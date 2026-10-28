@@ -1,0 +1,1124 @@
+{
+ "url": "http://127.0.0.1:5276/docs/verification/role-home-preview.html?role=teacher&state=long-names&width=fluid&theme=dark",
+ "at": "2026-10-28T17:53:35.235Z",
+ "allow": [
+  "button-fx",
+  "heavy-shadow",
+  "mixed-font-headline",
+  "micro-label",
+  "palette-cream",
+  "app-title-size"
+ ],
+ "viewports": [
+  {
+   "width": 390,
+   "height": 844,
+   "load": "load",
+   "screens": 5,
+   "filled": [
+    1,
+    1,
+    1,
+    0.98,
+    0.98
+   ],
+   "motion": {
+    "elements": 0,
+    "css": 0,
+    "transitions": 0,
+    "scripted": 0,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 390,
+     "h": 844
+    },
+    "page": {
+     "height": 3431,
+     "screens": 4.1,
+     "words": 351,
+     "img": 0,
+     "video": 0,
+     "canvas": 0,
+     "svg": 1,
+     "sections": 7,
+     "horizontalOverflow": 0,
+     "overflowCulprits": [],
+     "uiFragments": 0,
+     "uiAbuse": false,
+     "realPictures": 0,
+     "videoCount": 0,
+     "uiPictures": 0,
+     "pictureSamples": [],
+     "blendText": 0,
+     "sideScrollers": 1,
+     "brokenImages": [],
+     "emoji": [],
+     "videosNoPoster": 0
+    },
+    "hero": {
+     "text": "Good afternoon, Joshua.",
+     "words": 3,
+     "chars": 23,
+     "lines": 2,
+     "size": 30,
+     "vw": 7.7,
+     "font": "Fraunces",
+     "weight": 350,
+     "tracking": -0.05,
+     "leading": 1.02,
+     "top": 179,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "h1": {
+     "text": "Good afternoon, Joshua.",
+     "words": 3,
+     "lines": 2,
+     "size": 30,
+     "font": "Fraunces"
+    },
+    "headings": [
+     {
+      "text": "Good afternoon, Joshua.",
+      "words": 3,
+      "chars": 23,
+      "lines": 2,
+      "size": 30,
+      "vw": 7.7,
+      "font": "Fraunces",
+      "weight": 350,
+      "tracking": -0.045,
+      "leading": 1.02,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.83,
+      "top": 179,
+      "mixedFonts": [
+       "Fraunces",
+       "Fraunces italic"
+      ],
+      "tag": "h1",
+      "kind": "heading"
+     }
+    ],
+    "headingSummary": {
+     "count": 1,
+     "maxLines": 2,
+     "over2Lines": 0,
+     "statements": 0,
+     "centered": 0,
+     "medianWords": null,
+     "mixedFontHeadings": 1
+    },
+    "type": {
+     "families": [
+      {
+       "family": "Outfit",
+       "share": 0.99,
+       "mono": false
+      },
+      {
+       "family": "Fraunces",
+       "share": 0.01,
+       "mono": false
+      }
+     ],
+     "familyCount": 2,
+     "sizes": [
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      19,
+      30
+     ],
+     "sizeCount": 9,
+     "notLoaded": [],
+     "body": {
+      "font": "Outfit",
+      "size": 12,
+      "leading": 1.6,
+      "weight": 500,
+      "tracking": 0,
+      "contrast": 12.8
+     },
+     "measureChars": 36,
+     "max": {
+      "size": 30,
+      "vw": 7.7,
+      "font": "Fraunces",
+      "text": "Good afternoon,"
+     },
+     "monoShare": 0,
+     "monoProseShare": 0,
+     "monoFamilies": [],
+     "monoSamples": [],
+     "microLabels": 2,
+     "microLabelShare": 0.02,
+     "microSamples": [
+      "Wednesday, October 28, 2026",
+      "Teaching desk"
+     ],
+     "upperShare": 0.02,
+     "centerShare": 0.14,
+     "smallText": 24
+    },
+    "eyebrows": [
+     {
+      "text": "Wednesday, October 28, 2026",
+      "above": "Good afternoon, Joshua.",
+      "upper": true,
+      "tracked": true,
+      "mono": false,
+      "pill": false,
+      "size": 11,
+      "top": 157
+     }
+    ],
+    "numbered": [],
+    "color": {
+     "bodyBg": "#f7f4ee",
+     "bodyBgHsl": {
+      "h": 40,
+      "s": 0.36,
+      "l": 0.95
+     },
+     "dark": false,
+     "sectionBgs": [
+      {
+       "color": "#d9d6cd",
+       "top": 117,
+       "hsl": {
+        "h": 45,
+        "s": 0.14,
+        "l": 0.83
+       }
+      },
+      {
+       "color": "#131718",
+       "top": 117,
+       "hsl": {
+        "h": 192,
+        "s": 0.12,
+        "l": 0.08
+       }
+      },
+      {
+       "color": "#222824",
+       "top": 141,
+       "hsl": {
+        "h": 140,
+        "s": 0.08,
+        "l": 0.15
+       }
+      }
+     ],
+     "textColors": [
+      {
+       "color": "#efede6",
+       "share": 0.61
+      },
+      {
+       "color": "#babcb5",
+       "share": 0.35
+      },
+      {
+       "color": "#252b26",
+       "share": 0.02
+      },
+      {
+       "color": "#4f5850",
+       "share": 0.02
+      }
+     ],
+     "button": {
+      "bg": "#222824",
+      "hsl": {
+       "h": 140,
+       "s": 0.08,
+       "l": 0.15
+      },
+      "fg": "#efede6"
+     },
+     "lowContrast": []
+    },
+    "buttons": {
+     "count": 5,
+     "inHero": 4,
+     "radius": "pill",
+     "height": 44,
+     "withShadow": 5,
+     "withGradient": 0,
+     "mono": 0,
+     "upper": 0,
+     "heroLabels": [
+      "Assign work Choose a student and their n",
+      "Open email ↗",
+      "Messages (3)",
+      "Open follow-up ↗"
+     ]
+    },
+    "surfaces": {
+     "shadowStatic": 19,
+     "shadowOverlay": 0,
+     "shadowSamples": [
+      "header.home-desk-masthead → rgba(37, 43, 38, 0.05) 0px 1px 2px 0px, rgba(37, 43, 38, 0.055) 0px 8px 16px 0px",
+      "button.home-desk-launcher → rgba(20, 25, 21, 0.15) 0px 1px 2px 0px, rgba(20, 25, 21, 0.09) 0px 5px 10px 0px",
+      "a → rgba(0, 0, 0, 0.18) 0px 1px 2px 0px, rgba(0, 0, 0, 0.08) 0px 3px 6px 0px",
+      "button → rgba(0, 0, 0, 0.18) 0px 1px 2px 0px, rgba(0, 0, 0, 0.08) 0px 3px 6px 0px"
+     ],
+     "gradients": 0,
+     "scrims": 0,
+     "gradientSamples": [],
+     "gradientText": 0,
+     "hairlines": 11,
+     "hairlineSamples": [
+      "li.home-desk-manual-row 320px",
+      "li.home-desk-manual-row 320px",
+      "li 320px",
+      "li 320px",
+      "li 320px"
+     ],
+     "outlinedBoxes": 8,
+     "dashed": 0,
+     "blurred": 0,
+     "roundedBoxes": 11,
+     "boxRadius": 18,
+     "squareMedia": 0,
+     "roundedMedia": 0,
+     "mediaRadius": 0,
+     "textShadow": 0,
+     "cardRows": []
+    },
+    "heroMedia": [],
+    "nav": {
+     "links": 0,
+     "fixed": false,
+     "height": 281,
+     "floatingPill": true,
+     "blur": false
+    },
+    "fontsLoaded": [
+     "fraunces",
+     "outfit"
+    ]
+   },
+   "layout": {
+    "viewport": {
+     "w": 390,
+     "h": 844
+    },
+    "pageH": 3431,
+    "margins": {
+     "left": 24,
+     "right": 35
+    },
+    "sections": [
+     {
+      "sel": "header.home-desk-masthead",
+      "tag": "header",
+      "top": 141,
+      "height": 281,
+      "words": 29,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Good afternoon",
+       "size": 30,
+       "tag": "h1"
+      },
+      "left": 34,
+      "right": 34,
+      "textLeft": 34,
+      "textRight": 63,
+      "fullBleed": false,
+      "footer": false,
+      "hero": true,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "div.home-desk-work-column",
+      "tag": "div",
+      "top": 507,
+      "height": 1294,
+      "words": 129,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "After-session work",
+       "size": 17,
+       "tag": "h2"
+      },
+      "left": 35,
+      "right": 35,
+      "textLeft": 35,
+      "textRight": 35,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "aside.home-desk-side-column",
+      "tag": "aside",
+      "top": 1815,
+      "height": 980,
+      "words": 112,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Next up",
+       "size": 17,
+       "tag": "h2"
+      },
+      "left": 35,
+      "right": 35,
+      "textLeft": 35,
+      "textRight": 35,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "section.classroom-home-region.home-desk-students",
+      "tag": "section",
+      "top": 2814,
+      "height": 584,
+      "words": 48,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Students at a glance",
+       "size": 17,
+       "tag": "h2"
+      },
+      "left": 35,
+      "right": 35,
+      "textLeft": 35,
+      "textRight": 35,
+      "fullBleed": false,
+      "footer": true,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     }
+    ],
+    "gaps": [],
+    "h1s": [
+     {
+      "text": "Good afternoon, Joshua.",
+      "size": 30,
+      "top": 179,
+      "firstScreen": true
+     }
+    ],
+    "edgeText": [],
+    "edges": [
+     {
+      "x": 34,
+      "n": 13
+     },
+     {
+      "x": 99,
+      "n": 1
+     }
+    ],
+    "leftBlocks": 14,
+    "bodySize": 14,
+    "stage": false,
+    "explains": false,
+    "slivers": [],
+    "voidShare": 0,
+    "voidBox": null
+   },
+   "app": {
+    "viewport": {
+     "w": 390,
+     "h": 844
+    },
+    "dark": false,
+    "ground": "#f7f4ee",
+    "sidebar": null,
+    "topbar": null,
+    "canvas": {
+     "left": 24,
+     "right": -52
+    },
+    "hero": {
+     "text": "Good afternoon, Joshua.",
+     "words": 3,
+     "chars": 23,
+     "lines": 2,
+     "size": 30,
+     "vw": 7.7,
+     "font": "Fraunces",
+     "weight": 350,
+     "tracking": -0.05,
+     "leading": 1.02,
+     "top": 179,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "charts": 0,
+    "layout": {
+     "panels": 8,
+     "firstScreen": 2,
+     "ragged": [],
+     "voids": []
+    },
+    "tiles": 0,
+    "panels": {
+     "count": 18,
+     "radii": [
+      [
+       18,
+       7
+      ],
+      [
+       0,
+       7
+      ],
+      [
+       12,
+       2
+      ],
+      [
+       20,
+       1
+      ],
+      [
+       16,
+       1
+      ]
+     ],
+     "heavyBorders": 0,
+     "borderSamples": [],
+     "heavyShadows": 0,
+     "softShadows": 20,
+     "shadowSamples": [],
+     "glass": 0
+    },
+    "chips": {
+     "count": 0,
+     "hues": 0,
+     "samples": []
+    },
+    "numbers": {
+     "cells": 0,
+     "leftAligned": 0,
+     "figures": 2,
+     "tabularShare": 1,
+     "kpiMax": 14
+    },
+    "rows": null,
+    "chartHues": 0,
+    "placeholders": [],
+    "type": {
+     "under13": 0.26,
+     "tiny": 0,
+     "tinySamples": [],
+     "sizes": [
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      19,
+      30
+     ]
+    },
+    "title": {
+     "text": "Good afternoon,\nJoshua.",
+     "size": 30,
+     "top": 179
+    },
+    "colourShare": 0
+   },
+   "consoleErrors": []
+  },
+  {
+   "width": 320,
+   "height": 200,
+   "load": "load",
+   "screens": 12,
+   "filled": [
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    0.97,
+    1,
+    1,
+    1
+   ],
+   "motion": {
+    "elements": 0,
+    "css": 0,
+    "transitions": 0,
+    "scripted": 0,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 320,
+     "h": 200
+    },
+    "page": {
+     "height": 3721,
+     "screens": 18.6,
+     "words": 351,
+     "img": 0,
+     "video": 0,
+     "canvas": 0,
+     "svg": 1,
+     "sections": 7,
+     "horizontalOverflow": 0,
+     "overflowCulprits": [],
+     "uiFragments": 0,
+     "uiAbuse": false,
+     "realPictures": 0,
+     "videoCount": 0,
+     "uiPictures": 0,
+     "pictureSamples": [],
+     "blendText": 0,
+     "sideScrollers": 1,
+     "brokenImages": [],
+     "emoji": [],
+     "videosNoPoster": 0
+    },
+    "hero": {
+     "text": "Reset sample data",
+     "words": 3,
+     "chars": 17,
+     "lines": 1,
+     "size": 16,
+     "vw": 5,
+     "font": "Outfit",
+     "weight": 400,
+     "tracking": 0,
+     "leading": 1.6,
+     "top": 115,
+     "tag": "button",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "h1": {
+     "text": "Good afternoon, Joshua.",
+     "words": 3,
+     "lines": 2,
+     "size": 30,
+     "font": "Fraunces"
+    },
+    "headings": [
+     {
+      "text": "Good afternoon, Joshua.",
+      "words": 3,
+      "chars": 23,
+      "lines": 2,
+      "size": 30,
+      "vw": 9.4,
+      "font": "Fraunces",
+      "weight": 350,
+      "tracking": -0.045,
+      "leading": 1.02,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.79,
+      "top": 229,
+      "mixedFonts": [
+       "Fraunces",
+       "Fraunces italic"
+      ],
+      "tag": "h1",
+      "kind": "heading"
+     }
+    ],
+    "headingSummary": {
+     "count": 1,
+     "maxLines": 2,
+     "over2Lines": 0,
+     "statements": 0,
+     "centered": 0,
+     "medianWords": 3,
+     "mixedFontHeadings": 1
+    },
+    "type": {
+     "families": [
+      {
+       "family": "Outfit",
+       "share": 0.99,
+       "mono": false
+      },
+      {
+       "family": "Fraunces",
+       "share": 0.01,
+       "mono": false
+      }
+     ],
+     "familyCount": 2,
+     "sizes": [
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      19,
+      30
+     ],
+     "sizeCount": 9,
+     "notLoaded": [],
+     "body": {
+      "font": "Outfit",
+      "size": 12,
+      "leading": 1.6,
+      "weight": 500,
+      "tracking": 0,
+      "contrast": 12.8
+     },
+     "measureChars": 25,
+     "max": {
+      "size": 30,
+      "vw": 9.4,
+      "font": "Fraunces",
+      "text": "Good afternoon,"
+     },
+     "monoShare": 0,
+     "monoProseShare": 0,
+     "monoFamilies": [],
+     "monoSamples": [],
+     "microLabels": 2,
+     "microLabelShare": 0.02,
+     "microSamples": [
+      "Wednesday, October 28, 2026",
+      "Teaching desk"
+     ],
+     "upperShare": 0.02,
+     "centerShare": 0.14,
+     "smallText": 24
+    },
+    "eyebrows": [
+     {
+      "text": "Wednesday, October 28, 2026",
+      "above": "Good afternoon, Joshua.",
+      "upper": true,
+      "tracked": true,
+      "mono": false,
+      "pill": false,
+      "size": 11,
+      "top": 191
+     }
+    ],
+    "numbered": [],
+    "color": {
+     "bodyBg": "#f7f4ee",
+     "bodyBgHsl": {
+      "h": 40,
+      "s": 0.36,
+      "l": 0.95
+     },
+     "dark": false,
+     "sectionBgs": [
+      {
+       "color": "#252b26",
+       "top": 0,
+       "hsl": {
+        "h": 130,
+        "s": 0.08,
+        "l": 0.16
+       }
+      },
+      {
+       "color": "#d9d6cd",
+       "top": 151,
+       "hsl": {
+        "h": 45,
+        "s": 0.14,
+        "l": 0.83
+       }
+      },
+      {
+       "color": "#131718",
+       "top": 151,
+       "hsl": {
+        "h": 192,
+        "s": 0.12,
+        "l": 0.08
+       }
+      },
+      {
+       "color": "#222824",
+       "top": 175,
+       "hsl": {
+        "h": 140,
+        "s": 0.08,
+        "l": 0.15
+       }
+      },
+      {
+       "color": "#e6e8df",
+       "top": 331,
+       "hsl": {
+        "h": 73,
+        "s": 0.16,
+        "l": 0.89
+       }
+      },
+      {
+       "color": "#29302a",
+       "top": 660,
+       "hsl": {
+        "h": 129,
+        "s": 0.08,
+        "l": 0.17
+       }
+      }
+     ],
+     "textColors": [
+      {
+       "color": "#efede6",
+       "share": 0.61
+      },
+      {
+       "color": "#babcb5",
+       "share": 0.35
+      },
+      {
+       "color": "#252b26",
+       "share": 0.02
+      },
+      {
+       "color": "#4f5850",
+       "share": 0.02
+      }
+     ],
+     "button": {
+      "bg": "#222824",
+      "hsl": {
+       "h": 140,
+       "s": 0.08,
+       "l": 0.15
+      },
+      "fg": "#efede6"
+     },
+     "lowContrast": []
+    },
+    "buttons": {
+     "count": 4,
+     "inHero": 0,
+     "radius": "pill",
+     "height": 44,
+     "withShadow": 4,
+     "withGradient": 0,
+     "mono": 0,
+     "upper": 0,
+     "heroLabels": []
+    },
+    "surfaces": {
+     "shadowStatic": 19,
+     "shadowOverlay": 0,
+     "shadowSamples": [
+      "header.home-desk-masthead → rgba(37, 43, 38, 0.05) 0px 1px 2px 0px, rgba(37, 43, 38, 0.055) 0px 8px 16px 0px",
+      "button.home-desk-launcher → rgba(20, 25, 21, 0.15) 0px 1px 2px 0px, rgba(20, 25, 21, 0.09) 0px 5px 10px 0px",
+      "a → rgba(0, 0, 0, 0.18) 0px 1px 2px 0px, rgba(0, 0, 0, 0.08) 0px 3px 6px 0px",
+      "button → rgba(0, 0, 0, 0.18) 0px 1px 2px 0px, rgba(0, 0, 0, 0.08) 0px 3px 6px 0px"
+     ],
+     "gradients": 0,
+     "scrims": 0,
+     "gradientSamples": [],
+     "gradientText": 0,
+     "hairlines": 11,
+     "hairlineSamples": [
+      "li.home-desk-manual-row 250px",
+      "li.home-desk-manual-row 250px",
+      "li 250px",
+      "li 250px",
+      "li 250px"
+     ],
+     "outlinedBoxes": 8,
+     "dashed": 0,
+     "blurred": 0,
+     "roundedBoxes": 12,
+     "boxRadius": 18,
+     "squareMedia": 0,
+     "roundedMedia": 0,
+     "mediaRadius": 0,
+     "textShadow": 0,
+     "cardRows": [
+      {
+       "count": 3,
+       "iconTopped": false,
+       "rounded": true,
+       "top": 573
+      },
+      {
+       "count": 3,
+       "iconTopped": false,
+       "rounded": true,
+       "top": 1902
+      },
+      {
+       "count": 3,
+       "iconTopped": false,
+       "rounded": false,
+       "top": 1981
+      }
+     ]
+    },
+    "heroMedia": [],
+    "nav": {
+     "links": 0,
+     "fixed": false,
+     "height": 312,
+     "floatingPill": true,
+     "blur": false
+    },
+    "fontsLoaded": [
+     "fraunces",
+     "outfit"
+    ]
+   },
+   "layout": {
+    "viewport": {
+     "w": 320,
+     "h": 200
+    },
+    "pageH": 3721,
+    "margins": {
+     "left": 16,
+     "right": 31
+    },
+    "sections": [
+     {
+      "sel": "div.home-preview-toolbar",
+      "tag": "div",
+      "top": 0,
+      "height": 151,
+      "words": 13,
+      "media": 0,
+      "middle": 0,
+      "heading": null,
+      "left": 16,
+      "right": 111,
+      "textLeft": 16,
+      "textRight": 111,
+      "fullBleed": false,
+      "footer": false,
+      "hero": true,
+      "continues": false,
+      "pinned": true
+     },
+     {
+      "sel": "div",
+      "tag": "div",
+      "top": 151,
+      "height": 3570,
+      "words": 326,
+      "media": 0,
+      "middle": 169,
+      "heading": {
+       "text": "Good afternoon",
+       "size": 30,
+       "tag": "h1"
+      },
+      "left": 18,
+      "right": 0,
+      "textLeft": 28,
+      "textRight": 31,
+      "fullBleed": false,
+      "footer": true,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     }
+    ],
+    "gaps": [],
+    "h1s": [
+     {
+      "text": "Good afternoon, Joshua.",
+      "size": 30,
+      "top": 229,
+      "firstScreen": false
+     }
+    ],
+    "edgeText": [],
+    "edges": [
+     {
+      "x": 34,
+      "n": 13
+     },
+     {
+      "x": 99,
+      "n": 1
+     }
+    ],
+    "leftBlocks": 14,
+    "bodySize": 14,
+    "stage": false,
+    "explains": false,
+    "slivers": [],
+    "voidShare": 0,
+    "voidBox": null
+   },
+   "app": {
+    "viewport": {
+     "w": 320,
+     "h": 200
+    },
+    "dark": false,
+    "ground": "#f7f4ee",
+    "sidebar": null,
+    "topbar": null,
+    "canvas": {
+     "left": 16,
+     "right": -122
+    },
+    "hero": {
+     "text": "Reset sample data",
+     "words": 3,
+     "chars": 17,
+     "lines": 1,
+     "size": 16,
+     "vw": 5,
+     "font": "Outfit",
+     "weight": 400,
+     "tracking": 0,
+     "leading": 1.6,
+     "top": 115,
+     "tag": "button",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "charts": 0,
+    "layout": {
+     "panels": 8,
+     "firstScreen": 0,
+     "ragged": [],
+     "voids": []
+    },
+    "tiles": 0,
+    "panels": {
+     "count": 19,
+     "radii": [
+      [
+       0,
+       8
+      ],
+      [
+       18,
+       7
+      ],
+      [
+       12,
+       2
+      ],
+      [
+       20,
+       1
+      ],
+      [
+       16,
+       1
+      ]
+     ],
+     "heavyBorders": 0,
+     "borderSamples": [],
+     "heavyShadows": 0,
+     "softShadows": 20,
+     "shadowSamples": [],
+     "glass": 0
+    },
+    "chips": {
+     "count": 0,
+     "hues": 0,
+     "samples": []
+    },
+    "numbers": {
+     "cells": 0,
+     "leftAligned": 0,
+     "figures": 2,
+     "tabularShare": 1,
+     "kpiMax": 14
+    },
+    "rows": null,
+    "chartHues": 0,
+    "placeholders": [],
+    "type": {
+     "under13": 0.26,
+     "tiny": 0,
+     "tinySamples": [],
+     "sizes": [
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      19,
+      30
+     ]
+    },
+    "title": {
+     "text": "Good afternoon,\nJoshua.",
+     "size": 30,
+     "top": 229
+    },
+    "colourShare": 0.001
+   },
+   "consoleErrors": []
+  }
+ ],
+ "findings": [],
+ "images": [
+  {
+   "viewport": "mobile",
+   "width": 390,
+   "fold": "C:\\Users\\Joshu\\dev\\ai-os-projects\\lsatu-home-polish-20261027\\.taste-skill\\paper-restoration-final-long-dark\\mobile-390-fold.jpg",
+   "pages": [
+    "C:\\Users\\Joshu\\dev\\ai-os-projects\\lsatu-home-polish-20261027\\.taste-skill\\paper-restoration-final-long-dark\\mobile-390-page-01.jpg"
+   ],
+   "film": []
+  },
+  {
+   "viewport": "mobile",
+   "width": 320,
+   "fold": "C:\\Users\\Joshu\\dev\\ai-os-projects\\lsatu-home-polish-20261027\\.taste-skill\\paper-restoration-final-long-dark\\mobile-320-fold.jpg",
+   "pages": [
+    "C:\\Users\\Joshu\\dev\\ai-os-projects\\lsatu-home-polish-20261027\\.taste-skill\\paper-restoration-final-long-dark\\mobile-320-page-01.jpg",
+    "C:\\Users\\Joshu\\dev\\ai-os-projects\\lsatu-home-polish-20261027\\.taste-skill\\paper-restoration-final-long-dark\\mobile-320-page-02.jpg"
+   ],
+   "film": []
+  }
+ ]
+}

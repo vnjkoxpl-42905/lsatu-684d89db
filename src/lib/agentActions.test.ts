@@ -27,6 +27,7 @@ vi.mock('@/integrations/supabase/client', () => {
     b.select = chain;
     b.eq = chain;
     b.insert = chain;
+    b.abortSignal = chain;
     b.maybeSingle = () =>
       Promise.resolve({
         data: {

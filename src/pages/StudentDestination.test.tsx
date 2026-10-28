@@ -23,6 +23,20 @@ function Where() {
 }
 
 describe("visible locked destination sections", () => {
+  it('gives My Work content a list-only policy without changing its separate heading owner', () => {
+    permissions.has_classroom_access = true;
+    render(<MemoryRouter initialEntries={['/my-work/notes']}><StudentDestination destination="my-work" /></MemoryRouter>);
+    const content = document.querySelector('.student-destination-content');
+    expect(content).toHaveAttribute('data-motion-policy', 'list-only');
+    expect(content).not.toHaveAttribute('data-motion-enter');
+    expect(screen.getByRole('heading', { name: 'My Work' }).closest('header')).toHaveAttribute('data-motion-enter');
+  });
+  it('preserves the generic entrance for other destination content', () => {
+    render(<MemoryRouter initialEntries={['/library/lessons']}><StudentDestination destination="library" /></MemoryRouter>);
+    const content = document.querySelector('.student-destination-content');
+    expect(content).toHaveAttribute('data-motion-enter');
+    expect(content).not.toHaveAttribute('data-motion-policy');
+  });
   it('keeps the persistent heading under one destination motion owner across tab changes', () => {
     permissions.has_analytics_access = true;
     render(<MemoryRouter initialEntries={['/progress/overview']}><Routes><Route path="/progress/*" element={<StudentDestination destination="progress" />} /></Routes></MemoryRouter>);
@@ -75,6 +89,20 @@ describe("visible locked destination sections", () => {
     expect(screen.getByRole("link", { name: "Overview" })).toHaveAttribute("aria-current", "page");
     expect(screen.getByRole("link", { name: "History" })).toHaveAttribute("href", "/progress/history");
     expect(screen.queryByText(/Sections with a lock aren't available/)).toBeNull();
+  });
+  it("carries only a valid Progress window across tab links", () => {
+    permissions.has_analytics_access = true;
+    render(<MemoryRouter initialEntries={["/progress/overview?window=14&historyResult=missed&junk=1"]}><StudentDestination destination="progress" /></MemoryRouter>);
+    expect(screen.getByRole("link", { name: "History" })).toHaveAttribute("href", "/progress/history?window=14");
+    expect(screen.getByRole("link", { name: "Topics" })).toHaveAttribute("href", "/progress/topics?window=14");
+    cleanup();
+    render(<MemoryRouter initialEntries={["/progress/overview?window=banana"]}><StudentDestination destination="progress" /></MemoryRouter>);
+    expect(screen.getByRole("link", { name: "History" })).toHaveAttribute("href", "/progress/history");
+  });
+  it("does not add a window to other destinations' tab links", () => {
+    permissions.has_classroom_access = true;
+    render(<MemoryRouter initialEntries={["/my-work/notes?window=14"]}><StudentDestination destination="my-work" /></MemoryRouter>);
+    expect(screen.getByRole("link", { name: "Completed" })).toHaveAttribute("href", "/my-work/completed");
   });
   it("explains a locked section in visible text tied to the tab", () => {
     permissions.has_chat_access = true;

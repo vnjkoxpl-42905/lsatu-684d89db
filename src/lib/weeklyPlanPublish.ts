@@ -291,6 +291,8 @@ export async function runPublish(start: PublishJob, deps: PublishDeps): Promise<
         sourceId: job.itemIds[i],
         visibleToStudent: false,
         status: 'assigned',
+        notificationPolicy: 'suppressed',
+        notificationGroupId: job.planKey,
         metadata: { weekly_plan_id: job.planId, day_date: it.day, estimated_minutes: row.estimated_minutes },
       });
       if (!mirror?.id) return fail('mirrors', `Adding "${row.title}" to Classroom could not be confirmed.`);

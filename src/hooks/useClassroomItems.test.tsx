@@ -3,6 +3,7 @@ import { cleanup, renderHook, waitFor } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 const { range, eq, order, auth, subscriptions, removeChannel } = vi.hoisted(() => ({ range: vi.fn(), eq: vi.fn(), order: vi.fn(), auth: { user: { id: "student-one" } }, subscriptions: [] as Array<{filter: {filter: string}; callback: () => void}>, removeChannel: vi.fn() }));
+vi.mock('@/hooks/useStudentWorkState',()=>({useStudentWorkAccessReceipts:()=>({data:{access:[...Array.from({length:1000},(_,i)=>({source_table:'classroom_items',source_id:`note-${i}`,issuance:1,available:true})),{source_table:'classroom_items',source_id:'older-body-match',issuance:1,available:true}],receipts:[],practiceTests:[]},isLoading:false,isError:false,error:null,refetch:vi.fn()})}));
 vi.mock("@/contexts/AuthContext", () => ({ useAuth: () => auth }));
 vi.mock("@/integrations/supabase/client", () => ({ supabase: { channel: () => {
   const channel = { on: (_event: string, filter: {filter: string}, callback: () => void) => { subscriptions.push({ filter, callback }); return channel; }, subscribe: () => channel };

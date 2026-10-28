@@ -1,12 +1,12 @@
 {
   "repository": "vnjkoxpl-42905/lsatu-684d89db",
-  "source_head": "b6deac33bc82265f4949fa954bfbee2c3919eaf7",
+  "source_head": "29cf18a8d0fb0ef0c1106f8b976f26db13b9a3c4",
   "source_branch": "codex/home-polish-20261027",
   "snapshot_branch": "codex/local-sync/laptop-le9a083p/lsatu-home-polish-20261027",
   "encrypted_original_context": {
     "enabled": true,
     "format": 2,
-    "file_count": 92,
+    "file_count": 97,
     "paths": [
       "lsatu-home-polish-20261027/.agents/skills/notebooklm/tests/cassettes/artifacts_delete.yaml",
       "lsatu-home-polish-20261027/.agents/skills/notebooklm/tests/cassettes/artifacts_export_report.yaml",
@@ -81,9 +81,11 @@
       "lsatu-home-polish-20261027/.claude/skills/notebooklm/tests/cassettes/sources_rename.yaml",
       "lsatu-home-polish-20261027/.claude/skills/watch/scripts/setup.py",
       "lsatu-home-polish-20261027/dist-home-preview/assets/role-home-preview-8a6Ugh6y.js",
+      "lsatu-home-polish-20261027/dist-home-preview/assets/role-home-preview-B-5etMfU.js",
       "lsatu-home-polish-20261027/dist-home-preview/assets/role-home-preview-B0NfyT-A.js",
       "lsatu-home-polish-20261027/dist-home-preview/assets/role-home-preview-B4gE8cSH.js",
       "lsatu-home-polish-20261027/dist-home-preview/assets/role-home-preview-B69ieNBH.js",
+      "lsatu-home-polish-20261027/dist-home-preview/assets/role-home-preview-BMI5Ap71.js",
       "lsatu-home-polish-20261027/dist-home-preview/assets/role-home-preview-BbKXDMyX.js",
       "lsatu-home-polish-20261027/dist-home-preview/assets/role-home-preview-BdW5Wbvh.js",
       "lsatu-home-polish-20261027/dist-home-preview/assets/role-home-preview-BhrspnEe.js",
@@ -95,12 +97,15 @@
       "lsatu-home-polish-20261027/dist-home-preview/assets/role-home-preview-DGnVHwvO.js",
       "lsatu-home-polish-20261027/dist-home-preview/assets/role-home-preview-DNH15jNu.js",
       "lsatu-home-polish-20261027/dist-home-preview/assets/role-home-preview-DhrPL7hd.js",
+      "lsatu-home-polish-20261027/dist-home-preview/assets/role-home-preview-k_BYbUHp.js",
+      "lsatu-home-polish-20261027/dist-home-preview/assets/role-home-preview-mzjUdOBb.js",
+      "lsatu-home-polish-20261027/dist-home-preview/assets/role-home-preview-uHI8zBXH.js",
       "lsatu-home-polish-20261027/scripts/verification/start-rc-builder-preview.mjs",
       "lsatu-home-polish-20261027/src/contexts/AuthContext.tsx",
       "lsatu-home-polish-20261027/src/lib/googleDrive.ts",
       "lsatu-home-polish-20261027/supabase/functions/handle-email-events/index.ts",
       "lsatu-home-polish-20261027/supabase/functions/teacher-post-session-sync/desk.ts"
     ],
-    "ciphertext_sha256": "6a4f9910d241df48081303a8643a9d651638401b8d0b464d892563bad867ce76"
+    "ciphertext_sha256": "f9b208117d2732162cae62b809663c5dba0987aa4730ce1f9ef20e80fd390bd4"
   }
 }

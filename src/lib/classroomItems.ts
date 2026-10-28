@@ -2,10 +2,12 @@ import { supabase } from '@/integrations/supabase/client';
 import type { Json } from '@/integrations/supabase/types';
 import type { ClassroomItem } from '@/hooks/useClassroomItems';
 import { isReadingCenterAssignment, READING_CENTER_PATH } from '@/lib/readingCenterAccess';
+import { assignmentDeliveryColumns, assignmentWriteSignal, classroomNotificationPolicy, type AssignmentDelivery } from '@/lib/assignmentDelivery';
 
-interface CreateClassroomItemInput {
+interface CreateClassroomItemInput extends Partial<AssignmentDelivery> {
   /** Preallocated for contextual assignment links. Other callers keep database-generated IDs. */
   id?: string;
+  signal?: AbortSignal;
   studentId: string;
   createdBy: string;
   type: ClassroomItem['type'];
@@ -44,8 +46,13 @@ export async function createClassroomItem(input: CreateClassroomItemInput) {
       status: input.status ?? 'assigned',
       visible_to_student: input.visibleToStudent ?? true,
       metadata_json: (input.metadata ?? {}) as Json,
-    })
+      ...assignmentDeliveryColumns({
+        notificationPolicy: input.notificationPolicy ?? classroomNotificationPolicy(input.type),
+        notificationGroupId: input.notificationGroupId,
+      }),
+    } as never)
     .select()
+    .abortSignal(input.signal ?? assignmentWriteSignal())
     .single();
   if (error) throw error;
   if (input.id && (data?.id !== input.id || data.student_id !== input.studentId || data.source_id !== input.sourceId)) throw new Error('The assignment identity or route could not be verified. No notification was sent.');
@@ -178,6 +185,15 @@ function openableAssignmentId(item: ClassroomItem): string | null {
 export function resolveItemRoute(item: ClassroomItem): string | null {
   if (isReadingCenterAssignment(item)) return READING_CENTER_PATH;
   switch (item.type) {
+    case 'link': {
+      const source = item.source_id?.trim();
+      if (!source) return null;
+      if (/^\/(?![\/\\])/.test(source)) return source;
+      try {
+        const url = new URL(source);
+        return ['http:', 'https:'].includes(url.protocol) ? source : null;
+      } catch { return null; }
+    }
     case 'drill':
       if (item.source_table === 'guided_drill_assignments' && item.source_id) {
         return `/guided/${encodeURIComponent(item.source_id)}?returnTo=${encodeURIComponent('/classroom')}`;

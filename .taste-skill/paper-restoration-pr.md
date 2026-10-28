@@ -1,0 +1,5 @@
+The expanded teacher Home lost the approved warm-paper hierarchy. Restore the light Fraunces greeting, charcoal Assign work launcher, restrained paper depth and readable control hierarchy while retaining the connected session queue, private tasks, payment/access decisions, correspondence, agenda and student overview.
+
+Group work and correspondence in the main column, keep operations in a compact rail, and preserve a full-width student overview. Use the existing truthful session-status logic in the greeting, with a stale-empty regression test. Load production font families in the local verification entry and restore reduced-motion-aware pointer feedback.
+
+Validation:64 targeted Home tests passed on the merged checkout; production build and postbuild content check passed. Built-preview screenshots reviewed at1440/980/768/390 plus empty/setup/error states and dark long names. Named Taste allowances retain the user-approved palette, greeting and paper depth; full/empty report0failures0warnings. Setup/error retain one content-fit row warning. No backend changes or student mutations. Final typecheck and signed-in post-publish acceptance recorded separately.

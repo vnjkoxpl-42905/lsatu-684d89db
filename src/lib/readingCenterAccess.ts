@@ -1,6 +1,7 @@
 import { supabase } from '@/integrations/supabase/client';
 import { parseLocalDay } from '@/lib/localDate';
 import type { ClassroomItem } from '@/hooks/useClassroomItems';
+import { assignmentWriteSignal, type AssignmentDelivery } from '@/lib/assignmentDelivery';
 
 export const READING_CENTER_PATH = '/reading-center';
 export const READING_CENTER_SOURCE = 'reading_center';
@@ -20,7 +21,8 @@ export async function assignReadingCenter(input: {
   scheduledForLocalDate?: string;
   title?: string;
   description?: string;
-}): Promise<{ item: ClassroomItem; reused: boolean }> {
+  signal?: AbortSignal;
+} & AssignmentDelivery): Promise<{ item: ClassroomItem; reused: boolean }> {
   const day = input.scheduledForLocalDate ? parseLocalDay(input.scheduledForLocalDate) : null;
   if (input.scheduledForLocalDate && !day) throw new Error('Choose a valid assignment date.');
   const { data, error } = await supabase.rpc('assign_reading_center' as never, {
@@ -28,7 +30,9 @@ export async function assignReadingCenter(input: {
     p_unlock_at: day?.toISOString() ?? null,
     p_title: input.title?.trim() || 'Reading Center',
     p_description: input.description?.trim() || 'Practice reading articles with five reading modes, bookmarks and reading goals.',
-  } as never);
+    p_notification_policy: input.notificationPolicy,
+    p_notification_group_id: input.notificationGroupId ?? null,
+  } as never).abortSignal(input.signal ?? assignmentWriteSignal());
   if (error) throw error;
   const result = data as unknown as { item?: ClassroomItem; reused?: boolean } | null;
   if (!result?.item?.id || result.item.student_id !== input.studentId || !isReadingCenterAssignment(result.item) || !result.item.visible_to_student) {

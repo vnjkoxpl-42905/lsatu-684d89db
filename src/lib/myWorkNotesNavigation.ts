@@ -25,3 +25,16 @@ export function validateNotesReturnTo(value: string | null | undefined): string 
 export function notesDetailRoute(itemId: string, returnTo?: string | null): string {
   return `/classroom/item/${encodeURIComponent(itemId)}?${new URLSearchParams({ returnTo: validateNotesReturnTo(returnTo) })}`;
 }
+
+export type NotesArchiveOrigin = { id: string; returnTo: string };
+
+/** Carry only an archive's explicit origin through its reader chain. */
+export function notesArchiveOrigin(state: unknown, returnTo: string): NotesArchiveOrigin | null {
+  if (!state || typeof state !== 'object' || Array.isArray(state)) return null;
+  const origin = (state as { notesArchiveOrigin?: unknown }).notesArchiveOrigin;
+  if (!origin || typeof origin !== 'object' || Array.isArray(origin)) return null;
+  const { id, returnTo: path } = origin as Partial<NotesArchiveOrigin>;
+  if (typeof id !== 'string' || !id || id.length > 500 || /[\r\n]/.test(id) || typeof path !== 'string') return null;
+  if (path !== validateNotesReturnTo(path) || path !== validateNotesReturnTo(returnTo)) return null;
+  return { id, returnTo: path };
+}

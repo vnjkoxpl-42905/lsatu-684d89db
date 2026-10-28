@@ -257,7 +257,7 @@ export function MyList({
         </form>
       ) : null}
       {desk.manual.state === "ready" ? (
-        desk.manual.data?.items.length ? (
+        desk.manual.data?.items?.length ? (
           <ul className="home-desk-manual-list">
             {desk.manual.data.items.slice(0, 2).map((task) => (
               <ManualRow key={task.id} task={task} desk={desk} />

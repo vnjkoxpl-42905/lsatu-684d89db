@@ -1,7 +1,7 @@
 import { useEffect, type RefObject } from "react";
 import { gsap } from "gsap";
 
-const PRESSABLE = ".classroom-home-cta, .classroom-home-action, .classroom-home-done, .classroom-home-search-clear";
+const PRESSABLE = ".classroom-home-cta, .classroom-home-action, .classroom-home-done, .classroom-home-search-clear, [data-home-feedback]";
 
 /** Pointer feedback only. Daily-use Home content is visible immediately. */
 export function useHomeFeedback(ref: RefObject<HTMLElement>) {

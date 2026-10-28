@@ -45,6 +45,24 @@ export async function readDeskRpc(
     throw new Error("Invalid payments response");
   return data;
 }
+/** Setup envelopes are not successful provider data and may contain no list at all. */
+export function decodeDeskProvider(action: "agenda" | "email", data: any) {
+  if (!data || typeof data !== "object")
+    throw new Error("Provider did not return data");
+  if (data.setup_required === true && data.ok !== true) return data;
+  if (data.ok !== true) throw new Error("Provider did not return data");
+  if (action === "agenda" && !Array.isArray(data.events))
+    throw new Error("Invalid primary calendar response");
+  if (
+    action === "email" &&
+    (!Array.isArray(data.threads) ||
+      !Number.isInteger(data.count) ||
+      data.count < 0)
+  )
+    throw new Error("Invalid student email response");
+  return data;
+}
+
 function useDeskQuery(
   actorId: string | undefined,
   enabled: boolean,
@@ -120,15 +138,13 @@ export function useTeachingDesk(
       _student_id: null,
     }),
   );
-  const provider = async (action: string) => {
+  const provider = async (action: "agenda" | "email") => {
     const { data, error } = await supabase.functions.invoke(
       "teacher-post-session-sync",
       { body: { action } },
     );
     if (error) throw error;
-    if (!data?.ok && !data?.setup_required)
-      throw new Error("Provider did not return data");
-    return data;
+    return decodeDeskProvider(action, data);
   };
   const agenda = useDeskQuery(actorId, enabled, "agenda", () =>
     provider("agenda"),
@@ -167,7 +183,12 @@ export function useTeachingDesk(
           : q.isError
             ? "error"
             : "loading",
-    data: enabled && q.data !== undefined ? transform(q.data) : undefined,
+    data:
+      enabled &&
+      q.data !== undefined &&
+      !(q.data?.setup_required && !q.data?.threads?.length)
+        ? transform(q.data)
+        : undefined,
     stale: q.data !== undefined && q.isError,
     retryBlocked: !!retryBlocks[`${actorId}:${part}`] || q.isFetching,
     retry: () => {

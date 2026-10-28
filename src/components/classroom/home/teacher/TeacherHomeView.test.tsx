@@ -133,13 +133,46 @@ function expectNoStudentContent() {
 }
 
 describe("TeacherHomeView", () => {
+  it("keeps the masthead truthful when a saved empty queue cannot refresh", () => {
+    const { container } = render(
+      <TeacherHomeView
+        model={{
+          ...EMPTY,
+          postSession: {
+            state: "ready",
+            refreshFailed: true,
+            data: {
+              tasks: [],
+              handled: [],
+              total: 0,
+              settings: {
+                enabled: true,
+                activation_cutoff: "2026-10-28T12:00:00Z",
+                last_success_at: new Date().toISOString(),
+                last_error: null,
+                catching_up: false,
+                drive_root_url: null,
+              },
+            },
+          },
+        }}
+        onOpen={vi.fn()}
+      />,
+    );
+    expect(
+      within(
+        container.querySelector(".home-desk-masthead") as HTMLElement,
+      ).getByText("0 sessions were waiting when your work list last loaded."),
+    ).toBeInTheDocument();
+    expect(container.querySelector('[data-work-state="quiet"]')).toBeNull();
+  });
   it("keeps Assign work in the header without a student assignment promotion", () => {
     const onOpen = vi.fn();
     render(<TeacherHomeView model={READY} onOpen={onOpen} />);
     expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(
       "Good afternoon, Joshua.",
     );
-    fireEvent.click(screen.getByRole("button", { name: "Assign work ↗" }));
+    fireEvent.click(screen.getByRole("button", { name: "Assign work" }));
     expect(onOpen).toHaveBeenCalledWith("/teacher/library/assignments");
     expectNoStudentContent();
   });
@@ -242,6 +275,64 @@ describe("TeacherHomeView", () => {
     ).toHaveLength(3);
     expect(screen.queryByText("Online now")).toBeNull();
     expectNoStudentContent();
+  });
+});
+
+describe("Teacher Home provider setup rendering", () => {
+  it("keeps the desk rendered when email has the live array-free setup envelope", () => {
+    const email = {
+      state: "setup" as const,
+      data: {
+        ok: false,
+        setup_required: true,
+        error: "student_email_setup_required",
+        fetched_at: "2026-10-28T16:21:40.683Z",
+      } as any,
+    };
+    render(
+      <TeacherHomeView
+        model={{
+          ...READY,
+          desk: {
+            manual: { state: "error" },
+            agenda: {
+              state: "ready",
+              data: {
+                events: [],
+                next_cursor: null,
+                fetched_at: "2026-10-28T16:21:40.683Z",
+              },
+            },
+            email,
+            payments: {
+              state: "ready",
+              data: { recent: [], attention: [], total: 0, attention_total: 0 },
+            },
+            results: { state: "ready", data: [] },
+            access: { state: "ready", data: [] },
+          },
+        }}
+        onOpen={vi.fn()}
+      />,
+    );
+    expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(
+      "Joshua",
+    );
+    expect(
+      screen.getByRole("heading", { name: "After-session work" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { name: "My list" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(/student and enquiry email is not connected yet/),
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByText("No unread student or enquiry email."),
+    ).toBeNull();
+    expect(
+      screen.getByRole("heading", { name: "Next up" }),
+    ).toBeInTheDocument();
   });
 });
 

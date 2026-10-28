@@ -8,11 +8,11 @@ import { firstAnswerDetails } from '@/lib/firstAnswerDetails';
 /** Only LR question types persisted with a graded first answer are grouped. */
 export default function ProgressTopics({ studentId, hideWindowControl = false }: { studentId?: string; hideWindowControl?: boolean } = {}) {
   const [window, setWindow] = useProgressWindow(!studentId);
-  const { ledger, loading, error, resolution, refresh } = useFirstAnswerProgress(window, studentId);
+  const { ledger, asOf, loading, error, resolution, refresh } = useFirstAnswerProgress(window, studentId);
   const [search, setSearch] = useState('');
   const details = useMemo(() => ledger
-    ? firstAnswerDetails(ledger.answers, window, new Date().toISOString())
-    : null, [ledger, window]);
+    ? firstAnswerDetails(ledger.answers, window, asOf ?? new Date().toISOString())
+    : null, [ledger, window, asOf]);
   const topics = details?.topics.filter((row) => row.topic.toLowerCase().includes(search.trim().toLowerCase())) ?? [];
   const denominator = details?.topics.reduce((sum, row) => sum + row.denominator, 0) ?? 0;
   const partialLr = ledger?.coverage.missingSources.some((item) => ['lr_attempts', 'lr_section_history', 'practice_test_runs'].includes(item.source)) ?? false;

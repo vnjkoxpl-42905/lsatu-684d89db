@@ -16,6 +16,7 @@ import { preserveRedirectLocation } from "@/lib/preserveRedirectLocation";
 import { DestinationHeadingContext } from "@/contexts/DestinationHeadingContext";
 import { useReadingCenterAccess } from '@/hooks/useReadingCenterAccess';
 import { useClassroomMotion } from '@/hooks/useClassroomMotion';
+import { parseProgressWindow } from '@/hooks/useProgressWindow';
 
 function useDestinationPermissions(destination: Destination) {
   const permissions = useUserPermissions();
@@ -27,8 +28,11 @@ function useDestinationPermissions(destination: Destination) {
 }
 
 export function StudentDestination({ destination }: { destination: Destination }) {
-  const { pathname } = useLocation();
+  const { pathname, search } = useLocation();
   const headingRef = useRef<HTMLElement>(null);
+  // Progress tabs carry only a valid window; no other URL state follows a tab link.
+  const progressWindow = destination === "progress" ? parseProgressWindow(new URLSearchParams(search).get("window")) : null;
+  const tabTarget = (path: string) => progressWindow ? `${path}?window=${progressWindow}` : path;
   useClassroomMotion(headingRef, `destination:${destination}`);
   const permissions = useDestinationPermissions(destination);
   const config = DESTINATIONS[destination];
@@ -45,7 +49,7 @@ export function StudentDestination({ destination }: { destination: Destination }
       return (
         <Link
           key={tab.path}
-          to={row === "primary" && tab.path === "/practice/exams" ? practiceExamLandingPath(permissions) : tab.path}
+          to={row === "primary" && tab.path === "/practice/exams" ? practiceExamLandingPath(permissions) : tabTarget(tab.path)}
           className={active ? "student-destination-tab student-destination-tab-active" : "student-destination-tab"}
           aria-current={active ? "page" : undefined}
         >
@@ -94,7 +98,7 @@ export function StudentDestination({ destination }: { destination: Destination }
           {permissions.has_chat_access || permissions.is_admin ? " If that looks wrong, message Joshua." : null}
         </p>
       ) : null}
-      <div data-motion-enter={pathname === "/practice/drills" || (destination === "progress" && pathname.endsWith("/overview")) ? undefined : ""} className="student-destination-content">
+      <div data-motion-policy={destination === 'my-work' ? 'list-only' : undefined} data-motion-enter={destination === 'my-work' || pathname === "/practice/drills" || (destination === "progress" && pathname.endsWith("/overview")) ? undefined : ""} className="student-destination-content">
         <DestinationHeadingContext.Provider value>
           <Outlet />
         </DestinationHeadingContext.Provider>

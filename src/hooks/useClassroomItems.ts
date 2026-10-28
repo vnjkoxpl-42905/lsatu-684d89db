@@ -2,6 +2,8 @@ import { useEffect } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
+import { useStudentWorkAccessReceipts } from '@/hooks/useStudentWorkState';
+import { classroomWorkIdentity, deduplicateEquivalentClassroomItems, type StudentWorkIdentity } from '@/lib/studentWorkIdentity';
 
 export type ClassroomItemType =
   | 'drill'
@@ -14,7 +16,8 @@ export type ClassroomItemType =
   | 'upload_summary'
   | 'weekly_plan_task'
   | 'smartboard_recap'
-  | 'practice_test';
+  | 'practice_test'
+  | 'link';
 
 export type ClassroomItemStatus =
   | 'draft'
@@ -24,6 +27,7 @@ export type ClassroomItemStatus =
   | 'archived';
 
 export interface ClassroomItem {
+  workIdentity?:StudentWorkIdentity;
   id: string;
   student_id: string;
   class_id: string | null;
@@ -57,6 +61,7 @@ export function useClassroomItems() {
   const { user } = useAuth();
   const queryClient = useQueryClient();
   const userId = user?.id;
+  const workState=useStudentWorkAccessReceipts();
   useEffect(() => {
     if (!userId) return;
     const channel = supabase.channel(`classroom-items-${userId}-${Math.random().toString(36).slice(2)}`)
@@ -65,7 +70,7 @@ export function useClassroomItems() {
       }).subscribe();
     return () => { void supabase.removeChannel(channel); };
   }, [queryClient, userId]);
-  return useQuery<ClassroomItem[]>({
+  const query=useQuery<ClassroomItem[]>({
     queryKey: ['classroom-items', user?.id],
     enabled: !!user,
     staleTime: 60_000,
@@ -90,6 +95,17 @@ export function useClassroomItems() {
       }
     },
   });
+  const data=workState.data?(query.data?deduplicateEquivalentClassroomItems(query.data):undefined)?.filter(item=>{
+    const identity=classroomWorkIdentity(item,workState.data.practiceTests);
+    return identity&&workState.data.access.some(row=>row.available&&row.source_table===identity.sourceTable&&row.source_id===identity.sourceId);
+  }).map(item=>{
+    const identity=classroomWorkIdentity(item,workState.data.practiceTests)!;
+    const current=workState.data.access.find(row=>row.available&&row.source_table===identity.sourceTable&&row.source_id===identity.sourceId);
+    const receipt=workState.data.receipts.find(row=>row.source_table===identity.sourceTable&&row.source_id===identity.sourceId&&row.issuance===current?.issuance);
+    const {read_at:_priorRead,...metadata}=item.metadata_json??{};
+    return {...item,workIdentity:{...identity,issuance:current?.issuance??identity.issuance},issuance:current?.issuance??identity.issuance,metadata_json:receipt?{...metadata,read_at:receipt.read_at}:metadata};
+  }):undefined;
+  return {...query,data,rawData:query.data,isLoading:query.isLoading||workState.isLoading,isError:query.isError||workState.isError,error:query.error??workState.error,refetch:async()=>{await workState.refetch();return query.refetch();}};
 }
 
 /**

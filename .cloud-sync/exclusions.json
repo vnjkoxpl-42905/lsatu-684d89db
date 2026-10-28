@@ -308,6 +308,10 @@
     "reason": "excluded file"
   },
   {
+    "path": ".taste-skill/home-live-setup-regression.log",
+    "reason": "excluded file"
+  },
+  {
     "path": ".taste-skill/home-merge-tests.log",
     "reason": "excluded file"
   },
@@ -336,6 +340,10 @@
     "reason": "gitleaks credential redacted in snapshot: jwt"
   },
   {
+    "path": "dist-home-preview/assets/role-home-preview-B-5etMfU.js",
+    "reason": "gitleaks credential redacted in snapshot: jwt"
+  },
+  {
     "path": "dist-home-preview/assets/role-home-preview-B0NfyT-A.js",
     "reason": "gitleaks credential redacted in snapshot: jwt"
   },
@@ -345,6 +353,10 @@
   },
   {
     "path": "dist-home-preview/assets/role-home-preview-B69ieNBH.js",
+    "reason": "gitleaks credential redacted in snapshot: jwt"
+  },
+  {
+    "path": "dist-home-preview/assets/role-home-preview-BMI5Ap71.js",
     "reason": "gitleaks credential redacted in snapshot: jwt"
   },
   {
@@ -389,6 +401,18 @@
   },
   {
     "path": "dist-home-preview/assets/role-home-preview-DhrPL7hd.js",
+    "reason": "gitleaks credential redacted in snapshot: jwt"
+  },
+  {
+    "path": "dist-home-preview/assets/role-home-preview-k_BYbUHp.js",
+    "reason": "gitleaks credential redacted in snapshot: jwt"
+  },
+  {
+    "path": "dist-home-preview/assets/role-home-preview-mzjUdOBb.js",
+    "reason": "gitleaks credential redacted in snapshot: jwt"
+  },
+  {
+    "path": "dist-home-preview/assets/role-home-preview-uHI8zBXH.js",
     "reason": "gitleaks credential redacted in snapshot: jwt"
   },
   {
