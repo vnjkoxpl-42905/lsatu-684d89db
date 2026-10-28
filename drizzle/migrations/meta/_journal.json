@@ -295,6 +295,13 @@
       "when": 1793203719349,
       "tag": "0041_teacher_home_profile_identity_repair",
       "breakpoints": true
+    },
+    {
+      "idx": 42,
+      "version": "7",
+      "when": 1793203815529,
+      "tag": "0042_teacher_home_desk",
+      "breakpoints": true
     }
   ]
 }

@@ -6750,6 +6750,163 @@ export type Database = {
         }
         Relationships: []
       }
+      teacher_calendar_label_events: {
+        Row: {
+          created_at: string
+          event_id: string
+          id: number
+          kind: string
+          owner_id: string
+          revision: number
+        }
+        Insert: {
+          created_at?: string
+          event_id: string
+          id?: never
+          kind: string
+          owner_id: string
+          revision: number
+        }
+        Update: {
+          created_at?: string
+          event_id?: string
+          id?: never
+          kind?: string
+          owner_id?: string
+          revision?: number
+        }
+        Relationships: []
+      }
+      teacher_calendar_labels: {
+        Row: {
+          calendar_id: string
+          event_id: string
+          kind: string
+          labelled_at: string
+          owner_id: string
+          revision: number
+        }
+        Insert: {
+          calendar_id: string
+          event_id: string
+          kind: string
+          labelled_at?: string
+          owner_id: string
+          revision?: number
+        }
+        Update: {
+          calendar_id?: string
+          event_id?: string
+          kind?: string
+          labelled_at?: string
+          owner_id?: string
+          revision?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "teacher_calendar_labels_owner_id_fkey"
+            columns: ["owner_id"]
+            isOneToOne: false
+            referencedRelation: "teacher_post_session_settings"
+            referencedColumns: ["owner_id"]
+          },
+        ]
+      }
+      teacher_home_manual: {
+        Row: {
+          blocker: string | null
+          calendar_id: string | null
+          created_at: string
+          ends_at: string | null
+          event_id: string | null
+          handled_at: string | null
+          id: string
+          kind: string
+          operation_key: string | null
+          owner_id: string
+          revision: number
+          source_checked_at: string
+          source_state: string | null
+          source_updated_at: string | null
+          starts_at: string | null
+          student_id: string | null
+          title: string
+        }
+        Insert: {
+          blocker?: string | null
+          calendar_id?: string | null
+          created_at?: string
+          ends_at?: string | null
+          event_id?: string | null
+          handled_at?: string | null
+          id?: string
+          kind?: string
+          operation_key?: string | null
+          owner_id: string
+          revision?: number
+          source_checked_at?: string
+          source_state?: string | null
+          source_updated_at?: string | null
+          starts_at?: string | null
+          student_id?: string | null
+          title: string
+        }
+        Update: {
+          blocker?: string | null
+          calendar_id?: string | null
+          created_at?: string
+          ends_at?: string | null
+          event_id?: string | null
+          handled_at?: string | null
+          id?: string
+          kind?: string
+          operation_key?: string | null
+          owner_id?: string
+          revision?: number
+          source_checked_at?: string
+          source_state?: string | null
+          source_updated_at?: string | null
+          starts_at?: string | null
+          student_id?: string | null
+          title?: string
+        }
+        Relationships: []
+      }
+      teacher_home_manual_events: {
+        Row: {
+          action: string
+          created_at: string
+          detail: Json
+          id: number
+          owner_id: string
+          task_id: string
+        }
+        Insert: {
+          action: string
+          created_at?: string
+          detail: Json
+          id?: never
+          owner_id: string
+          task_id: string
+        }
+        Update: {
+          action?: string
+          created_at?: string
+          detail?: Json
+          id?: never
+          owner_id?: string
+          task_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "teacher_home_manual_events_task_id_fkey"
+            columns: ["task_id"]
+            isOneToOne: false
+            referencedRelation: "teacher_home_manual"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       teacher_message_templates: {
         Row: {
           body: string
@@ -6874,6 +7031,7 @@ export type Database = {
       }
       teacher_post_session_tasks: {
         Row: {
+          blocker: string | null
           calendar_id: string
           ends_at: string
           event_id: string
@@ -6884,6 +7042,7 @@ export type Database = {
           notes_done: boolean
           owner_id: string
           recap_done: boolean
+          recap_posted: boolean
           revision: number
           source_checked_at: string
           source_state: string
@@ -6898,6 +7057,7 @@ export type Database = {
           work_assigned: boolean
         }
         Insert: {
+          blocker?: string | null
           calendar_id: string
           ends_at: string
           event_id: string
@@ -6908,6 +7068,7 @@ export type Database = {
           notes_done?: boolean
           owner_id: string
           recap_done?: boolean
+          recap_posted?: boolean
           revision?: number
           source_checked_at?: string
           source_state: string
@@ -6922,6 +7083,7 @@ export type Database = {
           work_assigned?: boolean
         }
         Update: {
+          blocker?: string | null
           calendar_id?: string
           ends_at?: string
           event_id?: string
@@ -6932,6 +7094,7 @@ export type Database = {
           notes_done?: boolean
           owner_id?: string
           recap_done?: boolean
+          recap_posted?: boolean
           revision?: number
           source_checked_at?: string
           source_state?: string
@@ -9970,6 +10133,40 @@ export type Database = {
           storage_path: string
         }[]
       }
+      teacher_home_authorize: { Args: never; Returns: string }
+      teacher_home_consultation_source: {
+        Args: { _event: string; _lease: string; _owner: string; _source: Json }
+        Returns: undefined
+      }
+      teacher_home_label: {
+        Args: { _event_id: string; _expected_revision?: number; _kind: string }
+        Returns: Json
+      }
+      teacher_home_manual_tasks: {
+        Args: {
+          _cursor?: string
+          _handled?: boolean
+          _kind?: string
+          _student_id?: string
+        }
+        Returns: Json
+      }
+      teacher_home_manual_update: {
+        Args: {
+          _action?: string
+          _blocker?: string
+          _expected_revision?: number
+          _operation_key?: string
+          _student_id?: string
+          _task_id?: string
+          _title?: string
+        }
+        Returns: Json
+      }
+      teacher_home_payments: { Args: { _cursor?: string }; Returns: Json }
+      teacher_home_results: { Args: never; Returns: Json }
+      teacher_home_roster: { Args: { _owner: string }; Returns: Json }
+      teacher_home_task_counts: { Args: never; Returns: Json }
       teacher_post_session_attempt: {
         Args: { _error?: string; _owner: string; _started: string }
         Returns: undefined
@@ -9998,6 +10195,10 @@ export type Database = {
         }
         Returns: Json
       }
+      teacher_post_session_page: {
+        Args: { _cursor?: string; _handled?: boolean; _student_id?: string }
+        Returns: Json
+      }
       teacher_post_session_renew: {
         Args: { _lease: string; _owner: string }
         Returns: undefined
@@ -10013,6 +10214,18 @@ export type Database = {
         Returns: Json
       }
       teacher_post_session_update: {
+        Args: {
+          _action: string
+          _doc_id?: string
+          _expected_revision: number
+          _field?: string
+          _student_id?: string
+          _task_id: string
+          _value?: boolean
+        }
+        Returns: Json
+      }
+      teacher_post_session_update_base: {
         Args: {
           _action: string
           _doc_id?: string
