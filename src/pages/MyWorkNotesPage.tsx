@@ -6,6 +6,7 @@ import { TeachingNotesArchive } from "@/components/my-work/TeachingNotesArchive"
 import { createPage, listPages, updateMyNotePage, type JournalPage } from "@/lib/journalService";
 import { noteBodyToText, textToNoteBody } from "@/components/my-work/studentNoteText";
 import "./myWorkNotes.css";
+import "./myWorkNotesRefinement.css";
 
 type Draft = { title: string; body: string; baseline: string | null };
 const draftKey = (user: string, note: string) => `my-work-note-draft:${encodeURIComponent(user)}:${encodeURIComponent(note)}`;

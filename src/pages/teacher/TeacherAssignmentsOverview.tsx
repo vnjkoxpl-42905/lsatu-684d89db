@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
   GraduationCap,
+  Link as LinkIcon,
   Plus,
   BookOpen,
   Flame,
@@ -36,6 +37,7 @@ const TYPE_ICONS: Record<ClassroomItem['type'], React.ComponentType<{ className?
   drill: Sparkles,
   activity: GraduationCap,
   practice_test: FileText,
+  link: LinkIcon,
 };
 
 const TYPE_LABELS: Record<ClassroomItem['type'], string> = {
@@ -50,6 +52,7 @@ const TYPE_LABELS: Record<ClassroomItem['type'], string> = {
   drill: 'Drill',
   activity: 'Activity',
   practice_test: 'Practice test',
+  link: 'Link',
 };
 
 // Color discipline: amber stays reserved for *actions* (the New-Assignment

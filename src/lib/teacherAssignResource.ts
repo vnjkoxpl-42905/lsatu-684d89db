@@ -1,3 +1,4 @@
+import { newAssignmentDelivery, type AssignmentDelivery } from '@/lib/assignmentDelivery';
 import { supabase } from '@/integrations/supabase/client';
 import { assignWork } from '@/lib/assignWork';
 import { createClassroomItem } from '@/lib/classroomItems';
@@ -96,6 +97,7 @@ async function ensureClassroomItem(input: {
   sourceTable?: string;
   sourceId?: string;
   route: string;
+  delivery: AssignmentDelivery;
 }) {
   if (input.sourceTable && input.sourceId) {
     const { data: existing, error } = await supabase
@@ -108,10 +110,11 @@ async function ensureClassroomItem(input: {
       .limit(1)
       .maybeSingle();
     if (error) throw error;
-    if (existing?.id) return existing.id as string;
+    if (existing?.id) return { id: existing.id as string, reused: true };
   }
 
   const item = await createClassroomItem({
+    ...input.delivery,
     studentId: input.studentId,
     createdBy: input.adminUserId,
     type: input.type,
@@ -123,7 +126,7 @@ async function ensureClassroomItem(input: {
     status: 'assigned',
     metadata: { assigned_route: input.route },
   });
-  return item.id;
+  return { id: item.id, reused: false };
 }
 
 export async function assignResourceToStudent(input: {
@@ -133,6 +136,7 @@ export async function assignResourceToStudent(input: {
 }): Promise<ResourceAssignResult> {
   const { adminUserId, studentId, resource } = input;
   const kind = (resource.kind ?? '').toLowerCase();
+  const delivery = newAssignmentDelivery();
 
   if (kind === 'activity' || /activity|station/i.test(`${resource.title} ${resource.url ?? ''}`)) {
     const activity = await findActivity(resource);
@@ -151,7 +155,8 @@ export async function assignResourceToStudent(input: {
 
       if (existing?.id) {
         const route = `/activities/${existing.id}`;
-        const classroomItemId = await ensureClassroomItem({
+        const classroom = await ensureClassroomItem({
+          delivery,
           studentId,
           adminUserId,
           type: 'activity',
@@ -161,18 +166,11 @@ export async function assignResourceToStudent(input: {
           sourceId: existing.id as string,
           route,
         });
-        const notify = await notifyStudentOfClassroomItem({
-          adminUserId,
-          studentId,
-          title: activity.title,
-          description: activity.subtitle ?? undefined,
-          route,
-          assignmentType: 'activity',
-        });
+        const notify = { inbox_ok: true, bell_ok: true, email_ok: true };
         return {
           ok: true,
           route,
-          classroomItemId,
+          classroomItemId: classroom.id,
           sourceAssignmentId: existing.id as string,
           reusedExisting: true,
           notify,
@@ -219,7 +217,8 @@ export async function assignResourceToStudent(input: {
 
   const route = toPath(resource.url);
   const type = route.startsWith('/bootcamp') ? 'bootcamp_module' : 'note';
-  const classroomItemId = await ensureClassroomItem({
+  const classroom = await ensureClassroomItem({
+    delivery,
     studentId,
     adminUserId,
     type,
@@ -229,7 +228,8 @@ export async function assignResourceToStudent(input: {
     sourceId: route,
     route,
   });
-  const notify = await notifyStudentOfClassroomItem({
+  const notify = classroom.reused ? { inbox_ok: true, bell_ok: true, email_ok: true } : await notifyStudentOfClassroomItem({
+    notificationGroupId: delivery.notificationGroupId!,
     adminUserId,
     studentId,
     title: resource.title,
@@ -237,5 +237,5 @@ export async function assignResourceToStudent(input: {
     route,
     assignmentType: 'assignment',
   });
-  return { ok: true, route, classroomItemId, notify };
+  return { ok: true, route, classroomItemId: classroom.id, reusedExisting: classroom.reused, notify };
 }

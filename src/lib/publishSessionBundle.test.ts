@@ -3,21 +3,17 @@ import type { User } from '@supabase/supabase-js';
 import type { BundlePart, PartKey, SessionBundle } from './sessionBundle';
 
 const {
-  mockCreateClassroomItem,
+  mockMaterializePart,
   mockNotifyClassroomItem,
   mockNotifySessionRecap,
   mockUpdate,
   mockEq,
 } = vi.hoisted(() => ({
-  mockCreateClassroomItem: vi.fn(),
+  mockMaterializePart: vi.fn(),
   mockNotifyClassroomItem: vi.fn(),
   mockNotifySessionRecap: vi.fn(),
   mockUpdate: vi.fn(),
   mockEq: vi.fn(),
-}));
-
-vi.mock('@/lib/classroomItems', () => ({
-  createClassroomItem: (args: unknown) => mockCreateClassroomItem(args),
 }));
 
 vi.mock('@/lib/classroomNotify', () => ({
@@ -30,7 +26,7 @@ vi.mock('@/lib/sessionBundleNotify', () => ({
 }));
 
 vi.mock('@/integrations/supabase/client', () => ({
-  supabase: { from: () => ({ update: (p: unknown) => mockUpdate(p) }) },
+  supabase: { from: () => ({ update: (p: unknown) => mockUpdate(p) }), rpc: (name: string, args: unknown) => name === 'materialize_session_bundle_part' ? mockMaterializePart(args) : Promise.resolve({ data: {}, error: null }) },
 }));
 
 import { publishSessionBundle } from './publishSessionBundle';
@@ -60,7 +56,7 @@ beforeEach(() => {
   vi.clearAllMocks();
   mockEq.mockResolvedValue({ error: null });
   mockUpdate.mockReturnValue({ eq: (c: unknown) => mockEq(c) });
-  mockCreateClassroomItem.mockImplementation(async () => ({ id: 'item-uuid' }));
+  mockMaterializePart.mockImplementation(async (args) => ({ data: { item: { id: 'item-uuid', student_id: 'student-uuid', source_id: 'draft-uuid', title: args.p_title, notification_group_id: args.p_part === 'session_note' ? 'recap-group' : args.p_notification_group_id }, created: true }, error: null }));
   mockNotifyClassroomItem.mockResolvedValue({ inbox_ok: true, bell_ok: true });
   mockNotifySessionRecap.mockResolvedValue({ inbox_ok: true, bell_ok: true });
 });
@@ -72,13 +68,13 @@ describe('publishSessionBundle — what reaches the student', () => {
       weakness_tags: part({ audience: 'student' }),
     }));
     expect(result.nothing_to_publish).toBe(true);
-    expect(mockCreateClassroomItem).not.toHaveBeenCalled();
+    expect(mockMaterializePart).not.toHaveBeenCalled();
   });
 
   it('never posts an unapproved part', async () => {
     const result = await publish(bundle({ session_note: part({ approved: false }) }));
     expect(result.nothing_to_publish).toBe(true);
-    expect(mockCreateClassroomItem).not.toHaveBeenCalled();
+    expect(mockMaterializePart).not.toHaveBeenCalled();
   });
 
   it('ignores an `only` request for a part that is not approved', async () => {
@@ -87,13 +83,13 @@ describe('publishSessionBundle — what reaches the student', () => {
       ['homework'],
     );
     expect(result.nothing_to_publish).toBe(true);
-    expect(mockCreateClassroomItem).not.toHaveBeenCalled();
+    expect(mockMaterializePart).not.toHaveBeenCalled();
   });
 
   it('posts a session note as a session_recap and uses the recap notifier', async () => {
     const result = await publish(bundle({ session_note: part() }));
-    expect(mockCreateClassroomItem).toHaveBeenCalledWith(
-      expect.objectContaining({ type: 'session_recap', studentId: 'student-uuid', visibleToStudent: true }),
+    expect(mockMaterializePart).toHaveBeenCalledWith(
+      expect.objectContaining({ p_part: 'session_note', p_student_id: 'student-uuid', p_draft_id: 'draft-uuid' }),
     );
     expect(mockNotifySessionRecap).toHaveBeenCalled();
     expect(mockNotifyClassroomItem).not.toHaveBeenCalled();
@@ -103,8 +99,8 @@ describe('publishSessionBundle — what reaches the student', () => {
 
   it('posts homework as homework and uses the assignment notifier', async () => {
     await publish(bundle({ homework: part({ body_markdown: undefined, items: ['PT 90 LR1'] }) }));
-    expect(mockCreateClassroomItem).toHaveBeenCalledWith(
-      expect.objectContaining({ type: 'homework', contentMarkdown: '- [ ] PT 90 LR1' }),
+    expect(mockMaterializePart).toHaveBeenCalledWith(
+      expect.objectContaining({ p_part: 'homework', p_content_markdown: '- [ ] PT 90 LR1' }),
     );
     expect(mockNotifyClassroomItem).toHaveBeenCalled();
     expect(mockNotifySessionRecap).not.toHaveBeenCalled();
@@ -114,7 +110,7 @@ describe('publishSessionBundle — what reaches the student', () => {
 describe('publishSessionBundle — empty parts are fail-closed', () => {
   it('refuses to post a part that renders to nothing, and does not notify', async () => {
     const result = await publish(bundle({ session_note: part({ body_markdown: '   ' }) }));
-    expect(mockCreateClassroomItem).not.toHaveBeenCalled();
+    expect(mockMaterializePart).not.toHaveBeenCalled();
     expect(mockNotifySessionRecap).not.toHaveBeenCalled();
     expect(result.ok).toBe(false);
     expect(result.published[0]).toMatchObject({ part: 'session_note', ok: false });
@@ -127,8 +123,8 @@ describe('publishSessionBundle — empty parts are fail-closed', () => {
       session_note: part({ body_markdown: '' }),
       homework: part({ body_markdown: 'Do PT 90' }),
     }));
-    expect(mockCreateClassroomItem).toHaveBeenCalledTimes(1);
-    expect(mockCreateClassroomItem).toHaveBeenCalledWith(expect.objectContaining({ type: 'homework' }));
+    expect(mockMaterializePart).toHaveBeenCalledTimes(1);
+    expect(mockMaterializePart).toHaveBeenCalledWith(expect.objectContaining({ p_part: 'homework' }));
     expect(result.ok).toBe(false);
     expect(result.bundle.parts.homework?.posted).toBe(true);
     expect(result.bundle.parts.session_note?.posted).toBe(false);
@@ -141,13 +137,13 @@ describe('publishSessionBundle — idempotency and partial failure', () => {
       session_note: part({ posted: true }),
       homework: part(),
     }));
-    expect(mockCreateClassroomItem).toHaveBeenCalledTimes(1);
-    expect(mockCreateClassroomItem).toHaveBeenCalledWith(expect.objectContaining({ type: 'homework' }));
+    expect(mockMaterializePart).toHaveBeenCalledTimes(1);
+    expect(mockMaterializePart).toHaveBeenCalledWith(expect.objectContaining({ p_part: 'homework' }));
     expect(result.published.map((o) => o.part)).toEqual(['homework']);
   });
 
   it('leaves a failed part unposted so a retry can pick it up', async () => {
-    mockCreateClassroomItem.mockRejectedValueOnce(new Error('RLS denied'));
+    mockMaterializePart.mockRejectedValueOnce(new Error('RLS denied'));
     const result = await publish(bundle({ session_note: part() }));
     expect(result.ok).toBe(false);
     expect(result.published[0]).toMatchObject({ part: 'session_note', ok: false, error: 'RLS denied' });
@@ -155,19 +151,45 @@ describe('publishSessionBundle — idempotency and partial failure', () => {
   });
 
   it('does not touch the draft row when every part failed', async () => {
-    mockCreateClassroomItem.mockRejectedValue(new Error('boom'));
+    mockMaterializePart.mockRejectedValue(new Error('boom'));
     await publish(bundle({ session_note: part() }));
     expect(mockUpdate).not.toHaveBeenCalled();
   });
 
-  it('persists posted flags and rolls the row to posted once something lands', async () => {
-    await publish(bundle({ session_note: part() }));
-    expect(mockUpdate).toHaveBeenCalledWith(expect.objectContaining({ status: 'posted' }));
+  it('leaves draft flag persistence to the atomic RPC without overwriting draft_json from a stale client', async () => {
+    const result = await publish(bundle({ session_note: part() }));
+    expect(result.ok).toBe(true); expect(result.bundle.parts.session_note?.posted).toBe(true);
+    expect(mockUpdate).not.toHaveBeenCalled();
   });
 
-  it('reports failure when the draft row cannot be persisted', async () => {
-    mockEq.mockResolvedValueOnce({ error: { message: 'write failed' } });
-    const result = await publish(bundle({ session_note: part() }));
-    expect(result.ok).toBe(false);
+  it('advances only the advisory ledger after materialization', async () => {
+    const input = bundle({ homework: part() }); input.source = { ledger_id: 'ledger' };
+    await publish(input); expect(mockUpdate).toHaveBeenCalledExactlyOnceWith({ status: 'published' });
+  });
+});
+
+
+describe('atomic session-part retry', () => {
+  it('reuses a part after its committed RPC response is lost without repeating optional messages', async () => {
+    let saved: unknown;
+    mockMaterializePart.mockImplementation(async (args) => {
+      if (saved) return { data: { item: saved, created: false }, error: null };
+      saved = { id: 'persisted-homework', student_id: args.p_student_id, source_id: args.p_draft_id, title: args.p_title, notification_group_id: args.p_notification_group_id };
+      throw new Error('response lost after commit');
+    });
+    const staleInput = bundle({ homework: part() });
+    const first = await publish(staleInput); const retried = await publish(staleInput);
+    expect(first.ok).toBe(false); expect(retried.ok).toBe(true);
+    expect(mockMaterializePart).toHaveBeenCalledTimes(2);
+    expect(retried.bundle.parts.homework?.classroom_item_id).toBe('persisted-homework');
+    expect(mockNotifyClassroomItem).not.toHaveBeenCalled(); expect(mockNotifySessionRecap).not.toHaveBeenCalled();
+    expect(retried.published[0].notify_summary).toBe('Already posted');
+    expect(mockUpdate).not.toHaveBeenCalled();
+  });
+  it('reuses historical parts without manufacturing a new notification identity', async () => {
+    mockMaterializePart.mockResolvedValue({ data: { item: { id: 'historical-homework', student_id: 'student-uuid', source_id: 'draft-uuid', title: 'Original work', notification_group_id: null }, created: false }, error: null });
+    const result = await publish(bundle({ homework: part() }));
+    expect(result.ok).toBe(true); expect(result.bundle.parts.homework?.classroom_item_id).toBe('historical-homework');
+    expect(mockNotifyClassroomItem).not.toHaveBeenCalled();
   });
 });

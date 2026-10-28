@@ -1,5 +1,7 @@
-import { notesDetailRoute, validateNotesReturnTo } from "@/lib/myWorkNotesNavigation";
+import { notesArchiveOrigin, notesDetailRoute, validateNotesReturnTo } from "@/lib/myWorkNotesNavigation";
 import * as React from "react";
+import { useMotionValue } from "framer-motion";
+import NotificationBell from "@/components/notifications/NotificationBell";
 import {
   ChevronsUpDown,
   Lock,
@@ -55,6 +57,7 @@ import "@/components/classroom/classroom.css";
 import "@/styles/classroom-motion.css";
 import "@/styles/classroom-rail-motion.css";
 import { ClassroomMotionContent } from "./ClassroomMotionContent";
+import { useNoteReaderTransition } from '@/hooks/useNoteReaderTransition';
 import { ClassroomLayoutContext, type ClassroomSection } from "./classroomLayoutContext";
 
 const SECTION_TITLES: Record<ClassroomSection, string> = {
@@ -128,6 +131,12 @@ function ClassroomSidebar({
   const destinationPermissions = { ...permissions, readingCenterAssigned,
     readingCenterChecking: !permissions.is_admin && readingCenter.isPending };
   const unreadMessages = useUnreadMessageCount();
+  const workFeed = useAssignedTodoFeed();
+  const sidebarNotes = useClassroomItems();
+  const unreadWork = workFeed.loading || workFeed.failed ? 0 : workFeed.rows.filter(row => row.status !== "completed" && row.isUnread && (row.sourceTable === "reading_center" ? readingCenterAssigned : permissions.is_admin || permissions.has_classroom_access)).length;
+  const unreadTeachingNotes = sidebarNotes.isLoading || sidebarNotes.isError || !(permissions.is_admin || permissions.has_classroom_access) ? 0 : groupNotes(sidebarNotes.data ?? []).unread.length;
+  const unreadMyWork = unreadWork + unreadTeachingNotes;
+  const bellMouseX = useMotionValue(Infinity);
   const { notifications, markSignupNotificationsRead } = useNotifications();
   const unreadStudentSignups = React.useMemo(
     () =>
@@ -283,6 +292,7 @@ function ClassroomSidebar({
     <div className="classroom-sidebar-card">
       <PanelWash />
       <div className="classroom-panel-inner">
+        <div className="classroom-brand-row">
         <button
           type="button"
           className="classroom-brand"
@@ -291,6 +301,8 @@ function ClassroomSidebar({
           <i>LS</i>
           <span>LSAT U</span>
         </button>
+        <NotificationBell mouseX={bellMouseX} quiet />
+        </div>
 
         <nav aria-label="Classroom navigation" className="classroom-rail-motion" ref={navigationRef}>
           <span className="classroom-rail-marker" data-rail-marker aria-hidden="true" />
@@ -316,6 +328,7 @@ function ClassroomSidebar({
                     title={locked ? `${item.label} is locked for your account` : undefined}
                   >
                     {item.label}
+                    {item.id === "my-work" && !locked && unreadMyWork > 0 ? <span className="classroom-nav-badge">{unreadMyWork > 99 ? "99+" : unreadMyWork}<span className="sr-only"> unread notes and assignments</span></span> : null}
                     {locked ? (
                       <>
                         <Lock className="classroom-nav-lock" aria-hidden="true" />
@@ -348,7 +361,6 @@ function ClassroomSidebar({
                 explanation of why it is locked. */}
             {[
               { label: "Messages", path: "/inbox", flag: "has_chat_access" as const, active: location.pathname.startsWith("/inbox"), badge: unreadMessages },
-              { label: "Find a question", path: `/practice/drills?finder=open&finderReturnTo=${encodeURIComponent(location.pathname + location.search)}`, flag: "has_drill_access" as const, active: false, badge: 0 },
             ].map((shortcut) => {
               const open = canAccess({ flags: [shortcut.flag] });
               return (
@@ -554,7 +566,7 @@ function StandardSectionList({
   onClose?: () => void;
 }) {
   const navigate = useNavigate();
-  const { pathname, search } = useLocation();
+  const { pathname, search, state: navigationState } = useLocation();
   const itemsQuery = useClassroomItems();
   const homeworkQuery = useStudentAssignments();
   const taQuery = useStudentTAAssignments();
@@ -640,7 +652,9 @@ function StandardSectionList({
 
   const openRow = (route: string) => {
     onClose?.();
-    navigate(route);
+    const returnTo = validateNotesReturnTo(new URLSearchParams(search).get('returnTo'));
+    const origin = section === 'notes' ? notesArchiveOrigin(navigationState, returnTo) : null;
+    navigate(route, { state: origin ? { notesArchiveOrigin: origin } : null });
   };
 
   return (
@@ -696,6 +710,7 @@ function StandardSectionList({
                 <button
                   type="button"
                   key={item.id}
+                  data-note-target-id={item.id}
                   className={`classroom-panel-item${activeId === item.id ? " classroom-panel-item-active" : ""}`}
                   onClick={() => openRow(notesDetailRoute(item.id, validateNotesReturnTo(new URLSearchParams(search).get("returnTo"))))}
                 >
@@ -927,6 +942,8 @@ export default function ClassroomLayout() {
   const { theme } = useTheme();
   const navigate = useNavigate();
   const location = useLocation();
+  const transitionRoot = React.useRef<HTMLDivElement>(null);
+  useNoteReaderTransition(transitionRoot, location.pathname, location.key);
   const params = useParams();
   const [profileReady, setProfileReady] = React.useState(false);
   const [displayName, setDisplayName] = React.useState("");
@@ -1123,7 +1140,7 @@ export default function ClassroomLayout() {
 
   return (
     <ClassroomLayoutContext.Provider value={contextValue}>
-      <div className={`${rootClass}${reviewFromQueue ? " classroom-root-review-return" : ""}`}>
+      <div ref={transitionRoot} data-note-transition-mode={location.pathname.startsWith('/classroom/item/') ? 'reader' : location.pathname === '/my-work/notes' ? 'archive' : undefined} className={`${rootClass}${reviewFromQueue ? " classroom-root-review-return" : ""}`}>
         <div className="classroom-mobile-bar">
           <button
             type="button"
@@ -1199,7 +1216,7 @@ export default function ClassroomLayout() {
         ) : null}
 
         {activeSection && !reviewFromQueue ? (
-          <aside className="classroom-section-list">
+          <aside data-note-transition-rail className="classroom-section-list">
             <SectionList section={activeSection} activeId={activeId} />
           </aside>
         ) : null}
@@ -1221,7 +1238,7 @@ export default function ClassroomLayout() {
             </React.Suspense>
           </main>
         ) : (
-          <main className="classroom-stage">
+          <main data-note-transition-stage className="classroom-stage">
             <div className="classroom-column">
               <React.Suspense fallback={<StageFallback />}>
                 <ClassroomMotionContent><Outlet context={contextValue} /></ClassroomMotionContent>
@@ -1252,3 +1269,5 @@ export default function ClassroomLayout() {
     </ClassroomLayoutContext.Provider>
   );
 }
+
+export { SectionList as ClassroomSectionList };

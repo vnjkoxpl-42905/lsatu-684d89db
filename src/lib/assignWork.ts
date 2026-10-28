@@ -9,6 +9,7 @@ import { parseLocalDay } from '@/lib/localDate';
 import { coerceStudentLevel, type StudentLevel } from '@/lib/studentLevel';
 import { conditionalProtectedGrantRoute, resolveConditionalAssignment, type ConditionalAssignmentTarget } from '@/lib/conditionalBootcampAssignment';
 import { assignReadingCenter, READING_CENTER_PATH } from '@/lib/readingCenterAccess';
+import { newAssignmentDelivery, assignmentDeliveryColumns, assignmentWriteSignal, type AssignmentDelivery } from '@/lib/assignmentDelivery';
 
 /**
  * The one thing a teacher can hand a student. Every assign surface in the
@@ -58,7 +59,7 @@ interface AssignPlan {
   assignmentType?: string;
   sourceTable: string;
   /** Insert the assignment row. Returns null for kinds that have no row. */
-  insertRow: (studentId: string) => Promise<string | null>;
+  insertRow: (studentId: string, delivery: AssignmentDelivery, signal: AbortSignal) => Promise<string | null>;
   sourceId: (assignmentId: string | null) => string | undefined;
   route: (assignmentId: string | null) => string;
   unlockAt: string | null;
@@ -177,7 +178,7 @@ async function planFor(
         description: set.description ?? undefined,
         assignmentType: 'homework',
         sourceTable: 'homework_assignments',
-        insertRow: async (studentId) => {
+        insertRow: async (studentId, delivery, signal) => {
           const { data, error: insertError } = await supabase
             .from('homework_assignments')
             .insert({
@@ -191,8 +192,11 @@ async function planFor(
               set_description: set.description,
               question_qids: set.question_qids ?? [],
               status: 'assigned',
-            })
+              ...assignmentDeliveryColumns(delivery),
+              unlock_at: unlockAt,
+            } as never)
             .select('id')
+            .abortSignal(signal)
             .single();
           if (insertError) throw insertError;
           return data.id as string;
@@ -219,7 +223,7 @@ async function planFor(
         description: `New guided drill: ${drill.title}`,
         assignmentType: 'guided drill',
         sourceTable: 'guided_drill_assignments',
-        insertRow: async (studentId) => {
+        insertRow: async (studentId, delivery, signal) => {
           // Normally the level is recorded, not resolved: the question draw
           // happens when the student opens the drill, so a re-attempt gets a
           // fresh set. That is the whole point of the pool model.
@@ -245,6 +249,7 @@ async function planFor(
               unlock_at: unlockAt,
               status: 'assigned',
               level: levelFor(studentId),
+              ...assignmentDeliveryColumns(delivery),
               question_count: questionCountOverride ?? null,
               // Spread rather than `question_qids: frozen ?? null`, so the
               // default path sends a payload with no such key at all. That is
@@ -253,6 +258,7 @@ async function planFor(
               ...(frozen && frozen.length > 0 ? { question_qids: frozen } : {}),
             } as never)
             .select('id')
+            .abortSignal(signal)
             .single();
           if (insertError) throw insertError;
           return data.id as string;
@@ -287,7 +293,7 @@ async function planFor(
         description: activity.subtitle ?? undefined,
         assignmentType: 'activity',
         sourceTable: 'activity_assignments',
-        insertRow: async (studentId) => {
+        insertRow: async (studentId, delivery, signal) => {
           // Content is snapshotted at assign time so editing the activity
           // later cannot change work a student has already started.
           const { data, error: insertError } = await supabase
@@ -308,9 +314,12 @@ async function planFor(
               mode: activity.mode,
               time_goal_minutes: activity.time_goal_minutes as never,
               source_section: activity.source_section,
+              ...assignmentDeliveryColumns(delivery),
+              unlock_at: unlockAt,
               status: 'assigned',
-            })
+            } as never)
             .select('id')
+            .abortSignal(signal)
             .single();
           if (insertError) throw insertError;
           return data.id as string;
@@ -359,12 +368,9 @@ async function planFor(
  * other, so one failure never costs the rest their assignment and never
  * re-inserts a row that already landed.
  *
- * If the classroom item or the notify call throws, the rows already written
- * for that student are deleted again: an assignment the student cannot see is
- * worse than no assignment, because it silently blocks a re-assign. A notify
- * call that returns with a channel `false` is NOT a failure — the work is
- * visible in the Classroom and only a message went missing, so it is reported
- * on the ok result rather than rolled back.
+ * A failed work write rolls back only rows created in this attempt. After
+ * those writes commit, notification finalization is outside rollback: channel
+ * failures remain on the successful assignment result and never remove work.
  */
 export async function assignWork(input: {
   teacherId: string;
@@ -402,10 +408,14 @@ export async function assignWork(input: {
     const ok: StudentResult[] = [];
     const failed: StudentResult[] = [];
     for (const studentId of [...new Set(input.studentIds)]) {
+      const delivery = newAssignmentDelivery(input.notify !== false);
+      const signal = assignmentWriteSignal();
       try {
         const { item, reused } = await assignReadingCenter({
           studentId, scheduledForLocalDate: input.scheduledForLocalDate,
           title: input.overrides?.title, description: input.overrides?.description,
+          ...delivery,
+          signal,
         });
         // Repeating a successful assignment returns its existing launcher and
         // does not send the same notification again.
@@ -414,7 +424,8 @@ export async function assignWork(input: {
           try {
             notify = await notifyStudentOfClassroomItem({ adminUserId: input.teacherId, studentId,
               title: item.title, description: item.description ?? undefined,
-              route: READING_CENTER_PATH, assignmentType: 'reading practice' });
+              route: READING_CENTER_PATH, assignmentType: 'reading practice',
+              notificationGroupId: delivery.notificationGroupId!, unlockAt: item.unlock_at });
           } catch (error) {
             console.error('[assignWork] Reading Center notification failed after verified assignment', error);
             notify = { inbox_ok: false, bell_ok: false, email_ok: false };
@@ -570,11 +581,14 @@ async function runAssign(input: {
 
   for (const studentId of studentIds) {
     const written: Written[] = [];
+    const delivery = newAssignmentDelivery(shouldNotify);
+    const routes: string[] = [];
+    const signal = assignmentWriteSignal();
 
     try {
-      const routes: string[] = [];
 
       for (let i = 0; i < plans.length; i++) {
+        if (signal.aborted) throw new Error('Assignment write timed out. Refresh before trying again.');
         const plan = plans[i];
         const record: Written = {
           assignmentId: null,
@@ -586,7 +600,7 @@ async function runAssign(input: {
         // the previous items wrote.
         written.push(record);
 
-        record.assignmentId = await plan.insertRow(studentId);
+        record.assignmentId = await plan.insertRow(studentId, delivery, signal);
         const expandedTarget = plan.metadata.conditional_target as ConditionalAssignmentTarget | undefined;
         const classroomIdentity = expandedTarget?.courseEdition === 'full-conditionals-v3' ? crypto.randomUUID() : undefined;
         if (classroomIdentity) record.classroomItemId = classroomIdentity;
@@ -607,15 +621,28 @@ async function runAssign(input: {
           visibleToStudent: true,
           status: 'assigned',
           metadata: { ...plan.metadata, assigned_route: route },
+          ...delivery,
+          signal,
         });
         if (classroomIdentity && classroomItem.id !== classroomIdentity) throw new Error('The assigned course identity did not match its saved row. No notification was sent.');
         record.classroomItemId = classroomItem.id;
       }
 
+    } catch (error) {
+      console.error('[assignWork] student failed', { studentId, written, error });
+      const cleanup = await Promise.allSettled(written.map((record) => rollback(record)));
+      for (const outcome of cleanup) if (outcome.status === 'rejected') console.error('[assignWork] rollback request failed', outcome.reason);
+      failed.push({ studentId, error: message(error, 'Assign failed') });
+      continue;
+    }
+
+      // Finalization is outside the write rollback boundary. Work is committed
+      // even if its bell, message, or email cannot be delivered.
       // A caller that owns its own messaging opts out. The weekly-plan builder
       // does: it sends one summary for the whole week, and seven bell entries
       // for one plan is the exact UX it already avoids.
       const summary = notificationFor(plans, routes);
+      if (plans.length > 1) summary.route += '?workGroup=' + encodeURIComponent(delivery.notificationGroupId!);
       const notify = shouldNotify
         ? await notifyStudentOfClassroomItem({
             adminUserId: teacherId,
@@ -624,7 +651,9 @@ async function runAssign(input: {
             description: summary.description,
             route: summary.route,
             assignmentType: summary.assignmentType,
-          })
+            notificationGroupId: delivery.notificationGroupId!,
+            unlockAt: plans.find((plan) => plan.unlockAt)?.unlockAt,
+          }).catch((error): NotifyResult => ({ inbox_ok: false, bell_ok: false, email_ok: false, bell_error: message(error, 'Notification failed') }))
         : undefined;
 
       ok.push({
@@ -638,19 +667,6 @@ async function runAssign(input: {
           .filter((id): id is string => !!id),
         notify,
       });
-    } catch (error) {
-      console.error('[assignWork] student failed', {
-        studentId,
-        kinds: items.map((i) => i.kind),
-        written,
-        error,
-      });
-      // Newest first, so the half-written item goes before the ones that landed.
-      for (const record of [...written].reverse()) {
-        await rollback(record);
-      }
-      failed.push({ studentId, error: message(error, 'Assign failed') });
-    }
   }
 
   return { ok, failed };
@@ -675,7 +691,7 @@ function notificationFor(
   return {
     title: `${plans.length} new pieces of work`,
     description: plans.map((p) => `• ${p.title}`).join('\n'),
-    route: '/classroom',
+    route: '/my-work/to-do',
     assignmentType: 'assignment',
   };
 }
@@ -708,11 +724,11 @@ export function describeAssignResult(
     };
   }
 
-  const quiet = ok.filter((r) => r.notify && !(r.notify.inbox_ok && r.notify.bell_ok && r.notify.email_ok));
+  const quiet = ok.filter((r) => r.notify && !(r.notify.bell_ok && (r.notify.optional_channels_skipped || (r.notify.inbox_ok && r.notify.email_ok))));
   if (quiet.length > 0) {
     return {
       level: 'warning',
-      message: `Assigned "${title}" to ${students(ok.length)}, but ${students(quiet.length)} were not fully notified.`,
+      message: `Assigned "${title}" to ${students(ok.length)}, but ${students(quiet.length)} were not fully notified.${quiet.some((row) => !row.notify?.bell_ok) ? ' Keep the assignment; queued bell delivery will retry automatically.' : ''}`,
     };
   }
 
@@ -733,7 +749,7 @@ async function rollback(input: {
   const { assignmentId, classroomItemId, table, kind } = input;
 
   if (classroomItemId) {
-    const { error } = await supabase.from('classroom_items').delete().eq('id', classroomItemId);
+    const { error } = await supabase.from('classroom_items').delete().abortSignal(assignmentWriteSignal()).eq('id', classroomItemId);
     if (error) console.error('[assignWork] rollback left a classroom item', { classroomItemId, error });
   }
 
@@ -743,6 +759,7 @@ async function rollback(input: {
   const { error } = await supabase
     .from(table as 'homework_assignments' | 'guided_drill_assignments' | 'activity_assignments')
     .delete()
+    .abortSignal(assignmentWriteSignal())
     .eq('id', assignmentId);
   if (error) console.error('[assignWork] rollback left an assignment row', { table, assignmentId, error });
 }

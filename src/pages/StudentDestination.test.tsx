@@ -23,6 +23,20 @@ function Where() {
 }
 
 describe("visible locked destination sections", () => {
+  it('gives My Work content a list-only policy without changing its separate heading owner', () => {
+    permissions.has_classroom_access = true;
+    render(<MemoryRouter initialEntries={['/my-work/notes']}><StudentDestination destination="my-work" /></MemoryRouter>);
+    const content = document.querySelector('.student-destination-content');
+    expect(content).toHaveAttribute('data-motion-policy', 'list-only');
+    expect(content).not.toHaveAttribute('data-motion-enter');
+    expect(screen.getByRole('heading', { name: 'My Work' }).closest('header')).toHaveAttribute('data-motion-enter');
+  });
+  it('preserves the generic entrance for other destination content', () => {
+    render(<MemoryRouter initialEntries={['/library/lessons']}><StudentDestination destination="library" /></MemoryRouter>);
+    const content = document.querySelector('.student-destination-content');
+    expect(content).toHaveAttribute('data-motion-enter');
+    expect(content).not.toHaveAttribute('data-motion-policy');
+  });
   it('keeps the persistent heading under one destination motion owner across tab changes', () => {
     permissions.has_analytics_access = true;
     render(<MemoryRouter initialEntries={['/progress/overview']}><Routes><Route path="/progress/*" element={<StudentDestination destination="progress" />} /></Routes></MemoryRouter>);

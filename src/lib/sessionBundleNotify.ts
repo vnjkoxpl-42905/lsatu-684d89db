@@ -1,3 +1,4 @@
+import { claimAssignmentNotificationChannels, finalizeAssignmentDelivery } from '@/lib/assignmentDelivery';
 import { supabase } from '@/integrations/supabase/client';
 import type { User } from '@supabase/supabase-js';
 import { getOrCreateAdminStudentConversation } from '@/lib/adminConversation';
@@ -19,6 +20,7 @@ import { getOrCreateAdminStudentConversation } from '@/lib/adminConversation';
 export interface SessionNotifyResult {
   inbox_ok: boolean;
   bell_ok: boolean;
+  optional_channels_skipped?: boolean;
   inbox_error?: string;
   bell_error?: string;
 }
@@ -33,6 +35,8 @@ interface SessionNotifyParams {
    * default in the coaching voice is used. Never machine-labeled.
    */
   message?: string;
+  /** Durable message delivery for atomically materialized session parts. */
+  notificationGroupId?: string;
 }
 
 const DEFAULT_MESSAGE =
@@ -44,6 +48,21 @@ export async function notifyStudentOfSessionRecap(
   const { admin, studentId, route } = params;
   const result: SessionNotifyResult = { inbox_ok: false, bell_ok: false };
   const body = (params.message?.trim() || DEFAULT_MESSAGE) + `\n\n${route}`;
+
+  if (params.notificationGroupId) {
+    try {
+      await finalizeAssignmentDelivery(params.notificationGroupId, 'New recap in your Classroom', 'A recap from your latest session is ready.', route);
+      result.bell_ok = true;
+    } catch (error) {
+      result.bell_error = error instanceof Error ? error.message : 'bell failed';
+    }
+    try {
+      if (!await claimAssignmentNotificationChannels(params.notificationGroupId)) return { ...result, optional_channels_skipped: true };
+    } catch (error) {
+      result.inbox_error = error instanceof Error ? error.message : 'Notification channel claim failed';
+      return result;
+    }
+  }
 
   try {
     const conversationId = await getOrCreateAdminStudentConversation(admin, studentId);
@@ -63,7 +82,7 @@ export async function notifyStudentOfSessionRecap(
     result.inbox_error = e instanceof Error ? e.message : 'inbox failed';
   }
 
-  try {
+  if (!params.notificationGroupId) try {
     const { error: nErr } = await supabase.from('notifications').insert({
       user_id: studentId,
       type: 'message',

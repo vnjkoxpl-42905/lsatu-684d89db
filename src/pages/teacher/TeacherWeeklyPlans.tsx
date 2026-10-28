@@ -16,7 +16,7 @@ import { localDayISO } from '@/lib/localDate';
 import { buildPrescribedWeek, isPersonalPlan } from '@/lib/weeklyPlanWeek';
 import { moveWithinDay, replaceNeedsConfirm } from '@/lib/weeklyPlanBuilder';
 import HubStudentList from '@/components/hub/HubStudentList';
-import { notifyStudentOfClassroomItem, summarizeNotifyResult } from '@/lib/classroomNotify';
+import { notifyStudentOfClassroomItem } from '@/lib/classroomNotify';
 import type { TodoAction } from '@/lib/todoActions';
 import { loadCurriculumWeek } from '@/lib/curriculumSchedule';
 import {
@@ -110,26 +110,13 @@ export default function TeacherWeeklyPlans() {
         );
         return;
       }
-      // One summary notification per published plan (not one per item;
-      // flooding the bell with seven entries on a weekly plan is bad UX).
       void notifyStudentOfClassroomItem({
-        adminUserId: job.teacherId,
-        studentId: job.studentId,
-        title: `Weekly plan: ${planTitle}`,
-        description: `${job.drafts.length} item${job.drafts.length === 1 ? '' : 's'} this week. Open My Work to see the week.`,
-        route: '/my-work/to-do',
-        assignmentType: 'weekly_plan',
+        adminUserId: job.teacherId, studentId: job.studentId, notificationGroupId: job.planKey, notificationChannel: 'plan',
+        title: 'Your plan is ready', description: 'Your assigned plan is available in My Work.',
+        route: '/my-work/to-do?workGroup=' + encodeURIComponent(job.planKey), assignmentType: 'weekly_plan',
       }).then((notify) => {
-        const summary = `Published "${planTitle}". ${summarizeNotifyResult(notify)}`;
-        if (notify.inbox_ok && notify.bell_ok && notify.email_ok) {
-          toast.success(summary);
-        } else {
-          toast.warning(summary, {
-            description: notify.email_error ?? notify.inbox_error ?? notify.bell_error,
-          });
-        }
-      }).catch(() => {
-        toast.warning(`Published "${planTitle}", but the student was not notified.`);
+        if (notify.bell_ok && (notify.optional_channels_skipped || (notify.inbox_ok && notify.email_ok))) toast.success(notify.optional_channels_skipped ? 'Plan published. Already announced.' : 'Plan published and student notified');
+        else toast.warning('Plan published, but notification was incomplete', { description: notify.email_error ?? notify.inbox_error ?? notify.bell_error, action: notify.retryBell ? { label: 'Retry notification', onClick: () => void notify.retryBell!().then(() => toast.success('Bell notification delivered')).catch(() => toast.error('Notification failed. Try again.')) } : undefined });
       });
     },
     [qc, title, weekStart, items],
