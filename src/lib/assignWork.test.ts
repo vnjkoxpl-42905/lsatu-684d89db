@@ -683,8 +683,10 @@ describe('persisted assignment delivery identity', () => {
 
 it('stops a student bundle at its shared deadline and rolls back only this attempt before notification', async () => {
   const controller = new AbortController(); const deadline = vi.spyOn(deliveryHelpers, 'assignmentWriteSignal').mockReturnValueOnce(controller.signal);
-  mockCreateClassroomItem.mockImplementationOnce(async (input) => { expect(input.signal).toBe(controller.signal); controller.abort(); return { id: 'item-1' }; });
+  let mirrorSignal: AbortSignal | undefined;
+  mockCreateClassroomItem.mockImplementationOnce(async (input) => { mirrorSignal = input.signal; controller.abort(); return { id: 'item-1' }; });
   try { const result = await assignWorkBundle({ teacherId: TEACHER, studentIds: ['student-a'], items: [{ kind: 'guided_drill', drillId: 'drill-1' }, { kind: 'homework_set', setId: 'set-1' }] });
-    expect(result.ok).toEqual([]); expect(result.failed).toHaveLength(1); expect(inserted.homework_assignments).toBeUndefined(); expect(deleted.guided_drill_assignments).toEqual(['guided_drill_assignments-row-1']); expect(mockNotify).not.toHaveBeenCalled();
+    expect(mirrorSignal).toBe(controller.signal);
+    expect(result.ok).toEqual([]); expect(result.failed).toHaveLength(1); expect(inserted.homework_assignments).toBeUndefined(); expect(deleted.guided_drill_assignments).toEqual(['guided_drill_assignments-row-1']); expect(deleted.classroom_items).toEqual(['item-1']); expect(mockNotify).not.toHaveBeenCalled();
   } finally { deadline.mockRestore(); }
 });

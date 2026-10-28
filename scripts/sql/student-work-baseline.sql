@@ -10,11 +10,13 @@ do $$ begin
 end $$;
 grant usage on schema public,auth to authenticated,anon,service_role;
 create function auth.uid() returns uuid language sql stable as $$select nullif(current_setting('request.jwt.claim.sub',true),'')::uuid$$;
+create function auth.role() returns text language sql stable as $body$select nullif(current_setting('request.jwt.claim.role',true),'')$body$;
 create table auth.users(id uuid primary key);
 create table public.user_roles(user_id uuid,role text);
 create function public.has_role(p_user uuid,p_role text) returns boolean language sql stable security definer as $$select exists(select 1 from public.user_roles where user_id=p_user and role=p_role)$$;
 create function public.mcp_require_admin() returns uuid language plpgsql security definer as $$begin if not public.has_role(auth.uid(),'admin') then raise exception 'admin required' using errcode='42501';end if;return auth.uid();end$$;
 create function public.mcp_get_or_create_admin_student_conversation(p_admin uuid,p_student uuid) returns uuid language sql as $$select '90000000-0000-0000-0000-000000000001'::uuid$$;
+create table public.ai_ta_drafts(id uuid primary key,student_id uuid not null,created_by uuid,draft_type text,draft_json jsonb,status text default 'draft',posted_at timestamptz);
 create table public.profiles(class_id text primary key);
 create table public.homework_sets(id uuid primary key,title text,description text,question_qids text[],class_id uuid);
 create table public.mcp_write_audit(actor_id uuid,tool_name text,idempotency_key text,student_id uuid,result jsonb);

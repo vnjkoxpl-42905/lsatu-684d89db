@@ -88,6 +88,8 @@ select '20000000-0000-0000-0000-000000000001','weekly_plan_task','SECRET future 
 select public.publish_assignment_plan_notification('70000000-0000-0000-0000-999999999999','20000000-0000-0000-0000-000000000001');
 select public.publish_assignment_plan_notification('70000000-0000-0000-0000-999999999999','20000000-0000-0000-0000-000000000001');
 select public.assert_true((select count(*)=1 and bool_and(body not like '%SECRET%') from notifications where assignment_group_id='70000000-0000-0000-0000-999999999999'),'weekly one generic durable summary');
+select public.assert_true(public.claim_assignment_notification_channels('70000000-0000-0000-0000-999999999999'),'delivered generic plan can claim optional channels');
+select public.assert_true(not public.claim_assignment_notification_channels('70000000-0000-0000-0000-999999999999'),'plan optional channels can only be claimed once');
 -- Seven curriculum day bundles: no immediate future notifications; each day
 -- unlock becomes its own single cohort when its current date is advanced.
 do $$declare n integer;g uuid;begin for n in 1..7 loop
@@ -133,6 +135,61 @@ insert into notifications(user_id,type,title,link) values('20000000-0000-0000-00
 select public.assert_true(exists(select 1 from assignment_notification_legacy_links l join notifications n on n.id=l.notification_id where n.title='Recap message' and l.source_id='75000000-0000-0000-0000-000000000001'),'new message-channel recap mapped exactly');
 select public.assert_true(not exists(select 1 from assignment_delivery_events where source_id='75000000-0000-0000-0000-000000000001'),'recap remains suppressed without extra assignment ping');
 insert into activities(id,class_id,title,items,created_by,mode) values('76000000-0000-0000-0000-000000000001','20000000-0000-0000-0000-000000000001','Section','[{"slug":"a"},{"slug":"b"}]','10000000-0000-0000-0000-000000000001','section');
+-- Explicit message policy defers recap/announcement bells, without assignment pings.
+insert into classroom_items(id,student_id,type,title,description,unlock_at,notification_policy,notification_group_id)
+select ('78500000-0000-0000-0000-'||lpad(n::text,12,'0'))::uuid,'20000000-0000-0000-0000-000000000001',kind,'SECRET scheduled '||kind,'SECRET body '||kind,now()+interval '1 day','message',('78500000-0000-0000-9999-'||lpad(n::text,12,'0'))::uuid
+from unnest(array['session_recap','smartboard_recap','announcement']) with ordinality as x(kind,n);
+do $$declare n integer;begin for n in 1..3 loop
+perform public.finalize_assignment_notification_group(('78500000-0000-0000-9999-'||lpad(n::text,12,'0'))::uuid,'SECRET message title','SECRET message body','/my-work/notes');
+end loop;end$$;
+select public.assert_true(not exists(select 1 from notifications where assignment_group_id::text like '78500000%'),'future message channel stays silent');
+select public.assert_true(not public.claim_assignment_notification_channels('78500000-0000-0000-9999-000000000001'),'future message cannot claim optional channels');
+select set_config('request.jwt.claim.sub','20000000-0000-0000-0000-000000000001',false);
+set role authenticated;
+select public.expect_failure($c$select public.claim_assignment_notification_channels('70000000-0000-0000-0000-999999999999')$c$,'student cannot claim assignment notification channels');
+select public.expect_failure($c$select title,message from assignment_notification_groups where id::text like '78500000%'$c$,'future group payload is not directly selectable');
+select public.expect_failure($c$select * from assignment_delivery_events$c$,'internal event queue not directly selectable');
+select public.expect_failure($c$select * from assignment_notification_deliveries$c$,'internal deliveries not directly selectable');
+select public.expect_failure($c$select * from assignment_notification_legacy_links$c$,'internal legacy mappings not directly selectable');
+select public.expect_failure($c$select * from public.get_assignment_notification_group_items('78500000-0000-0000-9999-000000000001')$c$,'future undelivered message collection unavailable');
+reset role;
+select set_config('request.jwt.claim.sub','10000000-0000-0000-0000-000000000001',false);
+update classroom_items set unlock_at=now()-interval '1 minute' where id::text like '78500000%';
+select public.release_assignment_notifications(500);
+select public.assert_true((select count(*)=3 and bool_and(type='message') from notifications where assignment_group_id::text like '78500000%'),'unlock emits one message per recap or announcement and no assignment ping');
+select public.release_assignment_notifications(500);
+select public.assert_true((select count(*)=3 from notifications where assignment_group_id::text like '78500000%'),'message release retry exactly once');
+select set_config('request.jwt.claim.sub','20000000-0000-0000-0000-000000000001',false);
+set role authenticated;
+select public.acknowledge_student_work('classroom_items','78500000-0000-0000-0000-000000000001',1);
+select public.assert_true((select read from notifications where assignment_group_id='78500000-0000-0000-9999-000000000001'),'owned actual recap load clears deferred message alert');
+select public.assert_true((select not read from notifications where title='Conversation message'),'deferred recap receipt leaves Inbox conversation unread');
+reset role;
+select set_config('request.jwt.claim.sub','10000000-0000-0000-0000-000000000001',false);
+select public.expect_failure($c$insert into classroom_items(student_id,type,title,notification_policy,notification_group_id) values('20000000-0000-0000-0000-000000000001','note','Invalid message policy','message',gen_random_uuid())$c$,'message policy limited to recap and announcement');
+select public.expect_failure($c$insert into ta_assignments(student_id,title,notification_policy,notification_group_id) values('20000000-0000-0000-0000-000000000001','Invalid native message','message',gen_random_uuid())$c$,'native assignments cannot use message policy');
+-- Atomic session bundle parts survive lost posted flags and concurrent retries.
+insert into ai_ta_drafts(id,student_id,created_by,draft_type,draft_json) values
+ ('78600000-0000-0000-0000-000000000001','20000000-0000-0000-0000-000000000001','10000000-0000-0000-0000-000000000001','classroom_update_bundle','{"parts":{"session_note":{"approved":true,"include":true,"audience":"student"},"homework":{"approved":true,"include":true,"audience":"student"},"quiz":{"approved":true,"include":true,"audience":"student"},"private_note":{"approved":true,"include":true,"audience":"admin"}}}'),
+ ('78600000-0000-0000-0000-000000000002','20000000-0000-0000-0000-000000000001','10000000-0000-0000-0000-000000000001','classroom_update_bundle','{"parts":{"homework":{"approved":true,"include":true,"audience":"student"}}}'),
+ ('78600000-0000-0000-0000-000000000003','20000000-0000-0000-0000-000000000001','10000000-0000-0000-0000-000000000001','classroom_update_bundle','{"parts":{"homework":{"approved":false,"include":true,"audience":"student"}}}');
+do $body$declare first_result jsonb;retry_result jsonb;quiz_result jsonb;recap_result jsonb;begin
+ first_result:=public.materialize_session_bundle_part('78600000-0000-0000-0000-000000000001','20000000-0000-0000-0000-000000000001','homework','Original homework','Original body','78600000-0000-0000-9999-000000000001','{"approved":true,"include":true,"audience":"student"}'::jsonb);
+ update ai_ta_drafts set draft_json=jsonb_set(draft_json,'{parts,private_note,body_markdown}','"Newer private edit"') where id='78600000-0000-0000-0000-000000000001';
+ retry_result:=public.materialize_session_bundle_part('78600000-0000-0000-0000-000000000001','20000000-0000-0000-0000-000000000001','homework','Edited homework','Edited body','78600000-0000-0000-9999-000000000002');
+ perform public.assert_true((select draft_json->'parts'->'private_note'->>'body_markdown'='Newer private edit' and draft_json->'parts'->'homework'->>'posted'='true' and draft_json->'parts'->'homework'->>'classroom_item_id'=first_result->'item'->>'id' from ai_ta_drafts where id='78600000-0000-0000-0000-000000000001'),'atomic posted flags preserve newer unrelated authored parts');
+ perform public.assert_true(first_result->'item'->>'class_id' is null,'publisher does not invent a student UUID as class scope');
+ perform public.assert_true((first_result->>'created')::boolean and not (retry_result->>'created')::boolean and first_result->'item'=retry_result->'item','retry returns existing unchanged part after posted-flag failure');
+ quiz_result:=public.materialize_session_bundle_part('78600000-0000-0000-0000-000000000001','20000000-0000-0000-0000-000000000001','quiz','Quiz','Quiz body','78600000-0000-0000-9999-000000000002','{"approved":true,"include":true,"audience":"student"}'::jsonb);
+ perform public.assert_true(quiz_result->'item'->>'notification_group_id'=first_result->'item'->>'notification_group_id','different parts retain one durable draft homework group');
+ recap_result:=public.materialize_session_bundle_part('78600000-0000-0000-0000-000000000001','20000000-0000-0000-0000-000000000001','session_note','Recap','Recap body',null,'{"approved":true,"include":true,"audience":"student"}'::jsonb);
+ perform public.assert_true(recap_result->'item'->>'notification_policy'='message' and recap_result->'item'->>'notification_group_id' is distinct from first_result->'item'->>'notification_group_id','session recap has a separate durable message group');
+ perform public.assert_true((select count(*)=1 and bool_and(type='message') from notifications where assignment_group_id=(recap_result->'item'->>'notification_group_id')::uuid),'committed recap has a durable bell even if client loses its RPC response');
+end $body$;
+select public.expect_failure($c$select public.materialize_session_bundle_part('78600000-0000-0000-0000-000000000001','20000000-0000-0000-0000-000000000002','homework','Wrong student','body',null)$c$,'draft student mismatch rejected');
+select public.expect_failure($c$select public.materialize_session_bundle_part('78600000-0000-0000-0000-000000000001','20000000-0000-0000-0000-000000000001','private_note','Private','body',null)$c$,'private bundle part cannot be published');
+select public.expect_failure($c$select public.materialize_session_bundle_part('78600000-0000-0000-0000-000000000003','20000000-0000-0000-0000-000000000001','homework','Unapproved','body',null)$c$,'unapproved bundle part cannot be published');
+select public.expect_failure($c$select public.materialize_session_bundle_part('78600000-0000-0000-0000-000000000002','20000000-0000-0000-0000-000000000001','homework','Stale part','Stale body',null,'{"approved":true,"include":true,"audience":"student","body_markdown":"Old authored body"}'::jsonb)$c$,'stale authored part rejected before materialization');
 -- Reusing one managed UUID after a real reissue must produce a fresh durable
 -- delivery, retire only obsolete alerts, and retain old receipt generations.
 insert into classroom_items(id,student_id,type,title,notification_policy,notification_group_id) values
@@ -140,6 +197,7 @@ insert into classroom_items(id,student_id,type,title,notification_policy,notific
 select public.finalize_assignment_notification_group('78000000-0000-0000-0000-999999999999');
 select set_config('request.jwt.claim.sub','20000000-0000-0000-0000-000000000001',false);
 select public.acknowledge_student_work('classroom_items','78000000-0000-0000-0000-000000000001',1);
+select public.assert_true((select not read from notifications where assignment_group_id='70000000-0000-0000-0000-999999999999'),'unrelated document does not clear plan publication');
 select set_config('request.jwt.claim.sub','10000000-0000-0000-0000-000000000001',false);
 insert into notifications(user_id,type,title,link) values('20000000-0000-0000-0000-000000000001','message','Old reissue document alert','/classroom/item/78000000-0000-0000-0000-000000000001');
 insert into classroom_items(id,student_id,type,title,notification_policy) values('78000000-0000-0000-0000-000000000002','20000000-0000-0000-0000-000000000002','note','Other student unaffected','auto');
@@ -180,6 +238,7 @@ select public.release_assignment_notifications(500);
 -- RLS / owner RPCs execute as the real authenticated role.
 select set_config('request.jwt.claim.sub','20000000-0000-0000-0000-000000000001',false);
 set role authenticated;
+select public.expect_failure($c$select public.materialize_session_bundle_part('78600000-0000-0000-0000-000000000002','20000000-0000-0000-0000-000000000001','homework','Student publishing','body',null)$c$,'student cannot materialize session bundles');
 select public.acknowledge_student_work('guided_drill_assignments','34000000-0000-0000-0000-000000000001',1);
 select public.acknowledge_student_work('activity_assignments','34000000-0000-0000-0000-000000000002',1);
 select public.acknowledge_student_work('classroom_items','35000000-0000-0000-0000-000000000001',1);
@@ -188,12 +247,16 @@ select public.acknowledge_student_work('classroom_items','35000000-0000-0000-000
 select public.acknowledge_student_work('classroom_items','35000000-0000-0000-0000-000000000004',1);
 select public.acknowledge_student_work('classroom_items','35000000-0000-0000-0000-000000000005',1);
 select public.acknowledge_student_work('homework_assignments','30000000-0000-0000-0000-000000000004',1);
+reset role;
 select public.assert_true((select count(*)=8 and bool_and(n.read) from assignment_notification_legacy_links l join notifications n on n.id=l.notification_id where (n.title like 'Legacy native %' or n.title like 'Legacy alias %') and n.title<>'Legacy native TA'),'actual loaded native and standalone legacy documents clear exact alerts');
+set role authenticated;
 select public.assert_true((select bool_and(not read) from notifications where title in ('Generic','Retired bootcamp','Legacy inbox')),'generic retired and Inbox destinations remain unmapped and untouched');
 select public.assert_true(exists(select 1 from public.get_assignment_notification_links() l join notifications n on n.id=l.notification_id where n.title='Old reissue document alert' and l.source_id='78000000-0000-0000-0000-000000000001' and l.issuance=2),'historical alert navigation resolves current owned issuance');
 select public.expect_failure($c$update notifications set assignment_superseded_at=now() where title='Old reissue document alert'$c$,'student cannot forge supersession audit');
 select public.acknowledge_student_work('classroom_items','78000000-0000-0000-0000-000000000001',2);
+reset role;
 select public.assert_true(not exists(select 1 from notifications n join assignment_delivery_events e on e.id=n.assignment_event_id where e.source_id='78000000-0000-0000-0000-000000000001' and not n.read),'actual current load clears current alert');
+set role authenticated;
 select public.acknowledge_student_work('classroom_items','79000000-0000-0000-0000-000000000001',2);
 select public.assert_true(exists(select 1 from notifications where assignment_group_id='79000000-0000-0000-0000-999999999999' and not read),'reading reissued group member leaves other unread member');
 select public.acknowledge_student_work('classroom_items','79000000-0000-0000-0000-000000000002',1);
@@ -221,7 +284,7 @@ do $$declare run uuid;focus uuid;begin
  focus:=public.start_section_focus_attempt(run,array['a']);
  if not exists(select 1 from activity_assignments where id=focus and notification_policy='suppressed') then raise exception 'focus run not quiet';end if;
  perform public.acknowledge_student_work('activity_assignments',focus,1);
- if exists(select 1 from assignment_delivery_events where source_id in(run,focus)) then raise exception 'student initiated run generated alert';end if;
+ if exists(select 1 from notifications where link in('/activities/'||run::text,'/activities/'||focus::text)) then raise exception 'student initiated run generated alert';end if;
  if exists(select 1 from public.get_student_work_access() where source_id=run and available) then raise exception 'abandoned run still active';end if;
 end$$;
 select public.assert_true(not exists(select 1 from public.get_student_work_receipts() where source_id='72000000-0000-0000-0000-999999999999'),'owner receipts');
@@ -241,6 +304,9 @@ select public.acknowledge_student_work('classroom_items','60000000-0000-0000-000
 select public.assert_true((select not read from notifications where assignment_group_id='60000000-0000-0000-0000-999999999999'),'one read does not clear bundle');
 select public.assert_true((select count(*)=3 and count(read_at)=1 from public.get_assignment_notification_group_items('60000000-0000-0000-0000-999999999999')),'explicit group shows exact notes plus receipts');
 select public.assert_true((select count(*)=0 from public.get_assignment_notification_group_items('70000000-0000-0000-0000-999999999999')),'generic weekly summary reveals no future task titles');
+select public.assert_true((select not read from notifications where assignment_group_id='70000000-0000-0000-0000-999999999999'),'plan publication remains unread until its collection opens');
+select public.acknowledge_assignment_notification_group('70000000-0000-0000-0000-999999999999');
+select public.assert_true((select read from notifications where assignment_group_id='70000000-0000-0000-0000-999999999999'),'explicit plan collection clears only its summary');
 select public.acknowledge_assignment_notification_group('60000000-0000-0000-0000-999999999999');
 select public.assert_true((select read from notifications where assignment_group_id='60000000-0000-0000-0000-999999999999'),'explicit group clears bell');
 select public.assert_true((select count(*)=1 from public.get_student_work_receipts() where source_id::text like '60000000%'),'collection leaves other documents unread');

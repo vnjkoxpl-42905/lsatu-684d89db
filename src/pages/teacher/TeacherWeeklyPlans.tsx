@@ -115,7 +115,7 @@ export default function TeacherWeeklyPlans() {
         title: 'Your plan is ready', description: 'Your assigned plan is available in My Work.',
         route: '/my-work/to-do?workGroup=' + encodeURIComponent(job.planKey), assignmentType: 'weekly_plan',
       }).then((notify) => {
-        if (notify.inbox_ok && notify.email_ok && notify.bell_ok) toast.success('Plan published and student notified');
+        if (notify.bell_ok && (notify.optional_channels_skipped || (notify.inbox_ok && notify.email_ok))) toast.success(notify.optional_channels_skipped ? 'Plan published. Already announced.' : 'Plan published and student notified');
         else toast.warning('Plan published, but notification was incomplete', { description: notify.email_error ?? notify.inbox_error ?? notify.bell_error, action: notify.retryBell ? { label: 'Retry notification', onClick: () => void notify.retryBell!().then(() => toast.success('Bell notification delivered')).catch(() => toast.error('Notification failed. Try again.')) } : undefined });
       });
     },

@@ -15,7 +15,7 @@ grant all on public.assignment_delivery_control to service_role;
 do $$ declare t text; begin
   foreach t in array array['homework_assignments','ta_assignments','guided_drill_assignments','activity_assignments','practice_test_assignments','classroom_items'] loop
     execute format('alter table public.%I add column if not exists issuance integer not null default 1 check(issuance>0)',t);
-    execute format('alter table public.%I add column if not exists notification_policy text not null default ''legacy_client'' check(notification_policy in (''auto'',''managed'',''suppressed'',''legacy_client''))',t);
+    execute format('alter table public.%I add column if not exists notification_policy text not null default ''legacy_client'' check(notification_policy in (''auto'',''managed'',''message'',''suppressed'',''legacy_client''))',t);
     execute format('alter table public.%I add column if not exists notification_group_id uuid',t);
     execute format('alter table public.%I add column if not exists unlock_at timestamptz',t);
   end loop;
@@ -53,7 +53,7 @@ create table if not exists public.assignment_delivery_events (
   source_table text not null,
   source_id uuid not null,
   issuance integer not null check(issuance>0),
-  policy text not null check(policy in ('auto','managed')),
+  policy text not null check(policy in ('auto','managed','message')),
   group_id uuid references public.assignment_notification_groups(id),
   created_at timestamptz not null default now(),
   delivered_at timestamptz,
@@ -90,7 +90,7 @@ do $$ declare t text; begin
   foreach t in array array['student_work_receipts','assignment_notification_groups','assignment_delivery_events','assignment_notification_deliveries','assignment_notification_legacy_links'] loop
     execute format('alter table public.%I enable row level security',t);
     execute format('revoke all on public.%I from public,anon,authenticated',t);
-    execute format('grant select on public.%I to authenticated',t);
+    if t='student_work_receipts' then execute format('grant select on public.%I to authenticated',t);end if;
     execute format('grant all on public.%I to service_role',t);
     execute format('drop policy if exists %I on public.%I',t||'_owner_read',t);
     execute format('create policy %I on public.%I for select to authenticated using(student_id=auth.uid())',t||'_owner_read',t);
@@ -259,14 +259,20 @@ begin
      new.notification_group_id:=(source->>'notification_group_id')::uuid;
      return new; -- Existing PT edge mirror retries are harmless.
    end if;
-   if new.type not in ('note','homework','drill','activity','bootcamp_module','practice_test','link','weekly_plan_task') then
+   if new.notification_policy='message' and new.type not in ('session_recap','smartboard_recap','announcement') then
+     raise exception 'Message delivery is only for classroom recaps and announcements' using errcode='22023';
+   end if;
+   if new.type not in ('note','homework','drill','activity','bootcamp_module','practice_test','link','weekly_plan_task') and new.notification_policy<>'message' then
      new.notification_policy:='suppressed';
    end if;
  end if;
  if enabled and (tg_op='INSERT' or reissue) and new.notification_policy='legacy_client' then
    raise exception 'Refresh LSAT U before assigning new work. This tab uses an older assignment writer.' using errcode='P0001';
  end if;
- if new.notification_policy='managed' and new.notification_group_id is null then
+ if tg_table_name<>'classroom_items' and new.notification_policy='message' then
+   raise exception 'Message delivery requires a classroom recap or announcement' using errcode='22023';
+ end if;
+ if new.notification_policy in ('managed','message') and new.notification_group_id is null then
    raise exception 'Managed assignments require notification_group_id' using errcode='22023';
  end if;
  return new;
@@ -319,7 +325,7 @@ begin
    perform public.retire_superseded_student_work_alerts(new.student_id,'classroom_items',new.id,new.issuance);
  end if;
  -- Existing legacy/quiet rows never acquire historical events on progress.
- if s->>'policy' not in ('auto','managed') then return new; end if;
+ if s->>'policy' not in ('auto','managed','message') then return new; end if;
  if tg_op='UPDATE' and old.issuance=new.issuance then return new; end if;
  if not (s->>'active')::boolean then return new; end if;
  owner:=(s->>'student_id')::uuid;group_key:=(s->>'group_id')::uuid;
@@ -327,6 +333,9 @@ begin
    insert into public.assignment_notification_groups(id,student_id) values(group_key,owner) on conflict do nothing;
    select student_id into group_owner from public.assignment_notification_groups where id=group_key;
    if group_owner<>owner then raise exception 'An assignment group belongs to one student' using errcode='22023'; end if;
+   if exists(select 1 from public.assignment_delivery_events member where member.group_id=group_key and (member.policy='message') is distinct from (s->>'policy'='message')) then
+     raise exception 'Assignment and message delivery require separate groups' using errcode='22023';
+   end if;
  end if;
  insert into public.assignment_delivery_events(student_id,source_table,source_id,issuance,policy,group_id)
  values(owner,s->>'source_table',(s->>'source_id')::uuid,(s->>'issuance')::integer,s->>'policy',group_key)
@@ -390,8 +399,8 @@ begin
  for e in select ev.* from public.assignment_delivery_events ev where ev.delivered_at is null and ev.cancelled_at is null
    and coalesce((public.student_work_state(ev.source_table,ev.source_id,ev.student_id)->>'available')::boolean,false)
    and (ev.group_id is null or exists(select 1 from public.assignment_notification_groups ng where ng.id=ev.group_id and ng.kind='assignments'
-     and (ng.finalized_at is not null or (ev.policy='managed' and ev.created_at<=now()-interval '10 minutes'))))
-   and (ev.policy<>'managed' or ev.group_id is not null or ev.created_at<=now()-interval '10 minutes')
+     and (ng.finalized_at is not null or (ev.policy in ('managed','message') and ev.created_at<=now()-interval '10 minutes'))))
+   and (ev.policy not in ('managed','message') or ev.group_id is not null or ev.created_at<=now()-interval '10 minutes')
    order by ev.created_at,ev.id for update skip locked limit least(greatest(p_limit,1),500) loop
    -- Lock the actual current owner/publication/unlock row before release.
    if not public.student_work_native_table(e.source_table) and e.source_table<>'classroom_items' then continue; end if;
@@ -405,7 +414,7 @@ begin
    if e.group_id is not null then
      select * into g from public.assignment_notification_groups where id=e.group_id for update;
      if g.kind='plan_publication' then continue; end if;
-     if g.finalized_at is null and (e.policy<>'managed' or e.created_at>now()-interval '10 minutes') then continue; end if;
+     if g.finalized_at is null and (e.policy not in ('managed','message') or e.created_at>now()-interval '10 minutes') then continue; end if;
      select 'group:'||e.group_id::text||':members:'||md5(string_agg(member.id::text,',' order by member.id))||':unlock:'||coalesce(s->>'unlock_at','immediate')
      into cohort from public.assignment_delivery_events member where member.group_id=e.group_id and member.cancelled_at is null
        and (public.student_work_state(member.source_table,member.source_id,member.student_id)->>'issuance')::integer=member.issuance;
@@ -414,7 +423,7 @@ begin
        and (public.student_work_state(member.source_table,member.source_id,member.student_id)->>'issuance')::integer=member.issuance;
      route:=case when single_member then public.assignment_notification_group_link(s->>'link',null) else public.assignment_notification_group_link(g.link,e.group_id) end;
    else
-     if e.policy='managed' and e.created_at>now()-interval '10 minutes' then continue; end if;
+     if e.policy in ('managed','message') and e.created_at>now()-interval '10 minutes' then continue; end if;
      cohort:='event:'||e.id::text;route:=s->>'link';single_member:=true;
    end if;
    insert into public.assignment_notification_deliveries(group_id,event_id,cohort_key,student_id)
@@ -422,7 +431,7 @@ begin
    on conflict(cohort_key) do nothing returning id into delivery;
    if delivery is not null then
      insert into public.notifications(user_id,type,title,body,link,assignment_event_id,assignment_group_id,assignment_delivery_id)
-     values(e.student_id,'assignment',case when e.group_id is null then 'New assignment: '||(s->>'title') when exists(
+     values(e.student_id,case when e.policy='message' then 'message' else 'assignment' end,case when e.group_id is null then 'New assignment: '||(s->>'title') when exists(
          select 1 from public.assignment_delivery_events future where future.group_id=e.group_id and future.cancelled_at is null
          and not coalesce((public.student_work_state(future.source_table,future.source_id,future.student_id)->>'available')::boolean,false)
        ) then 'New assignments' else g.title end,
@@ -507,8 +516,12 @@ begin
  update public.notifications n set read=true where n.user_id=actor and not n.read and (
    exists(select 1 from public.assignment_delivery_events e where e.id=n.assignment_event_id and e.student_id=actor and e.source_table=p_source_table and e.source_id=p_source_id and e.issuance=p_issuance)
    or exists(select 1 from public.assignment_notification_legacy_links l where l.notification_id=n.id and l.student_id=actor and l.source_table=p_source_table and l.source_id=p_source_id and l.issuance=p_issuance));
- update public.notifications n set read=true where n.user_id=actor and not n.read and n.assignment_group_id is not null and
-   not exists(select 1 from public.assignment_delivery_events e where e.group_id=n.assignment_group_id and e.delivered_at is not null and e.cancelled_at is null
+ update public.notifications n set read=true where n.user_id=actor and not n.read and n.assignment_group_id is not null
+   and exists(select 1 from public.assignment_notification_groups g where g.id=n.assignment_group_id and g.student_id=actor and g.kind='assignments')
+   and exists(select 1 from public.assignment_delivery_events member where member.group_id=n.assignment_group_id and member.student_id=actor
+    and member.source_table=p_source_table and member.source_id=p_source_id and member.issuance=p_issuance
+    and member.delivered_at is not null and member.cancelled_at is null)
+   and not exists(select 1 from public.assignment_delivery_events e where e.group_id=n.assignment_group_id and e.delivered_at is not null and e.cancelled_at is null
     and (public.student_work_state(e.source_table,e.source_id,actor)->>'issuance')::integer=e.issuance
     and coalesce((public.student_work_state(e.source_table,e.source_id,actor)->>'available')::boolean,false)
     and not exists(select 1 from public.student_work_receipts rr where rr.student_id=actor and rr.source_table=e.source_table and rr.source_id=e.source_id and rr.issuance=e.issuance));

@@ -1,6 +1,6 @@
 import { supabase } from "@/integrations/supabase/client";
 import { sendAssignmentEmail } from "@/lib/assignmentEmail";
-import { finalizeAssignmentDelivery, publishPlanNotification } from '@/lib/assignmentDelivery';
+import { claimAssignmentNotificationChannels, finalizeAssignmentDelivery, publishPlanNotification } from '@/lib/assignmentDelivery';
 
 /**
  * Notify a student that a new classroom_items row has been created for them.
@@ -18,6 +18,10 @@ export interface NotifyResult {
   inbox_ok: boolean;
   bell_ok: boolean;
   email_ok: boolean;
+  /** The caller preserves a channel set that does not include email. */
+  email_skipped?: boolean;
+  /** Another attempt already claimed this group's optional channels. */
+  optional_channels_skipped?: boolean;
   inbox_error?: string;
   bell_error?: string;
   email_error?: string;
@@ -37,8 +41,10 @@ interface NotifyParams {
   assignmentType?: string;
   notificationGroupId: string;
   unlockAt?: string | null;
-  notificationPolicy?: 'managed' | 'suppressed';
+  notificationPolicy?: 'managed' | 'suppressed' | 'message';
   notificationChannel?: 'assignment' | 'message' | 'plan';
+  /** Existing callers retain email unless they explicitly omit that channel. */
+  sendEmail?: boolean;
 }
 
 async function findOrCreateThread(adminUserId: string, studentId: string): Promise<string> {
@@ -95,9 +101,7 @@ export async function notifyStudentOfClassroomItem(
     if (params.notificationChannel === 'plan') {
       await publishPlanNotification(params.notificationGroupId, studentId);
     } else if (params.notificationChannel === 'message') {
-      if (future) return;
-      const { error } = await supabase.from('notifications').insert({ user_id: studentId, type: 'message', title, body: description ?? null, link: route });
-      if (error) throw new Error(error.message);
+      await finalizeAssignmentDelivery(params.notificationGroupId, title, description, route);
     } else {
       await finalizeAssignmentDelivery(params.notificationGroupId, `New assignment: ${title}`, description, route);
     }
@@ -113,6 +117,15 @@ export async function notifyStudentOfClassroomItem(
   // disclose its title while the work itself is unavailable.
   if (future) {
     return { ...result, inbox_ok: true, email_ok: true, deferred: true };
+  }
+
+  try {
+    if (!await claimAssignmentNotificationChannels(params.notificationGroupId)) {
+      return { ...result, optional_channels_skipped: true };
+    }
+  } catch (error) {
+    const detail = error instanceof Error ? error.message : 'Notification channel claim failed';
+    return { ...result, inbox_error: detail, email_error: params.sendEmail === false ? undefined : detail, email_skipped: params.sendEmail === false };
   }
 
   try {
@@ -133,6 +146,11 @@ export async function notifyStudentOfClassroomItem(
   } catch (e) {
     console.error("[classroomNotify:inbox] failed", { studentId, error: e });
     result.inbox_error = e instanceof Error ? e.message : "inbox failed";
+  }
+
+  if (params.sendEmail === false) {
+    result.email_skipped = true;
+    return result;
   }
 
   // Email step. Failure is recorded but the assignment is not affected.
@@ -157,8 +175,9 @@ export async function notifyStudentOfClassroomItem(
  *   - "Assigned, but notification failed" (all three failed)
  */
 export function summarizeNotifyResult(r: NotifyResult): string {
+  if (r.optional_channels_skipped && r.bell_ok) return "Assigned. Already announced.";
   if (r.deferred && r.bell_ok) return "Assigned. Notification scheduled for unlock.";
-  if (r.inbox_ok && r.bell_ok && r.email_ok) return "Assigned and notified";
+  if (r.inbox_ok && r.bell_ok && (r.email_ok || r.email_skipped)) return "Assigned and notified";
   if (!r.inbox_ok && !r.bell_ok && !r.email_ok) return "Assigned, but notification failed";
   if (r.inbox_ok && r.bell_ok && !r.email_ok) return "Assigned, but email failed";
   return "Assigned, partial notification";

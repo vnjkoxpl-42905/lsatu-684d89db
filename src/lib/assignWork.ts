@@ -622,6 +622,7 @@ async function runAssign(input: {
           status: 'assigned',
           metadata: { ...plan.metadata, assigned_route: route },
           ...delivery,
+          signal,
         });
         if (classroomIdentity && classroomItem.id !== classroomIdentity) throw new Error('The assigned course identity did not match its saved row. No notification was sent.');
         record.classroomItemId = classroomItem.id;
@@ -723,7 +724,7 @@ export function describeAssignResult(
     };
   }
 
-  const quiet = ok.filter((r) => r.notify && !(r.notify.inbox_ok && r.notify.bell_ok && r.notify.email_ok));
+  const quiet = ok.filter((r) => r.notify && !(r.notify.bell_ok && (r.notify.optional_channels_skipped || (r.notify.inbox_ok && r.notify.email_ok))));
   if (quiet.length > 0) {
     return {
       level: 'warning',

@@ -11,12 +11,12 @@ describe('assignment writer coverage', () => {
     const found = new Set<string>(); const missing: string[] = [];
     for (const file of files(src)) {
       const text = readFileSync(file, 'utf8');
-      if (!/createClassroomItem|from\(['"](?:classroom_items|homework_assignments|guided_drill_assignments|activity_assignments|ta_assignments|practice_test_assignments)['"]/.test(text)) continue;
+      if (!/materialize_session_bundle_part|createClassroomItem|from\(['"](?:classroom_items|homework_assignments|guided_drill_assignments|activity_assignments|ta_assignments|practice_test_assignments)['"]/.test(text)) continue;
       const source = ts.createSourceFile(file, text, ts.ScriptTarget.Latest, true, file.endsWith('tsx') ? ts.ScriptKind.TSX : ts.ScriptKind.TS);
       const relative = path.relative(src, file).replace(/\\/g, '/');
       const visit = (node: ts.Node) => {
         if (ts.isCallExpression(node)) {
-          if (node.expression.getText(source) === 'createClassroomItem') found.add(relative);
+          if (node.expression.getText(source) === 'createClassroomItem' || (ts.isPropertyAccessExpression(node.expression) && node.expression.name.text === 'rpc' && node.arguments[0]?.getText(source).includes('materialize_session_bundle_part'))) found.add(relative);
           if (ts.isPropertyAccessExpression(node.expression) && ['insert', 'upsert'].includes(node.expression.name.text)) {
             const chain = node.expression.expression.getText(source); const table = chain.match(/\.from\(['"]([^'"]+)['"]/ )?.[1];
             if (table && tables.has(table)) {

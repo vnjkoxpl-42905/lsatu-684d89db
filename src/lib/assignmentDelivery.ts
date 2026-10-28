@@ -8,7 +8,7 @@ export function assignmentWriteSignal() {
   return controller.signal;
 }
 
-export type AssignmentNotificationPolicy = 'auto' | 'managed' | 'suppressed';
+export type AssignmentNotificationPolicy = 'auto' | 'managed' | 'suppressed' | 'message';
 export function classroomNotificationPolicy(type: string): AssignmentNotificationPolicy {
   return ['note', 'homework', 'drill', 'activity', 'bootcamp_module', 'practice_test', 'link'].includes(type) ? 'auto' : 'suppressed';
 }
@@ -39,4 +39,12 @@ export async function publishPlanNotification(groupId: string, studentId: string
     p_group_id: groupId, p_student_id: studentId, p_link: `/my-work/to-do?workGroup=${encodeURIComponent(groupId)}`,
   } as never);
   if (error) throw new Error(error.message);
+}
+
+/** One owner-authorized attempt at optional Inbox/email channels per durable group. */
+export async function claimAssignmentNotificationChannels(groupId: string): Promise<boolean> {
+  const { data, error } = await supabase.rpc('claim_assignment_notification_channels' as never, { p_group_id: groupId } as never);
+  if (error) throw new Error(error.message);
+  if (typeof data !== 'boolean') throw new Error('The notification channel claim could not be verified.');
+  return data;
 }

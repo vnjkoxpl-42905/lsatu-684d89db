@@ -120,7 +120,7 @@ export default function TeacherBootcamps() {
           description: `${b.description} · ${format(start, 'MMM d')} – ${format(end, 'MMM d')}`,
           route: resolveItemRoute(item) ?? b.route,
         });
-        if (notify.bell_ok && notify.email_ok && notify.inbox_ok) toast.success(summarizeNotifyResult(notify));
+        if (notify.bell_ok && (notify.optional_channels_skipped || (notify.inbox_ok && notify.email_ok))) toast.success(summarizeNotifyResult(notify));
         else toast.warning(summarizeNotifyResult(notify), { action: notify.retryBell ? { label: 'Retry notification', onClick: () => void notify.retryBell!().then(() => toast.success('Bell notification delivered')).catch(() => toast.error('Notification failed. Try again.')) } : undefined });
       } else {
         const it = findItem(b.id);

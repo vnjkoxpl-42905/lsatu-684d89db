@@ -259,7 +259,7 @@ export default function AssignmentBuilder({ studentId, adminUserId, onClose, onA
         item = await createClassroomItem({
 
           ...delivery,
-          notificationPolicy: ['session_recap', 'smartboard_recap', 'announcement'].includes(type) ? 'suppressed' : delivery.notificationPolicy,
+          notificationPolicy: ['session_recap', 'smartboard_recap', 'announcement'].includes(type) ? 'message' : delivery.notificationPolicy,
           studentId,
           createdBy: adminUserId,
           type,
@@ -288,7 +288,7 @@ export default function AssignmentBuilder({ studentId, adminUserId, onClose, onA
       qc.invalidateQueries({ queryKey: ['classroom-items'] });
 
       const summary = notify ? summarizeNotifyResult(notify) : 'Assigned';
-      if (notify && notify.inbox_ok && notify.bell_ok && notify.email_ok) {
+      if (notify && notify.bell_ok && (notify.optional_channels_skipped || (notify.inbox_ok && notify.email_ok))) {
         toast.success(summary);
       } else {
         toast.warning(summary, {

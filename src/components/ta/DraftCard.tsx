@@ -64,7 +64,7 @@ export default function DraftCard({
 
       const assignmentId = (inserted as { id: string }).id;
 
-      const notify = await notifyStudentOfClassroomItem({ adminUserId: user.id, studentId, title: draft.title || 'Untitled', route: '/classroom/ta/' + assignmentId, notificationGroupId: delivery.notificationGroupId! });
+      const notify = await notifyStudentOfClassroomItem({ adminUserId: user.id, studentId, title: draft.title || 'Untitled', route: '/classroom/ta/' + assignmentId, notificationGroupId: delivery.notificationGroupId!, sendEmail: false });
 
       track("hub_draft_approved", {
         student_id: studentId,
@@ -73,10 +73,10 @@ export default function DraftCard({
         bell_ok: notify.bell_ok,
       });
 
-      if (!notify.inbox_ok || !notify.bell_ok) {
+      if (!notify.bell_ok || (!notify.optional_channels_skipped && !notify.inbox_ok)) {
         toast.warning("Assignment created, notification(s) partially failed", { action: notify.retryBell ? { label: "Retry notification", onClick: () => void notify.retryBell!().catch(() => toast.error("Notification failed. Try again.")) } : undefined });
       } else {
-        toast.success("Assignment created and student notified");
+        toast.success(notify.optional_channels_skipped ? "Assignment created. Already announced." : "Assignment created and student notified");
       }
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Approve failed");

@@ -117,7 +117,7 @@ export default function StudentSchedulePanel({
       const item = await createClassroomItem({
 
         ...delivery,
-          notificationPolicy: ['session_recap', 'smartboard_recap', 'announcement'].includes(type) ? 'suppressed' : delivery.notificationPolicy,
+          notificationPolicy: ['session_recap', 'smartboard_recap', 'announcement'].includes(type) ? 'message' : delivery.notificationPolicy,
         studentId,
         createdBy: user.id,
         type,
@@ -142,7 +142,7 @@ export default function StudentSchedulePanel({
       qc.invalidateQueries({ queryKey: ['classroom-items'] });
 
       const summary = summarizeNotifyResult(notify);
-      if (notify.inbox_ok && notify.bell_ok && notify.email_ok) {
+      if (notify.bell_ok && (notify.optional_channels_skipped || (notify.inbox_ok && notify.email_ok))) {
         toast.success(summary);
       } else {
         toast.warning(summary, {

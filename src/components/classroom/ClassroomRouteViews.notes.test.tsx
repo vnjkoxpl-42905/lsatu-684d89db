@@ -16,7 +16,7 @@ vi.mock("@/components/classroom/ClassroomMarkdown", () => ({ default: () => null
 vi.mock("@/lib/drillLaunch", () => ({ launchDrill: vi.fn() }));
 import { ClassroomItemView } from "./ClassroomRouteViews";
 function Where() { const location = useLocation(); return <output data-reader-return={String(location.state?.notesArchiveReturn ?? '')}>{location.pathname}{location.search}</output>; }
-beforeEach(() => { acknowledge.mockReset(); markRead.mockReset(); markRead.mockResolvedValue(undefined); fixture.item.student_id = "reader"; fixture.item.status = "assigned"; fixture.item.metadata_json = {}; fixture.item.type = "note"; fixture.item.content_html = "<p>Full note</p>"; });
+beforeEach(() => { acknowledge.mockReset(); markRead.mockReset(); markRead.mockResolvedValue(undefined); fixture.item.student_id = "reader"; fixture.item.status = "assigned"; fixture.item.metadata_json = {}; delete (fixture.item as Record<string, unknown>).source_table; delete (fixture.item as Record<string, unknown>).source_id; delete (fixture.item as Record<string, unknown>).workIdentity; fixture.item.type = "note"; fixture.item.content_html = "<p>Full note</p>"; });
 afterEach(cleanup);
 describe("note detail return links", () => {
   it('registers an interactive note as a ready locally owned reader without changing its iframe contract', () => {
@@ -84,4 +84,14 @@ describe("note detail return links", () => {
     expect(acknowledge).toHaveBeenLastCalledWith(expect.objectContaining({ready:true}));
   });
 
+  it.each([
+    ['', '2'],
+    ['?workSource=activity_assignments&workId=11111111-1111-4111-8111-111111111111&workIssuance=1', '1'],
+    ['?workSource=activity_assignments&workId=11111111-1111-4111-8111-111111111111&workIssuance=invalid', 'invalid'],
+  ])('preserves explicit issuance through a source-backed redirect: %s', async (search, issuance) => {
+    Object.assign(fixture.item, {type:'activity', source_table:'activity_assignments', source_id:'11111111-1111-4111-8111-111111111111', content_html:null, workIdentity:{sourceTable:'activity_assignments',sourceId:'11111111-1111-4111-8111-111111111111',issuance:2}});
+    render(<QueryClientProvider client={new QueryClient()}><MemoryRouter initialEntries={['/classroom/item/one'+search]}><Routes><Route path="/classroom/item/:itemId" element={<ClassroomItemView />} /><Route path="*" element={<Where />} /></Routes></MemoryRouter></QueryClientProvider>);
+    await waitFor(() => expect(screen.getByRole('status')).toHaveTextContent('/activities/11111111-1111-4111-8111-111111111111?'));
+    expect(new URL(screen.getByRole('status').textContent!, 'https://lsatprep.study').searchParams.get('workIssuance')).toBe(issuance);
+  });
 });

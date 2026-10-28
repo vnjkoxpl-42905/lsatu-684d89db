@@ -229,9 +229,22 @@ export function ClassroomItemView() {
       item.type === "practice_test"
     ) {
       const route = resolveItemRoute(item);
-      if (route) navigate(item.workIdentity?withWorkIdentity(route,item.workIdentity):route, { replace: true });
+      if (route) {
+        const target = new URL(item.workIdentity ? withWorkIdentity(route, item.workIdentity) : route, window.location.origin);
+        const requested = new URLSearchParams(location.search);
+        const identityKeys = ['workSource', 'workId', 'workIssuance'];
+        // A stale or malformed explicit identity must reach the destination unchanged.
+        // Only a legacy URL without an identity may adopt the current issuance.
+        if (identityKeys.some(key => requested.has(key))) {
+          for (const key of identityKeys) {
+            target.searchParams.delete(key);
+            if (requested.has(key)) target.searchParams.set(key, requested.get(key)!);
+          }
+        }
+        navigate(target.pathname + target.search + target.hash, { replace: true });
+      }
     }
-  }, [item, navigate]);
+  }, [item, navigate, location.search]);
 
   const assignmentContext = !!item && ["homework", "drill", "activity", "practice_test", "bootcamp_module", "weekly_plan_task"].includes(item.type);
   const safeHtml = React.useMemo(() => {
