@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { supabase } from '@/integrations/supabase/client';
@@ -14,7 +14,17 @@ import ImportedMetricsPanel from '@/components/analytics/ImportedMetricsPanel';
 import FirstAnswerProgressPanel from '@/components/analytics/FirstAnswerProgressPanel';
 import { Flag } from 'lucide-react';
 
+const ProgressPrototype = import.meta.env.DEV ? React.lazy(() => import('@/components/analytics/prototype/LiveProgressPrototype')) : null;
+
 const Analytics = () => {
+  const [params] = useSearchParams();
+  if (import.meta.env.DEV && ProgressPrototype && ['desk', 'explorer', 'timeline'].includes(params.get('variant') ?? '')) {
+    return <React.Suspense fallback={<p role="status">Loading Progress preview…</p>}><ProgressPrototype /></React.Suspense>;
+  }
+  return <LegacyAnalytics />;
+};
+
+const LegacyAnalytics = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
   const { theme } = useTheme();
