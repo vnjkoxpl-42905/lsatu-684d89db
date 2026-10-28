@@ -91,12 +91,16 @@ export interface DrillEntranceProps {
   children?: ReactNode;
   onBack?: () => void;
   questionCount?: number;
+  headingLevel?: 1 | 2;
+  timingPlan?: 'progressive' | 'untimed' | 'timed';
 }
 
 /** A selectable worked example. Starting never depends on completing the walkthrough. */
-export function DrillEntrance({ mode, title, onStart, startLabel = "Start practice", children, onBack, questionCount }: DrillEntranceProps) {
+export function DrillEntrance({ mode, title, onStart, startLabel = "Start practice", children, onBack, questionCount, headingLevel = 1, timingPlan }: DrillEntranceProps) {
   const [step, setStep] = useState<DemoStep>(0);
   const steps = instructions[mode];
+  const Heading = headingLevel === 2 ? 'h2' : 'h1';
+  const PlanHeading = headingLevel === 2 ? 'h3' : 'h2';
 
   return (
     <section className="drill-entrance" data-mode={mode} aria-label={`${title} instructions`}>
@@ -108,7 +112,7 @@ export function DrillEntrance({ mode, title, onStart, startLabel = "Start practi
       )}
       <header className="drill-entrance-heading">
         <p className="drill-entrance-eyebrow">Instructions</p>
-        <h1>{title}</h1>
+        <Heading>{title}</Heading>
       </header>
       <div className="drill-entrance-grid">
         <div className="drill-entrance-visual">
@@ -136,8 +140,8 @@ export function DrillEntrance({ mode, title, onStart, startLabel = "Start practi
             ))}
           </ol>
           <div className="drill-launch">
-            {mode === "general" && <div className="drill-phase-plan" aria-label="Practice phases">
-              <h2>Three phases</h2>
+            {mode === "general" && (!timingPlan || timingPlan === 'progressive') && <div className="drill-phase-plan" aria-label="Practice phases">
+              <PlanHeading>Three phases</PlanHeading>
               <ol>
                 <li><span>1–12</span><strong>Untimed</strong></li>
                 <li><span>13–37</span><strong>45 seconds</strong></li>
@@ -145,8 +149,9 @@ export function DrillEntrance({ mode, title, onStart, startLabel = "Start practi
               </ol>
               <p>Diagram while the statement is visible. In timed phases, it disappears when time runs out or you press “I’m ready.” Then check both parts of each choice against your work. Choosing an answer is untimed.</p>
             </div>}
+            {mode === 'general' && timingPlan && timingPlan !== 'progressive' && <div className="drill-phase-plan" aria-label="Practice timing"><PlanHeading>{timingPlan === 'untimed' ? 'Work without a timer' : '45 seconds per diagram'}</PlanHeading><p>{timingPlan === 'untimed' ? 'Keep the statement visible while you diagram it. Open the choices when you are ready.' : 'Diagram while the statement is visible. After 45 seconds, it is hidden. Choosing and checking an answer is untimed.'}</p></div>}
             {children}
-            {mode !== "general" && questionCount !== undefined && <p className="drill-launch-count">{questionCount} {questionCount === 1 ? "question" : "questions"}</p>}
+            {(mode !== "general" || timingPlan) && questionCount !== undefined && <p className="drill-launch-count">{questionCount} {questionCount === 1 ? "question" : "questions"}</p>}
             <button type="button" className="drill-start" onClick={onStart}>
               {startLabel}
               <ArrowRight aria-hidden="true" size={18} />

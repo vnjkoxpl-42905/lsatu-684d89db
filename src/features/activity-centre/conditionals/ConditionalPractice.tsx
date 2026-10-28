@@ -4,12 +4,14 @@ import { ArrowLeft, ArrowRight, BookOpen, Check, Link2, GitBranch, History } fro
 import { useAuth } from "@/contexts/AuthContext";
 import { useUserPermissions } from "@/hooks/useUserPermissions";
 import { useStudentActivities } from "../hooks/useStudentActivities";
+import { useConditionalAssignments } from '@/bootcamps/conditionals/useConditionalAssignments';
+import { conditionalActivitySearch, normalizeConditionalActivityConfig } from '@/bootcamps/conditionals/activityRegistry';
 import { CONDITIONAL_QUESTIONS, type ConditionalMode, type ConditionalQuestion } from "./content";
 import { ConditionalNotation } from "./ConditionalNotation";
 import { DrillEntrance } from "./DrillEntrance";
 import { ConditionalScene } from "./ConditionalScene";
 import "./drill-entrance.css";
-import { cachePracticeRun, createPracticeRun, loadPracticeRuns, practiceSaveMessage, readCachedRuns, syncPendingPractice, syncPracticeRun, type PracticeMode, type PracticeRun } from "./practiceStore";
+import { cachePracticeRun, createPracticeRun, isConditionalRephraseRun, loadPracticeRuns, practiceSaveMessage, readCachedRuns, syncPendingPractice, syncPracticeRun, type PracticeMode, type PracticeRun } from "./practiceStore";
 import "../activity-centre.css";
 import "./conditionals.css";
 
@@ -26,13 +28,29 @@ export default function ConditionalPractice() {
   const { user } = useAuth();
   const { is_admin } = useUserPermissions();
   const { assignments, loading, error } = useStudentActivities();
+  const courseAssignments = useConditionalAssignments(user?.id, !!is_admin);
   const [params] = useSearchParams();
   const general = assignments.find(a => a.activity_id === GENERAL_ID && a.id === params.get("assignment"))
     ?? assignments.find(a => a.activity_id === GENERAL_ID);
   const preview = is_admin && params.get("preview") === "general";
+  const courseGrant = courseAssignments.data?.find(grant => grant.target.scope === 'course')
+    ?? courseAssignments.data?.find(grant => grant.target.scope === 'activity' && grant.target.activityId === 'rephrase');
+  const courseConfig = courseGrant ? normalizeConditionalActivityConfig({ activity: 'rephrase', ...(courseGrant.target.scope === 'activity' ? courseGrant.target.activitySettings : {}) }) : null;
+  const courseParams = courseConfig ? conditionalActivitySearch(courseConfig) : null;
+  if (courseParams && courseGrant) { courseParams.set('assignment', courseGrant.id); if (courseGrant.target.courseEdition) courseParams.set('edition', courseGrant.target.courseEdition); }
+  const courseUrl = courseParams ? `/bootcamp/conditionals/centre/rephrase?${courseParams}` : undefined;
   return user ? <ConditionalPracticeRoom key={user.id} userId={user.id}
-    generalUrl={preview ? `/activities/preview/${GENERAL_ID}` : general ? `/activities/${general.id}` : is_admin ? `/activities/preview/${GENERAL_ID}` : undefined}
-    generalStatus={loading ? "Loading…" : error ? "Could not load this drill. Please reload." : "Not assigned yet."} /> : null;
+    generalUrl={preview ? `/activities/preview/${GENERAL_ID}` : general ? `/activities/${general.id}` : is_admin ? `/activities/preview/${GENERAL_ID}` : courseUrl}
+    generalStatus={loading || courseAssignments.isLoading ? "Loading…" : error || courseAssignments.error ? "Could not load this drill. Please reload." : "Not assigned yet."} /> : null;
+}
+
+/** Resume through the current authorized entry. Saved sourceUrl is provenance, never a navigation target. */
+export function generalPracticeResumeUrl(run: PracticeRun, currentUrl?: string): string | undefined {
+  if (!currentUrl || !isConditionalRephraseRun(run)) return undefined;
+  const url = new URL(currentUrl, 'https://conditional.local');
+  if (url.origin !== 'https://conditional.local') return undefined;
+  url.searchParams.set('practiceRun', run.id);
+  return `${url.pathname}${url.search}${url.hash}`;
 }
 
 /** Dev-only lab also uses the real UI and local persistence, never student rows. */
@@ -40,8 +58,9 @@ export function ConditionalPracticeLab() {
   return <ConditionalPracticeRoom userId="conditional-development-preview" localOnly generalUrl="/src/dev/conditional-paper-preview.html" />;
 }
 
-export function ConditionalPracticeRoom({ userId, generalUrl, generalStatus, localOnly = false }: {
+export function ConditionalPracticeRoom({ userId, generalUrl, generalStatus, localOnly = false, embeddedMode, selectedQuestionIds, allowedQuestionIds, backUrl, selectionLabel }: {
   userId: string; generalUrl?: string; generalStatus?: string; localOnly?: boolean;
+  embeddedMode?: ConditionalMode; selectedQuestionIds?: readonly string[]; allowedQuestionIds?: readonly string[]; backUrl?: string; selectionLabel?: string;
 }) {
   const navigate = useNavigate();
   const [params, setParams] = useSearchParams();
@@ -49,13 +68,25 @@ export function ConditionalPracticeRoom({ userId, generalUrl, generalStatus, loc
   const [loaded, setLoaded] = useState(false);
   const [storageError, setStorageError] = useState<string | null>(null);
   const [saveStatus, setSaveStatus] = useState(localOnly ? "Preview: saved on this device" : "Loading saved practice…");
-  const [mode, setMode] = useState<ConditionalMode | null>(null);
+  const [mode, setMode] = useState<ConditionalMode | null>(embeddedMode ?? null);
   const [level, setLevel] = useState<"all" | "variables" | "words">("all");
   const [reviewId, setReviewId] = useState<string | null>(null);
   const alive = useRef(true);
   const syncCount = useRef(0);
   const syncFailure = useRef<string | null>(null);
-  const run = runs.find(r => r.id === params.get("run"));
+  const authorizedRuns = runs.filter(r => (!embeddedMode || r.mode === embeddedMode) && (!allowedQuestionIds || r.questions.every(question => allowedQuestionIds.includes(question.id))));
+  const run = authorizedRuns.find(r => r.id === params.get("run"));
+  const availableQuestions = CONDITIONAL_QUESTIONS.filter(q => (!selectedQuestionIds || selectedQuestionIds.includes(q.id)) && (!allowedQuestionIds || allowedQuestionIds.includes(q.id)));
+  const visibleRuns = authorizedRuns;
+  const RoomSurface = embeddedMode ? 'section' : 'main';
+  const QuestionHeading = embeddedMode ? 'h2' : 'h1';
+  const writeParams = (change: Record<string, string>) => {
+    if (!embeddedMode) { setParams(change); return; }
+    const next = new URLSearchParams(params);
+    next.delete("run");
+    for (const [key, value] of Object.entries(change)) next.set(key, value);
+    setParams(next);
+  };
   const selectedWorld = WORLDS.find(w => w.id === mode);
   useEffect(() => { window.scrollTo(0, 0); }, [mode]);
 
@@ -110,15 +141,15 @@ export function ConditionalPracticeRoom({ userId, generalUrl, generalStatus, loc
   };
   const update = (change: Partial<PracticeRun>) => run && persist({ ...run, ...change, updatedAt: new Date().toISOString() });
   const start = (world: ConditionalMode, questions?: ConditionalQuestion[]) => {
-    const selected = questions ?? CONDITIONAL_QUESTIONS.filter(q => q.mode === world && (level === "all" || q.level === level));
+    const selected = questions ?? availableQuestions.filter(q => q.mode === world && (level === "all" || q.level === level));
     if (!selected.length) return;
     try {
       const next = createPracticeRun(userId, world, selected);
-      if (persist(next)) { setParams({ run: next.id }); setMode(null); setReviewId(null); }
+      if (persist(next)) { writeParams({ run: next.id }); setMode(null); setReviewId(null); }
     } catch { setStorageError("This browser cannot save a new session. Check device storage before starting."); }
   };
-  const returnToHub = () => { setParams({}); setMode(null); setReviewId(null); };
-  const review = runs.find(r => r.id === reviewId);
+  const returnToHub = () => { writeParams({}); setMode(embeddedMode ?? null); setReviewId(null); };
+  const review = authorizedRuns.find(r => r.id === reviewId);
   const current = run?.questions[run.position];
   const questionAnswers = run && current ? run.answers.filter(a => a.questionId === current.id) : [];
   const last = questionAnswers.at(-1);
@@ -134,15 +165,17 @@ export function ConditionalPracticeRoom({ userId, generalUrl, generalStatus, loc
     update({ answers: [...run.answers, answer], stage: "feedback" });
   };
 
-  return <main className={`conditional-room activity-centre ${!run && !review ? "conditional-lobby" : ""}`}>
+  return <RoomSurface className={`conditional-room activity-centre ${embeddedMode ? "conditional-room-embedded" : ""} ${!run && !review ? "conditional-lobby" : ""}`}>
     <div className="conditional-shell">
       <header className="conditional-topbar">
-        {run || mode || review ? <button onClick={returnToHub} className="conditional-back"><ArrowLeft size={16} /> Conditional drills</button>
+        {embeddedMode && backUrl ? <Link to={backUrl} className="conditional-back"><ArrowLeft size={16} /> Back to conditional practice</Link> : run || mode || review ? <button onClick={returnToHub} className="conditional-back"><ArrowLeft size={16} /> Conditional drills</button>
           : <Link to="/activities" className="conditional-back"><ArrowLeft size={16} /> Activities</Link>}
         <div className="conditional-save" role="status">{saveStatus}
           {!localOnly && saveStatus !== "Saved to your account" && !saveStatus.includes("syncing") && <button onClick={() => void refresh()}>Retry sync</button>}</div>
       </header>
       {storageError && <p role="alert" className="conditional-error">{storageError}</p>}
+      {embeddedMode && selectionLabel && <p className="conditional-save">{selectionLabel}</p>}
+      {embeddedMode && !availableQuestions.some(question => question.mode === embeddedMode) && !run && <p role="alert" className="conditional-error">No questions match this selection. Choose another topic to begin.</p>}
       {!loaded ? <p>Loading saved practice…</p> : params.get("run") && !run ? <section className="conditional-panel"><h1>Session not available</h1><p>Check your connection and account, then retry loading your saved practice.</p><button onClick={() => void refresh()}>Retry</button></section>
       : review ? <PracticeReview run={review} onBack={() => setReviewId(null)} />
       : run && run.stage === "done" ? <section className="conditional-panel conditional-summary">
@@ -160,7 +193,7 @@ export function ConditionalPracticeRoom({ userId, generalUrl, generalStatus, loc
             {current.conclusion && <div className="conditional-target"><span className="conditional-eyebrow">Conclusion</span><p><ConditionalNotation text={current.conclusion} /></p></div>}
             <p className="conditional-paper-note">Diagram the relationships on paper before opening the choices.</p>
           </section>
-          <section className="conditional-panel conditional-answer"><h1>{run.mode === "must-be-true" ? "What must be true?" : "What's the missing link?"}</h1>
+          <section className="conditional-panel conditional-answer"><QuestionHeading>{run.mode === "must-be-true" ? "What must be true?" : "What's the missing link?"}</QuestionHeading>
             <p>{run.mode === "must-be-true" ? "Choose the statement that follows from the given rules and facts." : "Choose the additional conditional that makes the conclusion follow."}</p>
             {run.stage === "paper" ? <div className="conditional-paper-step"><BookOpen size={28} /><h2>Work it out on paper</h2><p>{run.mode === "must-be-true" ? "Follow the arrows. Keep track of what the facts establish." : "Start at the conclusion's sufficient condition. Find the gap before its necessary condition."}</p><button className="conditional-primary" onClick={() => update({ stage: "choices" })}>I've diagrammed it <ArrowRight size={16} /></button></div>
             : <>
@@ -172,33 +205,34 @@ export function ConditionalPracticeRoom({ userId, generalUrl, generalStatus, loc
               {run.stage === "feedback" && last && <div role="status" className="conditional-feedback">
                 <h2>{last.revealed ? "Answer revealed" : last.verdict === "correct" ? "Correct" : "Not yet"}</h2>
                 {resolved ? <><div className="conditional-credited"><span className="conditional-eyebrow">{run.mode === "must-be-true" ? "What follows" : "The missing link"}</span><p><ConditionalNotation text={current.choices.find(c => c.id === current.correctChoiceId)!.text} /></p></div>
-                  <p className="conditional-explanation"><ConditionalNotation text={current.explanation} /></p>
+                  <ConditionalExplanation text={current.explanation} />
                   <button className="conditional-primary" onClick={() => update(run.position + 1 === run.questions.length ? { stage: "done" } : { position: run.position + 1, stage: "paper", selection: "" })}>{run.position + 1 === run.questions.length ? "Finish practice" : "Next question"}<ArrowRight size={16} /></button></>
-                  : <><p>{run.mode === "must-be-true" ? "Check which conditions the facts establish. A conditional alone does not establish that its starting condition occurred." : "Check the direction and every slashed condition. The proposed link must work whenever the conclusion's starting condition holds."}</p><div className="conditional-actions"><button className="conditional-primary" onClick={() => update({ stage: "choices", selection: "" })}>Try again</button><button onClick={() => submit(true)}>Show answer</button></div></>}
+                  : <><p>{run.mode === "must-be-true" ? "Check which conditions the facts establish. A conditional alone does not establish that its starting condition occurred." : "Check the direction and every negative condition. The proposed link must work whenever the conclusion's starting condition holds."}</p><div className="conditional-actions"><button className="conditional-primary" onClick={() => update({ stage: "choices", selection: "" })}>Try again</button><button onClick={() => submit(true)}>Show answer</button></div></>}
               </div>}
             </>}
           </section>
         </div>
-      </> : mode ? <DrillEntrance mode={mode} title={selectedWorld?.title ?? ""} onStart={() => start(mode)} questionCount={CONDITIONAL_QUESTIONS.filter(q => q.mode === mode && (level === "all" || q.level === level)).length}>
-        <label className="conditional-select">Practice with <select value={level} onChange={e => setLevel(e.target.value as typeof level)}><option value="all">All questions</option><option value="variables">Variables</option><option value="words">Words and phrases</option></select></label>
-      </DrillEntrance> : <>
+      </> : mode ? <><DrillEntrance mode={mode} headingLevel={embeddedMode ? 2 : 1} title={embeddedMode === 'missing-link' ? 'Missing Links' : selectedWorld?.title ?? ""} onStart={() => start(mode)} questionCount={availableQuestions.filter(q => q.mode === mode && (level === "all" || q.level === level)).length}>
+        {!embeddedMode && <label className="conditional-select">Practice with <select value={level} onChange={e => setLevel(e.target.value as typeof level)}><option value="all">All questions</option><option value="variables">Variables</option><option value="words">Words and phrases</option></select></label>}
+      </DrillEntrance>{embeddedMode && <section className="conditional-history"><h2><History size={20} /> Practice history</h2>{visibleRuns.length ? visibleRuns.map(saved => <div key={saved.id} className="conditional-history-row"><div><strong>{titleFor(saved.mode)}</strong><span>{saved.createdAt.slice(0, 10)} · {saved.stage === "done" ? "Completed" : "In progress"}</span></div><button onClick={() => saved.stage === "done" ? setReviewId(saved.id) : writeParams({ run: saved.id })}>{saved.stage === "done" ? "Review" : "Continue"}</button></div>) : <p>No practice sessions yet.</p>}</section>}</>
+      : <>
         <header className="conditional-title"><h1>Conditional<br /><span>Reasoning</span></h1><div className="conditional-hero-diagram" aria-hidden="true"><span>A</span><i>&rarr;</i><span>B</span><i>&rarr;</i><span>C</span><div className="conditional-hero-proof">A <i>&rarr;</i> C</div></div></header>
         <div className="conditional-world-grid">{WORLDS.map((world) => {
           const unfinished = runs.find(r => r.mode === world.id && r.stage !== "done");
           return <section className="conditional-world" data-mode={world.id} key={world.id}><div className="conditional-card-art"><ConditionalScene mode={world.id} step={2} compact /></div><div className="conditional-world-top"><world.icon size={18} /><h2>{world.title}</h2></div>{world.description && <p>{world.description}</p>}
             {world.id === "general" ? <>{generalUrl ? <button className="conditional-primary" onClick={() => localOnly ? window.location.assign(generalUrl) : navigate(generalUrl)}>Open drill <ArrowRight size={16} /></button> : generalStatus && <p className="conditional-unavailable">{generalStatus}</p>}
-              {unfinished?.general && <button onClick={() => navigate(`${unfinished.general.sourceUrl}?practiceRun=${unfinished.id}`)}>Continue saved practice</button>}</>
+              {unfinished?.general && <button disabled={!generalPracticeResumeUrl(unfinished, generalUrl)} onClick={() => { const target = generalPracticeResumeUrl(unfinished, generalUrl); if (target) navigate(target); }}>Continue saved practice</button>}</>
               : <><button className="conditional-primary" onClick={() => { setMode(world.id); setLevel("all"); }}>Open drill <ArrowRight size={16} /></button>
                 {unfinished && <button onClick={() => setParams({ run: unfinished.id })}>Continue question {unfinished.position + 1}</button>}</>}
           </section>;
         })}</div>
         <section className="conditional-history"><h2><History size={20} /> Practice history</h2>
           {runs.length === 0 ? <p>No practice sessions yet.</p> : runs.map(saved => <div className="conditional-history-row" key={saved.id}><div><strong>{titleFor(saved.mode)}</strong><span>{saved.createdAt.slice(0, 10)} · {saved.stage === "done" ? "Completed" : "In progress"} · {saved.answers.length} recorded responses</span></div>
-            <button onClick={() => saved.general ? navigate(`${saved.general.sourceUrl}?practiceRun=${saved.id}`) : saved.stage === "done" ? setReviewId(saved.id) : setParams({ run: saved.id })}>{saved.stage === "done" ? "Review" : "Continue"}<ArrowRight size={16} /></button></div>)}
+            <button disabled={!!saved.general && !generalPracticeResumeUrl(saved, generalUrl)} onClick={() => { if (saved.general) { const target = generalPracticeResumeUrl(saved, generalUrl); if (target) navigate(target); } else if (saved.stage === 'done') setReviewId(saved.id); else setParams({ run: saved.id }); }}>{saved.stage === "done" ? "Review" : "Continue"}<ArrowRight size={16} /></button></div>)}
         </section>
       </>}
     </div>
-  </main>;
+  </RoomSurface>;
 }
 
 function firstTryCorrect(run: PracticeRun) {
@@ -209,7 +243,23 @@ function PracticeReview({ run, onBack }: { run: PracticeRun; onBack: () => void 
     {run.questions.map((q, i) => <details key={q.id} className="conditional-panel"><summary>Question {i + 1} · {run.answers.find(a => a.questionId === q.id)?.verdict === "correct" ? "Correct first time" : "Review"}</summary>
       {q.premises.map((p, j) => <p key={j}><ConditionalNotation text={p} /></p>)}{q.conclusion && <p>Conclusion: <ConditionalNotation text={q.conclusion} /></p>}
       {run.answers.filter(a => a.questionId === q.id).map(a => <p key={a.id}>Attempt {a.attempt}: <ConditionalNotation text={a.text} /> · {a.revealed ? "Revealed" : a.verdict}</p>)}
-      <p>Answer: <ConditionalNotation text={q.choices.find(c => c.id === q.correctChoiceId)!.text} /></p><p><ConditionalNotation text={q.explanation} /></p>
+      <p>Answer: <ConditionalNotation text={q.choices.find(c => c.id === q.correctChoiceId)!.text} /></p><ConditionalExplanation text={q.explanation} />
     </details>)}
   </section>;
+}
+
+/** Authored line breaks and choice explanations remain readable without interpreting HTML. */
+function ConditionalExplanation({ text }: { text: string }) {
+  const sections: { list: boolean; lines: string[] }[] = [];
+  for (const raw of text.split(/\n+/)) {
+    const line = raw.trim();
+    if (!line) continue;
+    const bullet = /^-\s+/.test(line);
+    const last = sections.at(-1);
+    if (bullet && last?.list) last.lines.push(line.replace(/^-\s+/, ''));
+    else sections.push({ list: bullet, lines: [bullet ? line.replace(/^-\s+/, '') : line] });
+  }
+  return <div className="conditional-explanation">{sections.map((section, index) => section.list
+    ? <ul key={index}>{section.lines.map((line, position) => <li key={position}><ConditionalNotation text={line} /></li>)}</ul>
+    : <p key={index}><ConditionalNotation text={section.lines[0]} /></p>)}</div>;
 }

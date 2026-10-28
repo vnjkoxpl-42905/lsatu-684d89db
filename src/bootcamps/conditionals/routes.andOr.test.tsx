@@ -42,21 +42,21 @@ it('keeps historical 100 percent while making new 2.4 optional, but requires it 
   state.progress!.course = Object.fromEntries(PRE_SPLIT_REQUIRED_STEP_IDS.map(id => [`${edition}:${id}`, { status: 'done' as const, updatedAt: '2026-10-20', contentRevision: id === 'and-or-negate-group' ? 'unknown' : 'old' }]));
   mount(`${base}/lessons?assignment=course`, [course]);
   expect(screen.getByRole('progressbar', { name: 'Course completion' })).toHaveAttribute('aria-valuetext', '100% complete, 70 of 70 steps done');
-  const newCard = screen.getByRole('heading', { level: 3, name: 'Negate AND and OR' }).closest('li')!;
+  const newCard = screen.getByText('Negate AND and OR', {selector:'.oc-path-title'}).closest('li')!;
   expect(within(newCard).getByText(/Optional/)).toBeVisible();
   expect(state.updateCalls).toBe(0);
   cleanup();
   const newer = { ...course, requirements: resolveConditionalRequirements(fullTarget, snapshotConditionalRequirements(fullTarget)) };
   mount(`${base}/lessons?assignment=course`, [newer]);
   expect(screen.getByRole('progressbar', { name: 'Course completion' }).getAttribute('aria-valuetext')).toContain('70 of 71 steps done');
-  expect(within(screen.getByRole('heading', { level: 3, name: 'Negate AND and OR' }).closest('li')!).queryByText(/Optional/)).toBeNull();
+  expect(within(screen.getByText('Negate AND and OR', {selector:'.oc-path-title'}).closest('li')!).queryByText(/Optional/)).toBeNull();
 });
 
 it('freezes de-morgan requirements and refuses a requirements query override', () => {
   const grant = assignment('demorgan', ['de-morgan']);
   mount(`${base}/lessons?assignment=demorgan&requirements=current`, [grant]);
   expect(screen.getByRole('progressbar', { name: 'Course completion' }).getAttribute('aria-valuetext')).toContain('of 3 steps done');
-  expect(within(screen.getByRole('heading', { level: 3, name: 'Negate AND and OR' }).closest('li')!).getByText(/Optional/)).toBeVisible();
+  expect(within(screen.getByText('Negate AND and OR', {selector:'.oc-path-title'}).closest('li')!).getByText(/Optional/)).toBeVisible();
   cleanup();
   mount(`${base}/lessons?assignment=demorgan`, [{ ...grant, requirements: resolveConditionalRequirements(grant.target, snapshotConditionalRequirements(grant.target)) }]);
   expect(screen.getByRole('progressbar', { name: 'Course completion' }).getAttribute('aria-valuetext')).toContain('of 4 steps done');
@@ -65,7 +65,7 @@ function mount(path: string, assignments: ResolvedConditionalAssignment[], isAdm
   return render(<MemoryRouter initialEntries={[path]}><Routes><Route path={`${base}/*`} element={<ConditionalBootcampRoutes userId="student" assignments={assignments} isAdmin={isAdmin}/>}/></Routes></MemoryRouter>);
 }
 const chapterTwo = () => screen.queryByRole('region', { name: 'Chapter 2' });
-const cardTitles = (region: HTMLElement) => within(region).getAllByRole('heading', { level: 3 }).map(heading => heading.textContent);
+const cardTitles = (region: HTMLElement) => Array.from(region.querySelectorAll('.oc-path-title')).map(node => node.textContent);
 beforeEach(() => { state.progress = emptyProgress(); state.updateCalls = 0; });
 afterEach(cleanup);
 
@@ -77,9 +77,12 @@ it('shows the whole Chapter 2 to a teacher preview and to a full course assignme
     mount(`${base}/lessons${isAdmin ? `?edition=${edition}` : ''}`, [...assignments], isAdmin);
     const region = chapterTwo()!;
     expect(region).toBeVisible();
-    expect(cardTitles(region)).toEqual([LESSONS[0], LESSONS[1], DRILLS[0], LESSONS[2], DRILLS[1], LESSONS[3], DRILLS[2], LESSONS[4], DRILLS[3]]);
-    expect(within(region).getAllByText(/^2\.[12345]$/)).toHaveLength(5);
-    expect(within(screen.getByRole('region', { name: 'Chapter 1' })).getAllByRole('link', { name: /Read lesson/ })).toHaveLength(5);
+    expect(cardTitles(region)).toEqual(LESSONS);
+    expect(within(region).getAllByText(/^Lesson 2\.[12345]/)).toHaveLength(5);
+    expect(within(screen.getByRole('region', { name: 'Chapter 1' })).getAllByRole('link', { name: /Start lesson/ })).toHaveLength(5);
+    cleanup();
+    mount(`${base}/opening-practice${isAdmin ? `?edition=${edition}` : ''}`,[...assignments],isAdmin);
+    expect(cardTitles(screen.getByRole('region',{name:'Chapter 2 drills'}))).toEqual(DRILLS);
     cleanup();
   }
 });
@@ -102,7 +105,10 @@ it('retains the frozen old course and refuses a new chapter even when an old row
 it('scopes And/Or and De Morgan selections to their own steps and refuses the other topic’s steps by URL', () => {
   const andOr = assignment('andor', ['and-or']);
   mount(`${base}/lessons?assignment=andor`, [andOr]);
-  expect(cardTitles(chapterTwo()!)).toEqual([LESSONS[0], LESSONS[1], DRILLS[0], LESSONS[2], DRILLS[1]]);
+  expect(cardTitles(chapterTwo()!)).toEqual([LESSONS[0], LESSONS[1], LESSONS[2]]);
+  cleanup();
+  mount(`${base}/opening-practice?assignment=andor`,[andOr]);
+  expect(cardTitles(screen.getByRole('region',{name:'Chapter 2 drills'}))).toEqual(DRILLS.slice(0,2));
   cleanup();
   mount(`${base}/opening/and-or-negate-group?assignment=andor`, [andOr]);
   expect(screen.getByRole('heading', { name: 'This lesson is not available here.' })).toBeVisible();
@@ -110,7 +116,10 @@ it('scopes And/Or and De Morgan selections to their own steps and refuses the ot
 
   const deMorgan = assignment('demorgan', ['de-morgan']);
   mount(`${base}/lessons?assignment=demorgan`, [deMorgan]);
-  expect(cardTitles(chapterTwo()!)).toEqual([LESSONS[3], DRILLS[2], LESSONS[4], DRILLS[3]]);
+  expect(cardTitles(chapterTwo()!)).toEqual([LESSONS[3], LESSONS[4]]);
+  cleanup();
+  mount(`${base}/opening-practice?assignment=demorgan`,[deMorgan]);
+  expect(cardTitles(screen.getByRole('region',{name:'Chapter 2 drills'}))).toEqual(DRILLS.slice(2));
   cleanup();
   mount(`${base}/opening/and-or-both-or-either?assignment=demorgan`, [deMorgan]);
   expect(screen.getByRole('heading', { name: 'This lesson is not available here.' })).toBeVisible();
@@ -144,7 +153,7 @@ it('keeps legacy read marks and the opening-edition membership separate from the
   state.progress!.lessons['de-morgan'] = '2026-09-01T12:00:00.000Z';
   expect(needsExpandedConditionalLessonReview(state.progress!.lessons, 'and-or')).toBe(false);
   mount(`${base}/lessons`, [course]);
-  const card = (title: string) => screen.getByRole('heading', { name: title }).closest('li')!;
+  const card = (title: string) => screen.getByText(title,{selector:'.oc-path-title'}).closest('li')!;
   for (const title of LESSONS) expect(within(card(title)).getByText('Not started')).toBeVisible();
   expect(state.updateCalls).toBe(0);
 });
@@ -206,9 +215,15 @@ it('shows each Chapter 2 step to exactly the assignment targets whose real unit 
   for (const { name, target } of targets) {
     const assignment = fromTarget(target);
     mount(`${base}/lessons?assignment=matrix`, [assignment]);
-    const expected = target.courseEdition ? expectedTitles(assignment.unitIds) : [];
+    const expected = target.courseEdition ? expectedTitles(assignment.unitIds).filter(title=>LESSONS.includes(title)) : [];
     if (!expected.length) expect(chapterTwo(), name).toBeNull();
     else expect(cardTitles(chapterTwo()!), name).toEqual(expected);
+    cleanup();
+    mount(`${base}/opening-practice?assignment=matrix`,[assignment]);
+    const expectedDrills=target.courseEdition ? expectedTitles(assignment.unitIds).filter(title=>DRILLS.includes(title)) : [];
+    const drillChapter=screen.queryByRole('region',{name:'Chapter 2 drills'});
+    if(!expectedDrills.length)expect(drillChapter,`${name} drills`).toBeNull();
+    else expect(cardTitles(drillChapter!),`${name} drills`).toEqual(expectedDrills);
     cleanup();
   }
   // Sanity on the contract itself: a legacy stage keeps its original membership, a skill grant is one unit.

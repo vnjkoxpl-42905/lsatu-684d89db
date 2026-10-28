@@ -345,7 +345,7 @@ async function planFor(
         unlockAt,
         dueAt: null,
         metadata: { bootcamp_id: bootcamp.id, ...(conditional ? { conditional_target: conditional.target, conditional_target_key: conditional.key,
-          ...(conditional.target.courseEdition ? { conditional_requirements: snapshotConditionalRequirements(conditional.target) } : {}) } : {}) },
+          ...(conditional.target.courseEdition && conditional.target.scope !== 'activity' ? { conditional_requirements: snapshotConditionalRequirements(conditional.target) } : {}) } : {}) },
       };
     }
   }

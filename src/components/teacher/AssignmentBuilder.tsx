@@ -158,7 +158,7 @@ export default function AssignmentBuilder({ studentId, adminUserId, onClose, onA
           i.metadata_json?.bootcamp_id === bootcampId &&
           (bootcampId !== 'conditionals' || (conditionalTarget.courseEdition
             ? protectedConditionalTarget(i)?.courseEdition === conditionalTarget.courseEdition && i.metadata_json?.conditional_target_key === conditionalTargetKey(conditionalTarget)
-              && hasCurrentConditionalRequirements(conditionalTarget, i.metadata_json?.conditional_requirements)
+              && (conditionalTarget.scope === 'activity' || hasCurrentConditionalRequirements(conditionalTarget, i.metadata_json?.conditional_requirements))
             : (i.metadata_json?.conditional_target_key ?? 'course') === conditionalTargetKey(conditionalTarget))) &&
           i.status !== 'archived' &&
           i.status !== 'completed',

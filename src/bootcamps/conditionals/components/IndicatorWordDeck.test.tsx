@@ -1,6 +1,6 @@
 import { FULL_CONDITIONAL_EDITION } from '@/lib/conditionalCourseEdition';
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
-import { afterEach, beforeEach, expect, it } from 'vitest';
+import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 import { IndicatorWordDeck } from './IndicatorWordDeck';
 import { CourseProgressProvider, createEditionCourseStore, useDeviceCourseProgress } from '../courseProgress';
 import { displayWord, indicatorWordCards } from '../content/indicatorWordCards';
@@ -94,4 +94,30 @@ it('resumes a prefixed account-only deck absent from the lesson registry with no
   expect(document.querySelector('.iw-front .iw-word')!.textContent).toBe(word);
   expect(document.querySelector('.iw-stage')).toHaveAttribute('data-result', 'wrong');
   expect(localStorage.getItem('conditional-indicator-words-v1')).toBeNull();
+});
+
+it('rejects invalid or wrong-group card links before device and account persistence mount', () => {
+  const save = vi.fn();
+  const write = vi.spyOn(Storage.prototype, 'setItem');
+  const store = createEditionCourseStore({}, save, [], undefined, 'actor');
+  render(<CourseProgressProvider store={store}><IndicatorWordDeck group={1} storageScope="actor" initialCardId={indicatorWordCards.find(card => card.group === 2)!.id}/></CourseProgressProvider>);
+  expect(screen.getByRole('alert')).toHaveTextContent('not available');
+  expect(write).not.toHaveBeenCalled();
+  expect(save).not.toHaveBeenCalled();
+  write.mockRestore();
+});
+
+it('uses a requested card only to start a fresh shared deck, then resumes the same deck without a per-card fork', () => {
+  const requested = indicatorWordCards[3];
+  const first = render(<IndicatorWordDeck storageScope="actor" initialCardId={requested.id}/>);
+  expect(shownCard().id).toBe(requested.id);
+  answer(true); click('Next card');
+  const next = shownCard().id;
+  const saved = localStorage.getItem('conditional-indicator-words-v1:actor');
+  expect(localStorage.getItem(`conditional-indicator-words-v1:actor:card:${requested.id}`)).toBeNull();
+  first.unmount();
+  render(<IndicatorWordDeck storageScope="actor" initialCardId={requested.id}/>);
+  expect(shownCard().id).toBe(next);
+  expect(screen.getByText('Your saved round takes priority over the card in this link.')).toBeVisible();
+  expect(localStorage.getItem('conditional-indicator-words-v1:actor')).toBe(saved);
 });
