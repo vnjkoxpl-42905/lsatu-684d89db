@@ -67,3 +67,8 @@ verify_jwt = true
 
 [functions.rc-recall-grade]
 verify_jwt = true
+
+# The handler authenticates the pinned admin or an atomic one-use worker ticket.
+# No anonymous action is accepted; the scheduler has no signed-in user JWT.
+[functions.teacher-post-session-sync]
+verify_jwt = false

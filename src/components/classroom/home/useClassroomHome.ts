@@ -41,6 +41,7 @@ import type { ActivityAssignmentSummary } from "@/features/activity-centre/api/t
 import { localDayISO } from "@/lib/localDate";
 import {
   pickContinueWork,
+  assignedWorkPath,
   homeBookingFor,
   KIND_LABEL,
   KIND_TONE,
@@ -127,7 +128,7 @@ export function useClassroomHome(): {
   const itemsQuery = useClassroomItems();
   const bookingQuery = useStudentBooking();
   const planQuery = useCurrentWeeklyPlan();
-  const { conversations, clearConversationFromHome } = useInbox();
+  const { conversations, clearConversationFromHome, unreadCount } = useInbox();
 
   // The one new Home read in v3. This is the student's own profile row and
   // deliberately selects only the test date needed for the top panel.
@@ -352,16 +353,22 @@ export function useClassroomHome(): {
     return all;
   }, [readingRows, reportRows, workRows]);
 
-  // The hero takes the top row. The list below repeats it deliberately: the
-  // hero is the argument for doing it now, the list is the inventory, and a
-  // student scanning only the list should still find the thing that is due.
   /*
-   * Never a Report Card. The hero argues for doing something next and takes its
-   * button label from the kind of work it is, so a finished run would be
-   * offered back to her as "Start". It belongs in the inventory below.
+   * The featured next action is the earliest real deadline (Continue). The
+   * hero describes that same row, so the view can lay its prose and progress
+   * onto the one featured block and leave it out of the Up next list. Before
+   * 2026-10-22 the hero took the top-ranked row and the list repeated it, so
+   * one assignment could be offered twice on the same screen.
+   *
+   * Never a Report Card: the hero takes its button label from the kind of
+   * work, so a finished run would be offered back to her as "Start".
    */
-  const heroRow = rows.find((row) => !row.key.startsWith("report:")) ?? null;
-  const listRows = rows.slice(0, 4);
+  const continueRow = React.useMemo(() => pickContinueWork(workRows, access, false), [access, workRows]);
+  const heroRow = continueRow
+    ? rows.find((row) => row.key === continueRow.key) ?? continueRow
+    : rows.find((row) => !row.key.startsWith("report:")) ?? null;
+  // Five rows so the list still shows four once the featured row is taken out.
+  const listRows = rows.slice(0, 5);
 
   const heroActivity = React.useMemo(() => {
     if (!heroRow || heroRow.kind !== "activity") return null;
@@ -539,12 +546,17 @@ export function useClassroomHome(): {
   const dueTodayCount = workRows.filter((row) => row.dueToday || row.overdue).length;
   // Without chat access there is no inbox to send them to, so the count must
   // not appear in the subtitle either — it would name something unreachable.
-  // The badge sits above the card, so it counts what the card can actually
-  // show. Anything read or cleared is gone from both at the same instant -
-  // the two cannot disagree, because they read the same list.
-  const unread = access.messages ? messages.length : 0;
+  // The badge is the canonical unread-conversation total, the same number the
+  // rail and the messenger show. The preview card may show fewer (a thread
+  // cleared from Home is still unread), but the count never disagrees.
+  const unread = access.messages ? unreadCount : 0;
 
   const model: ClassroomHomeModel = {
+    assignedWorkRoute: assignedWorkPath({
+      ...permissions,
+      readingCenterAssigned: readingCenterAccess.allowed,
+      readingCenterChecking: readingCenterAccess.isPending,
+    }),
     greeting: greetingFor(now),
     displayName,
     isAdmin: permissions.is_admin,
@@ -567,7 +579,7 @@ export function useClassroomHome(): {
     workFailed: assignedFailed,
     hero,
     rows: listRows,
-    continueRow: pickContinueWork(workRows, access, permissions.is_admin),
+    continueRow,
     newCount: rows.filter((row) => row.isNew).length,
     message,
     messages,

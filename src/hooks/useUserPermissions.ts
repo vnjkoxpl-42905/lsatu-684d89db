@@ -22,6 +22,20 @@ export interface UserPermissions {
   has_activity_access: boolean;
   is_admin: boolean;
   loading: boolean;
+  /**
+   * The flags above came from a successful read for the CURRENT actor. When
+   * false they are the all-denied defaults, which say nothing about the
+   * account, so a role-dependent screen must wait or offer a retry rather
+   * than treat them as a student.
+   */
+  resolved?: boolean;
+  /** The user id the resolved flags belong to, or null when unresolved. */
+  resolvedFor?: string | null;
+  /** The latest permissions read failed (cached flags, if any, are retained). */
+  isError?: boolean;
+  error?: unknown;
+  /** Re-run the permissions read. */
+  retry?: () => void;
 }
 
 const ACCESS_FLAGS = [
@@ -61,7 +75,7 @@ function isSessionDeadError(err: unknown): boolean {
   );
 }
 
-type PermissionFlags = Omit<UserPermissions, "loading">;
+type PermissionFlags = Omit<UserPermissions, "loading" | "resolved" | "resolvedFor" | "isError" | "error" | "retry">;
 
 const DEFAULT_PERMISSIONS: PermissionFlags = {
   has_bootcamp_access: false,
@@ -259,11 +273,21 @@ export function useUserPermissions(): UserPermissions {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [query.error, signOut, navigate]);
 
+  // The query key carries the user id, so data here was read for this actor;
+  // another account's cached flags live under a different key.
+  const resolved = !!userId && query.data !== undefined;
+  const { refetch } = query;
+
   return {
     ...DEFAULT_PERMISSIONS,
     ...(query.data ?? {}),
     // Only the true cold load (no cached data) blocks; cached reads and
     // background refetches keep loading false, so gated navigations don't flash.
     loading: authReady && !!user && query.isPending,
+    resolved,
+    resolvedFor: resolved ? userId : null,
+    isError: query.isError,
+    error: query.error ?? null,
+    retry: () => void refetch(),
   };
 }
