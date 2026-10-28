@@ -1370,7 +1370,7 @@ html.dark .classroom-root .classroom-home-task-checks input { color-scheme: dark
 .home-desk-label :is(input,select),.home-desk-filters :is(input,select),.home-desk-blocker input {min-width:0;width:100%;min-height:44px;padding:9px 11px;border:1px solid #b7b9ae;border-radius:8px;color:#252b26;background:#fffefa;font:400 14px/1.5 Outfit,sans-serif;}
 .home-desk-sheet {width:min(100%,720px)!important;max-width:720px!important;overflow-y:auto;border:0!important;background:#f7f6f0!important;color:#252b26!important;font-family:Outfit,sans-serif!important;padding:28px 24px!important;}
 .home-desk-overlay {background:#252b2670!important;}
-.home-desk-sheet>h2 {font:500 26px/1.2 Fraunces,serif;letter-spacing:-.02em;margin-bottom:8px;}
+.home-desk-sheet>h2 {font:500 26px/1.2 Outfit,ui-sans-serif,system-ui,sans-serif;letter-spacing:-.02em;margin-bottom:8px;}
 .home-desk-sheet>p {font-size:14px;line-height:1.5;}
 .home-desk-sheet>button:last-child {width:44px;height:44px;display:flex;justify-content:center;align-items:center;}
 .home-desk-sheet .classroom-home-task-list {list-style:none;padding:0;margin:12px 0;}
@@ -1420,3 +1420,39 @@ html.dark .home-desk-sheet input[type=checkbox] {color-scheme:dark;accent-color:
 
 /* Native mobile form fields stay at 16px so focusing never zooms the work surface. */
 @media(max-width:600px){.classroom-root .home-desk :is(input,select,textarea),.home-desk-sheet :is(input,select,textarea),.home-preview-toolbar select{font-size:16px!important;}}
+
+/* The sheets are portaled outside .classroom-root, so their text tokens must be local. */
+.home-desk-sheet :is(h1,h2,h3,h4,h5,h6,label,legend,summary,p,li) {
+  color: #252b26;
+}
+.home-desk-sheet :is(h1,h2,h3,h4,h5,h6) {
+  font-family: Outfit, ui-sans-serif, system-ui, sans-serif;
+}
+.home-desk-sheet > p,
+.home-desk-sheet :is(.home-desk-empty,small,.classroom-home-task-sync) {
+  color: #545c52;
+}
+.home-desk-sheet [role="alert"] { color: #a62e22; }
+html.dark .home-desk-sheet :is(h1,h2,h3,h4,h5,h6,label,legend,summary,p,li) {
+  color: #efede6;
+}
+html.dark .home-desk-sheet > p,
+html.dark .home-desk-sheet :is(.home-desk-empty,small,.classroom-home-task-sync) {
+  color: #b8bdaf;
+}
+html.dark .home-desk-sheet [role="alert"] { color: #ffb4a8; }
+/* Portal form fields cannot inherit the classroom-only input palette. */
+.home-desk-sheet :is(input,select,textarea) {
+  color: #252b26;
+  background-color: #fffefa;
+  caret-color: #252b26;
+  color-scheme: light;
+}
+.home-desk-sheet :is(input,textarea)::placeholder { color:#64665e; opacity:1; }
+html.dark .home-desk-sheet :is(input,select,textarea) {
+  color: #efede6;
+  background-color: #1d231f;
+  caret-color: #efede6;
+  color-scheme: dark;
+}
+html.dark .home-desk-sheet :is(input,textarea)::placeholder { color:#b8bdaf; opacity:1; }
