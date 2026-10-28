@@ -1,0 +1,19 @@
+{
+  "date": "2026-09-30",
+  "readOnly": true,
+  "fixtureExists": {
+    "activity_assignments": true,
+    "activity_item_responses": true,
+    "attempts": true,
+    "bootcamp_kv": true,
+    "classroom_items": true,
+    "guided_drill_assignments": true,
+    "homework_assignments": false,
+    "practice_test_runs": true,
+    "rc_attempts": true,
+    "rc_drill_sessions": true,
+    "section_history": true
+  },
+  "bootcampNamespace": "module_progress",
+  "executionStatus": "proposal-not-executed"
+}

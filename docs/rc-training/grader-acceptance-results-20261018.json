@@ -1,0 +1,212 @@
+{
+  "date": "2026-10-18",
+  "providerBudget": 6,
+  "expectedNewProviderCalls": 6,
+  "gradeEndpointRequests": 3,
+  "cacheRequests": 2,
+  "results": [
+    {
+      "fixture": "accurate-paraphrase",
+      "expected": "Accept ordinary paraphrase and changed order. Preserve some people, some psychologists, apparent inheritance, most musicians by six, and some athletic qualities can be inborn. Do not require exact vocabulary or count TTS name pronunciation as a semantic error.",
+      "attemptId": "ea9dc0da-c7df-4bd5-a83d-378ca6bb6245",
+      "recapId": "46ec0289-8060-46e1-8c5f-247f8825e314",
+      "objectPath": "d763bfe6-d710-4c4b-90ff-4b3a20929211/ea9dc0da-c7df-4bd5-a83d-378ca6bb6245/p1-para1-recall-74850171-084f-4060-ae03-3fd6627cab46.mp3",
+      "gradeHttpStatus": 200,
+      "response": {
+        "attemptId": "ea9dc0da-c7df-4bd5-a83d-378ca6bb6245",
+        "items": [
+          {
+            "recapId": "46ec0289-8060-46e1-8c5f-247f8825e314",
+            "label": "Passage 1 · Paragraph 1",
+            "status": "ready",
+            "retryable": false,
+            "grade": {
+              "version": 1,
+              "transcript": "In areas such as music, chess, and some sports, the very best performers do so much better even than other people with extensive experience that some people think inborn talent is needed to explain the difference. Some psychologists support that view by pointing to child prodigies and evidence that relevant traits seem to be inherited. For instance, most outstanding musicians are identified by age six. Researchers also have evidence that some abilities needed for exceptional athletic performance can be inborn, including excellent motor coordination, fast reflexes, and coordination between the hands and eyes.",
+              "sourceHash": "023476d01ea080e07f76eba650d691e40591a9bdeeae0522cff5cc5004240df6",
+              "sourceText": "In certain fields of human endeavor, such as music, chess, and some athletic activities, the performance of the best practitioners is so outstanding, so superior even to the performance of other highly experienced individuals in the field, that some people believe some notion of innate talent must be invoked to account for this highest level of performance. Certain psychologists have supported this view with data concerning the performance of prodigies and the apparent heritability of relevant traits. They have noted, for example, that most outstanding musicians are discovered by the age of six, and they have found evidence that some of the qualities necessary for exceptional athletic performance, including superior motor coordination, speed of reflexes, and hand-eye coordination, can be inborn.",
+              "audioHash": "a00b79426be9b28e89cbc5eef819f2104fcd995b779b724d55d7d715278776a4",
+              "model": "google/gemini-3.1-flash-lite",
+              "asrEngine": "deepgram/nova-3",
+              "assessment": {
+                "details": [
+                  {
+                    "status": "kept",
+                    "explanation": "The student accurately identified the fields mentioned, using 'sports' as a synonym for 'athletic activities'.",
+                    "recallQuote": "In areas such as music, chess, and some sports",
+                    "sourceQuote": "In certain fields of human endeavor, such as music, chess, and some athletic activities"
+                  },
+                  {
+                    "status": "kept",
+                    "explanation": "The student captured the comparative nature of the performance gap between elite practitioners and experienced peers.",
+                    "recallQuote": "the very best performers do so much better even than other people with extensive experience",
+                    "sourceQuote": "the performance of the best practitioners is so outstanding, so superior even to the performance of other highly experienced individuals in the field"
+                  },
+                  {
+                    "status": "kept",
+                    "explanation": "The student correctly conveyed the belief that innate talent is the proposed explanation for elite performance.",
+                    "recallQuote": "some people think inborn talent is needed to explain the difference.",
+                    "sourceQuote": "some people believe some notion of innate talent must be invoked to account for this highest level of performance."
+                  },
+                  {
+                    "status": "kept",
+                    "explanation": "The student accurately attributed the support for the innate talent view to psychologists and identified the two key pieces of evidence.",
+                    "recallQuote": "Some psychologists support that view by pointing to child prodigies and evidence that relevant traits seem to be inherited.",
+                    "sourceQuote": "Certain psychologists have supported this view with data concerning the performance of prodigies and the apparent heritability of relevant traits."
+                  },
+                  {
+                    "status": "kept",
+                    "explanation": "The student accurately recalled the specific age and the observation regarding the discovery of musicians.",
+                    "recallQuote": "most outstanding musicians are identified by age six.",
+                    "sourceQuote": "most outstanding musicians are discovered by the age of six"
+                  },
+                  {
+                    "status": "kept",
+                    "explanation": "The student successfully listed the specific athletic traits mentioned in the text, using minor paraphrasing that preserved the original meaning.",
+                    "recallQuote": "some abilities needed for exceptional athletic performance can be inborn, including excellent motor coordination, fast reflexes, and coordination between the hands and eyes.",
+                    "sourceQuote": "some of the qualities necessary for exceptional athletic performance, including superior motor coordination, speed of reflexes, and hand-eye coordination, can be inborn."
+                  }
+                ],
+                "summary": "The student successfully captured the core argument and the supporting evidence provided in the text, maintaining the original meaning through effective paraphrasing.",
+                "nextStep": "Practice summarizing more complex LSAT passages that involve multiple competing viewpoints to ensure you maintain the distinction between the author's voice and the views they are reporting.",
+                "relationships": []
+              }
+            }
+          }
+        ],
+        "build": "2026-10-18-rc-grader-1"
+      },
+      "stored": {
+        "tries": 1,
+        "updated_at": "2026-10-19T02:09:39.045+00:00",
+        "source_hash": "023476d01ea080e07f76eba650d691e40591a9bdeeae0522cff5cc5004240df6",
+        "audio_hash": "a00b79426be9b28e89cbc5eef819f2104fcd995b779b724d55d7d715278776a4",
+        "transcript": "In areas such as music, chess, and some sports, the very best performers do so much better even than other people with extensive experience that some people think inborn talent is needed to explain the difference. Some psychologists support that view by pointing to child prodigies and evidence that relevant traits seem to be inherited. For instance, most outstanding musicians are identified by age six. Researchers also have evidence that some abilities needed for exceptional athletic performance can be inborn, including excellent motor coordination, fast reflexes, and coordination between the hands and eyes."
+      },
+      "cacheUnchanged": true
+    },
+    {
+      "fixture": "substantial-omission",
+      "expected": "Identify omitted psychological evidence, prodigies, apparent heritability, most outstanding musicians being identified by age six, and the examples and limited inborn claim about athletic qualities. Do not treat a correct gist as complete recall.",
+      "attemptId": "b61bb4f1-91a8-4074-8469-0f54a6c432aa",
+      "recapId": "ef6bb616-f6e8-48e0-83e9-f0fd2aee9ba4",
+      "objectPath": "d763bfe6-d710-4c4b-90ff-4b3a20929211/b61bb4f1-91a8-4074-8469-0f54a6c432aa/p1-para1-recall-abc49a2b-221b-47dd-b66c-d6b6ac7e3277.mp3",
+      "gradeHttpStatus": 200,
+      "response": {
+        "attemptId": "b61bb4f1-91a8-4074-8469-0f54a6c432aa",
+        "items": [
+          {
+            "recapId": "ef6bb616-f6e8-48e0-83e9-f0fd2aee9ba4",
+            "label": "Passage 1 · Paragraph 1",
+            "status": "ready",
+            "retryable": false,
+            "grade": {
+              "version": 1,
+              "transcript": "In music, chess, and sports, the very best performers do far better than other experienced people. Some people explain this difference by saying these performers have natural talent.",
+              "sourceHash": "023476d01ea080e07f76eba650d691e40591a9bdeeae0522cff5cc5004240df6",
+              "sourceText": "In certain fields of human endeavor, such as music, chess, and some athletic activities, the performance of the best practitioners is so outstanding, so superior even to the performance of other highly experienced individuals in the field, that some people believe some notion of innate talent must be invoked to account for this highest level of performance. Certain psychologists have supported this view with data concerning the performance of prodigies and the apparent heritability of relevant traits. They have noted, for example, that most outstanding musicians are discovered by the age of six, and they have found evidence that some of the qualities necessary for exceptional athletic performance, including superior motor coordination, speed of reflexes, and hand-eye coordination, can be inborn.",
+              "audioHash": "11df02f693e91b530d63f43cba20a2beb781b9ca9de240990ed5322daf2f0f64",
+              "model": "google/gemini-3.1-flash-lite",
+              "asrEngine": "deepgram/nova-3",
+              "assessment": {
+                "details": [
+                  {
+                    "status": "kept",
+                    "explanation": "The student correctly identified the fields mentioned, using 'sports' as a synonym for 'athletic activities'.",
+                    "recallQuote": "In music, chess, and sports",
+                    "sourceQuote": "In certain fields of human endeavor, such as music, chess, and some athletic activities"
+                  },
+                  {
+                    "status": "kept",
+                    "explanation": "The student accurately paraphrased the comparison between elite performers and other experienced individuals.",
+                    "recallQuote": "the very best performers do far better than other experienced people",
+                    "sourceQuote": "the performance of the best practitioners is so outstanding, so superior even to the performance of other highly experienced individuals in the field"
+                  },
+                  {
+                    "status": "kept",
+                    "explanation": "The student correctly captured the causal link between the performance gap and the belief in innate/natural talent.",
+                    "recallQuote": "Some people explain this difference by saying these performers have natural talent.",
+                    "sourceQuote": "some people believe some notion of innate talent must be invoked to account for this highest level of performance"
+                  },
+                  {
+                    "status": "missing",
+                    "explanation": "The student failed to mention the role of psychologists or the specific evidence regarding prodigies and heritability.",
+                    "recallQuote": "",
+                    "sourceQuote": "Certain psychologists have supported this view with data concerning the performance of prodigies and the apparent heritability of relevant traits."
+                  },
+                  {
+                    "status": "missing",
+                    "explanation": "The student omitted the specific examples provided to support the psychologists' claims.",
+                    "recallQuote": "",
+                    "sourceQuote": "They have noted, for example, that most outstanding musicians are discovered by the age of six, and they have found evidence that some of the qualities necessary for exceptional athletic performance, including superior motor coordination, speed of reflexes, and hand-eye coordination, can be inborn."
+                  }
+                ],
+                "summary": "The student successfully captured the core premise regarding the performance gap in specific fields and the attribution of that gap to innate talent, but omitted the supporting evidence and the role of psychologists in the argument.",
+                "nextStep": "Practice summarizing complex arguments by identifying the main claim first, then listing the specific evidence used to support that claim to ensure no supporting details are overlooked.",
+                "relationships": [
+                  {
+                    "status": "kept",
+                    "explanation": "The student correctly identified the causal relationship between the observed performance gap and the proposed explanation of innate talent.",
+                    "recallQuote": "Some people explain this difference by saying these performers have natural talent.",
+                    "sourceQuote": "some people believe some notion of innate talent must be invoked to account for this highest level of performance"
+                  }
+                ]
+              }
+            }
+          }
+        ],
+        "build": "2026-10-18-rc-grader-1"
+      },
+      "stored": {
+        "tries": 1,
+        "updated_at": "2026-10-19T02:09:46.723+00:00",
+        "source_hash": "023476d01ea080e07f76eba650d691e40591a9bdeeae0522cff5cc5004240df6",
+        "audio_hash": "11df02f693e91b530d63f43cba20a2beb781b9ca9de240990ed5322daf2f0f64",
+        "transcript": "In music, chess, and sports, the very best performers do far better than other experienced people. Some people explain this difference by saying these performers have natural talent."
+      },
+      "cacheUnchanged": true
+    },
+    {
+      "fixture": "changed-quantifiers",
+      "expected": "Flag everyone versus some, proved versus supported/apparent, every musician exactly six versus most by six, and all abilities always inborn versus evidence that some qualities can be inborn. Explain changed certainty and scope with transcript and canonical source evidence.",
+      "attemptId": "88ab4df1-aa70-4285-8535-0d49251bf2f3",
+      "recapId": "cad87cbb-2222-47b2-8399-9e8235351bcc",
+      "objectPath": "d763bfe6-d710-4c4b-90ff-4b3a20929211/88ab4df1-aa70-4285-8535-0d49251bf2f3/p1-para1-recall-fd988616-7df3-4f3e-909f-cff6a9824d5c.mp3",
+      "gradeHttpStatus": 200,
+      "response": {
+        "attemptId": "88ab4df1-aa70-4285-8535-0d49251bf2f3",
+        "items": [
+          {
+            "recapId": "cad87cbb-2222-47b2-8399-9e8235351bcc",
+            "label": "Passage 1 · Paragraph 1",
+            "status": "failed",
+            "reason": "The feedback could not be verified against the passage. Try again.",
+            "retryable": true
+          }
+        ],
+        "build": "2026-10-18-rc-grader-1"
+      },
+      "failure": "Not ready; no retries made to preserve the six-call budget",
+      "stored": {
+        "tries": 1,
+        "updated_at": "2026-10-19T02:09:53.964+00:00",
+        "source_hash": "023476d01ea080e07f76eba650d691e40591a9bdeeae0522cff5cc5004240df6",
+        "audio_hash": "40fb017b1fcced8dd0c229c69ca8608fa37c6a0820ea5a308adfbed9867ceb5e",
+        "transcript": "In music, chess, and sports, the very best performers do much better than other highly experienced people. Everyone agrees this proves that inborn talent is the only possible explanation. All psychologists have proved this using child prodigies and the fact that every relevant trait is inherited. Every outstanding musician is discovered at exactly age six. All abilities needed for exceptional athletic performance are always inborn, including motor coordination, reflex speed, and hand eye coordination.",
+        "reason": "ungrounded_source_evidence",
+        "status": "failed",
+        "asr_engine": "deepgram/nova-3",
+        "model": "google/gemini-3.1-flash-lite"
+      }
+    }
+  ],
+  "preflightRecords": [
+    {
+      "fixture": "accurate-paraphrase",
+      "expected": "Accept ordinary paraphrase and changed order. Preserve some people, some psychologists, apparent inheritance, most musicians by six, and some athletic qualities can be inborn. Do not require exact vocabulary or count TTS name pronunciation as a semantic error.",
+      "attemptId": "93659a8b-b6d6-447f-a2db-65de3744d334",
+      "recapId": "8507205a-7754-41d0-aca2-48ff71c288a7",
+      "objectPath": "d763bfe6-d710-4c4b-90ff-4b3a20929211/93659a8b-b6d6-447f-a2db-65de3744d334/p1-para1-recall-f5dc08bf-95e8-463a-b37d-4d5298a35114.mp3"
+    }
+  ]
+}

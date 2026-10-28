@@ -1,0 +1,35 @@
+[
+  {
+    "article": 343,
+    "buttonHeights": [
+      46,
+      46
+    ],
+    "documentWidth": 375,
+    "formulaOverflow": 0,
+    "paths": "343.2px",
+    "width": 375
+  },
+  {
+    "article": 540,
+    "buttonHeights": [
+      46,
+      46
+    ],
+    "documentWidth": 768,
+    "formulaOverflow": 0,
+    "paths": "540px",
+    "width": 768
+  },
+  {
+    "article": 680,
+    "buttonHeights": [
+      46,
+      46
+    ],
+    "documentWidth": 980,
+    "formulaOverflow": 0,
+    "paths": "340px 340px",
+    "width": 980
+  }
+]

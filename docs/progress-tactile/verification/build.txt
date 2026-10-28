@@ -1,0 +1,494 @@
+
+> vite_react_shadcn_ts@0.0.0 prebuild
+> vite-node scripts/conditionals/import-content.ts --check && node scripts/build-question-bank.mjs && node scripts/verify-rc-answer-keys.mjs && node scripts/build-rc-search-index.mjs && node scripts/build-finder-address-index.mjs && node scripts/verify-rc-search-index.mjs
+
+Generated 30 lessons and 296 practice questions.
+build-question-bank: merged 156 section files (3959 questions) -> public/data/_bank.generated.json
+{"questions":2150,"documentedCorrections":57,"applied":[]}
+rc-search-index: wrote 2150 questions to C:\Users\Joshu\dev\ai-os-projects\lsatu-progress-tactile-20261027\public\data\rc\rc-question-index.json
+finder-address-index.json: 59 PrepTests, 236 sections, 320 RC passages, 89.9 KB
+RC indexes verified: 2150 unique bank questions, 2150 search records, 2150 finder addresses; ID, owner, and official-address sets match exactly.
+
+> vite_react_shadcn_ts@0.0.0 build
+> node --max-old-space-size=4096 ./node_modules/vite/bin/vite.js build
+
+vite v5.4.21 building for production...
+transforming...
+
+warn - The class `duration-[120ms]` is ambiguous and matches multiple utilities.
+warn - If this is content and not a class, replace it with `duration-&lsqb;120ms&rsqb;` to silence this warning.
+
+warn - The class `duration-[350ms]` is ambiguous and matches multiple utilities.
+warn - If this is content and not a class, replace it with `duration-&lsqb;350ms&rsqb;` to silence this warning.
+
+warn - The class `duration-[600ms]` is ambiguous and matches multiple utilities.
+warn - If this is content and not a class, replace it with `duration-&lsqb;600ms&rsqb;` to silence this warning.
+
+warn - The class `ease-[cubic-bezier(0.22,1,0.36,1)]` is ambiguous and matches multiple utilities.
+warn - If this is content and not a class, replace it with `ease-&lsqb;cubic-bezier(0.22,1,0.36,1)&rsqb;` to silence this warning.
+
+/noise.png referenced in /noise.png didn't resolve at build time, it will remain unchanged to be resolved at runtime
+✓ 7950 modules transformed.
+rendering chunks...
+[plugin:vite:reporter] [plugin vite:reporter] 
+(!) C:/Users/Joshu/dev/ai-os-projects/lsatu-progress-tactile-20261027/src/lib/guidedDrills.ts is dynamically imported by C:/Users/Joshu/dev/ai-os-projects/lsatu-progress-tactile-20261027/src/components/AssignmentGate.tsx but also statically imported by C:/Users/Joshu/dev/ai-os-projects/lsatu-progress-tactile-20261027/src/bootcamps/conditionals/components/GuidedConditionalActivity.tsx, C:/Users/Joshu/dev/ai-os-projects/lsatu-progress-tactile-20261027/src/components/drill/InteractiveGuidedDrillFrame.tsx, C:/Users/Joshu/dev/ai-os-projects/lsatu-progress-tactile-20261027/src/components/teacher/library/AssignWorkSheet.tsx, C:/Users/Joshu/dev/ai-os-projects/lsatu-progress-tactile-20261027/src/hooks/useAssignedTodoFeed.ts, C:/Users/Joshu/dev/ai-os-projects/lsatu-progress-tactile-20261027/src/lib/drillLaunchResolve.ts, C:/Users/Joshu/dev/ai-os-projects/lsatu-progress-tactile-20261027/src/lib/studentScopedWork.ts, C:/Users/Joshu/dev/ai-os-projects/lsatu-progress-tactile-20261027/src/pages/GuidedDrillStart.tsx, C:/Users/Joshu/dev/ai-os-projects/lsatu-progress-tactile-20261027/src/pages/admin/GuidedDrills.tsx, C:/Users/Joshu/dev/ai-os-projects/lsatu-progress-tactile-20261027/src/pages/teacher/desk/library/DeskLibraryGuidedDrillsSurface.tsx, dynamic import will not move module into another chunk.
+
+[plugin:vite:reporter] [plugin vite:reporter] 
+(!) C:/Users/Joshu/dev/ai-os-projects/lsatu-progress-tactile-20261027/src/components/review/introLrReviewSource.ts is dynamically imported by C:/Users/Joshu/dev/ai-os-projects/lsatu-progress-tactile-20261027/src/components/AssignmentGate.tsx but also statically imported by C:/Users/Joshu/dev/ai-os-projects/lsatu-progress-tactile-20261027/src/pages/IntroLrReviewDetail.tsx, C:/Users/Joshu/dev/ai-os-projects/lsatu-progress-tactile-20261027/src/pages/ReviewQueuePage.tsx, dynamic import will not move module into another chunk.
+
+[plugin:vite:reporter] [plugin vite:reporter] 
+(!) C:/Users/Joshu/dev/ai-os-projects/lsatu-progress-tactile-20261027/src/components/review/hardSentencesReviewSource.ts is dynamically imported by C:/Users/Joshu/dev/ai-os-projects/lsatu-progress-tactile-20261027/src/components/AssignmentGate.tsx but also statically imported by C:/Users/Joshu/dev/ai-os-projects/lsatu-progress-tactile-20261027/src/lib/scopedReviewEpisodes.ts, C:/Users/Joshu/dev/ai-os-projects/lsatu-progress-tactile-20261027/src/pages/HardSentencesReviewDetail.tsx, C:/Users/Joshu/dev/ai-os-projects/lsatu-progress-tactile-20261027/src/pages/ReviewQueuePage.tsx, dynamic import will not move module into another chunk.
+
+[plugin:vite:reporter] [plugin vite:reporter] 
+(!) C:/Users/Joshu/dev/ai-os-projects/lsatu-progress-tactile-20261027/src/components/review/nativeLabReviewSource.ts is dynamically imported by C:/Users/Joshu/dev/ai-os-projects/lsatu-progress-tactile-20261027/src/components/AssignmentGate.tsx but also statically imported by C:/Users/Joshu/dev/ai-os-projects/lsatu-progress-tactile-20261027/src/lib/drillHistory.ts, C:/Users/Joshu/dev/ai-os-projects/lsatu-progress-tactile-20261027/src/lib/scopedReviewEpisodes.ts, C:/Users/Joshu/dev/ai-os-projects/lsatu-progress-tactile-20261027/src/pages/NativeLabReviewDetail.tsx, C:/Users/Joshu/dev/ai-os-projects/lsatu-progress-tactile-20261027/src/pages/ReviewQueuePage.tsx, dynamic import will not move module into another chunk.
+
+[plugin:vite:reporter] [plugin vite:reporter] 
+(!) C:/Users/Joshu/dev/ai-os-projects/lsatu-progress-tactile-20261027/src/lib/sectionHistory.ts is dynamically imported by C:/Users/Joshu/dev/ai-os-projects/lsatu-progress-tactile-20261027/src/components/AssignmentGate.tsx but also statically imported by C:/Users/Joshu/dev/ai-os-projects/lsatu-progress-tactile-20261027/src/components/history/SectionHistoryList.tsx, C:/Users/Joshu/dev/ai-os-projects/lsatu-progress-tactile-20261027/src/pages/DrillHistory.tsx, C:/Users/Joshu/dev/ai-os-projects/lsatu-progress-tactile-20261027/src/pages/ReviewQueuePage.tsx, C:/Users/Joshu/dev/ai-os-projects/lsatu-progress-tactile-20261027/src/pages/SectionReviewDetail.tsx, dynamic import will not move module into another chunk.
+
+computing gzip size...
+dist/index.html                                             7.48 kB │ gzip:   3.05 kB
+dist/assets/Assistant-SemiBold-SCI4bEL9.woff2              20.21 kB
+dist/assets/Assistant-Regular-DVxZuzxb.woff2               20.23 kB
+dist/assets/Assistant-Medium-DrcxCXg3.woff2                20.32 kB
+dist/assets/Assistant-Bold-gm-uSS1B.woff2                  20.38 kB
+dist/assets/outfit-latin-Bc-8i84L.woff2                    32.29 kB
+dist/assets/rcTimedReaderStorage-CD29O2kz.css               0.11 kB │ gzip:   0.12 kB
+dist/assets/CausationStation-D8H6dcIw.css                   1.01 kB │ gzip:   0.43 kB
+dist/assets/PrincipleFlawApp-CTcnNjvU.css                   2.29 kB │ gzip:   0.65 kB
+dist/assets/player-BWBlfB54.css                             2.45 kB │ gzip:   0.87 kB
+dist/assets/SectionDirectionsCard-jINWRU4Y.css              2.73 kB │ gzip:   0.87 kB
+dist/assets/activity-centre-CKp8Zo-p.css                    3.04 kB │ gzip:   1.09 kB
+dist/assets/ActivityCard-Cb6Mlxvv.css                       5.34 kB │ gzip:   1.66 kB
+dist/assets/ConditionalPractice-DZi5RrEa.css                6.60 kB │ gzip:   1.77 kB
+dist/assets/ActivityLab-B2Cxl4X0.css                        6.75 kB │ gzip:   1.59 kB
+dist/assets/testing-centre-B5sHI719.css                     9.43 kB │ gzip:   1.86 kB
+dist/assets/negated-condition-61liIv5I.css                 15.11 kB │ gzip:   3.99 kB
+dist/assets/index-CcoqdWF5.css                             18.52 kB │ gzip:   3.60 kB
+dist/assets/UnlessDrill-CG6BrY3o.css                       24.60 kB │ gzip:   4.97 kB
+dist/assets/IntroToLrBootcamp-D6sspxv4.css                 31.14 kB │ gzip:   6.35 kB
+dist/assets/RcBootcampPage-BhrD5jR2.css                    32.97 kB │ gzip:   6.62 kB
+dist/assets/section-launch-B669Dw0i.css                    44.05 kB │ gzip:   9.00 kB
+dist/assets/rc-CoC3C6w0.css                                48.81 kB │ gzip:   8.35 kB
+dist/assets/AcademyMainhub-BqO2lUxx.css                    52.56 kB │ gzip:   8.14 kB
+dist/assets/index-BNZR9Tew.css                             59.41 kB │ gzip:  11.93 kB
+dist/assets/report-card-DEkbo3tf.css                      116.50 kB │ gzip:  23.01 kB
+dist/assets/TeacherSmartboard-CbfdidzT.css                145.49 kB │ gzip:  23.00 kB
+dist/assets/ConditionalBootcamp-e_PoaKlL.css              339.50 kB │ gzip:  65.89 kB
+dist/assets/index-BzEZ6Y45.css                            683.54 kB │ gzip:  97.84 kB
+dist/assets/channel-DbVqX7pS.js                             0.11 kB │ gzip:   0.12 kB
+dist/assets/endOfDay-Dvu0L_a2.js                            0.12 kB │ gzip:   0.13 kB
+dist/assets/practiceTestRunner-DAbjf4N_.js                  0.16 kB │ gzip:   0.15 kB
+dist/assets/bootcampDays-BDG0ehT3.js                        0.17 kB │ gzip:   0.16 kB
+dist/assets/differenceInCalendarMonths-B05sda47.js          0.17 kB │ gzip:   0.16 kB
+dist/assets/skeleton-BV5-qj-S.js                            0.17 kB │ gzip:   0.16 kB
+dist/assets/OneOffBooking-CrZG1sNj.js                       0.17 kB │ gzip:   0.17 kB
+dist/assets/chunk-2Q5K7J3B-DE-f792P.js                      0.19 kB │ gzip:   0.16 kB
+dist/assets/analytics-ivtukkOA.js                           0.20 kB │ gzip:   0.17 kB
+dist/assets/DrillRunSpecContext-HC1_m9nY.js                 0.21 kB │ gzip:   0.18 kB
+dist/assets/chunk-XXDRQBXY-BGmVJyiT.js                      0.22 kB │ gzip:   0.20 kB
+dist/assets/grading-status-Co85LNzT.js                      0.24 kB │ gzip:   0.17 kB
+dist/assets/minus-i3QvymPo.js                               0.29 kB │ gzip:   0.24 kB
+dist/assets/chunk-JWPE2WC7-CJUXMfz0.js                      0.29 kB │ gzip:   0.20 kB
+dist/assets/square-Bp7iV1ra.js                              0.32 kB │ gzip:   0.26 kB
+dist/assets/UnlessDrillPage-CBDTgYP7.js                     0.32 kB │ gzip:   0.22 kB
+dist/assets/use-mobile-BDjWUydS.js                          0.33 kB │ gzip:   0.24 kB
+dist/assets/arrow-up-BI0ctR22.js                            0.33 kB │ gzip:   0.27 kB
+dist/assets/rcRetrySelection-DxsWN1Qm.js                    0.33 kB │ gzip:   0.23 kB
+dist/assets/LrChoiceNote-pUmzXhvP.js                        0.34 kB │ gzip:   0.26 kB
+dist/assets/message-square-yAbLRiQE.js                      0.35 kB │ gzip:   0.27 kB
+dist/assets/command-s_KK8uCW.js                             0.35 kB │ gzip:   0.27 kB
+dist/assets/reply-E2DCF1U2.js                               0.36 kB │ gzip:   0.29 kB
+dist/assets/chunk-5VM5RSS4-DvgPpyUz.js                      0.36 kB │ gzip:   0.27 kB
+dist/assets/terminal-7NLSLQqP.js                            0.36 kB │ gzip:   0.28 kB
+dist/assets/circle-check-big-DORIE9H-.js                    0.36 kB │ gzip:   0.28 kB
+dist/assets/circle-play-B4hrwsX3.js                         0.36 kB │ gzip:   0.28 kB
+dist/assets/user-DBk2WL5N.js                                0.37 kB │ gzip:   0.29 kB
+dist/assets/rotate-cw-Cs959CJo.js                           0.37 kB │ gzip:   0.29 kB
+dist/assets/RcRedirect-Ce_CjYcZ.js                          0.37 kB │ gzip:   0.28 kB
+dist/assets/rrcNavigation-CGPIDFYI.js                       0.37 kB │ gzip:   0.27 kB
+dist/assets/info-TFXVQ_Qi.js                                0.37 kB │ gzip:   0.28 kB
+dist/assets/circle-x-BlAcNH3R.js                            0.38 kB │ gzip:   0.28 kB
+dist/assets/init-Dmth1JHB.js                                0.38 kB │ gzip:   0.19 kB
+dist/assets/undo-2-BUylRDiN.js                              0.38 kB │ gzip:   0.28 kB
+dist/assets/pause-tF6ArLJX.js                               0.38 kB │ gzip:   0.27 kB
+dist/assets/file-CsM9VwDL.js                                0.39 kB │ gzip:   0.28 kB
+dist/assets/flag-0NL07WjO.js                                0.39 kB │ gzip:   0.31 kB
+dist/assets/sticky-note-CeTcu81t.js                         0.39 kB │ gzip:   0.29 kB
+dist/assets/target-9fpmRwyy.js                              0.40 kB │ gzip:   0.27 kB
+dist/assets/library-C3ch32R4.js                             0.40 kB │ gzip:   0.29 kB
+dist/assets/useAITADrafts-hPC05pSZ.js                       0.40 kB │ gzip:   0.31 kB
+dist/assets/ellipsis-vertical-CyZ2mFwJ.js                   0.40 kB │ gzip:   0.28 kB
+dist/assets/activity-CD-ccO4l.js                            0.40 kB │ gzip:   0.30 kB
+dist/assets/history-BSi_3sfc.js                             0.41 kB │ gzip:   0.30 kB
+dist/assets/waitForSession-DmWCoHS5.js                      0.41 kB │ gzip:   0.30 kB
+dist/assets/database-78ul-wBr.js                            0.41 kB │ gzip:   0.31 kB
+dist/assets/book-marked-i3FF-IgD.js                         0.42 kB │ gzip:   0.31 kB
+dist/assets/chart-column-Cd5LCpPq.js                        0.42 kB │ gzip:   0.30 kB
+dist/assets/user-check-DlZt7Hd1.js                          0.42 kB │ gzip:   0.32 kB
+dist/assets/archive-BQgNA9RN.js                             0.42 kB │ gzip:   0.31 kB
+dist/assets/messages-square-DNThRqeQ.js                     0.43 kB │ gzip:   0.30 kB
+dist/assets/subset-worker.chunk-Cb7-jqXe.js                 0.43 kB │ gzip:   0.32 kB
+dist/assets/timedPracticeTestEntry-Bk37fKea.js              0.43 kB │ gzip:   0.31 kB
+dist/assets/upload-BdGoBo3V.js                              0.43 kB │ gzip:   0.32 kB
+dist/assets/mic-DDTkeyNk.js                                 0.44 kB │ gzip:   0.32 kB
+dist/assets/shield-BfbIwMZJ.js                              0.44 kB │ gzip:   0.33 kB
+dist/assets/flame-CmKg1GRY.js                               0.45 kB │ gzip:   0.34 kB
+dist/assets/git-branch-C7BZi5vL.js                          0.45 kB │ gzip:   0.32 kB
+dist/assets/stateDiagram-v2-MP3YSRHH-ByatYqft.js            0.45 kB │ gzip:   0.31 kB
+dist/assets/file-open-7c801643-684qeFg4.js                  0.45 kB │ gzip:   0.32 kB
+dist/assets/lightbulb-Bay5zeCb.js                           0.46 kB │ gzip:   0.33 kB
+dist/assets/useAdminActivities-CPq69m7U.js                  0.46 kB │ gzip:   0.33 kB
+dist/assets/maximize-2-CG6P__lx.js                          0.47 kB │ gzip:   0.31 kB
+dist/assets/minimize-2-D4FcYoFt.js                          0.47 kB │ gzip:   0.31 kB
+dist/assets/file-down-BRDmeods.js                           0.47 kB │ gzip:   0.32 kB
+dist/assets/users-DHBXkMOu.js                               0.47 kB │ gzip:   0.33 kB
+dist/assets/TeacherPayments-BALeAzyb.js                     0.48 kB │ gzip:   0.31 kB
+dist/assets/pdfExtract-63NwBohG.js                          0.49 kB │ gzip:   0.37 kB
+dist/assets/DrillSplit-BR_COpa2.js                          0.49 kB │ gzip:   0.32 kB
+dist/assets/printer-Xyhl8P5Q.js                             0.49 kB │ gzip:   0.34 kB
+dist/assets/classDiagram-ZZMXUADV-pF6ypTUn.js               0.49 kB │ gzip:   0.33 kB
+dist/assets/classDiagram-v2-VYDZK3BY-pF6ypTUn.js            0.49 kB │ gzip:   0.33 kB
+dist/assets/tag-C7_AX3dp.js                                 0.50 kB │ gzip:   0.35 kB
+dist/assets/save-h-f1OB84.js                                0.50 kB │ gzip:   0.33 kB
+dist/assets/layout-dashboard-rcy6oq4e.js                    0.52 kB │ gzip:   0.31 kB
+dist/assets/chunk-POPQ4Y6H-BYmPmOka.js                      0.53 kB │ gzip:   0.37 kB
+dist/assets/RcMarkdown-CAg8npHx.js                          0.53 kB │ gzip:   0.24 kB
+dist/assets/layers-BOXSnsNy.js                              0.53 kB │ gzip:   0.34 kB
+dist/assets/file-open-002ab408-DIuFHtCF.js                  0.54 kB │ gzip:   0.33 kB
+dist/assets/QueryErrorCard-CzvTunYq.js                      0.56 kB │ gzip:   0.35 kB
+dist/assets/drillSection-gTDTm6W4.js                        0.56 kB │ gzip:   0.35 kB
+dist/assets/swimlanesDiagram-VR7AAH4N-C8TBpfNa.js           0.57 kB │ gzip:   0.38 kB
+dist/assets/film-Bw1EkeEI.js                                0.58 kB │ gzip:   0.34 kB
+dist/assets/clipboard-list-CbSclSCm.js                      0.58 kB │ gzip:   0.36 kB
+dist/assets/directory-open-01563666-DWU9wJ6I.js             0.59 kB │ gzip:   0.36 kB
+dist/assets/infoDiagram-27XIBGKW-C74p3Ur7.js                0.60 kB │ gzip:   0.41 kB
+dist/assets/gauge-MpqcmdYw.js                               0.63 kB │ gzip:   0.33 kB
+dist/assets/star-BcJ_U6zm.js                                0.64 kB │ gzip:   0.40 kB
+dist/assets/file-save-3189631c-x92wctJd.js                  0.71 kB │ gzip:   0.46 kB
+dist/assets/badge-O1T_1GYF.js                               0.71 kB │ gzip:   0.38 kB
+dist/assets/useStudentLevels-CE41OPch.js                    0.72 kB │ gzip:   0.41 kB
+dist/assets/pencil-ruler-BBfjML48.js                        0.73 kB │ gzip:   0.44 kB
+dist/assets/dumbbell-CFnol2AN.js                            0.73 kB │ gzip:   0.40 kB
+dist/assets/sliders-horizontal-DyKpeXEc.js                  0.75 kB │ gzip:   0.37 kB
+dist/assets/RcEngagingPassageBootcamp-Dv5fQjIH.js           0.77 kB │ gzip:   0.48 kB
+dist/assets/DossierMessages-BJ-DSHS3.js                     0.82 kB │ gzip:   0.48 kB
+dist/assets/TeacherDevIndex-DMydPyeD.js                     0.84 kB │ gzip:   0.49 kB
+dist/assets/progress-840R8X5n.js                            0.84 kB │ gzip:   0.48 kB
+dist/assets/useConditionalAssignments-BOR5pcgU.js           0.86 kB │ gzip:   0.52 kB
+dist/assets/file-save-745eba88-Bb9F9Kg7.js                  0.87 kB │ gzip:   0.50 kB
+dist/assets/user-x-CGuZ-tP_.js                              0.96 kB │ gzip:   0.49 kB
+dist/assets/useTeachingAssets-DZ3SRP4u.js                   0.98 kB │ gzip:   0.51 kB
+dist/assets/card-BgFOVDKq.js                                0.99 kB │ gzip:   0.38 kB
+dist/assets/sizeCapture-INFHLROL-Cz2Onrwu.js                1.02 kB │ gzip:   0.57 kB
+dist/assets/guidedDrillNavigation-CHQJ6PV6.js               1.03 kB │ gzip:   0.54 kB
+dist/assets/adminConversation-D7UqJHLs.js                   1.07 kB │ gzip:   0.49 kB
+dist/assets/card-rC2RhWQE.js                                1.14 kB │ gzip:   0.44 kB
+dist/assets/ProgressWindowControl-nT1GvWBv.js               1.17 kB │ gzip:   0.66 kB
+dist/assets/ordinal-DILIJJjt.js                             1.20 kB │ gzip:   0.58 kB
+dist/assets/use-transform-BYoz0k5w.js                       1.28 kB │ gzip:   0.67 kB
+dist/assets/useBootcampProgress-CHBw1sRP.js                 1.39 kB │ gzip:   0.81 kB
+dist/assets/ScoreRing-DRr9GfoJ.js                           1.42 kB │ gzip:   0.75 kB
+dist/assets/SectionDirectionsCard-ld4zTd2M.js               1.49 kB │ gzip:   0.55 kB
+dist/assets/band-CquvqAHh.js                                1.54 kB │ gzip:   0.67 kB
+dist/assets/taPdf-D6O7mNBU.js                               1.55 kB │ gzip:   0.87 kB
+dist/assets/directory-open-4ed118d0-BzWybGaI.js             1.55 kB │ gzip:   0.79 kB
+dist/assets/dayQuestions-CKEmjr18.js                        1.59 kB │ gzip:   0.76 kB
+dist/assets/useQuestionHighlights-BkP8cfs7.js               1.61 kB │ gzip:   0.78 kB
+dist/assets/timedSectionAdoption-Davt49QS.js                1.61 kB │ gzip:   0.91 kB
+dist/assets/DossierProgress-5b8LDS3O.js                     1.63 kB │ gzip:   0.83 kB
+dist/assets/ScrollMoreCue-BR83CpKC.js                       1.63 kB │ gzip:   0.88 kB
+dist/assets/railroadDiagram-O6MQD6OU-Cp0ozbQa.js            1.63 kB │ gzip:   0.76 kB
+dist/assets/useStudentActivities-Do7iuu3s.js                1.64 kB │ gzip:   0.78 kB
+dist/assets/FallacyFlawBootcamp-MFDdGc5i.js                 1.65 kB │ gzip:   0.91 kB
+dist/assets/TeacherAssistant-C8Y9Ak3d.js                    1.70 kB │ gzip:   0.92 kB
+dist/assets/useHubStudents-DJR1CgM0.js                      1.78 kB │ gzip:   0.81 kB
+dist/assets/lastActivity-kFLRmOcg.js                        1.80 kB │ gzip:   0.80 kB
+dist/assets/PrincipleFlawBootcamp-BF5KNkSE.js               1.83 kB │ gzip:   1.00 kB
+dist/assets/abnfDiagram-VCTEODGH-CbNv2J-9.js                1.83 kB │ gzip:   0.90 kB
+dist/assets/chunk-F27PBJKO-C75wTdLr.js                      1.85 kB │ gzip:   0.81 kB
+dist/assets/RcExamPane-BUUnwg2l.js                          1.86 kB │ gzip:   0.97 kB
+dist/assets/pegDiagram-XKGWAZYB-C9AYciGQ.js                 1.98 kB │ gzip:   0.93 kB
+dist/assets/ebnfDiagram-PWID7BFC-BcAGHqQV.js                2.03 kB │ gzip:   0.89 kB
+dist/assets/SectionDirections-XXYALghp.js                   2.10 kB │ gzip:   0.89 kB
+dist/assets/progress-BF2E6SF8.js                            2.15 kB │ gzip:   1.06 kB
+dist/assets/ActivityCard-Ct9CKZNW.js                        2.16 kB │ gzip:   0.96 kB
+dist/assets/HubMessages-19xagZjy.js                         2.23 kB │ gzip:   1.06 kB
+dist/assets/classroomNotify-CXSPRnTN.js                     2.30 kB │ gzip:   0.91 kB
+dist/assets/Homework-BTupMP6h.js                            2.36 kB │ gzip:   1.03 kB
+dist/assets/OAuthConsent-wJLq_c6g.js                        2.49 kB │ gzip:   1.09 kB
+dist/assets/PublicBooking-Dtj2sPp_.js                       2.61 kB │ gzip:   1.23 kB
+dist/assets/assignmentGroups-z0eslL-i.js                    2.65 kB │ gzip:   1.19 kB
+dist/assets/Inspector-BdzZPy3V.js                           2.72 kB │ gzip:   1.19 kB
+dist/assets/scheduleTemplate-owUH5t3b.js                    2.72 kB │ gzip:   1.12 kB
+dist/assets/useLrExplanation-C_6oNTXp.js                    2.72 kB │ gzip:   1.18 kB
+dist/assets/rcExposure-DgkSt8XO.js                          2.83 kB │ gzip:   1.13 kB
+dist/assets/MeshSurfaceSampler-CbQdw46a.js                  2.85 kB │ gzip:   0.93 kB
+dist/assets/accessTierClient-BaJe6DK4.js                    2.86 kB │ gzip:   1.15 kB
+dist/assets/NativeLabReviewDetail-D3QX9pg7.js               2.89 kB │ gzip:   1.32 kB
+dist/assets/rcSession-YwUd7W8-.js                           2.96 kB │ gzip:   1.07 kB
+dist/assets/StudentIndicatorLedger-CNOyBG-p.js              3.01 kB │ gzip:   1.26 kB
+dist/assets/rcSearch-CkuiWMV5.js                            3.02 kB │ gzip:   1.31 kB
+dist/assets/roundRect-0PYZxl1G.js                           3.05 kB │ gzip:   1.08 kB
+dist/assets/SignupQueue-BhJ-u7dU.js                         3.30 kB │ gzip:   1.40 kB
+dist/assets/InspectorReport-DyBDG1oi.js                     3.32 kB │ gzip:   1.37 kB
+dist/assets/tabs-DW1GOfG0.js                                3.40 kB │ gzip:   1.44 kB
+dist/assets/arc-9KbbLbYh.js                                 3.42 kB │ gzip:   1.46 kB
+dist/assets/ActivityReviewDetail-DCYflDC4.js                3.42 kB │ gzip:   1.47 kB
+dist/assets/IntroLr-DtRAPHpf.js                             3.78 kB │ gzip:   1.47 kB
+dist/assets/TeacherBootcampsHub-DqQ2LqBN.js                 3.87 kB │ gzip:   1.30 kB
+dist/assets/rcAdaptive-BQ5aqwhQ.js                          3.88 kB │ gzip:   1.57 kB
+dist/assets/bootcampReferences-Cf2SBv4h.js                  3.90 kB │ gzip:   1.28 kB
+dist/assets/SectionReviewDetail-CisMxIet.js                 3.93 kB │ gzip:   1.65 kB
+dist/assets/teacherAssignResource-B97mISYr.js               3.94 kB │ gzip:   1.35 kB
+dist/assets/HardSentencesReviewDetail-BsV9roZX.js           4.12 kB │ gzip:   1.64 kB
+dist/assets/diagram-Z3DM3KII-DzoNknqw.js                    4.27 kB │ gzip:   1.87 kB
+dist/assets/TeacherReadingCenter-BuQUGpja.js                4.28 kB │ gzip:   1.80 kB
+dist/assets/switch-B90zL6r5.js                              4.31 kB │ gzip:   1.83 kB
+dist/assets/BootcampReferenceLab-DFYDJpWM.js                4.47 kB │ gzip:   1.51 kB
+dist/assets/checkbox-B31q8FeE.js                            4.55 kB │ gzip:   1.95 kB
+dist/assets/ProgressTopics-P3nwkdIc.js                      4.64 kB │ gzip:   1.88 kB
+dist/assets/practiceStore-D1DqcOsr.js                       4.67 kB │ gzip:   2.01 kB
+dist/assets/Overview-DhRlhah4.js                            4.68 kB │ gzip:   1.67 kB
+dist/assets/defaultLocale-DX6XiGOO.js                       4.69 kB │ gzip:   2.18 kB
+dist/assets/TeacherWorkspaceShell-fmeaHc1D.js               4.83 kB │ gzip:   1.85 kB
+dist/assets/QuestionMultiPicker-C6FX7zNp.js                 4.86 kB │ gzip:   1.73 kB
+dist/assets/HubStudentList-7OLzkv7F.js                      4.97 kB │ gzip:   2.01 kB
+dist/assets/FirstAnswerProgressPanel-Be0rfoer.js            4.98 kB │ gzip:   1.90 kB
+dist/assets/OperatorChatProvider-DUqE5z9q.js                5.02 kB │ gzip:   2.06 kB
+dist/assets/Profile-DJHCDZiS.js                             5.14 kB │ gzip:   1.94 kB
+dist/assets/IntroLrReviewDetail-BH9T6NYh.js                 5.27 kB │ gzip:   2.02 kB
+dist/assets/Schedule-BYBd6bcy.js                            5.35 kB │ gzip:   1.89 kB
+dist/assets/StudentNoteDialog-BZpcD7sp.js                   5.38 kB │ gzip:   2.00 kB
+dist/assets/TeacherHomeworkDetail-uBH1Pv9B.js               5.40 kB │ gzip:   2.07 kB
+dist/assets/StudentNotes-O_jjzPpi.js                        5.50 kB │ gzip:   2.18 kB
+dist/assets/rcProtectedRelease-IxlChxZB.js                  5.52 kB │ gzip:   2.07 kB
+dist/assets/EmbeddedConditionalActivity-Bm1QcLV1.js         5.74 kB │ gzip:   2.22 kB
+dist/assets/TeacherBootcampDetail-BURTyMme.js               5.75 kB │ gzip:   1.56 kB
+dist/assets/linear-C-JHJ_0a.js                              5.80 kB │ gzip:   2.38 kB
+dist/assets/DrillRuns-BmoWUCXC.js                           5.82 kB │ gzip:   2.09 kB
+dist/assets/SavedReviewEpisodePanel-B4BUpXPg.js             6.19 kB │ gzip:   2.08 kB
+dist/assets/TutorCorpus-DoAnAjYw.js                         6.19 kB │ gzip:   2.26 kB
+dist/assets/useModuleProgress-BJnNI_cQ.js                   6.21 kB │ gzip:   1.88 kB
+dist/assets/PracticeExamsPreview-GiGofCz2.js                6.23 kB │ gzip:   1.94 kB
+dist/assets/diagram-UQ7AKVKN-DTaGccHG.js                    6.24 kB │ gzip:   2.68 kB
+dist/assets/questionFeatureFamilies-b1h_3DLt.js             6.31 kB │ gzip:   2.48 kB
+dist/assets/pieDiagram-E7YTZNPT-DhykUcuk.js                 6.38 kB │ gzip:   2.66 kB
+dist/assets/PracticeSetResults-DbJ_o4bT.js                  6.43 kB │ gzip:   1.82 kB
+dist/assets/LsatKnowledgeImport-CMIMoq_0.js                 6.64 kB │ gzip:   2.17 kB
+dist/assets/Trust-CJGdPDrC.js                               6.71 kB │ gzip:   2.62 kB
+dist/assets/ActivityCentre-Cn27723a.js                      6.77 kB │ gzip:   2.31 kB
+dist/assets/TeacherTemplates-D81EYgAi.js                    6.78 kB │ gzip:   2.21 kB
+dist/assets/useGmailTodoSource-Bq6uFE8z.js                  6.86 kB │ gzip:   2.90 kB
+dist/assets/BootcampReferences-nrO9pMXe.js                  6.96 kB │ gzip:   2.33 kB
+dist/assets/LRQuestionModal-BxysqNGs.js                     7.25 kB │ gzip:   2.88 kB
+dist/assets/GuidedDrills-DS_2vsA4.js                        7.38 kB │ gzip:   2.55 kB
+dist/assets/HelpSheet-B2jYM9Fm.js                           7.43 kB │ gzip:   3.04 kB
+dist/assets/RcQuestionPreview-vreXAuqz.js                   7.51 kB │ gzip:   2.91 kB
+dist/assets/TeacherStudentBootcampDetail-Ck_1knAd.js        7.64 kB │ gzip:   2.19 kB
+dist/assets/DriveFiles-yZ5arN6-.js                          7.67 kB │ gzip:   3.18 kB
+dist/assets/BookingAccess-C9QBUFxa.js                       7.81 kB │ gzip:   2.54 kB
+dist/assets/ledger-D5twMm1r.js                              7.83 kB │ gzip:   2.22 kB
+dist/assets/dynamic-island-toc-BqjcXFts.js                  7.85 kB │ gzip:   3.33 kB
+dist/assets/HomeworkNew-ghCovy8d.js                         7.91 kB │ gzip:   2.37 kB
+dist/assets/HomeworkDetail-D1CeU4yy.js                      8.01 kB │ gzip:   3.08 kB
+dist/assets/si-LK-N5RQ5JYF-BGrKMMqQ.js                      8.02 kB │ gzip:   3.36 kB
+dist/assets/DrillLaunchGate-DM7Vvzgh.js                     8.14 kB │ gzip:   3.32 kB
+dist/assets/useBootcampMetrics-D-OSnLtP.js                  8.16 kB │ gzip:   2.91 kB
+dist/assets/zh-HK-E62DVLB3-DxwUWTJD.js                      8.20 kB │ gzip:   4.09 kB
+dist/assets/diagram-S7CK7UJ4-D8bg7t_Z.js                    8.32 kB │ gzip:   3.73 kB
+dist/assets/az-AZ-76LH7QW2-DnV-q2qD.js                      8.51 kB │ gzip:   3.59 kB
+dist/assets/BootcampReferenceDetail-KR0dFOc-.js             8.54 kB │ gzip:   2.48 kB
+dist/assets/OfficialDrillToolbar-CFvV79lo.js                8.65 kB │ gzip:   3.13 kB
+dist/assets/downloads-DUgoRE10.js                           8.74 kB │ gzip:   3.45 kB
+dist/assets/section-launch-DKrYqMVh.js                      8.78 kB │ gzip:   3.71 kB
+dist/assets/kk-KZ-P5N5QNE5-g18yr6tZ.js                      9.02 kB │ gzip:   4.20 kB
+dist/assets/RcSearch-DI7Vyiv3.js                            9.05 kB │ gzip:   2.66 kB
+dist/assets/assignWork-10r5OmcY.js                          9.19 kB │ gzip:   3.36 kB
+dist/assets/DrillSetupPreview-aqMzA9vH.js                   9.29 kB │ gzip:   3.37 kB
+dist/assets/PaymentsPanel-DiCLZBoo.js                       9.46 kB │ gzip:   3.31 kB
+dist/assets/DossierReview-DDSRRD2C.js                       9.47 kB │ gzip:   3.44 kB
+dist/assets/practiceSectionAttempts-BgX2Oo1Z.js             9.92 kB │ gzip:   3.87 kB
+dist/assets/kaa-6HZHGXH3-YDHJlw4_.js                        9.97 kB │ gzip:   4.18 kB
+dist/assets/DossierOverview-Dcl9ATB0.js                    10.08 kB │ gzip:   3.23 kB
+dist/assets/cynefinDiagram-5FMLGOSQ-CNqJyS7Y.js            10.10 kB │ gzip:   3.64 kB
+dist/assets/FirstAnswerHistoryPanel-DKKiZ_yZ.js            10.24 kB │ gzip:   3.15 kB
+dist/assets/stateDiagram-D77RDMKH-Cu_eJ6pk.js              10.39 kB │ gzip:   3.63 kB
+dist/assets/th-TH-HPSO5L25-mcRrt1FE.js                     10.48 kB │ gzip:   5.20 kB
+dist/assets/confetti.module-B5JVzsfH.js                    10.66 kB │ gzip:   4.28 kB
+dist/assets/TeacherSessionIngest-B6Br_Nv9.js               10.79 kB │ gzip:   3.62 kB
+dist/assets/diagram-VSXAHHWV-Ce29rTQG.js                   10.85 kB │ gzip:   4.18 kB
+dist/assets/Flashcards-DrPVvT0x.js                         11.05 kB │ gzip:   3.72 kB
+dist/assets/rcTimedReaderStorage-HUgX9WEm.js               11.07 kB │ gzip:   4.27 kB
+dist/assets/PracticeExamPages-DUZmoPnp.js                  11.09 kB │ gzip:   3.34 kB
+dist/assets/HubAssignments-BmUeiDOa.js                     11.13 kB │ gzip:   3.95 kB
+dist/assets/dagre-GXQ25YYZ-DWgPWBMN.js                     11.16 kB │ gzip:   4.19 kB
+dist/assets/my-MM-5M5IBNSE-Dg2ax79k.js                     11.16 kB │ gzip:   5.33 kB
+dist/assets/LineChart-BbkJM9pl.js                          11.17 kB │ gzip:   4.31 kB
+dist/assets/StudentOverview-BZXuRywv.js                    11.25 kB │ gzip:   3.15 kB
+dist/assets/ConditionalGuidedLibrary-D2qr1d1c.js           12.21 kB │ gzip:   4.42 kB
+dist/assets/GuidedDrillStart-BaoUuPZT.js                   12.27 kB │ gzip:   4.60 kB
+dist/assets/zh-CN-LNUGB5OW-DpZviCA5.js                     12.27 kB │ gzip:   8.89 kB
+dist/assets/lt-LT-XHIRWOB4-c5nAZ9OC.js                     12.27 kB │ gzip:   5.36 kB
+dist/assets/vi-VN-M7AON7JQ-Ce0M8Hjn.js                     12.31 kB │ gzip:   5.79 kB
+dist/assets/zh-TW-RAJ6MFWO-SwOvM2BX.js                     12.39 kB │ gzip:   8.87 kB
+dist/assets/AssignWorkSheet-CrjQ_vsz.js                    12.56 kB │ gzip:   4.77 kB
+dist/assets/ja-JP-DBVTYXUO-DT8onVoD.js                     13.59 kB │ gzip:   8.82 kB
+dist/assets/NegatedCondition-DMkkXSeY.js                   13.59 kB │ gzip:   4.31 kB
+dist/assets/bn-BD-2XOGV67Q-CjmXUkSB.js                     13.63 kB │ gzip:   6.71 kB
+dist/assets/da-DK-5WZEPLOC-CFaSi9mr.js                     14.30 kB │ gzip:   6.06 kB
+dist/assets/DrillActorScope-Dci8KFIu.js                    14.41 kB │ gzip:   5.06 kB
+dist/assets/ko-KR-MTYHY66A-D7USYS12.js                     14.64 kB │ gzip:   9.18 kB
+dist/assets/he-IL-6SHJWFNN-d-jU1-Lc.js                     14.86 kB │ gzip:   7.57 kB
+dist/assets/bg-BG-XCXSNQG7-2rnsClye.js                     14.86 kB │ gzip:   7.39 kB
+dist/assets/Practice-Bd7mwDe4.js                           15.07 kB │ gzip:   4.39 kB
+dist/assets/time-G62C-iHd.js                               15.14 kB │ gzip:   4.92 kB
+dist/assets/StudentHub-nv8TILj0.js                         15.22 kB │ gzip:   4.72 kB
+dist/assets/OfficialQuestionPane-CQOgWrka.js               15.36 kB │ gzip:   6.00 kB
+dist/assets/TeachingLibrary-DVE5ULWQ.js                    15.50 kB │ gzip:   5.14 kB
+dist/assets/pa-IN-N4M65BXN-Cz6VVKQ-.js                     15.58 kB │ gzip:   7.99 kB
+dist/assets/OfficialDrillFrame-LMchAwWT.js                 15.60 kB │ gzip:   4.89 kB
+dist/assets/DossierSchedule-a5bg-nd0.js                    15.66 kB │ gzip:   5.05 kB
+dist/assets/DossierWork-CeYcVU6b.js                        15.71 kB │ gzip:   5.77 kB
+dist/assets/chunk-SVP7TREG-5jgm0Lba.js                     15.75 kB │ gzip:   4.42 kB
+dist/assets/nn-NO-6E72VCQL-DbgJSfAd.js                     15.85 kB │ gzip:   6.71 kB
+dist/assets/assignments-R6yPW3Qh.js                        15.93 kB │ gzip:   5.08 kB
+dist/assets/PracticeTestRun-SKoSNIWp.js                    16.04 kB │ gzip:   5.62 kB
+dist/assets/diagram-VX7I27RA-BYIqD_RC.js                   16.09 kB │ gzip:   5.74 kB
+dist/assets/ConditionalPractice-Q_RwDcVU.js                16.43 kB │ gzip:   5.43 kB
+dist/assets/rcProgress-CDSYvRQY.js                         16.73 kB │ gzip:   4.71 kB
+dist/assets/nl-NL-IS3SIHDZ-DbSMv8oI.js                     16.74 kB │ gzip:   6.92 kB
+dist/assets/ReviewLog-KEpNh1RZ.js                          16.89 kB │ gzip:   4.47 kB
+dist/assets/sectionAnalysis-D3BtRSFF.js                    16.90 kB │ gzip:   6.43 kB
+dist/assets/hu-HU-A5ZG7DT2-Xyd3HiD1.js                     17.04 kB │ gzip:   7.59 kB
+dist/assets/fa-IR-HGAKTJCU-rFcFmbLq.js                     17.04 kB │ gzip:   8.47 kB
+dist/assets/hi-IN-IWLTKZ5I-BS21xR7_.js                     17.30 kB │ gzip:   9.17 kB
+dist/assets/ishikawaDiagram-5VMMS53U-WofgG--I.js           17.58 kB │ gzip:   6.68 kB
+dist/assets/ta-IN-2NMHFXQM-z1kktdai.js                     17.74 kB │ gzip:   8.58 kB
+dist/assets/ar-SA-G6X2FPQ2-Cx2WAzUC.js                     17.82 kB │ gzip:   9.14 kB
+dist/assets/kab-KAB-ZGHBKWFO-DxpM-B7P.js                   17.92 kB │ gzip:   7.53 kB
+dist/assets/fi-FI-Z5N7JZ37-DzvG9QHx.js                     17.93 kB │ gzip:   7.52 kB
+dist/assets/StudentDossier-2g04T-Tm.js                     18.03 kB │ gzip:   6.02 kB
+dist/assets/km-KH-HSX4SM5Z-Dn8Qc2_x.js                     18.09 kB │ gzip:   9.31 kB
+dist/assets/lv-LV-5QDEKY6T-BQft2j5H.js                     18.21 kB │ gzip:   7.78 kB
+dist/assets/TeacherSmartboard-CeoK3wby.js                  18.33 kB │ gzip:   6.93 kB
+dist/assets/tr-TR-DEFEU3FU-CPuCpJ_Y.js                     18.43 kB │ gzip:   7.97 kB
+dist/assets/cs-CZ-2BRQDIVT-BAzyUBBO.js                     18.48 kB │ gzip:   8.39 kB
+dist/assets/gl-ES-HMX3MZ6V-CUMTdIFm.js                     19.20 kB │ gzip:   7.74 kB
+dist/assets/pt-PT-UZXXM6DQ-C70w-kaJ.js                     19.38 kB │ gzip:   7.78 kB
+dist/assets/oc-FR-POXYY2M6-D4FHDsAI.js                     19.42 kB │ gzip:   7.82 kB
+dist/assets/ku-TR-6OUDTVRD-8y6ysTQP.js                     19.59 kB │ gzip:   9.28 kB
+dist/assets/ca-ES-6MX7JW3Y-B4gitCCz.js                     19.60 kB │ gzip:   7.90 kB
+dist/assets/id-ID-SAP4L64H-DAAUTGLR.js                     19.71 kB │ gzip:   7.69 kB
+dist/assets/el-GR-BZB4AONW-EZxQ7p7Z.js                     19.81 kB │ gzip:   9.62 kB
+dist/assets/nb-NO-T6EIAALU-BKfUBfMQ.js                     19.93 kB │ gzip:   8.21 kB
+dist/assets/string-DyYdvY5l.js                             19.96 kB │ gzip:   6.70 kB
+dist/assets/ru-RU-B4JR7IUQ-DvURhTim.js                     20.41 kB │ gzip:   9.91 kB
+dist/assets/kanban-definition-UXKFOSKX-snx2Din8.js         20.72 kB │ gzip:   7.29 kB
+dist/assets/pt-BR-5N22H2LF-BQ8ZO-Os.js                     20.73 kB │ gzip:   8.20 kB
+dist/assets/uk-UA-QMV73CPH-NrdWluHD.js                     20.91 kB │ gzip:  10.13 kB
+dist/assets/mr-IN-CRQNXWMA-B18SkscI.js                     20.92 kB │ gzip:  10.71 kB
+dist/assets/sl-SI-NN7IZMDC-DhvrzuR6.js                     21.04 kB │ gzip:   8.55 kB
+dist/assets/sk-SK-C5VTKIMK-B_-3b2ub.js                     21.06 kB │ gzip:   9.09 kB
+dist/assets/sv-SE-XGPEYMSR-DfRYvOQb.js                     21.06 kB │ gzip:   8.55 kB
+dist/assets/es-ES-U4NZUMDT-CKwYPyiW.js                     21.19 kB │ gzip:   8.47 kB
+dist/assets/eu-ES-A7QVB2H4-DcPyNAU9.js                     21.23 kB │ gzip:   8.22 kB
+dist/assets/pl-PL-T2D74RX3-CVSQN7Zm.js                     21.69 kB │ gzip:   9.22 kB
+dist/assets/Analytics-esAMB0t4.js                          21.78 kB │ gzip:   6.68 kB
+dist/assets/it-IT-JPQ66NNP-CwoqVI7g.js                     22.04 kB │ gzip:   8.58 kB
+dist/assets/RcResults-Dv6eAXJ2.js                          22.24 kB │ gzip:   6.96 kB
+dist/assets/ro-RO-JPDTUUEW-Bn2AC4bd.js                     22.43 kB │ gzip:   8.93 kB
+dist/assets/fr-FR-RHASNOE6-Bo7orvVh.js                     23.05 kB │ gzip:   8.88 kB
+dist/assets/de-DE-XR44H4JA-BRGCCmgb.js                     23.13 kB │ gzip:   8.98 kB
+dist/assets/mindmap-definition-YA3MSWOX-W3DLFANQ.js        23.38 kB │ gzip:   7.89 kB
+dist/assets/sankeyDiagram-P5KCCOFB-Dr55yhlX.js             23.41 kB │ gzip:   8.59 kB
+dist/assets/journeyDiagram-3NMN7TZE-CYJg5Bhb.js            23.61 kB │ gzip:   8.37 kB
+dist/assets/player-CT9viyVj.js                             24.17 kB │ gzip:   9.08 kB
+dist/assets/BarChart-BQazRSXJ.js                           24.68 kB │ gzip:   6.40 kB
+dist/assets/timedPracticeTestStore-C03azqxG.js             24.69 kB │ gzip:   7.48 kB
+dist/assets/DrillHistory-B7eEt4uV.js                       24.95 kB │ gzip:   6.98 kB
+dist/assets/DossierNotes-7-mwM8HY.js                       25.12 kB │ gzip:   7.94 kB
+dist/assets/SingleSession-CNP30EaF.js                      25.36 kB │ gzip:   7.94 kB
+dist/assets/RadarChart-BshRJHOI.js                         26.02 kB │ gzip:   6.33 kB
+dist/assets/wardleyDiagram-VM6X3IG4-Y6GwzdJ7.js            26.12 kB │ gzip:   6.95 kB
+dist/assets/DeskPeopleSurface-BDs3_ODB.js                  26.57 kB │ gzip:   7.62 kB
+dist/assets/UnlessDrill-BtE8PMKn.js                        26.61 kB │ gzip:   8.53 kB
+dist/assets/SectionReportCard-BfSRr-8k.js                  29.14 kB │ gzip:   9.16 kB
+dist/assets/RcBootcampPage-C4r_TM7r.js                     29.34 kB │ gzip:   9.07 kB
+dist/assets/gitGraphDiagram-WWUBYQGX-B98wZpku.js           29.96 kB │ gzip:   8.88 kB
+dist/assets/TimedOfficialChildRunner-Cj8ANRZZ.js           30.16 kB │ gzip:   9.91 kB
+dist/assets/erDiagram-RLTQ6QDP-DzcYoznR.js                 30.95 kB │ gzip:  10.64 kB
+dist/assets/requirementDiagram-BXWQKSXE-CFgUCM8-.js        31.22 kB │ gzip:   9.82 kB
+dist/assets/timeline-definition-24CTP7MA-DU5CWBJ2.js       31.38 kB │ gzip:  10.44 kB
+dist/assets/pica-CpUpHwzv.js                               32.60 kB │ gzip:  12.98 kB
+dist/assets/PrincipleFlawApp-DmXAaiTa.js                   32.84 kB │ gzip:   9.58 kB
+dist/assets/TeacherWeeklyPlans-C3R6P6et.js                 34.23 kB │ gzip:  11.32 kB
+dist/assets/quadrantDiagram-AXDQQJYC-Cs8SaUaz.js           34.51 kB │ gzip:  10.13 kB
+dist/assets/TeacherInboxRoom-BDAZ7av5.js                   34.52 kB │ gzip:  11.21 kB
+dist/assets/layout-CMUWSSfq.js                             35.43 kB │ gzip:  12.74 kB
+dist/assets/ConditionalIndicatorsRefresher-BVlMK_ef.js     36.32 kB │ gzip:  11.64 kB
+dist/assets/chunk-IMKFNOWR-CnADDGnK.js                     38.59 kB │ gzip:  12.66 kB
+dist/assets/Learn-AuZbwh9W.js                              40.06 kB │ gzip:   7.74 kB
+dist/assets/rcHistoricalGrading-C2EJnJti.js                40.75 kB │ gzip:   6.73 kB
+dist/assets/vennDiagram-4TSXK5OY-BmX3j8b4.js               42.39 kB │ gzip:  15.80 kB
+dist/assets/TestingCentre-p41tfpSc.js                      42.40 kB │ gzip:  13.90 kB
+dist/assets/ConditionalAssignmentFields-G7UTxuv7.js        43.10 kB │ gzip:  13.18 kB
+dist/assets/blockDiagram-I7D4REHJ-uTMbIizf.js              43.15 kB │ gzip:  13.91 kB
+dist/assets/xychartDiagram-S5SC5T6Z-DgeaQUmO.js            43.30 kB │ gzip:  12.15 kB
+dist/assets/GLTFLoader-i3eTcSr4.js                         45.61 kB │ gzip:  13.71 kB
+dist/assets/image-blob-reduce.esm-B6b2_-a4.js              45.93 kB │ gzip:  16.78 kB
+dist/assets/TAChatView-C_mt4KX4.js                         47.09 kB │ gzip:  13.71 kB
+dist/assets/data-4HLUU11d.js                               47.12 kB │ gzip:  10.18 kB
+dist/assets/TimedStandaloneSectionRunner-xoxlklwC.js       47.12 kB │ gzip:  13.90 kB
+dist/assets/chunk-TICWLB2K-BwWmZq3V.js                     49.32 kB │ gzip:  15.79 kB
+dist/assets/ActivityRunner-pmSmlYin.js                     49.42 kB │ gzip:  17.07 kB
+dist/assets/ganttDiagram-EL5Y4UJY-BxXbKSx3.js              54.61 kB │ gzip:  18.92 kB
+dist/assets/SectionLibraryPanel-i3gw6tPg.js                55.44 kB │ gzip:  17.42 kB
+dist/assets/flowDiagram-HODETNUW-DOViwPEo.js               62.63 kB │ gzip:  20.06 kB
+dist/assets/CompletionSummary-B46AUe5A.js                  64.93 kB │ gzip:  19.58 kB
+dist/assets/c4Diagram-7LVT6UL2-XLxdwT6U.js                 65.57 kB │ gzip:  18.83 kB
+dist/assets/guidedDrillLaunch-BLONVRbv.js                  70.40 kB │ gzip:  14.07 kB
+dist/assets/RcPlayer-BLxM2-Y3.js                           72.86 kB │ gzip:  22.81 kB
+dist/assets/content-Y2czhYqu.js                            79.83 kB │ gzip:  26.09 kB
+dist/assets/cose-bilkent-JH36ORCC-HfGr8laS.js              81.57 kB │ gzip:  22.45 kB
+dist/assets/DeskTodaySurface-DevORDBa.js                  105.65 kB │ gzip:  29.87 kB
+dist/assets/FallacyApp-DMPvxtFG.js                        107.31 kB │ gzip:  29.38 kB
+dist/assets/ActivityLab-mYXMiMFC.js                       107.77 kB │ gzip:  24.14 kB
+dist/assets/DeskLibrarySurface-Bt_Bp_IL.js                108.07 kB │ gzip:  32.64 kB
+dist/assets/report-card-DALPkqFn.js                       109.82 kB │ gzip:  30.00 kB
+dist/assets/swimlanes-42K2YHIH-C8fYI6YZ.js                117.15 kB │ gzip:  42.84 kB
+dist/assets/sequenceDiagram-WJ2MYXX4-Yhm1NJya.js          117.44 kB │ gzip:  31.26 kB
+dist/assets/Auth-BA7BjKFa.js                              122.92 kB │ gzip:  35.55 kB
+dist/assets/AcademyMainhub-TgYZ5pl7.js                    150.74 kB │ gzip:  42.97 kB
+dist/assets/index.es-BvTM6MIp.js                          150.87 kB │ gzip:  51.62 kB
+dist/assets/architectureDiagram-5GKGNRK7-Cx0YSPSX.js      151.83 kB │ gzip:  43.19 kB
+dist/assets/html2canvas.esm-CBrSDip1.js                   201.42 kB │ gzip:  48.03 kB
+dist/assets/CausationStation-D3ZjhMbf.js                  214.39 kB │ gzip:  56.35 kB
+dist/assets/Drill-B4zCFh83.js                             250.17 kB │ gzip:  73.87 kB
+dist/assets/katex-C5jXJg4s.js                             258.49 kB │ gzip:  77.57 kB
+dist/assets/guidedDrillsLocal-Czz9eZtY.js                 297.66 kB │ gzip:  72.46 kB
+dist/assets/generateCategoricalChart-h_47w43w.js          304.27 kB │ gzip:  83.33 kB
+dist/assets/index-DpN0KKgW.js                             308.07 kB │ gzip:  91.69 kB
+dist/assets/index-DTJOiJsh.js                             357.06 kB │ gzip:  90.36 kB
+dist/assets/pdf-BnPRJEQ6.js                               365.12 kB │ gzip: 107.61 kB
+dist/assets/jspdf.es.min-Dm_lpd2w.js                      390.49 kB │ gzip: 128.82 kB
+dist/assets/cytoscape.esm-DgFJg4rT.js                     443.93 kB │ gzip: 142.40 kB
+dist/assets/openingCoursePath-BYjYdVUn.js                 497.73 kB │ gzip: 123.16 kB
+dist/assets/cynefin-OW5HDTMX-yiuSysYz.js                  690.59 kB │ gzip: 155.09 kB
+dist/assets/index-D56qwjYc.js                             701.39 kB │ gzip: 172.42 kB
+dist/assets/IntroToLrBootcamp-BqLUENlL.js                 712.29 kB │ gzip: 185.83 kB
+dist/assets/three.module-DL1GCKva.js                      734.51 kB │ gzip: 189.59 kB
+dist/assets/ConditionalBootcamp-dqL9Yup_.js             1,118.27 kB │ gzip: 246.43 kB
+dist/assets/percentages-BXMCSKIN-BIKE3Obj.js            1,119.46 kB │ gzip: 362.76 kB
+dist/assets/subset-shared.chunk-pwZdWFp6.js             1,823.54 kB │ gzip: 736.87 kB
+dist/assets/index-_zIGBCBM.js                           3,168.71 kB │ gzip: 840.53 kB
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 2m 35s
+
+> vite_react_shadcn_ts@0.0.0 postbuild
+> node scripts/knowledge/verify-no-canonical-in-build.mjs
+
+OK verify-no-canonical-in-build: scanned 783 dist files; no canonical guide content present.

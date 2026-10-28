@@ -1,0 +1,22 @@
+TASTESKILL · LINT   8 file(s)
+
+WARN
+  [shadow] Shadow. Elements at rest carry none; only real overlays (menu, dialog, sticky bar) may.  (29×)
+      src/components/analytics/prototype/progress-prototype.css:17  box-shadow:
+      src/components/analytics/prototype/progress-prototype.css:23  box-shadow:
+      src/components/analytics/prototype/progress-prototype.css:25  box-shadow:
+      src/components/analytics/prototype/progress-prototype.css:26  box-shadow:
+      src/components/analytics/prototype/progress-prototype.css:33  box-shadow:
+      src/components/analytics/prototype/progress-prototype.css:49  box-shadow:
+      … 23 more
+  [eyebrow] Eyebrow / kicker label above a heading.  (7×)
+      src/components/analytics/prototype/ProgressPrototype.tsx:86  className="pp-kicker
+      src/components/analytics/prototype/ProgressPrototype.tsx:99  className="pp-kicker
+      src/components/analytics/prototype/ProgressPrototype.tsx:124  className="pp-kicker
+      src/components/analytics/prototype/ProgressPrototype.tsx:137  className="pp-kicker
+      src/components/analytics/prototype/ProgressPrototype.tsx:159  className="pp-kicker
+      src/components/analytics/prototype/ProgressPrototype.tsx:169  className="pp-kicker
+      … 1 more
+
+RESULT: 0 FAIL, 36 WARN
+Interface fragments marked data-ui keep their own borders and shadows. Any other line that must keep a flagged pattern for a real reason can carry the comment taste-skill-ignore.

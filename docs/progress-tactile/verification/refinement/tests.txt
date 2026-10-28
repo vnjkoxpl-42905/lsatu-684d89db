@@ -1,0 +1,29 @@
+
+ RUN  v3.2.7 C:/Users/Joshu/dev/ai-os-projects/lsatu-progress-tactile-20261027
+
+ ✓ src/lib/firstAnswerDetails.test.ts (4 tests) 27ms
+ ✓ src/lib/firstAnswerProgress.test.ts (10 tests) 35ms
+ ✓ src/components/analytics/prototype/model.test.ts (14 tests) 54ms
+ ✓ src/components/analytics/prototype/ProgressPrototype.test.tsx (17 tests) 20162ms
+   ✓ interactive Progress preview > clears saved-answer detail when changing subject  1144ms
+   ✓ interactive Progress preview > clears saved-answer detail when changing view  1202ms
+   ✓ interactive Progress preview > clears saved-answer detail when changing design  551ms
+   ✓ interactive Progress preview > returns focus to the answer that opened the detail  595ms
+   ✓ interactive Progress preview > reveals older practice dates instead of silently truncating history  4690ms
+   ✓ actionable evidence refinement > filters evidence without changing the accuracy denominator  512ms
+   ✓ actionable evidence refinement > shows bucket evidence separately and clears selection when changing subject  525ms
+   ✓ actionable evidence refinement > filters repeat history and its visible count  2654ms
+   ✓ review regression cases > marks incomplete-source question chronology as provisional  2383ms
+   ✓ review regression cases > makes RC chart evidence reachable directly in Timeline  2418ms
+   ✓ final inspection fixes > preserves expanded evidence and restores focus to a row beyond the sixth  1551ms
+   ✓ final inspection fixes > makes every question type reachable in the compact desk list  958ms
+
+ Test Files  4 passed (4)
+      Tests  45 passed (45)
+   Start at  04:23:14
+   Duration  23.96s (transform 973ms, setup 776ms, collect 2.12s, tests 20.28s, environment 4.23s, prepare 1.05s)
+
+stderr | src/components/analytics/prototype/ProgressPrototype.test.tsx > interactive Progress preview > clears saved-answer detail when changing subject
+⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+

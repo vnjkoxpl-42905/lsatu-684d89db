@@ -1,0 +1,101 @@
+{
+  "task": "Work through the stimulus out loud, a piece at a time. When you have got all of it, press space. The text goes away, and you say the entire argument back from memory.",
+  "coach": {
+    "drill": "a whole Logical Reasoning section run out loud, where the student reads each line of a stimulus, looks away, tells it back from memory in her own words, reacts to it, and gives The Recall of the whole stimulus before moving to the next one",
+    "rubric": [
+      "Judge by meaning, never by wording. Her own words are required here, so a good recall will never match the line's phrasing. High overlap with the original is the failure, not the standard.",
+      "Order is free. She is encouraged to deliver the ideas out of the order she read them in, and reordering must never cost her anything.",
+      "Casual, unpolished, laughing delivery is expected. Never mark down for style, length or fluency.",
+      "A detail merely gestured at is not carried. Naming the topic is not the same as saying what was claimed about it.",
+      "Numbers, names, dates, quantities and connecting words are each their own detail. Never treat one as carried because the sentence around it was.",
+      "A reaction that could be pasted onto any other sentence does not count as a colour. Judge whether it engages this content, never whether it is correct or well put.",
+      "Score The Read against the captured key for that stimulus, not against a retelling. A different name for the same move is fine; missing the move is not.",
+      "Silence during a silent read is correct and expected. Only silence inside a recall or a colour counts against her."
+    ],
+    "partial_rule": "Mark 'partial' when the retelling is real but at least one detail went missing, which is the drill's ordinary state. Mark 'incorrect' only when the response is a gist or a topic label rather than a retelling."
+  },
+  "rules": [
+    "Everything here is out loud. The whole section records in one take. You can pause: the text hides and the clock stops while you are away, and you cannot go back to a stimulus.",
+    "Read silently, about a sentence at a time. When you are not sure how much to take on, take less.",
+    "Look away and tell it back in your own words. Then react to it. Both out loud.",
+    "Keep going like that through the whole stimulus.",
+    "Press space when you have got all of it. The stimulus vanishes and stays gone. Now say the whole argument back from memory, with every detail you can hold.",
+    "Press space again and the next one loads. No going back, all the way to the end."
+  ],
+  "tagline": "Read it, tell it back, react to it. Then the stimulus disappears and you say the whole argument back from memory.",
+  "briefing": {
+    "lede": "Worth reading properly once. After that, skim the rules above and go.",
+    "closer": "One a day holds you steady. The second one is where you improve.",
+    "sections": [
+      {
+        "body": [
+          "You follow a stimulus, sentence by sentence, and it all makes sense as it goes. Then you get down to answer choice C and realise you are holding almost none of it. That is not a comprehension problem. It is a retention problem, and it is the one this drill was built for.",
+          "Understanding is necessary for everything and sufficient for nothing. If the argument is not still with you while you work the answers, your understanding never got the chance to help.",
+          "Most of what you call reading is built for getting to the end. Scanning names. Dropping the connecting words. Turning a list of three into one label. That is a fine way to read a phone bill. It is a bad way to read something that is about to ask you for every detail back."
+        ],
+        "heading": "You can understand every sentence and still arrive with nothing."
+      },
+      {
+        "body": [
+          "Three steps through the stimulus, then a fourth step once you have read all of it. You decide how much to take on at a time, and nothing on the screen is tracking where you are.",
+          "Space is the only key, and you press it twice per stimulus. The first press takes the text away and asks you for the whole argument from memory. The second press moves you to the next stimulus. Nothing advances on its own, so a pause to think costs you nothing but the clock."
+        ],
+        "steps": [
+          {
+            "body": "Read about one sentence at a time, silently. Give each word enough attention to hear it naturally in your head. If that feels like too much to hold, take a shorter piece. When you take on too much, the part that slips is always the beginning.",
+            "label": "Read it.",
+            "short": "Read about a sentence at a time, silently. Nothing is spoken yet."
+          },
+          {
+            "body": "Look away from the screen and tell it back in your own words, out loud, like you are telling a friend what it said. Out of order is fine. Casual is fine. Laughing is fine.",
+            "label": "Tell it back.",
+            "short": "Look away and tell it back in your own words, out loud."
+          },
+          {
+            "body": "React. A doubt, a question, an example, a joke, a feeling. One or two seconds is plenty. It does not have to be clever, it has to be yours.",
+            "label": "Colour it.",
+            "short": "React to it out loud. A doubt, a question, an example, a joke."
+          },
+          {
+            "body": "Press space. The stimulus disappears and does not come back. Now say the entire argument back from memory, out loud, with every detail you can still hold. This is the part that gets scored.",
+            "label": "The Recall.",
+            "short": "The text goes. Say the whole argument back from memory."
+          }
+        ],
+        "heading": "What you actually do."
+      },
+      {
+        "body": [
+          "Do not give back the gist, or the summary, or the important parts. You cannot know which parts were important until you have read the whole thing, so filtering on the way through mostly means quietly throwing out the piece you were going to need.",
+          "Fewer words is fine when the words cover the same ideas. Fewer ideas is not. The names, the numbers, and the small words that carry the load (all, most, only, probably) either come back or they do not.",
+          "**Efficiency is never a licence to leave information out.**"
+        ],
+        "heading": "Simpler is not the same as shorter."
+      },
+      {
+        "body": [
+          "You will open your mouth to colour something and find nothing there. That lasts about a week.",
+          "It is not that you have no thoughts. It is that nobody has ever asked you for one in the middle of reading before, and the habit takes a few sessions to wake up. Say something obvious on purpose if you have to. \"Okay, sure.\" \"That seems like a stretch.\" \"Who measured that?\" All of those count.",
+          "The reaction is what makes the sentence yours instead of the author's. Skip it and you are back to repeating words you do not own."
+        ],
+        "heading": "You will think you have nothing to say. Everybody does."
+      },
+      {
+        "body": [
+          "While you are working the stimulus, nothing on the screen hides. The whole thing stays readable, which means the only thing stopping you rereading a line while you tell it back is you, looking away from it.",
+          "That is deliberate. Reading while you recall is a one way street with cars coming both ways. It jams. You stop using your memory at all and slide straight back into the author's exact words instead of finding your own.",
+          "It is also the version that still works on paper, and on test day. A screen that hides the text for you is a crutch that cannot come with you."
+        ],
+        "heading": "Look away. That part is on you."
+      },
+      {
+        "body": [
+          "The goal is twenty-five minutes for a whole section, and it only counts if every stimulus got recalled, coloured, and given The Recall. Finishing early with four of them skipped is not finishing early. If you have extra time on test day, your goal scales with it.",
+          "The clock in the corner shows how long you have been going. It is there so you can pace a section. It never counts down, because a number falling away in the corner of your eye produces exactly the skating read this drill exists to fix.",
+          "It is not a race. It is the pace at which this stops being a study exercise and starts being how you read under a clock. Go slower while it is new. The speed shows up on its own once the method does."
+        ],
+        "heading": "Twenty-five minutes, and what that number means."
+      }
+    ]
+  }
+}

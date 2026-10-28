@@ -1,0 +1,1 @@
+GRANT UPDATE (layout_prefs) ON public.profiles TO authenticated;
