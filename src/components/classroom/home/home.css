@@ -1262,3 +1262,33 @@ html.dark .classroom-root .classroom-home-notice {
 @media (max-width: 600px) {
   .classroom-root.classroom-root-home .classroom-home { padding-top: 24px; }
 }
+
+/* Post-session work is the primary teacher task region. */
+.classroom-root .classroom-home-teacher .classroom-home-post-session { grid-column: 1; grid-row: 1; min-width: 0; }
+.classroom-root .classroom-home-teacher .classroom-home-region-main { grid-column: 1; grid-row: 2; }
+.classroom-root .classroom-home-teacher .classroom-home-rail { grid-column: 2; grid-row: 1 / span 2; }
+.classroom-root .classroom-home-task-intro { color: var(--home-muted); font-size: 14px; line-height: 1.5; margin: 0 0 16px; }
+.classroom-root .classroom-home-task-sync { color: var(--home-muted); font-size: 12px; line-height: 1.5; margin: 12px 0; }
+.classroom-root .classroom-home-task-list { list-style: none; padding: 0; margin: 0; }
+.classroom-root .classroom-home-session-task { border-top: 1px solid var(--home-line); padding: 20px 0; min-width: 0; }
+.classroom-root .classroom-home-session-task:last-child { padding-bottom: 0; }
+.classroom-root .classroom-home-task-heading { display: flex; justify-content: space-between; align-items: start; flex-wrap: wrap; gap: 8px 16px; }
+.classroom-root .classroom-home-task-heading h3 { margin: 0; font-size: 17px; font-weight: 500; }
+.classroom-root .classroom-home-task-heading p { margin: 5px 0 0; color: var(--home-muted); font-size: 13px; line-height: 1.5; }
+.classroom-root .classroom-home-task-heading .classroom-home-quiet-button { min-height: 44px; border: 1px solid var(--home-line); border-radius: 9px; padding: 6px 12px; }
+.classroom-root .classroom-home-task-checks { display: flex; flex-wrap: wrap; gap: 4px 18px; border: 0; margin: 12px 0 4px; padding: 0; }
+.classroom-root .classroom-home-task-checks label { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; font-size: 13px; cursor: pointer; }
+.classroom-root .classroom-home-task-checks input { color-scheme: light; accent-color: var(--home-ink); width: 18px; height: 18px; flex-shrink: 0; }
+html.dark .classroom-root .classroom-home-task-checks input { color-scheme: dark; }
+.classroom-root .classroom-home-task-links { display: flex; flex-wrap: wrap; align-items: center; column-gap: 18px; font-size: 13px; }
+.classroom-root .classroom-home-task-links a, .classroom-root .classroom-home-task-links button { display: inline-flex; align-items: center; min-height: 44px; color: var(--home-ink); text-decoration: underline; text-underline-offset: 4px; background: none; border: 0; padding: 0; font: inherit; cursor: pointer; }
+.classroom-root .classroom-home-task-links span { color: var(--home-muted); padding: 8px 0; }
+.classroom-root .classroom-home-task-attach { margin-top: 4px; font-size: 13px; }
+.classroom-root .classroom-home-task-attach summary { cursor: pointer; width: fit-content; min-height: 44px; align-content: center; }
+.classroom-root .classroom-home-task-form { display: grid; gap: 8px; margin-top: 10px; }
+.classroom-root .classroom-home-task-form input, .classroom-root .classroom-home-task-form select { min-width: 0; width: 100%; min-height: 44px; border: 1px solid var(--home-line); border-radius: 8px; padding: 8px 10px; background: var(--home-surface); color: var(--home-ink); font: inherit; }
+.classroom-root .classroom-home-post-session :is(button, input, select, summary, a):focus-visible { outline: 2px solid var(--home-ink); outline-offset: 4px; }
+.classroom-root .classroom-home-post-session button:disabled { cursor: wait; opacity: .6; }
+@container classroom-home (max-width: 900px) {
+  .classroom-root .classroom-home-teacher :is(.classroom-home-post-session, .classroom-home-region-main, .classroom-home-rail) { grid-column: 1; grid-row: auto; }
+}

@@ -25,6 +25,8 @@ import { buildWeek, weekDates, weekLabelFor } from "../homeModel";
 import { localDayISO } from "@/lib/localDate";
 import type { TeacherHomeModel } from "./teacherHomeModel";
 import { filterStudents, teacherLede } from "./teacherHomeModel";
+import { PostSessionWork } from './PostSessionWork';
+import { postSessionLede } from './postSessionModel';
 
 const SHOWN_MATCHES = 8;
 
@@ -181,7 +183,7 @@ export function TeacherHomeView({
             {model.greeting}
             {model.displayName ? <>, <span>{model.displayName}</span>.</> : "."}
           </h1>
-          <p className="classroom-home-subtitle">{teacherLede(model.unread)}</p>
+          <p className="classroom-home-subtitle">{postSessionLede(model.postSession) ?? teacherLede(model.unread)}</p>
         </header>
 
         <section className="classroom-home-focus" aria-labelledby="teacher-home-assign-title">
@@ -200,6 +202,7 @@ export function TeacherHomeView({
       </section>
 
       <div className="classroom-home-grid">
+        <PostSessionWork work={model.postSession} students={model.roster.all ?? model.roster.recent} onOpen={onOpen} />
         <section
           className="classroom-home-region classroom-home-region-main"
           aria-labelledby="teacher-home-unread-title"

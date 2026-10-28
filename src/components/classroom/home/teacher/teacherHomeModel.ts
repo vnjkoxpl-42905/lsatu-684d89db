@@ -15,6 +15,7 @@
 
 import type { Conversation } from "@/hooks/useInbox";
 import { localDayISO } from "@/lib/localDate";
+import type { PostSessionHomeState } from './postSessionModel';
 
 export type RegionState = "loading" | "error" | "ready";
 
@@ -50,6 +51,7 @@ export interface TeacherSessionRow {
 }
 
 export interface TeacherHomeModel {
+  postSession?: PostSessionHomeState;
   greeting: string;
   displayName: string;
   dateline: string;

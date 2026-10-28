@@ -17,6 +17,7 @@ import { useInbox } from "@/hooks/useInbox";
 import { useClassroomLayout } from "@/components/classroom/shell/classroomLayoutContext";
 import { localDayISO } from "@/lib/localDate";
 import { datelineFor, greetingFor } from "../homeModel";
+import { usePostSessionHome } from './usePostSessionHome';
 import {
   buildRoster,
   buildSessions,
@@ -50,6 +51,7 @@ export function useTeacherHome(): {
   const actorId = user?.id;
   const permissions = useUserPermissions();
   const isAdmin = permissions.resolved === true && permissions.is_admin;
+  const postSession = usePostSessionHome(actorId, isAdmin);
   const { displayName } = useClassroomLayout();
   const inbox = useInbox();
 
@@ -97,6 +99,7 @@ export function useTeacherHome(): {
       (rosterQuery.data ?? []).map((row) => [row.class_id, row.display_name?.trim() || "Student"]),
     );
     return {
+      postSession,
       greeting: greetingFor(now),
       displayName,
       dateline: datelineFor(now),
@@ -121,7 +124,7 @@ export function useTeacherHome(): {
         refreshFailed: sessionsQuery.data !== undefined && sessionsQuery.isError,
       },
     };
-  }, [actorId, displayName, inbox.conversations, inbox.error, inbox.loaded, inbox.unreadCount, now, rosterQuery, sessionsQuery]);
+  }, [actorId, displayName, inbox.conversations, inbox.error, inbox.loaded, inbox.unreadCount, now, rosterQuery, sessionsQuery, postSession]);
 
   return {
     model,

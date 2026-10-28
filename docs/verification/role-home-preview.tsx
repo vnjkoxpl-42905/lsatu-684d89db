@@ -27,13 +27,14 @@ import {
   type ClassroomHomeModel,
   type HomeRow,
 } from "@/components/classroom/home/homeModel";
+import type { PostSessionTask, PostSessionHomeState, PostSessionChange } from "@/components/classroom/home/teacher/postSessionModel";
 import type { TeacherHomeModel } from "@/components/classroom/home/teacher/teacherHomeModel";
 import "@/index.css";
 import "@/components/classroom/classroom.css";
 import "@/components/classroom/home/home.css";
 
 type Role = "teacher" | "student";
-type PreviewState = "full" | "empty" | "loading" | "error" | "role-pending" | "role-error" | "role-stale";
+type PreviewState = "full" | "empty" | "loading" | "error" | "role-pending" | "role-error" | "role-stale" | "setup" | "save-error";
 
 const params = new URLSearchParams(location.search);
 const NOW = new Date();
@@ -233,8 +234,12 @@ function teacherModel(state: PreviewState, threads: TeacherHomeModel["unread"]["
 
 /* ── harness ──────────────────────────────────────────────────────────── */
 
+const SAMPLE_TASKS: PostSessionTask[] = [
+  { id: 'followup-1', revision: 1, student_id: 's1', student_name: 'Celia Moreno', source_title: 'Sample tutoring session', starts_at: atLocal(-1, 17), ends_at: atLocal(-1, 18), source_state: 'ended', match_state: 'matched', transcript_doc_id: 'SAMPLE_TRANSCRIPT_NOT_A_REAL_FILE', transcript_source: 'auto', transcript_status: 'linked', drive_folder_url: 'https://drive.google.com/drive/folders/SAMPLE_FOLDER_NOT_A_REAL_FILE', local_slug: null, recap_done: false, notes_done: true, work_assigned: false, handled_at: null },
+  { id: 'followup-2', revision: 1, student_id: 's2', student_name: 'Ivory Chen', source_title: 'Sample tutoring session', starts_at: atLocal(-1, 15), ends_at: atLocal(-1, 16), source_state: 'ended', match_state: 'matched', transcript_doc_id: null, transcript_source: null, transcript_status: 'waiting', drive_folder_url: null, local_slug: null, recap_done: false, notes_done: false, work_assigned: false, handled_at: null },
+];
 const WIDTHS = ["fluid", "1440", "980", "768", "390", "320"] as const;
-const STATES: PreviewState[] = ["full", "empty", "loading", "error", "role-pending", "role-error", "role-stale"];
+const STATES: PreviewState[] = ["full", "empty", "loading", "error", "role-pending", "role-error", "role-stale", "setup", "save-error"];
 
 function Preview() {
   const [role, setRole] = React.useState<Role>((params.get("role") as Role) || "teacher");
@@ -243,6 +248,8 @@ function Preview() {
   const [theme, setTheme] = React.useState(params.get("theme") === "dark" ? "dark" : "light");
   const [rows, setRows] = React.useState(STUDENT_ROWS);
   const [threads, setThreads] = React.useState(THREADS);
+  const [tasks, setTasks] = React.useState(SAMPLE_TASKS);
+  const [taskError, setTaskError] = React.useState<string | undefined>();
   const [completing, setCompleting] = React.useState<string | null>(null);
   const [log, setLog] = React.useState<string[]>([]);
   const note = (line: string) => setLog((prev) => [line, ...prev].slice(0, 6));
@@ -265,6 +272,23 @@ function Preview() {
   };
 
   const contentState: PreviewState = state.startsWith("role-") ? "full" : state;
+  const sampleUpdate = async (task: PostSessionTask, change: PostSessionChange) => {
+    if (state === 'save-error') { setTaskError('Sample save failed. Nothing changed.'); return; }
+    setTaskError(undefined);
+    setTasks(previous => previous.map(row => row.id !== task.id ? row : { ...row, revision: row.revision + 1,
+      ...(change.action === 'checklist' ? { [change.field!]: change.value } : {}),
+      ...(change.action === 'handle' ? { handled_at: new Date().toISOString() } : {}),
+      ...(change.action === 'reopen' ? { handled_at: null } : {}),
+      ...(change.action === 'attach_transcript' ? { transcript_doc_id: change.docId!, transcript_status: 'linked' as const, transcript_source: 'manual' as const } : {}),
+      ...(change.action === 'match_student' ? { student_id: change.studentId!, student_name: teacherModel('full', threads).roster.all?.find(student => student.id === change.studentId)?.name ?? 'Sample student', match_state: 'matched' as const } : {}),
+    }));
+    note('Sample work list updated. No real record changed.');
+  };
+  const sampleWork: PostSessionHomeState = {
+    state: contentState === 'loading' ? 'loading' : contentState === 'error' ? 'error' : contentState === 'setup' ? 'setup' : 'ready',
+    data: { settings: { enabled: true, activation_cutoff: atLocal(-7, 0), last_success_at: NOW.toISOString(), last_error: null, drive_root_url: null, catching_up: false }, tasks: contentState === 'empty' ? [] : tasks.filter(task => !task.handled_at), handled: contentState === 'empty' ? [] : tasks.filter(task => !!task.handled_at) },
+    update: sampleUpdate, retry, error: taskError,
+  };
   let body: React.ReactNode;
   if (state === "role-pending") body = <HomeRoleSkeleton />;
   else if (state === "role-error") body = <HomeRoleError onRetry={retry} />;
@@ -272,7 +296,7 @@ function Preview() {
     body = (
       <TeacherHomeView
         key={`teacher-${contentState}`}
-        model={teacherModel(contentState, threads)}
+        model={{ ...teacherModel(contentState, threads), postSession: sampleWork }}
         onOpen={open}
         onRetryInbox={retry}
         onRetryRoster={retry}
@@ -312,12 +336,12 @@ function Preview() {
         aria-label="Preview controls"
         style={{ alignItems: "center", background: "#252b26", color: "#efede6", display: "flex", flexWrap: "wrap", fontSize: 13, gap: 12, padding: "10px 16px", position: "sticky", top: 0, zIndex: 50 }}
       >
-        <strong style={{ fontWeight: 500, background: "#efede6", borderRadius: 4, color: "#252b26", padding: "2px 8px" }}>Sample data · local preview</strong>
+        <strong style={{ fontWeight: 500, background: "#efede6", borderRadius: 4, color: "#252b26", padding: "2px 8px" }}>Sample data · links are examples</strong>
         <label>Role <select value={role} onChange={(e) => setRole(e.target.value as Role)}><option value="teacher">teacher</option><option value="student">student</option></select></label>
         <label>State <select value={state} onChange={(e) => setState(e.target.value as PreviewState)}>{STATES.map((s) => <option key={s}>{s}</option>)}</select></label>
         <label>Width <select value={width} onChange={(e) => setWidth(e.target.value)}>{WIDTHS.map((w) => <option key={w}>{w}</option>)}</select></label>
         <label>Theme <select value={theme} onChange={(e) => setTheme(e.target.value)}><option>light</option><option>dark</option></select></label>
-        <button type="button" onClick={() => { setRows(STUDENT_ROWS); setThreads(THREADS); setLog([]); }}>Reset sample data</button>
+        <button type="button" onClick={() => { setRows(STUDENT_ROWS); setThreads(THREADS); setTasks(SAMPLE_TASKS); setTaskError(undefined); setLog([]); }}>Reset sample data</button>
         <span aria-live="polite" style={{ opacity: 0.8 }}>{log[0] ?? ""}</span>
       </div>
       <div style={{ background: "#d9d6cd", minHeight: "100vh", overflowX: "auto", padding: width === "fluid" ? 0 : "24px 0" }}>
