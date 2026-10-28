@@ -80,3 +80,5 @@ Observed model claude-sonnet-5-5.
 ```
 
 Disposition: accept F1,F2,F3,F5,F6,F7. F4 accept strict provenance validation/tests, keep resolver scoped to Progress rather than changing unrelated protected-review modules. Plan passages replaced to make contracts consistent. No production implementation yet.
+
+2026-10-28 user switches builder to Claude and explicitly grants design liberty. Round2 REVISE accepted G1 focus/reconnect policy, G2 shared Toronto module, G3 malformed provenance exclusion, G4 design improvements/correct screenshot paths. Standalone work order uses --unreviewed-spec under claude-build; advisory plan review is not final approval. Codex will inspect production diff. Existing prototype authored by Codex; Claude must review inherited code. No release until verification.
