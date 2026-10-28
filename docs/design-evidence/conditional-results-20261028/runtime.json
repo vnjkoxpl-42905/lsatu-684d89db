@@ -1,0 +1,434 @@
+{
+  "localOnly": true,
+  "actor": "preview",
+  "fixtureDescription": "Synthetic local preview records created from actual source question snapshots; no account records.",
+  "captures": [
+    {
+      "name": "practice-summary-1440",
+      "url": "http://127.0.0.1:8099/dev/conditional-opening-preview?page=centre&edition=full-conditionals-v3&activity=missing-links&level=all&run=local-visual-six-outcomes",
+      "viewport": 1440,
+      "scrollWidth": 1440,
+      "bodyWidth": 1440,
+      "reducedMotion": true,
+      "focused": "\n    \n    Conditional logicLearnHomeChaptersChapter 1Read a conditionalChapter 2"
+    },
+    {
+      "name": "practice-summary-390",
+      "url": "http://127.0.0.1:8099/dev/conditional-opening-preview?page=centre&edition=full-conditionals-v3&activity=missing-links&level=all&run=local-visual-six-outcomes",
+      "viewport": 390,
+      "scrollWidth": 390,
+      "bodyWidth": 390,
+      "reducedMotion": true,
+      "focused": "\n    \n    Conditional logicLearnHomeChaptersChapter 1Read a conditionalChapter 2"
+    },
+    {
+      "name": "practice-review-1440",
+      "url": "http://127.0.0.1:8099/dev/conditional-opening-preview?page=centre&edition=full-conditionals-v3&activity=missing-links&level=all&run=local-visual-six-outcomes",
+      "viewport": 1440,
+      "scrollWidth": 1440,
+      "bodyWidth": 1440,
+      "reducedMotion": true,
+      "focused": "Question 3 \u00b7 ReviewA \u2192 BConclusion: C \u2192 AAttempt 1: B \u2192 C \u00b7 incorrectAttempt 2: "
+    },
+    {
+      "name": "practice-review-390",
+      "url": "http://127.0.0.1:8099/dev/conditional-opening-preview?page=centre&edition=full-conditionals-v3&activity=missing-links&level=all&run=local-visual-six-outcomes",
+      "viewport": 390,
+      "scrollWidth": 390,
+      "bodyWidth": 390,
+      "reducedMotion": true,
+      "focused": "Question 3 \u00b7 ReviewA \u2192 BConclusion: C \u2192 AAttempt 1: B \u2192 C \u00b7 incorrectAttempt 2: "
+    },
+    {
+      "name": "practice-miss-1440",
+      "url": "http://127.0.0.1:8099/dev/conditional-opening-preview?page=centre&edition=full-conditionals-v3&activity=missing-links&level=all&run=local-visual-live",
+      "viewport": 1440,
+      "scrollWidth": 1440,
+      "bodyWidth": 1440,
+      "reducedMotion": true,
+      "focused": "\n    \n    Conditional logicLearnHomeChaptersChapter 1Read a conditionalChapter 2"
+    },
+    {
+      "name": "practice-retry-correct-1440",
+      "url": "http://127.0.0.1:8099/dev/conditional-opening-preview?page=centre&edition=full-conditionals-v3&activity=missing-links&level=all&run=local-visual-live",
+      "viewport": 1440,
+      "scrollWidth": 1440,
+      "bodyWidth": 1440,
+      "reducedMotion": true,
+      "focused": "\n    \n    Conditional logicLearnHomeChaptersChapter 1Read a conditionalChapter 2"
+    },
+    {
+      "name": "practice-retry-correct-390",
+      "url": "http://127.0.0.1:8099/dev/conditional-opening-preview?page=centre&edition=full-conditionals-v3&activity=missing-links&level=all&run=local-visual-live",
+      "viewport": 390,
+      "scrollWidth": 390,
+      "bodyWidth": 390,
+      "reducedMotion": true,
+      "focused": "\n    \n    Conditional logicLearnHomeChaptersChapter 1Read a conditionalChapter 2"
+    },
+    {
+      "name": "sort-hint-1440",
+      "url": "http://127.0.0.1:8099/dev/conditional-opening-preview?page=centre&edition=full-conditionals-v3&activity=sort&groups=g1,g2",
+      "viewport": 1440,
+      "scrollWidth": 1440,
+      "bodyWidth": 1440,
+      "reducedMotion": true,
+      "focused": "Group 2 \u00b7 Necessary"
+    },
+    {
+      "name": "sort-hint-390",
+      "url": "http://127.0.0.1:8099/dev/conditional-opening-preview?page=centre&edition=full-conditionals-v3&activity=sort&groups=g1,g2",
+      "viewport": 390,
+      "scrollWidth": 390,
+      "bodyWidth": 390,
+      "reducedMotion": true,
+      "focused": "Group 2 \u00b7 Necessary"
+    },
+    {
+      "name": "sort-retry-correct-1440",
+      "url": "http://127.0.0.1:8099/dev/conditional-opening-preview?page=centre&edition=full-conditionals-v3&activity=sort&groups=g1,g2",
+      "viewport": 1440,
+      "scrollWidth": 1440,
+      "bodyWidth": 1440,
+      "reducedMotion": true,
+      "focused": "Next"
+    },
+    {
+      "name": "sort-first-correct-1440",
+      "url": "http://127.0.0.1:8099/dev/conditional-opening-preview?page=centre&edition=full-conditionals-v3&activity=sort&groups=g1,g2",
+      "viewport": 1440,
+      "scrollWidth": 1440,
+      "bodyWidth": 1440,
+      "reducedMotion": true,
+      "focused": "Next"
+    },
+    {
+      "name": "sort-first-correct-390",
+      "url": "http://127.0.0.1:8099/dev/conditional-opening-preview?page=centre&edition=full-conditionals-v3&activity=sort&groups=g1,g2",
+      "viewport": 390,
+      "scrollWidth": 390,
+      "bodyWidth": 390,
+      "reducedMotion": true,
+      "focused": "Next"
+    },
+    {
+      "name": "diagram-results-1440",
+      "url": "http://127.0.0.1:8099/dev/conditional-opening-preview?page=centre&edition=full-conditionals-v3&activity=diagram&groups=g1,g2,g3,g4&stage=contrapositive",
+      "viewport": 1440,
+      "scrollWidth": 1440,
+      "bodyWidth": 1440,
+      "reducedMotion": true,
+      "focused": "\n    \n    Conditional logicLearnHomeChaptersChapter 1Read a conditionalChapter 2"
+    },
+    {
+      "name": "diagram-results-390",
+      "url": "http://127.0.0.1:8099/dev/conditional-opening-preview?page=centre&edition=full-conditionals-v3&activity=diagram&groups=g1,g2,g3,g4&stage=contrapositive",
+      "viewport": 390,
+      "scrollWidth": 390,
+      "bodyWidth": 390,
+      "reducedMotion": true,
+      "focused": "\n    \n    Conditional logicLearnHomeChaptersChapter 1Read a conditionalChapter 2"
+    },
+    {
+      "name": "flashcard-ratings-1440",
+      "url": "http://127.0.0.1:8099/dev/conditional-opening-preview?page=centre&edition=full-conditionals-v3&activity=translate-cards&groups=g1,g2,g3,g4&stage=translate&review=all",
+      "viewport": 1440,
+      "scrollWidth": 1440,
+      "bodyWidth": 1440,
+      "reducedMotion": true,
+      "focused": "\n    \n    Conditional logicLearnHomeChaptersChapter 1Read a conditionalChapter 2"
+    },
+    {
+      "name": "flashcard-ratings-390",
+      "url": "http://127.0.0.1:8099/dev/conditional-opening-preview?page=centre&edition=full-conditionals-v3&activity=translate-cards&groups=g1,g2,g3,g4&stage=translate&review=all",
+      "viewport": 390,
+      "scrollWidth": 390,
+      "bodyWidth": 390,
+      "reducedMotion": true,
+      "focused": "\n    \n    Conditional logicLearnHomeChaptersChapter 1Read a conditionalChapter 2"
+    },
+    {
+      "name": "unless-isolated-subset-summary-1440",
+      "url": "http://127.0.0.1:8099/dev/conditional-opening-preview?page=centre&edition=full-conditionals-v3&activity=unless",
+      "viewport": 1440,
+      "scrollWidth": 1440,
+      "bodyWidth": 1440,
+      "reducedMotion": true,
+      "focused": "\n    \n    Conditional logicLearnHomeChaptersChapter 1Read a conditionalChapter 2"
+    },
+    {
+      "name": "unless-isolated-subset-summary-390",
+      "url": "http://127.0.0.1:8099/dev/conditional-opening-preview?page=centre&edition=full-conditionals-v3&activity=unless",
+      "viewport": 390,
+      "scrollWidth": 390,
+      "bodyWidth": 390,
+      "reducedMotion": true,
+      "focused": "Review statement 2, form 2: Time ran out"
+    }
+  ],
+  "checks": [
+    {
+      "name": "Practice summary exact answered coverage",
+      "passed": true
+    },
+    {
+      "name": "Result button opens corresponding question",
+      "passed": true
+    },
+    {
+      "name": "Unanswered question cannot open through result strip",
+      "passed": true
+    },
+    {
+      "name": "Reduced motion disables outcome animation",
+      "passed": true
+    },
+    {
+      "name": "Flashcard ratings visibly self-reported and count unique cards",
+      "passed": true,
+      "totalText": "Saved ratings for these cards\n12 total",
+      "uniqueCards": 12,
+      "queueLength": 13
+    },
+    {
+      "name": "Unless local-only guard remains present",
+      "passed": true
+    },
+    {
+      "name": "Isolated Unless summary late correct remains timeout and click selects statement",
+      "passed": true
+    },
+    {
+      "name": "All captured pages fit viewport width",
+      "passed": true
+    }
+  ],
+  "errors": [],
+  "blockedRequests": [
+    {
+      "url": "https://fonts.googleapis.com/css2",
+      "method": "GET"
+    },
+    {
+      "url": "https://fonts.googleapis.com/css2",
+      "method": "GET"
+    },
+    {
+      "url": "https://fonts.googleapis.com/css2",
+      "method": "GET"
+    },
+    {
+      "url": "https://fonts.googleapis.com/css2",
+      "method": "GET"
+    },
+    {
+      "url": "https://fonts.googleapis.com/css2",
+      "method": "GET"
+    },
+    {
+      "url": "https://fonts.googleapis.com/css2",
+      "method": "GET"
+    },
+    {
+      "url": "https://fonts.googleapis.com/css2",
+      "method": "GET"
+    },
+    {
+      "url": "https://fonts.googleapis.com/css2",
+      "method": "GET"
+    },
+    {
+      "url": "https://fonts.googleapis.com/css2",
+      "method": "GET"
+    },
+    {
+      "url": "https://fonts.googleapis.com/css2",
+      "method": "GET"
+    },
+    {
+      "url": "https://fonts.googleapis.com/css2",
+      "method": "GET"
+    },
+    {
+      "url": "https://fonts.googleapis.com/css2",
+      "method": "GET"
+    },
+    {
+      "url": "https://fonts.googleapis.com/css2",
+      "method": "GET"
+    },
+    {
+      "url": "https://fonts.googleapis.com/css2",
+      "method": "GET"
+    },
+    {
+      "url": "https://fonts.googleapis.com/css2",
+      "method": "GET"
+    },
+    {
+      "url": "https://fonts.googleapis.com/css2",
+      "method": "GET"
+    },
+    {
+      "url": "https://fonts.googleapis.com/css2",
+      "method": "GET"
+    },
+    {
+      "url": "https://fonts.googleapis.com/css2",
+      "method": "GET"
+    },
+    {
+      "url": "https://fonts.googleapis.com/css2",
+      "method": "GET"
+    },
+    {
+      "url": "https://fonts.googleapis.com/css2",
+      "method": "GET"
+    },
+    {
+      "url": "https://fonts.googleapis.com/css2",
+      "method": "GET"
+    },
+    {
+      "url": "https://fonts.googleapis.com/css2",
+      "method": "GET"
+    },
+    {
+      "url": "https://fonts.googleapis.com/css2",
+      "method": "GET"
+    },
+    {
+      "url": "https://fonts.googleapis.com/css2",
+      "method": "GET"
+    },
+    {
+      "url": "https://fonts.googleapis.com/css2",
+      "method": "GET"
+    },
+    {
+      "url": "https://fonts.googleapis.com/css2",
+      "method": "GET"
+    },
+    {
+      "url": "https://fonts.googleapis.com/css2",
+      "method": "GET"
+    },
+    {
+      "url": "https://fonts.googleapis.com/css2",
+      "method": "GET"
+    },
+    {
+      "url": "https://fonts.googleapis.com/css2",
+      "method": "GET"
+    },
+    {
+      "url": "https://fonts.googleapis.com/css2",
+      "method": "GET"
+    },
+    {
+      "url": "https://fonts.googleapis.com/css2",
+      "method": "GET"
+    },
+    {
+      "url": "https://fonts.googleapis.com/css2",
+      "method": "GET"
+    },
+    {
+      "url": "https://fonts.googleapis.com/css2",
+      "method": "GET"
+    },
+    {
+      "url": "https://fonts.googleapis.com/css2",
+      "method": "GET"
+    },
+    {
+      "url": "https://fonts.googleapis.com/css2",
+      "method": "GET"
+    },
+    {
+      "url": "https://fonts.googleapis.com/css2",
+      "method": "GET"
+    },
+    {
+      "url": "https://fonts.googleapis.com/css2",
+      "method": "GET"
+    },
+    {
+      "url": "https://fonts.googleapis.com/css2",
+      "method": "GET"
+    },
+    {
+      "url": "https://fonts.googleapis.com/css2",
+      "method": "GET"
+    }
+  ],
+  "limitations": [
+    "Unless native engine intentionally unavailable in local-only centre because it uses account milestones. No native timer, unlock or account persistence acceptance exercised.",
+    "Unless screenshots use the actual exported presentation component mounted in an isolated local DOM fixture, not the native engine. Three supplied statements include late-correct timeout precedence."
+  ],
+  "fixture": {
+    "runId": "local-visual-six-outcomes",
+    "ids": [
+      "PHOTO-ML01",
+      "PHOTO-ML02",
+      "PHOTO-ML03",
+      "PHOTO-ML04",
+      "ML1",
+      "PHOTO-ML05"
+    ]
+  },
+  "ratingsFixture": {
+    "uniqueCards": 12,
+    "queueLength": 13,
+    "ratings": {
+      "f1": "again",
+      "f2": "needs",
+      "f3": "got",
+      "f5": "again",
+      "f6": "needs",
+      "f7": "got",
+      "f9": "again",
+      "f10": "needs",
+      "f11": "got"
+    }
+  },
+  "visualReview": {
+    "inspectedPixels": [
+      "diagram-results-1440",
+      "diagram-results-390",
+      "flashcard-ratings-1440",
+      "flashcard-ratings-390",
+      "practice-miss-1440",
+      "practice-retry-correct-1440",
+      "practice-retry-correct-390",
+      "practice-review-1440",
+      "practice-review-390",
+      "practice-summary-1440",
+      "practice-summary-390",
+      "sort-first-correct-1440",
+      "sort-first-correct-390",
+      "sort-hint-1440",
+      "sort-hint-390",
+      "sort-retry-correct-1440",
+      "unless-isolated-subset-summary-1440",
+      "unless-isolated-subset-summary-390"
+    ],
+    "findings": [
+      "Explicit symbols and text distinguish first success, retry, missed, revealed and unanswered outcomes without depending on color.",
+      "Fresh phone loads of summary, diagram results and flashcard ratings correctly collapse Filters; earlier resized desktop captures intentionally retained desktop open state. The earlier concern was a capture artifact, not an app initial-state defect.",
+      "Final Practice summary action grouping visually verified: Review primary, related retry action plus description, lower separated secondary actions. Former loose action/prose wrap is fixed.",
+      "Phone review details retain visible blue focus outline, readable real-length explanatory text and no horizontal clipping.",
+      "Flashcard chart displays 12 unique cards despite 13 queued appearances, with exact counts and explicit self-report disclaimer.",
+      "Unless isolated presentation fixture clearly labels its scope and renders 3 statements, including late-correct timeout priority."
+    ],
+    "severity": "No blocking rendering defect in final captured feedback states. Normal-motion temporal quality remains unverified by this reduced-motion harness.",
+    "allScreenshotPixelsOpened": true
+  },
+  "harnessNotes": [
+    "Synthetic local preview fixture dates use 2026-10-27 so existing cache compare-and-swap updates are chronological. Earlier future timestamps caused a harness-fixture refusal, corrected before final successful run.",
+    "All final eight runtime checks passed; no page errors. External network requests were blocked.",
+    "Practice summary/diagram/cards phone captures freshly reloaded at390. Practice review phone preserves opened review and focus across viewport resize.",
+    "Unless uses actual exported component in isolated local fixture. Native timer/milestones/account writes were not mounted or bypassed.",
+    "No source files or dependencies modified by this verification task."
+  ]
+}

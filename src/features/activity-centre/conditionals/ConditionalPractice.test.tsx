@@ -2,7 +2,7 @@ import { cleanup, fireEvent, render, screen, within } from '@testing-library/rea
 import { MemoryRouter, useLocation } from 'react-router-dom';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { ConditionalPracticeRoom, generalPracticeResumeUrl } from './ConditionalPractice';
-import { createPracticeRun, readCachedRuns } from './practiceStore';
+import { cachePracticeRun, createPracticeRun, readCachedRuns } from './practiceStore';
 import { CONDITIONAL_QUESTIONS } from './content';
 
 vi.mock('@/integrations/supabase/client', () => ({ supabase: {} }));
@@ -22,6 +22,39 @@ function beginMissingLink() {
 describe('conditional practice workflow', () => {
   beforeEach(() => { localStorage.clear(); vi.spyOn(window, 'scrollTo').mockImplementation(() => {}); });
   afterEach(cleanup);
+  it('starts review questions as a separate recorded session and preserves the original snapshot', () => {
+    const questions = CONDITIONAL_QUESTIONS.filter(question => question.mode === 'missing-link').slice(0, 2);
+    const original = createPracticeRun('test-user', 'missing-link', questions);
+    const saved = { ...original, stage: 'done' as const, position: 1, answers: [{ id: 'miss', questionId: questions[0].id, text: 'No', verdict: 'incorrect' as const, attempt: 1, revealed: false, at: original.createdAt }, { id: 'hit', questionId: questions[1].id, text: 'Yes', verdict: 'correct' as const, attempt: 1, revealed: false, at: original.createdAt }] };
+    cachePracticeRun(saved);
+    mount(`/conditional-lab?run=${saved.id}`);
+    expect(screen.getByText('This starts a new recorded practice session. This session stays saved.')).toBeVisible();
+    fireEvent.click(screen.getByRole('button', { name: 'Practise questions to review' }));
+    const runs = readCachedRuns('test-user');
+    expect(runs).toHaveLength(2);
+    expect(runs.find(run => run.id === saved.id)).toEqual(saved);
+    expect(runs.find(run => run.id !== saved.id)!.questions).toEqual([questions[0]]);
+    expect(screen.queryByRole('button', { name: /Review question/ })).toBeNull();
+  });
+  it('opens only answered items from the reviewed result strip without adding answers', () => {
+    const questions = CONDITIONAL_QUESTIONS.filter(question => question.mode === 'missing-link').slice(0, 2);
+    const original = createPracticeRun('test-user', 'missing-link', questions);
+    const saved = { ...original, stage: 'done' as const, answers: [{ id: 'hit', questionId: questions[0].id, text: 'Yes', verdict: 'correct' as const, attempt: 1, revealed: false, at: original.createdAt }] };
+    cachePracticeRun(saved); mount(`/conditional-lab?run=${saved.id}`);
+    fireEvent.click(screen.getByRole('button', { name: 'Review answers' }));
+    expect(screen.queryByRole('button', { name: /Review question 2/ })).toBeNull();
+    expect(document.querySelectorAll('details')).toHaveLength(1);
+    const unanswered = screen.getByText('Question 2 · Not answered').closest('.conditional-panel')!;
+    expect(unanswered.querySelector('summary')).toBeNull();
+    expect(unanswered.querySelector('button')).toBeNull();
+    expect(unanswered).not.toHaveTextContent(questions[1].explanation);
+    expect(unanswered).not.toHaveTextContent('Answer:');
+    expect(document.querySelectorAll('.conditional-explanation')).toHaveLength(1);
+    fireEvent.click(screen.getByRole('button', { name: 'Review question 1: Correct first time' }));
+    expect(document.querySelector('details')!.open).toBe(true);
+    expect(document.activeElement).toBe(document.querySelector('details'));
+    expect(readCachedRuns('test-user')[0].answers).toEqual(saved.answers);
+  });
   it('continues a bootcamp-created General session through the current canonical grant URL, preserving its settings', () => {
     const saved = createPracticeRun('test-user', 'general', [], { sourceUrl: '/bootcamp/conditionals/centre/rephrase', collectionId: 'conditional-rephrase', items: [{ order: 1, prompt: 'If A, then B.', credited_answers: ['If A, then B.'], explanation: 'A is sufficient.' }] });
     const currentUrl = '/bootcamp/conditionals/centre/rephrase?assignment=current-grant&groups=g3&timing=untimed';

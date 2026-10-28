@@ -1,0 +1,51 @@
+{
+  "proof": [
+    {
+      "width": 1440,
+      "scroll": 1440,
+      "nav": "block",
+      "mobile": "none"
+    },
+    {
+      "width": 1307,
+      "scroll": 1307,
+      "nav": "block",
+      "mobile": "none"
+    },
+    {
+      "width": 940,
+      "scroll": 940,
+      "nav": "block",
+      "mobile": "none"
+    },
+    {
+      "width": 768,
+      "scroll": 768,
+      "nav": "none",
+      "mobile": "grid"
+    },
+    {
+      "width": 390,
+      "scroll": 390,
+      "nav": "none",
+      "mobile": "grid"
+    }
+  ],
+  "reduced": {
+    "transition": "0s",
+    "animation": "0s"
+  },
+  "errors": [],
+  "checks": [
+    "five widths no overflow",
+    "Missing Links configured Words launch",
+    "return restores draft",
+    "guided 13 set links",
+    "Unless instructions",
+    "select focus retained",
+    "keyboard focus",
+    "reduced motion",
+    "dark host",
+    "phone selectors"
+  ]
+}

@@ -7,6 +7,8 @@ import { Diagram, Tok } from "@/features/conditional-refresher/Notation";
 import { useUnlessMilestones } from "./unlessProgress";
 import { useAuth } from '@/contexts/AuthContext';
 import { unlessLockTiming } from './unlessTiming';
+import { UnlessRoundResults, unlessOutcome } from './UnlessRoundResults';
+import { ResultBadge } from '@/features/conditional-feedback/ConditionalResults';
 import "@/features/conditional-refresher/conditional-refresher.css";
 
 /* The timed Unless drill. Used as a tab of the Conditional Indicators
@@ -91,6 +93,7 @@ function UnlessRun({ actor, edition }: { actor: string; edition: string }) {
   const [index, setIndex] = useState(0);
   const [placed, setPlaced] = useState<Placed>(EMPTY);
   const [results, setResults] = useState<UnlessResult[]>([]);
+  const reviewTargets = useRef<(HTMLDivElement | null)[]>([]);
   const [remaining, setRemaining] = useState(pace);
   const [ready, setReady] = useState(READY_STEPS);
   const [best, setBest] = useState<number | undefined>(() => readSaved(deviceKey).bestPerfectAvg);
@@ -226,7 +229,7 @@ function UnlessRun({ actor, edition }: { actor: string; edition: string }) {
   /* --------------------------------- Idle --------------------------------- */
   if (phase === "idle") {
     return (
-      <section className="cir-card">
+      <section className="cir-card ud-native">
         {savingNotice}
         <p className="cir-prompt">Four unless statements. Beat the clock on each one.</p>
         <div className="ud-move">
@@ -269,7 +272,7 @@ function UnlessRun({ actor, edition }: { actor: string; edition: string }) {
   /* --------------------------------- Ready -------------------------------- */
   if (phase === "ready") {
     return (
-      <section className="cir-card ud-stage">
+      <section className="cir-card ud-stage ud-native">
         <p className="cir-meta">Get ready</p>
         <p className="ud-ready" aria-live="assertive">{ready > 0 ? ready : "Go"}</p>
       </section>
@@ -284,7 +287,7 @@ function UnlessRun({ actor, edition }: { actor: string; edition: string }) {
       .filter(r => r.verdict !== "correct" || r.timedOut)
       .map(({ pattern, x, y }) => ({ pattern, x, y }));
     return (
-      <section className="cir-card">
+      <section className="cir-card ud-native">
         {savingNotice}
         <p className="cir-prompt">Round review</p>
         {justUnlocked && (
@@ -301,7 +304,8 @@ function UnlessRun({ actor, edition }: { actor: string; edition: string }) {
           <div><b>{avg.toFixed(1)}s</b><span>average per statement</span></div>
           {best !== undefined && <div><b>{best.toFixed(1)}s</b><span>fastest perfect round</span></div>}
         </div>
-        {results.map((r, i) => <ReviewRow key={i} n={i + 1} result={r} />)}
+        <UnlessRoundResults results={results} paceSeconds={pace / 1000} onSelect={index => { const target = reviewTargets.current[index]; if (target) { target.focus(); target.scrollIntoView?.({ block: 'nearest', behavior: 'auto' }); } }}/>
+        {results.map((r, i) => <div key={i} className="ud-review-target" tabIndex={-1} ref={element => { reviewTargets.current[i] = element; }}><ReviewRow n={i + 1} result={r} /></div>)}
         <div className="cir-actions">
           {missed.length > 0 && (
             <button type="button" className="cir-btn" onClick={() => begin(shuffle(missed))}>
@@ -327,7 +331,7 @@ function UnlessRun({ actor, edition }: { actor: string; edition: string }) {
   const canLock = live && !!placed.left && !!placed.right;
 
   return (
-    <section className="cir-card ud-stage">
+    <section className="cir-card ud-stage ud-native">
       <div className="ud-head">
         <span className="cir-meta">Statement {index + 1} of {rounds.length}</span>
         <span className={`ud-count${warn ? " is-warn" : ""}`} aria-hidden="true">
@@ -379,7 +383,7 @@ function ReviewRow({ n, result }: { n: number; result: UnlessResult }) {
   return (
     <div className={`cir-summary-row ud-row${ok ? " is-right" : " is-wrong"}`}>
       <div className="cir-summary-meta ud-row-meta">
-        <span className={`ud-status${ok ? " is-right" : " is-wrong"}`}>{ok ? "Correct" : "Not correct"}</span>
+        <ResultBadge {...unlessOutcome(result)}/>
         <span>Statement {n} · {result.timedOut ? "time ran out" : `${result.seconds.toFixed(1)}s`}</span>
       </div>
       <p className="ud-row-statement"><UnlessText round={result} /></p>

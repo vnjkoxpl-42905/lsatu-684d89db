@@ -11,9 +11,11 @@ import { ConditionalNotation } from "./ConditionalNotation";
 import { DrillEntrance } from "./DrillEntrance";
 import { ConditionalScene } from "./ConditionalScene";
 import "./drill-entrance.css";
+import { ResultBadge } from "@/features/conditional-feedback/ConditionalResults";
 import { cachePracticeRun, createPracticeRun, isConditionalRephraseRun, loadPracticeRuns, practiceSaveMessage, readCachedRuns, syncPendingPractice, syncPracticeRun, type PracticeMode, type PracticeRun } from "./practiceStore";
 import "../activity-centre.css";
 import "./conditionals.css";
+import { PracticeResultStrip, PracticeResultSummary, practiceRetryQuestions, practiceQuestionResults } from "./practiceResults";
 
 const GENERAL_ID = "7946f46b-e7f8-4c60-b405-4ece9c409deb";
 const WORLDS = [
@@ -181,12 +183,19 @@ export function ConditionalPracticeRoom({ userId, generalUrl, generalStatus, loc
       : run && run.stage === "done" ? <section className="conditional-panel conditional-summary">
           <span className="conditional-eyebrow">{titleFor(run.mode)}</span><h1>Practice complete</h1>
           <p>{firstTryCorrect(run)} of {run.questions.length} correct on the first attempt.</p>
-          <div className="conditional-actions"><button className="conditional-primary" onClick={() => setReviewId(run.id)}>Review answers</button>
-          <button onClick={() => start(run.mode as ConditionalMode, run.questions)}>Practice again</button><button onClick={returnToHub}>Choose a drill</button></div>
+          <PracticeResultSummary run={run}/>
+          <PracticeResultStrip run={run}/>
+          <div className="cpr-summary-actions">
+            <div className="cpr-review-actions"><button className="conditional-primary" onClick={() => setReviewId(run.id)}>Review answers</button>
+              {practiceRetryQuestions(run, allowedQuestionIds).length > 0 && <div className="cpr-retry-action"><button onClick={() => { const questions = practiceRetryQuestions(run, allowedQuestionIds); if (questions.length) start(run.mode as ConditionalMode, questions); }}>Practise questions to review</button><p>This starts a new recorded practice session. This session stays saved.</p></div>}
+            </div>
+            <div className="conditional-actions cpr-secondary-actions"><button onClick={() => start(run.mode as ConditionalMode, run.questions)}>Practice again</button><button onClick={returnToHub}>Choose a drill</button></div>
+          </div>
         </section>
       : run && current ? <>
         <div className="conditional-heading"><span className="conditional-eyebrow">{titleFor(run.mode)}</span><span>Question {run.position + 1} of {run.questions.length}</span></div>
         <div className="conditional-progress"><span style={{ width: `${run.position / run.questions.length * 100}%` }} /></div>
+        <PracticeResultStrip run={run}/>
         <div className="conditional-question-grid">
           <section className="conditional-premises"><span className="conditional-eyebrow">Given</span>
             {current.premises.map((p, i) => <div className="conditional-premise" key={i}><span className="conditional-premise-number">{i + 1}</span><p><ConditionalNotation text={p} /></p></div>)}
@@ -203,7 +212,7 @@ export function ConditionalPracticeRoom({ userId, generalUrl, generalStatus, loc
               </label>)}</div>
               {run.stage === "choices" && <button className="conditional-primary" disabled={!run.selection} onClick={() => submit()}>Check answer</button>}
               {run.stage === "feedback" && last && <div role="status" className="conditional-feedback">
-                <h2>{last.revealed ? "Answer revealed" : last.verdict === "correct" ? "Correct" : "Not yet"}</h2>
+                <h2><ResultBadge tone={practiceQuestionResults(run)[run.position].tone} label={practiceQuestionResults(run)[run.position].label}/></h2>
                 {resolved ? <><div className="conditional-credited"><span className="conditional-eyebrow">{run.mode === "must-be-true" ? "What follows" : "The missing link"}</span><p><ConditionalNotation text={current.choices.find(c => c.id === current.correctChoiceId)!.text} /></p></div>
                   <ConditionalExplanation text={current.explanation} />
                   <button className="conditional-primary" onClick={() => update(run.position + 1 === run.questions.length ? { stage: "done" } : { position: run.position + 1, stage: "paper", selection: "" })}>{run.position + 1 === run.questions.length ? "Finish practice" : "Next question"}<ArrowRight size={16} /></button></>
@@ -239,8 +248,11 @@ function firstTryCorrect(run: PracticeRun) {
   return run.questions.filter(q => run.answers.find(a => a.questionId === q.id)?.verdict === "correct").length;
 }
 function PracticeReview({ run, onBack }: { run: PracticeRun; onBack: () => void }) {
+  const details = useRef<Record<string, HTMLDetailsElement | null>>({});
+  const openQuestion = (id: string) => { const target = details.current[id]; if (target) { target.open = true; target.focus(); target.scrollIntoView?.({ block: 'nearest', behavior: 'auto' }); } };
   return <section className="conditional-review"><button className="conditional-back" onClick={onBack}><ArrowLeft size={16} /> Back</button><h1>{titleFor(run.mode)}: session review</h1><p>{run.createdAt.slice(0, 10)} · {firstTryCorrect(run)} correct on the first answer</p>
-    {run.questions.map((q, i) => <details key={q.id} className="conditional-panel"><summary>Question {i + 1} · {run.answers.find(a => a.questionId === q.id)?.verdict === "correct" ? "Correct first time" : "Review"}</summary>
+    <PracticeResultSummary run={run}/><PracticeResultStrip run={run} onSelect={openQuestion}/>
+    {run.questions.map((q, i) => !run.answers.some(answer => answer.questionId === q.id) ? <div key={q.id} className="conditional-panel cpr-unanswered-review"><p>Question {i + 1} · Not answered</p></div> : <details ref={element => { details.current[q.id] = element; }} tabIndex={-1} key={q.id} className="conditional-panel"><summary>Question {i + 1} · {run.answers.find(a => a.questionId === q.id)?.verdict === "correct" ? "Correct first time" : "Review"}</summary>
       {q.premises.map((p, j) => <p key={j}><ConditionalNotation text={p} /></p>)}{q.conclusion && <p>Conclusion: <ConditionalNotation text={q.conclusion} /></p>}
       {run.answers.filter(a => a.questionId === q.id).map(a => <p key={a.id}>Attempt {a.attempt}: <ConditionalNotation text={a.text} /> · {a.revealed ? "Revealed" : a.verdict}</p>)}
       <p>Answer: <ConditionalNotation text={q.choices.find(c => c.id === q.correctChoiceId)!.text} /></p><ConditionalExplanation text={q.explanation} />

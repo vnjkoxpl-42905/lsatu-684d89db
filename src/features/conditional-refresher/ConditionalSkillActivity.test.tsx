@@ -144,6 +144,52 @@ describe('conditional practice interactions', () => {
     expect(screen.queryByText(/Switch AND with OR/)).toBeNull();
   });
 });
+describe('conditional results and saved review rounds', () => {
+  it('counts unique eligible cards rather than repeated retry queue entries', () => {
+    render(<ConditionalSkillActivity {...defaults} itemId="f1" />);
+    click('Show answer'); click('Again');
+    const ratings = screen.getByRole('region', { name: 'Saved ratings for these cards' });
+    expect(within(ratings).getByText('1 total')).toBeInTheDocument();
+    expect(within(ratings).getByText('1 of 1')).toBeInTheDocument();
+    expect(screen.getByText(/Card 2 of 2/)).toBeInTheDocument();
+  });
+  it('restores an explicit needs-work subset and returns to configured cards on an ordinary new round', () => {
+    const view = render(<ConditionalSkillActivity {...defaults} />);
+    view.unmount();
+    const key = 'lsatu.conditional-skill.v2:actor-a:translate-cards:g1,g2,g3,g4:translate:all:round';
+    const saved = JSON.parse(localStorage.getItem(key)!);
+    localStorage.setItem(key, JSON.stringify({ ...saved, index: saved.queue.length }));
+    localStorage.setItem('lsatu.conditional-skill.ratings.v3:actor-a:translate-cards', JSON.stringify({ f1: 'needs', f2: 'got' }));
+    const resumed = render(<ConditionalSkillActivity {...defaults} />);
+    click('Review needs work');
+    expect(screen.getByText(/Card 1 of 1/)).toBeInTheDocument();
+    expect(screen.getByText(/Review round · 1 card/)).toBeInTheDocument();
+    resumed.unmount();
+    render(<ConditionalSkillActivity {...defaults} />);
+    expect(screen.getByText(/Card 1 of 1/)).toBeInTheDocument();
+    click('Show answer'); click('Got it'); click('Start a new round');
+    expect(screen.getByText('Card 1 of 12 · Round 3')).toBeInTheDocument();
+    expect(JSON.parse(localStorage.getItem('lsatu.conditional-skill.ratings.v3:actor-a:translate-cards')!)).toMatchObject({ f1: 'got', f2: 'got' });
+  });
+  it('does not turn a restored zero-check reveal into an incorrect first answer', () => {
+    const view = render(<ConditionalSkillActivity {...defaults} kind="diagram" itemId="d1" />);
+    view.unmount();
+    const key = 'lsatu.conditional-skill.v2:actor-a:diagram:g1,g2,g3,g4:translate:all:d1';
+    const saved = JSON.parse(localStorage.getItem(key)!);
+    localStorage.setItem(key, JSON.stringify({ ...saved, feedback: 'reveal', results: { d1: { tries: 0, firstCorrect: false, resolved: true } } }));
+    render(<ConditionalSkillActivity {...defaults} kind="diagram" itemId="d1" />);
+    expect(screen.getByText('Viewed without checking')).toBeInTheDocument();
+    click('Next');
+    const results = screen.getByRole('region', { name: 'This round' });
+    expect(within(results).getByText('1 of 1')).toBeInTheDocument();
+    expect(screen.getByText(/0 correct on the first attempt out of 0 attempted/)).toBeInTheDocument();
+    const viewed = within(results).getByText('Viewed without checking').closest('div');
+    expect(viewed).toHaveTextContent('1 of 1');
+    const missed = within(results).getByText('Not correct first time').closest('div');
+    expect(missed).toHaveTextContent('0 of 1');
+  });
+});
+
 describe('authored conditional practice integrity', () => {
   it('keeps 12 cards and 21 diagrams with explicit positive and negative meanings', () => {
     expect(PRACTICE_CARDS).toHaveLength(12);

@@ -3,6 +3,7 @@ import { GROUPS, GROUP_LABEL, INDICATOR_POOL, type GroupId } from './content';
 import { Diagram, Tok } from './Notation';
 import { PRACTICE_CARDS, PRACTICE_DIAGRAMS, PRACTICE_REVISION, diagramMatches, englishRule, negateSideText } from './practiceContent';
 import { freshRun, rateCard, restoreRun, validRatings, type PracticeRun, type Rating } from './practiceState';
+import { ResultBadge, ResultDistribution } from '../conditional-feedback/ConditionalResults';
 import './conditional-refresher.css';
 
 export interface ConditionalSkillActivityProps {
@@ -83,10 +84,10 @@ function ActivityRun({ kind, groups, stage, review, storageScope, itemId, ids, f
     if (target) { if (positionChanged) target.tabIndex = -1; target.focus(); }
   }, [run.index, run.step, run.feedback]);
   const patch = (value: Partial<PracticeRun>) => setRun(current => ({ ...current, ...value }));
-  const restart = (all = false) => {
+  const restart = (all = false, subset?: string[]) => {
     let ratings = { ...run.ratings };
     try { ratings = { ...ratings, ...readRatings() }; } catch { /* In-memory review remains available. */ }
-    const eligible = itemId ? [itemId] : review === 'needs' && !all ? ids.filter(id => ratings[id] === 'again' || ratings[id] === 'needs') : ids;
+    const eligible = subset ? [...new Set(subset)].filter(id => ids.includes(id) && (!itemId || id === itemId)) : itemId ? [itemId] : review === 'needs' && !all ? ids.filter(id => ratings[id] === 'again' || ratings[id] === 'needs') : ids;
     setRun(freshRun(eligible, fingerprint, ratings, run.attempt + 1));
   };
   const recordRating = (rating: Rating) => {
@@ -100,9 +101,16 @@ function ActivityRun({ kind, groups, stage, review, storageScope, itemId, ids, f
   const next = () => patch({ index: run.index + 1, step: 1, left: [], right: [], side: 'left', feedback: 'none' });
   const currentId = run.queue[run.index];
   const finished = run.index >= run.queue.length;
-  const firstCorrect = Object.values(run.results).filter(result => result.firstCorrect).length;
+  const roundIds = [...new Set(run.queue)];
+  const eligibleCardIds = [...new Set(itemId ? [itemId] : ids)];
+  const needsIds = eligibleCardIds.filter(id => run.ratings[id] === 'again' || run.ratings[id] === 'needs');
+  const subsetRound = kind === 'translate-cards' && review === 'all' && roundIds.length < eligibleCardIds.length;
+  const firstCorrect = roundIds.filter(id => run.results[id]?.tries > 0 && run.results[id]?.firstCorrect).length;
+  const notFirstCorrect = roundIds.filter(id => run.results[id]?.tries > 0 && !run.results[id]?.firstCorrect).length;
+  const viewedWithoutCheck = roundIds.filter(id => run.results[id]?.tries === 0).length;
+  const unchecked = roundIds.filter(id => !run.results[id]).length;
   const resolved = Object.values(run.results).filter(result => result.resolved).length;
-  const assessed = Object.keys(run.results).length;
+  const assessed = firstCorrect + notFirstCorrect;
   const check = (correct: boolean) => {
     const old = run.results[currentId];
     patch({ feedback: correct ? 'correct' : 'hint', results: { ...run.results, [currentId]: { tries: (old?.tries ?? 0) + 1, firstCorrect: old ? old.firstCorrect : correct, resolved: old?.resolved || correct } } });
@@ -111,11 +119,18 @@ function ActivityRun({ kind, groups, stage, review, storageScope, itemId, ids, f
   return <section ref={sectionRef} className="cir-card cir-skill-activity" data-kind={kind} data-feedback={run.feedback} data-finished={finished} aria-label={kind === 'sort' ? 'Sort indicators' : kind === 'diagram' ? 'Build a diagram' : 'Sentence cards'}>
     <p className="cir-meta">{groups.map(group => `Group ${group.slice(1)}`).join(' · ')} · {stage === 'translate' ? 'Translation' : 'Translation and contrapositive'}</p>
     <p className="cir-save" role="status">{saveError || ratingSaveError ? 'This browser could not save your work. Keep this page open to continue.' : 'Your place is saved in this browser.'}</p>
+    {subsetRound && <p className="cir-subset-notice">Review round · {roundIds.length} {roundIds.length === 1 ? 'card' : 'cards'}. A new ordinary round returns to your configured cards.</p>}
     {freshNotice && <p>A fresh round has started because the saved round no longer matches this activity.</p>}
     <div className="cir-bar" role="progressbar" aria-label="Round progress" aria-valuemin={0} aria-valuemax={run.queue.length || 1} aria-valuenow={run.index}><span style={{ width: `${run.queue.length ? run.index / run.queue.length * 100 : 0}%` }} /></div>
     {finished ? <>
       <h2>{run.queue.length ? 'Round finished' : 'No cards need practice yet'}</h2>
       {kind === 'translate-cards' ? <p>Your ratings guide future review. They are self-reports, not a mastery score.</p> : <p>{firstCorrect} correct on the first attempt out of {assessed} attempted. {resolved} resolved, including revealed answers.</p>}
+      {kind !== 'translate-cards' && <ResultDistribution title="This round" segments={[
+        { id: 'first', label: 'Correct first time', count: firstCorrect, tone: 'correct' },
+        { id: 'not-first', label: 'Not correct first time', count: notFirstCorrect, tone: 'missed' },
+        { id: 'viewed', label: 'Viewed without checking', count: viewedWithoutCheck, tone: 'revealed' },
+        { id: 'unchecked', label: 'Unchecked', count: unchecked, tone: 'neutral' },
+      ]} />}
       <div className="cir-actions"><button className="cir-btn" onClick={() => restart(!run.queue.length)}>{run.queue.length ? 'Start a new round' : 'Practice all cards'}</button></div>
     </> : <>
       <p className="cir-meta">{kind === 'translate-cards' ? 'Card' : 'Item'} {run.index + 1} of {run.queue.length} · Round {run.attempt}</p>
@@ -123,7 +138,7 @@ function ActivityRun({ kind, groups, stage, review, storageScope, itemId, ids, f
         const item = INDICATOR_POOL.find(i => `${i.group}:${i.word}` === currentId)!;
         const shown = run.feedback === 'correct' || run.feedback === 'reveal';
         return <><p className="cir-prompt">{item.word}</p><p>Which group does this indicator belong to?</p><div className="cir-choices">{groups.map(group => <button key={group} className="cir-choice" disabled={shown} onClick={() => check(group === item.group)}>{GROUP_LABEL[group]}</button>)}</div>
-          <div className="cir-answer-feedback" role="status" aria-live="polite" aria-atomic="true">{run.feedback === 'hint' && <p>Think about what the word does: does it introduce IF, introduce THEN, or ask you to negate an idea?</p>}{shown && <p>{GROUP_LABEL[item.group]}. {GROUPS.find(g => g.id === item.group)?.rule ?? GROUPS.find(g => g.id === item.group)?.steps?.join(' ')}</p>}</div>
+          <div className="cir-answer-feedback" role="status" aria-live="polite" aria-atomic="true">{run.feedback !== 'none' && <ResultBadge key={`${currentId}:${run.feedback}`} tone={run.feedback === 'correct' ? run.results[currentId]?.firstCorrect ? 'correct' : 'retry' : run.feedback === 'hint' ? 'missed' : 'revealed'} label={run.feedback === 'correct' ? run.results[currentId]?.firstCorrect ? 'Correct first time' : 'Correct after retry' : run.feedback === 'hint' ? 'Try again' : run.results[currentId]?.tries ? 'Answer shown after a check' : 'Viewed without checking'} />}{run.feedback === 'hint' && <p>Think about what the word does: does it introduce IF, introduce THEN, or ask you to negate an idea?</p>}{shown && <p>{GROUP_LABEL[item.group]}. {GROUPS.find(g => g.id === item.group)?.rule ?? GROUPS.find(g => g.id === item.group)?.steps?.join(' ')}</p>}</div>
           <div className="cir-actions">{run.feedback === 'hint' && <button className="cir-btn ghost" onClick={reveal}>Show answer</button>}{shown && <button className="cir-btn" data-continue onClick={next}>Next</button>}</div></>;
       })()}
       {kind === 'translate-cards' && (() => {
@@ -152,10 +167,20 @@ function ActivityRun({ kind, groups, stage, review, storageScope, itemId, ids, f
           <p className="cir-meta">Adding to {run.side === 'left' ? 'IF' : 'THEN'}. Choose a condition or connector.</p>
           <div className="cir-palette">{tokens.map(token => <button className="cir-token" key={token} disabled={shown || run[run.side].length >= 11} aria-label={`Add ${token.startsWith('/') ? `not ${token.slice(1)}` : token}`} onClick={() => push(token)}><Tok text={token} /></button>)}<button className="cir-token" disabled={shown || !run[run.side].length} onClick={() => patch({ [run.side]: run[run.side].slice(0, -1), feedback: 'none' })}>Undo</button></div>
           <div className="cir-actions">{!shown && <button className="cir-btn" disabled={!run.left.length || !run.right.length} onClick={() => check(diagramMatches(item, run.left.join(' '), run.right.join(' '), stage === 'contrapositive'))}>Check answer</button>}{run.feedback === 'hint' && <button className="cir-btn ghost" onClick={reveal}>Show answer</button>}{shown && <button className="cir-btn" data-continue onClick={next}>Next</button>}</div>
-          <div className="cir-answer-feedback" role="status" aria-live="polite" aria-atomic="true">{run.feedback === 'hint' && <p>Keep your arrangement and check the indicator. Check which complete condition guarantees the other and keep existing negatives.{stage === 'contrapositive' && <> If you reverse the arrow, negate both conditions.{allowCompound !== false && ' Switch AND with OR when negating a compound condition.'}</>}</p>}{shown && <><p>{run.feedback === 'correct' ? 'That follows the rule.' : 'Compare this answer with your arrangement.'}</p><Diagram left={item.left} right={item.right} /><p>{englishRule(item, item.left, item.right)}</p>{stage === 'contrapositive' && <><Diagram left={negateSideText(item.right)} right={negateSideText(item.left)} /><p>{englishRule(item, negateSideText(item.right), negateSideText(item.left))}</p></>}</>}</div></>;
+          <div className="cir-answer-feedback" role="status" aria-live="polite" aria-atomic="true">{run.feedback !== 'none' && <ResultBadge key={`${currentId}:${run.feedback}`} tone={run.feedback === 'correct' ? run.results[currentId]?.firstCorrect ? 'correct' : 'retry' : run.feedback === 'hint' ? 'missed' : 'revealed'} label={run.feedback === 'correct' ? run.results[currentId]?.firstCorrect ? 'Correct first time' : 'Correct after retry' : run.feedback === 'hint' ? 'Try again' : run.results[currentId]?.tries ? 'Answer shown after a check' : 'Viewed without checking'} />}{run.feedback === 'hint' && <p>Keep your arrangement and check the indicator. Check which complete condition guarantees the other and keep existing negatives.{stage === 'contrapositive' && <> If you reverse the arrow, negate both conditions.{allowCompound !== false && ' Switch AND with OR when negating a compound condition.'}</>}</p>}{shown && <><p>{run.feedback === 'correct' ? 'That follows the rule.' : 'Compare this answer with your arrangement.'}</p><Diagram left={item.left} right={item.right} /><p>{englishRule(item, item.left, item.right)}</p>{stage === 'contrapositive' && <><Diagram left={negateSideText(item.right)} right={negateSideText(item.left)} /><p>{englishRule(item, negateSideText(item.right), negateSideText(item.left))}</p></>}</>}</div></>;
       })()}
       <div className="cir-actions cir-round-controls"><button className="cir-btn ghost" onClick={() => restart()}>Restart round</button></div>
     </>}
+    {kind === 'translate-cards' && <div className="cir-saved-ratings">
+      <ResultDistribution title="Saved ratings for these cards" segments={[
+        { id: 'again', label: 'Again', count: eligibleCardIds.filter(id => run.ratings[id] === 'again').length, tone: 'retry' },
+        { id: 'needs', label: 'Needs work', count: eligibleCardIds.filter(id => run.ratings[id] === 'needs').length, tone: 'missed' },
+        { id: 'got', label: 'Got it', count: eligibleCardIds.filter(id => run.ratings[id] === 'got').length, tone: 'correct' },
+        { id: 'unrated', label: 'Not rated', count: eligibleCardIds.filter(id => !run.ratings[id]).length, tone: 'neutral' },
+      ]} />
+      <p className="cir-meta">Saved self-ratings include earlier rounds. Each card counts once.</p>
+      {finished && needsIds.length > 0 && <button className="cir-btn ghost" onClick={() => restart(false, needsIds)}>Review needs work</button>}
+    </div>}
   </section>;
 }
 export default ConditionalSkillActivity;

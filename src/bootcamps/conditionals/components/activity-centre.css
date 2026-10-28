@@ -221,8 +221,8 @@
 /* The centre's reading plane stays legible inside either course theme.
    Workbench navigation and setup own their styles in a separate scoped file. */
 .cc-centre--home {
-  --cc-ink:#252d27; --cc-muted:#596151; --cc-line:#cccec2;
-  --cc-raised:#e5e5db; --cc-control:#a8af9d; --cc-surface:#f3f0e9;
+  --cc-ink:#26282e; --cc-muted:#5b5d63; --cc-line:#d2d1ca;
+  --cc-raised:#ecebe6; --cc-control:#aeb5c3; --cc-surface:#f3f0e9;
   background:var(--cc-surface); border-radius:12px;
 }
 .cc-centre--home .cc-heading { margin-bottom:24px; }

@@ -219,3 +219,80 @@ Approval check matched before implementation.
   ]
 }
 ```
+
+
+## Results expansion review, round 3
+Result: C:\Users\Joshu\AppData\Local\Temp\claudex-centre-results-plan-20261028\claudex-6a0y6bl5\result.json
+```json
+{
+  "verdict": "REVISE",
+  "summary": "The F1\u2013F4 fixes from the earlier rounds still hold. The new results scope is mostly consistent with the code. The Unless timeout rule matches `unlessLockTiming` and `ReviewRow`. The skill-activity result model (`tries`, `firstCorrect`, `resolved`) really cannot separate retry-correct from reveal, as the plan says. The new `Review these questions` action collides with the \"no history mutation\" boundary. Three smaller points need pinning down before build: how the strip click behaves mid-session, whether flashcard ratings are per round, and how the reveal states map. No tests, build or visuals were run.",
+  "findings": [
+    {
+      "id": "F5",
+      "severity": "medium",
+      "path": "src/features/activity-centre/conditionals/ConditionalPractice.tsx:143-150; src/features/activity-centre/conditionals/practiceStore.ts:112-119",
+      "evidence": "The plan describes `Review these questions` as an 'ungraded run' with no history mutation, started through the existing `start(mode, questions)`. `start` calls `createPracticeRun`, which has no ungraded flag. It persists a normal PracticeRun, and `persist` syncs it to the account via `syncPracticeRun`. It then appears in Practice history as a new row. Its answers are graded and counted like any other run. This is the same behavior as the existing 'Practice again', but it contradicts the plan's 'ungraded' and 'history mutation' wording. Adding a real ungraded marker would change the persisted schema, which the plan forbids.",
+      "fix": "Either (a) state that this is a new ordinary practice run on the missed questions, labelled honestly as a new session that is recorded like Practice again, and drop 'ungraded' and 'no history mutation'; or (b) drop the action. Also intersect the snapshotted questions with the current `allowedQuestionIds` at click time. Add a test that the new run's questions are all in `allowedQuestionIds` and are a subset of the source run."
+    },
+    {
+      "id": "F6",
+      "severity": "low",
+      "path": "src/features/activity-centre/conditionals/ConditionalPractice.tsx:152, 180, 241-249",
+      "evidence": "The plan says clicking a reviewed result may 'open/scroll the existing question review'. The existing `PracticeReview` is only reachable for finished runs (`reviewId`). It prints every question's answer and explanation. During a live session, the only explanation gate is `resolved`, which is true after a correct answer, a reveal, or 2 attempts. Pointing a mid-session strip item at `PracticeReview` would reveal unresolved or later questions. A strip item for the current question that is amber after one miss would also look clickable.",
+      "fix": "Make strip items interactive only when the run is done, or when that specific question is already resolved by the existing predicate. Never make the current unresolved or unanswered item interactive. Add a test that an unresolved current question has no review affordance."
+    },
+    {
+      "id": "F7",
+      "severity": "low",
+      "path": "src/features/conditional-refresher/ConditionalSkillActivity.tsx:30-31, 86-90, 118",
+      "evidence": "Flashcard ratings are stored under a single per-kind key (`ratings.v3:<scope>:<kind>`). They persist across rounds and across group and stage settings, and `restart` merges `readRatings()` into `run.ratings`. A 'Your ratings' distribution is therefore cumulative saved self-ratings, not this round's responses, and 'Not rated' includes cards that were rated in earlier rounds. `restart` also reads `review` from the closure, so a Review needs work button inside an `all` configuration needs its own override. The draft key and fingerprint include `review`, so the subset queue would be stored under the `all` key and restored as a subset on reload.",
+      "fix": "Label the display 'Saved ratings for these cards' (not this round). Count over unique ids in the current eligible `ids`. Give `Review needs work` an explicit override into `freshRun` with the unique Again and Needs ids. Document the reload behavior, or key the subset round separately. Test duplicate retry queue entries."
+    },
+    {
+      "id": "F8",
+      "severity": "low",
+      "path": "src/features/activity-centre/conditionals/ConditionalPractice.tsx:158-166, 210",
+      "evidence": "The `Show answer` button is rendered only in the 'Not yet' state, after an incorrect answer. So a first-answer reveal (`submit(true)` with no prior answer) cannot happen from the UI. The plan's neutral 'revealed (first answer reveal)' state is effectively unreachable. The real case, a miss followed by a reveal, is mapped to amber 'needs review'. A reader could expect the neutral eye for it.",
+      "fix": "State the mapping explicitly: miss then reveal gets its own labelled variant, either amber with a text label 'missed, answer shown' or the neutral eye. Keep the first-answer reveal state only as a defensive fallback for stored data. Test both states from constructed runs."
+    }
+  ],
+  "coverage": [
+    "Re-read the full amended plan and the earlier findings F1\u2013F4 against it.",
+    "Read ConditionalPractice.tsx in full: `start`, `submit`, `resolved`, `firstTryCorrect` and `PracticeReview`.",
+    "Read `createPracticeRun` and the persistence code in practiceStore.ts.",
+    "Read the ConditionalSkillActivity.tsx run and rating logic: keys, `freshRun`, `restart`, `recordRating`, `check` and `reveal`.",
+    "Checked the UnlessDrill.tsx timeout, perfect-round and `ReviewRow` semantics against the plan.",
+    "Cross-checked the permission and `allowedQuestionIds` flow for the retry action."
+  ],
+  "limitations": [
+    "Source and plan review only. No tests, build or visual checks were run, and none is claimed to pass.",
+    "I did not read practiceState.ts, the rest of UnlessDrill.tsx outside the grepped lines, the CSS, or the Rephrase assigned-run ledger.",
+    "I did not review the 21st.dev, Firecrawl or Tavily evidence the plan cites.",
+    "The new result primitives do not exist yet."
+  ]
+}
+```
+All F5-F8 accepted. Ordinary recorded retry; allowed-ID intersection at click; noninteractive live strip; saved self-ratings and explicit subset-round restore; missed-then-reveal label.
+
+
+## Results expansion review, round 4
+Result: C:\Users\Joshu\AppData\Local\Temp\claudex-centre-results-plan-r4-20261028\claudex-z988jmua\result.json
+```json
+{
+  "verdict": "APPROVED",
+  "summary": "F5\u2013F8 are resolved in this revision, and I found no new material defects. The Review these questions retry is now an ordinary new recorded session, the same as Practice again. It intersects with the current `allowedQuestionIds` at click time. The live strip is informational only, and review opens only after completion. A missed-then-revealed answer is labelled `Missed, answer shown`. Flashcard ratings are described as cumulative saved ratings over unique eligible IDs. A subset round restores on reload because `restoreRun` accepts a subset queue with the same fingerprint, so the documented behavior is achievable. This approves the plan only, not finished code or visual results. Implementation still needs a fresh code inspection.",
+  "findings": [],
+  "coverage": [
+    "Re-read the final amended plan against F1\u2013F8.",
+    "Re-checked the `restoreRun` and `freshRun` constraints in practiceState.ts for the subset-round claim.",
+    "Reused my earlier source reading of ConditionalPractice.tsx, ConditionalSkillActivity.tsx, UnlessDrill.tsx, practiceStore.ts, the registry, routes and the centre component."
+  ],
+  "limitations": [
+    "Source and plan review only. No tests, build or visual checks were run, and none is claimed to pass.",
+    "None of the new Workbench, result primitives or tests exist yet.",
+    "I did not re-inspect CSS, the cited research artifacts, or the Rephrase assigned-run ledger."
+  ]
+}
+```
+Approval check passed for SHA256 952714ed101af5a4815f38207e874252c211e15da244281df5123962b6192884. Observed model claude-sonnet-5-5. Note reviewer limitation claiming Workbench does not exist is stale: Workbench already implemented under prior approval and still requires finished-code inspection. New feedback implementation starts after this approval.
