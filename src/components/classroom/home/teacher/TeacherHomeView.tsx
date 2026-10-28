@@ -1,4 +1,7 @@
 import * as React from "react";
+import { ArrowRight } from "lucide-react";
+import { useHomeFeedback } from "../useHomeFeedback";
+import { postSessionLede, calendarCheckIsStale } from "./postSessionModel";
 import type { TeacherHomeModel } from "./teacherHomeModel";
 import { filterStudents } from "./teacherHomeModel";
 import { PostSessionWork } from "./PostSessionWork";
@@ -44,6 +47,8 @@ function TeacherDeskContent({
   onRetrySessions?: () => void;
 }) {
   const desk = model.desk ?? EMPTY_DESK;
+  const rootRef = React.useRef<HTMLDivElement>(null);
+  useHomeFeedback(rootRef);
   const students = model.roster.all ?? model.roster.recent;
   const [allTasks, setAllTasks] = React.useState(false);
   const [booking, setBooking] = React.useState(false);
@@ -65,43 +70,236 @@ function TeacherDeskContent({
   };
   const count = (state: string, count: number | undefined) =>
     state === "ready" ? (count ?? 0) : "—";
+  const sessionTotal =
+    model.postSession?.data?.total ??
+    model.postSession?.data?.tasks?.length ??
+    0;
+  const sessionSummary =
+    postSessionLede(model.postSession) ??
+    (model.postSession?.state === "ready"
+      ? "Your saved follow-up work is below."
+      : model.postSession?.state === "loading"
+        ? "Checking your session follow-up…"
+        : model.postSession?.state === "error"
+          ? "Your session follow-up could not be checked."
+          : "Connect session follow-up to see your next steps.");
+  const settings = model.postSession?.data?.settings;
+  const quietWork =
+    model.postSession?.state === "ready" &&
+    !model.postSession.refreshFailed &&
+    settings?.enabled &&
+    !settings.last_error &&
+    !settings.catching_up &&
+    !calendarCheckIsStale(settings) &&
+    sessionTotal === 0 &&
+    desk.manual.state === "ready" &&
+    !desk.manual.stale &&
+    desk.manual.data?.total === 0;
+  const paymentActivity = (
+    <section
+      className="classroom-home-region home-desk-payments"
+      id="home-payments"
+    >
+      <header className="classroom-home-region-head">
+        <h2>Payment activity</h2>
+        <span className="home-desk-period">Last 90 days</span>
+        <button
+          className="classroom-home-more"
+          onClick={() => onOpen("/teacher/today")}
+        >
+          History ↗
+        </button>
+      </header>
+      <DeskStatus region={desk.payments} noun="payment activity" />
+      {desk.payments.state === "ready" ? (
+        desk.payments.data?.recent?.length ? (
+          <ul className="home-desk-payment-list">
+            {desk.payments.data.recent.slice(0, 3).map((p) => (
+              <li key={p.id}>
+                <span>
+                  <b>{p.payer_name || p.email || "Payer not linked"}</b>
+                  <small>
+                    {paymentLabel(p)} · {when(p.paid_at)}
+                  </small>
+                </span>
+                <strong>{deskMoney(p)}</strong>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p className="home-desk-empty">No payment activity recorded.</p>
+        )
+      ) : null}
+    </section>
+  );
+  const correspondence = (
+    <section
+      className="classroom-home-region home-desk-correspondence-region"
+      id="home-correspondence"
+      tabIndex={-1}
+    >
+      <header className="classroom-home-region-head">
+        <h2>Correspondence</h2>
+      </header>
+      <div className="home-desk-correspondence">
+        <div>
+          <div className="home-desk-subhead">
+            <h3>Email</h3>
+            <a href={EMAIL} target="_blank" rel="noopener noreferrer">
+              Open email ↗
+            </a>
+          </div>
+          <DeskStatus region={desk.email} noun="student and enquiry email" />
+          {desk.email.data?.enquiries_configured === false ? (
+            <p role="status" className="home-desk-empty">
+              Student email is shown. Add the Gmail label “LSAT U/Tutoring
+              enquiries” to include enquiries.
+            </p>
+          ) : null}
+          {desk.email.data?.threads?.length ? (
+            <ul>
+              {desk.email.data.threads.slice(0, 2).map((thread) => (
+                <li key={thread.id}>
+                  {safeGoogleLink(thread.url, "email") ? (
+                    <a
+                      href={safeGoogleLink(thread.url, "email")!}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <b>{thread.sender}</b>
+                      <small>{thread.subject}</small>
+                    </a>
+                  ) : (
+                    <>
+                      <b>{thread.sender}</b>
+                      <small>{thread.subject}</small>
+                    </>
+                  )}
+                </li>
+              ))}
+            </ul>
+          ) : desk.email.state === "ready" ? (
+            <p className="home-desk-empty">
+              {desk.email.data?.enquiries_configured === false
+                ? "No unread student email."
+                : "No unread student or enquiry email."}
+            </p>
+          ) : null}
+        </div>
+        <div>
+          <div className="home-desk-subhead">
+            <h3>
+              Messages{" "}
+              {model.unread.state === "ready" ? `(${model.unread.total})` : ""}
+            </h3>
+            <button onClick={() => onOpen("/teacher/inbox")}>Inbox ↗</button>
+          </div>
+          {model.unread.state === "loading" ? (
+            <p className="home-desk-empty">Loading messages…</p>
+          ) : model.unread.state === "error" ? (
+            <p role="alert">
+              Unread messages are unknown.{" "}
+              <button onClick={onRetryInbox}>Retry</button>
+            </p>
+          ) : (
+            <>
+              {model.unread.refreshFailed ? (
+                <p role="status" className="home-desk-empty">
+                  Could not refresh messages. Showing the last loaded
+                  conversations.
+                </p>
+              ) : null}
+              <ul aria-label="Unread conversations">
+                {model.unread.rows.slice(0, 2).map((t) => (
+                  <li key={t.id}>
+                    <button onClick={() => onOpen(t.route)}>
+                      <b>{t.name}</b>
+                      <small>{t.snippet}</small>
+                    </button>
+                  </li>
+                ))}
+              </ul>
+              {!model.unread.rows.length ? (
+                <p className="home-desk-empty">
+                  {model.unread.refreshFailed
+                    ? "No conversations were unread when the inbox last loaded."
+                    : "No unread conversations."}
+                </p>
+              ) : null}
+            </>
+          )}
+        </div>
+      </div>
+    </section>
+  );
   return (
     <div
+      ref={rootRef}
       className="classroom-home classroom-home-teacher home-desk"
       data-motion-skip
       data-role-home="teacher"
+      data-home-treatment="paper"
+      data-work-state={quietWork ? "quiet" : "active"}
     >
       <header className="home-desk-masthead">
-        <div>
-          <h1>
-            {model.greeting}
-            {model.displayName ? `, ${model.displayName}.` : "."}
-          </h1>
-          <p>
+        <div className="home-desk-greeting">
+          <p className="home-desk-dateline">
             {model.dateline} <span>Teaching desk</span>
           </p>
+          <h1>
+            {model.greeting}
+            {model.displayName ? (
+              <>
+                , <span className="home-desk-name">{model.displayName}.</span>
+              </>
+            ) : (
+              "."
+            )}
+          </h1>
+          <p className="home-desk-summary">{sessionSummary}</p>
         </div>
-        <div className="home-desk-header-actions">
-          <a href={EMAIL} target="_blank" rel="noopener noreferrer">
-            Open email ↗
-          </a>
+        <div className="home-desk-action-stack">
           <button
-            className="home-desk-primary"
+            className="home-desk-launcher"
+            aria-label="Assign work"
+            data-home-feedback
             onClick={() => onOpen("/teacher/library/assignments")}
           >
-            Assign work ↗
+            <span className="home-desk-launcher-copy">
+              <span className="home-desk-launcher-title">Assign work</span>
+              <span className="home-desk-launcher-description">
+                Choose a student and their next task.
+              </span>
+            </span>
+            <span className="home-desk-launcher-arrow" aria-hidden="true">
+              <ArrowRight size={20} />
+            </span>
           </button>
-          <details className="home-desk-more-menu">
-            <summary>More</summary>
-            <div>
-              <button onClick={() => setBooking(true)}>
-                Create session link
-              </button>
-              <button onClick={() => onOpen("/teacher/students")}>
-                All students
-              </button>
-            </div>
-          </details>
+          <div className="home-desk-header-actions">
+            <a
+              data-home-feedback
+              href={EMAIL}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Open email ↗
+            </a>
+            <button data-home-feedback onClick={() => onOpen("/teacher/inbox")}>
+              Messages
+              {model.unread.state === "ready" ? ` (${model.unread.total})` : ""}
+            </button>
+            <details className="home-desk-more-menu">
+              <summary>More</summary>
+              <div>
+                <button onClick={() => setBooking(true)}>
+                  Create session link
+                </button>
+                <button onClick={() => onOpen("/teacher/students")}>
+                  All students
+                </button>
+              </div>
+            </details>
+          </div>
         </div>
       </header>
       <nav className="home-desk-attention" aria-label="Jump to work">
@@ -149,6 +347,7 @@ function TeacherDeskContent({
             students={students}
             onAll={() => setAllTasks(true)}
           />
+          {correspondence}
         </div>
         <aside
           className="home-desk-side-column"
@@ -305,146 +504,8 @@ function TeacherDeskContent({
               </button>
             </div>
           </section>
+          {paymentActivity}
         </aside>
-      </div>
-      <div className="home-desk-lower">
-        <section className="classroom-home-region" id="home-payments">
-          <header className="classroom-home-region-head">
-            <h2>Payment activity</h2>
-            <span className="home-desk-period">Last 90 days</span>
-            <button
-              className="classroom-home-more"
-              onClick={() => onOpen("/teacher/today")}
-            >
-              History ↗
-            </button>
-          </header>
-          <DeskStatus region={desk.payments} noun="payment activity" />
-          {desk.payments.state === "ready" ? (
-            desk.payments.data?.recent?.length ? (
-              <ul className="home-desk-payment-list">
-                {desk.payments.data.recent.slice(0, 3).map((p) => (
-                  <li key={p.id}>
-                    <span>
-                      <b>{p.payer_name || p.email || "Payer not linked"}</b>
-                      <small>
-                        {paymentLabel(p)} · {when(p.paid_at)}
-                      </small>
-                    </span>
-                    <strong>{deskMoney(p)}</strong>
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p className="home-desk-empty">No payment activity recorded.</p>
-            )
-          ) : null}
-        </section>
-        <section
-          className="classroom-home-region"
-          id="home-correspondence"
-          tabIndex={-1}
-        >
-          <header className="classroom-home-region-head">
-            <h2>Correspondence</h2>
-          </header>
-          <div className="home-desk-correspondence">
-            <div>
-              <div className="home-desk-subhead">
-                <h3>Email</h3>
-                <a href={EMAIL} target="_blank" rel="noopener noreferrer">
-                  Open email ↗
-                </a>
-              </div>
-              <DeskStatus
-                region={desk.email}
-                noun="student and enquiry email"
-              />
-              {desk.email.data?.enquiries_configured === false ? (
-                <p role="status" className="home-desk-empty">
-                  Student email is shown. Add the Gmail label “LSAT U/Tutoring
-                  enquiries” to include enquiries.
-                </p>
-              ) : null}
-              {desk.email.data?.threads?.length ? (
-                <ul>
-                  {desk.email.data.threads.slice(0, 2).map((thread) => (
-                    <li key={thread.id}>
-                      {safeGoogleLink(thread.url, "email") ? (
-                        <a
-                          href={safeGoogleLink(thread.url, "email")!}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          <b>{thread.sender}</b>
-                          <small>{thread.subject}</small>
-                        </a>
-                      ) : (
-                        <>
-                          <b>{thread.sender}</b>
-                          <small>{thread.subject}</small>
-                        </>
-                      )}
-                    </li>
-                  ))}
-                </ul>
-              ) : desk.email.state === "ready" ? (
-                <p className="home-desk-empty">
-                  {desk.email.data?.enquiries_configured === false
-                    ? "No unread student email."
-                    : "No unread student or enquiry email."}
-                </p>
-              ) : null}
-            </div>
-            <div>
-              <div className="home-desk-subhead">
-                <h3>
-                  Messages{" "}
-                  {model.unread.state === "ready"
-                    ? `(${model.unread.total})`
-                    : ""}
-                </h3>
-                <button onClick={() => onOpen("/teacher/inbox")}>
-                  Inbox ↗
-                </button>
-              </div>
-              {model.unread.state === "loading" ? (
-                <p className="home-desk-empty">Loading messages…</p>
-              ) : model.unread.state === "error" ? (
-                <p role="alert">
-                  Unread messages are unknown.{" "}
-                  <button onClick={onRetryInbox}>Retry</button>
-                </p>
-              ) : (
-                <>
-                  {model.unread.refreshFailed ? (
-                    <p role="status" className="home-desk-empty">
-                      Could not refresh messages. Showing the last loaded
-                      conversations.
-                    </p>
-                  ) : null}
-                  <ul aria-label="Unread conversations">
-                    {model.unread.rows.slice(0, 2).map((t) => (
-                      <li key={t.id}>
-                        <button onClick={() => onOpen(t.route)}>
-                          <b>{t.name}</b>
-                          <small>{t.snippet}</small>
-                        </button>
-                      </li>
-                    ))}
-                  </ul>
-                  {!model.unread.rows.length ? (
-                    <p className="home-desk-empty">
-                      {model.unread.refreshFailed
-                        ? "No conversations were unread when the inbox last loaded."
-                        : "No unread conversations."}
-                    </p>
-                  ) : null}
-                </>
-              )}
-            </div>
-          </div>
-        </section>
       </div>
       <section className="classroom-home-region home-desk-students">
         <header className="classroom-home-region-head">
