@@ -33,4 +33,4 @@ if (productionFixture) {
   await server.listen();
 }
 console.log(`${productionFixture ? 'Built' : baseline ? 'Baseline' : 'Current'} My Work fixture: http://127.0.0.1:${port}/scripts/verification/my-work-preview.html`);
-console.log('Scenarios: archive, archive-empty, archive-error, archive-loading, personal-list, personal-empty, personal-editor, personal-new, personal-save-error, personal-conflict, personal-storage-warning, personal-error, personal-loading, reader, reader-missing, reader-error. Append ?scenario=<name>.');
+console.log('Scenarios: archive, archive-empty, archive-error, archive-loading, archive-many-unread, work-loading, work-error, work-empty, work-no-rows, work-empty-kind, work-empty-subject, work-no-match, personal-list, personal-empty, personal-editor, personal-new, personal-save-error, personal-conflict, personal-storage-warning, personal-error, personal-loading, reader, reader-missing, reader-error. Append ?scenario=<name>.');

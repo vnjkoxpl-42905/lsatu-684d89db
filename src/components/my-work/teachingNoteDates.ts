@@ -4,7 +4,7 @@ export function teachingNoteDate(value: string, timeZone?: string) {
   if (!value || Number.isNaN(date.getTime())) {
     return { key: 'undated', month: 'Date unavailable', label: 'Date unavailable' };
   }
-  const options = timeZone ? { timeZone } : {};
+  const options: Intl.DateTimeFormatOptions = { calendar: 'gregory', ...(timeZone ? { timeZone } : {}) };
   const parts = new Intl.DateTimeFormat('en-US', { ...options, year: 'numeric', month: '2-digit' }).formatToParts(date);
   return {
     key: `${parts.find((part) => part.type === 'year')?.value}-${parts.find((part) => part.type === 'month')?.value}`,

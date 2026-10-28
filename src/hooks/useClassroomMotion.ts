@@ -49,8 +49,27 @@ export function useClassroomMotion(ref: RefObject<HTMLElement>, motionKey: strin
     const root = ref.current;
     if (!root || !motionKey || root.closest(EXCLUDED)) return;
     let handleIntent = (_intent: ClassroomListIntent) => {};
-    const owner = (intent: ClassroomListIntent) => handleIntent(intent);
+    const owner = (intent: ClassroomListIntent) => {
+      handleIntent(intent);
+      if (intent === 'restore') queueMicrotask(() => {
+        // A child's layout restore may reach the outgoing owner. Leave the
+        // marker for its replacement's first discovery before cleaning it up.
+        if (listOwners.get(root) === owner) consumeRestore();
+      });
+    };
     listOwners.set(root, owner);
+    const consumeRestore = () => {
+      let restored = false;
+      root.querySelectorAll<HTMLElement>('[data-motion-list-restore]').forEach(marker => {
+        for (let node: HTMLElement | null = marker; node; node = node.parentElement) {
+          const registered = listOwners.get(node);
+          if (!registered) continue;
+          if (registered === owner) { marker.removeAttribute('data-motion-list-restore'); restored = true; }
+          break;
+        }
+      });
+      return restored;
+    };
     const enteredAt = performance.now();
     const media = gsap.matchMedia();
     const context = gsap.context(() => {
@@ -71,8 +90,8 @@ export function useClassroomMotion(ref: RefObject<HTMLElement>, motionKey: strin
           return `slot:${parts.join('/')}`;
         };
         const pending = new Map<string, { element: HTMLElement; timer: ReturnType<typeof setTimeout>; index: number }>();
-        const records: Array<{ element: HTMLElement; tween: gsap.core.Tween; scroller?: HTMLElement; list: boolean }> = [];
-        let listInteraction = false;
+        const records: Array<{ element: HTMLElement; tween: gsap.core.Tween; scroller?: HTMLElement; list: boolean; listEntry: { entered: boolean } }> = [];
+        let listInteraction = consumeRestore();
         let keyboardInteraction = false;
         const selector = '[data-motion-item], [data-motion-enter], [data-motion-reveal]';
         const listOnly = (element: HTMLElement) => !!element.closest('[data-motion-policy="list-only"]');
@@ -112,7 +131,7 @@ export function useClassroomMotion(ref: RefObject<HTMLElement>, motionKey: strin
             batch.forEach(([animation], index) => animation.delay(index * stagger).restart(true));
           });
         };
-        const settle = ({ tween }: typeof records[number]) => { entering.delete(tween); tween.scrollTrigger?.kill(); tween.progress(1); };
+        const settle = (record: typeof records[number]) => { if (record.list) record.listEntry.entered = true; entering.delete(record.tween); record.tween.scrollTrigger?.kill(); record.tween.progress(1); };
         const finishPending = (id: string) => {
           const waiting = pending.get(id);
           if (!waiting) return;
@@ -178,6 +197,8 @@ export function useClassroomMotion(ref: RefObject<HTMLElement>, motionKey: strin
             }
             if (waiting) { clearTimeout(waiting.timer); pending.delete(id); }
             seen.add(element); completedIds.add(id);
+            // Capture before GSAP construction: onEnter can run synchronously.
+            const listEntry = { entered: false };
             const tween = gsap.fromTo(element,
               { y: preset.y, opacity: preset.opacity, ...(list ? {} : { filter: CLASSROOM_REVEAL.filter }) },
               { y: 0, opacity: 1, ...(list ? {} : { filter: 'blur(0px)' }), duration: preset.duration, ease: preset.ease,
@@ -185,11 +206,11 @@ export function useClassroomMotion(ref: RefObject<HTMLElement>, motionKey: strin
                 ...(reachable ? { immediateRender: true, scrollTrigger: {
                   trigger: element, scroller, start: 'clamp(top bottom-=100)', once: true,
                   toggleActions: list ? 'none none none none' : 'play none none none',
-                  ...(list ? { onEnter: (trigger: ScrollTrigger) => { if (trigger.animation) queueListEntry(trigger.animation as gsap.core.Tween, element); } } : {}),
+                  ...(list ? { onEnter: (trigger: ScrollTrigger) => { if (trigger.animation) { listEntry.entered = true; queueListEntry(trigger.animation as gsap.core.Tween, element); } } } : {}),
                 } } : {}),
               });
-            records.push({ element, tween, scroller, list });
-            if (list && !reachable) queueListEntry(tween, element);
+            records.push({ element, tween, scroller, list, listEntry });
+            if (list && !reachable) { listEntry.entered = true; queueListEntry(tween, element); }
           });
         };
         scope.add(() => discover(true));
@@ -198,6 +219,7 @@ export function useClassroomMotion(ref: RefObject<HTMLElement>, motionKey: strin
           clearTimeout(timer);
           timer = setTimeout(() => records.forEach(record => {
             if (!record.tween.scrollTrigger) return;
+            if (record.list && record.listEntry.entered) return;
             if (inView(record.element, record.scroller)) settle(record);
             else record.tween.scrollTrigger.refresh();
           }), 100);
@@ -224,7 +246,10 @@ export function useClassroomMotion(ref: RefObject<HTMLElement>, motionKey: strin
           if (intent === 'paginate') { if (!keyboardInteraction) listInteraction = false; return; }
           settleLists();
         };
-        const useList = () => { keyboardInteraction = true; settleLists(); };
+        const useList = (event: Event) => {
+          if (event instanceof KeyboardEvent && ['Meta', 'Control', 'Shift', 'Alt', 'Escape'].includes(event.key)) return;
+          keyboardInteraction = true; settleLists();
+        };
         root.addEventListener('keydown', useList); root.addEventListener('input', useList); root.addEventListener('change', useList);
         root.addEventListener('focusin', interact); root.addEventListener('pointerdown', interact);
         window.addEventListener('beforeprint', settleLists);
@@ -239,6 +264,7 @@ export function useClassroomMotion(ref: RefObject<HTMLElement>, motionKey: strin
         };
       });
     }, root);
+    consumeRestore(); // Reduced-motion owners consume markers without animating.
     return () => { media.revert(); context.revert(); if (listOwners.get(root) === owner) listOwners.delete(root); };
   }, [ref, motionKey]);
 }

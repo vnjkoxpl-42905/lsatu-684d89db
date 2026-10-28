@@ -1,5 +1,5 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import { Link, MemoryRouter, Route, Routes, useLocation } from 'react-router-dom';
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { Link, MemoryRouter, Route, Routes, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type { ClassroomItem } from '@/hooks/useClassroomItems';
 import { TeachingNotesArchive } from './TeachingNotesArchive';
@@ -20,7 +20,7 @@ async function chooseType(label: string) {
   fireEvent.keyDown(option, { key: 'Enter' });
 }
 function Location() { return <output aria-label="Location">{useLocation().search}</output>; }
-function show(path = '/my-work/notes') { return render(<MemoryRouter initialEntries={[path]}><TeachingNotesArchive /><Location /></MemoryRouter>); }
+function show(path = '/my-work/notes', returning: string | false = false) { return render(<MemoryRouter initialEntries={[returning ? { pathname: path.split('?')[0], search: path.includes('?') ? `?${path.split('?')[1]}` : '', state: { notesArchiveReturn: returning } } : path]}><TeachingNotesArchive /><Location /></MemoryRouter>); }
 function note(index: number): ClassroomItem {
   return { id: `note-${index}`, title: `Reference ${index}`, type: 'note', created_at: `2026-10-${String(26 - index).padStart(2, '0')}T12:00:00Z`, content_html: `<p>${index === 14 ? 'Complete conditions on older page' : 'A useful explanation.'}</p>`, metadata_json: {}, status: 'assigned' } as ClassroomItem;
 }
@@ -73,6 +73,34 @@ describe('TeachingNotesArchive', () => {
     fireEvent.change(screen.getByRole('searchbox'), { target: { value: 'absent' } });
     fireEvent.click(screen.getByRole('button', { name: 'Clear filters' }));
     expect(listIntent.mock.calls.map(call => call[1])).toEqual(['filter', 'filter', 'filter']);
+  });
+  it('returns keyboard focus to search after Clear filters removes the focused no-match button', () => {
+    show('/my-work/notes?q=absent&filter=unread');
+    const clear = screen.getByRole('button', { name: 'Clear filters' });
+    clear.focus(); fireEvent.keyDown(clear, { key: 'Enter' }); fireEvent.click(clear, { detail: 0 });
+    expect(screen.queryByRole('button', { name: 'Clear filters' })).not.toBeInTheDocument();
+    expect(screen.getByRole('searchbox', { name: 'Search notes' })).toHaveFocus();
+    expect(screen.getByLabelText('Location').textContent).toBe('');
+    expect(listIntent).toHaveBeenCalledOnce();
+    expect(listIntent).toHaveBeenCalledWith(document.querySelector('.teaching-notes-home'), 'filter');
+  });
+  it('does not focus search after a pointer clears filters even when the button held focus', () => {
+    show('/my-work/notes?q=absent');
+    const clear = screen.getByRole('button', { name: 'Clear filters' }); clear.focus();
+    fireEvent.click(clear, { detail: 1 });
+    expect(screen.queryByRole('button', { name: 'Clear filters' })).not.toBeInTheDocument();
+    expect(screen.getByRole('searchbox', { name: 'Search notes' })).not.toHaveFocus();
+    expect(listIntent).toHaveBeenCalledWith(document.querySelector('.teaching-notes-home'), 'filter');
+  });
+  it('does not focus search when a pointer All types choice removes the focused selector', async () => {
+    show('/my-work/notes?type=smartboard_recap');
+    const trigger = screen.getByRole('combobox', { name: 'Type' });
+    const down = new MouseEvent('pointerdown', { bubbles: true, button: 0, ctrlKey: false });
+    Object.defineProperty(down, 'pointerType', { value: 'mouse' }); fireEvent(trigger, down);
+    const option = await screen.findByRole('option', { name: 'All types' }); act(() => option.focus());
+    fireEvent.click(option, { detail: 1 });
+    await waitFor(() => expect(screen.queryByRole('combobox')).not.toBeInTheDocument());
+    expect(screen.getByRole('searchbox', { name: 'Search notes' })).not.toHaveFocus();
   });
   it('signals a portaled type choice against the archive ref before committing the URL', async () => {
     state.data[0].type = 'session_recap'; show();
@@ -128,7 +156,7 @@ describe('TeachingNotesArchive', () => {
   it('stores the lead identity on detail navigation and restores its focus on return', () => {
     render(<MemoryRouter initialEntries={['/my-work/notes']}><Routes>
       <Route path="/my-work/notes" element={<TeachingNotesArchive />} />
-      <Route path="/classroom/item/:id" element={<Link to="/my-work/notes">Back to notes</Link>} />
+      <Route path="/classroom/item/:id" element={<Link to="/my-work/notes" state={{ notesArchiveReturn: 'note-0' }}>Back to notes</Link>} />
     </Routes></MemoryRouter>);
     fireEvent.click(screen.getByRole('link', { name: /Reference 0/ }));
     expect(JSON.parse(sessionStorage.getItem('my-work-notes-anchor:student-a:/my-work/notes')!)).toMatchObject({ id: 'note-0' });
@@ -142,9 +170,62 @@ describe('TeachingNotesArchive', () => {
     listIntent.mockImplementation((_element, intent) => {
       expect(intent).toBe('restore'); expect(document.activeElement?.tagName).not.toBe('A');
     });
-    show('/my-work/notes?filter=unread');
+    show('/my-work/notes?filter=unread', 'note-0');
     expect(listIntent).toHaveBeenCalledOnce();
     expect(screen.getByRole('link', { name: /Reference 1\./ })).toHaveFocus();
+  });
+  it('ignores stale anchors on a direct default POP and pointer pagination into a saved key', () => {
+    sessionStorage.setItem('my-work-notes-anchor:student-a:/my-work/notes', JSON.stringify({ id: 'note-0', ids: ['note-0'] }));
+    sessionStorage.setItem('my-work-notes-anchor:student-a:/my-work/notes?shown=24', JSON.stringify({ id: 'note-14', ids: ['note-14'], archiveEntryKey: 'old-entry' }));
+    show();
+    expect(listIntent).not.toHaveBeenCalled();
+    fireEvent.click(screen.getByRole('button', { name: /Load more notes/ }), { detail: 1 });
+    expect(listIntent.mock.calls.map(call => call[1])).toEqual(['paginate']);
+    expect(screen.getByRole('link', { name: /Reference 14/ })).not.toHaveFocus();
+  });
+  it('ignores a stale anchor when a portal filter reaches its saved URL', async () => {
+    state.data[0].type = 'session_recap';
+    sessionStorage.setItem('my-work-notes-anchor:student-a:/my-work/notes?type=session_recap', JSON.stringify({ id: 'note-0', ids: ['note-0'], archiveEntryKey: 'old-entry' }));
+    show(); await chooseType('Session recaps');
+    expect(listIntent.mock.calls.map(call => call[1])).toEqual(['filter']);
+  });
+  it('restores a true reader POP to the original stored archive history entry', () => {
+    function ReaderBack() { const navigate = useNavigate(); return <button onClick={() => navigate(-1)}>Browser Back</button>; }
+    sessionStorage.setItem('my-work-notes-anchor:student-a:/my-work/notes', JSON.stringify({ id: 'note-4', ids: ['note-4'], archiveEntryKey: 'archive-history' }));
+    render(<MemoryRouter initialEntries={[{ pathname: '/my-work/notes', key: 'archive-history' }, '/classroom/item/note-4']} initialIndex={1}><Routes><Route path="/my-work/notes" element={<TeachingNotesArchive />} /><Route path="/classroom/item/:id" element={<ReaderBack />} /></Routes></MemoryRouter>);
+    fireEvent.click(screen.getByRole('button', { name: 'Browser Back' }));
+    expect(screen.getByRole('link', { name: /Reference 4\./ })).toHaveFocus();
+    expect(listIntent).toHaveBeenCalledWith(document.querySelector('.teaching-notes-home'), 'restore');
+  });
+  it('discards an old archive anchor when an unrelated reader returns by the fallback route', () => {
+    function Reader() { const { id } = useParams(); return <><Link to="/elsewhere">Leave by rail</Link><Link to="/my-work/notes" state={{ notesArchiveReturn: id }}>Back to notes</Link></>; }
+    render(<MemoryRouter initialEntries={['/my-work/notes']}><Routes><Route path="/my-work/notes" element={<TeachingNotesArchive />} /><Route path="/classroom/item/:id" element={<Reader />} /><Route path="/elsewhere" element={<Link to="/classroom/item/note-1">Open unrelated note</Link>} /></Routes></MemoryRouter>);
+    fireEvent.click(screen.getByRole('link', { name: /Reference 0\./ }));
+    fireEvent.click(screen.getByRole('link', { name: 'Leave by rail' }));
+    fireEvent.click(screen.getByRole('link', { name: 'Open unrelated note' }));
+    fireEvent.click(screen.getByRole('link', { name: 'Back to notes' }));
+    expect(screen.getByRole('link', { name: /Reference 0\./ })).not.toHaveFocus();
+    expect(listIntent).not.toHaveBeenCalled();
+    expect(sessionStorage.getItem('my-work-notes-anchor:student-a:/my-work/notes')).toBeNull();
+  });
+  it('does not trust an old boolean reader-return marker', () => {
+    sessionStorage.setItem('my-work-notes-anchor:student-a:/my-work/notes', JSON.stringify({ id: 'note-0', ids: ['note-0'] }));
+    render(<MemoryRouter initialEntries={[{ pathname: '/my-work/notes', state: { notesArchiveReturn: true } }]}><TeachingNotesArchive /></MemoryRouter>);
+    expect(listIntent).not.toHaveBeenCalled();
+    expect(sessionStorage.getItem('my-work-notes-anchor:student-a:/my-work/notes')).toBeNull();
+  });
+  it.each(['ctrlKey', 'metaKey', 'shiftKey', 'altKey'] as const)('does not save a return anchor for %s clicks or restore on filter Back', (modifier) => {
+    function BrowserBack() { const navigate = useNavigate(); return <button onClick={() => navigate(-1)}>Browser Back</button>; }
+    render(<MemoryRouter initialEntries={[{ pathname: '/my-work/notes', key: 'original-archive' }]}><TeachingNotesArchive /><BrowserBack /><Location /></MemoryRouter>);
+    // Prevent jsdom's native navigation after React has observed the modifier.
+    document.addEventListener('click', event => event.preventDefault(), { once: true });
+    fireEvent.click(screen.getByRole('link', { name: /Reference 9\./ }), { [modifier]: true, button: 0, detail: 1 });
+    expect(sessionStorage.getItem('my-work-notes-anchor:student-a:/my-work/notes')).toBeNull();
+    fireEvent.click(screen.getByRole('button', { name: 'Unread' }));
+    const back = screen.getByRole('button', { name: 'Browser Back' }); back.focus(); fireEvent.click(back);
+    expect(screen.getByLabelText('Location').textContent).toBe('');
+    expect(back).toHaveFocus();
+    expect(listIntent.mock.calls.map(call => call[1])).toEqual(['filter']);
   });
 
   it('combines exact type with unread and search while preserving type on detail links', async () => {

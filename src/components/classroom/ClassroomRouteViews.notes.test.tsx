@@ -14,7 +14,7 @@ vi.mock("@/components/classroom/StructuredTAAssignmentWorkspace", () => ({ defau
 vi.mock("@/components/classroom/ClassroomMarkdown", () => ({ default: () => null }));
 vi.mock("@/lib/drillLaunch", () => ({ launchDrill: vi.fn() }));
 import { ClassroomItemView } from "./ClassroomRouteViews";
-function Where() { const location = useLocation(); return <output>{location.pathname}{location.search}</output>; }
+function Where() { const location = useLocation(); return <output data-reader-return={String(location.state?.notesArchiveReturn ?? '')}>{location.pathname}{location.search}</output>; }
 beforeEach(() => { markRead.mockReset(); markRead.mockResolvedValue(undefined); fixture.item.student_id = "reader"; fixture.item.status = "assigned"; fixture.item.metadata_json = {}; });
 afterEach(cleanup);
 describe("note detail return links", () => {
@@ -24,6 +24,7 @@ describe("note detail return links", () => {
     render(<QueryClientProvider client={new QueryClient()}><MemoryRouter initialEntries={[`/classroom/item/one?${new URLSearchParams({ returnTo })}`]}><Routes><Route path="/classroom/item/:itemId" element={<ClassroomItemView />} /><Route path="*" element={<Where />} /></Routes></MemoryRouter></QueryClientProvider>);
     fireEvent.click(await screen.findByRole("button", { name: "Back to notes" }));
     await waitFor(() => expect(screen.getByRole("status")).toHaveTextContent(returnTo));
+    expect(screen.getByRole('status')).toHaveAttribute('data-reader-return', 'one');
   });
   it("uses the safe fallback for an external return target", async () => {
     fixture.item.content_html = "<p>Full note</p>";

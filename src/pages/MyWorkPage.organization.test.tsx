@@ -3,18 +3,92 @@ import { act, render, screen, fireEvent, within } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 beforeEach(() => { HTMLElement.prototype.scrollIntoView = vi.fn(); });
-const state = vi.hoisted(() => ({ rows: [] as any[], failed: false, generalAccess: true }));
+const state = vi.hoisted(() => ({ rows: [] as any[], failed: false, generalAccess: true, readingCenterAccess: false }));
 vi.mock('@/hooks/useUserPermissions', () => ({ useUserPermissions: () => ({ is_admin: false, has_classroom_access: state.generalAccess }) }));
-vi.mock('@/hooks/useReadingCenterAccess', () => ({ useReadingCenterAccess: () => ({ allowed: false }) }));
+vi.mock('@/hooks/useReadingCenterAccess', () => ({ useReadingCenterAccess: () => ({ allowed: state.readingCenterAccess }) }));
 vi.mock('@/components/classroom/PrescribedWeek', () => ({ default: () => <div>Weekly plan</div> }));
 vi.mock('@/hooks/useAssignedTodoFeed', async (original) => ({ ...await original<typeof import('@/hooks/useAssignedTodoFeed')>(), useAssignedTodoFeed: () => ({ rows: state.rows, loading: false, failed: state.failed, retry: vi.fn() }) }));
 const notifyIntent = vi.hoisted(() => vi.fn());
 vi.mock('@/hooks/useClassroomMotion', () => ({ notifyClassroomListIntent: (...args: any[]) => notifyIntent(...args) }));
 import MyWorkPage from './MyWorkPage';
-beforeEach(() => { state.failed = false; state.generalAccess = true; notifyIntent.mockReset(); });
+beforeEach(() => { state.failed = false; state.generalAccess = true; state.readingCenterAccess = false; notifyIntent.mockReset(); });
 function row(id: string, changes = {}) { return { key: id, refId: id, sourceTable: 'guided_drill_assignments', kind: 'guided', title: `Assignment ${id}`, subtitle: 'Practice the reasoning', route: `/guided/${id}`, status: 'assigned', workSection: 'lr', createdAt: '2026-10-20T12:00:00Z', dueAt: null, ...changes }; }
 function open(completed = false, path = '/my-work/to-do') { return render(<MemoryRouter initialEntries={[path]}><MyWorkPage completed={completed} /></MemoryRouter>); }
 describe('My Work organization', () => {
+  it.each([[0, 'keyboard'], [1, 'pointer']])('recovers focus after failed-empty Clear with %s-detail %s activation', (detail) => {
+    state.rows = []; state.failed = true;
+    open(false, '/my-work/to-do?kind=Activity');
+    const clear = screen.getByRole('button', { name: 'Clear filters' });
+    clear.focus();
+    fireEvent.click(clear, { detail });
+    expect(screen.queryByRole('searchbox')).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Clear filters' })).not.toBeInTheDocument();
+    if (detail === 0) expect(screen.getByRole('button', { name: 'Try again' })).toHaveFocus();
+    else expect(screen.getByRole('alert')).toHaveFocus();
+  });
+
+  it('does not open the search keyboard after pointer Clear filters', () => {
+    state.rows = [row('a')]; open(false, '/my-work/to-do?kind=Activity');
+    const clear = screen.getByRole('button', { name: 'Clear filters' });
+    clear.focus();
+    fireEvent.click(clear, { detail: 1 });
+    expect(screen.queryByRole('button', { name: 'Clear filters' })).not.toBeInTheDocument();
+    expect(screen.getByRole('searchbox')).not.toHaveFocus();
+    expect(screen.getByRole('region', { name: 'Work to do' })).toHaveFocus();
+  });
+  it.each([
+    ['kind=Activity', 'Assignment type', 'All work types'],
+    ['subject=rc', 'Assignment subject', 'All subjects'],
+  ])('keeps pointer portal reset away from Search: %s', async (query, label, allLabel) => {
+    state.rows = [row('a')]; open(false, `/my-work/to-do?${query}`);
+    const trigger = screen.getByRole('combobox', { name: label });
+    trigger.focus();
+    fireEvent.keyDown(trigger, { key: 'ArrowDown' });
+    const all = await screen.findByRole('option', { name: allLabel });
+    act(() => all.focus());
+    fireEvent.pointerDown(all, { pointerType: 'touch', button: 0 });
+    fireEvent.click(all, { detail: 1 });
+    expect(screen.queryByRole('combobox', { name: label })).not.toBeInTheDocument();
+    expect(screen.getByRole('searchbox')).not.toHaveFocus();
+    expect(screen.getByRole('region', { name: 'Work to do' })).toHaveFocus();
+  });
+
+  it('returns keyboard focus to Search after Clear filters removes the no-match action', () => {
+    state.rows = [row('a')]; open(false, '/my-work/to-do?kind=Activity');
+    const clear = screen.getByRole('button', { name: 'Clear filters' });
+    clear.focus();
+    fireEvent.click(clear, { detail: 0 });
+    expect(screen.queryByRole('button', { name: 'Clear filters' })).not.toBeInTheDocument();
+    expect(screen.getByRole('searchbox')).toHaveFocus();
+    expect(screen.getByRole('link', { name: /Assignment a/ })).toBeInTheDocument();
+  });
+  it('keeps a valid Reading Center filter across denied, granted and revoked access without exposing other work', async () => {
+    state.generalAccess = false;
+    state.rows = [row('private', { kind: 'activity' }), row('rc', { sourceTable: 'reading_center', refId: 'library', workSection: 'rc', title: 'Reading Center library' }), row('invalid', { sourceTable: 'reading_center', refId: 'private-library', workSection: 'mixed' })];
+    const view = open(false, '/my-work/to-do?kind=Reading+Center');
+    const assertDenied = () => {
+      expect(screen.getByRole('combobox', { name: 'Assignment type' })).toHaveTextContent('Reading Center');
+      expect(screen.getByText('0 of 0 to do')).toBeInTheDocument();
+      expect(screen.queryByRole('link')).not.toBeInTheDocument();
+      expect(screen.queryByRole('combobox', { name: 'Assignment subject' })).not.toBeInTheDocument();
+    };
+    assertDenied();
+    state.readingCenterAccess = true;
+    view.rerender(<MemoryRouter><MyWorkPage completed={false} /></MemoryRouter>);
+    expect(screen.getByRole('link', { name: /Reading Center library/ })).toBeInTheDocument();
+    expect(screen.getByText('1 of 1 to do')).toBeInTheDocument();
+    expect(screen.queryByText('Assignment private')).not.toBeInTheDocument();
+    expect(screen.queryByText('Assignment invalid')).not.toBeInTheDocument();
+    const type = screen.getByRole('combobox', { name: 'Assignment type' });
+    fireEvent.keyDown(type, { key: 'ArrowDown' });
+    expect(await screen.findByRole('option', { name: 'Reading Center' })).toBeInTheDocument();
+    expect(screen.queryByRole('option', { name: 'Activity' })).not.toBeInTheDocument();
+    fireEvent.keyDown(screen.getByRole('listbox'), { key: 'Escape' });
+    state.readingCenterAccess = false;
+    view.rerender(<MemoryRouter><MyWorkPage completed={false} /></MemoryRouter>);
+    assertDenied();
+  });
+
   it.each([
     ['kind=Activity', 'Assignment type', 'All work types'],
     ['subject=rc', 'Assignment subject', 'All subjects'],

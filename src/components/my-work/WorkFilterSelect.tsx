@@ -5,13 +5,15 @@ import { useNotesSelectMotion } from '@/hooks/useNotesSelectMotion';
 export function WorkFilterSelect({ label, allLabel, value, options, onChange }: {
   label: string; allLabel: string; value: string;
   options: Array<{ value: string; label: string }>;
-  onChange: (value: string, focusedWithin: boolean) => void;
+  onChange: (value: string, focusedWithin: boolean, modality: 'keyboard' | 'pointer') => void;
 }) {
   const labelId = useId();
   const triggerRef = useRef<HTMLButtonElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const [open, setOpen] = useState(false);
   const [modality, setModality] = useState<'keyboard' | 'pointer'>('keyboard');
+  const modalityRef = useRef(modality);
+  function recordModality(next: 'keyboard' | 'pointer') { modalityRef.current = next; setModality(next); }
   const motionRef = useNotesSelectMotion(open, modality);
   const setContentRef = useCallback((element: HTMLDivElement | null) => {
     contentRef.current = element;
@@ -22,10 +24,10 @@ export function WorkFilterSelect({ label, allLabel, value, options, onChange }: 
     <Select open={open} onOpenChange={setOpen} value={value || 'all'} onValueChange={(next) => {
       const active = document.activeElement;
       const focusedWithin = !!active && (triggerRef.current?.contains(active) || contentRef.current?.contains(active));
-      onChange(next === 'all' ? '' : next, Boolean(focusedWithin));
+      onChange(next === 'all' ? '' : next, Boolean(focusedWithin), modalityRef.current);
     }}>
-      <SelectTrigger ref={triggerRef} aria-labelledby={labelId} className="notes-select-trigger" onPointerDown={() => setModality('pointer')} onKeyDown={() => setModality('keyboard')}><SelectValue /></SelectTrigger>
-      <SelectContent ref={setContentRef} className="notes-select-content" data-input-modality={modality}>
+      <SelectTrigger ref={triggerRef} aria-labelledby={labelId} className="notes-select-trigger" onPointerDown={() => recordModality('pointer')} onKeyDown={() => recordModality('keyboard')}><SelectValue /></SelectTrigger>
+      <SelectContent onPointerDownCapture={() => recordModality('pointer')} onKeyDownCapture={() => recordModality('keyboard')} ref={setContentRef} className="notes-select-content" data-input-modality={modality}>
         <SelectItem className="notes-select-option" value="all">{allLabel}</SelectItem>
         {options.map((option) => <SelectItem key={option.value} className="notes-select-option" value={option.value}>{option.label}</SelectItem>)}
       </SelectContent>

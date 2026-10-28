@@ -175,6 +175,16 @@ describe('reference motion safety', () => {
     notifyClassroomListIntent(root, 'restore');
     expect(mock.fromTo.mock.results[0].value.progress).toHaveBeenCalledWith(1);
   });
+  it.each(['Meta', 'Control', 'Shift', 'Alt', 'Escape'])('does not make %s keydown suppress later pointer pagination', async (key) => {
+    const { root, run } = mount('<div data-motion-list><a data-motion-item data-motion-id="one">One</a></div>'); run();
+    notifyClassroomListIntent(root, 'filter');
+    root.dispatchEvent(new KeyboardEvent('keydown', { key, bubbles: true }));
+    notifyClassroomListIntent(root, 'paginate');
+    const more = document.createElement('a'); more.dataset.motionItem = ''; more.dataset.motionId = 'two'; geometry(more);
+    root.firstElementChild!.append(more); await Promise.resolve();
+    expect(mock.fromTo).toHaveBeenCalledTimes(2);
+    expect(mock.fromTo.mock.calls[1][2]).toMatchObject({ paused: true });
+  });
   it('resolves only the nearest registered owner, including reduced-motion owners, and unregisters', () => {
     const outer = mount('<div data-motion-list><a data-motion-item>Outer</a></div><div class="classroom-motion-local"><div data-motion-list><a data-motion-item>Inner</a></div></div>');
     outer.run(); const outside = mock.fromTo.mock.results[0].value;
@@ -189,6 +199,30 @@ describe('reference motion safety', () => {
     expect(outside.progress).not.toHaveBeenCalled();
     reduced.unmount(); notifyClassroomListIntent(innerRoot, 'restore');
     expect(outside.progress).toHaveBeenCalledWith(1);
+  });
+  it.each([false, true])('cleans delayed restore markers after the registered owner handles them, reduced=%s', async (reduced) => {
+    mock.reduced = reduced;
+    const { root, run } = mount('<section><div data-motion-list><a data-motion-item>Row</a></div></section>'); run();
+    const archive = root.firstElementChild as HTMLElement;
+    archive.setAttribute('data-motion-list-restore', '');
+    notifyClassroomListIntent(archive, 'restore');
+    expect(archive).toHaveAttribute('data-motion-list-restore');
+    await new Promise<void>(resolve => queueMicrotask(resolve));
+    expect(archive).not.toHaveAttribute('data-motion-list-restore');
+  });
+  it('preserves an outgoing owner restore marker for replacement discovery before microtask cleanup', async () => {
+    const { root } = mount('<section data-motion-policy="list-only"><h2 tabindex="-1">Archive</h2><div data-motion-list><a data-motion-item>Row</a></div></section>');
+    const ref = { current: root };
+    const hook = renderHook(({ key }) => useClassroomMotion(ref, key), { initialProps: { key: 'old' } });
+    expect(mock.fromTo).toHaveBeenCalledTimes(1);
+    const archive = root.firstElementChild as HTMLElement;
+    archive.setAttribute('data-motion-list-restore', ''); root.querySelector('h2')!.focus();
+    notifyClassroomListIntent(archive, 'restore');
+    hook.rerender({ key: 'new' });
+    expect(mock.fromTo).toHaveBeenCalledTimes(1);
+    expect(archive).not.toHaveAttribute('data-motion-list-restore');
+    await new Promise<void>(resolve => queueMicrotask(resolve));
+    expect(mock.fromTo).toHaveBeenCalledTimes(1);
   });
   it.each(['Loading your work…', 'Could not load', 'Nothing assigned', 'No matches', 'Loading notes', 'Notes unavailable', 'No notes', 'Personal notes'])('keeps list-only %s content immediate, including generic fallback', (text) => {
     const { root, run } = mount(`<div data-motion-policy="list-only"><section data-motion-item>${text}</section></div>`);
@@ -364,10 +398,34 @@ describe('reference motion safety', () => {
     expect(tween.progress).toHaveBeenCalledWith(1);
     expect(tween.scrollTrigger.kill).toHaveBeenCalledTimes(1);
   });
+  it.each([false, true])('does not snap a list reveal on resize after entry, frame started=%s', (started) => {
+    vi.useFakeTimers();
+    let resized: () => void = () => {}, frame: FrameRequestCallback | undefined;
+    vi.stubGlobal('ResizeObserver', class { constructor(callback: () => void) { resized = callback; } observe() {} disconnect() {} });
+    vi.spyOn(window, 'requestAnimationFrame').mockImplementation(callback => { frame = callback; return 97; });
+    const { root, run } = mount('<div data-motion-list><a data-motion-item data-below>Entering row</a></div>'); run();
+    const tween = mock.fromTo.mock.results[0].value;
+    geometry(root.querySelector('a')!, 100);
+    mock.fromTo.mock.calls[0][2].scrollTrigger.onEnter({ animation: tween });
+    if (started) frame!(0);
+    resized(); vi.advanceTimersByTime(100);
+    expect(tween.progress).not.toHaveBeenCalled();
+    expect(tween.scrollTrigger.refresh).not.toHaveBeenCalled();
+    if (!started) { frame!(0); expect(tween.restart).toHaveBeenCalledWith(true); }
+  });
+  it('still settles an untriggered list row pushed into view by layout', () => {
+    vi.useFakeTimers(); let resized: () => void = () => {};
+    vi.stubGlobal('ResizeObserver', class { constructor(callback: () => void) { resized = callback; } observe() {} disconnect() {} });
+    const { root, run } = mount('<div data-motion-list><a data-motion-item data-below>Untriggered row</a></div>'); run();
+    const tween = mock.fromTo.mock.results[0].value;
+    geometry(root.querySelector('a')!, 100); resized(); vi.advanceTimersByTime(100);
+    expect(tween.progress).toHaveBeenCalledWith(1);
+    expect(tween.scrollTrigger.kill).toHaveBeenCalledOnce();
+  });
 });
 
 describe('real notes archive motion composition', () => {
-  function setup(path = '/my-work/notes', work = false) {
+  function setup(path = '/my-work/notes', work = false, returning: string | false = false, empty = false) {
     const frames: FrameRequestCallback[] = [];
     vi.spyOn(window, 'requestAnimationFrame').mockImplementation(callback => { frames.push(callback); return frames.length; });
     vi.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockReturnValue({ height: 100, top: 20, bottom: 120 } as DOMRect);
@@ -377,6 +435,7 @@ describe('real notes archive motion composition', () => {
     HTMLElement.prototype.scrollIntoView = () => undefined;
     archiveFixture.loading = false;
     archiveFixture.data = Array.from({ length: 28 }, (_, index) => ({ id: `real-${index}`, title: `Real note ${index}`, type: index % 2 ? 'note' : 'session_recap', created_at: `2026-10-${String(28 - index).padStart(2, '0')}T12:00:00Z`, status: 'assigned', metadata_json: index % 3 ? {} : { read_at: '2026-10-27' } } as ClassroomItem));
+    if (empty) archiveFixture.data = [];
     mock.fromTo.mockImplementation((element: HTMLElement, from: Record<string, unknown>) => {
       element.style.opacity = String(from.opacity);
       const animation = { delay: vi.fn(), restart: vi.fn(), progress: vi.fn(), scrollTrigger: { refresh: vi.fn(), kill: vi.fn() } };
@@ -385,7 +444,7 @@ describe('real notes archive motion composition', () => {
       animation.restart.mockImplementation(() => { element.style.opacity = ''; return animation; });
       return animation;
     });
-    const view = render(<MemoryRouter initialEntries={[path]}><ClassroomMotionContent><Routes><Route element={<StudentDestination destination="my-work" />}><Route path={work ? '/my-work/to-do' : '/my-work/notes'} element={work ? <MyWorkPage completed={false} /> : <TeachingNotesArchive />} /></Route></Routes></ClassroomMotionContent></MemoryRouter>);
+    const view = render(<MemoryRouter initialEntries={[returning ? { pathname: path, state: { notesArchiveReturn: returning } } : path]}><ClassroomMotionContent><Routes><Route element={<StudentDestination destination="my-work" />}><Route path={work ? '/my-work/to-do' : '/my-work/notes'} element={work ? <MyWorkPage completed={false} /> : <TeachingNotesArchive />} /></Route></Routes></ClassroomMotionContent></MemoryRouter>);
     return { ...view, flush: () => { frames.splice(0).forEach(frame => frame(0)); }, rowCalls: () => mock.fromTo.mock.calls.filter(([element]) => element.matches('.teaching-note-card')) };
   }
   it.each(['type', 'unread'])('settles real pointer %s filtering and reveals new pointer Load more rows in order', async (filter) => {
@@ -418,11 +477,24 @@ describe('real notes archive motion composition', () => {
   });
   it('restores cached focus in the first layout commit without hiding surrounding rows', () => {
     sessionStorage.setItem('my-work-notes-anchor:motion-student:/my-work/notes', JSON.stringify({ id: 'real-4', ids: ['real-3', 'real-4', 'real-5'], pointer: true }));
-    const view = setup();
+    const view = setup('/my-work/notes', false, 'real-4');
     expect(screen.getByRole('link', { name: /Read Real note 4\./ })).toHaveFocus();
     expect(view.rowCalls()).toHaveLength(0);
     document.querySelectorAll<HTMLElement>('.teaching-note-card').forEach(row => expect(row.style.opacity).not.toBe('0'));
     expect(screen.getByRole('link', { name: /Read Real note 4\./ })).toHaveAccessibleName(/Shared/);
+  });
+  it('consumes a scoped cached restore marker when no anchored row survives and focus falls back to the heading', async () => {
+    sessionStorage.setItem('my-work-notes-anchor:motion-student:/my-work/notes', JSON.stringify({ id: 'removed', ids: ['removed'], pointer: true }));
+    const view = setup('/my-work/notes', false, 'removed', true);
+    expect(screen.getByRole('heading', { name: 'Teaching notes' })).toHaveFocus();
+    expect(view.rowCalls()).toHaveLength(0);
+    expect(document.querySelector('[data-motion-list-restore]')).toBeNull();
+    archiveFixture.data = [{ id: 'arrived', title: 'Newly arrived note', type: 'note', created_at: '2026-10-27T12:00:00Z', metadata_json: {}, status: 'assigned' } as ClassroomItem];
+    view.rerender(<MemoryRouter initialEntries={['/my-work/notes']}><ClassroomMotionContent><Routes><Route element={<StudentDestination destination="my-work" />}><Route path="/my-work/notes" element={<TeachingNotesArchive />} /></Route></Routes></ClassroomMotionContent></MemoryRouter>);
+    await Promise.resolve();
+    expect(screen.getByText('Newly arrived note')).toBeInTheDocument();
+    expect(view.rowCalls()).toHaveLength(0);
+    document.querySelectorAll<HTMLElement>('.teaching-note-card').forEach(row => expect(row.style.opacity).not.toBe('0'));
   });
   it('settles actual assigned-work portal filtering through its section ref without animating newly matched rows', async () => {
     workFixture.rows = [

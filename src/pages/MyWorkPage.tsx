@@ -31,7 +31,10 @@ export default function MyWorkPage({ completed }: { completed: boolean }) {
 function MyWorkList({ completed, generalAccess, readingCenterAllowed }: { completed: boolean; generalAccess: boolean; readingCenterAllowed: boolean }) {
   const sectionRef = useRef<HTMLElement>(null);
   const searchRef = useRef<HTMLInputElement>(null);
-  const recoverFilterFocus = useRef<'subject' | 'kind' | null>(null);
+  const errorRef = useRef<HTMLDivElement>(null);
+  const retryRef = useRef<HTMLButtonElement>(null);
+  const recoverFilterKeyboard = useRef(false);
+  const recoverFilterFocus = useRef<'subject' | 'kind' | 'clear' | null>(null);
   const { pathname, search: locationSearch } = useLocation();
   const [params, setParams] = useSearchParams();
   const search = params.get('q') ?? '';
@@ -49,14 +52,16 @@ function MyWorkList({ completed, generalAccess, readingCenterAllowed }: { comple
   const showSubjects = subjects.length > 1 || Boolean(subject);
   const showKinds = kinds.length > 1 || Boolean(kind);
   useEffect(() => {
-    const removed = recoverFilterFocus.current === 'subject' ? !showSubjects : recoverFilterFocus.current === 'kind' && !showKinds;
+    const removed = recoverFilterFocus.current === 'clear' || (recoverFilterFocus.current === 'subject' ? !showSubjects : recoverFilterFocus.current === 'kind' && !showKinds);
     recoverFilterFocus.current = null;
-    if (removed) searchRef.current?.focus();
+    if (removed) (recoverFilterKeyboard.current ? searchRef.current ?? retryRef.current ?? sectionRef.current : sectionRef.current ?? errorRef.current)?.focus({ preventScroll: true });
+    recoverFilterKeyboard.current = false;
   });
   const hasFilters = Boolean(search || subject || kind);
   const matches = visible.filter((row) => (!subject || (row.workSection ?? 'unknown') === subject) && (!kind || workKindLabel(row) === kind) && `${row.title} ${row.subtitle ?? ''} ${workKindLabel(row)}`.toLocaleLowerCase().includes(search.trim().toLocaleLowerCase()));
   const groups = groupAssignedWork(matches, completed);
-  function updateFilter(key: string, value: string, focusedWithin = false) {
+  function updateFilter(key: string, value: string, focusedWithin = false, modality: 'keyboard' | 'pointer' = 'pointer') {
+    recoverFilterKeyboard.current = modality === 'keyboard';
     recoverFilterFocus.current = !value && focusedWithin && (key === 'subject' || key === 'kind') ? key : null;
     notifyClassroomListIntent(sectionRef.current, 'filter');
     const next = new URLSearchParams(params);
@@ -66,14 +71,14 @@ function MyWorkList({ completed, generalAccess, readingCenterAllowed }: { comple
 
   if (loading) return <p className="student-destination-message" role="status">Loading your work…</p>;
   if (failed && rows.length === 0 && !hasFilters) return (
-    <div className="student-destination-message" role="alert">
+    <div ref={errorRef} tabIndex={-1} className="student-destination-message" role="alert">
       <p>{evidenceWarnings.length > 0 ? `Could not confirm ${evidenceWarnings.join(", ")}. We could not confirm whether this list is complete.` : "We could not load your assignments."}</p>
-      <button type="button" className="classroom-button" onClick={retry}>Try again</button>
+      <button ref={retryRef} type="button" className="classroom-button" onClick={retry}>Try again</button>
     </div>
   );
 
   return (
-    <section ref={sectionRef} className="student-work-list my-work-organized" aria-label={completed ? "Completed work" : "Work to do"}>
+    <section ref={sectionRef} tabIndex={-1} className="student-work-list my-work-organized" aria-label={completed ? "Completed work" : "Work to do"}>
       {failed && (
         <div className="student-destination-message" role="alert">
           <p>{rows.length === 0 ? "We could not load your assignments or confirm whether any match these filters." : evidenceWarnings.length > 0 ? `Could not confirm ${evidenceWarnings.join(", ")}. Available saved work is still shown.` : "Some assignments could not refresh. Your saved work is still shown."}</p>
@@ -81,13 +86,13 @@ function MyWorkList({ completed, generalAccess, readingCenterAllowed }: { comple
         </div>
       )}
       <div className="my-work-list-heading"><h2>{completed ? 'Completed work' : 'All assigned work'}</h2><span className="student-work-count" role="status">{matches.length}{search || subject || kind ? ` of ${visible.length}` : ''} {failed ? "shown (list may be incomplete)" : completed ? "completed" : "to do"}</span></div>
-      {(visible.length > 0 || hasFilters) && <div className="my-work-list-controls"><label className="my-work-search"><Search size={18} aria-hidden="true" /><span className="sr-only">Search assigned work</span><input ref={searchRef} type="search" placeholder="Find an assignment…" value={search} onChange={(event) => updateFilter('q', event.target.value)} /></label>{showSubjects && <WorkFilterSelect label="Assignment subject" allLabel="All subjects" value={subject} options={subjects.map(value => ({ value, label: WORK_SUBJECT_LABELS[value] }))} onChange={(value, focusedWithin) => updateFilter('subject', value, focusedWithin)} />}{showKinds && <WorkFilterSelect label="Assignment type" allLabel="All work types" value={kind} options={kinds.map(value => ({ value, label: value }))} onChange={(value, focusedWithin) => updateFilter('kind', value, focusedWithin)} />}</div>}
+      {(visible.length > 0 || hasFilters) && <div className="my-work-list-controls"><label className="my-work-search"><Search size={18} aria-hidden="true" /><span className="sr-only">Search assigned work</span><input ref={searchRef} type="search" placeholder="Find an assignment…" value={search} onChange={(event) => updateFilter('q', event.target.value)} /></label>{showSubjects && <WorkFilterSelect label="Assignment subject" allLabel="All subjects" value={subject} options={subjects.map(value => ({ value, label: WORK_SUBJECT_LABELS[value] }))} onChange={(value, focusedWithin, modality) => updateFilter('subject', value, focusedWithin, modality)} />}{showKinds && <WorkFilterSelect label="Assignment type" allLabel="All work types" value={kind} options={kinds.map(value => ({ value, label: value }))} onChange={(value, focusedWithin, modality) => updateFilter('kind', value, focusedWithin, modality)} />}</div>}
       {visible.length === 0 && !hasFilters ? (
         <p className="student-destination-message">
           {failed ? "We could not confirm whether this list is complete." : completed ? "Finished assignments will appear here after your work is saved." : "Nothing is assigned right now."}
         </p>
       ) : (
-        <>{matches.length === 0 ? <div className="student-destination-message"><p>{failed && rows.length === 0 ? "Try again to check for matching assignments, or clear your filters." : "No assignments match these filters."}</p><button className="classroom-button" type="button" onClick={() => { notifyClassroomListIntent(sectionRef.current, 'filter'); const next = new URLSearchParams(params); next.delete('q'); next.delete('subject'); next.delete('kind'); setParams(next); }}>Clear filters</button></div> : groups.map((group) => <section className="my-work-status-group" key={group.label} aria-label={group.label}>
+        <>{matches.length === 0 ? <div className="student-destination-message"><p>{failed && rows.length === 0 ? "Try again to check for matching assignments, or clear your filters." : "No assignments match these filters."}</p><button className="classroom-button" type="button" onClick={(event) => { recoverFilterKeyboard.current = event.detail === 0; recoverFilterFocus.current = event.currentTarget === document.activeElement ? 'clear' : null; notifyClassroomListIntent(sectionRef.current, 'filter'); const next = new URLSearchParams(params); next.delete('q'); next.delete('subject'); next.delete('kind'); setParams(next); }}>Clear filters</button></div> : groups.map((group) => <section className="my-work-status-group" key={group.label} aria-label={group.label}>
         {!completed && <h3>{group.label}<span>{group.rows.length}</span></h3>}
         <ul data-motion-list>
           {group.rows.map((row) => (

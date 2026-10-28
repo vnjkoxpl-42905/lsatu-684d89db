@@ -290,7 +290,7 @@ export function ClassroomItemView() {
         <button
           type="button"
           className="classroom-button mb-4"
-          onClick={() => navigate(notesReturnTo)}
+          onClick={() => navigate(notesReturnTo, { state: { notesArchiveReturn: itemId } })}
         >
           Back to notes
         </button>
@@ -351,7 +351,7 @@ export function ClassroomItemView() {
           <button
             type="button"
             className="classroom-button"
-            onClick={() => navigate(notesReturnTo)}
+            onClick={() => navigate(notesReturnTo, { state: { notesArchiveReturn: itemId } })}
           >
             Back to notes
           </button>
