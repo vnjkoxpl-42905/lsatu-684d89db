@@ -73,6 +73,59 @@ Deno.serve(async (req) => {
       ...(association ? { association } : {}),
     });
 
+    if (["home_get", "home_create", "home_revoke", "home_reactivate"].includes(action)) {
+      const studentId = String(body.student_id || "");
+      const { data: student, error: studentError } = await supabase.from("profiles").select("class_id,display_name,archived_at").eq("class_id", studentId).maybeSingle();
+      const { data: adminTarget, error: adminError } = await supabase.from("user_roles").select("role").eq("user_id", studentId).eq("role", "admin").maybeSingle();
+      if (studentError || adminError) throw studentError || adminError;
+      if (!student || student.archived_at || adminTarget) return json({ error: "ineligible_student" }, 400);
+      let pass: any = null;
+      let created = false;
+      if (action === "home_create") {
+        const slug = generateBookingSlug(student.display_name, null);
+        const { data, error } = await supabase.rpc("teacher_home_create_pass", {
+          _actor: user.id, _student: studentId, _credits: body.credits,
+          _slug: slug, _token_hash: await sha256Hex(genToken()),
+          _session_minutes: body.session_minutes ?? 70, _expires_at: body.expires_at ?? null,
+        });
+        if (error) return json({ error: error.message }, error.message === "forbidden" ? 403 : 409);
+        pass = data?.pass; created = data?.created === true;
+      } else if (action === "home_reactivate") {
+        if (body.confirmed !== true) return json({ error: "confirmation_required" }, 400);
+        const result = await supabase.rpc("teacher_home_reactivate_pass", { _actor: user.id, _student: studentId, _pass: body.pass_id });
+        if (result.error) return json({ error: result.error.message }, result.error.message === "forbidden" ? 403 : 409);
+        pass = result.data;
+      } else if (action === "home_revoke") {
+        if (body.confirmed !== true) return json({ error: "confirmation_required" }, 400);
+        const result = await supabase.rpc("teacher_home_revoke_pass", { _actor: user.id, _student: studentId, _pass: body.pass_id });
+        if (result.error) throw result.error;
+        pass = result.data;
+      } else {
+        const { data, error } = await supabase.from("booking_passes").select("*").eq("student_id", studentId)
+          .order("created_at", { ascending: false }).limit(1).maybeSingle();
+        if (error) throw error;
+        pass = data;
+      }
+      if (pass && pass.student_id !== studentId) return json({ error: "pass_verification_failed" }, 500);
+      return json({ created, pass: pass ? { ...pass, credits_remaining: Math.max(0, pass.total_credits-pass.used_credits),
+        booking_url: pass.booking_slug ? bookingUrl(pass.booking_slug) : null } : null });
+    }
+
+    if (action === "home_add_credits" || action === "home_resolve_add") {
+      const { data, error } = await supabase.rpc("teacher_home_add_credits", {
+        _actor: user.id, _student: body.student_id, _pass: body.pass_id,
+        _operation: body.operation_key, _delta: body.credits, _apply: action === "home_add_credits",
+      });
+      if (error) return json({ error: error.message }, error.message === "forbidden" ? 403 : 409);
+      if (action === "home_add_credits" && data?.cancelled === true) return json({ error: "operation_cancelled: This pending add was resolved without applying credits. Start a new intentional add." }, 409);
+      const pass = data?.pass;
+      if (!pass || pass.student_id !== body.student_id || pass.id !== body.pass_id) return json({ error: "pass_verification_failed" }, 500);
+      return json({ ...data, pass: { ...pass,
+        credits_remaining: Math.max(0, pass.total_credits - pass.used_credits),
+        booking_url: pass.booking_slug ? bookingUrl(pass.booking_slug) : null,
+      } });
+    }
+
     if (action === "single_sessions_global") {
       const { data, error } = await supabase.from("single_session_bookings")
         .select("id,start_at,end_at,status,meet_url,name,email,user_id,created_at")

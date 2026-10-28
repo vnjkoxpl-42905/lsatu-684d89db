@@ -361,7 +361,6 @@ function ClassroomSidebar({
                 explanation of why it is locked. */}
             {[
               { label: "Messages", path: "/inbox", flag: "has_chat_access" as const, active: location.pathname.startsWith("/inbox"), badge: unreadMessages },
-              { label: "Find a question", path: `/practice/drills?finder=open&finderReturnTo=${encodeURIComponent(location.pathname + location.search)}`, flag: "has_drill_access" as const, active: false, badge: 0 },
             ].map((shortcut) => {
               const open = canAccess({ flags: [shortcut.flag] });
               return (

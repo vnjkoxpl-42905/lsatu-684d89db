@@ -121,7 +121,7 @@ describe("ClassroomHomeView", () => {
       continueRow: { ...FULL.rows[0], workStatus: 'in_progress' },
     }} loading={false} onOpen={vi.fn()} />);
     expect(screen.getByText('3 open assignments · 1 with saved work')).toBeInTheDocument();
-    expect(screen.getByText('This assignment is due today.')).toBeInTheDocument();
+    expect(screen.getByText('Due today')).toBeInTheDocument();
     expect(screen.getByText('Continue')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Continue assigned work' })).toBeInTheDocument();
   });
@@ -168,12 +168,15 @@ describe("ClassroomHomeView", () => {
     expect(screen.queryByRole("dialog")).toBeNull();
   });
 
-  it("shows a slim booked-session line in the top panel and opens booking management", () => {
+  // Since 2026-10-22 the booked session is supporting context, not a header
+  // block: it sits in the compact context list after the work.
+  it("shows a slim booked-session line in the context list and opens booking management", () => {
     const onOpen = vi.fn();
     render(<ClassroomHomeView model={FULL} loading={false} onOpen={onOpen} />);
     const nextSession = screen.getByRole("button", { name: /Next session: Friday/ });
     expect(nextSession).toBeInTheDocument();
-    expect(nextSession.closest(".classroom-home-top")).toBeInTheDocument();
+    expect(nextSession.closest(".classroom-home-context")).toBeInTheDocument();
+    expect(nextSession.closest(".classroom-home-top")).toBeNull();
     fireEvent.click(nextSession);
     expect(onOpen).toHaveBeenCalledWith("/booking");
     expect(screen.queryByLabelText("Next session card")).not.toBeInTheDocument();
@@ -285,12 +288,11 @@ describe("ClassroomHomeView", () => {
     const model = { ...EMPTY, rows: [assignedRrc], newCount: 1 };
     render(<ClassroomHomeView model={model} loading={false} onOpen={onOpen} />);
     expect(screen.queryByLabelText("Read, Recall, Colour")).not.toBeInTheDocument();
-    expect(screen.getByText(assignedRrc.title, { selector: ".classroom-home-row-title" })).toBeInTheDocument();
-    const assignedRow = screen
-      .getAllByRole("button", { name: /Read, Recall, Colour: Section 1/ })
-      .find((button) => button.classList.contains("classroom-home-row"));
-    expect(assignedRow).toBeDefined();
-    fireEvent.click(assignedRow!);
+    // The only assignment is the featured next action. Since 2026-10-22 it is
+    // not repeated as a row in Up next, so it appears exactly once.
+    expect(screen.getAllByText(assignedRrc.title)).toHaveLength(1);
+    expect(screen.queryByText(assignedRrc.title, { selector: ".classroom-home-row-title" })).toBeNull();
+    fireEvent.click(screen.getByRole("button", { name: "Start assigned work" }));
     expect(onOpen).toHaveBeenCalledWith(assignedRrc.route);
   });
 
@@ -355,13 +357,16 @@ describe("ClassroomHomeView", () => {
     for (const name of ["Start assigned work", "Smart Drill", "Timed section"]) {
       expect(screen.queryByRole("button", { name })).toBeNull();
     }
-    // The finder was never gated on Home; the redesign keeps it that way.
-    expect(screen.getByRole("button", { name: "Find a question" })).toBeInTheDocument();
+    // Home lookup follows the same drill permission as Practice.
+    expect(screen.queryByRole("button", { name: "Find a question" })).not.toBeInTheDocument();
     expect(screen.queryByRole("button", { name: /Inbox,/ })).toBeNull();
     expect(screen.getByLabelText("Next seven days")).toBeInTheDocument();
   });
 
-  it("offers the teacher their own assigned work without changing student ownership", () => {
+  // The student view is pure: it draws the model it is given. Since 2026-10-22
+  // an admin never receives it at all; ClassroomHome.role.test proves the
+  // dispatcher mounts the teaching desk instead and never these rows.
+  it("draws the work in whatever model it is given, flag or no flag", () => {
     const onOpen = vi.fn();
     render(<ClassroomHomeView model={{ ...FULL, isAdmin: true, workSummary: { open: 1, inProgress: 0 } }} loading={false} onOpen={onOpen} />);
     expect(screen.getByText('1 open assignment · 0 with saved work')).toBeInTheDocument();
@@ -781,7 +786,8 @@ describe("homeModel", () => {
     expect(subtitleFor(0, 0, 0)).toBe(
       "Nothing is due today. Drill whatever you feel like.",
     );
-    expect(subtitleFor(0, 0, 2)).toContain("Two unread messages.");
+    // Counted in conversations, the one unit every badge uses.
+    expect(subtitleFor(0, 0, 2)).toContain("Two unread conversations.");
   });
 
   it("rolls the strip forward from today rather than from Monday", () => {
@@ -862,7 +868,8 @@ describe("unread notes on Home", () => {
       />,
     );
     expect(screen.getByText("Causation, Part 1: the argument")).toBeInTheDocument();
-    expect(screen.getByText("1 NEW")).toBeInTheDocument();
+    // Sentence case since the 2026-10-22 redesign.
+    expect(screen.getByText("1 new")).toBeInTheDocument();
     expect(screen.getAllByText("Read").length).toBeGreaterThan(0);
   });
 
@@ -876,7 +883,7 @@ describe("unread notes on Home", () => {
       />,
     );
     expect(screen.getByText("Causation, Part 1: the argument")).toBeInTheDocument();
-    expect(screen.queryByText("1 NEW")).not.toBeInTheDocument();
+    expect(screen.queryByText("1 new")).not.toBeInTheDocument();
   });
 
   it("opens the note at its own route", () => {
@@ -905,4 +912,146 @@ it('shows a named partial-work warning and retry while suppressing unverified su
   expect(retry).toHaveBeenCalledOnce();
   expect(screen.queryByText(/0 with saved work/)).toBeNull();
   expect(screen.queryByText('Nothing assigned right now.')).toBeNull();
+});
+
+describe("featured work and Up next", () => {
+  const second = { ...FULL.rows[0], key: "b", title: "Flaw drill", route: "/guided/b", isNew: false, dueToday: false };
+  // A repeated assignment: same title, a different instance key.
+  const repeat = { ...FULL.rows[0], key: "a-2", route: "/activities/a?instance=2", dueToday: false };
+
+  it("shows the featured assignment once and lists only the others, by exact key", () => {
+    render(
+      <ClassroomHomeView
+        model={{ ...FULL, rows: [FULL.rows[0], second, repeat], continueRow: FULL.rows[0], workSummary: { open: 3, inProgress: 0 } }}
+        loading={false}
+        onOpen={vi.fn()}
+      />,
+    );
+    const upNext = screen.getByRole("region", { name: "Up next" });
+    const listed = Array.from(upNext.querySelectorAll(".classroom-home-row-title")).map((node) => node.textContent);
+    // The featured key "a" is gone from the list; its repeat "a-2" stays.
+    expect(listed).toEqual(["Flaw drill", "Negation Station"]);
+    expect(screen.getByRole("region", { name: "Next assignment" })).toHaveTextContent("Negation Station");
+    // The total is stated in full, not reduced by the featured row.
+    expect(screen.getByText("3 open assignments · 0 with saved work")).toBeInTheDocument();
+  });
+
+  it("keeps the featured hero's progress on the one featured block", () => {
+    const { container } = render(
+      <ClassroomHomeView model={{ ...FULL, continueRow: FULL.rows[0] }} loading={false} onOpen={vi.fn()} />,
+    );
+    expect(container.querySelectorAll(".classroom-home-tick")).toHaveLength(12);
+    expect(screen.queryByRole("region", { name: "Pick up where you left off" })).toBeNull();
+    expect(screen.getByText("Nothing else is assigned right now.")).toBeInTheDocument();
+  });
+
+  it("does not say Nothing assigned while loading or after a failed read", () => {
+    const { rerender } = render(<ClassroomHomeView model={EMPTY} loading onOpen={vi.fn()} />);
+    expect(screen.getByLabelText("Loading your work")).toBeInTheDocument();
+    expect(screen.queryByText("Nothing assigned right now.")).toBeNull();
+    rerender(<ClassroomHomeView model={{ ...EMPTY, workFailed: true }} loading={false} onOpen={vi.fn()} />);
+    expect(screen.queryByText("Nothing assigned right now.")).toBeNull();
+    expect(screen.queryByText(/caught up/i)).toBeNull();
+  });
+
+  it("drops the decorative Open and Rest labels from empty days", () => {
+    render(<ClassroomHomeView model={EMPTY} loading={false} onOpen={vi.fn()} />);
+    const week = screen.getByLabelText("Next seven days");
+    expect(week).not.toHaveTextContent(/\bOpen\b/);
+    expect(week).not.toHaveTextContent(/\bRest\b/);
+  });
+
+  it("puts the featured assignment straight after the greeting, before tools and context, in DOM order", () => {
+    const { container } = render(
+      <ClassroomHomeView
+        model={{ ...FULL, continueRow: FULL.rows[0], workSummary: { open: 1, inProgress: 0 }, daysToTest: 12 }}
+        loading={false}
+        onOpen={vi.fn()}
+      />,
+    );
+    const order = (node: Element | null) => {
+      expect(node).not.toBeNull();
+      return Array.from(container.querySelectorAll("*")).indexOf(node!);
+    };
+    const greeting = order(screen.getByRole("heading", { level: 1 }));
+    const featured = order(screen.getByRole("button", { name: "Start assigned work" }));
+    const finder = order(screen.getByRole("button", { name: "Find a question" }));
+    const drill = order(screen.getByRole("button", { name: "Smart Drill" }));
+    const session = order(screen.getByRole("button", { name: /Next session/ }));
+    const testDay = order(screen.getByLabelText("12 days to test day"));
+    expect(greeting).toBeLessThan(featured);
+    for (const later of [finder, drill, session, testDay]) expect(featured).toBeLessThan(later);
+    // Tab order follows: the featured action is the first control after the greeting.
+    const buttons = screen.getAllByRole("button");
+    expect(buttons[0]).toHaveAccessibleName("Start assigned work");
+  });
+
+  it("does not show a New count over work that failed to load", () => {
+    render(<ClassroomHomeView model={{ ...FULL, workFailed: true, newCount: 3 }} loading={false} onOpen={vi.fn()} />);
+    expect(screen.queryByText("3 new")).toBeNull();
+  });
+
+  it("offers a manual refresh of assigned work", () => {
+    const onRefresh = vi.fn();
+    render(<ClassroomHomeView model={FULL} loading={false} onOpen={vi.fn()} onRefresh={onRefresh} />);
+    fireEvent.click(screen.getByRole("button", { name: "Refresh" }));
+    expect(onRefresh).toHaveBeenCalledOnce();
+  });
+
+  it("offers the full assignment list only when its route is verified open", () => {
+    const onOpen = vi.fn();
+    const { rerender } = render(<ClassroomHomeView model={{ ...FULL, assignedWorkRoute: "/my-work/to-do" }} loading={false} onOpen={onOpen} />);
+    fireEvent.click(screen.getByRole("button", { name: "View all assigned work" }));
+    expect(onOpen).toHaveBeenCalledWith("/my-work/to-do");
+    rerender(<ClassroomHomeView model={{ ...FULL, assignedWorkRoute: null }} loading={false} onOpen={onOpen} />);
+    expect(screen.queryByRole("button", { name: "View all assigned work" })).toBeNull();
+  });
+
+  it("reconciles the featured key, remaining new badge and totals after refresh", () => {
+    const first = FULL.rows[0];
+    const second = { ...first, key: "second", title: "Flaw drill", route: "/guided/second", isNew: true, workStatus: "in_progress" as const };
+    const { rerender } = render(<ClassroomHomeView model={{ ...FULL, continueRow: first, rows: [first, second], newCount: 2, workSummary: { open: 2, inProgress: 1 } }} loading={false} onOpen={vi.fn()} />);
+    expect(screen.getByRole("region", { name: "Up next" })).toHaveTextContent("Flaw drill");
+    expect(screen.getByRole("region", { name: "Up next" })).toHaveTextContent("1 new");
+    expect(screen.getByText("2 open assignments · 1 with saved work")).toBeInTheDocument();
+    rerender(<ClassroomHomeView model={{ ...FULL, hero: null, continueRow: second, rows: [second], newCount: 1, workSummary: { open: 1, inProgress: 1 } }} loading={false} onOpen={vi.fn()} />);
+    expect(screen.getByRole("region", { name: "Next assignment" })).toHaveTextContent("Flaw drill");
+    expect(screen.getByRole("region", { name: "Up next" })).not.toHaveTextContent("Flaw drill");
+    expect(screen.queryByText("1 new")).toBeNull();
+    expect(screen.getByText("1 open assignment · 1 with saved work")).toBeInTheDocument();
+  });
+
+  it("includes new assignments beyond the five visible rows in the queue count", () => {
+    const rows = Array.from({ length: 5 }, (_, i) => ({ ...FULL.rows[0], key: i ? `work-${i}` : "a", title: `Assignment ${i + 1}` }));
+    render(<ClassroomHomeView model={{ ...FULL, rows, newCount: 8, workSummary: { open: 8, inProgress: 0 } }} loading={false} onOpen={vi.fn()} />);
+    const queue = screen.getByRole("region", { name: "Up next" });
+    expect(queue).toHaveTextContent("7 new");
+    expect(queue.querySelectorAll(".classroom-home-row")).toHaveLength(4);
+    expect(screen.getByText("8 open assignments · 0 with saved work")).toBeInTheDocument();
+  });
+});
+
+
+describe("Home question finder permission lifecycle", () => {
+  it.each([true, false])("does not mount lookup while permissions resolve (drill=%s)", drill => {
+    render(<ClassroomHomeView model={{...EMPTY, access: {...EMPTY.access, drill}}} loading={false} permissionsResolved={false} onOpen={vi.fn()} />);
+    expect(screen.queryByRole("button", {name: "Find a question"})).not.toBeInTheDocument();
+    fireEvent.keyDown(window, {key: "k", ctrlKey: true});
+    expect(screen.queryByRole("dialog", {name: "Find a question"})).not.toBeInTheDocument();
+  });
+  it("unmounts an open lookup on permission revocation", () => {
+    const view = render(<ClassroomHomeView model={EMPTY} actorId="student" loading={false} onOpen={vi.fn()} />);
+    fireEvent.click(screen.getByRole("button", {name: "Find a question"}));
+    expect(screen.getByRole("dialog", {name: "Find a question"})).toBeInTheDocument();
+    view.rerender(<ClassroomHomeView model={{...EMPTY, access: {...EMPTY.access, drill: false}}} actorId="student" loading={false} onOpen={vi.fn()} />);
+    expect(screen.queryByRole("dialog", {name: "Find a question"})).not.toBeInTheDocument();
+  });
+  it("closes the previous actor's lookup when the account changes", () => {
+    const view = render(<ClassroomHomeView model={EMPTY} actorId="actor-a" loading={false} onOpen={vi.fn()} />);
+    fireEvent.click(screen.getByRole("button", {name: "Find a question"}));
+    expect(screen.getByRole("dialog", {name: "Find a question"})).toBeInTheDocument();
+    view.rerender(<ClassroomHomeView model={EMPTY} actorId="actor-b" loading={false} onOpen={vi.fn()} />);
+    expect(screen.queryByRole("dialog", {name: "Find a question"})).not.toBeInTheDocument();
+  });
+
 });

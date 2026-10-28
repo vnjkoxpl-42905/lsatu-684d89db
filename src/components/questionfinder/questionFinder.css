@@ -591,59 +591,9 @@ html.dark .qf-panel,
   text-align: center;
 }
 
-/* ── doors ────────────────────────────────────────────────────────────── */
-
-.qf-doors {
-  box-shadow: 0 -1px 0 var(--qf-hair-08);
-  display: flex;
-  flex: none;
-  flex-direction: column;
-}
-
-.qf-door {
-  align-items: center;
-  background: transparent;
-  border: 0;
-  color: var(--qf-ink-mid);
-  cursor: pointer;
-  display: flex;
-  font-family: var(--qf-ui);
-  font-size: 13px;
-  font-weight: 500;
-  gap: 11px;
-  padding: 13px 20px;
-  text-align: left;
-  transition: background 140ms var(--qf-ease), color 140ms var(--qf-ease);
-  width: 100%;
-}
-
-.qf-door:hover {
-  background: var(--qf-row-hover);
-  color: var(--qf-ink);
-}
-
-.qf-door-icon {
-  color: var(--qf-muted);
-  flex: none;
-}
-
-.qf-door-grow {
-  flex: 1;
-}
-
-.qf-door-chevron {
-  color: var(--qf-muted);
-  flex: none;
-  transition: transform 200ms var(--qf-ease);
-}
-
-.qf-door[aria-expanded="true"] .qf-door-chevron {
-  transform: rotate(180deg);
-}
-
 /* ── browse by test ───────────────────────────────────────────────────── */
 
-/* Three selectors and the door they open, on one line. The arrow is the
+/* Address selectors and the preview action, on one line. The arrow is the
    selectors' Enter key, so it belongs in their row rather than under it. */
 .qf-browse {
   align-items: end;
@@ -881,7 +831,7 @@ html.dark .qf-panel,
   }
 
   /* Full-screen on a phone, so here the body DOES take the slack — otherwise
-     the doors and the results would bunch at the top of an empty sheet. */
+     the controls and the results would bunch at the top of an empty sheet. */
   .qf-body {
     flex: 1;
     max-height: none;
@@ -984,3 +934,15 @@ html.dark .qf-panel,
  .qf-row-rc .qf-row-title { display: block; overflow: visible; white-space: normal; text-overflow: clip; font-size: 15px; line-height: 1.5; }
  .qf-row-rc .qf-snippet, .qf-row-rc .qf-row-go { display: none; }
 }
+
+/* Match the warm Practice surface while keeping long questions readable. */
+.qf-lr-preview.qf-lr-preview { background: #faf8f3; color: #302e2a; padding: 28px; }
+.qf-lr-preview ol { padding: 0; list-style: none; }
+.qf-lr-preview.qf-lr-preview li { border-color: #dcd7cd; background: #fffdf8; }
+.qf-lr-preview [aria-label="Answer explanations"] { border-top: 1px solid #dcd7cd; padding-top: 18px; }
+.qf-lr-preview button:focus-visible { outline: 2px solid #5a6650; outline-offset: 3px; }
+@media (max-width: 480px) { .qf-lr-preview { padding: 24px 20px; } }
+
+.qf-lr-preview.qf-lr-preview h2 { color: #302e2a; }
+.qf-lr-preview.qf-lr-preview .qf-lr-preview-description { color: #625e56; }
+.qf-lr-preview.qf-lr-preview button { color: #302e2a; border-color: #c9c2b5; }
