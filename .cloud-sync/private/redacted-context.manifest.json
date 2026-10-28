@@ -1,7 +1,7 @@
 {
   "enabled": true,
   "format": 2,
-  "file_count": 76,
+  "file_count": 77,
   "paths": [
     "lsatu-progress-release-claude-20261028/.agents/skills/notebooklm/tests/cassettes/artifacts_delete.yaml",
     "lsatu-progress-release-claude-20261028/.agents/skills/notebooklm/tests/cassettes/artifacts_export_report.yaml",
@@ -78,7 +78,8 @@
     "lsatu-progress-release-claude-20261028/scripts/verification/start-rc-builder-preview.mjs",
     "lsatu-progress-release-claude-20261028/src/contexts/AuthContext.tsx",
     "lsatu-progress-release-claude-20261028/src/lib/googleDrive.ts",
-    "lsatu-progress-release-claude-20261028/supabase/functions/handle-email-events/index.ts"
+    "lsatu-progress-release-claude-20261028/supabase/functions/handle-email-events/index.ts",
+    "lsatu-progress-release-claude-20261028/supabase/functions/teacher-post-session-sync/desk.ts"
   ],
-  "ciphertext_sha256": "ba3c712ef235be6ba9ee901b03a1270447e90010c9665c5388ce66777032723e"
+  "ciphertext_sha256": "f9b18dfb4536d90fc048412a52de787c21631846e96af7a326da946f8b713440"
 }

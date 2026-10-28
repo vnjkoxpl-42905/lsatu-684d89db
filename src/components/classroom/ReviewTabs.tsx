@@ -1,66 +1,22 @@
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useUserPermissions } from "@/hooks/useUserPermissions";
+import { useContext } from "react";
+import { DestinationHeadingContext } from "@/contexts/DestinationHeadingContext";
 
 export type ReviewSection = "journal" | "flagged";
-
-export function reviewDefaultPath(permissions: {
-  loading?: boolean;
-  is_admin: boolean;
-  has_journal_access: boolean;
-  has_flagged_access: boolean;
-}) {
-  const canOpenJournal =
-    permissions.loading ||
-    permissions.is_admin ||
-    permissions.has_journal_access;
-  return canOpenJournal ? "/journal" : "/flagged";
-}
+export function reviewDefaultPath(_permissions: unknown) { return "/review/to-review"; }
 
 export function ReviewTabs() {
-  const navigate = useNavigate();
   const { pathname } = useLocation();
   const permissions = useUserPermissions();
-  const active: ReviewSection = pathname.startsWith("/flagged")
-    ? "flagged"
-    : "journal";
-  const canOpenJournal =
-    permissions.loading ||
-    permissions.is_admin ||
-    permissions.has_journal_access;
-  const canOpenFlagged =
-    permissions.loading || permissions.is_admin || permissions.has_flagged_access;
-
-  return (
-    <div className="classroom-account-heading classroom-review-heading">
-      <h1 className="classroom-title">Review</h1>
-      <div
-        className="classroom-account-tabs"
-        role="tablist"
-        aria-label="Review sections"
-      >
-        {canOpenJournal ? (
-          <button
-            type="button"
-            role="tab"
-            aria-selected={active === "journal"}
-            className={active === "journal" ? "classroom-account-tab-active" : ""}
-            onClick={() => navigate("/journal")}
-          >
-            Wrong answers
-          </button>
-        ) : null}
-        {canOpenFlagged ? (
-          <button
-            type="button"
-            role="tab"
-            aria-selected={active === "flagged"}
-            className={active === "flagged" ? "classroom-account-tab-active" : ""}
-            onClick={() => navigate("/flagged")}
-          >
-            Flagged
-          </button>
-        ) : null}
-      </div>
-    </div>
-  );
+  const inDestination = useContext(DestinationHeadingContext);
+  if (inDestination) return null;
+  const links = [
+    { label: "To review", path: "/review/to-review", allowed: true },
+    { label: "Progress", path: "/review/progress", allowed: permissions.is_admin || permissions.has_analytics_access },
+    { label: "History", path: "/review/history", allowed: permissions.is_admin || permissions.has_analytics_access },
+    { label: "Wrong-answer journal", path: "/review/wrong", allowed: permissions.is_admin || permissions.has_journal_access },
+    { label: "Flagged", path: "/review/flagged", allowed: permissions.is_admin || permissions.has_flagged_access },
+  ];
+  return <nav className="classroom-account-tabs" aria-label="Review sections">{links.filter(link => link.allowed && !permissions.loading).map(link => <Link key={link.path} to={link.path} aria-current={pathname === link.path || (link.path === '/review/wrong' && pathname.startsWith('/journal')) || (link.path === '/review/flagged' && pathname.startsWith('/flagged')) ? 'page' : undefined}>{link.label}</Link>)}</nav>;
 }

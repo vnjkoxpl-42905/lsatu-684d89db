@@ -120,7 +120,7 @@ describe('persisted source eligibility', () => {
   });
 
   it('uses answer time to choose the first RC pick when a session grades multiple attempts together', () => {
-    const session = { id: 'rc-1', user_id: student, status: 'completed', completed_at: '2026-09-27T00:00:00Z', excluded_from_analytics: false, practice_test_run_id: null };
+    const session = { id: 'rc-1', user_id: student, status: 'completed', completed_at: '2026-09-27T00:00:00Z', excluded_from_analytics: false, practice_test_run_id: null, config: { resultsRevealedAt: '2026-09-27T00:00:00Z' } };
     const attempt = (id: string, date: string, correct: boolean) => ({ id, user_id: student, session_id: 'rc-1', passage_id: 11, question_id: 1, selected: 'B', is_correct: correct, created_at: date });
     const answers = adaptRcAttempts([attempt('later', '2026-09-26T12:00:00Z', true), attempt('earlier', '2026-09-26T11:00:00Z', false)], [session], student, new Set());
     const result = projectFirstAnswerProgress({ answers, window: 'all', asOf: '2026-09-28', coverage });
@@ -130,9 +130,33 @@ describe('persisted source eligibility', () => {
 });
 
 describe('RC grading date and provenance corrections', () => {
-  const session = (over: Record<string, unknown> = {}) => ({ id: 'rc-1', user_id: student, status: 'completed', completed_at: '2026-09-27T00:00:00Z', excluded_from_analytics: false, practice_test_run_id: null, ...over });
+  const session = (over: Record<string, unknown> = {}) => ({ id: 'rc-1', user_id: student, status: 'completed', completed_at: '2026-09-27T00:00:00Z', excluded_from_analytics: false, practice_test_run_id: null, config: { resultsRevealedAt: '2026-09-27T00:00:00Z' }, ...over });
   const attempt = (id: string, created: string, over: Record<string, unknown> = {}) => ({ id, user_id: student, session_id: 'rc-1', passage_id: 11, question_id: 1, selected: 'B', is_correct: true, created_at: created, ...over });
   const one = (a: ReturnType<typeof attempt>, s = session(), runs: string[] = []) => adaptRcAttempts([a], [s as never], student, new Set(runs));
+
+  it('retains withheld earliest RC identity before accuracy selection, rather than promoting a released repeat', () => {
+    const answers = adaptRcAttempts([
+      attempt('hidden-first', '2026-09-01', { session_id: 'hidden', is_correct: false }),
+      attempt('released-repeat', '2026-09-26', { session_id: 'released', is_correct: true }),
+    ], [session({ id: 'hidden', completed_at: '2026-09-02', config: {} }), session({ id: 'released' })] as never, student, new Set());
+    expect(answers[0]).toMatchObject({ correct: null, resultVisibility: 'withheld', provenance: { sessionId: 'hidden' } });
+    expect(projectFirstAnswerProgress({ answers, coverage, window: 'all', asOf: '2026-09-28' }).RC).toMatchObject({ denominator: 0, evidenceAttemptIds: [] });
+    expect(projectFirstAnswerProgress({ answers, coverage, window: 'all', asOf: '2026-09-28' }).repeatCount).toBe(1);
+  });
+
+  it('does not follow a released parent when the player parent or full-test leg conflicts', () => {
+    const pick = attempt('pick', '2026-09-26');
+    for (const parents of [
+      { practice_test_run_id: 'complete', config: { practiceTestRunId: 'unfinished' } },
+      { practice_test_run_id: 'unfinished', config: { practiceTestRunId: 'complete' } },
+      { practice_test_run_id: 'complete', config: { practiceTestRunId: 42 } },
+    ]) expect(one(pick, session(parents), ['complete'])).toEqual([]);
+    const matched = one(pick, session({ practice_test_run_id: 'complete', practice_test_leg: 1, config: { practiceTestRunId: 'complete', practiceTestLegIndex: 1 } }), ['complete']);
+    expect(matched[0]).toMatchObject({ correct: true, provenance: { runId: 'complete', legIndex: 1 } });
+    const conflicting = one(pick, session({ practice_test_run_id: 'complete', practice_test_leg: 1, config: { practiceTestRunId: 'complete', practiceTestLegIndex: 2 } }), ['complete']);
+    expect(conflicting[0]).toMatchObject({ correct: null, resultVisibility: 'withheld' });
+    expect(conflicting[0].provenance).not.toHaveProperty('legIndex');
+  });
 
   it('grades a pre-completion pick at completion and keeps a later review at its saved date', () => {
     expect(one(attempt('pick', '2026-09-26T00:00:00Z'))[0].gradedAt).toBe('2026-09-27T00:00:00Z');
@@ -182,11 +206,11 @@ describe('RC grading date and provenance corrections', () => {
     expect(one(attempt('a', '2026-09-26T00:00:00Z'), session({ config: { practiceTestRunId: 'unknown' } }), ['run-1'])).toEqual([]);
   });
 
-  it('excludes malformed non-string identities and lets a valid column beat a conflicting config', () => {
+  it('excludes malformed identities and conflicting parent provenance rather than guessing the player parent', () => {
     expect(one(attempt('a', '2026-09-26T00:00:00Z'), session({ config: { practiceTestRunId: 42 } }), ['42'])).toEqual([]);
     expect(one(attempt('a', '2026-09-26T00:00:00Z'), session({ practice_test_run_id: 7 }), ['7'])).toEqual([]);
     const conflicting = session({ practice_test_run_id: 'run-1', config: { practiceTestRunId: 'run-2' } });
-    expect(one(attempt('a', '2026-09-26T00:00:00Z'), conflicting, ['run-1'])).toHaveLength(1);
+    expect(one(attempt('a', '2026-09-26T00:00:00Z'), conflicting, ['run-1'])).toEqual([]);
     expect(one(attempt('a', '2026-09-26T00:00:00Z'), conflicting, ['run-2'])).toEqual([]);
   });
 

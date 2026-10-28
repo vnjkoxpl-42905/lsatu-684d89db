@@ -253,3 +253,11 @@ describe('runPublish actor guard', () => {
     expect(s.items.size).toBe(3);
   });
 });
+
+it('suppresses all seven daily task mirrors under the same persisted publication identity', async () => {
+  const server = fakeServer(); const inputs: Record<string, unknown>[] = []; const create = server.deps.createMirror;
+  server.deps.createMirror = async (input) => { inputs.push(input); return create(input); };
+  const week = newPublishJob({ teacherId: 't', studentId: 's', title: 'Private plan title', weekStart: '2099-01-01', drafts: Array.from({ length: 7 }, (_, i) => ({ day: '2099-01-0' + (i + 1), title: 'Private future task ' + i })) }, ids);
+  const result = await runPublish(week, server.deps); expect(result.ok).toBe(true); expect(inputs).toHaveLength(7);
+  for (const input of inputs) { expect(input.notificationPolicy).toBe('suppressed'); expect(input.notificationGroupId).toBe(week.planKey); }
+});

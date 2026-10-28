@@ -13,8 +13,8 @@ vi.mock("./useFinderAddressIndex", () => ({
 describe("QuestionJump shared finder entry", () => {
   it("opens the same question finder under the compact landing-page label", () => {
     render(<MemoryRouter><QuestionJump returnTo="/classroom" bank="rc" /></MemoryRouter>);
-    fireEvent.click(screen.getByRole("button", { name: "Open a question" }));
+    fireEvent.click(screen.getByRole("button", { name: "Find a question" }));
     expect(screen.getByRole("dialog", { name: "Find a question" })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Open question" })).toBeDisabled();
+    expect(screen.getByRole("button", { name: "Open preview" })).toBeDisabled();
   });
 });

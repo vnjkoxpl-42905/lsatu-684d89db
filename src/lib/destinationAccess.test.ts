@@ -33,7 +33,7 @@ const LOADING = { ...NONE, loading: true };
 /** The ProtectedRoute shape App.tsx registers for a destination child path. */
 function routeGate(destination: Destination, child: string): string {
   const parent = app.indexOf(`<Route path="/${destination}" element=`);
-  const close = app.indexOf("</Route>", parent);
+  const close = app.indexOf('<Route path="/', parent + 15);
   const block = app.slice(parent, close);
   const match = block.match(new RegExp(`<Route path="${child.replace(/[/*]/g, "\\$&")}" element=\\{<(\\w+)([^>]*)>`));
   if (!match) throw new Error(`No route for /${destination}/${child}`);
@@ -41,10 +41,14 @@ function routeGate(destination: Destination, child: string): string {
 }
 
 describe("destination route matrix", () => {
-  it.each(Object.entries(DESTINATIONS))("registers %s and every tab with the gate its padlock describes", (destination, config) => {
+  it.each(Object.entries(DESTINATIONS).filter(([id]) => id !== "progress"))("registers %s and every tab with the gate its padlock describes", (destination, config) => {
     expect(app).toContain(`<Route path="${config.path}" element={<ProtectedRoute allowSignedIn><StudentDestination destination="${destination}" />`);
     expect(app).toContain(`<DestinationIndex destination="${destination}" />`);
     for (const tab of config.tabs) {
+      if (destination === "review" && ["/review/progress", "/review/history"].includes(tab.path)) {
+        expect(app).toContain('<Route element={<ProtectedRoute flag="has_analytics_access"><ReviewProgressSnapshotBoundary /></ProtectedRoute>}>');
+        continue;
+      }
       const gate = routeGate(destination as Destination, tab.path.slice(config.path.length + 1));
       if (tab.admin) expect(gate).toBe("ProtectedRoute requireAdmin");
       else if (tab.readingCenterEligible) expect(gate).toBe('MyWorkGate');
@@ -143,7 +147,7 @@ describe("destination landing", () => {
     ["my-work", { ...NONE, readingCenterChecking: true }, "/my-work/to-do"],
     ["my-work", { ...NONE, readingCenterAssigned: true }, "/my-work/to-do"],
     ["my-work", NONE, "/my-work/to-do"],
-    ["progress", TIER_3, "/progress/overview"],
+    ["progress", TIER_3, "/review/progress"],
     ["library", ADMIN, "/library/lessons"],
   ] as const)("%s lands a matching account on its first open tab", (destination, permissions, path) => {
     expect(destinationLandingPath(destination, permissions)).toBe(path);
@@ -177,7 +181,7 @@ describe("legacy links", () => {
     ["/waj", "/review/wrong"],
     ["/journal", "/review/wrong"],
     ["/flagged", "/review/flagged"],
-    ["/analytics", "/progress/overview"],
+    ["/analytics", "/review/progress"],
     ["/testing", "/practice/exams"],
     ["/testing/exams", "/practice/exams/all"],
     ["/testing/attempts", "/practice/exams/attempts"],
@@ -197,7 +201,7 @@ describe("legacy links", () => {
   it("forwards old History links through the filter-aware redirect", () => {
     expect(app).toContain('<Route path="/history" element={<RedirectLegacyHistory />} />');
     expect(redirectLegacyHistoryLocation("?area=rc", "#row"))
-      .toBe("/progress/history?historyArea=RC#row");
+      .toBe("/review/history?historyArea=RC#row");
   });
 
   it("reaches every legacy target in one hop, so no redirect can loop", () => {

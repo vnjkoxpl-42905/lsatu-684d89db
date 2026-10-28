@@ -4,7 +4,13 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import ProgressPage from './ProgressPage';
 import type { GradedQuestionAnswer, ProgressCoverage } from '@/lib/firstAnswerProgress';
 
-const state = vi.hoisted(() => ({ data: {} as Record<string, unknown>, calls: [] as unknown[][] }));
+const state = vi.hoisted(() => ({ data: {} as Record<string, unknown>, calls: [] as unknown[][], actor: 's', authReady: true, journalCalls: [] as boolean[], permissions: {} as Record<string, unknown> }));
+vi.mock('@/contexts/AuthContext', () => ({ useAuth: () => ({ user: { id: state.actor }, authReady: state.authReady }) }));
+vi.mock('@/hooks/useUserPermissions', () => ({ useUserPermissions: () => state.permissions }));
+vi.mock('@/hooks/useJournalEntries', () => ({ useJournalEntries: (enabled: boolean) => {
+  state.journalCalls.push(enabled);
+  return { classId: state.actor, data: [], isLoading: false, isError: false };
+} }));
 vi.mock('@/hooks/useFirstAnswerProgress', () => ({
   useFirstAnswerProgress: (...args: unknown[]) => { state.calls.push(args); return state.data; },
 }));
@@ -18,14 +24,19 @@ const loaded = (over: Record<string, unknown> = {}) => ({
 });
 const renderPage = (view: 'overview' | 'types' | 'history' = 'overview', url = '/progress/overview') => render(<MemoryRouter initialEntries={[url]}><ProgressPage view={view} /></MemoryRouter>);
 
-beforeEach(() => { state.calls = []; });
+beforeEach(() => {
+  state.calls = []; state.journalCalls = []; state.actor = 's'; state.authReady = true;
+  state.permissions = { loading: false, resolved: true, resolvedFor: 's', is_admin: false,
+    has_analytics_access: true, has_classroom_access: true, has_drill_access: true,
+    has_practice_access: true, has_journal_access: true };
+});
 afterEach(cleanup);
 
 describe('Progress container', () => {
   it('reads with Progress-only revalidation and shows the real record in production mode', () => {
     state.data = loaded();
     renderPage();
-    expect(state.calls[0][2]).toEqual({ revalidateOnMount: true });
+    expect(state.calls[0][2]).toEqual({ revalidateOnMount: true, enabled: true });
     expect(state.calls[0][0]).toBe(30);
     expect(screen.queryByText(/Design preview/)).not.toBeInTheDocument();
     expect(screen.queryByLabelText('Design comparison')).not.toBeInTheDocument();
@@ -82,4 +93,24 @@ describe('Progress container', () => {
     expect(screen.getByRole('region', { name: 'Practice history' })).toBeInTheDocument();
     expect(screen.getByLabelText('Active filters')).toHaveTextContent('Missed');
   });
+  it('does not read journal records without a resolved current-actor grant', () => {
+    state.data = loaded(); state.permissions = { ...state.permissions, loading: true, resolved: false };
+    renderPage(); expect(state.journalCalls.every((enabled) => !enabled)).toBe(true);
+    cleanup(); state.journalCalls = [];
+    state.permissions = { ...state.permissions, loading: false, resolved: true, has_journal_access: false };
+    renderPage(); expect(state.journalCalls.every((enabled) => !enabled)).toBe(true);
+  });
+
+  it('withholds journal reads during an account switch even with the previous ledger', () => {
+    state.data = loaded(); state.actor = 'next';
+    renderPage(); expect(state.journalCalls.every((enabled) => !enabled)).toBe(true);
+    cleanup(); state.journalCalls = [];
+    state.permissions = { ...state.permissions, resolvedFor: 'next' };
+    renderPage(); expect(state.journalCalls.every((enabled) => !enabled)).toBe(true);
+  });
+
+  it('enables the journal only for the matching owner and granted actor', () => {
+    state.data = loaded(); renderPage(); expect(state.journalCalls.at(-1)).toBe(true);
+  });
+
 });

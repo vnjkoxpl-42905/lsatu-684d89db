@@ -2,6 +2,8 @@ import { cleanup, render, screen } from '@testing-library/react';
 import { MemoryRouter, Route, Routes, useLocation } from 'react-router-dom';
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 import BootcampGate from './BootcampGate';
+vi.mock('@/hooks/useStudentWorkState',()=>({useLoadedStudentWorkAcknowledgment:vi.fn()}));
+vi.mock('@/hooks/useClassroomItems',()=>({useClassroomItems:()=>{const result=query.getMockImplementation()?.();return {data:result?.data?[{id:'bootcamp-one',student_id:'student-1',type:'bootcamp_module',source_id:'/bootcamp/conditionals',created_at:'2026-10-28T12:00:00Z',metadata_json:{bootcamp_id:'conditionals'}}]:[],isLoading:result?.isLoading,isError:false};}}));
 
 const { auth, permissions, query } = vi.hoisted(() => ({ auth: vi.fn(), permissions: vi.fn(), query: vi.fn() }));
 vi.mock('@/contexts/AuthContext', () => ({ useAuth: () => auth() }));

@@ -1,3 +1,4 @@
+import { assignmentNotificationNavigation } from '@/lib/assignmentNotificationRoute';
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Bell } from "lucide-react";
@@ -55,9 +56,13 @@ export default function NotificationBell({ mouseX, quiet = false }: Props) {
   });
 
   const handleClick = async (n: Notification) => {
-    if (!n.read) void markRead(n.id);
+    const destination = assignmentNotificationNavigation(n);
+    if (!n.read && destination.acknowledgeOnClick) void markRead(n.id);
     setOpen(false);
-    if (n.link) navigate(n.link);
+    if (destination.route) {
+      if (/^https?:\/\//i.test(destination.route)) window.location.assign(destination.route);
+      else navigate(destination.route);
+    }
   };
 
   // The popover deliberately stays open: approving one signup should not cost

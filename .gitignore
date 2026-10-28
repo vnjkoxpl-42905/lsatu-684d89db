@@ -107,3 +107,7 @@ scripts/__pycache__/
 # the room by accident, which is exactly what some of them exist to delete.
 .scratch/
 .impeccable/review/
+
+# Local Home design measurements and the separately built fixture preview.
+.taste-skill/
+dist-home-preview/

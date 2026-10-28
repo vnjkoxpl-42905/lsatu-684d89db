@@ -197,7 +197,8 @@ function FlagNote({ row }: { row: FlaggedQuestionRow }) {
 }
 
 export function FlaggedIndexView() {
-  const query = useFlagged();
+  const permissions = useUserPermissions();
+  const query = useFlagged({ enabled: !permissions.loading && (permissions.is_admin || permissions.has_flagged_access) });
   const rows = query.data ?? [];
 
   return (
@@ -257,9 +258,9 @@ export function FlaggedQuestionView() {
   const queueReturnTo = reviewReturnTo(location.search);
   const reviewNav = queueReturnTo ? <ReviewReturnLink /> : <ReviewTabs />;
   const navigate = useNavigate();
-  const query = useFlagged();
-  const invalidate = useInvalidateFlagged();
   const permissions = useUserPermissions();
+  const query = useFlagged({ enabled: !permissions.loading && (permissions.is_admin || permissions.has_flagged_access) });
+  const invalidate = useInvalidateFlagged();
   const { isLoading: bankLoading, error: bankError } = useQuestionBank();
   const [askOpen, setAskOpen] = React.useState(false);
 

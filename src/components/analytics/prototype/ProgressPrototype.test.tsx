@@ -370,12 +370,12 @@ describe('production presenter', () => {
     expect(onRefresh).toHaveBeenCalled();
   });
 
-  it('offers a general Review link and never promises the selected question opens', () => {
+  it('explains unavailable review access instead of sending the selected answer to a generic queue', () => {
     renderProduction();
     openRecentAnswer();
-    const link = within(screen.getByRole('region', { name: 'Saved answer detail' })).getByRole('link', { name: 'Review' });
-    expect(link).toHaveAttribute('href', '/review/to-review');
-    expect(screen.getByText(/does not open this exact question/)).toBeInTheDocument();
+    const detail = screen.getByRole('region', { name: 'Saved answer detail' });
+    expect(within(detail).getByRole('status')).toHaveTextContent('Checking review access.');
+    expect(within(detail).queryByRole('link', {name:'Review'})).not.toBeInTheDocument();
   });
 
   it('says first available answer in history rows under partial sources', () => {
@@ -459,5 +459,35 @@ describe('history URL contract', () => {
     expect(url().searchParams.get('window')).toBe('14');
     expect(url().searchParams.get('other')).toBe('1');
     expect(screen.getByRole('button', { name: 'Reset filters' })).toBeDisabled();
+  });
+});
+
+describe('Unified Review evidence actions', () => {
+  const owner='00000000-0000-4000-8000-000000000002';
+  const historyId='00000000-0000-4000-8000-000000000003';
+  const answer:GradedQuestionAnswer={attemptId:'section-evidence',questionKey:'LR:PT104-S2-Q17',area:'LR',source:'lr_section_history',mode:'timed-section',correct:false,gradedAt:DEMO_AS_OF,topic:'Necessary Assumption',provenance:{kind:'lr-section',ownerId:owner,historyId,qid:'PT104-S2-Q17'}};
+  it('opens the exact permitted saved section with a validated selected-answer return', () => {
+    render(<MemoryRouter initialEntries={['/review/progress?window=30&progressArea=LR&progressType=Necessary+Assumption']}><ProgressPrototype production answers={[answer]} coverage={demoCoverage} asOf={DEMO_AS_OF} reviewAccess={{actorId:owner,ownerId:owner,resolved:true,analytics:true}} /></MemoryRouter>);
+    openRecentAnswer();
+    const detail=screen.getByRole('region',{name:'Saved answer detail'});
+    const href=within(detail).getByRole('link',{name:'Review saved work'}).getAttribute('href')!;
+    const url=new URL(href,'https://example.test');
+    expect(url.pathname).toBe(`/review/section/${historyId}/PT104-S2-Q17`);
+    const back=new URL(url.searchParams.get('returnTo')!,'https://example.test');
+    expect(back.pathname).toBe('/review/progress');
+    expect(back.searchParams.get('progressAnswer')).toBe('section-evidence');
+    expect(back.searchParams.get('progressType')).toBe('Necessary Assumption');
+    expect(within(detail).getByText(/Opening this does not mark it reviewed/)).toBeInTheDocument();
+  });
+  it('restores the selected answer from a production URL on first mount', () => {
+    render(<MemoryRouter initialEntries={['/review/progress?window=30&progressAnswer=section-evidence']}><ProgressPrototype production answers={[answer]} coverage={demoCoverage} asOf={DEMO_AS_OF} reviewAccess={{actorId:owner,ownerId:owner,resolved:true,analytics:true}} /></MemoryRouter>);
+    expect(screen.getByRole('region',{name:'Saved answer detail'})).toHaveFocus();
+  });
+  it('keeps an unrevealed original neutral in History and never turns it into a miss', () => {
+    const withheld:GradedQuestionAnswer={...answer,attemptId:'withheld-first',questionKey:'RC:1:2',area:'RC',source:'rc_attempts',mode:'rc-drill',correct:null,resultVisibility:'withheld',provenance:undefined};
+    render(<MemoryRouter initialEntries={['/review/history?window=all']}><ProgressPrototype production view="history" answers={[withheld]} coverage={demoCoverage} asOf={DEMO_AS_OF} /></MemoryRouter>);
+    const history=screen.getByRole('region',{name:'Practice history'});
+    expect(within(history).getByText('Results not revealed')).toBeInTheDocument();
+    expect(history.querySelector('.pp-outcome.is-missed')).toBeNull();
   });
 });

@@ -11,9 +11,9 @@ import {
 const app = readFileSync(resolve(process.cwd(), "src/App.tsx"), "utf8");
 
 describe("seven destination rail", () => {
-  it("has exactly seven top-level destinations with canonical routes", () => {
+  it("has exactly six top-level destinations with canonical routes", () => {
     expect(RAIL_CATALOG.map((item) => item.id)).toEqual([
-      "home", "my-work", "practice", "review", "progress", "library", "schedule",
+      "home", "my-work", "practice", "review", "library", "schedule",
     ]);
     for (const path of ["/classroom", "/my-work", "/practice", "/review", "/progress", "/library", "/schedule"]) {
       expect(app).toContain(`path="${path}"`);
@@ -25,8 +25,7 @@ describe("seven destination rail", () => {
     for (const path of [
       "/my-work/to-do", "/my-work/completed", "/my-work/notes",
       "/practice/drills", "/practice/exams", "/practice/exams/all", "/practice/exams/attempts",
-      "/review/to-review", "/review/wrong", "/review/flagged",
-      "/progress/overview", "/progress/history", "/progress/topics",
+      "/review/to-review", "/review/progress", "/review/history",
       "/library/lessons", "/library/activities", "/library/bootcamps", "/library/admissions",
     ]) expect(tabs).toContain(path);
     expect(app).toContain('path="drills/saved" element={<ProtectedRoute flag="has_drill_access"><SavedSets />');

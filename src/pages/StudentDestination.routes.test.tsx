@@ -12,6 +12,7 @@ const { auth, permissions, assignment } = vi.hoisted(() => ({
 vi.mock("@/contexts/AuthContext", () => ({ useAuth: () => auth }));
 vi.mock("@/hooks/useUserPermissions", () => ({ useUserPermissions: () => permissions }));
 vi.mock('@/hooks/useReadingCenterAccess', () => ({ useReadingCenterAccess: () => ({ allowed: false, isPending: false }) }));
+vi.mock('@/hooks/useClassroomMotion', () => ({ useClassroomMotion: vi.fn() }));
 
 vi.mock("@/integrations/supabase/client", () => ({
   supabase: { from: () => {
@@ -41,15 +42,15 @@ function Where() {
   return <output data-testid="where">{`${pathname}${search}`}</output>;
 }
 
-/** The /progress and /library branches exactly as App.tsx composes them. */
+/** The /review/progress and /library branches exactly as App.tsx composes them. */
 function renderAt(path: string) {
   return render(
     <QueryClientProvider client={new QueryClient({ defaultOptions: { queries: { retry: false } } })}>
     <MemoryRouter initialEntries={[path]}>
       <Routes>
-        <Route path="/progress" element={<ProtectedRoute allowSignedIn><StudentDestination destination="progress" /></ProtectedRoute>}>
-          <Route index element={<DestinationIndex destination="progress" />} />
-          <Route path="overview" element={<ProtectedRoute flag="has_analytics_access"><div>progress overview content</div></ProtectedRoute>} />
+        <Route path="/review" element={<ProtectedRoute allowSignedIn><StudentDestination destination="review" /></ProtectedRoute>}>
+          <Route index element={<DestinationIndex destination="review" />} />
+          <Route path="progress" element={<ProtectedRoute flag="has_analytics_access"><div>progress overview content</div></ProtectedRoute>} />
           <Route path="history" element={<ProtectedRoute flag="has_analytics_access"><div>history content</div></ProtectedRoute>} />
         </Route>
         <Route path="/library" element={<ProtectedRoute allowSignedIn><StudentDestination destination="library" /></ProtectedRoute>}>
@@ -84,16 +85,16 @@ describe("destination routes across auth and permission states", () => {
   it("renders nothing protected while auth is still resolving", () => {
     auth.user = null;
     auth.authReady = false;
-    renderAt("/progress/history?range=30d");
+    renderAt("/review/history?range=30d");
     expect(screen.queryByText("history content")).toBeNull();
-    expect(screen.queryByRole("heading", { name: "Progress" })).toBeNull();
+    expect(screen.queryByRole("heading", { name: "Review" })).toBeNull();
     expect(screen.queryByTestId("where")).toBeNull();
   });
 
   it("sends a signed-out deep link to sign-in with its full return path", () => {
     auth.user = null;
-    renderAt("/progress/history?range=30d");
-    expect(screen.getByTestId("where")).toHaveTextContent("/auth?returnTo=%2Fprogress%2Fhistory%3Frange%3D30d");
+    renderAt("/review/history?range=30d");
+    expect(screen.getByTestId("where")).toHaveTextContent("/auth?returnTo=%2Freview%2Fhistory%3Frange%3D30d");
   });
 
   it("renders no destination or content while permissions are unresolved", () => {
@@ -105,16 +106,16 @@ describe("destination routes across auth and permission states", () => {
 
   it("denies a locked direct URL and explains why, inside the destination", () => {
     permissions.has_classroom_access = true;
-    renderAt("/progress/history");
+    renderAt("/review/history");
     expect(screen.queryByText("history content")).toBeNull();
-    expect(screen.getByRole("heading", { name: "Progress" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Review" })).toBeInTheDocument();
     expect(screen.getByText("Not open yet")).toBeInTheDocument();
     expect(screen.getByText(/Sections with a lock aren't available/)).toBeInTheDocument();
   });
 
   it("opens an entitled direct URL on reload", () => {
     permissions.has_analytics_access = true;
-    renderAt("/progress/history");
+    renderAt("/review/history");
     expect(screen.getByText("history content")).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "History" })).toHaveAttribute("aria-current", "page");
   });
@@ -145,14 +146,14 @@ describe("destination routes across auth and permission states", () => {
   });
 
   it("explains unavailable access without guessing it was paused", () => {
-    renderAt("/progress");
+    renderAt("/review/progress");
     expect(screen.queryByText("Your access is paused")).toBeNull();
     expect(screen.getByText(/isn.t available to your account/)).toBeInTheDocument();
   });
   it("does not tell a practice-only Tier 3 student Joshua paused their Classroom access", () => {
     permissions.has_practice_access = true;
     permissions.has_drill_access = true;
-    renderAt("/progress");
+    renderAt("/review/progress");
     expect(screen.queryByText("Your access is paused")).toBeNull();
     expect(screen.getByText(/isn.t available to your account/)).toBeInTheDocument();
     expect(screen.queryByText("history content")).toBeNull();
@@ -181,7 +182,7 @@ describe("destination routes across auth and permission states", () => {
   });
   it("preserves opt-in local development access through the real nested gate", () => {
     vi.stubEnv("VITE_DEV_BYPASS_GATES", "1");
-    renderAt("/progress/history");
+    renderAt("/review/history");
     expect(screen.getByText("history content")).toBeInTheDocument();
   });
 

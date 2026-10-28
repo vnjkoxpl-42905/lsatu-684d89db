@@ -5781,3 +5781,19 @@ html:not(.light) .drill-setup-preview {
 .drill-observatory-root .rc-practice-assigned[open] > section {
   margin-top: 16px;
 }
+
+.classroom-brand-row { display: flex; align-items: center; justify-content: space-between; gap: .5rem; }
+.classroom-brand-row .classroom-brand { min-width: 0; }
+
+/* One shared Review workspace: compact shell, three route-backed views. */
+.classroom-root .student-destination:has(.review-hub-utilities)>.student-destination-tabs{margin-block:20px 10px}
+.classroom-root .student-destination:has(.review-hub-utilities)>.review-hub-utilities{display:flex;flex-wrap:wrap;align-items:center;gap:6px 18px;margin:0 0 14px;font-size:12px;color:var(--classroom-meta-text)}
+.classroom-root .student-destination:has(.review-hub-utilities)>.review-hub-utilities :is(a,span){display:inline-flex;align-items:center;gap:5px;min-height:32px}
+.classroom-root .review-hub-utilities a{color:var(--classroom-link-text)}
+.classroom-root .review-hub-utilities a:focus-visible{outline:2px solid var(--classroom-accent);outline-offset:3px}
+@media(max-width:600px){
+ .classroom-root .student-destination:has(.review-hub-utilities)>.student-destination-heading h1{font-size:28px}
+ .classroom-root .student-destination:has(.review-hub-utilities)>.student-destination-heading p{font-size:12px;margin-top:6px;line-height:1.5}
+ .classroom-root .student-destination:has(.review-hub-utilities)>.student-destination-tabs{margin-block:12px 6px;gap:4px 20px}
+ .classroom-root .student-destination:has(.review-hub-utilities)>.review-hub-utilities{margin-bottom:8px;gap:2px 14px;font-size:12px}
+}

@@ -90,7 +90,7 @@ describe("acknowledged sidebar preferences", () => {
     const hook = harness();
     await waitFor(() => expect(hook.result.current.canSave).toBe(true));
     await act(() => hook.result.current.save({ order: {}, hidden: ["library"] }));
-    expect(state.writes[0]).toEqual({ layout_prefs: { unrelated: "keep", classroom_rail_v2: { order: {}, hidden: ["library"] } } });
+    expect(state.writes[0]).toEqual({ layout_prefs: { unrelated: "keep", classroom_rail_v2: { order: {}, hidden: ["library"], reviewHub: true } } });
     await waitFor(() => expect(hook.result.current.prefs.hidden).toEqual(["library"]));
   });
   it.each([
@@ -123,13 +123,14 @@ describe("acknowledged sidebar preferences", () => {
     expect(hook.result.current.canSave).toBe(false);
     expect(state.writes).toHaveLength(0);
   });
-  it("requires acknowledged legacy migration before editing", async () => {
+  it("reads legacy settings without writing and saves only after an explicit edit", async () => {
     state.rows = [{ class_id: "student-a", layout_prefs: { unrelated: "keep", classroom_rail: { hidden: ["schedule"] } } }];
-    state.nextWrite = { data: null, error: null };
     const hook = harness();
-    await waitFor(() => expect(hook.result.current.error).toBeTruthy());
-    expect(hook.result.current.canSave).toBe(false);
-    expect((state.writes[0] as { layout_prefs: object }).layout_prefs).toHaveProperty("unrelated", "keep");
+    await waitFor(() => expect(hook.result.current.canSave).toBe(true));
+    expect(state.writes).toHaveLength(0);
+    await act(() => hook.result.current.save({ ...hook.result.current.projectedPrefs, hidden: ["library"] }));
+    expect(state.writes).toHaveLength(1);
+    expect((state.writes[0] as {layout_prefs: object}).layout_prefs).toHaveProperty("unrelated", "keep");
   });
   it("switches owner caches without carrying the previous user's layout", async () => {
     const hook = harness();
@@ -153,7 +154,7 @@ describe("acknowledged sidebar preferences", () => {
     await waitFor(() => expect(hook.result.current.saving).toBe(true));
     expect(hook.result.current.prefs).toEqual(current);
     await act(async () => {
-      resolveWrite({ data: { class_id: "student-a", layout_prefs: { classroom_rail_v2: { order: {}, hidden: ["library"] } } }, error: null });
+      resolveWrite({ data: { class_id: "student-a", layout_prefs: { classroom_rail_v2: { order: {}, hidden: ["library"], reviewHub: true } } }, error: null });
       await pending;
     });
     await waitFor(() => expect(hook.result.current.prefs.hidden).toEqual(["library"]));
@@ -172,7 +173,7 @@ describe("acknowledged sidebar preferences", () => {
     hook.rerender();
     await waitFor(() => expect(hook.result.current.prefs.hidden).toEqual(["practice"]));
     await act(async () => {
-      resolveWrite({ data: { class_id: "student-a", layout_prefs: { classroom_rail_v2: { order: {}, hidden: ["library"] } } }, error: null });
+      resolveWrite({ data: { class_id: "student-a", layout_prefs: { classroom_rail_v2: { order: {}, hidden: ["library"], reviewHub: true } } }, error: null });
       await expect(pending).rejects.toThrow("account changed");
     });
     expect(hook.result.current.prefs.hidden).toEqual(["practice"]);
@@ -180,57 +181,34 @@ describe("acknowledged sidebar preferences", () => {
   });
 });
 
-describe("legacy rail migration", () => {
-  it("migrates once per account and never again after the acknowledged write", async () => {
-    state.rows = [{ class_id: "student-a", layout_prefs: { unrelated: "keep", classroom_rail: { hidden: ["drill", "testing"] } } }];
+describe("legacy read and first explicit save", () => {
+  it.each([[["review"]], [["progress"]], [["review", "progress"]], [[]]])("projects old mixed visibility without a read write: %j", async (hidden) => {
+    state.rows = [{ class_id: "student-a", layout_prefs: { classroom_rail_v2: { order: { classroom: ["progress", "review", "home"] }, hidden } } }];
     const hook = harness();
     await waitFor(() => expect(hook.result.current.canSave).toBe(true));
-    expect(state.writes).toHaveLength(1);
-    expect(hook.result.current.prefs.hidden).toEqual(["practice"]);
+    expect(state.writes).toHaveLength(0);
+    expect(hook.result.current.projectedPrefs.hidden.includes("review")).toBe(hidden.length === 2);
+    await act(() => hook.result.current.save({ ...hook.result.current.projectedPrefs, hidden: [...hook.result.current.projectedPrefs.hidden, "schedule"] }));
+    await waitFor(() => expect(hook.result.current.prefs.reviewHub).toBe(true));
+    expect(hook.result.current.prefs.order.classroom).toEqual(["review", "home"]);
+    expect(hook.result.current.prefs.hidden.includes("review")).toBe(hidden.length === 2);
+    expect(hook.result.current.prefs.reviewHub).toBe(true);
     await act(() => hook.result.current.retry());
-    await waitFor(() => expect(hook.result.current.canSave).toBe(true));
-    expect(state.writes).toHaveLength(1);
-    // The legacy key is left in place; only the versioned key is added.
-    expect((state.rows[0] as { layout_prefs: Record<string, unknown> }).layout_prefs).toHaveProperty("classroom_rail");
+    expect(hook.result.current.projectedPrefs.hidden.includes("review")).toBe(hidden.length === 2);
   });
-
-  it("does not migrate over a saved v2 layout, even one holding retired ids", async () => {
-    state.rows = [{ class_id: "student-a", layout_prefs: { classroom_rail: { hidden: ["drill", "testing"] }, classroom_rail_v2: { order: { classroom: ["journal", "review"] }, hidden: ["analytics", "library"] } } }];
+  it("rejects a real changed legacy snapshot before its first Save", async () => {
+    state.rows = [{ class_id: "student-a", layout_prefs: { classroom_rail: { hidden: ["schedule"] } } }];
     const hook = harness();
     await waitFor(() => expect(hook.result.current.canSave).toBe(true));
+    (state.rows[0] as {layout_prefs: unknown}).layout_prefs = {classroom_rail: {hidden: ["library"]}};
+    await act(async () => { await expect(hook.result.current.save(hook.result.current.projectedPrefs)).rejects.toThrow("another device"); });
     expect(state.writes).toHaveLength(0);
-    expect(hook.result.current.prefs).toEqual({ order: { classroom: ["review"] }, hidden: ["library"] });
   });
-
-  it("repairs unknown legacy entries without carrying them forward", async () => {
-    state.rows = [{ class_id: "student-a", layout_prefs: { classroom_rail: { order: { classroom: ["bogus", "testing", 7] }, hidden: ["bogus", "messages", "analytics", "history"] } } }];
+  it("rejects a real changed v2 snapshot", async () => {
     const hook = harness();
     await waitFor(() => expect(hook.result.current.canSave).toBe(true));
-    const written = (state.writes[0] as { layout_prefs: { classroom_rail_v2: { order: { classroom: string[] }; hidden: string[] } } }).layout_prefs.classroom_rail_v2;
-    expect(written.hidden).toEqual(["progress"]);
-    expect(written.order.classroom[0]).toBe("practice");
-    expect(written.order.classroom).not.toContain("bogus");
-  });
-
-  it("adopts a layout another device wrote during migration instead of failing or overwriting it", async () => {
-    state.rows = [{ class_id: "student-a", layout_prefs: { classroom_rail: { hidden: [] } } }];
-    state.nextWrite = { data: null, error: null };
-    state.onWrite = () => {
-      (state.rows[0] as { layout_prefs: unknown }).layout_prefs = { classroom_rail: { hidden: [] }, classroom_rail_v2: { order: {}, hidden: ["schedule"] } };
-    };
-    const hook = harness();
-    await waitFor(() => expect(hook.result.current.canSave).toBe(true));
-    expect(hook.result.current.error).toBeNull();
-    expect(hook.result.current.prefs.hidden).toEqual(["schedule"]);
-    expect(state.writes).toHaveLength(1);
-  });
-
-  it("refuses to save an edit built on a layout another device has since replaced", async () => {
-    const hook = harness();
-    await waitFor(() => expect(hook.result.current.canSave).toBe(true));
-    (state.rows[0] as { layout_prefs: unknown }).layout_prefs = { unrelated: "keep", classroom_rail_v2: { order: {}, hidden: ["progress"] } };
-    await act(async () => { await expect(hook.result.current.save({ ...current, hidden: ["library"] })).rejects.toThrow("another device"); });
+    (state.rows[0] as {layout_prefs: unknown}).layout_prefs = { classroom_rail_v2: {order: {}, hidden: ["progress"]}};
+    await act(async () => { await expect(hook.result.current.save(hook.result.current.projectedPrefs)).rejects.toThrow("another device"); });
     expect(state.writes).toHaveLength(0);
-    await waitFor(() => expect(hook.result.current.prefs.hidden).toEqual(["progress"]));
   });
 });

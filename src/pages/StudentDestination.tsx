@@ -1,4 +1,5 @@
 import { useRef } from "react";
+import { useReviewViewMemory } from '@/contexts/ReviewViewMemoryContext';
 import { Link, Navigate, Outlet, useLocation } from "react-router-dom";
 import { Lock } from "lucide-react";
 import { useUserPermissions, type PermissionFlag } from "@/hooks/useUserPermissions";
@@ -28,11 +29,13 @@ function useDestinationPermissions(destination: Destination) {
 }
 
 export function StudentDestination({ destination }: { destination: Destination }) {
-  const { pathname, search } = useLocation();
+  const { pathname, search, hash } = useLocation();
+  const remembered = useReviewViewMemory();
+  if (destination === 'review') remembered.remember(`${pathname}${search}${hash}`);
   const headingRef = useRef<HTMLElement>(null);
   // Progress tabs carry only a valid window; no other URL state follows a tab link.
   const progressWindow = destination === "progress" ? parseProgressWindow(new URLSearchParams(search).get("window")) : null;
-  const tabTarget = (path: string) => progressWindow ? `${path}?window=${progressWindow}` : path;
+  const tabTarget = (path: string) => destination === 'review' ? remembered.target(path) : progressWindow ? `${path}?window=${progressWindow}` : path;
   useClassroomMotion(headingRef, `destination:${destination}`);
   const permissions = useDestinationPermissions(destination);
   const config = DESTINATIONS[destination];
@@ -86,6 +89,17 @@ export function StudentDestination({ destination }: { destination: Destination }
       <nav data-motion-skip className="student-destination-tabs" aria-label={`${config.title} sections`} aria-busy={permissions.loading || (permissions.readingCenterChecking && !permissions.has_classroom_access)}>
         {renderTabs(config.tabs, "primary")}
       </nav>
+      {destination === 'review' ? <nav className="review-hub-utilities" aria-label="Review tools">
+        {[
+          { label: 'Wrong-answer journal', path: '/review/wrong', flags: ['has_journal_access'] },
+          { label: 'Flagged', path: '/review/flagged', flags: ['has_flagged_access'] },
+          { label: 'Imported work', path: '/review/imported', flags: ['has_analytics_access', 'has_drill_access'] },
+        ].map((utility) => {
+          const access = tabAccess(utility as DestinationTab, permissions);
+          return access === 'open' ? <Link key={utility.path} to={tabTarget(utility.path)} aria-current={pathname === utility.path ? 'page' : undefined}>{utility.label}</Link>
+            : <span key={utility.path} aria-disabled="true" title={access === 'checking' ? 'Checking access' : `${utility.label} is locked for your account`}>{utility.label} <span className="sr-only">{access === 'checking' ? '(checking access)' : '(locked)'}</span>{access === 'locked' ? <Lock size={12} aria-hidden="true" /> : null}</span>;
+        })}
+      </nav> : null}
       {showExamTabs ? (
         <nav data-motion-skip className="student-destination-subtabs" aria-label="Practice Exams pages" aria-busy={permissions.loading}>
           {renderTabs(EXAM_TABS, "exams")}
@@ -98,7 +112,7 @@ export function StudentDestination({ destination }: { destination: Destination }
           {permissions.has_chat_access || permissions.is_admin ? " If that looks wrong, message Joshua." : null}
         </p>
       ) : null}
-      <div data-motion-enter={pathname === "/practice/drills" || (destination === "progress" && pathname.endsWith("/overview")) ? undefined : ""} className="student-destination-content">
+      <div data-motion-policy={destination === 'my-work' ? 'list-only' : undefined} data-motion-enter={destination === 'my-work' || pathname === "/practice/drills" || (destination === "progress" && pathname.endsWith("/overview")) ? undefined : ""} className="student-destination-content">
         <DestinationHeadingContext.Provider value>
           <Outlet />
         </DestinationHeadingContext.Provider>

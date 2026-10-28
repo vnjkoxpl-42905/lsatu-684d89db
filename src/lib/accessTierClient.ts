@@ -98,6 +98,7 @@ export async function setPracticeTestAssignment(
         pt,
         assigned_by: adminId ?? null,
         assigned_at: new Date().toISOString(),
+        notification_policy: 'auto',
         status: 'assigned',
       } as never,
       { onConflict: 'student_id,pt' },
@@ -113,7 +114,7 @@ export async function setPracticeTestAssignment(
     if (existing) {
       const { error: updateError } = await supabase
         .from('classroom_items')
-        .update({ status: 'assigned', visible_to_student: true } as never)
+        .update({ status: 'assigned', visible_to_student: true, notification_policy: 'auto' } as never)
         .eq('id', (existing as { id: string }).id);
       if (updateError) throw updateError;
     } else {
@@ -121,6 +122,7 @@ export async function setPracticeTestAssignment(
         student_id: classId,
         created_by: adminId ?? null,
         type: 'practice_test',
+        notification_policy: 'auto',
         title: `PrepTest ${pt}`,
         description: 'A full practice test: three scored sections, in order, with a break.',
         source_table: 'practice_test_assignments',

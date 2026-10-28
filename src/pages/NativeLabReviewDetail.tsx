@@ -1,3 +1,4 @@
+import { safeReviewHubReturn } from '@/lib/reviewHubReturn';
 import { useEffect, useState } from 'react';
 import { Link, useParams, useSearchParams } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
@@ -6,7 +7,7 @@ import SavedReviewEpisodePanel from '@/components/review/SavedReviewEpisodePanel
 export default function NativeLabReviewDetail() {
   const { attemptId } = useParams(); const { user } = useAuth(); const [params] = useSearchParams();
   const returnTo = params.get('returnTo');
-  const back = returnTo?.split('?')[0] === '/review/to-review' ? returnTo : '/review/to-review?reason=missed';
+  const back = safeReviewHubReturn(returnTo) ?? '/review/to-review?reason=missed';
   const scope = `${user?.id}:${attemptId}`;
   const [saved, setSaved] = useState<{ scope: string; value: NativeLabReviewAttempt | null } | null>(null);
   const [loading, setLoading] = useState(true); const [failed, setFailed] = useState(false); const [retry, setRetry] = useState(0);

@@ -3,6 +3,7 @@ import React from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import ReviewProgressSnapshotBoundary from '@/components/review/ReviewProgressSnapshotBoundary';
 import { BrowserRouter, Routes, Route, Navigate, Outlet, useParams, useLocation } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { OrbitalActiveProvider } from "@/contexts/OrbitalActiveContext";
@@ -10,6 +11,7 @@ import { OrbitalActiveProvider } from "@/contexts/OrbitalActiveContext";
 const queryClient = new QueryClient();
 import { QuestionBankProvider } from "./contexts/QuestionBankContext";
 import { AuthProvider } from "./contexts/AuthContext";
+import { ReviewViewMemoryProvider } from "./contexts/ReviewViewMemoryContext";
 import { UserSettingsProvider } from "./contexts/UserSettingsContext";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { AdaptiveEngineProvider } from "./contexts/AdaptiveEngineContext";
@@ -35,6 +37,7 @@ const ConditionalOpeningPreview = import.meta.env.DEV
   : () => null;
 const Drill = safeLazy(() => import("./pages/Drill"));
 const DrillLaunchGate = safeLazy(() => import("./components/drill/DrillLaunchGate"));
+const ImportedWorkPage = safeLazy(() => import("./pages/ImportedWorkPage"));
 const Analytics = safeLazy(() => import("./pages/Analytics"));
 const DrillRuns = safeLazy(() => import("./pages/DrillRuns"));
 const ActivityReviewDetail = safeLazy(() => import("./pages/ActivityReviewDetail"));
@@ -228,7 +231,7 @@ function RedirectLegacyExamDetail() {
 function RedirectLegacyDrill() {
   const { search } = useLocation();
   const stage = new URLSearchParams(search).get("stage");
-  return <RedirectWithSearch to={stage === "full-section" ? "/practice/exams" : stage === "analytics" ? "/progress/overview" : "/practice/drills"} />;
+  return <RedirectWithSearch to={stage === "full-section" ? "/practice/exams" : stage === "analytics" ? "/review/progress" : "/practice/drills"} />;
 }
 
 function RedirectSmartboardToWhiteboard() {
@@ -276,6 +279,7 @@ const App = () => {
   <QueryClientProvider client={queryClient}>
   <ThemeProvider>
   <AuthProvider>
+  <ReviewViewMemoryProvider>
     <UserSettingsProvider>
     <AdaptiveEngineProvider>
     <OrbitalActiveProvider>
@@ -646,6 +650,11 @@ const App = () => {
 
                     <Route path="/review" element={<ProtectedRoute allowSignedIn><StudentDestination destination="review" /></ProtectedRoute>}>
                       <Route index element={<DestinationIndex destination="review" />} />
+                      <Route element={<ProtectedRoute flag="has_analytics_access"><ReviewProgressSnapshotBoundary /></ProtectedRoute>}>
+                        <Route path="progress" element={<ProgressPage view="overview" />} />
+                        <Route path="history" element={<ProgressPage view="history" />} />
+                      </Route>
+                      <Route path="imported" element={<ProtectedRoute flag={["has_analytics_access", "has_drill_access"]}><ImportedWorkPage /></ProtectedRoute>} />
                       <Route path="to-review" element={<ProtectedRoute allowSignedIn><ReviewQueuePage /></ProtectedRoute>} />
                       <Route path="activity/:assignmentId/:itemOrder" element={<ActivityAssignmentGate><ActivityReviewDetail /></ActivityAssignmentGate>} />
                       <Route path="section/:historyId/:qid" element={<OwnedWorkReviewGate kind="section"><SectionReviewDetail /></OwnedWorkReviewGate>} />
@@ -656,13 +665,10 @@ const App = () => {
                       <Route path="flagged" element={<ProtectedRoute flag="has_flagged_access"><ReviewIndexList section="flagged" /></ProtectedRoute>} />
                     </Route>
 
-                    <Route path="/progress" element={<ProtectedRoute allowSignedIn><StudentDestination destination="progress" /></ProtectedRoute>}>
-                      <Route index element={<DestinationIndex destination="progress" />} />
-                      {/* One container, three route-derived views; the destination tabs are the only section navigation. */}
-                      <Route path="overview" element={<ProtectedRoute flag="has_analytics_access"><Analytics /></ProtectedRoute>} />
-                      <Route path="history" element={<ProtectedRoute flag="has_analytics_access"><ProgressPage view="history" /></ProtectedRoute>} />
-                      <Route path="topics" element={<ProtectedRoute flag="has_analytics_access"><ProgressPage view="types" /></ProtectedRoute>} />
-                    </Route>
+                    <Route path="/progress" element={<RedirectWithSearch to="/review/progress" />} />
+                    <Route path="/progress/overview" element={<RedirectWithSearch to="/review/progress" />} />
+                    <Route path="/progress/topics" element={<RedirectWithSearch to="/review/progress?mode=types" />} />
+                    <Route path="/progress/history" element={<RedirectWithSearch to="/review/history" />} />
 
                     <Route path="/library" element={<ProtectedRoute allowSignedIn><StudentDestination destination="library" /></ProtectedRoute>}>
                       <Route index element={<DestinationIndex destination="library" />} />
@@ -736,7 +742,7 @@ const App = () => {
                         <UnlessDrillPage />
                       </ProtectedRoute>
                     } />
-                    <Route path="/analytics" element={<RedirectWithSearch to="/progress/overview" />} />
+                    <Route path="/analytics" element={<RedirectWithSearch to="/review/progress" />} />
                     <Route path="/history" element={<RedirectLegacyHistory />} />
                     <Route path="/schedule" element={
                       <ProtectedRoute flag="has_schedule_access" allowSignedIn><Schedule /></ProtectedRoute>
@@ -1050,6 +1056,7 @@ const App = () => {
     </OrbitalActiveProvider>
     </AdaptiveEngineProvider>
     </UserSettingsProvider>
+  </ReviewViewMemoryProvider>
   </AuthProvider>
   </ThemeProvider>
   </QueryClientProvider>

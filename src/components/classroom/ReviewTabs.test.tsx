@@ -42,12 +42,12 @@ describe("ReviewTabs", () => {
   it("reflects deep links and switches the URL", () => {
     renderTabs("/journal/PT-1-S1-Q1");
 
-    expect(screen.getByRole("tab", { name: "Wrong answers" })).toHaveAttribute(
-      "aria-selected",
-      "true",
+    expect(screen.getByRole("link", { name: "Wrong-answer journal" })).toHaveAttribute(
+      "aria-current",
+      "page",
     );
-    fireEvent.click(screen.getByRole("tab", { name: "Flagged" }));
-    expect(screen.getByLabelText("Current path")).toHaveTextContent("/flagged");
+    fireEvent.click(screen.getByRole("link", { name: "Flagged" }));
+    expect(screen.getByLabelText("Current path")).toHaveTextContent("/review/flagged");
   });
 
   it("does not expose a review feature the student cannot access", () => {
@@ -56,10 +56,10 @@ describe("ReviewTabs", () => {
 
     renderTabs("/flagged/PT-1-S1-Q1");
 
-    expect(screen.queryByRole("tab", { name: "Wrong answers" })).not.toBeInTheDocument();
-    expect(screen.getByRole("tab", { name: "Flagged" })).toHaveAttribute(
-      "aria-selected",
-      "true",
+    expect(screen.queryByRole("link", { name: "Wrong-answer journal" })).not.toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Flagged" })).toHaveAttribute(
+      "aria-current",
+      "page",
     );
   });
 });
@@ -72,13 +72,13 @@ describe("reviewDefaultPath", () => {
         has_journal_access: true,
         has_flagged_access: true,
       }),
-    ).toBe("/journal");
+    ).toBe("/review/to-review");
     expect(
       reviewDefaultPath({
         ...permissionState,
         has_journal_access: false,
         has_flagged_access: true,
       }),
-    ).toBe("/flagged");
+    ).toBe("/review/to-review");
   });
 });

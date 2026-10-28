@@ -146,11 +146,11 @@ export default function MainhubAccountButton({
 
         {(permissions.is_admin || permissions.has_analytics_access) && (
           <DropdownMenuItem
-            onClick={() => navigate("/analytics")}
+            onClick={() => navigate("/review/progress")}
             className="flex items-center gap-2.5 px-3 py-2.5 text-sm text-foreground"
           >
             <BarChart3 className="h-4 w-4 text-muted-foreground" aria-hidden />
-            Analytics
+            Progress
           </DropdownMenuItem>
         )}
 

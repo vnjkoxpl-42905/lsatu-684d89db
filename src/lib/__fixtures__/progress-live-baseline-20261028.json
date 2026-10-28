@@ -1,0 +1,1362 @@
+{
+  "revision": "29cf18a8d0fb0ef0c1106f8b976f26db13b9a3c4",
+  "sourceSha256": "9a351642fcbe075918bd7258a5be1428dfabc4a6dbcfe19077ed6e0ca6fc5767",
+  "rawSha256": "8d277c86f4e81d7c4acbd672b218633ecbae105247679df74850d46963a9df9a",
+  "ownerId": "00000000-0000-4000-8000-000000000002",
+  "answers": [
+    {
+      "attemptId": "attempts:00000000-0000-4000-8000-000000000008",
+      "questionKey": "LR:PT115-S4-Q3",
+      "area": "LR",
+      "source": "lr_attempts",
+      "mode": "adaptive",
+      "correct": true,
+      "gradedAt": "2026-09-14T00:55:51.841+00:00",
+      "answeredAt": "2026-09-14T00:55:51.841+00:00",
+      "topic": "Method of Reasoning"
+    },
+    {
+      "attemptId": "attempts:00000000-0000-4000-8000-000000000009",
+      "questionKey": "LR:PT159-S3-Q6",
+      "area": "LR",
+      "source": "lr_attempts",
+      "mode": "practice-set",
+      "correct": false,
+      "gradedAt": "2026-07-09T23:33:17.634+00:00",
+      "answeredAt": "2026-07-09T23:33:17.634+00:00",
+      "topic": "Weaken"
+    },
+    {
+      "attemptId": "attempts:00000000-0000-4000-8000-000000000010",
+      "questionKey": "LR:PT112-S1-Q19",
+      "area": "LR",
+      "source": "lr_attempts",
+      "mode": "adaptive",
+      "correct": true,
+      "gradedAt": "2026-06-12T13:02:59.873+00:00",
+      "answeredAt": "2026-06-12T13:02:59.873+00:00",
+      "topic": "Flaw"
+    },
+    {
+      "attemptId": "attempts:00000000-0000-4000-8000-000000000011",
+      "questionKey": "LR:PT138-S3-Q11",
+      "area": "LR",
+      "source": "lr_attempts",
+      "mode": "practice-set",
+      "correct": false,
+      "gradedAt": "2026-07-25T09:49:31.192+00:00",
+      "answeredAt": "2026-07-25T09:49:31.192+00:00",
+      "topic": "Main Conclusion"
+    },
+    {
+      "attemptId": "attempts:00000000-0000-4000-8000-000000000013",
+      "questionKey": "LR:PT159-S3-Q20",
+      "area": "LR",
+      "source": "lr_attempts",
+      "mode": "practice-set",
+      "correct": false,
+      "gradedAt": "2026-07-09T23:33:22.268+00:00",
+      "answeredAt": "2026-07-09T23:33:22.268+00:00",
+      "topic": "Main Conclusion"
+    },
+    {
+      "attemptId": "attempts:00000000-0000-4000-8000-000000000015",
+      "questionKey": "LR:PT118-S4-Q1",
+      "area": "LR",
+      "source": "lr_attempts",
+      "mode": "practice-set",
+      "correct": false,
+      "gradedAt": "2026-07-25T09:49:30.262+00:00",
+      "answeredAt": "2026-07-25T09:49:30.262+00:00",
+      "topic": "Main Conclusion"
+    },
+    {
+      "attemptId": "attempts:00000000-0000-4000-8000-000000000017",
+      "questionKey": "LR:PT159-S1-Q11",
+      "area": "LR",
+      "source": "lr_attempts",
+      "mode": "practice-set",
+      "correct": false,
+      "gradedAt": "2026-07-09T23:33:21.422+00:00",
+      "answeredAt": "2026-07-09T23:33:21.422+00:00",
+      "topic": "Weaken"
+    },
+    {
+      "attemptId": "attempts:00000000-0000-4000-8000-000000000021",
+      "questionKey": "LR:PT106-S1-Q17",
+      "area": "LR",
+      "source": "lr_attempts",
+      "mode": "adaptive",
+      "correct": false,
+      "gradedAt": "2026-05-20T09:35:37.709+00:00",
+      "answeredAt": "2026-05-20T09:35:37.709+00:00",
+      "topic": "Paradox"
+    },
+    {
+      "attemptId": "attempts:00000000-0000-4000-8000-000000000022",
+      "questionKey": "LR:PT135-S4-Q20",
+      "area": "LR",
+      "source": "lr_attempts",
+      "mode": "adaptive",
+      "correct": true,
+      "gradedAt": "2026-07-09T23:34:53.213+00:00",
+      "answeredAt": "2026-07-09T23:34:53.213+00:00",
+      "topic": "Unknown"
+    },
+    {
+      "attemptId": "attempts:00000000-0000-4000-8000-000000000026",
+      "questionKey": "LR:PT132-S4-Q17",
+      "area": "LR",
+      "source": "lr_attempts",
+      "mode": "adaptive",
+      "correct": false,
+      "gradedAt": "2026-06-12T13:03:35.096+00:00",
+      "answeredAt": "2026-06-12T13:03:35.096+00:00",
+      "topic": "Unknown"
+    },
+    {
+      "attemptId": "attempts:00000000-0000-4000-8000-000000000027",
+      "questionKey": "LR:PT105-S1-Q5",
+      "area": "LR",
+      "source": "lr_attempts",
+      "mode": "adaptive",
+      "correct": false,
+      "gradedAt": "2026-05-19T07:54:34.267+00:00",
+      "answeredAt": "2026-05-19T07:54:34.267+00:00",
+      "topic": "Weaken"
+    },
+    {
+      "attemptId": "attempts:00000000-0000-4000-8000-000000000035",
+      "questionKey": "LR:PT135-S1-Q21",
+      "area": "LR",
+      "source": "lr_attempts",
+      "mode": "adaptive",
+      "correct": true,
+      "gradedAt": "2026-07-10T05:05:35.752+00:00",
+      "answeredAt": "2026-07-10T05:05:35.752+00:00",
+      "topic": "Necessary Assumption"
+    },
+    {
+      "attemptId": "attempts:00000000-0000-4000-8000-000000000042",
+      "questionKey": "LR:PT103-S1-Q9",
+      "area": "LR",
+      "source": "lr_attempts",
+      "mode": "adaptive",
+      "correct": true,
+      "gradedAt": "2026-07-10T06:20:20.899+00:00",
+      "answeredAt": "2026-07-10T06:20:20.899+00:00",
+      "topic": "Weaken"
+    },
+    {
+      "attemptId": "attempts:00000000-0000-4000-8000-000000000048",
+      "questionKey": "LR:PT106-S2-Q13",
+      "area": "LR",
+      "source": "lr_attempts",
+      "mode": "adaptive",
+      "correct": false,
+      "gradedAt": "2026-05-19T07:54:45.31+00:00",
+      "answeredAt": "2026-05-19T07:54:45.31+00:00",
+      "topic": "Unknown"
+    },
+    {
+      "attemptId": "attempts:00000000-0000-4000-8000-000000000051",
+      "questionKey": "LR:PT159-S3-Q22",
+      "area": "LR",
+      "source": "lr_attempts",
+      "mode": "practice-set",
+      "correct": false,
+      "gradedAt": "2026-07-09T23:33:22.571+00:00",
+      "answeredAt": "2026-07-09T23:33:22.571+00:00",
+      "topic": "Must Be True"
+    },
+    {
+      "attemptId": "attempts:00000000-0000-4000-8000-000000000053",
+      "questionKey": "LR:PT106-S3-Q7",
+      "area": "LR",
+      "source": "lr_attempts",
+      "mode": "adaptive",
+      "correct": false,
+      "gradedAt": "2026-05-20T10:01:43.553+00:00",
+      "answeredAt": "2026-05-20T10:01:43.553+00:00",
+      "topic": "Method of Reasoning"
+    },
+    {
+      "attemptId": "attempts:00000000-0000-4000-8000-000000000055",
+      "questionKey": "LR:PT159-S1-Q20",
+      "area": "LR",
+      "source": "lr_attempts",
+      "mode": "practice-set",
+      "correct": false,
+      "gradedAt": "2026-07-09T23:33:20.385+00:00",
+      "answeredAt": "2026-07-09T23:33:20.385+00:00",
+      "topic": "Principle-Conform"
+    },
+    {
+      "attemptId": "attempts:00000000-0000-4000-8000-000000000058",
+      "questionKey": "LR:PT106-S3-Q12",
+      "area": "LR",
+      "source": "lr_attempts",
+      "mode": "adaptive",
+      "correct": false,
+      "gradedAt": "2026-05-20T07:15:10.194+00:00",
+      "answeredAt": "2026-05-20T07:15:10.194+00:00",
+      "topic": "Unknown"
+    },
+    {
+      "attemptId": "attempts:00000000-0000-4000-8000-000000000061",
+      "questionKey": "LR:PT139-S4-Q1",
+      "area": "LR",
+      "source": "lr_attempts",
+      "mode": "practice-set",
+      "correct": false,
+      "gradedAt": "2026-07-25T09:49:31.424+00:00",
+      "answeredAt": "2026-07-25T09:49:31.424+00:00",
+      "topic": "Main Conclusion"
+    },
+    {
+      "attemptId": "attempts:00000000-0000-4000-8000-000000000068",
+      "questionKey": "LR:PT158-S4-Q20",
+      "area": "LR",
+      "source": "lr_attempts",
+      "mode": "practice-set",
+      "correct": true,
+      "gradedAt": "2026-08-11T13:35:08.828+00:00",
+      "answeredAt": "2026-08-11T13:35:08.828+00:00",
+      "topic": "Agree/Disagree"
+    },
+    {
+      "attemptId": "attempts:00000000-0000-4000-8000-000000000071",
+      "questionKey": "LR:PT105-S1-Q20",
+      "area": "LR",
+      "source": "lr_attempts",
+      "mode": "adaptive",
+      "correct": true,
+      "gradedAt": "2026-05-20T07:03:39.872+00:00",
+      "answeredAt": "2026-05-20T07:03:39.872+00:00",
+      "topic": "Most Strongly Supported"
+    },
+    {
+      "attemptId": "attempts:00000000-0000-4000-8000-000000000072",
+      "questionKey": "LR:PT107-S4-Q22",
+      "area": "LR",
+      "source": "lr_attempts",
+      "mode": "adaptive",
+      "correct": true,
+      "gradedAt": "2026-07-10T06:18:27.593+00:00",
+      "answeredAt": "2026-07-10T06:18:27.593+00:00",
+      "topic": "Unknown"
+    },
+    {
+      "attemptId": "attempts:00000000-0000-4000-8000-000000000073",
+      "questionKey": "LR:PT159-S1-Q1",
+      "area": "LR",
+      "source": "lr_attempts",
+      "mode": "practice-set",
+      "correct": false,
+      "gradedAt": "2026-09-28T18:12:24.974+00:00",
+      "answeredAt": "2026-09-28T18:12:24.974+00:00",
+      "topic": "Flaw"
+    },
+    {
+      "attemptId": "attempts:00000000-0000-4000-8000-000000000076",
+      "questionKey": "LR:PT127-S1-Q17",
+      "area": "LR",
+      "source": "lr_attempts",
+      "mode": "adaptive",
+      "correct": false,
+      "gradedAt": "2026-07-10T06:16:56.475+00:00",
+      "answeredAt": "2026-07-10T06:16:56.475+00:00",
+      "topic": "Must Be True"
+    },
+    {
+      "attemptId": "attempts:00000000-0000-4000-8000-000000000080",
+      "questionKey": "LR:PT102-S2-Q16",
+      "area": "LR",
+      "source": "lr_attempts",
+      "mode": "practice-set",
+      "correct": true,
+      "gradedAt": "2026-08-26T20:08:34.146+00:00",
+      "answeredAt": "2026-08-26T20:08:34.146+00:00",
+      "topic": "Necessary Assumption"
+    },
+    {
+      "attemptId": "attempts:00000000-0000-4000-8000-000000000087",
+      "questionKey": "LR:PT106-S3-Q11",
+      "area": "LR",
+      "source": "lr_attempts",
+      "mode": "adaptive",
+      "correct": false,
+      "gradedAt": "2026-05-19T07:54:22.704+00:00",
+      "answeredAt": "2026-05-19T07:54:22.704+00:00",
+      "topic": "Weaken"
+    },
+    {
+      "attemptId": "attempts:00000000-0000-4000-8000-000000000088",
+      "questionKey": "LR:PT106-S3-Q7",
+      "area": "LR",
+      "source": "lr_attempts",
+      "mode": "adaptive",
+      "correct": false,
+      "gradedAt": "2026-05-20T09:36:21.563+00:00",
+      "answeredAt": "2026-05-20T09:36:21.563+00:00",
+      "topic": "Method of Reasoning"
+    },
+    {
+      "attemptId": "attempts:00000000-0000-4000-8000-000000000089",
+      "questionKey": "LR:PT118-S1-Q1",
+      "area": "LR",
+      "source": "lr_attempts",
+      "mode": "practice-set",
+      "correct": true,
+      "gradedAt": "2026-07-25T09:49:30.118+00:00",
+      "answeredAt": "2026-07-25T09:49:30.118+00:00",
+      "topic": "Main Conclusion"
+    },
+    {
+      "attemptId": "attempts:00000000-0000-4000-8000-000000000093",
+      "questionKey": "LR:PT143-S3-Q1",
+      "area": "LR",
+      "source": "lr_attempts",
+      "mode": "adaptive",
+      "correct": false,
+      "gradedAt": "2026-05-20T07:03:30.211+00:00",
+      "answeredAt": "2026-05-20T07:03:30.211+00:00",
+      "topic": "Most Strongly Supported"
+    },
+    {
+      "attemptId": "attempts:00000000-0000-4000-8000-000000000094",
+      "questionKey": "LR:PT140-S3-Q11",
+      "area": "LR",
+      "source": "lr_attempts",
+      "mode": "adaptive",
+      "correct": true,
+      "gradedAt": "2026-07-10T07:46:55.462+00:00",
+      "answeredAt": "2026-07-10T07:46:55.462+00:00",
+      "topic": "Must Be True"
+    },
+    {
+      "attemptId": "attempts:00000000-0000-4000-8000-000000000095",
+      "questionKey": "LR:PT130-S3-Q11",
+      "area": "LR",
+      "source": "lr_attempts",
+      "mode": "practice-set",
+      "correct": true,
+      "gradedAt": "2026-10-02T20:31:35.665+00:00",
+      "answeredAt": "2026-10-02T20:31:35.665+00:00",
+      "topic": "Necessary Assumption"
+    },
+    {
+      "attemptId": "attempts:00000000-0000-4000-8000-000000000097",
+      "questionKey": "LR:PT120-S4-Q19",
+      "area": "LR",
+      "source": "lr_attempts",
+      "mode": "adaptive",
+      "correct": false,
+      "gradedAt": "2026-06-09T13:16:22.923+00:00",
+      "answeredAt": "2026-06-09T13:16:22.923+00:00",
+      "topic": "Unknown"
+    },
+    {
+      "attemptId": "attempts:00000000-0000-4000-8000-000000000100",
+      "questionKey": "LR:PT146-S2-Q17",
+      "area": "LR",
+      "source": "lr_attempts",
+      "mode": "adaptive",
+      "correct": false,
+      "gradedAt": "2026-09-02T01:04:35.22+00:00",
+      "answeredAt": "2026-09-02T01:04:35.22+00:00",
+      "topic": "Most Strongly Supported"
+    },
+    {
+      "attemptId": "attempts:00000000-0000-4000-8000-000000000101",
+      "questionKey": "LR:PT106-S3-Q7",
+      "area": "LR",
+      "source": "lr_attempts",
+      "mode": "adaptive",
+      "correct": true,
+      "gradedAt": "2026-05-20T06:19:09.989+00:00",
+      "answeredAt": "2026-05-20T06:19:09.989+00:00",
+      "topic": "Method of Reasoning"
+    },
+    {
+      "attemptId": "attempts:00000000-0000-4000-8000-000000000102",
+      "questionKey": "LR:PT143-S4-Q23",
+      "area": "LR",
+      "source": "lr_attempts",
+      "mode": "adaptive",
+      "correct": true,
+      "gradedAt": "2026-07-10T05:23:49.187+00:00",
+      "answeredAt": "2026-07-10T05:23:49.187+00:00",
+      "topic": "Principle-Conform"
+    },
+    {
+      "attemptId": "attempts:00000000-0000-4000-8000-000000000103",
+      "questionKey": "LR:PT106-S3-Q7",
+      "area": "LR",
+      "source": "lr_attempts",
+      "mode": "adaptive",
+      "correct": true,
+      "gradedAt": "2026-05-19T07:54:10.366+00:00",
+      "answeredAt": "2026-05-19T07:54:10.366+00:00",
+      "topic": "Method of Reasoning"
+    },
+    {
+      "attemptId": "attempts:00000000-0000-4000-8000-000000000104",
+      "questionKey": "LR:PT159-S1-Q2",
+      "area": "LR",
+      "source": "lr_attempts",
+      "mode": "practice-set",
+      "correct": true,
+      "gradedAt": "2026-09-28T18:12:25.324+00:00",
+      "answeredAt": "2026-09-28T18:12:25.324+00:00",
+      "topic": "Method of Reasoning"
+    },
+    {
+      "attemptId": "attempts:00000000-0000-4000-8000-000000000105",
+      "questionKey": "LR:PT138-S4-Q24",
+      "area": "LR",
+      "source": "lr_attempts",
+      "mode": "adaptive",
+      "correct": false,
+      "gradedAt": "2026-09-29T11:29:31.578+00:00",
+      "answeredAt": "2026-09-29T11:29:31.578+00:00",
+      "topic": "Most Strongly Supported"
+    },
+    {
+      "attemptId": "attempts:00000000-0000-4000-8000-000000000109",
+      "questionKey": "LR:PT109-S3-Q20",
+      "area": "LR",
+      "source": "lr_attempts",
+      "mode": "adaptive",
+      "correct": false,
+      "gradedAt": "2026-06-12T12:25:25.416+00:00",
+      "answeredAt": "2026-06-12T12:25:25.416+00:00",
+      "topic": "Strengthen"
+    },
+    {
+      "attemptId": "attempts:00000000-0000-4000-8000-000000000112",
+      "questionKey": "LR:PT108-S3-Q11",
+      "area": "LR",
+      "source": "lr_attempts",
+      "mode": "adaptive",
+      "correct": false,
+      "gradedAt": "2026-07-09T23:24:14.659+00:00",
+      "answeredAt": "2026-07-09T23:24:14.659+00:00",
+      "topic": "Necessary Assumption"
+    },
+    {
+      "attemptId": "attempts:00000000-0000-4000-8000-000000000114",
+      "questionKey": "LR:PT118-S4-Q11",
+      "area": "LR",
+      "source": "lr_attempts",
+      "mode": "adaptive",
+      "correct": false,
+      "gradedAt": "2026-06-12T04:28:44.907+00:00",
+      "answeredAt": "2026-06-12T04:28:44.907+00:00",
+      "topic": "Evaluate"
+    },
+    {
+      "attemptId": "attempts:00000000-0000-4000-8000-000000000116",
+      "questionKey": "LR:PT106-S3-Q7",
+      "area": "LR",
+      "source": "lr_attempts",
+      "mode": "adaptive",
+      "correct": true,
+      "gradedAt": "2026-05-20T04:30:02.13+00:00",
+      "answeredAt": "2026-05-20T04:30:02.13+00:00",
+      "topic": "Method of Reasoning"
+    },
+    {
+      "attemptId": "attempts:00000000-0000-4000-8000-000000000119",
+      "questionKey": "LR:PT106-S3-Q15",
+      "area": "LR",
+      "source": "lr_attempts",
+      "mode": "adaptive",
+      "correct": false,
+      "gradedAt": "2026-05-19T07:54:30.426+00:00",
+      "answeredAt": "2026-05-19T07:54:30.426+00:00",
+      "topic": "Weaken"
+    },
+    {
+      "attemptId": "attempts:00000000-0000-4000-8000-000000000122",
+      "questionKey": "LR:PT159-S1-Q2",
+      "area": "LR",
+      "source": "lr_attempts",
+      "mode": "practice-set",
+      "correct": true,
+      "gradedAt": "2026-09-28T18:14:17.103+00:00",
+      "answeredAt": "2026-09-28T18:14:17.103+00:00",
+      "topic": "Method of Reasoning"
+    },
+    {
+      "attemptId": "attempts:00000000-0000-4000-8000-000000000124",
+      "questionKey": "LR:PT128-S2-Q13",
+      "area": "LR",
+      "source": "lr_attempts",
+      "mode": "practice-set",
+      "correct": false,
+      "gradedAt": "2026-07-25T09:49:30.574+00:00",
+      "answeredAt": "2026-07-25T09:49:30.574+00:00",
+      "topic": "Main Conclusion"
+    },
+    {
+      "attemptId": "attempts:00000000-0000-4000-8000-000000000125",
+      "questionKey": "LR:PT159-S3-Q15",
+      "area": "LR",
+      "source": "lr_attempts",
+      "mode": "practice-set",
+      "correct": true,
+      "gradedAt": "2026-07-09T23:33:19.952+00:00",
+      "answeredAt": "2026-07-09T23:33:19.952+00:00",
+      "topic": "Flaw"
+    },
+    {
+      "attemptId": "attempts:00000000-0000-4000-8000-000000000126",
+      "questionKey": "LR:PT159-S1-Q5",
+      "area": "LR",
+      "source": "lr_attempts",
+      "mode": "practice-set",
+      "correct": false,
+      "gradedAt": "2026-07-09T23:33:21.991+00:00",
+      "answeredAt": "2026-07-09T23:33:21.991+00:00",
+      "topic": "Weaken"
+    },
+    {
+      "attemptId": "attempts:00000000-0000-4000-8000-000000000128",
+      "questionKey": "LR:PT106-S3-Q7",
+      "area": "LR",
+      "source": "lr_attempts",
+      "mode": "adaptive",
+      "correct": true,
+      "gradedAt": "2026-05-20T07:15:00.506+00:00",
+      "answeredAt": "2026-05-20T07:15:00.506+00:00",
+      "topic": "Method of Reasoning"
+    },
+    {
+      "attemptId": "attempts:00000000-0000-4000-8000-000000000130",
+      "questionKey": "LR:PT106-S3-Q7",
+      "area": "LR",
+      "source": "lr_attempts",
+      "mode": "adaptive",
+      "correct": true,
+      "gradedAt": "2026-05-20T07:03:18.963+00:00",
+      "answeredAt": "2026-05-20T07:03:18.963+00:00",
+      "topic": "Method of Reasoning"
+    },
+    {
+      "attemptId": "attempts:00000000-0000-4000-8000-000000000133",
+      "questionKey": "LR:PT111-S3-Q6",
+      "area": "LR",
+      "source": "lr_attempts",
+      "mode": "adaptive",
+      "correct": true,
+      "gradedAt": "2026-07-10T05:25:02.812+00:00",
+      "answeredAt": "2026-07-10T05:25:02.812+00:00",
+      "topic": "Parallel Flaw"
+    },
+    {
+      "attemptId": "attempts:00000000-0000-4000-8000-000000000137",
+      "questionKey": "LR:PT102-S4-Q11",
+      "area": "LR",
+      "source": "lr_attempts",
+      "mode": "adaptive",
+      "correct": false,
+      "gradedAt": "2026-07-09T23:22:50.935+00:00",
+      "answeredAt": "2026-07-09T23:22:50.935+00:00",
+      "topic": "Unknown"
+    },
+    {
+      "attemptId": "attempts:00000000-0000-4000-8000-000000000138",
+      "questionKey": "LR:PT131-S3-Q9",
+      "area": "LR",
+      "source": "lr_attempts",
+      "mode": "practice-set",
+      "correct": false,
+      "gradedAt": "2026-07-25T09:49:30.987+00:00",
+      "answeredAt": "2026-07-25T09:49:30.987+00:00",
+      "topic": "Main Conclusion"
+    },
+    {
+      "attemptId": "attempts:00000000-0000-4000-8000-000000000140",
+      "questionKey": "LR:PT130-S1-Q23",
+      "area": "LR",
+      "source": "lr_attempts",
+      "mode": "adaptive",
+      "correct": false,
+      "gradedAt": "2026-09-14T00:55:57.223+00:00",
+      "answeredAt": "2026-09-14T00:55:57.223+00:00",
+      "topic": "Principle-Conform"
+    },
+    {
+      "attemptId": "attempts:00000000-0000-4000-8000-000000000142",
+      "questionKey": "LR:PT158-S4-Q22",
+      "area": "LR",
+      "source": "lr_attempts",
+      "mode": "practice-set",
+      "correct": false,
+      "gradedAt": "2026-08-11T13:35:09.545+00:00",
+      "answeredAt": "2026-08-11T13:35:09.545+00:00",
+      "topic": "Most Strongly Supported"
+    },
+    {
+      "attemptId": "attempts:00000000-0000-4000-8000-000000000148",
+      "questionKey": "LR:PT159-S1-Q1",
+      "area": "LR",
+      "source": "lr_attempts",
+      "mode": "practice-set",
+      "correct": true,
+      "gradedAt": "2026-09-28T18:14:16.965+00:00",
+      "answeredAt": "2026-09-28T18:14:16.965+00:00",
+      "topic": "Flaw"
+    },
+    {
+      "attemptId": "attempts:00000000-0000-4000-8000-000000000150",
+      "questionKey": "LR:PT159-S3-Q12",
+      "area": "LR",
+      "source": "lr_attempts",
+      "mode": "practice-set",
+      "correct": false,
+      "gradedAt": "2026-07-09T23:33:21.711+00:00",
+      "answeredAt": "2026-07-09T23:33:21.711+00:00",
+      "topic": "Strengthen"
+    },
+    {
+      "attemptId": "attempts:00000000-0000-4000-8000-000000000154",
+      "questionKey": "LR:PT159-S3-Q10",
+      "area": "LR",
+      "source": "lr_attempts",
+      "mode": "practice-set",
+      "correct": false,
+      "gradedAt": "2026-07-09T23:33:20.75+00:00",
+      "answeredAt": "2026-07-09T23:33:20.75+00:00",
+      "topic": "Parallel Flaw"
+    },
+    {
+      "attemptId": "attempts:00000000-0000-4000-8000-000000000157",
+      "questionKey": "LR:PT159-S3-Q3",
+      "area": "LR",
+      "source": "lr_attempts",
+      "mode": "practice-set",
+      "correct": false,
+      "gradedAt": "2026-07-09T23:33:21.106+00:00",
+      "answeredAt": "2026-07-09T23:33:21.106+00:00",
+      "topic": "Agree/Disagree"
+    },
+    {
+      "attemptId": "attempts:00000000-0000-4000-8000-000000000159",
+      "questionKey": "LR:PT133-S3-Q26",
+      "area": "LR",
+      "source": "lr_attempts",
+      "mode": "adaptive",
+      "correct": true,
+      "gradedAt": "2026-06-12T04:10:54.029+00:00",
+      "answeredAt": "2026-06-12T04:10:54.029+00:00",
+      "topic": "Paradox"
+    },
+    {
+      "attemptId": "attempts:00000000-0000-4000-8000-000000000160",
+      "questionKey": "LR:PT146-S3-Q18",
+      "area": "LR",
+      "source": "lr_attempts",
+      "mode": "adaptive",
+      "correct": true,
+      "gradedAt": "2026-07-10T06:24:26.192+00:00",
+      "answeredAt": "2026-07-10T06:24:26.192+00:00",
+      "topic": "Main Conclusion"
+    },
+    {
+      "attemptId": "attempts:00000000-0000-4000-8000-000000000165",
+      "questionKey": "LR:PT104-S4-Q9",
+      "area": "LR",
+      "source": "lr_attempts",
+      "mode": "adaptive",
+      "correct": false,
+      "gradedAt": "2026-06-12T14:12:37.484+00:00",
+      "answeredAt": "2026-06-12T14:12:37.484+00:00",
+      "topic": "Necessary Assumption"
+    },
+    {
+      "attemptId": "attempts:00000000-0000-4000-8000-000000000166",
+      "questionKey": "LR:PT158-S4-Q21",
+      "area": "LR",
+      "source": "lr_attempts",
+      "mode": "practice-set",
+      "correct": false,
+      "gradedAt": "2026-08-11T13:35:09.151+00:00",
+      "answeredAt": "2026-08-11T13:35:09.151+00:00",
+      "topic": "Principle-Conform"
+    },
+    {
+      "attemptId": "section_history:00000000-0000-4000-8000-000000000169:PT107-S3-Q1",
+      "questionKey": "LR:PT107-S3-Q1",
+      "area": "LR",
+      "source": "lr_section_history",
+      "mode": "timed-section",
+      "correct": false,
+      "gradedAt": "2026-08-29T08:02:19.968754+00:00",
+      "topic": "Necessary Assumption"
+    },
+    {
+      "attemptId": "section_history:00000000-0000-4000-8000-000000000169:PT107-S3-Q2",
+      "questionKey": "LR:PT107-S3-Q2",
+      "area": "LR",
+      "source": "lr_section_history",
+      "mode": "timed-section",
+      "correct": true,
+      "gradedAt": "2026-08-29T08:02:19.968754+00:00",
+      "topic": "Main Conclusion"
+    },
+    {
+      "attemptId": "section_history:00000000-0000-4000-8000-000000000169:PT107-S3-Q3",
+      "questionKey": "LR:PT107-S3-Q3",
+      "area": "LR",
+      "source": "lr_section_history",
+      "mode": "timed-section",
+      "correct": false,
+      "gradedAt": "2026-08-29T08:02:19.968754+00:00",
+      "topic": "Method of Reasoning"
+    },
+    {
+      "attemptId": "section_history:00000000-0000-4000-8000-000000000169:PT107-S3-Q4",
+      "questionKey": "LR:PT107-S3-Q4",
+      "area": "LR",
+      "source": "lr_section_history",
+      "mode": "timed-section",
+      "correct": true,
+      "gradedAt": "2026-08-29T08:02:19.968754+00:00",
+      "topic": "Weaken"
+    },
+    {
+      "attemptId": "section_history:00000000-0000-4000-8000-000000000170:PT159-S1-Q1",
+      "questionKey": "LR:PT159-S1-Q1",
+      "area": "LR",
+      "source": "lr_section_history",
+      "mode": "practice-test",
+      "correct": false,
+      "gradedAt": "2026-09-28T16:33:16.913838+00:00",
+      "topic": "Flaw"
+    },
+    {
+      "attemptId": "section_history:00000000-0000-4000-8000-000000000173:PT110-S2-Q1",
+      "questionKey": "LR:PT110-S2-Q1",
+      "area": "LR",
+      "source": "lr_section_history",
+      "mode": "timed-section",
+      "correct": true,
+      "gradedAt": "2026-08-29T08:15:21.012623+00:00",
+      "topic": "Flaw"
+    },
+    {
+      "attemptId": "section_history:00000000-0000-4000-8000-000000000176:PT109-S1-Q1",
+      "questionKey": "LR:PT109-S1-Q1",
+      "area": "LR",
+      "source": "lr_section_history",
+      "mode": "timed-section",
+      "correct": false,
+      "gradedAt": "2026-08-29T08:12:59.98519+00:00",
+      "topic": "Strengthen"
+    },
+    {
+      "attemptId": "section_history:00000000-0000-4000-8000-000000000176:PT109-S1-Q2",
+      "questionKey": "LR:PT109-S1-Q2",
+      "area": "LR",
+      "source": "lr_section_history",
+      "mode": "timed-section",
+      "correct": false,
+      "gradedAt": "2026-08-29T08:12:59.98519+00:00",
+      "topic": "Method of Reasoning"
+    },
+    {
+      "attemptId": "section_history:00000000-0000-4000-8000-000000000176:PT109-S1-Q3",
+      "questionKey": "LR:PT109-S1-Q3",
+      "area": "LR",
+      "source": "lr_section_history",
+      "mode": "timed-section",
+      "correct": false,
+      "gradedAt": "2026-08-29T08:12:59.98519+00:00",
+      "topic": "Agree/Disagree"
+    },
+    {
+      "attemptId": "section_history:00000000-0000-4000-8000-000000000179:PT159-S3-Q1",
+      "questionKey": "LR:PT159-S3-Q1",
+      "area": "LR",
+      "source": "lr_section_history",
+      "mode": "practice-test",
+      "correct": true,
+      "gradedAt": "2026-09-28T16:35:49.842759+00:00",
+      "topic": "Principle-Conform"
+    },
+    {
+      "attemptId": "rc_attempts:00000000-0000-4000-8000-000000000188",
+      "questionKey": "RC:218:2372",
+      "area": "RC",
+      "source": "rc_attempts",
+      "mode": "rc-drill",
+      "correct": false,
+      "gradedAt": "2026-08-27T10:11:35.337+00:00",
+      "answeredAt": "2026-08-27T10:11:26.457455+00:00"
+    },
+    {
+      "attemptId": "rc_attempts:00000000-0000-4000-8000-000000000191",
+      "questionKey": "RC:218:2375",
+      "area": "RC",
+      "source": "rc_attempts",
+      "mode": "rc-drill",
+      "correct": false,
+      "gradedAt": "2026-08-27T10:11:35.337+00:00",
+      "answeredAt": "2026-08-27T10:11:27.795689+00:00"
+    },
+    {
+      "attemptId": "rc_attempts:00000000-0000-4000-8000-000000000204",
+      "questionKey": "RC:74:516",
+      "area": "RC",
+      "source": "rc_attempts",
+      "mode": "rc-drill",
+      "correct": false,
+      "gradedAt": "2026-08-06T13:06:46.182+00:00",
+      "answeredAt": "2026-08-06T13:06:07.148749+00:00"
+    },
+    {
+      "attemptId": "rc_attempts:00000000-0000-4000-8000-000000000212",
+      "questionKey": "RC:218:2371",
+      "area": "RC",
+      "source": "rc_attempts",
+      "mode": "rc-drill",
+      "correct": false,
+      "gradedAt": "2026-08-27T10:40:22.187343+00:00",
+      "answeredAt": "2026-08-27T10:40:22.187343+00:00"
+    },
+    {
+      "attemptId": "rc_attempts:00000000-0000-4000-8000-000000000216",
+      "questionKey": "RC:74:515",
+      "area": "RC",
+      "source": "rc_attempts",
+      "mode": "rc-drill",
+      "correct": true,
+      "gradedAt": "2026-08-06T13:06:46.182+00:00",
+      "answeredAt": "2026-08-06T13:06:06.65844+00:00"
+    },
+    {
+      "attemptId": "rc_attempts:00000000-0000-4000-8000-000000000222",
+      "questionKey": "RC:218:2371",
+      "area": "RC",
+      "source": "rc_attempts",
+      "mode": "rc-drill",
+      "correct": true,
+      "gradedAt": "2026-08-27T11:55:03.851517+00:00",
+      "answeredAt": "2026-08-27T11:55:03.851517+00:00"
+    },
+    {
+      "attemptId": "rc_attempts:00000000-0000-4000-8000-000000000235",
+      "questionKey": "RC:218:2371",
+      "area": "RC",
+      "source": "rc_attempts",
+      "mode": "rc-drill",
+      "correct": true,
+      "gradedAt": "2026-08-27T10:11:35.337+00:00",
+      "answeredAt": "2026-08-27T10:11:25.735731+00:00"
+    },
+    {
+      "attemptId": "rc_attempts:00000000-0000-4000-8000-000000000264",
+      "questionKey": "RC:218:2371",
+      "area": "RC",
+      "source": "rc_attempts",
+      "mode": "rc-drill",
+      "correct": false,
+      "gradedAt": "2026-08-27T11:52:34.075712+00:00",
+      "answeredAt": "2026-08-27T11:52:34.075712+00:00"
+    },
+    {
+      "attemptId": "rc_attempts:00000000-0000-4000-8000-000000000265",
+      "questionKey": "RC:218:2373",
+      "area": "RC",
+      "source": "rc_attempts",
+      "mode": "rc-drill",
+      "correct": false,
+      "gradedAt": "2026-08-27T10:11:35.337+00:00",
+      "answeredAt": "2026-08-27T10:11:26.940147+00:00"
+    },
+    {
+      "attemptId": "rc_attempts:00000000-0000-4000-8000-000000000273",
+      "questionKey": "RC:218:2372",
+      "area": "RC",
+      "source": "rc_attempts",
+      "mode": "rc-drill",
+      "correct": false,
+      "gradedAt": "2026-08-27T11:55:21.017562+00:00",
+      "answeredAt": "2026-08-27T11:55:21.017562+00:00"
+    },
+    {
+      "attemptId": "rc_attempts:00000000-0000-4000-8000-000000000274",
+      "questionKey": "RC:218:2374",
+      "area": "RC",
+      "source": "rc_attempts",
+      "mode": "rc-drill",
+      "correct": true,
+      "gradedAt": "2026-08-27T10:11:35.337+00:00",
+      "answeredAt": "2026-08-27T10:11:27.389376+00:00"
+    },
+    {
+      "attemptId": "rc_attempts:00000000-0000-4000-8000-000000000277",
+      "questionKey": "RC:1756:10732",
+      "area": "RC",
+      "source": "rc_attempts",
+      "mode": "practice-test",
+      "correct": false,
+      "gradedAt": "2026-09-28T16:34:37.669+00:00",
+      "answeredAt": "2026-09-28T16:34:12.412947+00:00"
+    },
+    {
+      "attemptId": "rc_attempts:00000000-0000-4000-8000-000000000288",
+      "questionKey": "RC:218:2376",
+      "area": "RC",
+      "source": "rc_attempts",
+      "mode": "rc-drill",
+      "correct": false,
+      "gradedAt": "2026-08-27T10:11:35.337+00:00",
+      "answeredAt": "2026-08-27T10:11:28.166686+00:00"
+    },
+    {
+      "attemptId": "rc_attempts:00000000-0000-4000-8000-000000000291",
+      "questionKey": "RC:1188:7660",
+      "area": "RC",
+      "source": "rc_attempts",
+      "mode": "rc-drill",
+      "correct": false,
+      "gradedAt": "2026-08-28T16:59:05.697+00:00",
+      "answeredAt": "2026-08-28T16:58:53.52588+00:00"
+    },
+    {
+      "attemptId": "rc_attempts:00000000-0000-4000-8000-000000000297",
+      "questionKey": "RC:74:513",
+      "area": "RC",
+      "source": "rc_attempts",
+      "mode": "rc-drill",
+      "correct": true,
+      "gradedAt": "2026-08-06T13:06:46.182+00:00",
+      "answeredAt": "2026-08-06T13:06:06.170607+00:00"
+    },
+    {
+      "attemptId": "rc_attempts:00000000-0000-4000-8000-000000000299",
+      "questionKey": "RC:218:2377",
+      "area": "RC",
+      "source": "rc_attempts",
+      "mode": "rc-drill",
+      "correct": false,
+      "gradedAt": "2026-08-27T10:11:35.337+00:00",
+      "answeredAt": "2026-08-27T10:11:28.596609+00:00"
+    }
+  ],
+  "firstIdentities": [
+    [
+      "LR:PT106-S3-Q7",
+      "attempts:00000000-0000-4000-8000-000000000103"
+    ],
+    [
+      "LR:PT106-S3-Q11",
+      "attempts:00000000-0000-4000-8000-000000000087"
+    ],
+    [
+      "LR:PT106-S3-Q15",
+      "attempts:00000000-0000-4000-8000-000000000119"
+    ],
+    [
+      "LR:PT105-S1-Q5",
+      "attempts:00000000-0000-4000-8000-000000000027"
+    ],
+    [
+      "LR:PT106-S2-Q13",
+      "attempts:00000000-0000-4000-8000-000000000048"
+    ],
+    [
+      "LR:PT143-S3-Q1",
+      "attempts:00000000-0000-4000-8000-000000000093"
+    ],
+    [
+      "LR:PT105-S1-Q20",
+      "attempts:00000000-0000-4000-8000-000000000071"
+    ],
+    [
+      "LR:PT106-S3-Q12",
+      "attempts:00000000-0000-4000-8000-000000000058"
+    ],
+    [
+      "LR:PT106-S1-Q17",
+      "attempts:00000000-0000-4000-8000-000000000021"
+    ],
+    [
+      "LR:PT120-S4-Q19",
+      "attempts:00000000-0000-4000-8000-000000000097"
+    ],
+    [
+      "LR:PT133-S3-Q26",
+      "attempts:00000000-0000-4000-8000-000000000159"
+    ],
+    [
+      "LR:PT118-S4-Q11",
+      "attempts:00000000-0000-4000-8000-000000000114"
+    ],
+    [
+      "LR:PT109-S3-Q20",
+      "attempts:00000000-0000-4000-8000-000000000109"
+    ],
+    [
+      "LR:PT112-S1-Q19",
+      "attempts:00000000-0000-4000-8000-000000000010"
+    ],
+    [
+      "LR:PT132-S4-Q17",
+      "attempts:00000000-0000-4000-8000-000000000026"
+    ],
+    [
+      "LR:PT104-S4-Q9",
+      "attempts:00000000-0000-4000-8000-000000000165"
+    ],
+    [
+      "LR:PT102-S4-Q11",
+      "attempts:00000000-0000-4000-8000-000000000137"
+    ],
+    [
+      "LR:PT108-S3-Q11",
+      "attempts:00000000-0000-4000-8000-000000000112"
+    ],
+    [
+      "LR:PT159-S3-Q6",
+      "attempts:00000000-0000-4000-8000-000000000009"
+    ],
+    [
+      "LR:PT159-S3-Q15",
+      "attempts:00000000-0000-4000-8000-000000000125"
+    ],
+    [
+      "LR:PT159-S1-Q20",
+      "attempts:00000000-0000-4000-8000-000000000055"
+    ],
+    [
+      "LR:PT159-S3-Q10",
+      "attempts:00000000-0000-4000-8000-000000000154"
+    ],
+    [
+      "LR:PT159-S3-Q3",
+      "attempts:00000000-0000-4000-8000-000000000157"
+    ],
+    [
+      "LR:PT159-S1-Q11",
+      "attempts:00000000-0000-4000-8000-000000000017"
+    ],
+    [
+      "LR:PT159-S3-Q12",
+      "attempts:00000000-0000-4000-8000-000000000150"
+    ],
+    [
+      "LR:PT159-S1-Q5",
+      "attempts:00000000-0000-4000-8000-000000000126"
+    ],
+    [
+      "LR:PT159-S3-Q20",
+      "attempts:00000000-0000-4000-8000-000000000013"
+    ],
+    [
+      "LR:PT159-S3-Q22",
+      "attempts:00000000-0000-4000-8000-000000000051"
+    ],
+    [
+      "LR:PT135-S4-Q20",
+      "attempts:00000000-0000-4000-8000-000000000022"
+    ],
+    [
+      "LR:PT135-S1-Q21",
+      "attempts:00000000-0000-4000-8000-000000000035"
+    ],
+    [
+      "LR:PT143-S4-Q23",
+      "attempts:00000000-0000-4000-8000-000000000102"
+    ],
+    [
+      "LR:PT111-S3-Q6",
+      "attempts:00000000-0000-4000-8000-000000000133"
+    ],
+    [
+      "LR:PT127-S1-Q17",
+      "attempts:00000000-0000-4000-8000-000000000076"
+    ],
+    [
+      "LR:PT107-S4-Q22",
+      "attempts:00000000-0000-4000-8000-000000000072"
+    ],
+    [
+      "LR:PT103-S1-Q9",
+      "attempts:00000000-0000-4000-8000-000000000042"
+    ],
+    [
+      "LR:PT146-S3-Q18",
+      "attempts:00000000-0000-4000-8000-000000000160"
+    ],
+    [
+      "LR:PT140-S3-Q11",
+      "attempts:00000000-0000-4000-8000-000000000094"
+    ],
+    [
+      "LR:PT118-S1-Q1",
+      "attempts:00000000-0000-4000-8000-000000000089"
+    ],
+    [
+      "LR:PT118-S4-Q1",
+      "attempts:00000000-0000-4000-8000-000000000015"
+    ],
+    [
+      "LR:PT128-S2-Q13",
+      "attempts:00000000-0000-4000-8000-000000000124"
+    ],
+    [
+      "LR:PT131-S3-Q9",
+      "attempts:00000000-0000-4000-8000-000000000138"
+    ],
+    [
+      "LR:PT138-S3-Q11",
+      "attempts:00000000-0000-4000-8000-000000000011"
+    ],
+    [
+      "LR:PT139-S4-Q1",
+      "attempts:00000000-0000-4000-8000-000000000061"
+    ],
+    [
+      "RC:74:513",
+      "rc_attempts:00000000-0000-4000-8000-000000000297"
+    ],
+    [
+      "RC:74:515",
+      "rc_attempts:00000000-0000-4000-8000-000000000216"
+    ],
+    [
+      "RC:74:516",
+      "rc_attempts:00000000-0000-4000-8000-000000000204"
+    ],
+    [
+      "LR:PT158-S4-Q20",
+      "attempts:00000000-0000-4000-8000-000000000068"
+    ],
+    [
+      "LR:PT158-S4-Q21",
+      "attempts:00000000-0000-4000-8000-000000000166"
+    ],
+    [
+      "LR:PT158-S4-Q22",
+      "attempts:00000000-0000-4000-8000-000000000142"
+    ],
+    [
+      "LR:PT102-S2-Q16",
+      "attempts:00000000-0000-4000-8000-000000000080"
+    ],
+    [
+      "RC:218:2371",
+      "rc_attempts:00000000-0000-4000-8000-000000000235"
+    ],
+    [
+      "RC:218:2372",
+      "rc_attempts:00000000-0000-4000-8000-000000000188"
+    ],
+    [
+      "RC:218:2373",
+      "rc_attempts:00000000-0000-4000-8000-000000000265"
+    ],
+    [
+      "RC:218:2374",
+      "rc_attempts:00000000-0000-4000-8000-000000000274"
+    ],
+    [
+      "RC:218:2375",
+      "rc_attempts:00000000-0000-4000-8000-000000000191"
+    ],
+    [
+      "RC:218:2376",
+      "rc_attempts:00000000-0000-4000-8000-000000000288"
+    ],
+    [
+      "RC:218:2377",
+      "rc_attempts:00000000-0000-4000-8000-000000000299"
+    ],
+    [
+      "RC:1188:7660",
+      "rc_attempts:00000000-0000-4000-8000-000000000291"
+    ],
+    [
+      "LR:PT107-S3-Q1",
+      "section_history:00000000-0000-4000-8000-000000000169:PT107-S3-Q1"
+    ],
+    [
+      "LR:PT107-S3-Q2",
+      "section_history:00000000-0000-4000-8000-000000000169:PT107-S3-Q2"
+    ],
+    [
+      "LR:PT107-S3-Q3",
+      "section_history:00000000-0000-4000-8000-000000000169:PT107-S3-Q3"
+    ],
+    [
+      "LR:PT107-S3-Q4",
+      "section_history:00000000-0000-4000-8000-000000000169:PT107-S3-Q4"
+    ],
+    [
+      "LR:PT109-S1-Q1",
+      "section_history:00000000-0000-4000-8000-000000000176:PT109-S1-Q1"
+    ],
+    [
+      "LR:PT109-S1-Q2",
+      "section_history:00000000-0000-4000-8000-000000000176:PT109-S1-Q2"
+    ],
+    [
+      "LR:PT109-S1-Q3",
+      "section_history:00000000-0000-4000-8000-000000000176:PT109-S1-Q3"
+    ],
+    [
+      "LR:PT110-S2-Q1",
+      "section_history:00000000-0000-4000-8000-000000000173:PT110-S2-Q1"
+    ],
+    [
+      "LR:PT146-S2-Q17",
+      "attempts:00000000-0000-4000-8000-000000000100"
+    ],
+    [
+      "LR:PT115-S4-Q3",
+      "attempts:00000000-0000-4000-8000-000000000008"
+    ],
+    [
+      "LR:PT130-S1-Q23",
+      "attempts:00000000-0000-4000-8000-000000000140"
+    ],
+    [
+      "LR:PT159-S1-Q1",
+      "section_history:00000000-0000-4000-8000-000000000170:PT159-S1-Q1"
+    ],
+    [
+      "RC:1756:10732",
+      "rc_attempts:00000000-0000-4000-8000-000000000277"
+    ],
+    [
+      "LR:PT159-S3-Q1",
+      "section_history:00000000-0000-4000-8000-000000000179:PT159-S3-Q1"
+    ],
+    [
+      "LR:PT159-S1-Q2",
+      "attempts:00000000-0000-4000-8000-000000000104"
+    ],
+    [
+      "LR:PT138-S4-Q24",
+      "attempts:00000000-0000-4000-8000-000000000105"
+    ],
+    [
+      "LR:PT130-S3-Q11",
+      "attempts:00000000-0000-4000-8000-000000000095"
+    ]
+  ],
+  "progress": {
+    "LR": {
+      "correct": 23,
+      "denominator": 63,
+      "percent": 37,
+      "sample": "established",
+      "evidenceAttemptIds": [
+        "attempts:00000000-0000-4000-8000-000000000103",
+        "attempts:00000000-0000-4000-8000-000000000087",
+        "attempts:00000000-0000-4000-8000-000000000119",
+        "attempts:00000000-0000-4000-8000-000000000027",
+        "attempts:00000000-0000-4000-8000-000000000048",
+        "attempts:00000000-0000-4000-8000-000000000093",
+        "attempts:00000000-0000-4000-8000-000000000071",
+        "attempts:00000000-0000-4000-8000-000000000058",
+        "attempts:00000000-0000-4000-8000-000000000021",
+        "attempts:00000000-0000-4000-8000-000000000097",
+        "attempts:00000000-0000-4000-8000-000000000159",
+        "attempts:00000000-0000-4000-8000-000000000114",
+        "attempts:00000000-0000-4000-8000-000000000109",
+        "attempts:00000000-0000-4000-8000-000000000010",
+        "attempts:00000000-0000-4000-8000-000000000026",
+        "attempts:00000000-0000-4000-8000-000000000165",
+        "attempts:00000000-0000-4000-8000-000000000137",
+        "attempts:00000000-0000-4000-8000-000000000112",
+        "attempts:00000000-0000-4000-8000-000000000009",
+        "attempts:00000000-0000-4000-8000-000000000125",
+        "attempts:00000000-0000-4000-8000-000000000055",
+        "attempts:00000000-0000-4000-8000-000000000154",
+        "attempts:00000000-0000-4000-8000-000000000157",
+        "attempts:00000000-0000-4000-8000-000000000017",
+        "attempts:00000000-0000-4000-8000-000000000150",
+        "attempts:00000000-0000-4000-8000-000000000126",
+        "attempts:00000000-0000-4000-8000-000000000013",
+        "attempts:00000000-0000-4000-8000-000000000051",
+        "attempts:00000000-0000-4000-8000-000000000022",
+        "attempts:00000000-0000-4000-8000-000000000035",
+        "attempts:00000000-0000-4000-8000-000000000102",
+        "attempts:00000000-0000-4000-8000-000000000133",
+        "attempts:00000000-0000-4000-8000-000000000076",
+        "attempts:00000000-0000-4000-8000-000000000072",
+        "attempts:00000000-0000-4000-8000-000000000042",
+        "attempts:00000000-0000-4000-8000-000000000160",
+        "attempts:00000000-0000-4000-8000-000000000094",
+        "attempts:00000000-0000-4000-8000-000000000089",
+        "attempts:00000000-0000-4000-8000-000000000015",
+        "attempts:00000000-0000-4000-8000-000000000124",
+        "attempts:00000000-0000-4000-8000-000000000138",
+        "attempts:00000000-0000-4000-8000-000000000011",
+        "attempts:00000000-0000-4000-8000-000000000061",
+        "attempts:00000000-0000-4000-8000-000000000068",
+        "attempts:00000000-0000-4000-8000-000000000166",
+        "attempts:00000000-0000-4000-8000-000000000142",
+        "attempts:00000000-0000-4000-8000-000000000080",
+        "section_history:00000000-0000-4000-8000-000000000169:PT107-S3-Q1",
+        "section_history:00000000-0000-4000-8000-000000000169:PT107-S3-Q2",
+        "section_history:00000000-0000-4000-8000-000000000169:PT107-S3-Q3",
+        "section_history:00000000-0000-4000-8000-000000000169:PT107-S3-Q4",
+        "section_history:00000000-0000-4000-8000-000000000176:PT109-S1-Q1",
+        "section_history:00000000-0000-4000-8000-000000000176:PT109-S1-Q2",
+        "section_history:00000000-0000-4000-8000-000000000176:PT109-S1-Q3",
+        "section_history:00000000-0000-4000-8000-000000000173:PT110-S2-Q1",
+        "attempts:00000000-0000-4000-8000-000000000100",
+        "attempts:00000000-0000-4000-8000-000000000008",
+        "attempts:00000000-0000-4000-8000-000000000140",
+        "section_history:00000000-0000-4000-8000-000000000170:PT159-S1-Q1",
+        "section_history:00000000-0000-4000-8000-000000000179:PT159-S3-Q1",
+        "attempts:00000000-0000-4000-8000-000000000104",
+        "attempts:00000000-0000-4000-8000-000000000105",
+        "attempts:00000000-0000-4000-8000-000000000095"
+      ],
+      "sources": [
+        "lr_attempts",
+        "lr_section_history"
+      ]
+    },
+    "RC": {
+      "correct": 4,
+      "denominator": 12,
+      "percent": 33,
+      "sample": "established",
+      "evidenceAttemptIds": [
+        "rc_attempts:00000000-0000-4000-8000-000000000297",
+        "rc_attempts:00000000-0000-4000-8000-000000000216",
+        "rc_attempts:00000000-0000-4000-8000-000000000204",
+        "rc_attempts:00000000-0000-4000-8000-000000000235",
+        "rc_attempts:00000000-0000-4000-8000-000000000188",
+        "rc_attempts:00000000-0000-4000-8000-000000000265",
+        "rc_attempts:00000000-0000-4000-8000-000000000274",
+        "rc_attempts:00000000-0000-4000-8000-000000000191",
+        "rc_attempts:00000000-0000-4000-8000-000000000288",
+        "rc_attempts:00000000-0000-4000-8000-000000000299",
+        "rc_attempts:00000000-0000-4000-8000-000000000291",
+        "rc_attempts:00000000-0000-4000-8000-000000000277"
+      ],
+      "sources": [
+        "rc_attempts"
+      ]
+    },
+    "repeatCount": 13,
+    "coverage": {
+      "includedSources": [
+        "lr_attempts",
+        "lr_section_history",
+        "rc_attempts"
+      ],
+      "missingSources": [],
+      "excludedRows": {}
+    }
+  }
+}

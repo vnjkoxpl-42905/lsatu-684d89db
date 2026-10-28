@@ -8,7 +8,7 @@ const question: RcQuestionIndexEntry = {
   questionType: "Main point", questionTypeFamily: "Global", difficulty: 3, features: [], prompt: null,
 };
 const session: RcDrillSessionRow = {
-  id: "session-1", user_id: "student-1", config: {}, passage_ids: [20], status: "completed",
+  id: "session-1", user_id: "student-1", config: { resultsRevealedAt: '2026-09-02T00:00:00Z' }, passage_ids: [20], status: "completed",
   excluded_from_analytics: false, started_at: "2026-09-01T00:00:00Z", completed_at: "2026-09-02T00:00:00Z",
 };
 function attempt(overrides: Partial<RcAttemptRow> = {}): RcAttemptRow {
@@ -20,6 +20,17 @@ function attempt(overrides: Partial<RcAttemptRow> = {}): RcAttemptRow {
 }
 
 describe("RC Review adapter", () => {
+  it('does not leak a completed unrevealed miss, while retaining an independent flag without answer fields', () => {
+    const hidden = { ...session, config: {} };
+    expect(buildRcReviewQueue([attempt()], [hidden], [question])).toEqual([]);
+    expect(buildRcReviewQueue([attempt({ flagged: true })], [hidden], [question])).toMatchObject([{ reasons: ['flagged'], firstAnswer: null, latestAnswer: null, firstMissAt: null }]);
+  });
+  it('excludes active and completed timed sittings, including legacy config provenance', () => {
+    for (const status of ['in_progress', 'completed']) {
+      expect(buildRcReviewQueue([attempt({ flagged: true })], [{ ...session, status, config: { timedSectionSittingId: 'timed' } }], [question])).toEqual([]);
+      expect(buildRcReviewQueue([attempt({ flagged: true })], [{ ...session, status, timed_section_sitting_id: 'timed' } as RcDrillSessionRow], [question])).toEqual([]);
+    }
+  });
   it("preserves first and later answers with missed and flagged reasons", () => {
     const items = buildRcReviewQueue([
       attempt(),

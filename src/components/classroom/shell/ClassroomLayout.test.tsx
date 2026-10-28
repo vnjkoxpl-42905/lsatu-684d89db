@@ -1,9 +1,12 @@
+vi.mock('@/components/notifications/NotificationBell', () => ({ default: () => <button aria-label="Notifications">Notifications</button> }));
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import React from "react";
-import { act, cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { act, cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { MemoryRouter, Route, Routes, useLocation } from "react-router-dom";
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { afterAll, afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-const { permissions, readingCenter, railPrefs } = vi.hoisted(() => ({
+const { permissions, readingCenter, railPrefs, unreadFeed } = vi.hoisted(() => ({
+  unreadFeed: { rows: [] as any[], loading: false, failed: false },
   permissions: {} as Record<string, boolean>, readingCenter: { allowed: false, isPending: false },
   railPrefs: { order: { classroom: [] as string[] }, hidden: [] as string[] },
 }));
@@ -22,7 +25,7 @@ vi.mock("@/hooks/useClassroomItems", () => ({ useClassroomItems: () => ({ items:
 vi.mock("@/hooks/useFlagged", () => ({ useFlagged: () => ({ flagged: [], loading: false }) }));
 vi.mock("@/hooks/useJournalEntries", () => ({ useJournalEntries: () => ({ entries: [], loading: false }) }));
 vi.mock("@/hooks/useStudentAssignments", () => ({ useStudentAssignments: () => ({ data: [] }), useStudentTAAssignments: () => ({ data: [] }) }));
-vi.mock("@/hooks/useAssignedTodoFeed", () => ({ useAssignedTodoFeed: () => ({ items: [] }), routeWithReturnTo: (route: string) => route }));
+vi.mock("@/hooks/useAssignedTodoFeed", () => ({ useAssignedTodoFeed: () => unreadFeed, routeWithReturnTo: (route: string) => route }));
 vi.mock("@/lib/routePreload", () => ({ preloadDrillHub: vi.fn() }));
 
 import ClassroomLayout from "./ClassroomLayout";
@@ -65,6 +68,9 @@ beforeEach(() => {
   window.matchMedia = window.matchMedia ?? ((() => ({ matches: false, addEventListener() {}, removeEventListener() {} })) as never);
 });
 afterEach(cleanup);
+// Registering ScrollTrigger starts an app-lifetime polling interval. JSDOM
+// ends after this suite, so stop that plugin service after component cleanup.
+afterAll(() => ScrollTrigger.disable());
 
 it("shares the shell context with the real orientation hook across layout remounts", async () => {
   const snapshots: Array<{ name: string; shared: boolean }> = [];
@@ -107,8 +113,8 @@ describe("classroom rail access", () => {
     await renderShell('/classroom');
     const group = railButton(/^My Work/).parentElement!;
     const labels = Array.from(group.querySelectorAll('button')).map((button) => button.textContent);
-    expect(labels[0]).toMatch(/^Progress/);
-    expect(railButton(/^Review/)).toBeUndefined();
+    expect(labels[0]).toMatch(/^Review/);
+    expect(railButton(/^Progress/)).toBeUndefined();
     expect(railButton(/^My Work/).nextElementSibling).toHaveTextContent('Reading Center');
     expect(railPrefs.hidden).toEqual(['my-work', 'review']);
   });
@@ -134,12 +140,12 @@ describe("classroom rail access", () => {
   });
   it("keeps a fully locked destination reachable so its page can explain the lock", async () => {
     await renderShell("/classroom");
-    const progress = railButton(/^Progress/);
-    expect(progress).not.toBeDisabled();
-    expect(progress).toHaveTextContent("(locked)");
-    expect(progress).toHaveAttribute("title", "Progress is locked for your account");
-    fireEvent.click(progress);
-    expect(screen.getByTestId("where")).toHaveTextContent("/progress/overview");
+    const library = railButton(/^Library/);
+    expect(library).not.toBeDisabled();
+    expect(library).toHaveTextContent("(locked)");
+    expect(library).toHaveAttribute("title", "Library is locked for your account");
+    fireEvent.click(library);
+    expect(screen.getByTestId("where")).toHaveTextContent("/library/lessons");
   });
 
   it("opens a partly locked destination on a tab the account can use", async () => {
@@ -160,8 +166,8 @@ describe("classroom rail access", () => {
   it("marks the current destination for assistive tech", async () => {
     permissions.has_analytics_access = true;
     await renderShell("/progress/history");
-    expect(railButton(/^Progress/)).toHaveAttribute("aria-current", "page");
-    expect(railButton(/^Review/)).not.toHaveAttribute("aria-current");
+    expect(railButton(/^Review/)).toHaveAttribute("aria-current", "page");
+    expect(railButton(/^Progress/)).toBeUndefined();
   });
 
   it("keeps the student Schedule destination out of the teacher rail", async () => {
@@ -181,8 +187,8 @@ describe("classroom rail access", () => {
     permissions.has_chat_access = false;
     await renderShell("/classroom");
     const messages = railButton(/^Messages/);
-    const find = railButton(/^Find a question/);
-    for (const shortcut of [messages, find]) {
+    expect(railButton(/^Find a question/)).toBeUndefined();
+    for (const shortcut of [messages]) {
       expect(shortcut).not.toBeDisabled();
       expect(shortcut).toHaveAttribute("aria-disabled", "true");
       expect(shortcut).toHaveTextContent("locked for your account");
@@ -199,23 +205,18 @@ describe("classroom rail access", () => {
     expect(screen.getByText(/Locked shortcuts aren.t available/)).toHaveTextContent("Message Joshua about access.");
   });
 
-  it("opens Messages and Find a question for an entitled account", async () => {
+  it("keeps Messages available and removes question lookup from the entitled rail", async () => {
     permissions.has_drill_access = true;
     await renderShell("/classroom");
-    fireEvent.click(railButton(/^Find a question/));
-    expect(screen.getByTestId("where")).toHaveTextContent("/practice/drills");
+    expect(railButton(/^Find a question/)).toBeUndefined();
     fireEvent.click(railButton(/^Messages/));
     expect(screen.getByTestId("where")).toHaveTextContent("/inbox");
   });
 
-  it("carries the sidebar's current route and query into question lookup", async () => {
-    permissions.has_drill_access = true;
+  it("removes question lookup from the teacher rail too", async () => {
+    permissions.is_admin = true;
     await renderShell("/progress/history?view=completed");
-    fireEvent.click(railButton(/^Find a question/));
-    const destination = new URL(screen.getByTestId("where").textContent ?? "", "https://test.invalid");
-    expect(destination.pathname).toBe("/practice/drills");
-    expect(destination.searchParams.get("finder")).toBe("open");
-    expect(destination.searchParams.get("finderReturnTo")).toBe("/progress/history?view=completed");
+    expect(railButton(/^Find a question/)).toBeUndefined();
   });
 });
 
@@ -240,4 +241,11 @@ describe("mobile menu", () => {
     await waitFor(() => expect(screen.queryByRole("dialog", { name: "Classroom menu" })).toBeNull());
     expect(screen.getByTestId("where")).toHaveTextContent("/review/to-review");
   });
+});
+
+it('counts unread work without treating incomplete work as unread', async () => {
+ Object.assign(permissions, NONE, {has_classroom_access:true});
+ unreadFeed.rows=[{status:'assigned',isUnread:true,sourceTable:'homework_assignments'}, {status:'in_progress',isUnread:false,sourceTable:'guided_drill_assignments'}, {status:'completed',isUnread:true,sourceTable:'activity_assignments'}];
+ try {await renderShell('/my-work/to-do');expect(within(rail()).getByRole('button',{name:/My Work.*1.*unread notes and assignments/})).toBeInTheDocument();}
+ finally {unreadFeed.rows=[];}
 });

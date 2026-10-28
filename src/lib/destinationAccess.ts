@@ -58,18 +58,17 @@ export const DESTINATIONS: Record<Destination, DestinationConfig> = {
     path: "/review",
     tabs: [
       { label: "To review", path: "/review/to-review", allowSignedIn: true },
-      { label: "Wrong answers", path: "/review/wrong", flags: ["has_journal_access"] },
-      { label: "Flagged", path: "/review/flagged", flags: ["has_flagged_access"] },
+      { label: "Progress", path: "/review/progress", flags: ["has_analytics_access"] },
+      { label: "History", path: "/review/history", flags: ["has_analytics_access"] },
     ],
   },
   progress: {
     title: "Progress",
     introduction: "See your practice record and where to focus next.",
-    path: "/progress",
+    path: "/review/progress",
     tabs: [
-      { label: "Overview", path: "/progress/overview", flags: ["has_analytics_access"] },
-      { label: "History", path: "/progress/history", flags: ["has_analytics_access"] },
-      { label: "Topics", path: "/progress/topics", flags: ["has_analytics_access"] },
+      { label: "Progress", path: "/review/progress", flags: ["has_analytics_access"] },
+      { label: "History", path: "/review/history", flags: ["has_analytics_access"] },
     ],
   },
   library: {
