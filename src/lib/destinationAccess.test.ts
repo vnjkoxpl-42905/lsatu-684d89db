@@ -65,9 +65,9 @@ describe("destination route matrix", () => {
 describe("tab access", () => {
   it('opens only the two filtered work tabs for a verified Reading Center assignment', () => {
     const assigned = { ...NONE, readingCenterAssigned: true };
-    expect(tabAccess(DESTINATIONS['my-work'].tabs[0], assigned)).toBe('open');
-    expect(tabAccess(DESTINATIONS['my-work'].tabs[1], assigned)).toBe('open');
-    expect(tabAccess(DESTINATIONS['my-work'].tabs[2], assigned)).toBe('locked');
+    expect(tabAccess(DESTINATIONS['my-work'].tabs.find(tab => tab.path === '/my-work/to-do')!, assigned)).toBe('open');
+    expect(tabAccess(DESTINATIONS['my-work'].tabs.find(tab => tab.path === '/my-work/completed')!, assigned)).toBe('open');
+    expect(tabAccess(DESTINATIONS['my-work'].tabs.find(tab => tab.path === '/my-work/notes')!, assigned)).toBe('locked');
     expect(destinationLock('my-work', assigned)).toBe('partial');
     expect(railItemLocked('my-work', assigned)).toBe(false);
     expect(destinationLock('library', assigned)).toBe('locked');
@@ -75,7 +75,7 @@ describe("tab access", () => {
   it('does not draw a My Work lock before the assignment check resolves', () => {
     expect(destinationLock('my-work', { ...NONE, readingCenterChecking: true })).toBe('checking');
     expect(railItemLocked('my-work', { ...NONE, readingCenterChecking: true })).toBe(false);
-    expect(tabAccess(DESTINATIONS['my-work'].tabs[2], { ...NONE, readingCenterChecking: true })).toBe('locked');
+    expect(tabAccess(DESTINATIONS['my-work'].tabs.find(tab => tab.path === '/my-work/notes')!, { ...NONE, readingCenterChecking: true })).toBe('locked');
   });
   it("never reports a lock while permissions are unresolved", () => {
     for (const config of Object.values(DESTINATIONS)) {
@@ -138,6 +138,11 @@ describe("destination landing", () => {
     ["library", TIER_1, "/library/lessons"],
     ["review", TIER_3, "/review/to-review"],
     ["my-work", TIER_3, "/my-work/to-do"],
+    ["my-work", TIER_1, "/my-work/notes"],
+    ["my-work", ADMIN, "/my-work/notes"],
+    ["my-work", { ...NONE, readingCenterChecking: true }, "/my-work/to-do"],
+    ["my-work", { ...NONE, readingCenterAssigned: true }, "/my-work/to-do"],
+    ["my-work", NONE, "/my-work/to-do"],
     ["progress", TIER_3, "/progress/overview"],
     ["library", ADMIN, "/library/lessons"],
   ] as const)("%s lands a matching account on its first open tab", (destination, permissions, path) => {

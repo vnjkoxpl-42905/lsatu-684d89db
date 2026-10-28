@@ -204,7 +204,7 @@ export function StudentCornerBubble() {
       void markRead(event.notifId);
       navigate(event.link || '/inbox');
     } else {
-      navigate('/inbox');
+      navigate(`/inbox/${encodeURIComponent(event.conversationId)}`);
     }
     setEvent(null);
   };
