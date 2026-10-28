@@ -1,5 +1,7 @@
 # A search hit is a finding aid, not the scope of the work it opens
 
+Historical launch contract. Superseded for question lookup by [0036: Question finder opens a preview without starting a drill](0036-question-finder-opens-preview.md), authorized for release on 2026-10-28. The rationale below is preserved; it does not describe the current preview lifecycle.
+
 The Question finder searches both banks from one box, so one result list mixes LR
 questions and RC questions. The obvious design makes them behave alike: click a hit,
 open that hit. RC can express it — **Question subset** already means "the passage

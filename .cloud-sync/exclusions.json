@@ -308,6 +308,10 @@
     "reason": "excluded file"
   },
   {
+    "path": "dist",
+    "reason": "excluded directory"
+  },
+  {
     "path": "node_modules",
     "reason": "link"
   },

@@ -211,8 +211,8 @@ export default function AcademyMainhub({
   };
   const [finderLaunch, setFinderLaunch] = React.useState<{ origin: string; seed: "LR" | "RC"; kind: "url"; actor: string | null } | null>(null);
   const acknowledgedFinder = React.useRef<string | null>(null);
-  const lookupReturnTo = finderLaunch?.origin ?? cleanedPractice;
   const finderEnabled = !perms.loading && (perms.is_admin || !!perms.has_drill_access);
+  const lookupReturnTo = finderEnabled && finderLaunch?.actor === (user?.id ?? null) ? finderLaunch.origin : cleanedPractice;
   const questionFinderRef = React.useRef<QuestionFinderHandle>(null);
   const navigate = useNavigate();
   const viewParam = searchParams.get("view");
@@ -245,13 +245,15 @@ export default function AcademyMainhub({
 
   const sectionParam = searchParams.get(DRILL_SECTION_PARAM);
   const section = React.useMemo(() => resolveDrillSection(sectionParam), [sectionParam]);
+  React.useEffect(() => { setFinderLaunch(null); acknowledgedFinder.current = null; }, [user?.id]);
+  React.useEffect(() => { if (!finderEnabled) setFinderLaunch(null); }, [finderEnabled]);
   React.useEffect(() => {
     if (searchParams.get("finder") !== "open" || !finderEnabled || acknowledgedFinder.current === location.key) return;
-    const seed = section === "rc" ? "RC" : "LR";
+    const seed: "LR" | "RC" = section === "rc" ? "RC" : "LR";
     const origin = sanitizeOrigin(searchParams.get("finderReturnTo"));
     const launch = { origin, seed, kind: "url" as const, actor: user?.id ?? null };
-    setFinderLaunch(launch);
     if (!questionFinderRef.current?.open({ bank: seed, returnTo: origin, replacePreview: true })) return;
+    setFinderLaunch(launch);
     acknowledgedFinder.current = location.key;
     const next = new URLSearchParams(searchParams);
     next.delete("finder");
@@ -259,7 +261,6 @@ export default function AcademyMainhub({
     if (!next.get(DRILL_SECTION_PARAM)) next.set(DRILL_SECTION_PARAM, section);
     setSearchParams(next, { replace: true });
   }, [searchParams, finderEnabled, location.key, section, user?.id, setSearchParams]);
-  React.useEffect(() => { setFinderLaunch(null); }, [user?.id]);
   const finishFinder = () => {
     const launch = finderLaunch;
     setFinderLaunch(null);
@@ -493,8 +494,8 @@ export default function AcademyMainhub({
           </div>
           {!(section === "lr" && view === "create" && isLauncherStage) && <SectionToggle section={section} onChange={changeSection} />}
         </nav>
-        <div data-motion-enter className="drill-observatory-tools">
-          <QuestionJump key={user?.id ?? "guest"} ref={questionFinderRef} enabled={finderEnabled} actorId={user?.id} returnTo={lookupReturnTo} tone={theme === "dark" ? "dark" : "light"} bank={section} withSearch={false} triggerLabel="Find a question" onDismiss={finishFinder} onPreviewClose={finishFinder} />
+        <div data-motion-enter className={`drill-observatory-tools${section === "rc" && rcBuilderRequested ? " rc-builder-question-shortcut" : ""}`}>
+          <QuestionJump hideTrigger={section === "lr" && view === "create" && isLauncherStage} key={user?.id ?? "guest"} ref={questionFinderRef} enabled={finderEnabled} actorId={user?.id} returnTo={lookupReturnTo} tone={theme === "dark" ? "dark" : "light"} bank={section} withSearch={false} triggerLabel="Find a question" onDismiss={finishFinder} onPreviewClose={finishFinder} />
           {searchParams.get("finder") === "open" && !perms.loading && !finderEnabled && <p role="alert">Question finder requires access to Drills.</p>}
         </div>
         {view === "saved" ? (section === "rc" ? (

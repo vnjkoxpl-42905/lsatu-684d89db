@@ -29,11 +29,6 @@ import { resolveFinderAddress, resolveFinderHit, type FinderResolution } from '.
 
 const PER_BANK_LIMIT = 6;
 
-/* The bank switch, as a segmented control rather than a hidden filter.
-   LSAT Lab puts "Modern | Legacy" here, which splits its bank by PrepTest
-   numbering. Ours is PT101-159 end to end — every question is modern — so a
-   Legacy tab would be a control that returns nothing every time it is pressed.
-   The switch that is real here is the one between the two banks. */
 const BANK_TABS: { value: QuestionFinderBank | "all"; label: string }[] = [
   { value: "all", label: "All" },
   { value: "lr", label: "LR" },
@@ -49,29 +44,19 @@ export interface QuestionFinderProps {
   /** Restricts results to the active side of the LR/RC hub switch. */
   bank?: QuestionFinderBank;
   triggerLabel?: string;
+  hideTrigger?: boolean;
   enabled?: boolean;
   actorId?: string | null;
   onDismiss?: () => void;
   onPreviewClose?: () => void;
 }
 
-/**
- * The Question finder.
- *
- * A labelled field that opens a panel: type words to search question text, or
- * type a question address (PT90 S1 Q12) to locate it. It can search both banks
- * or follow the Drill hub's active bank. Selecting a result retains its address;
- * opening remains unavailable until safe preview is implemented.
- * See `docs/adr/0008-question-finder-lands-differently-by-bank.md`.
- *
- * It never builds a set. That is the Drill console's job, and the last row of
- * the panel is the door to it.
- */
+/** Search and open validated read-only previews from either bank. */
 export interface QuestionFinderHandle {
   open: (options?: { bank?: 'LR' | 'RC' | 'All'; returnTo?: string; replacePreview?: boolean }) => boolean;
 }
 
-const QuestionFinder = React.forwardRef<QuestionFinderHandle, QuestionFinderProps>(function QuestionFinder({ returnTo, tone = "light", bank, triggerLabel = "Find a question", enabled = true, actorId, onDismiss, onPreviewClose }, ref) {
+const QuestionFinder = React.forwardRef<QuestionFinderHandle, QuestionFinderProps>(function QuestionFinder({ returnTo, tone = "light", bank, triggerLabel = "Find a question", enabled = true, actorId, onDismiss, onPreviewClose, hideTrigger = false }, ref) {
   const [open, setOpen] = React.useState(false);
   const [openedReturnTo, setOpenedReturnTo] = React.useState(returnTo);
   const [seed, setSeed] = React.useState<QuestionFinderBank | 'all'>(bank ?? 'all');
@@ -126,6 +111,8 @@ const QuestionFinder = React.forwardRef<QuestionFinderHandle, QuestionFinderProp
     return () => window.removeEventListener("keydown", onKey);
   }, [enabled, preview, open, openFinder, dismiss]);
 
+  if (!enabled) return null;
+
   return (
     <div className="qf" data-tone={tone}>
       {/* ONE trigger, not one per breakpoint. Two buttons behind a CSS
@@ -134,7 +121,7 @@ const QuestionFinder = React.forwardRef<QuestionFinderHandle, QuestionFinderProp
           label is what collapses on a phone; the control and its accessible
           name do not change. The shortcut still works but is not advertised
           on the trigger: Joshua's call, 2026-09-08. */}
-      <button
+      {!hideTrigger && <button
         ref={triggerRef}
         type="button"
         className="qf-trigger"
@@ -153,7 +140,7 @@ const QuestionFinder = React.forwardRef<QuestionFinderHandle, QuestionFinderProp
         <span className="qf-trigger-label" aria-hidden>
           {triggerLabel}
         </span>
-      </button>
+      </button>}
 
       {active && open && <FinderPanel returnTo={openedReturnTo} open tone={tone} bank={seed} replacePreview={replacePreview} onClose={dismiss} onTarget={() => setOpen(false)} onLrPreview={setPreview} />}
       {active && preview && <FinderLrPreview key={`${actorId}:${preview.qid}`} question={preview} onClose={() => { setPreview(null); onPreviewClose?.(); }} onRestoreFocus={() => { if (triggerRef.current?.isConnected) triggerRef.current.focus(); }} />}
@@ -186,11 +173,9 @@ function FinderPanel({
 }) {
   const navigate = useNavigate();
   const [query, setQuery] = React.useState("");
-  const [resolutionMessage, setResolutionMessage] = React.useState<string | null>(null);
-  const [retainedRcHit, setRetainedRcHit] = React.useState<{ passageId: number; pt: number; section: number; pnum: number; questionId: number | null; qnum: number | null } | null>(null);
+  const [resolutionMessage, setResolutionMessage] = React.useState<{ message: string; status: string } | null>(null);
   // Address edits express fresh intent. Only a clicked result retains index provenance.
   const writeQuery = React.useCallback((value: string) => {
-    setRetainedRcHit(null);
     setResolutionMessage(null);
     setQuery(value);
   }, []);
@@ -250,28 +235,9 @@ function FinderPanel({
   const targetSelected = React.useRef(false);
   const resolverInput = { tests: addressIndex.tests, loading: addressIndex.loading, failed: addressIndex.failed, lr: banks.lr, getQuestion: (qid: string) => questionBank.getQuestion(qid) };
   const resolvedAddress = resolveFinderAddress(results.address, view, resolverInput);
-  /* RC retained provenance is validated by the same pure resolver as row activation. */
-  const addressTarget = React.useMemo(() => {
-    const address = results.address;
-    if (!address?.section || view === "lr" || (view === 'all' && results.exact)) return null;
-    const section = addressIndex.tests.find((test) => test.pt === address.pt)?.sections.find((entry) => entry.section === address.section);
-    const passages = (section?.rc ?? []).filter(passage => passage.questions.length > 0 && (address.pnum === undefined || passage.position === address.pnum));
-    if (address.qnum === undefined) return address.pnum !== undefined && passages.length === 1 ? { passageId: passages[0].id, questionId: null } : null;
-    const matches = passages.flatMap((passage) => passage.questions.filter((q) => q.number === address.qnum).map((q) => ({ passageId: passage.id, questionId: q.id })));
-    return matches.length === 1 ? matches[0] : null;
-  }, [results.address, results.exact, addressIndex.tests, view]);
-  const retainedMismatch = React.useMemo(() => {
-    if (!retainedRcHit || addressIndex.loading || addressIndex.failed) return false;
-    const address = results.address;
-    const section = addressIndex.tests.find(test => test.pt === retainedRcHit.pt)?.sections.find(entry => entry.section === retainedRcHit.section);
-    const samePassage = section?.rc.some(passage => passage.id === retainedRcHit.passageId && passage.position === retainedRcHit.pnum && passage.questions.length > 0);
-    const sameAddress = address?.pt === retainedRcHit.pt && address.section === retainedRcHit.section && (address.pnum === undefined || address.pnum === retainedRcHit.pnum);
-    const sameQuestion = retainedRcHit.questionId === null ? address?.qnum === undefined && address?.pnum === retainedRcHit.pnum : address?.qnum === retainedRcHit.qnum;
-    return !samePassage || !sameAddress || !sameQuestion || !addressTarget || addressTarget.passageId !== retainedRcHit.passageId || addressTarget.questionId !== retainedRcHit.questionId;
-  }, [retainedRcHit, results.address, addressTarget, addressIndex.tests, addressIndex.loading, addressIndex.failed]);
-  const selectedTarget = retainedMismatch || resolvedAddress.status !== 'ready' ? null : resolvedAddress.target;
+  const selectedTarget = resolvedAddress.status === 'ready' ? resolvedAddress.target : null;
   const openResolution = (resolution: FinderResolution) => {
-    if (resolution.status !== 'ready') { setResolutionMessage(resolution.message); return; }
+    if (resolution.status !== 'ready') { setResolutionMessage({ message: resolution.message, status: resolution.status }); return; }
     targetSelected.current = true;
     if (resolution.target.bank === 'lr') {
       onLrPreview(resolution.target.question);
@@ -282,7 +248,7 @@ function FinderPanel({
     if (resolution.target.questionId !== null) params.set('q', String(resolution.target.questionId));
     params.set('returnTo', safeRcReturnTo(returnTo) ?? '/practice/drills?section=rc');
     onTarget();
-    navigate(`/rc/preview?${params}`, { replace: replacePreview });
+    navigate(`/rc/preview?${params}`, { replace: replacePreview, state: { finderPreviewHistory: replacePreview ? 'replace' : 'push' } });
   };
   const openSelected = () => {
     if (!selectedTarget) return;
@@ -326,7 +292,7 @@ function FinderPanel({
       // A modal that leaks focus to the page behind it is not modal. Cycle
       // within the panel rather than trapping the student on one control.
       const focusable = panelRef.current?.querySelectorAll<HTMLElement>(
-        'button, input, select, [href], [tabindex]:not([tabindex="-1"])',
+        'button:not(:disabled), input:not(:disabled), select:not(:disabled), [href], [tabindex]:not([tabindex="-1"])',
       );
       if (!focusable?.length) return;
       const first = focusable[0];
@@ -407,8 +373,8 @@ function FinderPanel({
             <BrowseByTest
               tone={tone}
               bank={view === "all" ? undefined : view}
-              loading={addressIndex.loading}
-              failed={addressIndex.failed}
+              loading={view !== 'lr' && addressIndex.loading}
+              failed={view !== 'lr' && addressIndex.failed}
               onPick={writeQuery}
               tests={addressIndex.tests}
               selectedAddress={results.address}
@@ -417,9 +383,8 @@ function FinderPanel({
               onOpen={openSelected}
             />
             {addressIndex.failed && <p className="qf-warn" role="alert">Question addresses could not be loaded. <button type="button" onClick={addressIndex.retry}>Retry</button></p>}
-            {resolutionMessage && <p className="qf-warn" role="status">{resolutionMessage}</p>}
+            {resolutionMessage && <p className="qf-warn" role={resolutionMessage.status === 'loading' ? 'status' : 'alert'}>{resolutionMessage.message}</p>}
             {results.address && resolvedAddress.status === 'ambiguous' && <p className="qf-warn" role="status">{resolvedAddress.message}</p>}
-            {retainedMismatch && <p className="qf-warn" role="alert">The passage address no longer matches this search result. Choose the passage using the selectors, or search again before opening it.</p>}
 
           <div className="qf-inputrow">
             <Search className="qf-inputrow-icon" size={18} strokeWidth={1.9} aria-hidden />
@@ -478,7 +443,7 @@ function FinderPanel({
             {!banks.loading && showNoResults && (
               <p className="qf-state">
                 {results.address
-                  ? `No question at ${formatQuestionAddress(results.address)}.`
+                  ? `${formatQuestionAddress(results.address)} is unavailable in the loaded bank. Some sections may still be unavailable.`
                   : "Nothing matched that."}
               </p>
             )}

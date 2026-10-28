@@ -9,7 +9,7 @@ export function FinderLrPreview({ question, onClose, onRestoreFocus }: { questio
     <SheetContent className="qf-lr-preview w-full sm:max-w-xl overflow-y-auto" onCloseAutoFocus={event => { event.preventDefault(); onRestoreFocus(); }}>
       <SheetHeader>
         <SheetTitle>PT {question.pt} · Section {question.section} · Question {question.qnum}</SheetTitle>
-        <SheetDescription>Read-only preview. This does not start or score a drill.</SheetDescription>
+        <SheetDescription className="qf-lr-preview-description">Read-only preview. This does not start or score a drill.</SheetDescription>
       </SheetHeader>
       <div className="mt-6 space-y-5 text-sm">
         <p className="whitespace-pre-wrap leading-relaxed">{question.stimulus}</p>

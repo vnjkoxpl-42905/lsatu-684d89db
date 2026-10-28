@@ -26,8 +26,8 @@ export function resolveFinderHit(hit: FinderHit, input: Input): FinderResolution
 
 export function resolveFinderAddress(address: QuestionAddress | null, view: QuestionFinderBank | 'all', input: Input): FinderResolution {
   if (!address?.section || (address.qnum === undefined && address.pnum === undefined)) return { status: 'missing', message: 'Choose an exact question or passage address.' };
-  if (input.loading) return { status: 'loading', message: 'Question addresses are loading.' };
-  if (input.failed) return { status: 'missing', message: 'Question addresses could not be loaded. Retry to open a preview.' };
+  if (view !== 'lr' && input.loading) return { status: 'loading', message: 'Question addresses are loading. Choose LR to open a known LR question while the RC index loads.' };
+  if (view !== 'lr' && input.failed) return { status: 'missing', message: 'Question addresses could not be loaded. Retry or choose LR to open a known LR question.' };
   const candidates: FinderResolution[] = [];
   if (view !== 'rc' && address.pnum === undefined && address.qnum !== undefined) {
     const matches = input.lr.filter(q => q.pt === address.pt && q.section === address.section && q.qnum === address.qnum);

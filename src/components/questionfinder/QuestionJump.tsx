@@ -2,7 +2,7 @@ import * as React from "react";
 import QuestionFinder, { type QuestionFinderHandle, type QuestionFinderProps } from "./QuestionFinder";
 import type { QuestionFinderBank } from "./questionFinderSearch";
 
-export interface QuestionJumpProps extends Pick<QuestionFinderProps, 'enabled' | 'actorId' | 'onDismiss' | 'onPreviewClose'> {
+export interface QuestionJumpProps extends Pick<QuestionFinderProps, 'hideTrigger' | 'enabled' | 'actorId' | 'onDismiss' | 'onPreviewClose'> {
   returnTo: string;
   tone?: "light" | "dark";
   bank?: QuestionFinderBank;
