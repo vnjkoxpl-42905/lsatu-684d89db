@@ -23,6 +23,7 @@ type UploadApi = {
 };
 
 type Props = {
+  bookingFor?: { name: string; email: string };
   open: boolean;
   onOpenChange: (open: boolean) => void;
   slotIso: string | null;
@@ -69,17 +70,17 @@ const fmtTime = (iso: string) =>
   new Date(iso).toLocaleTimeString(undefined, { hour: "numeric", minute: "2-digit" });
 
 /** The session summary "ticket" — the hero of the confirm and success phases. */
-function Ticket({ slotIso, durationMinutes }: { slotIso: string; durationMinutes: number }) {
+function Ticket({ slotIso, durationMinutes, bookingFor }: { slotIso: string; durationMinutes: number; bookingFor?: { name: string; email: string } }) {
   return (
     <div className="flex items-start gap-3 rounded-xl border border-border bg-card px-4 py-3.5 shadow-sm">
       <div className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary/5 text-primary">
         <Calendar className="h-4 w-4" />
       </div>
       <div className="min-w-0">
-        <div className="text-base font-semibold tracking-tight text-foreground">{fmtDate(slotIso)}</div>
+        <div className="text-base font-semibold tracking-tight text-foreground">{bookingFor ? new Date(slotIso).toLocaleDateString(undefined, { weekday: "long", month: "long", day: "numeric", year: "numeric" }) : fmtDate(slotIso)}</div>
         <div className="mt-0.5 flex items-center gap-2 text-sm text-muted-foreground">
           <Clock className="h-3.5 w-3.5 shrink-0" />
-          <span>{fmtTime(slotIso)}</span>
+          <span>{fmtTime(slotIso)}{bookingFor ? ` (${Intl.DateTimeFormat().resolvedOptions().timeZone})` : ""}</span>
           <span aria-hidden className="text-border">·</span>
           <span>{durationLabel(durationMinutes)}</span>
         </div>
@@ -90,7 +91,7 @@ function Ticket({ slotIso, durationMinutes }: { slotIso: string; durationMinutes
 
 type Step = "confirm" | "work" | "success";
 
-export default function BookingConfirmDialog({ open, onOpenChange, slotIso, durationMinutes, book, onBooked, onCommitError, upload, theme = "booking" }: Props) {
+export default function BookingConfirmDialog({ open, onOpenChange, slotIso, durationMinutes, book, onBooked, onCommitError, upload, theme = "booking", bookingFor }: Props) {
   const reduceMotion = useReducedMotion();
   const phaseMotion = reduceMotion
     ? { initial: false as const, animate: { opacity: 1, y: 0 }, exit: { opacity: 1, y: 0 }, transition: { duration: 0 } }
@@ -199,7 +200,9 @@ export default function BookingConfirmDialog({ open, onOpenChange, slotIso, dura
       // than leaking an internal string like "redeem_failed" at a student.
       const msg = e instanceof Error ? e.message : "";
       toast.error(bookingErrorMessage(msg));
-      if (onCommitError) await onCommitError(); // refresh so a taken slot disappears
+      // Teacher recovery owns unknown outcomes. Preserve this confirmation until
+      // it is closed explicitly, instead of unmounting it during a card reload.
+      if (onCommitError && !(bookingFor && msg === "booking_outcome_unknown")) await onCommitError();
     } finally {
       setBooking(false);
     }
@@ -213,7 +216,7 @@ export default function BookingConfirmDialog({ open, onOpenChange, slotIso, dura
         aria-describedby={undefined}
         onEscapeKeyDown={(event) => { if (booking) event.preventDefault(); }}
         onPointerDownOutside={(event) => { if (booking) event.preventDefault(); }}
-        className={`booking-dialog ${theme === "booking" ? "booking-holo " : ""}booking-shadow gap-0 overflow-hidden rounded-2xl border-border p-0 sm:max-w-md`}
+        className={`booking-dialog ${bookingFor ? "booking-dialog-teacher " : ""}${theme === "booking" ? "booking-holo " : ""}booking-shadow gap-0 overflow-hidden rounded-2xl border-border p-0 sm:max-w-md`}
       >
         {/* Accessible label for screen readers; visible headings are styled per phase below. */}
         <DialogTitle className="sr-only">
@@ -240,7 +243,7 @@ export default function BookingConfirmDialog({ open, onOpenChange, slotIso, dura
                 transition={reduceMotion ? { duration: 0 } : { duration: 0.28, ease: EASE, delay: 0.14 }}
                 className="mt-4 text-xl font-semibold tracking-tight text-foreground"
               >
-                You're booked
+                {bookingFor ? "Session booked" : "You're booked"}
               </motion.h2>
 
               <motion.div
@@ -249,9 +252,9 @@ export default function BookingConfirmDialog({ open, onOpenChange, slotIso, dura
                 transition={reduceMotion ? { duration: 0 } : { duration: 0.3, ease: EASE, delay: 0.2 }}
                 className="mt-4 w-full"
               >
-                <Ticket slotIso={bookedSlot} durationMinutes={durationMinutes} />
+                <Ticket slotIso={bookedSlot} durationMinutes={durationMinutes} bookingFor={bookingFor} />
                 <p className="mt-3 text-sm text-muted-foreground">
-                  Your calendar invite is on its way to your email.
+                  {bookingFor ? `The calendar invite and normal email confirmation will go to ${bookingFor.email}.` : "Your calendar invite is on its way to your email."}
                 </p>
               </motion.div>
 
@@ -342,10 +345,10 @@ export default function BookingConfirmDialog({ open, onOpenChange, slotIso, dura
           ) : (
             <motion.div key="confirm" {...phaseMotion} className="px-6 pb-6 pt-6">
               <h2 className="text-xl font-semibold tracking-tight text-foreground">Confirm your session</h2>
-              <p className="mt-1 text-sm text-muted-foreground">Here's your 1:1 with Joshua.</p>
+              <p className="mt-1 text-sm text-muted-foreground">{bookingFor ? <>Booking for <strong>{bookingFor.name}</strong><br />{bookingFor.email}<br />This uses 1 session. The student receives the normal calendar invite and email confirmation.</> : "Here's your 1:1 with Joshua."}</p>
 
               <div className="mt-4">
-                {slotIso ? <Ticket slotIso={slotIso} durationMinutes={durationMinutes} /> : (
+                {slotIso ? <Ticket slotIso={slotIso} durationMinutes={durationMinutes} bookingFor={bookingFor} /> : (
                   <p className="text-sm text-muted-foreground">Pick a time first.</p>
                 )}
               </div>
