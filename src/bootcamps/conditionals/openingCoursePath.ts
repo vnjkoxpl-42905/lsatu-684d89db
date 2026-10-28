@@ -99,7 +99,7 @@ const LESSON_SUMMARIES: Record<string, string> = {
   'hidden-chain': 'Some rules connect only after you write one of them as its contrapositive.',
   'failed-connections': 'Two rules that mention the same idea do not always connect.',
   'same-domain': 'A rule covers only its stated subject and circumstances. Keep them when you link.',
-  'missing-bridges': 'Find the one added rule that carries the premises to the conclusion.',
+  'missing-bridges': 'Connect the given rules with an added rule that makes the conclusion follow.',
   'quantity-meaning': 'What some, most and all actually claim, and what each one allows.',
   'quantity-denial': 'Negate a quantity statement by finding exactly what makes it false.',
   'quantity-links': 'When quantity statements combine to guarantee a new conclusion.',

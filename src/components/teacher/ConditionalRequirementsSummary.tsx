@@ -7,6 +7,7 @@ export function ConditionalRequirementsSummary({ target, existingSnapshots = [] 
   target: ConditionalAssignmentTarget;
   existingSnapshots?: unknown[];
 }) {
+  if (target.scope === 'activity') return <p className="text-sm text-muted-foreground">This assigns the selected activity and settings. It adds no numbered course requirements.</p>;
   if (!target.courseEdition) return null;
   let count: number;
   try {

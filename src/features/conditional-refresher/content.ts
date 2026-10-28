@@ -80,6 +80,7 @@ export interface DiagramItem {
   /** Space-separated tokens. "/" prefix means the slashed (negated) name. */
   left: string;
   right: string;
+  meanings?: Record<string, { yes: string; no: string }>;
 }
 
 export const DIAGRAM_ITEMS: DiagramItem[] = [
@@ -91,10 +92,10 @@ export const DIAGRAM_ITEMS: DiagramItem[] = [
   { id: "d6", group: "g2", prompt: "The bridge opens only if it has been inspected.", names: ["opens", "inspected"], left: "opens", right: "inspected" },
   { id: "d7", group: "g2", prompt: "Funding requires approval.", names: ["funding", "approval"], left: "funding", right: "approval" },
   { id: "d8", group: "g2", prompt: "Hikers always bring a map.", names: ["hiker", "map"], left: "hiker", right: "map" },
-  { id: "d9", group: "g2", prompt: "Every finalist must write or present.", names: ["finalist", "write", "present"], connectors: ["or"], left: "finalist", right: "write or present" },
+  { id: "d9", group: "g1", prompt: "Every finalist writes or presents.", names: ["finalist", "write", "present"], connectors: ["or"], left: "finalist", right: "write or present" },
   { id: "d10", group: "g3", prompt: "Unless the rain stops, the game is cancelled.", names: ["rain stops", "cancelled"], left: "/rain stops", right: "cancelled" },
   { id: "d11", group: "g3", prompt: "The plant dies without water.", names: ["water", "dies"], left: "/water", right: "dies" },
-  { id: "d12", group: "g3", prompt: "Nina will not sign until the terms change.", names: ["terms change", "signs"], left: "/terms change", right: "/signs" },
+  { id: "d12", group: "g3", prompt: "Nina will not sign until the terms change.", names: ["changed", "signed"], left: "/changed", right: "/signed" },
   { id: "d13", group: "g4", prompt: "No reptiles are warm-blooded.", names: ["reptile", "warm-blooded"], left: "reptile", right: "/warm-blooded" },
   { id: "d14", group: "g4", prompt: "Sam never works weekends.", names: ["weekend", "works"], left: "weekend", right: "/works" },
   { id: "d15", group: "g4", prompt: "The pool and the gym are not both open.", names: ["pool open", "gym open"], left: "pool open", right: "/gym open" },
@@ -110,7 +111,8 @@ export interface FlashCard {
   kind: FlashKind;
   /** What the student sees first. */
   front: string;
-  /** Step 1 prompt is always diagram; step 2 is always plain English. */
+  groups?: GroupId[];
+  rows?: FlashAnswerRow[];
   conditional: string;
   contrapositive: string;
   englishConditional: string;
@@ -118,17 +120,19 @@ export interface FlashCard {
   note?: string;
 }
 
+export interface FlashAnswerRow { label: string; left: string; right: string; english: string; contraEnglish: string }
+
 export const FLASHCARDS: FlashCard[] = [
   {
-    id: "f1", kind: "indicator", front: "\u201cIf\u201d \u2014 which side of the arrow does it introduce?",
-    conditional: "if X \u2192 Y", contrapositive: "/Y \u2192 /X",
+    id: "f1", kind: "indicator", front: "\u201cIf\u201d: which side of the arrow does it introduce?",
+    conditional: "X \u2192 Y", contrapositive: "/Y \u2192 /X",
     englishConditional: "If X happens, then Y happens.", englishContrapositive: "If Y does not happen, then X does not happen.",
     note: "Group 1. The indicator introduces the sufficient idea, so it goes left.",
   },
   {
-    id: "f2", kind: "indicator", front: "\u201cOnly if\u201d \u2014 which side of the arrow does it introduce?",
+    id: "f2", kind: "indicator", front: "\u201cOnly if\u201d: which side of the arrow does it introduce?",
     conditional: "X \u2192 Y", contrapositive: "/Y \u2192 /X",
-    englishConditional: "X only if Y: if X happens, then Y happens.", englishContrapositive: "If Y does not happen, then X does not happen.",
+    englishConditional: "If X happens, then Y happens.", englishContrapositive: "If Y does not happen, then X does not happen.",
     note: "Group 2. The idea after the indicator is necessary, so it goes right.",
   },
   {
@@ -152,7 +156,7 @@ export const FLASHCARDS: FlashCard[] = [
   {
     id: "f6", kind: "translation", front: "The plant dies without water.",
     conditional: "/water \u2192 dies", contrapositive: "/dies \u2192 water",
-    englishConditional: "If the plant does not get water, then the plant dies.", englishContrapositive: "If the plant does not die, then the plant got water.",
+    englishConditional: "If the plant does not get water, then the plant dies.", englishContrapositive: "If the plant does not die, then the plant gets water.",
     note: "Group 3: negate one complete idea and put it on the left.",
   },
   {
@@ -168,29 +172,29 @@ export const FLASHCARDS: FlashCard[] = [
     note: "Group 1: \u201call\u201d introduces the sufficient idea.",
   },
   {
-    id: "f9", kind: "contrast", front: "\u201cAll runners hydrate\u201d versus \u201cOnly runners hydrate\u201d \u2014 do they diagram the same way?",
+    id: "f9", kind: "contrast", front: "\u201cAll runners hydrate\u201d vs \u201cOnly runners hydrate\u201d : do they diagram the same way?",
     conditional: "runner \u2192 hydrate  /  hydrate \u2192 runner", contrapositive: "/hydrate \u2192 /runner  /  /runner \u2192 /hydrate",
     englishConditional: "If someone is a runner, then that person hydrates. But: if someone hydrates, then that person is a runner.",
     englishContrapositive: "If someone does not hydrate, then that person is not a runner. But: if someone is not a runner, then that person does not hydrate.",
     note: "No. \u201call\u201d is Group 1; \u201conly\u201d is Group 2. They point opposite ways.",
   },
   {
-    id: "f10", kind: "contrast", front: "\u201cUnless you pay, you leave\u201d versus \u201cIf you pay, you leave\u201d \u2014 do they diagram the same way?",
+    id: "f10", kind: "contrast", front: "\u201cUnless you pay, you leave\u201d vs \u201cIf you pay, you leave\u201d : do they diagram the same way?",
     conditional: "/pay \u2192 leave  /  pay \u2192 leave", contrapositive: "/leave \u2192 pay  /  /leave \u2192 /pay",
     englishConditional: "If you do not pay, then you leave. But: if you do pay, then you leave.",
-    englishContrapositive: "If you do not leave, then you paid. But: if you do not leave, then you did not pay.",
+    englishContrapositive: "If you do not leave, then you pay. But: if you do not leave, then you do not pay.",
     note: "No. \u201cunless\u201d is Group 3, so the starting idea is negated first.",
   },
   {
     id: "f11", kind: "translation", front: "Nina will not sign until the terms change.",
-    conditional: "/terms change \u2192 /signs", contrapositive: "signs \u2192 terms change",
-    englishConditional: "If the terms do not change, then Nina does not sign.", englishContrapositive: "If Nina signs, then the terms changed.",
-    note: "Before the terms change, Nina does not sign. A change in terms permits signing under this restriction; it does not guarantee that she signs.",
+    conditional: "/changed \u2192 /signed", contrapositive: "signed \u2192 changed",
+    englishConditional: "If the terms have not changed yet, then Nina has not signed yet.", englishContrapositive: "If Nina has signed by then, then the terms have changed by then.",
+    note: "Before the terms change, Nina does not sign. After that boundary, this restriction no longer rules out signing. It does not promise that she signs.",
   },
   {
-    id: "f12", kind: "indicator", front: "\u201crequires\u201d \u2014 which side of the arrow does it introduce?",
+    id: "f12", kind: "indicator", front: "\u201crequires\u201d: which side of the arrow does it introduce?",
     conditional: "funding \u2192 approval", contrapositive: "/approval \u2192 /funding",
-    englishConditional: "If there is funding, then there was approval.", englishContrapositive: "If there was no approval, then there is no funding.",
+    englishConditional: "If there is funding, then there is approval.", englishContrapositive: "If there is no approval, then there is no funding.",
     note: "Group 2: what is required is necessary, so it goes right.",
   },
 ];

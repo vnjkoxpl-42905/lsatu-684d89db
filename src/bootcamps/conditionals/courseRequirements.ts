@@ -37,6 +37,7 @@ export const PRE_SPLIT_REQUIRED_STEP_IDS = [
 ] as const;
 
 export function eligibleConditionalSteps(target: ConditionalAssignmentTarget): OpeningCourseStep[] {
+  if (target.scope === 'activity') return [];
   const grant = { id: 'requirements', title: '', route: '', target,
     unitIds: conditionalAssignmentUnitIds(target), mode: target.mode,
     ...(target.scope !== 'course' && target.scope !== 'stage' ? { difficulty: target.difficulty } : {}) };
@@ -45,6 +46,7 @@ export function eligibleConditionalSteps(target: ConditionalAssignmentTarget): O
 
 /** Called only after the fetched row's protected entitlement has been validated. */
 export function resolveConditionalRequirements(target: ConditionalAssignmentTarget, metadata?: unknown): ConditionalRequirements {
+  if (target.scope === 'activity') throw new Error('Focused activities do not have numbered course requirements.');
   const eligible = eligibleConditionalSteps(target);
   const allowed = new Set(eligible.map(step => step.id));
   if (metadata === undefined) return { source: 'pre-split-default', revision: 'pre-split-default',
@@ -60,7 +62,7 @@ export function resolveConditionalRequirements(target: ConditionalAssignmentTarg
 }
 
 export function snapshotConditionalRequirements(target: ConditionalAssignmentTarget): ConditionalRequirementsSnapshot {
-  if (target.courseEdition !== FULL_CONDITIONAL_EDITION) throw new Error('Requirements snapshots belong to the full course.');
+  if (target.scope === 'activity' || target.courseEdition !== FULL_CONDITIONAL_EDITION) throw new Error('Requirements snapshots belong to the full course.');
   return { version: 1, revision: CONDITIONAL_REQUIREMENTS_REVISION,
     requiredStepIds: eligibleConditionalSteps(target).filter(step => step.requiredForEditionCompletion !== false).map(step => step.id) };
 }

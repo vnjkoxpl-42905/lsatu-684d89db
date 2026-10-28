@@ -4,6 +4,7 @@ import type { ConditionalQuestion } from "./content";
 import type { ActivityItem, Verdict } from "../api/types";
 
 export type PracticeMode = "general" | "linking" | "missing-link" | "must-be-true";
+export type ConditionalPracticeTiming = "progressive" | "untimed" | "timed";
 export interface PracticeAnswer {
   id: string;
   questionId: string;
@@ -21,7 +22,7 @@ export interface PracticeRun {
   createdAt: string;
   updatedAt: string;
   questions: ConditionalQuestion[];
-  general?: { sourceUrl: string; items: ActivityItem[] };
+  general?: { sourceUrl: string; items: ActivityItem[]; collectionId?: "conditional-rephrase"; timing?: ConditionalPracticeTiming };
   position: number;
   stage: "intro" | "paper" | "choices" | "feedback" | "done";
   /** Absolute deadline for the current General question; omitted for untimed questions. */
@@ -32,6 +33,12 @@ export interface PracticeRun {
 interface CachedRun { run: PracticeRun; revision: number | null; dirty: boolean; pending?: PracticeRun }
 interface RunRow { id: string; user_id: string; snapshot: Pick<PracticeRun, "mode" | "questions" | "general" | "createdAt">; state: Omit<PracticeRun, "id" | "userId" | "mode" | "questions" | "general" | "createdAt">; revision: number }
 const prefix = "lsatu:conditional-practice:v1:";
+/** Older General sessions used their launch route as identity. Keep their snapshots intact. */
+export function isConditionalRephraseRun(run: PracticeRun): boolean {
+  if (run.mode !== "general" || !run.general?.items.length) return false;
+  if (run.general.collectionId) return run.general.collectionId === "conditional-rephrase";
+  return /^\/activities\/(?:[a-f\d-]{36}|preview\/7946f46b-e7f8-4c60-b405-4ece9c409deb)\/?$/i.test(run.general.sourceUrl);
+}
 const keyFor = (userId: string, id: string) => `${prefix}${userId}:${id}`;
 const conflict = () => new Error("This session changed in another tab or device. Your device copy is kept, but it has not synced. Continue from the device with the latest session.");
 class CacheError extends Error {}
