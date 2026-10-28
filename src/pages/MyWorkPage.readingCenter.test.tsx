@@ -10,7 +10,7 @@ const state = vi.hoisted(() => ({
 }));
 vi.mock('@/contexts/AuthContext', () => ({ useAuth: () => ({ user: state.user ? { id: state.user } : null, authReady: state.ready }) }));
 vi.mock('@/hooks/useUserPermissions', () => ({ useUserPermissions: () => ({ loading: false, is_admin: state.admin, has_classroom_access: state.classroom }) }));
-vi.mock('@/hooks/useClassroomMotion', () => ({ useClassroomMotion: () => undefined }));
+vi.mock('@/hooks/useClassroomMotion', () => ({ useClassroomMotion: () => undefined, notifyClassroomListIntent: vi.fn() }));
 vi.mock('@/integrations/supabase/client', () => ({ supabase: { rpc: state.rpc } }));
 vi.mock('@/hooks/useAssignedTodoFeed', () => ({
   useAssignedTodoFeed: () => ({ loading: false, failed: false, retry: vi.fn(), rows: [
