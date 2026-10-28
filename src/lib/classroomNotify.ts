@@ -1,5 +1,6 @@
 import { supabase } from "@/integrations/supabase/client";
 import { sendAssignmentEmail } from "@/lib/assignmentEmail";
+import { finalizeAssignmentDelivery, publishPlanNotification } from '@/lib/assignmentDelivery';
 
 /**
  * Notify a student that a new classroom_items row has been created for them.
@@ -20,6 +21,8 @@ export interface NotifyResult {
   inbox_error?: string;
   bell_error?: string;
   email_error?: string;
+  deferred?: boolean;
+  retryBell?: () => Promise<void>;
 }
 
 interface NotifyParams {
@@ -32,6 +35,10 @@ interface NotifyParams {
   description?: string;
   /** Type label used in the email body, e.g. "homework", "bootcamp_module". */
   assignmentType?: string;
+  notificationGroupId: string;
+  unlockAt?: string | null;
+  notificationPolicy?: 'managed' | 'suppressed';
+  notificationChannel?: 'assignment' | 'message' | 'plan';
 }
 
 async function findOrCreateThread(adminUserId: string, studentId: string): Promise<string> {
@@ -82,10 +89,36 @@ export async function notifyStudentOfClassroomItem(
     email_ok: false,
   };
 
+  if (params.notificationPolicy === 'suppressed') return { inbox_ok: true, bell_ok: true, email_ok: true };
+  const future = !!params.unlockAt && new Date(params.unlockAt).getTime() > Date.now();
+  const finalize = async () => {
+    if (params.notificationChannel === 'plan') {
+      await publishPlanNotification(params.notificationGroupId, studentId);
+    } else if (params.notificationChannel === 'message') {
+      if (future) return;
+      const { error } = await supabase.from('notifications').insert({ user_id: studentId, type: 'message', title, body: description ?? null, link: route });
+      if (error) throw new Error(error.message);
+    } else {
+      await finalizeAssignmentDelivery(params.notificationGroupId, `New assignment: ${title}`, description, route);
+    }
+  };
+  try {
+    await finalize();
+    result.bell_ok = true;
+  } catch (error) {
+    result.bell_error = error instanceof Error ? error.message : 'Notification failed';
+    result.retryBell = finalize;
+  }
+  // Locked work is announced in-app at unlock only. No message or email may
+  // disclose its title while the work itself is unavailable.
+  if (future) {
+    return { ...result, inbox_ok: true, email_ok: true, deferred: true };
+  }
+
   try {
     const conversationId = await findOrCreateThread(adminUserId, studentId);
     const body =
-      `New assignment: ${title}\n\n` +
+      (params.notificationChannel && params.notificationChannel !== 'assignment' ? `${title}\n\n` : `New assignment: ${title}\n\n`) +
       (description ? `${description}\n\n` : "") +
       `View in your Classroom: ${route}`;
     const { error: mErr } = await supabase
@@ -102,27 +135,6 @@ export async function notifyStudentOfClassroomItem(
     result.inbox_error = e instanceof Error ? e.message : "inbox failed";
   }
 
-  try {
-    const { error: nErr } = await (supabase as unknown as {
-      from: (t: string) => {
-        insert: (v: unknown) => Promise<{ error: { message: string } | null }>;
-      };
-    })
-      .from("notifications")
-      .insert({
-        user_id: studentId,
-        type: "assignment",
-        title: `New assignment: ${title}`,
-        body: description ?? null,
-        link: route,
-      });
-    if (nErr) throw nErr;
-    result.bell_ok = true;
-  } catch (e) {
-    console.error("[classroomNotify:bell] failed", { studentId, error: e });
-    result.bell_error = e instanceof Error ? e.message : "bell failed";
-  }
-
   // Email step. Failure is recorded but the assignment is not affected.
   const emailRes = await sendAssignmentEmail({
     studentId,
@@ -130,7 +142,7 @@ export async function notifyStudentOfClassroomItem(
     description,
     route,
     assignmentType: assignmentType ?? "assignment",
-  });
+  }).catch((error) => ({ ok: false, error: error instanceof Error ? error.message : "email failed" }));
   result.email_ok = emailRes.ok;
   if (!emailRes.ok) result.email_error = emailRes.error;
 
@@ -145,6 +157,7 @@ export async function notifyStudentOfClassroomItem(
  *   - "Assigned, but notification failed" (all three failed)
  */
 export function summarizeNotifyResult(r: NotifyResult): string {
+  if (r.deferred && r.bell_ok) return "Assigned. Notification scheduled for unlock.";
   if (r.inbox_ok && r.bell_ok && r.email_ok) return "Assigned and notified";
   if (!r.inbox_ok && !r.bell_ok && !r.email_ok) return "Assigned, but notification failed";
   if (r.inbox_ok && r.bell_ok && !r.email_ok) return "Assigned, but email failed";

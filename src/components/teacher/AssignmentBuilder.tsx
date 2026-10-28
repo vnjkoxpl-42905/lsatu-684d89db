@@ -1,3 +1,4 @@
+import { newAssignmentDelivery } from '@/lib/assignmentDelivery';
 import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
@@ -254,7 +255,11 @@ export default function AssignmentBuilder({ studentId, adminUserId, onClose, onA
         item = created;
         notify = first.notify;
       } else {
+        const delivery = newAssignmentDelivery();
         item = await createClassroomItem({
+
+          ...delivery,
+          notificationPolicy: ['session_recap', 'smartboard_recap', 'announcement'].includes(type) ? 'suppressed' : delivery.notificationPolicy,
           studentId,
           createdBy: adminUserId,
           type,
@@ -268,6 +273,9 @@ export default function AssignmentBuilder({ studentId, adminUserId, onClose, onA
         });
 
         notify = await notifyStudentOfClassroomItem({
+          notificationGroupId: delivery.notificationGroupId!,
+          notificationChannel: ['session_recap', 'smartboard_recap', 'announcement'].includes(type) ? 'message' : 'assignment',
+          unlockAt: item.unlock_at,
           adminUserId,
           studentId,
           title: title.trim(),

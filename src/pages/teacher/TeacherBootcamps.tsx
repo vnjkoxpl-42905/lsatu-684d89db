@@ -1,3 +1,4 @@
+import { newAssignmentDelivery } from '@/lib/assignmentDelivery';
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
@@ -91,7 +92,12 @@ export default function TeacherBootcamps() {
         const end = draftDates[b.id]?.end ?? defaultEnd(b.id, start);
         setDates(b.id, { start, end });
 
+        const delivery = newAssignmentDelivery();
+
         const item = await createClassroomItem({
+
+
+          ...delivery,
           studentId,
           createdBy: user.id,
           type: 'bootcamp_module',
@@ -106,13 +112,16 @@ export default function TeacherBootcamps() {
           metadata: { bootcamp_id: b.id },
         });
         const notify = await notifyStudentOfClassroomItem({
+          notificationGroupId: delivery.notificationGroupId!,
+          unlockAt: item.unlock_at,
           adminUserId: user.id,
           studentId,
           title: b.title,
           description: `${b.description} · ${format(start, 'MMM d')} – ${format(end, 'MMM d')}`,
           route: resolveItemRoute(item) ?? b.route,
         });
-        toast.success(summarizeNotifyResult(notify));
+        if (notify.bell_ok && notify.email_ok && notify.inbox_ok) toast.success(summarizeNotifyResult(notify));
+        else toast.warning(summarizeNotifyResult(notify), { action: notify.retryBell ? { label: 'Retry notification', onClick: () => void notify.retryBell!().then(() => toast.success('Bell notification delivered')).catch(() => toast.error('Notification failed. Try again.')) } : undefined });
       } else {
         const it = findItem(b.id);
         if (it) await archiveClassroomItem(it.id);

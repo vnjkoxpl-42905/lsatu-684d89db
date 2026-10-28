@@ -1,3 +1,4 @@
+import { newAssignmentDelivery } from '@/lib/assignmentDelivery';
 import type { User } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
 import { createClassroomItem } from '@/lib/classroomItems';
@@ -71,6 +72,8 @@ export async function publishSessionBundle(args: PublishArgs): Promise<PublishRe
   // Work on a mutable copy so we can write posted flags back atomically.
   const next: SessionBundle = { ...bundle, parts: { ...bundle.parts } };
   const outcomes: PublishPartOutcome[] = [];
+  const delivery = newAssignmentDelivery();
+  const assignedParts: Array<{ title: string; id: string }> = [];
 
   for (const key of targets) {
     const part = next.parts[key];
@@ -119,10 +122,11 @@ export async function publishSessionBundle(args: PublishArgs): Promise<PublishRe
         });
         next.parts[key] = { ...part, posted: true, classroom_item_id: item.id };
       } else {
-        // homework + quiz: real assignable items; reuse the assignment notifier.
+        // Persist this publication identity before inserting work.
         const item = await createClassroomItem({
           studentId,
           createdBy: admin.id,
+          ...delivery,
           type: 'homework',
           title,
           contentMarkdown: markdown,
@@ -132,19 +136,12 @@ export async function publishSessionBundle(args: PublishArgs): Promise<PublishRe
           visibleToStudent: true,
           metadata: { bundle_part: key },
         });
-        const notify = await notifyStudentOfClassroomItem({
-          adminUserId: admin.id,
-          studentId,
-          title,
-          route: itemRoute(item.id),
-          description: key === 'quiz' ? 'A short recall check from your session.' : undefined,
-          assignmentType: 'homework',
-        });
+        assignedParts.push({ title, id: item.id });
         outcomes.push({
           part: key,
           ok: true,
           classroom_item_id: item.id,
-          notify_summary: summarizeNotifyResult(notify),
+          notify_summary: 'Posted',
         });
         next.parts[key] = { ...part, posted: true, classroom_item_id: item.id };
       }
@@ -176,6 +173,17 @@ export async function publishSessionBundle(args: PublishArgs): Promise<PublishRe
         .update({ status: 'published' })
         .eq('id', next.source.ledger_id);
     }
+  }
+
+  if (assignedParts.length > 0) {
+    const notify = await notifyStudentOfClassroomItem({
+      notificationGroupId: delivery.notificationGroupId!, adminUserId: admin.id, studentId,
+      title: assignedParts.length === 1 ? assignedParts[0].title : 'New work from your session',
+      route: assignedParts.length === 1 ? itemRoute(assignedParts[0].id) : '/my-work/to-do?workGroup=' + encodeURIComponent(delivery.notificationGroupId!),
+      description: assignedParts.length > 1 ? assignedParts.map((part) => part.title).join('\n') : undefined,
+      assignmentType: 'homework',
+    });
+    for (const outcome of outcomes) if (assignedParts.some((part) => part.id === outcome.classroom_item_id)) outcome.notify_summary = summarizeNotifyResult(notify);
   }
 
   return {

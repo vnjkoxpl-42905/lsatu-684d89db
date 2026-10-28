@@ -1,3 +1,4 @@
+vi.mock('@/hooks/useStudentWorkState', () => ({ useAssignmentGroupAcknowledgment: vi.fn() }));
 import React from 'react';
 import { act, render, screen, waitFor } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';

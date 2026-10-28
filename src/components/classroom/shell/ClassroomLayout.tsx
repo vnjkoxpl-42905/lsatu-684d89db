@@ -1,5 +1,7 @@
 import { notesArchiveOrigin, notesDetailRoute, validateNotesReturnTo } from "@/lib/myWorkNotesNavigation";
 import * as React from "react";
+import { useMotionValue } from "framer-motion";
+import NotificationBell from "@/components/notifications/NotificationBell";
 import {
   ChevronsUpDown,
   Lock,
@@ -129,6 +131,12 @@ function ClassroomSidebar({
   const destinationPermissions = { ...permissions, readingCenterAssigned,
     readingCenterChecking: !permissions.is_admin && readingCenter.isPending };
   const unreadMessages = useUnreadMessageCount();
+  const workFeed = useAssignedTodoFeed();
+  const sidebarNotes = useClassroomItems();
+  const unreadWork = workFeed.loading || workFeed.failed ? 0 : workFeed.rows.filter(row => row.status !== "completed" && row.isUnread && (row.sourceTable === "reading_center" ? readingCenterAssigned : permissions.is_admin || permissions.has_classroom_access)).length;
+  const unreadTeachingNotes = sidebarNotes.isLoading || sidebarNotes.isError || !(permissions.is_admin || permissions.has_classroom_access) ? 0 : groupNotes(sidebarNotes.data ?? []).unread.length;
+  const unreadMyWork = unreadWork + unreadTeachingNotes;
+  const bellMouseX = useMotionValue(Infinity);
   const { notifications, markSignupNotificationsRead } = useNotifications();
   const unreadStudentSignups = React.useMemo(
     () =>
@@ -284,6 +292,7 @@ function ClassroomSidebar({
     <div className="classroom-sidebar-card">
       <PanelWash />
       <div className="classroom-panel-inner">
+        <div className="classroom-brand-row">
         <button
           type="button"
           className="classroom-brand"
@@ -292,6 +301,8 @@ function ClassroomSidebar({
           <i>LS</i>
           <span>LSAT U</span>
         </button>
+        <NotificationBell mouseX={bellMouseX} quiet />
+        </div>
 
         <nav aria-label="Classroom navigation" className="classroom-rail-motion" ref={navigationRef}>
           <span className="classroom-rail-marker" data-rail-marker aria-hidden="true" />
@@ -317,6 +328,7 @@ function ClassroomSidebar({
                     title={locked ? `${item.label} is locked for your account` : undefined}
                   >
                     {item.label}
+                    {item.id === "my-work" && !locked && unreadMyWork > 0 ? <span className="classroom-nav-badge">{unreadMyWork > 99 ? "99+" : unreadMyWork}<span className="sr-only"> unread notes and assignments</span></span> : null}
                     {locked ? (
                       <>
                         <Lock className="classroom-nav-lock" aria-hidden="true" />

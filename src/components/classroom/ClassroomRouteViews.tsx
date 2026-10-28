@@ -1,4 +1,6 @@
 import * as React from "react";
+import { useLoadedStudentWorkAcknowledgment } from '@/hooks/useStudentWorkState';
+import { withWorkIdentity } from '@/lib/studentWorkIdentity';
 import "@/pages/myWorkNotes.css";
 import "@/pages/myWorkNotesRefinement.css";
 import { Navigate, useNavigate, useParams, useLocation } from "react-router-dom";
@@ -208,29 +210,9 @@ export function ClassroomItemView() {
 
   const queryClient = useQueryClient();
   const { user } = useAuth();
-  const readAttempts = React.useRef(new Set<string>());
-
-  // Reconcile the originating account even when a quick Back unmounts this view.
-  React.useEffect(() => {
-    const viewerId = user?.id;
-    if (!item || !viewerId || item.student_id !== viewerId || !NOTE_TYPES.has(item.type)) return;
-    const attemptKey = `${viewerId}:${item.id}`;
-    if (readAttempts.current.has(attemptKey)) return;
-    readAttempts.current.add(attemptKey);
-    void markNoteRead(item, viewerId)
-      .then((readItem) => {
-        if (!readItem) return;
-        const readAt = readItem.metadata_json?.read_at;
-        if (typeof readAt === 'string' && readAt) queryClient.setQueryData<ClassroomItem[]>(['classroom-items', viewerId], (rows) => rows?.map((row) => row.id === readItem.id ? { ...row, metadata_json: { ...row.metadata_json, read_at: readAt } } : row));
-        void queryClient.invalidateQueries({ queryKey: ['classroom-items', viewerId] });
-        void queryClient.invalidateQueries({ queryKey: ['notifications', viewerId] });
-        void queryClient.invalidateQueries({ queryKey: ['notifications-unread-count', viewerId] });
-      })
-      .catch((error) => {
-        readAttempts.current.delete(attemptKey);
-        console.warn('Could not confirm note read state', error);
-      });
-  }, [item, queryClient, user?.id]);
+  const interactive=!!item?.content_html?.includes('<meta name="lsatu-interactive-lesson"');
+  const [interactiveLoaded,setInteractiveLoaded]=React.useState<string|null>(null);
+  useLoadedStudentWorkAcknowledgment({sourceTable:'classroom_items',sourceId:item?.id,studentId:item?.student_id,ready:!!item && !query.isLoading && !query.error && (NOTE_TYPES.has(item.type)||isSelfContainedItem(item)) && (!interactive || interactiveLoaded===item.id)});
 
   React.useEffect(() => {
     if (!item) return;
@@ -247,7 +229,7 @@ export function ClassroomItemView() {
       item.type === "practice_test"
     ) {
       const route = resolveItemRoute(item);
-      if (route) navigate(route, { replace: true });
+      if (route) navigate(item.workIdentity?withWorkIdentity(route,item.workIdentity):route, { replace: true });
     }
   }, [item, navigate]);
 
@@ -300,6 +282,7 @@ export function ClassroomItemView() {
           Back to notes
         </button>
         <iframe
+          onLoad={()=>setInteractiveLoaded(item.id)}
           data-note-reader-block
           title={`${item.title} interactive lesson`}
           srcDoc={item.content_html}
@@ -556,6 +539,7 @@ export function ClassroomAssignmentView() {
   const assignmentQuery = useStudentAssignment(assignmentId);
   const setQuery = useHomeworkSet(assignmentQuery.assignment?.set_id ?? undefined);
   const assignment = assignmentQuery.assignment;
+  useLoadedStudentWorkAcknowledgment({sourceTable:'homework_assignments',sourceId:assignment?.id,studentId:assignment?.student_id,ready:!!assignment && !assignmentQuery.loading && !assignmentQuery.error && !setQuery.loading && !!setQuery.set});
 
   const start = () => {
     if (!assignment) return;
@@ -645,6 +629,7 @@ export function ClassroomTAAssignmentView() {
   const { assignmentId } = useParams<{ assignmentId: string }>();
   const query = useStudentTAAssignment(assignmentId);
   const assignment = query.assignment;
+  useLoadedStudentWorkAcknowledgment({sourceTable:'ta_assignments',sourceId:assignment?.id,studentId:assignment?.student_id,ready:!!assignment && !query.loading && !query.error});
   const structured = assignment ? hasStructuredWorkspace(assignment) : false;
   const [completing, setCompleting] = React.useState(false);
   const [downloading, setDownloading] = React.useState(false);

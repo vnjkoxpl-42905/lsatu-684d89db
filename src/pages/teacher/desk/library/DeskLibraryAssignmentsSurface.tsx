@@ -3,6 +3,7 @@ import {
   BookOpen,
   Flame,
   GraduationCap,
+  Link as LinkIcon,
   Megaphone,
   Sparkles,
   StickyNote,
@@ -34,6 +35,7 @@ const TYPE_ICONS: Record<ClassroomItem['type'], React.ComponentType<{ className?
   drill: Sparkles,
   activity: GraduationCap,
   practice_test: FileText,
+  link: LinkIcon,
 };
 
 const TYPE_LABELS: Record<ClassroomItem['type'], string> = {
@@ -48,6 +50,7 @@ const TYPE_LABELS: Record<ClassroomItem['type'], string> = {
   drill: 'Drill',
   activity: 'Activity',
   practice_test: 'Practice test',
+  link: 'Link',
 };
 
 const STATE_TONE: Record<AssignmentState, { bg: string; text: string; label: string }> = {

@@ -1,9 +1,10 @@
+vi.mock('@/hooks/useStudentWorkState',()=>({useLoadedStudentWorkAcknowledgment:acknowledge}));
 import React from "react";
 import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { MemoryRouter, Route, Routes, useLocation } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-const { markRead, fixture } = vi.hoisted(() => ({ markRead: vi.fn(), fixture: { item: { id: "one", student_id: "reader", metadata_json: {}, status: "assigned", type: "note", title: "Stored note", created_at: "2026-10-01T12:00:00Z", content_html: "<p>Full note</p>", content_markdown: null, description: null } } }));
+const { markRead, acknowledge, fixture } = vi.hoisted(() => ({ acknowledge: vi.fn(), markRead: vi.fn(), fixture: { item: { id: "one", student_id: "reader", metadata_json: {}, status: "assigned", type: "note", title: "Stored note", created_at: "2026-10-01T12:00:00Z", content_html: "<p>Full note</p>", content_markdown: null, description: null } } }));
 vi.mock("@/hooks/useClassroomItems", () => ({ useClassroomItems: () => ({ data: [fixture.item], isLoading: false, error: null }) }));
 vi.mock("@/lib/markNoteRead", () => ({ markNoteRead: markRead }));
 vi.mock("@/contexts/AuthContext", () => ({ useAuth: () => ({ user: { id: "reader" } }) }));
@@ -15,7 +16,7 @@ vi.mock("@/components/classroom/ClassroomMarkdown", () => ({ default: () => null
 vi.mock("@/lib/drillLaunch", () => ({ launchDrill: vi.fn() }));
 import { ClassroomItemView } from "./ClassroomRouteViews";
 function Where() { const location = useLocation(); return <output data-reader-return={String(location.state?.notesArchiveReturn ?? '')}>{location.pathname}{location.search}</output>; }
-beforeEach(() => { markRead.mockReset(); markRead.mockResolvedValue(undefined); fixture.item.student_id = "reader"; fixture.item.status = "assigned"; fixture.item.metadata_json = {}; fixture.item.type = "note"; fixture.item.content_html = "<p>Full note</p>"; });
+beforeEach(() => { acknowledge.mockReset(); markRead.mockReset(); markRead.mockResolvedValue(undefined); fixture.item.student_id = "reader"; fixture.item.status = "assigned"; fixture.item.metadata_json = {}; fixture.item.type = "note"; fixture.item.content_html = "<p>Full note</p>"; });
 afterEach(cleanup);
 describe("note detail return links", () => {
   it('registers an interactive note as a ready locally owned reader without changing its iframe contract', () => {
@@ -64,20 +65,10 @@ describe("note detail return links", () => {
     fireEvent.click(await screen.findByRole("button", { name: "Back to notes" }));
     expect(screen.getByRole("status")).toHaveTextContent("/my-work/notes");
   });
-  it('reconciles the original account after a quick Back before read persistence completes', async () => {
-    let finish!: (value: unknown) => void;
-    markRead.mockReturnValue(new Promise(resolve => { finish = resolve; }));
-    const client = new QueryClient();
-    client.setQueryData(['classroom-items', 'reader'], [fixture.item]);
-    client.setQueryData(['classroom-items', 'other'], [{ ...fixture.item, student_id: 'other' }]);
-    const invalidate = vi.spyOn(client, 'invalidateQueries');
-    render(<QueryClientProvider client={client}><MemoryRouter initialEntries={['/classroom/item/one']}><Routes><Route path="/classroom/item/:itemId" element={<ClassroomItemView />} /><Route path="*" element={<Where />} /></Routes></MemoryRouter></QueryClientProvider>);
-    await waitFor(() => expect(markRead).toHaveBeenCalledWith(fixture.item, 'reader'));
-    fireEvent.click(screen.getByRole('button', { name: 'Back to notes' }));
-    finish({ ...fixture.item, metadata_json: { read_at: '2026-10-27T12:00:00Z' } });
-    await waitFor(() => expect(client.getQueryData<any[]>(['classroom-items', 'reader'])?.[0].metadata_json.read_at).toBe('2026-10-27T12:00:00Z'));
-    expect(invalidate).toHaveBeenCalledWith({ queryKey: ['notifications', 'reader'] });
-    expect(client.getQueryData<any[]>(['classroom-items', 'other'])?.[0].metadata_json.read_at).toBeUndefined();
+  it('passes successful loaded owned content to the shared acknowledgement hook', () => {
+    render(<QueryClientProvider client={new QueryClient()}><MemoryRouter initialEntries={['/classroom/item/one']}><Routes><Route path="/classroom/item/:itemId" element={<ClassroomItemView />} /></Routes></MemoryRouter></QueryClientProvider>);
+    expect(acknowledge).toHaveBeenCalledWith({sourceTable:'classroom_items',sourceId:'one',studentId:'reader',ready:true});
+    expect(markRead).not.toHaveBeenCalled();
   });
   it('does not mark a teacher preview of someone elses note read', () => {
     fixture.item.student_id = 'someone-else';
@@ -85,18 +76,12 @@ describe("note detail return links", () => {
     expect(markRead).not.toHaveBeenCalled();
   });
 
-  it('does not synthesize undefined read metadata or repeat a completed-note read after refetch', async () => {
-    fixture.item.status = 'completed';
-    markRead.mockResolvedValue(fixture.item);
-    const client = new QueryClient();
-    client.setQueryData(['classroom-items', 'reader'], [fixture.item]);
-    const invalidate = vi.spyOn(client, 'invalidateQueries');
-    const view = render(<QueryClientProvider client={client}><MemoryRouter initialEntries={['/classroom/item/one']}><Routes><Route path="/classroom/item/:itemId" element={<ClassroomItemView />} /></Routes></MemoryRouter></QueryClientProvider>);
-    await waitFor(() => expect(invalidate).toHaveBeenCalledWith({ queryKey: ['notifications-unread-count', 'reader'] }));
-    expect(client.getQueryData<any[]>(['classroom-items', 'reader'])?.[0].metadata_json).not.toHaveProperty('read_at');
-    fixture.item = { ...fixture.item, metadata_json: {} };
-    view.rerender(<QueryClientProvider client={client}><MemoryRouter initialEntries={['/classroom/item/one']}><Routes><Route path="/classroom/item/:itemId" element={<ClassroomItemView />} /></Routes></MemoryRouter></QueryClientProvider>);
-    expect(markRead).toHaveBeenCalledTimes(1);
+  it('waits for interactive content load before acknowledging it', () => {
+    fixture.item.content_html='<meta name="lsatu-interactive-lesson"><p>Lesson</p>';
+    render(<QueryClientProvider client={new QueryClient()}><MemoryRouter initialEntries={['/classroom/item/one']}><Routes><Route path="/classroom/item/:itemId" element={<ClassroomItemView />} /></Routes></MemoryRouter></QueryClientProvider>);
+    expect(acknowledge).toHaveBeenLastCalledWith(expect.objectContaining({ready:false}));
+    fireEvent.load(screen.getByTitle('Stored note interactive lesson'));
+    expect(acknowledge).toHaveBeenLastCalledWith(expect.objectContaining({ready:true}));
   });
 
 });

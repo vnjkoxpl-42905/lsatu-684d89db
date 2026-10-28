@@ -26,6 +26,7 @@ import {
   type PracticePool,
 } from '@/bootcamps/main-conclusion/data/practiceDrillPools';
 import { useAuth } from '@/contexts/AuthContext';
+import { useLoadedStudentWorkAcknowledgment } from '@/hooks/useStudentWorkState';
 import { loadPracticeSession } from '@/bootcamps/main-conclusion/lib/practiceSessionStore';
 import {
   buildGuidedLaunchReturnPath,
@@ -293,6 +294,7 @@ export default function GuidedDrillStart({
   }, [assignmentId, slug]);
 
   const drill = assignment?.guided_drill ?? directDrill;
+  useLoadedStudentWorkAcknowledgment({sourceTable:'guided_drill_assignments',sourceId:assignment?.id,studentId:assignment?.student_id,ready:!!assignment && !!drill && !loading && !qbLoading});
   const launchPage = React.useMemo(() => (
     findGuidedDrillHtmlByDrill(drill) ?? findGuidedDrillHtmlBySlug(slug)
   ), [drill, slug]);

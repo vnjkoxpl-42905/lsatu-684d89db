@@ -18,6 +18,24 @@ const EMPTY: AssignedFeedSources = {
   items: [],
 };
 
+describe('current issuance read and access projection',()=>{
+  it('preserves Reading Center display classification while using a Classroom receipt identity',()=>{
+    const rows=buildAssignedRows({...EMPTY,items:[item({id:'reading-center-mirror',type:'activity',source_table:'reading_center',source_id:'library',title:'Reading Center'})],access:[{source_table:'classroom_items',source_id:'reading-center-mirror',issuance:3,available:true}]});
+    expect(rows).toHaveLength(1);
+    expect(rows[0]).toMatchObject({kind:'activity',sourceTable:'reading_center',refId:'library',workIdentity:{sourceTable:'classroom_items',sourceId:'reading-center-mirror',issuance:3},isUnread:true});
+    expect(rows[0].route).toContain('/reading-center?');
+    expect(rows.filter(row=>row.sourceTable==='reading_center')).toHaveLength(1);
+    expect(buildAssignedRows({...EMPTY,items:[item({id:'reading-center-mirror',type:'activity',source_table:'reading_center',source_id:'library'})],access:[{source_table:'classroom_items',source_id:'reading-center-mirror',issuance:3,available:false}]})).toEqual([]);
+  });
+  const hw={id:'source',question_qids:[],set_title:'Work',status:'assigned',created_at:'2026-10-28T12:00:00Z'} as never;
+  const access={source_table:'homework_assignments',source_id:'source',issuance:2,available:true};
+  it('does not confuse opening with progress or completion',()=>{const rows=buildAssignedRows({...EMPTY,hw:[hw],access:[access],receipts:[{...access,first_opened_at:'2026-10-28T13:00:00Z',last_opened_at:'2026-10-28T13:00:00Z',read_at:'2026-10-28T13:00:00Z'}]});expect(rows[0]).toMatchObject({status:'assigned',isUnread:false,openedAt:'2026-10-28T13:00:00Z',workIdentity:{issuance:2}});});
+  it('does not carry an old receipt into a new issuance',()=>{expect(buildAssignedRows({...EMPTY,hw:[hw],access:[access],receipts:[{...access,issuance:1,first_opened_at:'old',last_opened_at:'old',read_at:'old'}]})[0].isUnread).toBe(true);});
+  it('blocks raw sources when hidden, future or revoked mirror access is false',()=>{expect(buildAssignedRows({...EMPTY,hw:[hw],access:[{...access,available:false}]})).toEqual([]);expect(buildAssignedRows({...EMPTY,hw:[hw],access:[]})).toEqual([]);});
+  it('keeps two practice tests distinct and resolves a legacy mirror',()=>{const tests=[{id:'pt-one',pt:141,status:'assigned',assigned_at:'2026-10-28T12:00:00Z'},{id:'pt-two',pt:142,status:'assigned',assigned_at:'2026-10-28T12:00:00Z'}];const rows=buildAssignedRows({...EMPTY,practiceTests:tests,items:[item({id:'pt-mirror',type:'practice_test',source_table:'practice_test_assignments',source_id:'practice_test:141'})]});expect(rows).toHaveLength(2);expect(rows.map(row=>row.refId).sort()).toEqual(['pt-one','pt-two']);expect(rows.find(row=>row.refId==='pt-one')?.route).toBe('/testing?pt=141');});
+  it('selects newest equivalent native mirror independent of input order',()=>{const older=item({id:'old',type:'homework',source_table:'homework_assignments',source_id:'source',title:'Older',created_at:'2026-10-27T12:00:00Z'});const newer={...older,id:'new',title:'Newer',created_at:'2026-10-28T12:00:00Z'};expect(buildAssignedRows({...EMPTY,hw:[hw],items:[newer,older]})[0].title).toBe('Newer');});
+});
+
 describe('source-backed assignment section classification', () => {
   it('preserves RC homework identity through a renamed classroom mirror', () => {
     const rows = buildAssignedRows({ ...EMPTY,

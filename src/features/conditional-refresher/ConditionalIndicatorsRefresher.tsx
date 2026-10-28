@@ -1,3 +1,4 @@
+import { useClassroomDestinationAcknowledgment } from '@/hooks/useClassroomDestinationAcknowledgment';
 import { useCallback, useEffect, useRef, useState } from "react";
 import {
   DIAGRAM_ITEMS, FLASHCARDS, GROUPS, GROUP_LABEL, INDICATOR_POOL,
@@ -41,6 +42,7 @@ function shuffle<T>(items: T[]): T[] {
 
 const TAB_ACTIVITIES = ['', 'sort', 'translate-cards', 'diagram', 'unless'] as const;
 export default function ConditionalIndicatorsRefresher() {
+  useClassroomDestinationAcknowledgment(true);
   const [params, setParams] = useSearchParams();
   const { user } = useAuth();
   const activity = params.get('activity') ?? '';

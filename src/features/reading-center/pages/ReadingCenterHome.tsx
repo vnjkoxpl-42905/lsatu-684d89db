@@ -2,6 +2,7 @@ import { ArrowRight, Clock3, Gauge, Mic } from "lucide-react";
 import { Link } from "react-router-dom";
 import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { useAuth } from "@/contexts/AuthContext";
+import { useClassroomDestinationAcknowledgment } from '@/hooks/useClassroomDestinationAcknowledgment';
 import { useDashboardPassages, useDashboardProgress, useDashboardSessions, useRecallDashboard } from "../hooks/useRecallDashboard";
 import { readingDashboard, recordedTime } from "../lib/dashboard";
 import { RC_LIBRARY_PATH, RC_PROFILE_PATH, RC_RRC_PATH } from "../lib/routes";
@@ -55,6 +56,8 @@ export default function ReadingCenterHome() {
   const dashboard = readingDashboard(user?.id ?? "", recall.data?.assignments ?? [], recall.data?.grades ?? [], sessions.data ?? [], passages.data ?? [], progress.data ?? []);
   const recentLoading = recall.isLoading || passages.isLoading || progress.isLoading;
   const recentFailed = recall.isError || passages.isError || progress.isError;
+  useClassroomDestinationAcknowledgment(!recentLoading&&!recentFailed&&!sessions.isLoading&&!sessions.isError);
+
   const stats = [
     { label: "LR drills completed", value: recall.isLoading ? "…" : recall.isError ? "Unavailable" : dashboard.completedLr, icon: Mic, detail: "Completed LR sections" },
     { label: "Passages completed", value: progress.isLoading ? "…" : progress.isError ? "Unavailable" : dashboard.completedPassages, icon: Gauge, detail: "Speed Reading collection" },

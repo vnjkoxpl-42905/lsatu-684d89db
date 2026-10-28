@@ -19,6 +19,7 @@ vi.mock('@/integrations/supabase/client', () => ({
 }));
 
 import { assignWork, assignWorkBundle } from './assignWork';
+import * as deliveryHelpers from './assignmentDelivery';
 
 const TEACHER = 'teacher-uuid';
 
@@ -32,7 +33,7 @@ let levelLookupShouldFail: boolean | 'missing-column';
 
 function selectableRow(row: Record<string, unknown>) {
   return {
-    select: () => ({ single: async () => ({ data: row, error: null }) }),
+    select: () => { const query = { single: async () => ({ data: row, error: null }), abortSignal: (_signal: AbortSignal) => query }; return query; },
   };
 }
 
@@ -81,12 +82,13 @@ beforeEach(() => {
     }),
     insert: (row: Record<string, unknown>) => {
       if (insertShouldFail === table) {
-        return { select: () => ({ single: async () => ({ data: null, error: new Error('insert blew up') }) }) };
+        return { select: () => { const query = { single: async () => ({ data: null, error: new Error('insert blew up') }), abortSignal: (_signal: AbortSignal) => query }; return query; } };
       }
       (inserted[table] ??= []).push(row);
       return selectableRow({ id: `${table}-row-${inserted[table].length}` });
     },
     delete: () => ({
+      abortSignal: () => ({ eq: async (_col: string, id: string) => { (deleted[table] ??= []).push(id); return { error: null }; } }),
       eq: async (_col: string, id: string) => {
         (deleted[table] ??= []).push(id);
         return { error: null };
@@ -141,7 +143,7 @@ describe('assignWork', () => {
     expect(deleted.guided_drill_assignments).toEqual(['guided_drill_assignments-row-1']);
   });
 
-  it('rolls back both writes when notifying throws', async () => {
+  it('keeps committed work when notifying throws', async () => {
     mockNotify.mockRejectedValueOnce(new Error('smtp down'));
 
     const result = await assignWork({
@@ -150,9 +152,10 @@ describe('assignWork', () => {
       item: { kind: 'guided_drill', drillId: 'drill-1' },
     });
 
-    expect(result.ok).toEqual([]);
-    expect(deleted.classroom_items).toEqual(['item-1']);
-    expect(deleted.guided_drill_assignments).toEqual(['guided_drill_assignments-row-1']);
+    expect(result.ok).toHaveLength(1);
+    expect(result.failed).toEqual([]);
+    expect(result.ok[0].notify?.bell_ok).toBe(false);
+    expect(deleted).toEqual({});
   });
 
   it('keeps the assignment when a notification channel merely reports failure', async () => {
@@ -326,7 +329,7 @@ describe('assignWorkBundle', () => {
     expect(mockNotify).toHaveBeenCalledWith(
       expect.objectContaining({
         title: '2 new pieces of work',
-        route: '/classroom',
+        route: expect.stringMatching(/^\/my-work\/to-do\?workGroup=/),
         description: '• First sentence conclusions\n• Weaken set',
       }),
     );
@@ -655,4 +658,33 @@ describe('freeze-on-attach', () => {
     ).rejects.toThrow(/is empty/);
     expect(inserted.guided_drill_assignments).toBeUndefined();
   });
+});
+
+describe('persisted assignment delivery identity', () => {
+  it('writes the same managed group before every source and mirror in one bundle, with separate student groups', async () => {
+    await assignWorkBundle({ teacherId: TEACHER, studentIds: ['student-a', 'student-b'], items: [{ kind: 'guided_drill', drillId: 'drill-1' }, { kind: 'homework_set', setId: 'set-1' }] });
+    const first = inserted.guided_drill_assignments[0].notification_group_id;
+    expect(first).toEqual(expect.any(String)); expect(inserted.homework_assignments[0].notification_group_id).toBe(first);
+    expect(mockCreateClassroomItem.mock.calls[0][0]).toMatchObject({ notificationGroupId: first, notificationPolicy: 'managed' });
+    expect(mockCreateClassroomItem.mock.calls[1][0].notificationGroupId).toBe(first);
+    expect(inserted.guided_drill_assignments[1].notification_group_id).not.toBe(first);
+    expect(mockNotify.mock.calls[0][0].notificationGroupId).toBe(first);
+  });
+  it('persists suppression on both native work and its mirror when a caller owns the summary', async () => {
+    await assignWork({ teacherId: TEACHER, studentIds: ['student-a'], item: { kind: 'guided_drill', drillId: 'drill-1' }, notify: false });
+    expect(inserted.guided_drill_assignments[0].notification_policy).toBe('suppressed'); expect(mockCreateClassroomItem.mock.calls[0][0].notificationPolicy).toBe('suppressed'); expect(mockNotify).not.toHaveBeenCalled();
+  });
+  it('keeps seven curriculum day-bundle groups distinct and carries each unlock to finalization', async () => {
+    for (let day = 1; day <= 7; day++) await assignWorkBundle({ teacherId: TEACHER, studentIds: ['student-a'], items: [{ kind: 'guided_drill', drillId: 'drill-1' }], scheduledForLocalDate: '2099-01-0' + day });
+    expect(mockNotify).toHaveBeenCalledTimes(7); expect(new Set(mockNotify.mock.calls.map(([input]) => input.notificationGroupId)).size).toBe(7);
+    for (const [input] of mockNotify.mock.calls) expect(new Date(input.unlockAt).getFullYear()).toBe(2099);
+  });
+});
+
+it('stops a student bundle at its shared deadline and rolls back only this attempt before notification', async () => {
+  const controller = new AbortController(); const deadline = vi.spyOn(deliveryHelpers, 'assignmentWriteSignal').mockReturnValueOnce(controller.signal);
+  mockCreateClassroomItem.mockImplementationOnce(async (input) => { expect(input.signal).toBe(controller.signal); controller.abort(); return { id: 'item-1' }; });
+  try { const result = await assignWorkBundle({ teacherId: TEACHER, studentIds: ['student-a'], items: [{ kind: 'guided_drill', drillId: 'drill-1' }, { kind: 'homework_set', setId: 'set-1' }] });
+    expect(result.ok).toEqual([]); expect(result.failed).toHaveLength(1); expect(inserted.homework_assignments).toBeUndefined(); expect(deleted.guided_drill_assignments).toEqual(['guided_drill_assignments-row-1']); expect(mockNotify).not.toHaveBeenCalled();
+  } finally { deadline.mockRestore(); }
 });

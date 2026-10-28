@@ -1,3 +1,4 @@
+import { newAssignmentDelivery } from '@/lib/assignmentDelivery';
 // Client-side executor for an agent ActionProposal.
 //
 // The ta-agent edge function only PROPOSES actions (resolving the target student
@@ -107,7 +108,10 @@ async function executeNote(
 ): Promise<ExecuteResult> {
   const title = proposal.resource?.title || 'Note';
   const html = DOMPurify.sanitize(proposal.generated_html ?? '');
+  const delivery = newAssignmentDelivery();
   const item = await createClassroomItem({
+
+    ...delivery,
     studentId: proposal.student.id,
     createdBy: adminUserId,
     type: 'note',
@@ -118,6 +122,8 @@ async function executeNote(
   });
   const route = `/classroom/item/${item.id}`;
   await notifyStudentOfClassroomItem({
+          notificationGroupId: delivery.notificationGroupId!,
+          unlockAt: item.unlock_at,
     adminUserId,
     studentId: proposal.student.id,
     title,

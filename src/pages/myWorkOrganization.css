@@ -33,3 +33,9 @@
 @media (forced-colors: active) { .my-work-organized { border-color: CanvasText; box-shadow: none; } .my-work-search, .my-work-subject select { border-color: ButtonText; } }
 @media (max-width:600px) { .my-work-filter-select { flex: 1 1 9rem; } .classroom-root .my-work-filter-select .notes-select-trigger { width: 100%; min-width: 0; } }
 @media (max-width:700px) { .classroom-root .student-destination:has(.my-work-organized) .student-destination-heading { margin-bottom: 12px; } .classroom-root .student-destination:has(.my-work-organized) .student-destination-heading h1 { font-size: 1.5rem; } .classroom-root .student-destination:has(.my-work-organized) .student-destination-tabs { margin-bottom: 16px; } }
+
+.classroom-root .my-work-organized .student-work-row .my-work-unread-label { display: inline-flex; width: max-content; max-width: 100%; margin-inline-start: .65rem; padding: .15rem .4rem; border-radius: .3rem; background: var(--classroom-ink, #252b26); color: var(--classroom-paper, #faf8f3); font-family: inherit; font-size: .65rem; font-weight: 600; line-height: 1.3; vertical-align: middle; }
+
+.my-work-update-back { display: inline-flex; align-items: center; gap: .4rem; font-size: .8125rem; white-space: nowrap; }
+
+@media (max-width: 1000px) { .my-work-list-controls .my-work-search { flex-basis: 100%; } .my-work-list-controls .my-work-filter-select { flex: 1 1 9rem; } }

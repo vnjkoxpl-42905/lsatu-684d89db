@@ -42,7 +42,7 @@ fixtureWindow.__workFixture = [
   ['saved', 'Review your reasoning', 'guided', 'lr', 'in_progress'],
   ['done-1', 'Read, Recall, Colour · PT134 Section 3', 'activity', 'rc', 'completed'],
   ['done-2', 'Read, Recall, Colour · PT134 Section 3', 'activity', 'rc', 'completed'],
-].map(([id, title, kind, workSection, status], i) => ({ key: id, refId: id, sourceTable: kind === 'guided' ? 'guided_drill_assignments' : 'activities', title, kind, workSection, status, subtitle: kind === 'guided' ? '10 questions · 60 minutes' : 'Read the instructions and continue with your assigned practice.', route: kind === 'guided' ? `/guided/${id}` : `/activities/${id}`, createdAt: new Date(Date.UTC(2026, 9, 20 - i, 12)).toISOString(), dueAt: i === 1 ? '2026-10-30T19:00:00Z' : null, progressUnverified: id === 'saved' }));
+].map(([id, title, kind, workSection, status], i) => ({ key: id, refId: id, sourceTable: kind === 'guided' ? 'guided_drill_assignments' : 'activities', title, kind, workSection, status, subtitle: kind === 'guided' ? '10 questions · 60 minutes' : 'Read the instructions and continue with your assigned practice.', route: kind === 'guided' ? `/guided/${id}` : `/activities/${id}`, createdAt: new Date(Date.UTC(2026, 9, 20 - i, 12)).toISOString(), dueAt: i === 1 ? '2026-10-30T19:00:00Z' : null, isUnread: status === 'assigned', openedAt: status === 'assigned' ? null : '2026-10-27T12:00:00Z', progressUnverified: id === 'saved' }));
 if (scenario === 'work-empty-kind') fixtureWindow.__workFixture = fixtureWindow.__workFixture.filter(row => row.kind !== 'guided');
 if (scenario === 'work-empty-subject') fixtureWindow.__workFixture = fixtureWindow.__workFixture.filter(row => row.workSection !== 'rc');
 if (['work-no-rows', 'work-empty', 'work-loading', 'work-error'].includes(scenario)) fixtureWindow.__workFixture = [];
@@ -112,5 +112,5 @@ const editorScenario = ['personal-editor', 'personal-save-error', 'personal-conf
 const initialRoute = (scenario === 'reader-shell' || scenario === 'reader-shell-interactive') ? '/my-work/notes' : scenario.startsWith('reader')
   ? `/classroom/item/${scenario === 'reader-missing' ? 'missing-fixture' : 'fixture-note-0'}?returnTo=%2Fmy-work%2Fnotes`
   : personalScenario ? `/my-work/notes?view=mine${scenario === 'personal-new' ? '&note=new' : editorScenario ? '&note=local-personal-1' : ''}`
-  : scenario.startsWith('work-') ? `/my-work/to-do${scenario === 'work-empty-kind' || scenario === 'work-no-rows' ? '?kind=Guided+drill' : scenario === 'work-empty-subject' ? '?subject=rc' : scenario === 'work-no-match' ? '?q=not-present' : ''}` : '/my-work/notes';
+  : scenario.startsWith('work-') ? `/my-work/to-do${scenario === 'work-update' ? '?workGroup=00000000-0000-4000-8000-000000000001' : scenario === 'work-empty-kind' || scenario === 'work-no-rows' ? '?kind=Guided+drill' : scenario === 'work-empty-subject' ? '?subject=rc' : scenario === 'work-no-match' ? '?q=not-present' : ''}` : '/my-work/notes';
 createRoot(document.getElementById('root')!).render(<QueryClientProvider client={query}><MemoryRouter initialEntries={[initialRoute]}><Fixture /></MemoryRouter></QueryClientProvider>);

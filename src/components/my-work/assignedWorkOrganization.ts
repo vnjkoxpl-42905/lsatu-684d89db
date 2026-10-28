@@ -4,7 +4,7 @@ import { READING_CENTER_SOURCE } from '@/lib/readingCenterAccess';
 export const WORK_SUBJECT_LABELS: Record<string, string> = {
   lr: 'Logical Reasoning', rc: 'Reading Comprehension', mixed: 'LR and RC', unknown: 'Other work',
 };
-const WORK_KIND_LABELS = { homework: 'Practice set', ta: 'Assignment', activity: 'Activity', guided: 'Guided drill', bootcamp: 'Course', plan: 'Weekly task' } as const;
+const WORK_KIND_LABELS = { homework: 'Practice set', ta: 'Assignment', activity: 'Activity', guided: 'Guided drill', bootcamp: 'Course', plan: 'Weekly task', practice_test: 'Practice test', link: 'Link' } as const;
 export const WORK_KINDS = [...Object.values(WORK_KIND_LABELS), 'Reading Center'];
 
 export function workKindLabel(row: AssignedTodoRow): string {

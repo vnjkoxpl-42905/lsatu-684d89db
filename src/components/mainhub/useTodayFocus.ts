@@ -1,3 +1,4 @@
+import { assignmentNotificationNavigation } from '@/lib/assignmentNotificationRoute';
 import * as React from "react";
 import { useQuery } from "@tanstack/react-query";
 import { format, isToday } from "date-fns";
@@ -230,8 +231,9 @@ function instructorMessageToFocus(m: InstructorMessage): TodayFocusItem {
   };
 }
 
-function notificationToFocus(n: Notification, markRead: (id: string) => Promise<void>): TodayFocusItem | null {
+export function notificationToFocus(n: Notification, markRead: (id: string) => Promise<void>): TodayFocusItem | null {
   if (n.read || n.type === "message") return null;
+  const destination = assignmentNotificationNavigation(n);
   return {
     id: `notification-${n.id}`,
     type: "notification",
@@ -240,12 +242,12 @@ function notificationToFocus(n: Notification, markRead: (id: string) => Promise<
     status: "New",
     actionLabel: n.link ? "Open" : "Review",
     actionCue: n.type === "assignment" ? "New" : undefined,
-    route: n.link,
+    route: destination.route,
     priority: n.type === "assignment" ? 760 : 220,
     preview: compactText(n.body, 100) ?? undefined,
     updatedAt: n.created_at,
     Icon: n.type === "assignment" ? ClipboardList : Bell,
-    onOpen: () => markRead(n.id),
+    onOpen: destination.acknowledgeOnClick ? () => markRead(n.id) : undefined,
   };
 }
 
@@ -418,7 +420,8 @@ export function useTodayFocus(drillReturnTo = "/classroom"): TodayFocus {
     async (item: TodayFocusItem) => {
       await item.onOpen?.();
       if (item.route) {
-        navigate(item.route, item.routeState ? { state: item.routeState } : undefined);
+        if (/^https?:\/\//i.test(item.route)) window.location.assign(item.route);
+        else navigate(item.route, item.routeState ? { state: item.routeState } : undefined);
       }
     },
     [navigate],

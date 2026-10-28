@@ -1,3 +1,4 @@
+vi.mock('@/hooks/useStudentWorkState', () => ({useAssignmentGroupAcknowledgment:vi.fn(),useLoadedStudentWorkAcknowledgment:vi.fn(),useStudentWorkAcknowledgment:vi.fn()}));
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { cleanup, fireEvent, render, renderHook, screen, waitFor } from '@testing-library/react';
 import { useRef } from 'react';

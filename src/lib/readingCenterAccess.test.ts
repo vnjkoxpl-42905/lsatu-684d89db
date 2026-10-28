@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 const state = vi.hoisted(() => ({ rpc: vi.fn(), saved: null as Record<string, unknown> | null, readError: null as Error | null }));
 vi.mock('@/integrations/supabase/client', () => ({ supabase: {
-  rpc: state.rpc,
+  rpc: (...args: unknown[]) => { const result = state.rpc(...args); result.abortSignal = () => result; return result; },
   from: () => { const q = { select: () => q, eq: () => q,
     single: async () => ({ data: state.saved, error: state.readError }) }; return q; },
 } }));
@@ -13,27 +13,27 @@ beforeEach(() => { state.rpc.mockReset(); state.saved = { ...item }; state.readE
 describe('Reading Center assignment contract', () => {
   it('verifies the actual student launcher after the grant RPC', async () => {
     state.rpc.mockResolvedValue({ data: { item, reused: false }, error: null });
-    expect(await assignReadingCenter({ studentId: 'student-1' })).toEqual({ item, reused: false });
+    expect(await assignReadingCenter({ notificationPolicy: 'managed', notificationGroupId: 'group-1', studentId: 'student-1' })).toEqual({ item, reused: false });
     expect(state.rpc).toHaveBeenCalledWith('assign_reading_center', expect.objectContaining({ p_student_id: 'student-1', p_unlock_at: null }));
   });
   it('returns the existing verified item for an idempotent retry', async () => {
     state.rpc.mockResolvedValue({ data: { item, reused: true }, error: null });
-    expect((await assignReadingCenter({ studentId: 'student-1' })).reused).toBe(true);
+    expect((await assignReadingCenter({ notificationPolicy: 'managed', notificationGroupId: 'group-1', studentId: 'student-1' })).reused).toBe(true);
   });
   it('does not report success for a different student or a hidden launcher', async () => {
     state.rpc.mockResolvedValue({ data: { item: { ...item, student_id: 'other' } }, error: null });
-    await expect(assignReadingCenter({ studentId: 'student-1' })).rejects.toThrow('could not be verified');
+    await expect(assignReadingCenter({ notificationPolicy: 'managed', notificationGroupId: 'group-1', studentId: 'student-1' })).rejects.toThrow('could not be verified');
     state.rpc.mockResolvedValue({ data: { item }, error: null });
     state.saved = { ...item, visible_to_student: false };
-    await expect(assignReadingCenter({ studentId: 'student-1' })).rejects.toThrow('not available');
+    await expect(assignReadingCenter({ notificationPolicy: 'managed', notificationGroupId: 'group-1', studentId: 'student-1' })).rejects.toThrow('not available');
   });
   it('does not claim verification when the database readback fails', async () => {
     state.rpc.mockResolvedValue({ data: { item }, error: null }); state.readError = new Error('database unavailable');
-    await expect(assignReadingCenter({ studentId: 'student-1' })).rejects.toThrow('database unavailable');
+    await expect(assignReadingCenter({ notificationPolicy: 'managed', notificationGroupId: 'group-1', studentId: 'student-1' })).rejects.toThrow('database unavailable');
   });
   it('sends the chosen local start date as the access unlock time', async () => {
     state.rpc.mockResolvedValue({ data: { item }, error: null });
-    await assignReadingCenter({ studentId: 'student-1', scheduledForLocalDate: '2026-10-14' });
+    await assignReadingCenter({ notificationPolicy: 'managed', notificationGroupId: 'group-1', studentId: 'student-1', scheduledForLocalDate: '2026-10-14' });
     expect(state.rpc.mock.calls[0][1].p_unlock_at).toEqual(new Date(2026, 9, 14).toISOString());
   });
   it('uses the database decision and reports access failures', async () => {

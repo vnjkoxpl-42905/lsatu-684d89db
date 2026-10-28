@@ -1,3 +1,5 @@
+import { newAssignmentDelivery, assignmentDeliveryColumns, assignmentWriteSignal } from '@/lib/assignmentDelivery';
+import { notifyStudentOfClassroomItem } from '@/lib/classroomNotify';
 import { useState } from "react";
 import DOMPurify from "dompurify";
 import { Check, X, Pencil, Loader2 } from "lucide-react";
@@ -7,7 +9,6 @@ import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import type { DraftPayload } from "@/hooks/useTAChat";
-import { notifyStudentOfTAAssignment } from "@/lib/taNotify";
 import { track } from "@/lib/analytics";
 
 interface Props {
@@ -38,17 +39,20 @@ export default function DraftCard({
     if (!user) return;
     setBusy("approve");
     try {
+      const delivery = newAssignmentDelivery();
       const { data: inserted, error: insertErr } = await supabase
         .from("ta_assignments")
         .insert({
+          ...assignmentDeliveryColumns(delivery),
           student_id: studentId,
           interaction_id: interactionId,
           title: draft.title,
           content_html: draft.content_html,
           asset_ids: draft.asset_ids ?? [],
           assigned_by: user.id,
-        })
+        } as never)
         .select("id")
+        .abortSignal(assignmentWriteSignal())
         .single();
       if (insertErr) throw insertErr;
 
@@ -60,41 +64,17 @@ export default function DraftCard({
 
       const assignmentId = (inserted as { id: string }).id;
 
-      const notify = await notifyStudentOfTAAssignment({
-        adminUserId: user.id,
-        studentId,
-        title: draft.title || "Untitled",
-        assignmentId,
-      });
-
-      // Bell notification. Non-blocking: if this fails the inbox message
-      // already landed, so the student still gets a signal.
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const { error: notifErr } = await supabase
-        .from("notifications")
-        .insert({
-          user_id: studentId,
-          type: "assignment",
-          title: `New assignment: ${draft.title || "Untitled"}`,
-          link: `/classroom/ta/${assignmentId}`,
-        });
-      if (notifErr) {
-        console.error("[ta:notify:bell] failed", {
-          studentId,
-          assignmentId,
-          error: notifErr,
-        });
-      }
+      const notify = await notifyStudentOfClassroomItem({ adminUserId: user.id, studentId, title: draft.title || 'Untitled', route: '/classroom/ta/' + assignmentId, notificationGroupId: delivery.notificationGroupId! });
 
       track("hub_draft_approved", {
         student_id: studentId,
         assignment_id: assignmentId,
-        inbox_ok: notify.ok,
-        bell_ok: !notifErr,
+        inbox_ok: notify.inbox_ok,
+        bell_ok: notify.bell_ok,
       });
 
-      if (!notify.ok || notifErr) {
-        toast.warning("Assignment created, notification(s) partially failed");
+      if (!notify.inbox_ok || !notify.bell_ok) {
+        toast.warning("Assignment created, notification(s) partially failed", { action: notify.retryBell ? { label: "Retry notification", onClick: () => void notify.retryBell!().catch(() => toast.error("Notification failed. Try again.")) } : undefined });
       } else {
         toast.success("Assignment created and student notified");
       }

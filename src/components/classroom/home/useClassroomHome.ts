@@ -76,6 +76,8 @@ const FEED_KIND: Record<AssignedTodoRow["kind"], HomeKind> = {
   ta: "ta",
   bootcamp: "bootcamp",
   plan: "plan",
+  practice_test: "practice_test",
+  link: "link",
 };
 
 function timeLabel(iso: string) {
@@ -208,7 +210,7 @@ export function useClassroomHome(): {
           route: routeWithReturnTo(row.route, pathname),
           actionLabel: "Open",
           emphasis: false,
-          isNew: row.status === "assigned" && !row.progressUnverified,
+          isNew: row.isUnread === true,
           dueToday: due === "due today",
           overdue: !!due?.includes("overdue"),
           workStatus: row.progressUnverified ? undefined : row.status === "in_progress" ? "in_progress" : "assigned",

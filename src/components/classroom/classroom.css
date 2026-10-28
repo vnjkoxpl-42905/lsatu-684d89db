@@ -5781,3 +5781,6 @@ html:not(.light) .drill-setup-preview {
 .drill-observatory-root .rc-practice-assigned[open] > section {
   margin-top: 16px;
 }
+
+.classroom-brand-row { display: flex; align-items: center; justify-content: space-between; gap: .5rem; }
+.classroom-brand-row .classroom-brand { min-width: 0; }
