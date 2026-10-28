@@ -1,5 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
-import { fireEvent, render, screen, within } from "@testing-library/react";
+import { fireEvent, render, screen, within, waitFor, act } from "@testing-library/react";
+import { EMPTY_DESK } from "./teachingDeskModel";
 import { TeacherHomeView } from "./TeacherHomeView";
 import {
   buildRoster,
@@ -133,6 +134,33 @@ function expectNoStudentContent() {
 }
 
 describe("TeacherHomeView", () => {
+  it("uses an accessible More menu that closes on Escape and returns focus", async () => {
+    render(<TeacherHomeView model={READY} onOpen={vi.fn()} />);
+    const trigger = screen.getByRole("button", { name: "More" });
+    fireEvent.keyDown(trigger, { key: "ArrowDown" });
+    const menu = await screen.findByRole("menu");
+    expect(within(menu).getByRole("menuitem", { name: "Create session link" })).toBeInTheDocument();
+    fireEvent.keyDown(menu, { key: "Escape" });
+    await waitFor(() => expect(screen.queryByRole("menu")).toBeNull());
+    await waitFor(() => expect(trigger).toHaveFocus());
+  });
+  it("hands More selection to the booking sheet and returns to an interactive page", async () => {
+    const onOpen = vi.fn();
+    render(<TeacherHomeView model={READY} onOpen={onOpen} />);
+    const trigger = screen.getByRole("button", { name: "More" });
+    fireEvent.keyDown(trigger, { key: "ArrowDown" });
+    fireEvent.click(await screen.findByRole("menuitem", { name: "Create session link" }));
+    const sheet = await screen.findByRole("dialog", { name: "Session link" });
+    expect(screen.queryByRole("menu")).toBeNull();
+    await waitFor(() => expect(sheet.contains(document.activeElement)).toBe(true));
+    expect(within(sheet).getByLabelText("Student")).toBeInTheDocument();
+    fireEvent.click(within(sheet).getByRole("button", { name: "Close" }));
+    await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
+    await waitFor(() => expect(trigger).toHaveFocus());
+    expect(document.body.style.pointerEvents).not.toBe("none");
+    fireEvent.click(screen.getByRole("button", { name: "Assign work ↗" }));
+    expect(onOpen).toHaveBeenCalledWith("/teacher/library/assignments");
+  });
   it("keeps Assign work in the header without a student assignment promotion", () => {
     const onOpen = vi.fn();
     render(<TeacherHomeView model={READY} onOpen={onOpen} />);
@@ -169,6 +197,7 @@ describe("TeacherHomeView", () => {
       screen.queryByText("No after-session tasks are waiting."),
     ).toBeNull();
     expect(screen.queryByText("No payment decisions waiting.")).toBeNull();
+    expect(screen.getByText(/Test results are not connected yet/)).toBeInTheDocument();
   });
   it("separates unknown inbox and activity from empty data", () => {
     const { rerender } = render(
@@ -242,6 +271,64 @@ describe("TeacherHomeView", () => {
     ).toHaveLength(3);
     expect(screen.queryByText("Online now")).toBeNull();
     expectNoStudentContent();
+  });
+});
+
+describe("Teacher Home provider setup rendering", () => {
+  it("keeps the desk rendered when email has the live array-free setup envelope", () => {
+    const email = {
+      state: "setup" as const,
+      data: {
+        ok: false,
+        setup_required: true,
+        error: "student_email_setup_required",
+        fetched_at: "2026-10-28T16:21:40.683Z",
+      } as any,
+    };
+    render(
+      <TeacherHomeView
+        model={{
+          ...READY,
+          desk: {
+            manual: { state: "error" },
+            agenda: {
+              state: "ready",
+              data: {
+                events: [],
+                next_cursor: null,
+                fetched_at: "2026-10-28T16:21:40.683Z",
+              },
+            },
+            email,
+            payments: {
+              state: "ready",
+              data: { recent: [], attention: [], total: 0, attention_total: 0 },
+            },
+            results: { state: "ready", data: [] },
+            access: { state: "ready", data: [] },
+          },
+        }}
+        onOpen={vi.fn()}
+      />,
+    );
+    expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(
+      "Joshua",
+    );
+    expect(
+      screen.getByRole("heading", { name: "After-session work" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { name: "My list" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(/Student and enquiry email is not connected yet/),
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByText("No unread student or enquiry email."),
+    ).toBeNull();
+    expect(
+      screen.getByRole("heading", { name: "Next up" }),
+    ).toBeInTheDocument();
   });
 });
 
@@ -425,4 +512,108 @@ describe("teacherHomeModel", () => {
       teacherLede({ state: "ready", total: 0, rows: [], refreshFailed: true }),
     ).toBe("Nothing was unread when your inbox last loaded.");
   });
+});
+
+describe("teacher seven-day calendar", () => {
+  it("groups upcoming starts in the connected zone and preserves partial snapshot qualifications", () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date("2026-10-28T22:00:00Z"));
+    try {
+      const onOpen = vi.fn();
+      render(<TeacherHomeView model={{ ...READY, desk: { ...EMPTY_DESK, agenda: {
+        state: "ready", stale: true, data: { fetched_at: "2026-10-28T21:00:00Z", time_zone: "America/Toronto", next_cursor: "another-page", events: [
+          { id: "late", title: "Late session", starts_at: "2026-10-29T01:00:00Z", ends_at: "2026-10-29T02:00:00Z", status: "confirmed", calendar_url: "", student_id: "s1", student_name: "Lydia" },
+          { id: "all-day", title: "All-day event", starts_at: "2026-10-29", ends_at: "2026-10-30", status: "confirmed", calendar_url: "", student_id: null, student_name: null },
+        ] }
+      } } }} onOpen={onOpen} />);
+      const week = screen.getByRole("region", { name: "The next seven days" });
+      expect(within(week).getAllByRole("button", { pressed: true })).toHaveLength(1);
+      expect(within(week).getByRole("button", { name: /Wednesday, October 28, today, 1 upcoming event shown/ })).toHaveAttribute("aria-pressed", "true");
+      expect(within(week).getByText("Late session")).toBeInTheDocument();
+      expect(within(week).getByText("9:00 PM")).toBeInTheDocument();
+      expect(document.querySelector(".home-desk-agenda-list time")).toHaveTextContent("Oct 28, 9:00 PM");
+      fireEvent.click(within(week).getByRole("button", { name: /Thursday, October 29, 1 upcoming event shown/ }));
+      expect(within(week).getByText("All-day event")).toBeInTheDocument();
+      expect(within(week).getByText("All day")).toBeInTheDocument();
+      expect(within(week).queryByText("Late session")).toBeNull();
+      expect(screen.getByText("Late session")).toBeInTheDocument(); // Next up stays intact.
+      expect(within(week).getByText(/Some events may not be shown/)).toHaveTextContent("Calendar refresh is delayed");
+      fireEvent.click(within(week).getByRole("button", { name: /Friday, October 30, No upcoming events shown/ }));
+      expect(within(week).getByText(/No upcoming events shown for this day/)).toBeInTheDocument();
+      expect(within(week).queryByText("No events")).toBeNull();
+    } finally { vi.useRealTimers(); }
+  });
+  it("moves today at calendar-zone midnight while retaining the snapshot date", () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date("2026-10-29T03:59:30Z"));
+    try {
+      render(<TeacherHomeView model={{ ...READY, desk: { ...EMPTY_DESK, agenda: { state: "ready", data: { fetched_at: "2026-10-29T03:00:00Z", time_zone: "America/Toronto", next_cursor: null, events: [] } } } }} onOpen={vi.fn()} />);
+      const week = screen.getByRole("region", { name: "The next seven days" });
+      expect(within(week).getByRole("button", { name: /Wednesday, October 28, today/ })).toHaveAttribute("aria-pressed", "true");
+      act(() => { vi.advanceTimersByTime(60_000); });
+      expect(within(week).getByRole("button", { name: /Thursday, October 29, today/ })).toHaveAttribute("aria-pressed", "true");
+      expect(within(week).getByText(/Updated Oct 28/)).toBeInTheDocument();
+    } finally { vi.useRealTimers(); }
+  });
+});
+
+describe("teacher calendar status", () => {
+  it("reports one calendar error and one retry for both calendar presentations", () => {
+    render(<TeacherHomeView model={{ ...READY, desk: { ...EMPTY_DESK, agenda: { state: "error", retry: vi.fn() } } }} onOpen={vi.fn()} />);
+    expect(screen.getAllByText(/Could not load primary calendar/)).toHaveLength(1);
+    const calendarError = screen.getByText(/Could not load primary calendar/);
+    expect(within(calendarError).getByRole("button", { name: "Try again" })).toBeInTheDocument();
+    expect(screen.getByText(/Calendar is unavailable/)).toBeInTheDocument();
+  });
+});
+
+describe("teacher saved calendar coverage", () => {
+  it("removes past timed starts and falls back to today outside an aged snapshot", () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date("2026-10-28T22:00:00Z"));
+    try {
+      render(<TeacherHomeView model={{ ...READY, desk: { ...EMPTY_DESK, agenda: { state: "ready", data: { fetched_at: "2026-10-28T21:59:00Z", time_zone: "America/Toronto", next_cursor: null, events: [
+        { id: "past", title: "Earlier session", starts_at: "2026-10-28T20:00:00Z", ends_at: "2026-10-28T21:00:00Z", status: "confirmed", calendar_url: "", student_id: null, student_name: null },
+        { id: "future", title: "Upcoming session", starts_at: "2026-10-28T23:00:00Z", ends_at: "2026-10-29T00:00:00Z", status: "confirmed", calendar_url: "", student_id: null, student_name: null },
+      ] } } } }} onOpen={vi.fn()} />);
+      const week = screen.getByRole("region", { name: "The next seven days" });
+      expect(within(week).queryByText("Earlier session")).toBeNull();
+      expect(within(week).getByText("Upcoming session")).toBeInTheDocument();
+      vi.setSystemTime(new Date("2026-10-28T23:30:00Z"));
+      act(() => { vi.advanceTimersByTime(60_000); });
+      expect(within(week).queryByText("Upcoming session")).toBeNull();
+      expect(within(week).getByText(/Calendar refresh is delayed/)).toBeInTheDocument();
+      fireEvent.click(within(week).getByRole("button", { name: /Thursday, October 29/ }));
+      vi.setSystemTime(new Date("2026-11-06T18:00:00Z"));
+      act(() => { vi.advanceTimersByTime(60_000); });
+      expect(within(week).getByRole("button", { name: "Friday, November 6, today, Unknown" })).toHaveAttribute("aria-pressed", "true");
+      expect(within(week).getByText(/This day is outside the known calendar snapshot/)).toBeInTheDocument();
+      expect(within(week).getAllByRole("button", { name: /Unknown/ })).toHaveLength(7);
+      expect(within(week).queryByText("None shown")).toBeNull();
+      expect(week.querySelector('[aria-live="polite"]')).toHaveTextContent("Friday, November 6. Calendar coverage unknown for this day.");
+    } finally { vi.useRealTimers(); }
+  });
+  it.each([undefined, "bad-date"])("uses unknown coverage when snapshot time is %s and safely falls back from an invalid zone", fetched_at => {
+    render(<TeacherHomeView model={{ ...READY, desk: { ...EMPTY_DESK, agenda: { state: "ready", data: { fetched_at: fetched_at as string, time_zone: "invalid/zone", next_cursor: null, events: [] } } } }} onOpen={vi.fn()} />);
+    const week = screen.getByRole("region", { name: "The next seven days" });
+    expect(within(week).getAllByRole("button", { name: /Unknown/ })).toHaveLength(7);
+    expect(within(week).getByText(/Snapshot time unavailable/)).toHaveTextContent(Intl.DateTimeFormat().resolvedOptions().timeZone);
+  });
+});
+
+it("compacts the all-confirmed-empty summary but keeps unknown and stale email visible", () => {
+  const settings = { enabled: true, activation_cutoff: new Date().toISOString(), last_success_at: new Date().toISOString(), last_error: null, drive_root_url: null, catching_up: false };
+  const model: TeacherHomeModel = { ...READY, postSession: { state: "ready", data: { settings, tasks: [], handled: [], total: 0 } }, desk: { ...EMPTY_DESK,
+    payments: { state: "ready", data: { attention: [], attention_total: 0, recent: [], total: 0 } },
+    access: { state: "ready", data: [] },
+    email: { state: "ready", data: { threads: [], count: 0, fetched_at: new Date().toISOString() } },
+  } };
+  const { rerender } = render(<TeacherHomeView model={model} onOpen={vi.fn()} />);
+  expect(screen.queryByRole("navigation", { name: "Jump to work" })).toBeNull();
+  expect(screen.getByText("No after-session tasks are waiting.")).toBeInTheDocument();
+  rerender(<TeacherHomeView model={{ ...model, desk: { ...model.desk!, email: { state: "setup" } } }} onOpen={vi.fn()} />);
+  expect(screen.getByRole("navigation", { name: "Jump to work" })).toBeInTheDocument();
+  expect(screen.getByText("Not connected")).toBeInTheDocument();
+  rerender(<TeacherHomeView model={{ ...model, desk: { ...model.desk!, email: { ...model.desk!.email, stale: true } } }} onOpen={vi.fn()} />);
+  expect(screen.getByRole("navigation", { name: "Jump to work" })).toBeInTheDocument();
 });

@@ -1,12 +1,12 @@
 {
   "repository": "vnjkoxpl-42905/lsatu-684d89db",
-  "source_head": "5497ff9e25039179e2757441782bf97f8c816517",
+  "source_head": "18fc8af7e1ff7d83defb62b9e0d8dd720f90b3a3",
   "source_branch": "codex/my-work-organization-20261027",
   "snapshot_branch": "codex/local-sync/laptop-le9a083p/lsatu-my-work-20261026",
   "encrypted_original_context": {
     "enabled": true,
     "format": 2,
-    "file_count": 78,
+    "file_count": 80,
     "paths": [
       "lsatu-my-work-20261026/.agents/skills/notebooklm/tests/cassettes/artifacts_delete.yaml",
       "lsatu-my-work-20261026/.agents/skills/notebooklm/tests/cassettes/artifacts_export_report.yaml",
@@ -80,6 +80,8 @@
       "lsatu-my-work-20261026/.claude/skills/notebooklm/tests/cassettes/sources_refresh.yaml",
       "lsatu-my-work-20261026/.claude/skills/notebooklm/tests/cassettes/sources_rename.yaml",
       "lsatu-my-work-20261026/.claude/skills/watch/scripts/setup.py",
+      "lsatu-my-work-20261026/.taste-skill/teacher-vite-baseline/deps/@supabase_supabase-js.js",
+      "lsatu-my-work-20261026/.taste-skill/teacher-vite-current/deps/@supabase_supabase-js.js",
       "lsatu-my-work-20261026/docs/plans/my-work-remediation-review-log.md",
       "lsatu-my-work-20261026/scripts/verification/start-rc-builder-preview.mjs",
       "lsatu-my-work-20261026/src/contexts/AuthContext.tsx",
@@ -87,6 +89,6 @@
       "lsatu-my-work-20261026/supabase/functions/handle-email-events/index.ts",
       "lsatu-my-work-20261026/supabase/functions/teacher-post-session-sync/desk.ts"
     ],
-    "ciphertext_sha256": "ae73b012f46fc9c9bfe5c27faed73b9681be3ab641efafcc509ca94f46387175"
+    "ciphertext_sha256": "5550cc56864ede7ddff59f0a5a9661668c780c7d49788a553906847063f6d845"
   }
 }

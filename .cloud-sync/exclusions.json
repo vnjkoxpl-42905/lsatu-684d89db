@@ -328,6 +328,22 @@
     "reason": "excluded file"
   },
   {
+    "path": ".taste-skill/teacher-preview-baseline-server.log",
+    "reason": "excluded file"
+  },
+  {
+    "path": ".taste-skill/teacher-preview-server.log",
+    "reason": "excluded file"
+  },
+  {
+    "path": ".taste-skill/teacher-vite-baseline/deps/@supabase_supabase-js.js",
+    "reason": "credential assignment redacted in snapshot"
+  },
+  {
+    "path": ".taste-skill/teacher-vite-current/deps/@supabase_supabase-js.js",
+    "reason": "credential assignment redacted in snapshot"
+  },
+  {
     "path": "dist",
     "reason": "excluded directory"
   },

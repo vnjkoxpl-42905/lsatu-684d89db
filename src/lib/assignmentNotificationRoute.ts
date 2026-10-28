@@ -1,7 +1,7 @@
 import type { Notification } from '@/hooks/useNotifications';
 import { withWorkIdentity } from '@/lib/studentWorkIdentity';
 
-const GENERIC_WORK_SUMMARIES = new Set(['/classroom', '/classroom/my-work', '/my-work', '/my-work/to-do', '/my-work/notes']);
+const GENERIC_WORK_SUMMARIES = new Set(['/classroom', '/classroom/my-work', '/my-work', '/my-work/to-do', '/my-work/notes', '/inbox']);
 
 function notificationWorkRoute(link: string | null) {
   if (!link) return null;

@@ -1,0 +1,103 @@
+{
+  "hash": "dca6a70c",
+  "configHash": "8c638e64",
+  "lockfileHash": "32439672",
+  "browserHash": "828dff47",
+  "optimized": {
+    "react/jsx-dev-runtime": {
+      "src": "../../../../lsatu-spot-video-release-20261025/node_modules/react/jsx-dev-runtime.js",
+      "file": "react_jsx-dev-runtime.js",
+      "fileHash": "fe9e4367",
+      "needsInterop": true
+    },
+    "@radix-ui/react-dialog": {
+      "src": "../../../../lsatu-spot-video-release-20261025/node_modules/@radix-ui/react-dialog/dist/index.mjs",
+      "file": "@radix-ui_react-dialog.js",
+      "fileHash": "c9bdacff",
+      "needsInterop": false
+    },
+    "@radix-ui/react-dropdown-menu": {
+      "src": "../../../../lsatu-spot-video-release-20261025/node_modules/@radix-ui/react-dropdown-menu/dist/index.mjs",
+      "file": "@radix-ui_react-dropdown-menu.js",
+      "fileHash": "876edaa4",
+      "needsInterop": false
+    },
+    "@supabase/supabase-js": {
+      "src": "../../../../lsatu-spot-video-release-20261025/node_modules/@supabase/supabase-js/dist/index.mjs",
+      "file": "@supabase_supabase-js.js",
+      "fileHash": "bba6f3b2",
+      "needsInterop": false
+    },
+    "class-variance-authority": {
+      "src": "../../../../lsatu-spot-video-release-20261025/node_modules/class-variance-authority/dist/index.mjs",
+      "file": "class-variance-authority.js",
+      "fileHash": "c2b8de60",
+      "needsInterop": false
+    },
+    "clsx": {
+      "src": "../../../../lsatu-spot-video-release-20261025/node_modules/clsx/dist/clsx.mjs",
+      "file": "clsx.js",
+      "fileHash": "d02f554e",
+      "needsInterop": false
+    },
+    "lucide-react": {
+      "src": "../../../../lsatu-spot-video-release-20261025/node_modules/lucide-react/dist/esm/lucide-react.js",
+      "file": "lucide-react.js",
+      "fileHash": "97fe3b0c",
+      "needsInterop": false
+    },
+    "react": {
+      "src": "../../../../lsatu-spot-video-release-20261025/node_modules/react/index.js",
+      "file": "react.js",
+      "fileHash": "55578905",
+      "needsInterop": true
+    },
+    "react-dom/client": {
+      "src": "../../../../lsatu-spot-video-release-20261025/node_modules/react-dom/client.js",
+      "file": "react-dom_client.js",
+      "fileHash": "c9b166e7",
+      "needsInterop": true
+    },
+    "react-router-dom": {
+      "src": "../../../../lsatu-spot-video-release-20261025/node_modules/react-router-dom/dist/index.js",
+      "file": "react-router-dom.js",
+      "fileHash": "26a74ea3",
+      "needsInterop": false
+    },
+    "react/jsx-runtime": {
+      "src": "../../../../lsatu-spot-video-release-20261025/node_modules/react/jsx-runtime.js",
+      "file": "react_jsx-runtime.js",
+      "fileHash": "92506c01",
+      "needsInterop": true
+    },
+    "tailwind-merge": {
+      "src": "../../../../lsatu-spot-video-release-20261025/node_modules/tailwind-merge/dist/bundle-mjs.mjs",
+      "file": "tailwind-merge.js",
+      "fileHash": "db5030c4",
+      "needsInterop": false
+    }
+  },
+  "chunks": {
+    "chunk-DWLJUYFR": {
+      "file": "chunk-DWLJUYFR.js"
+    },
+    "chunk-SSNNRPHA": {
+      "file": "chunk-SSNNRPHA.js"
+    },
+    "chunk-YZYIA5QP": {
+      "file": "chunk-YZYIA5QP.js"
+    },
+    "chunk-6MDF5L2Y": {
+      "file": "chunk-6MDF5L2Y.js"
+    },
+    "chunk-M77SC7TK": {
+      "file": "chunk-M77SC7TK.js"
+    },
+    "chunk-BJG56G2C": {
+      "file": "chunk-BJG56G2C.js"
+    },
+    "chunk-ILHRZGIS": {
+      "file": "chunk-ILHRZGIS.js"
+    }
+  }
+}

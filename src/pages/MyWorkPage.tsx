@@ -81,7 +81,7 @@ function MyWorkList({ completed, generalAccess, readingCenterAllowed }: { comple
   );
 
   return (
-    <section ref={sectionRef} data-work-sync="issuance-read-20261028" tabIndex={-1} className="student-work-list my-work-organized" aria-label={completed ? "Completed work" : "Work to do"}>
+    <section ref={sectionRef} data-work-sync="issuance-read-owner-20261028" tabIndex={-1} className="student-work-list my-work-organized" aria-label={completed ? "Completed work" : "Work to do"}>
       {failed && (
         <div className="student-destination-message" role="alert">
           <p>{rows.length === 0 ? "We could not load your assignments or confirm whether any match these filters." : evidenceWarnings.length > 0 ? `Could not confirm ${evidenceWarnings.join(", ")}. Available saved work is still shown.` : "Some assignments could not refresh. Your saved work is still shown."}</p>

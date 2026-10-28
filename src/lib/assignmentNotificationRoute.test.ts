@@ -15,8 +15,20 @@ describe('unmapped or missing work targets', () => {
   it.each(['/classroom/item/deleted', '/classroom/ta/deleted', '/classroom/00000000-0000-4000-8000-000000000001', '/activities/00000000-0000-4000-8000-000000000001', '/guided/deleted', '/guided-drills/missing', '/bootcamp/conditionals', '/conditional-indicators-refresher', '/quick-drills/unless-drill', '/topics/abstract', '/testing?pt=155', '/reading-center'])('preserves an unmapped specific assignment alert at %s', (link) => {
     expect(assignmentNotificationNavigation({ ...base, link })).toEqual({ route: link, acknowledgeOnClick: false });
   });
-  it.each(['/classroom', '/classroom?from=alert', '/my-work', '/my-work/to-do'])('retains legacy generic summary click acknowledgment at %s', (link) => expect(assignmentNotificationNavigation({ ...base, link }).acknowledgeOnClick).toBe(true));
+  it.each(['/classroom', '/classroom?from=alert', '/my-work', '/my-work/to-do', '/inbox'])('retains legacy generic summary click acknowledgment at %s', (link) => expect(assignmentNotificationNavigation({ ...base, link }).acknowledgeOnClick).toBe(true));
   it('never treats an unmapped or invalid contextual group URL as a generic summary', () => expect(assignmentNotificationNavigation({ ...base, link: '/my-work/to-do?workGroup=missing' }).acknowledgeOnClick).toBe(false));
   it('preserves an unmapped recap document alert without falsely reading a conversation', () => expect(assignmentNotificationNavigation({ ...base, type: 'message', link: '/classroom/item/deleted' }).acknowledgeOnClick).toBe(false));
   it('retains nonwork notification and conversation click behavior', () => { expect(assignmentNotificationNavigation({ ...base, type: 'reminder', link: '/activities/deleted' }).acknowledgeOnClick).toBe(true); expect(assignmentNotificationNavigation({ ...base, type: 'message', link: '/inbox/conversation' }).acknowledgeOnClick).toBe(true); });
+});
+
+describe('legacy Inbox assignment summary', () => {
+  it('dismisses only the generic summary notification without attaching a document identity', () => {
+    expect(assignmentNotificationNavigation({ ...base, link: '/inbox' })).toEqual({ route: '/inbox', acknowledgeOnClick: true });
+  });
+  it.each(['/inbox/thread-id', '/inbox?workGroup=missing', '/inbox?workSource=classroom_items&workId=missing', 'https://example.com/inbox'])('keeps specific, contextual or external assignment links unread: %s', link => {
+    expect(assignmentNotificationNavigation({ ...base, link }).acknowledgeOnClick).toBe(false);
+  });
+  it('keeps the Inbox summary unread when assignment mapping is unavailable', () => {
+    expect(assignmentNotificationNavigation({ ...base, link: '/inbox', assignmentMappingUnavailable: true }).acknowledgeOnClick).toBe(false);
+  });
 });

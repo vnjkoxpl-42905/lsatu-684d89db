@@ -96,7 +96,7 @@ export default function BootcampGate({
       );
     },
   });
-  useLoadedStudentWorkAcknowledgment({sourceTable:'classroom_items',sourceId:loaded?.id,studentId:loaded?.student_id,ready:!!loaded&&!!assigned&&!items.isLoading&&!items.isError&&!permsLoading&&has_classroom_access&&!is_admin});
+  useLoadedStudentWorkAcknowledgment({sourceTable:'classroom_items',sourceId:loaded?.id,studentId:loaded?.student_id,ready:authReady&&!!loaded&&loaded.student_id===user?.id&&!items.isLoading&&!items.isError&&!permsLoading&&(is_admin||(has_classroom_access&&!!assigned))});
   useEffect(()=>{
     if(!exact&&loaded?.workIdentity&&oldAlias&&assigned&&!items.isLoading&&!items.isError){
       navigate(withWorkIdentity(`${location.pathname}${location.search}${location.hash}`,loaded.workIdentity),{replace:true});

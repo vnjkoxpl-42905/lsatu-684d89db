@@ -1288,7 +1288,7 @@ html.dark .classroom-root .classroom-home-task-checks input { color-scheme: dark
 .classroom-root .classroom-home-task-form { display: grid; gap: 8px; margin-top: 10px; }
 .classroom-root .classroom-home-task-form input, .classroom-root .classroom-home-task-form select { min-width: 0; width: 100%; min-height: 44px; border: 1px solid var(--home-line); border-radius: 8px; padding: 8px 10px; background: var(--home-surface); color: var(--home-ink); font: inherit; }
 .classroom-root .classroom-home-post-session :is(button, input, select, summary, a):focus-visible { outline: 2px solid var(--home-ink); outline-offset: 4px; }
-.classroom-root .classroom-home-post-session button:disabled { cursor: wait; opacity: .6; }
+.classroom-root .classroom-home-post-session button:disabled { cursor: not-allowed; opacity: .6; }
 @container classroom-home (max-width: 900px) {
   .classroom-root .classroom-home-teacher :is(.classroom-home-post-session, .classroom-home-region-main, .classroom-home-rail) { grid-column: 1; grid-row: auto; }
 }
@@ -1300,10 +1300,6 @@ html.dark .classroom-root .classroom-home-task-checks input { color-scheme: dark
 .classroom-root .home-desk-header-actions {display:flex;align-items:center;gap:14px;font-size:14px;flex-wrap:wrap;}
 .classroom-root .home-desk-header-actions>a {min-height:44px;display:flex;align-items:center;}
 .home-desk-primary {background:#252b26;color:#fffefa;border:0;border-radius:8px;padding:10px 16px;min-height:44px;display:inline-flex;align-items:center;justify-content:center;font:500 14px/1.35 Outfit,sans-serif;cursor:pointer;}
-.classroom-root .home-desk-more-menu {position:relative;}
-.classroom-root .home-desk-more-menu summary {min-height:44px;display:flex;align-items:center;cursor:pointer;padding:0 8px;}
-.classroom-root .home-desk-more-menu>div {position:absolute;right:0;top:46px;background:var(--home-surface);box-shadow:0 8px 24px #252b2622;border-radius:10px;z-index:10;min-width:190px;padding:8px;}
-.classroom-root .home-desk-more-menu button {width:100%;text-align:left;padding:10px;min-height:44px;}
 .classroom-root .home-desk-attention {display:flex;align-items:stretch;gap:8px;flex-wrap:wrap;background:var(--home-surface);border-radius:12px;padding:4px 10px;}
 .classroom-root .home-desk-attention button {display:flex;gap:16px;justify-content:space-between;align-items:center;flex:1;min-height:44px;padding:8px 10px;font-size:13px;white-space:nowrap;}
 .classroom-root .home-desk-attention b {font-size:16px;font-weight:500;font-variant-numeric:tabular-nums;}
@@ -1324,10 +1320,11 @@ html.dark .classroom-root .classroom-home-task-checks input { color-scheme: dark
 .classroom-root .home-desk-task-summary span {display:block;color:var(--home-muted);font-size:12px;margin-top:3px;}
 .classroom-root .home-desk .classroom-home-task-sync {margin:10px 0 0;}
 .home-desk :is(button,a,summary),.home-desk-sheet :is(button,a,summary) {transition:background-color 140ms,color 140ms,transform 140ms;}
-.home-desk button:active,.home-desk-sheet button:active {transform:translateY(1px);}
-.home-desk :is(button,a,summary):hover {text-decoration:underline;text-underline-offset:4px;}
-.home-desk :is(button,a,input,select,summary):focus-visible,.home-desk-sheet :is(button,a,input,select,summary):focus-visible {outline:2px solid #49685e;outline-offset:3px;}
-.home-desk button:disabled,.home-desk-sheet button:disabled {opacity:.55;cursor:wait;}
+.home-desk button:not(:disabled):active,.home-desk-sheet button:not(:disabled):active {transform:translateY(1px);}
+.home-desk a:hover {text-decoration:underline;text-underline-offset:4px;}
+.home-desk :is(button,a,input,select,summary):focus-visible,.home-desk-sheet :is(button,a,input,select,summary):focus-visible {outline:2px solid #303431;outline-offset:3px;}
+.home-desk button:disabled,.home-desk-sheet button:disabled {opacity:.55;cursor:not-allowed;}
+.home-desk button[aria-busy="true"]:disabled,.home-desk [aria-busy="true"] button:disabled,.home-desk-sheet button[aria-busy="true"]:disabled,.home-desk-sheet [aria-busy="true"] button:disabled {cursor:wait;}
 .classroom-root .home-desk ul {list-style:none;margin:0;padding:0;}
 .classroom-root .home-desk-empty,.home-desk-empty {font-size:13px;line-height:1.5;color:var(--home-muted,#64665e);margin:8px 0;}
 .classroom-root .home-desk-footnote {font-size:12px;line-height:1.5;color:var(--home-muted);margin:10px 0 0;}
@@ -1405,7 +1402,7 @@ html.dark .classroom-root .classroom-home-task-checks input { color-scheme: dark
 
 .classroom-root .home-desk .classroom-home-count {color:var(--home-ink);}
 /* Minimum working-text size; dates, source/status captions remain metadata. */
-.classroom-root .home-desk :is(button,a,summary) {font-size:14px!important;}
+
 .classroom-root .home-desk-task-summary,.home-desk-sheet .home-desk-task-summary,.classroom-root .home-desk-empty,.home-desk-empty {font-size:14px;}
 .classroom-root .home-desk-correspondence li small {font-size:14px;}
 .home-desk-sheet,.home-desk-overlay {animation-duration:160ms!important;transition-duration:160ms!important;}
@@ -1456,3 +1453,116 @@ html.dark .home-desk-sheet :is(input,select,textarea) {
   color-scheme: dark;
 }
 html.dark .home-desk-sheet :is(input,textarea)::placeholder { color:#b8bdaf; opacity:1; }
+
+/* Teacher-only paper and charcoal: the ground belongs to this route, not shared tokens. */
+html:not(.dark) .classroom-root.classroom-root-home:has(.home-desk) .classroom-stage {background:#f2f3f0;}
+html:not(.dark) .classroom-root .home-desk {
+  --home-ink:#262a28; --home-muted:#5c625e; --home-line:#d5d9d4;
+  --home-line-strong:#858e87; --home-hover:#e9ede8;
+  --home-surface:#fffefa; --home-plane:#eef0eb; --home-edge:#d8ddd7;
+}
+.classroom-root .home-desk .classroom-home-region {
+  border:1px solid var(--home-edge); box-shadow:0 1px 2px #20282208,0 7px 16px -12px #20282235;
+  padding:22px 24px; border-radius:14px;
+}
+.classroom-root .home-desk-masthead h1 {font-size:clamp(28px,2.6vw,36px);line-height:1.16;}
+.classroom-root .home-desk-masthead p {display:flex;flex-wrap:wrap;gap:6px 14px;font-size:14px;}
+.classroom-root .home-desk-masthead p span {border-left:1px solid var(--home-line);padding-left:14px;}
+.classroom-root .home-desk-attention {background:transparent;border-top:1px solid var(--home-line);border-bottom:1px solid var(--home-line);border-radius:0;padding:6px 0;gap:0;}
+.classroom-root .home-desk-attention button {padding:10px 14px;border-radius:6px;font-size:14px;white-space:normal;text-align:left;gap:12px;}
+.classroom-root .home-desk-attention button+button {border-left:1px solid var(--home-line);}
+.classroom-root .home-desk-attention b {font-size:16px;white-space:nowrap;}
+.classroom-root .home-desk-attention button:last-child b {font-size:14px;}
+.classroom-root .home-desk button:not(:disabled):not(.home-desk-primary):not([aria-pressed=true]):hover,.classroom-root .home-desk-more-trigger[data-state=open] {background-color:var(--home-hover);text-decoration:none;}
+.classroom-root .home-desk :is(button,a,summary) {font-size:14px;}
+.classroom-root .home-desk .classroom-home-region-head h2 {font:500 21px/1.3 var(--home-display);letter-spacing:-.025em;}
+.classroom-root .home-desk .classroom-home-task-heading h3 {font:500 18px/1.35 var(--home-ui);}
+.classroom-root .home-desk .classroom-home-task-heading :is(p,button),.classroom-root .home-desk .classroom-home-more {font-size:14px;}
+.classroom-root .home-desk .classroom-home-region-head {margin-bottom:10px;}
+.classroom-root .home-desk :is(.home-desk-footnote,.home-desk-period,.home-desk-agenda-list time) {font-size:13px;line-height:1.5;font-variant-numeric:tabular-nums;}
+.classroom-root .home-desk small {font-size:13px;}
+.classroom-root .home-desk .classroom-home-state {margin:8px 0;font-size:14px;line-height:1.55;padding:0;}
+.classroom-root .home-desk[data-session-empty=true] .classroom-home-post-session,.classroom-root .home-desk .is-ready-empty {padding-block:16px;}
+.classroom-root .home-desk .is-ready-empty .classroom-home-region-head {margin-bottom:0;}
+.classroom-root .home-desk .home-desk-my-list.is-ready-empty>.classroom-home-more {font-size:13px;margin-top:0;}
+.classroom-root .home-desk .classroom-home-post-session .classroom-home-task-list[aria-label="Sessions needing follow-up"] > .classroom-home-session-task:first-child {background:#282e2a;color:#fffefa;border:1px solid #282e2a;border-radius:10px;padding:18px;margin:10px 0 8px;--home-muted:#d0d6ce;--home-ink:#fffefa;--home-line:#778178;--home-surface:#343c35;--home-plane:#414b43;--home-hover:#414b43;}
+.classroom-root .home-desk .classroom-home-post-session .classroom-home-task-list[aria-label="Sessions needing follow-up"] > .classroom-home-session-task:first-child :is(h3,p,label,summary,a,button) {color:inherit;}
+.classroom-root .home-desk .classroom-home-post-session .classroom-home-task-list[aria-label="Sessions needing follow-up"] > .classroom-home-session-task:first-child :is(button,input,select,summary,a):focus-visible {outline-color:#fffefa;}
+.classroom-root .home-desk .classroom-home-post-session .classroom-home-task-list[aria-label="Sessions needing follow-up"] > .classroom-home-session-task:first-child .home-desk-primary {background:#fffefa;color:#282e2a;}
+.classroom-root .home-desk-more-trigger {display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:44px;padding:8px 14px;border:1px solid var(--home-line-strong);border-radius:8px;background:var(--home-surface);}
+.home-desk-menu {font:400 14px/1.5 Outfit,ui-sans-serif,system-ui,sans-serif;min-width:220px;padding:6px;border:1px solid #a3aca4;border-radius:10px;background:#fffefa;color:#262a28;box-shadow:0 3px 5px #20282212,0 14px 30px -12px #20282245;}
+.home-desk-menu [role=menuitem] {min-height:44px;padding:10px 12px;border-radius:5px;cursor:pointer;}
+.home-desk-menu [role=menuitem][data-highlighted] {background:#e9ede8;color:#262a28;outline:2px solid #303431;outline-offset:-2px;}
+html.dark .home-desk-menu {background:#222824;color:#efede6;border-color:#818c80;}
+html.dark .home-desk-menu [role=menuitem][data-highlighted] {background:#363f36;color:#efede6;outline-color:#efede6;}
+@container classroom-home (max-width:540px) {
+  .classroom-root .home-desk .classroom-home-region {padding:18px;}
+  .classroom-root .home-desk-attention button {padding:10px;min-height:50px;}
+  .classroom-root .home-desk-attention button:nth-child(3) {border-left:0;}
+  .classroom-root .home-desk-attention button:nth-child(n+3) {border-top:1px solid var(--home-line);}
+  .classroom-root .home-desk .classroom-home-region-head h2 {font-size:20px;}
+}
+@media(prefers-reduced-motion:reduce) {.home-desk-menu {animation:none!important;transition:none!important;}}
+
+/* An in-flow seven-day ledger complements Next up without hiding the upcoming agenda. */
+.classroom-root .home-desk-week {border-top:1px solid var(--home-line);padding-top:20px;min-width:0;}
+.classroom-root .home-desk-week>header {display:flex;align-items:baseline;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:12px;}
+.classroom-root .home-desk-week h2 {font:500 21px/1.3 var(--home-display);margin:0;letter-spacing:-.02em;}
+.classroom-root .home-desk-week>header a {font-size:14px;min-height:44px;display:inline-flex;align-items:center;}
+.classroom-root .home-desk-week-days {display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:7px;}
+.classroom-root .home-desk-week-days button {display:grid;grid-template-columns:1fr auto;align-items:baseline;gap:12px 6px;text-align:left;min-width:0;padding:14px 12px;border:1px solid var(--home-edge);border-radius:9px;background:var(--home-surface);color:var(--home-ink);}
+.classroom-root .home-desk-week-days button span {font-size:12px;text-transform:uppercase;letter-spacing:.06em;}
+.classroom-root .home-desk-week-days button b {font:500 24px/1 var(--home-display);font-variant-numeric:tabular-nums;}
+.classroom-root .home-desk-week-days button small {grid-column:1/-1;margin:0;font-size:13px;}
+.classroom-root .home-desk-week-days button.is-today {border-color:var(--home-line-strong);box-shadow:inset 0 2px var(--home-ink);}
+.classroom-root .home-desk-week-days button[aria-pressed=true],.classroom-root .home-desk-week-days button[aria-pressed=true]:hover {background:#282e2a;color:#fffefa;border-color:#282e2a;}
+.classroom-root .home-desk-week-days button[aria-pressed=true] small {color:#d0d6ce;}
+.classroom-root .home-desk-week-detail {border-bottom:1px solid var(--home-line);padding:16px 0;}
+.classroom-root .home-desk-week-detail h3 {font-size:16px;}
+.classroom-root .home-desk-week-detail li {display:flex;align-items:baseline;gap:8px 20px;flex-wrap:wrap;border-top:1px solid var(--home-line);padding:12px 0;}
+.classroom-root .home-desk-week-detail time {font-size:13px;color:var(--home-muted);}
+.classroom-root .home-desk-week-detail li b {font-size:15px;font-weight:500;}
+.classroom-root .home-desk-week-detail li button {min-height:44px;margin-left:auto;}
+@container classroom-home (max-width:680px) {.classroom-root .home-desk-week-days {gap:4px;}.classroom-root .home-desk-week-days button {display:flex;flex-direction:column;align-items:center;padding:12px 4px;gap:8px;}.classroom-root .home-desk-week-days button small {font-size:13px;text-align:center;}.classroom-root .home-desk-week-days button span {font-size:12px;}.classroom-root .home-desk-week-days button b {font-size:21px;}}
+
+/* One working sheet, a quiet agenda rail, and an open ledger below. */
+.classroom-root .home-desk-work-column {gap:0;background:var(--home-surface);border:1px solid var(--home-edge);border-radius:14px;box-shadow:0 1px 2px #20282208,0 9px 18px -14px #20282255;}
+.classroom-root .home-desk-work-column>.classroom-home-region {background:transparent;border:0;border-radius:0;box-shadow:none;}
+.classroom-root .home-desk-work-column>.classroom-home-region+.classroom-home-region {border-top:1px solid var(--home-line);}
+.classroom-root .home-desk-side-column {gap:22px;padding:0 4px;}
+.classroom-root .home-desk-side-column>.classroom-home-region {background:transparent;border:0;border-radius:0;box-shadow:none;padding:4px 0 0;}
+.classroom-root .home-desk-side-column>.classroom-home-region+.classroom-home-region {border-top:1px solid var(--home-line);padding-top:18px;}
+.classroom-root .home-desk-agenda-list li:first-child {border-top:0;padding-top:4px;}
+.classroom-root .home-desk-agenda-list li:first-child time {font-size:15px;color:var(--home-ink);font-weight:500;}
+.classroom-root .home-desk-agenda-list li:first-child>a,.classroom-root .home-desk-agenda-list li:first-child>b {font-size:17px;}
+.classroom-root .home-desk-lower {border-top:1px solid var(--home-line);padding-top:22px;gap:32px;}
+.classroom-root .home-desk-lower>.classroom-home-region,.classroom-root .home-desk .home-desk-students {background:transparent;border:0;border-radius:0;box-shadow:none;padding:0;}
+.classroom-root .home-desk-lower>.classroom-home-region+.classroom-home-region {border-left:1px solid var(--home-line);padding-left:28px;}
+.classroom-root .home-desk .home-desk-students {border-top:1px solid var(--home-line);padding-top:20px;}
+@container classroom-home (max-width:860px) {.classroom-root .home-desk-lower>.classroom-home-region+.classroom-home-region {border-left:0;padding-left:0;border-top:1px solid var(--home-line);padding-top:20px;}.classroom-root .home-desk-side-column {padding:0;}}
+
+html.dark :is(.home-desk,.home-desk-sheet) :is(button,a,input,select,summary):focus-visible {outline-color:#efede6;}
+
+.classroom-root .home-desk-week-caption {font-size:13px;line-height:1.5;color:var(--home-muted);margin:0 0 12px;}
+.classroom-root .home-desk-week-scroll {overflow-x:auto;overscroll-behavior-x:contain;padding:4px;margin:-4px;scrollbar-width:thin;}
+.classroom-root .home-desk-week-scroll:focus-visible {outline:2px solid var(--home-ink);outline-offset:3px;}
+.classroom-root .home-desk-week-days {min-width:665px;}
+.classroom-root .home-desk-week-days button small {font-size:13px;line-height:1.4;}
+.classroom-root .home-desk-week-days button.is-today:not([aria-pressed=true]) {background:var(--home-surface);color:var(--home-ink);box-shadow:inset 0 3px var(--home-ink);border-color:var(--home-line-strong);}
+.classroom-root .home-desk-week-days button.is-today:not([aria-pressed=true]) small {color:var(--home-muted);}
+.classroom-root .home-desk-week-days button[aria-pressed=true] {outline:2px solid var(--home-ink);outline-offset:2px;}
+.classroom-root .home-desk .home-desk-week-days button.is-today:not([aria-pressed=true]):hover {background:var(--home-hover);}
+.classroom-root .home-desk-week-detail {padding:12px 0 4px;border-bottom:0;}
+.classroom-root .home-desk-week-detail h3 {margin:0 0 8px;font-size:16px;}
+html.dark .home-desk-week-days button[aria-pressed=true] {outline-color:#efede6;}
+
+.classroom-root .home-desk .home-desk-week-days button:focus-visible {outline:3px solid var(--home-ink);outline-offset:4px;}
+
+.classroom-root .home-desk .classroom-home-region-head a {font-size:14px;}
+
+/* Essential input boundaries are distinct from decorative section edges. */
+.classroom-root .home-desk {--lsatu-field-border:#747773;}
+.classroom-root .home-desk :is(input,select,textarea),.classroom-root .home-desk .home-desk-check {border-color:#747773;}
+.home-desk-sheet :is(input,select,textarea),.home-desk-sheet .home-desk-check {border-color:#747773;}
+html.dark .classroom-root .home-desk {--lsatu-field-border:#929b91;}
+html.dark .classroom-root .home-desk :is(input,select,textarea),html.dark .classroom-root .home-desk .home-desk-check,html.dark .home-desk-sheet :is(input,select,textarea),html.dark .home-desk-sheet .home-desk-check {border-color:#929b91;}

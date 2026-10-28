@@ -1,6 +1,13 @@
 import * as React from "react";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+} from "@/components/ui/dropdown-menu";
 import type { TeacherHomeModel } from "./teacherHomeModel";
 import { filterStudents } from "./teacherHomeModel";
+import { calendarCheckIsStale } from "./postSessionModel";
 import { PostSessionWork } from "./PostSessionWork";
 import { MyList, AllTasksSheet, DeskStatus } from "./TeacherTasks";
 import { AccessSheet, BookingSheet } from "./TeacherAccessBooking";
@@ -10,10 +17,17 @@ import {
   paymentLabel,
   safeGoogleLink,
 } from "./teachingDeskModel";
+import {
+  calendarTimeZone,
+  calendarDayKey,
+  calendarWeek,
+  calendarDateLabel,
+  calendarStartLabel,
+} from "./teacherWeek";
 import type { ManagedUser } from "@/lib/adminUsers";
 const CALENDAR = "https://calendar.google.com/calendar/u/0/r";
 const EMAIL = "https://mail.google.com/mail/u/0/#inbox";
-function when(value: string) {
+function when(value: string, timeZone?: string) {
   if (/^\d{4}-\d{2}-\d{2}$/.test(value))
     return (
       new Intl.DateTimeFormat("en-US", {
@@ -29,7 +43,89 @@ function when(value: string) {
         day: "numeric",
         hour: "numeric",
         minute: "2-digit",
+        ...(timeZone ? { timeZone } : {}),
       }).format(date);
+}
+function TeacherWeek({ agenda, onOpen }: {
+  agenda: NonNullable<TeacherHomeModel["desk"]>["agenda"];
+  onOpen: (route: string) => void;
+}) {
+  const [now, setNow] = React.useState(() => new Date());
+  const [selection, setSelection] = React.useState<string | null>(null);
+  const detailId = React.useId();
+  React.useEffect(() => {
+    const timer = window.setInterval(() => setNow(new Date()), 60_000);
+    return () => window.clearInterval(timer);
+  }, []);
+  const zone = calendarTimeZone(agenda.data?.time_zone);
+  const days = calendarWeek(now, zone);
+  const selected = days.some(day => day.key === selection) ? selection! : days[0].key;
+  const chosen = days.find(day => day.key === selected)!;
+  const loaded = agenda.state === "ready";
+  const eventsFor = (key: string) => (agenda.data?.events ?? []).filter(event => {
+    if (calendarDayKey(event.starts_at, zone) !== key) return false;
+    // All-day starts have date precision only; timed starts must still be upcoming.
+    return /^\d{4}-\d{2}-\d{2}$/.test(event.starts_at) || new Date(event.starts_at).getTime() >= now.getTime();
+  });
+  const selectedEvents = eventsFor(selected);
+  const fetched = agenda.data?.fetched_at ? new Date(agenda.data.fetched_at) : null;
+  const snapshotValid = !!fetched && !Number.isNaN(fetched.getTime()) && fetched.getTime() <= now.getTime() + 120_000;
+  const coveredDays = new Set(snapshotValid ? calendarWeek(fetched!, zone).map(day => day.key) : []);
+  const dayKnown = (key: string) => loaded && coveredDays.has(key);
+  const delayed = agenda.stale || !snapshotValid || now.getTime() - fetched!.getTime() > 120_000;
+  const checked = snapshotValid
+    ? new Intl.DateTimeFormat("en-US", { timeZone: zone, month: "short", day: "numeric", hour: "numeric", minute: "2-digit" }).format(fetched)
+    : null;
+  const fullName = (date: Date) => calendarDateLabel(date, { weekday: "long", month: "long", day: "numeric" });
+  return (
+    <section className="home-desk-week" aria-labelledby="home-desk-week-title">
+      <header>
+        <h2 id="home-desk-week-title">The next seven days</h2>
+        <a href={CALENDAR} target="_blank" rel="noopener noreferrer">Open full calendar ↗</a>
+      </header>
+      <p className="home-desk-week-caption">
+        Events starting in the next seven days · {zone}
+        {checked ? " · Updated " + checked : ""}
+        {agenda.data?.next_cursor ? " · Some events may not be shown. Open full calendar." : ""}
+        {delayed ? " · Calendar refresh is delayed" : ""}
+        {!snapshotValid ? " · Snapshot time unavailable" : ""}
+      </p>
+      <div className="home-desk-week-scroll" tabIndex={0} role="region" aria-label="Seven-day calendar, scroll horizontally for later days">
+        <div className="home-desk-week-days" role="group" aria-label="Choose a calendar day">
+          {days.map((day, index) => {
+            const count = eventsFor(day.key).length;
+            const status = dayKnown(day.key) ? count ? count + " upcoming" : "None shown" : agenda.state === "loading" ? "Loading…" : "Unknown";
+            return (
+              <button key={day.key} className={index === 0 ? "is-today" : undefined}
+                aria-pressed={selected === day.key} aria-controls={detailId}
+                onClick={() => setSelection(day.key)}
+                aria-label={fullName(day.date) + (index === 0 ? ", today" : "") + ", " + (dayKnown(day.key) ? count ? count + (count === 1 ? " upcoming event shown" : " upcoming events shown") : "No upcoming events shown" : status)}>
+                <span>{calendarDateLabel(day.date, { weekday: "short" })}</span>
+                <b>{day.date.getUTCDate()}</b>
+                <small>{status}</small>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+      <p className="classroom-home-sr" aria-live="polite" aria-atomic="true">
+        {fullName(chosen.date) + ". " + (dayKnown(selected) ? selectedEvents.length + (selectedEvents.length === 1 ? " upcoming event shown." : " upcoming events shown.") : "Calendar coverage unknown for this day.")}
+      </p>
+      <div id={detailId} className="home-desk-week-detail">
+        <h3>{fullName(chosen.date)}</h3>
+        {!loaded ? <p className="home-desk-empty">Calendar {agenda.state === "loading" ? "is loading" : "is unavailable"}. Connection status is shown in Next up.</p> : null}
+        {dayKnown(selected) ? selectedEvents.length ? (
+          <ul>{selectedEvents.map(event => (
+            <li key={event.id}>
+              <time dateTime={event.starts_at}>{calendarStartLabel(event.starts_at, zone)}</time>
+              <b>{event.title}</b>
+              {event.student_id ? <button onClick={() => onOpen("/teacher/students/" + encodeURIComponent(event.student_id!))}>Prepare for {event.student_name || "student"} ↗</button> : null}
+            </li>
+          ))}</ul>
+        ) : <p className="home-desk-empty">No upcoming events shown for this day. Open the full calendar for earlier or additional events.</p> : loaded ? <p className="home-desk-empty">This day is outside the known calendar snapshot. Open the full calendar to check it.</p> : null}
+      </div>
+    </section>
+  );
 }
 function TeacherDeskContent({
   model,
@@ -47,22 +143,40 @@ function TeacherDeskContent({
   const students = model.roster.all ?? model.roster.recent;
   const [allTasks, setAllTasks] = React.useState(false);
   const [booking, setBooking] = React.useState(false);
+  const moreTrigger = React.useRef<HTMLButtonElement>(null);
   const [access, setAccess] = React.useState<ManagedUser | null>(null);
   const [search, setSearch] = React.useState("");
   const [classifyError, setClassifyError] = React.useState("");
+  const sessionReadyEmpty =
+    model.postSession?.state === "ready" &&
+    !model.postSession.data?.tasks?.length &&
+    !model.postSession.error &&
+    !model.postSession.refreshFailed;
+  const decisionsReadyEmpty =
+    desk.payments.state === "ready" &&
+    !desk.payments.stale &&
+    !desk.payments.data?.attention?.length &&
+    desk.access.state === "ready" &&
+    !desk.access.stale &&
+    !desk.access.data?.some((person) => !person.access_tier);
   const pendingAccess = desk.access.data?.filter((p) => !p.access_tier) ?? [];
+  const settings = model.postSession?.data?.settings;
+  const hideAttention = sessionReadyEmpty &&
+    (model.postSession?.data?.total ?? model.postSession?.data?.tasks?.length) === 0 && !!settings?.enabled &&
+    !settings.last_error && !settings.catching_up && !calendarCheckIsStale(settings) &&
+    decisionsReadyEmpty && desk.payments.data?.attention_total === 0 && !!desk.access.data &&
+    desk.email.state === "ready" && !desk.email.stale &&
+    desk.email.data?.count === 0 && !desk.email.data.count_is_lower_bound;
   const matches = search.trim()
     ? filterStudents(students, search).slice(0, 5)
     : [];
   const jump = (id: string) => {
-    document
-      .getElementById(id)
-      ?.scrollIntoView({
-        behavior: matchMedia("(prefers-reduced-motion: reduce)").matches
-          ? "instant"
-          : "smooth",
-        block: "start",
-      });
+    document.getElementById(id)?.scrollIntoView({
+      behavior: matchMedia("(prefers-reduced-motion: reduce)").matches
+        ? "instant"
+        : "smooth",
+      block: "start",
+    });
     document.getElementById(id)?.focus({ preventScroll: true });
   };
   const count = (state: string, count: number | undefined) =>
@@ -72,6 +186,7 @@ function TeacherDeskContent({
       className="classroom-home classroom-home-teacher home-desk"
       data-motion-skip
       data-role-home="teacher"
+      data-session-empty={sessionReadyEmpty || undefined}
     >
       <header className="home-desk-masthead">
         <div>
@@ -84,36 +199,32 @@ function TeacherDeskContent({
           </p>
         </div>
         <div className="home-desk-header-actions">
-          <a href={EMAIL} target="_blank" rel="noopener noreferrer">
-            Open email ↗
-          </a>
           <button
             className="home-desk-primary"
             onClick={() => onOpen("/teacher/library/assignments")}
           >
             Assign work ↗
           </button>
-          <details className="home-desk-more-menu">
-            <summary>More</summary>
-            <div>
-              <button onClick={() => setBooking(true)}>
+          <DropdownMenu modal={false}>
+            <DropdownMenuTrigger asChild>
+              <button ref={moreTrigger} className="home-desk-more-trigger">More <span aria-hidden="true">⌄</span></button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" sideOffset={8} className="home-desk-menu" onCloseAutoFocus={(event) => { if (booking) event.preventDefault(); }}>
+              <DropdownMenuItem onSelect={() => setBooking(true)}>
                 Create session link
-              </button>
-              <button onClick={() => onOpen("/teacher/students")}>
-                All students
-              </button>
-            </div>
-          </details>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       </header>
-      <nav className="home-desk-attention" aria-label="Jump to work">
+      {!hideAttention ? <nav className="home-desk-attention" aria-label="Jump to work">
         <button onClick={() => jump("home-session-work")}>
           <span>After-session</span>
           <b>
             {count(
               model.postSession?.state ?? "setup",
               model.postSession?.data?.total ??
-                model.postSession?.data?.tasks.length,
+                model.postSession?.data?.tasks?.length,
             )}
           </b>
         </button>
@@ -129,9 +240,16 @@ function TeacherDeskContent({
         </button>
         <button onClick={() => jump("home-correspondence")}>
           <span>Email</span>
-          <b>{count(desk.email.state, desk.email.data?.count)}{desk.email.state === "ready" && desk.email.data?.count_is_lower_bound ? "+" : ""}</b>
+          <b>
+            {desk.email.state === "setup" ? "Not connected" : count(desk.email.state, desk.email.data?.count)}
+            {desk.email.state === "ready" &&
+            desk.email.data?.count_is_lower_bound
+              ? "+"
+              : ""}
+          </b>
         </button>
-      </nav>
+      </nav> : null}
+      <TeacherWeek agenda={desk.agenda} onOpen={onOpen} />
       <div className="home-desk-main">
         <div className="home-desk-work-column">
           <PostSessionWork
@@ -159,12 +277,12 @@ function TeacherDeskContent({
             </header>
             <DeskStatus region={desk.agenda} noun="primary calendar" />
             {desk.agenda.state === "ready" ? (
-              desk.agenda.data?.events.length ? (
+              desk.agenda.data?.events?.length ? (
                 <ul className="home-desk-agenda-list">
                   {desk.agenda.data.events.slice(0, 3).map((event) => (
                     <li key={event.id}>
                       <time dateTime={event.starts_at}>
-                        {when(event.starts_at)}
+                        {when(event.starts_at, calendarTimeZone(desk.agenda.data?.time_zone))}
                       </time>
                       {safeGoogleLink(event.calendar_url, "calendar") ? (
                         <a
@@ -236,12 +354,12 @@ function TeacherDeskContent({
             {classifyError ? <p role="alert">{classifyError}</p> : null}
             {desk.agenda.data?.fetched_at ? (
               <p className="home-desk-footnote">
-                Checked {when(desk.agenda.data.fetched_at)} · Primary calendar
+                Checked {when(desk.agenda.data.fetched_at, calendarTimeZone(desk.agenda.data?.time_zone))} · Primary calendar
               </p>
             ) : null}
           </section>
           <section
-            className="classroom-home-region home-desk-decisions"
+            className={`classroom-home-region home-desk-decisions${decisionsReadyEmpty ? " is-ready-empty" : ""}`}
             id="home-decisions"
             tabIndex={-1}
           >
@@ -250,7 +368,7 @@ function TeacherDeskContent({
             </header>
             <DeskStatus region={desk.payments} noun="payment decisions" />
             {desk.payments.state === "ready" ? (
-              desk.payments.data?.attention.length ? (
+              desk.payments.data?.attention?.length ? (
                 <ul>
                   {desk.payments.data.attention.slice(0, 2).map((p) => (
                     <li key={p.id}>
@@ -293,11 +411,8 @@ function TeacherDeskContent({
               )
             ) : null}
             <div className="home-desk-decision-actions">
-              <button onClick={() => onOpen("/teacher/today")}>
-                Payments and history ↗
-              </button>
               <button onClick={() => onOpen("/teacher/students")}>
-                Student access ↗
+                Manage access ↗
               </button>
             </div>
           </section>
@@ -317,7 +432,7 @@ function TeacherDeskContent({
           </header>
           <DeskStatus region={desk.payments} noun="payment activity" />
           {desk.payments.state === "ready" ? (
-            desk.payments.data?.recent.length ? (
+            desk.payments.data?.recent?.length ? (
               <ul className="home-desk-payment-list">
                 {desk.payments.data.recent.slice(0, 3).map((p) => (
                   <li key={p.id}>
@@ -362,7 +477,7 @@ function TeacherDeskContent({
                   enquiries” to include enquiries.
                 </p>
               ) : null}
-              {desk.email.data?.threads.length ? (
+              {desk.email.data?.threads?.length ? (
                 <ul>
                   {desk.email.data.threads.slice(0, 2).map((thread) => (
                     <li key={thread.id}>
@@ -577,7 +692,10 @@ function TeacherDeskContent({
       <BookingSheet
         actions={desk.actions}
         open={booking}
-        onClose={() => setBooking(false)}
+        onClose={() => {
+          setBooking(false);
+          requestAnimationFrame(() => moreTrigger.current?.focus());
+        }}
         actorId={desk.actorId}
         students={desk.access.data ?? []}
       />

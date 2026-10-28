@@ -21,6 +21,7 @@ export function DeskStatus({
   region: DeskRegion<unknown>;
   noun: string;
 }) {
+  const subject = noun.charAt(0).toUpperCase() + noun.slice(1);
   return (
     <>
       {region.state === "loading" ? (
@@ -36,7 +37,7 @@ export function DeskStatus({
         </p>
       ) : region.state === "setup" ? (
         <p className="home-desk-empty">
-          {noun} is not connected yet.{" "}
+          {subject} {/\b(decisions|results)$/.test(noun) ? "are" : "is"} not connected yet.{" "}
           {region.retry ? (
             <button disabled={region.retryBlocked} onClick={region.retry}>
               {region.retryBlocked ? "Check again shortly" : "Check connection"}
@@ -75,6 +76,7 @@ function ManualRow({ task, desk }: { task: ManualTask; desk: TeachingDesk }) {
       <div className="home-desk-manual-line">
         <button
           className="home-desk-check"
+          aria-busy={busy}
           disabled={busy || !desk.mutateManual}
           aria-label={`${task.handled_at ? "Reopen" : "Handle"} ${task.title}`}
           onClick={() => void save(task.handled_at ? "reopen" : "handle")}
@@ -121,7 +123,9 @@ function ManualRow({ task, desk }: { task: ManualTask; desk: TeachingDesk }) {
               onChange={(e) => setBlocker(e.target.value)}
             />
           </label>
-          <button disabled={busy || !desk.mutateManual}>Save blocker</button>
+          <button aria-busy={busy} disabled={busy || !desk.mutateManual}>
+            Save blocker
+          </button>
         </form>
       </details>
       {error ? <p role="alert">{error}</p> : null}
@@ -144,7 +148,7 @@ export function MyList({
   const [error, setError] = React.useState("");
   return (
     <section
-      className="classroom-home-region home-desk-my-list"
+      className={`classroom-home-region home-desk-my-list${desk.manual.state === "ready" && !desk.manual.stale && !desk.manual.data?.items?.length && !adding && !desk.pendingManual && !desk.pendingManualError && !error ? " is-ready-empty" : ""}`}
       id="home-my-list"
     >
       <header className="classroom-home-region-head">
@@ -171,6 +175,7 @@ export function MyList({
             task.
           </p>
           <button
+            aria-busy={busy}
             disabled={busy || !desk.retryManualCreate}
             onClick={async () => {
               setBusy(true);
@@ -244,6 +249,7 @@ export function MyList({
           </label>
           <button
             className="home-desk-primary"
+            aria-busy={busy}
             disabled={
               busy ||
               !desk.mutateManual ||
@@ -257,7 +263,7 @@ export function MyList({
         </form>
       ) : null}
       {desk.manual.state === "ready" ? (
-        desk.manual.data?.items.length ? (
+        desk.manual.data?.items?.length ? (
           <ul className="home-desk-manual-list">
             {desk.manual.data.items.slice(0, 2).map((task) => (
               <ManualRow key={task.id} task={task} desk={desk} />
@@ -478,6 +484,7 @@ export function AllTasksSheet({
         {page?.next_cursor ? (
           <button
             className="home-desk-primary"
+            aria-busy={busy}
             disabled={busy}
             onClick={() => void load(page.next_cursor)}
           >
