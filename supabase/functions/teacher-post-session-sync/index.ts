@@ -1,3 +1,4 @@
+import { invalidateDeskRoster, readDesk } from "./desk.ts";
 import { createClient } from "npm:@supabase/supabase-js@2";
 import {
   getAccessToken,
@@ -7,6 +8,7 @@ import {
 import {
   type CalendarEvent,
   classify,
+  consultationSource,
   normalizeEmail,
   recordSyncAttempt,
   runWorker,
@@ -63,9 +65,10 @@ Deno.serve(async (req) => {
     const body = await req.json();
     requestAction = body.action;
     if (
-      !["sync", "import_folders", "status", "folder_links"].includes(
-        body.action ?? "sync",
-      )
+      !["sync", "import_folders", "status", "folder_links", "agenda", "email"]
+        .includes(
+          body.action ?? "sync",
+        )
     ) {
       return json({ error: "unknown_action" }, 400);
     }
@@ -88,6 +91,11 @@ Deno.serve(async (req) => {
         owner,
       ).eq("role", "admin").maybeSingle();
       if (role.error || !role.data) return json({ error: "forbidden" }, 403);
+    }
+    // Read-only areas are isolated from ALL worker health/lease writes, including failures.
+    if (body.action === "agenda" || body.action === "email") {
+      if (body.ticket) return json({ error: "forbidden" }, 403);
+      return json(await readDesk(body, owner, googleEmail, db));
     }
     authenticated = true;
     await recordSyncAttempt(
@@ -212,6 +220,7 @@ Deno.serve(async (req) => {
         _folders: linked,
         _dry_run: Boolean(body.dry_run),
       });
+      invalidateDeskRoster(owner);
       return json({
         ...result,
         unresolved: [...unresolved, ...result.unresolved],
@@ -237,7 +246,32 @@ Deno.serve(async (req) => {
     const now = new Date().toISOString();
     const renew = () =>
       rpc("teacher_post_session_renew", { _owner: owner, _lease: lease });
+    const labels: { event_id: string; kind: string }[] = [];
+    for (let offset = 0;; offset += 1000) {
+      const r = await db.from("teacher_calendar_labels").select("event_id,kind")
+        .eq("owner_id", owner).eq("calendar_id", settings.calendar_id).order(
+          "event_id",
+        ).range(offset, offset + 999);
+      if (r.error) throw r.error;
+      labels.push(...r.data);
+      if (r.data.length < 1000) break;
+    }
     const save = async (event: CalendarEvent) => {
+      const label = labels.find((l: any) => l.event_id === event.id);
+      if (label?.kind === "consultation") {
+        await rpc("teacher_home_consultation_source", {
+          _owner: owner,
+          _lease: lease,
+          _event: event.id,
+          _source: consultationSource(
+            event,
+            googleEmail,
+            new Date().toISOString(),
+          ),
+        });
+        return;
+      }
+      if (label?.kind === "general") return;
       const r = await db.from("teacher_post_session_tasks").select(
         "id,starts_at,ends_at",
       ).eq("owner_id", owner).eq("calendar_id", settings.calendar_id).eq(
@@ -252,6 +286,7 @@ Deno.serve(async (req) => {
         settings.activation_cutoff,
         now,
         Boolean(r.data),
+        label?.kind === "session",
       );
       if (
         source && r.data && source.source_state === "ended" &&
@@ -280,15 +315,31 @@ Deno.serve(async (req) => {
             "source_checked_at",
           ).limit(20);
           if (r.error) throw r.error;
-          return r.data;
+          const consultations = await db.from("teacher_home_manual").select(
+            "event_id",
+          ).eq("owner_id", owner).eq("kind", "consultation").is(
+            "handled_at",
+            null,
+          ).order("source_checked_at").limit(20);
+          if (consultations.error) throw consultations.error;
+          return [...r.data, ...consultations.data];
         },
         unavailable: (id) =>
-          rpc("teacher_post_session_source", {
-            _owner: owner,
-            _lease: lease,
-            _event: id,
-            _source: { source_state: "unavailable", source_updated_at: now },
-          }),
+          labels.some((l: any) =>
+              l.event_id === id && l.kind === "consultation"
+            )
+            ? rpc("teacher_home_consultation_source", {
+              _owner: owner,
+              _lease: lease,
+              _event: id,
+              _source: { source_state: "unavailable" },
+            })
+            : rpc("teacher_post_session_source", {
+              _owner: owner,
+              _lease: lease,
+              _event: id,
+              _source: { source_state: "unavailable", source_updated_at: now },
+            }),
         finish: (covered, updated, catchingUp) =>
           rpc("teacher_post_session_finish", {
             _owner: owner,

@@ -17,7 +17,8 @@ import { useInbox } from "@/hooks/useInbox";
 import { useClassroomLayout } from "@/components/classroom/shell/classroomLayoutContext";
 import { localDayISO } from "@/lib/localDate";
 import { datelineFor, greetingFor } from "../homeModel";
-import { usePostSessionHome } from './usePostSessionHome';
+import { usePostSessionHome } from "./usePostSessionHome";
+import { useTeachingDesk } from "./useTeachingDesk";
 import {
   buildRoster,
   buildSessions,
@@ -35,7 +36,11 @@ export const teacherRosterQueryKey = (actorId: string | undefined) =>
 export const teacherSessionsQueryKey = (actorId: string | undefined) =>
   ["teacher-home:upcoming-sessions", actorId] as const;
 
-function regionState(query: { isPending: boolean; isError: boolean; data: unknown }): RegionState {
+function regionState(query: {
+  isPending: boolean;
+  isError: boolean;
+  data: unknown;
+}): RegionState {
   if (query.data !== undefined) return "ready";
   if (query.isError) return "error";
   return "loading";
@@ -52,6 +57,7 @@ export function useTeacherHome(): {
   const permissions = useUserPermissions();
   const isAdmin = permissions.resolved === true && permissions.is_admin;
   const postSession = usePostSessionHome(actorId, isAdmin);
+  const desk = useTeachingDesk(actorId, isAdmin);
   const { displayName } = useClassroomLayout();
   const inbox = useInbox();
 
@@ -61,7 +67,10 @@ export function useTeacherHome(): {
     staleTime: 5 * 60_000,
     queryFn: async () => {
       // The same Edge Function the Student Hub reads; it enforces admin itself.
-      const { data, error } = await supabase.functions.invoke("admin-manage-users", { method: "GET" });
+      const { data, error } = await supabase.functions.invoke(
+        "admin-manage-users",
+        { method: "GET" },
+      );
       if (error) throw error;
       return (data ?? []) as RosterInput[];
     },
@@ -86,20 +95,33 @@ export function useTeacherHome(): {
     },
   });
 
+  const [clock, setClock] = React.useState(() => Date.now());
+  React.useEffect(() => {
+    const timer = setInterval(() => setClock(Date.now()), 60_000);
+    return () => clearInterval(timer);
+  }, []);
   const today = localDayISO();
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const now = React.useMemo(() => new Date(), [today]);
+  const now = React.useMemo(() => new Date(clock), [today, clock]);
 
   const model = React.useMemo<TeacherHomeModel>(() => {
-    const unreadState: RegionState = inbox.loaded ? "ready" : inbox.error ? "error" : "loading";
+    const unreadState: RegionState = inbox.loaded
+      ? "ready"
+      : inbox.error
+        ? "error"
+        : "loading";
     const rosterState = regionState(rosterQuery);
     const sessionsState = regionState(sessionsQuery);
     const roster = rosterQuery.data ? buildRoster(rosterQuery.data, now) : null;
     const names = new Map(
-      (rosterQuery.data ?? []).map((row) => [row.class_id, row.display_name?.trim() || "Student"]),
+      (rosterQuery.data ?? []).map((row) => [
+        row.class_id,
+        row.display_name?.trim() || "Student",
+      ]),
     );
     return {
       postSession,
+      desk,
       greeting: greetingFor(now),
       displayName,
       dateline: datelineFor(now),
@@ -108,7 +130,10 @@ export function useTeacherHome(): {
       unread: {
         state: unreadState,
         total: unreadState === "ready" ? inbox.unreadCount : null,
-        rows: unreadState === "ready" ? buildUnreadThreads(inbox.conversations, actorId ?? null, now) : [],
+        rows:
+          unreadState === "ready"
+            ? buildUnreadThreads(inbox.conversations, actorId ?? null, now)
+            : [],
         refreshFailed: inbox.loaded && !!inbox.error,
       },
       roster: {
@@ -120,11 +145,26 @@ export function useTeacherHome(): {
       },
       sessions: {
         state: sessionsState,
-        rows: sessionsQuery.data ? buildSessions(sessionsQuery.data, names, now) : [],
-        refreshFailed: sessionsQuery.data !== undefined && sessionsQuery.isError,
+        rows: sessionsQuery.data
+          ? buildSessions(sessionsQuery.data, names, now)
+          : [],
+        refreshFailed:
+          sessionsQuery.data !== undefined && sessionsQuery.isError,
       },
     };
-  }, [actorId, displayName, inbox.conversations, inbox.error, inbox.loaded, inbox.unreadCount, now, rosterQuery, sessionsQuery, postSession]);
+  }, [
+    actorId,
+    displayName,
+    inbox.conversations,
+    inbox.error,
+    inbox.loaded,
+    inbox.unreadCount,
+    now,
+    rosterQuery,
+    sessionsQuery,
+    postSession,
+    desk,
+  ]);
 
   return {
     model,

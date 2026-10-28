@@ -78,6 +78,55 @@ export type Source = {
   transcript_doc_id?: string | null;
   transcript_status?: string;
 };
+export function candidateEmails(
+  event: CalendarEvent,
+  teacher: string,
+): string[] {
+  return [
+    ...new Set(
+      (event.attendees ?? []).filter((a) =>
+        a.email && !a.self && !a.resource && a.responseStatus !== "declined" &&
+        normalizeEmail(a.email) !== normalizeEmail(teacher)
+      ).map((a) => normalizeEmail(a.email!)),
+    ),
+  ];
+}
+export function matchStudent(
+  event: CalendarEvent,
+  roster: Student[],
+  teacher: string,
+): Student | null {
+  const emails = candidateEmails(event, teacher);
+  const matches = roster.filter((s) =>
+    emails.some((e) =>
+      [s.email, ...(s.aliases ?? [])].some((v) => normalizeEmail(v) === e)
+    )
+  );
+  return matches.length === 1 && !matches[0].archived && !matches[0].admin
+    ? matches[0]
+    : null;
+}
+export function consultationSource(
+  event: CalendarEvent,
+  teacher: string,
+  now: string,
+) {
+  const starts = event.start?.dateTime, ends = event.end?.dateTime;
+  return {
+    source_title: event.summary ?? "Consultation",
+    source_updated_at: event.updated ?? now,
+    starts_at: starts,
+    ends_at: ends,
+    eligible_guest: candidateEmails(event, teacher).length > 0,
+    source_state: event.status === "cancelled"
+      ? "cancelled"
+      : !starts || !ends
+      ? "unavailable"
+      : Date.parse(ends) > Date.parse(now)
+      ? "rescheduled"
+      : "ended",
+  };
+}
 export function classify(
   event: CalendarEvent,
   roster: Student[],
@@ -85,6 +134,7 @@ export function classify(
   cutoff: string,
   now: string,
   existing = false,
+  explicitlySession = false,
 ): Source | null {
   if (!event.id) return null;
   if (event.status === "cancelled") {
@@ -103,15 +153,7 @@ export function classify(
     (Date.parse(ends) < Date.parse(cutoff) ||
       Date.parse(ends) > Date.parse(now))
   ) return null;
-  const emails = [
-    ...new Set(
-      (event.attendees ?? []).filter((a) =>
-        a.email && !a.self && !a.resource && !a.organizer &&
-        a.responseStatus !== "declined" &&
-        normalizeEmail(a.email!) !== normalizeEmail(teacher)
-      ).map((a) => normalizeEmail(a.email!)),
-    ),
-  ];
+  const emails = candidateEmails(event, teacher);
   if (!existing && !emails.length) return null;
   const matches = roster.filter((s) =>
     emails.some((e) =>
@@ -119,13 +161,13 @@ export function classify(
     )
   );
   if (
-    !existing && !matches.length &&
+    !existing && !explicitlySession && !matches.length &&
     /consultation|consult call|personal|out of office|holiday/i.test(
       event.summary ?? "",
     )
   ) return null;
   if (
-    !existing && !matches.length &&
+    !existing && !explicitlySession && !matches.length &&
     !/session|tutoring|lsat lesson/i.test(event.summary ?? "")
   ) return null;
   // Shared/archived/admin matches hold the task, even if one active match also exists.

@@ -15,7 +15,8 @@
 
 import type { Conversation } from "@/hooks/useInbox";
 import { localDayISO } from "@/lib/localDate";
-import type { PostSessionHomeState } from './postSessionModel';
+import type { PostSessionHomeState } from "./postSessionModel";
+import type { TeachingDesk } from "./teachingDeskModel";
 
 export type RegionState = "loading" | "error" | "ready";
 
@@ -51,12 +52,18 @@ export interface TeacherSessionRow {
 }
 
 export interface TeacherHomeModel {
+  desk?: TeachingDesk;
   postSession?: PostSessionHomeState;
   greeting: string;
   displayName: string;
   dateline: string;
   /** Unread conversations. `total` is the canonical count every badge shows. */
-  unread: { state: RegionState; total: number | null; rows: TeacherThreadRow[]; refreshFailed?: boolean };
+  unread: {
+    state: RegionState;
+    total: number | null;
+    rows: TeacherThreadRow[];
+    refreshFailed?: boolean;
+  };
   roster: {
     state: RegionState;
     total: number | null;
@@ -65,7 +72,11 @@ export interface TeacherHomeModel {
     all?: TeacherStudentRow[];
     refreshFailed?: boolean;
   };
-  sessions: { state: RegionState; rows: TeacherSessionRow[]; refreshFailed?: boolean };
+  sessions: {
+    state: RegionState;
+    rows: TeacherSessionRow[];
+    refreshFailed?: boolean;
+  };
 }
 
 export interface RosterInput {
@@ -86,7 +97,10 @@ const SHOWN_THREADS = 6;
 const SHOWN_STUDENTS = 5;
 
 function clockLabel(date: Date) {
-  return new Intl.DateTimeFormat("en-US", { hour: "numeric", minute: "2-digit" })
+  return new Intl.DateTimeFormat("en-US", {
+    hour: "numeric",
+    minute: "2-digit",
+  })
     .format(date)
     .replace(/\s?AM$/, " am")
     .replace(/\s?PM$/, " pm");
@@ -101,7 +115,10 @@ export function threadTimeLabel(iso: string, now: Date = new Date()): string {
   const yesterday = new Date(now);
   yesterday.setDate(now.getDate() - 1);
   if (day === localDayISO(yesterday)) return "Yesterday";
-  return new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric" }).format(date);
+  return new Intl.DateTimeFormat("en-US", {
+    month: "short",
+    day: "numeric",
+  }).format(date);
 }
 
 export function sessionDayLabel(iso: string, now: Date = new Date()): string {
@@ -111,13 +128,25 @@ export function sessionDayLabel(iso: string, now: Date = new Date()): string {
   const tomorrow = new Date(now);
   tomorrow.setDate(now.getDate() + 1);
   if (day === localDayISO(tomorrow)) return "Tomorrow";
-  return new Intl.DateTimeFormat("en-US", { weekday: "short", month: "short", day: "numeric" }).format(date);
+  return new Intl.DateTimeFormat("en-US", {
+    weekday: "short",
+    month: "short",
+    day: "numeric",
+  }).format(date);
 }
 
-export function activityLabel(lastSeenAt: string | null, now: Date = new Date()): string {
+export function activityLabel(
+  lastSeenAt: string | null,
+  now: Date = new Date(),
+): string {
   if (!lastSeenAt) return "No activity recorded";
   const date = new Date(lastSeenAt);
   if (Number.isNaN(date.getTime())) return "No activity recorded";
+  if (
+    now.getTime() - date.getTime() >= 0 &&
+    now.getTime() - date.getTime() < 5 * 60_000
+  )
+    return "Active in the last 5 minutes";
   if (localDayISO(date) === localDayISO(now)) return "Active today";
   const yesterday = new Date(now);
   yesterday.setDate(now.getDate() - 1);
@@ -141,17 +170,25 @@ export function buildUnreadThreads(
     .filter((thread) => thread.unread)
     .map((thread) => {
       const waiting = thread.latest_unread_message ?? null;
-      const receivedAt = waiting?.created_at ?? thread.latest_unread_at ?? thread.last_message_at;
+      const receivedAt =
+        waiting?.created_at ??
+        thread.latest_unread_at ??
+        thread.last_message_at;
       const other =
         thread.participants.find((p) => p.user_id === waiting?.sender_id) ??
-        thread.participants.find((p) => p.user_id !== viewerId && !p.is_admin) ??
+        thread.participants.find(
+          (p) => p.user_id !== viewerId && !p.is_admin,
+        ) ??
         thread.participants.find((p) => p.user_id !== viewerId);
-      const name = other?.display_name?.trim() || thread.subject?.trim() || "Student";
+      const name =
+        other?.display_name?.trim() || thread.subject?.trim() || "Student";
       return {
         id: thread.id,
         name,
         initial: name.slice(0, 1).toUpperCase(),
-        snippet: waiting?.body?.trim() || (thread.hasAttachments ? "Sent an attachment" : "New message"),
+        snippet:
+          waiting?.body?.trim() ||
+          (thread.hasAttachments ? "Sent an attachment" : "New message"),
         timeLabel: threadTimeLabel(receivedAt, now),
         receivedAt,
         hasAttachments: thread.hasAttachments,
@@ -159,7 +196,10 @@ export function buildUnreadThreads(
         route: `/teacher/inbox/platform:${thread.id}`,
       };
     })
-    .sort((a, b) => new Date(b.receivedAt).getTime() - new Date(a.receivedAt).getTime())
+    .sort(
+      (a, b) =>
+        new Date(b.receivedAt).getTime() - new Date(a.receivedAt).getTime(),
+    )
     .slice(0, SHOWN_THREADS);
 }
 
@@ -173,12 +213,20 @@ export function buildRoster(rows: RosterInput[], now: Date = new Date()) {
       activityLabel: activityLabel(row.last_seen_at, now),
       route: `/teacher/students/${encodeURIComponent(row.class_id)}`,
     }));
-  return { total: students.length, recent: students.slice(0, SHOWN_STUDENTS), all: students };
+  return {
+    total: students.length,
+    recent: students.slice(0, SHOWN_STUDENTS),
+    all: students,
+  };
 }
 
 /** Case- and accent-insensitive name match over every fetched student. */
-export function filterStudents(students: TeacherStudentRow[], query: string): TeacherStudentRow[] {
-  const fold = (value: string) => value.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
+export function filterStudents(
+  students: TeacherStudentRow[],
+  query: string,
+): TeacherStudentRow[] {
+  const fold = (value: string) =>
+    value.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
   const needle = fold(query.trim());
   if (!needle) return students;
   return students.filter((student) => fold(student.name).includes(needle));
@@ -196,27 +244,46 @@ export function buildSessions(
       name: names.get(session.student_id) ?? "Student",
       dayLabel: sessionDayLabel(session.scheduled_at, now),
       timeLabel: clockLabel(start),
-      durationLabel: session.duration_minutes ? `${session.duration_minutes} min` : null,
+      durationLabel: session.duration_minutes
+        ? `${session.duration_minutes} min`
+        : null,
       route: `/teacher/students/${encodeURIComponent(session.student_id)}/schedule`,
       scheduledAt: session.scheduled_at,
     };
   });
 }
 
-const ONES = ["No", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten"];
+const ONES = [
+  "No",
+  "One",
+  "Two",
+  "Three",
+  "Four",
+  "Five",
+  "Six",
+  "Seven",
+  "Eight",
+  "Nine",
+  "Ten",
+];
 
 /** The one line under the greeting, stated only from what loaded. */
 export function teacherLede(unread: TeacherHomeModel["unread"]): string {
   if (unread.state === "loading") return "Checking your inbox.";
-  if (unread.state === "error" || unread.total === null) return "Your inbox did not load. Retry below.";
-  const count = unread.total < ONES.length ? ONES[unread.total] : String(unread.total);
+  if (unread.state === "error" || unread.total === null)
+    return "Your inbox did not load. Retry below.";
+  const count =
+    unread.total < ONES.length ? ONES[unread.total] : String(unread.total);
   if (unread.refreshFailed) {
     // An old answer, said as one.
-    if (unread.total === 0) return "Nothing was unread when your inbox last loaded.";
+    if (unread.total === 0)
+      return "Nothing was unread when your inbox last loaded.";
     return unread.total === 1
       ? "One conversation was unread when your inbox last loaded."
       : `${count} conversations were unread when your inbox last loaded.`;
   }
   if (unread.total === 0) return "Every conversation is read.";
-  return unread.total === 1 ? "One conversation is unread." : `${count} conversations are unread.`;
+  return unread.total === 1
+    ? "One conversation is unread."
+    : `${count} conversations are unread.`;
 }

@@ -1292,3 +1292,131 @@ html.dark .classroom-root .classroom-home-task-checks input { color-scheme: dark
 @container classroom-home (max-width: 900px) {
   .classroom-root .classroom-home-teacher :is(.classroom-home-post-session, .classroom-home-region-main, .classroom-home-rail) { grid-column: 1; grid-row: auto; }
 }
+/* Teacher Home: compact work-led composition. Student styles above are unchanged. */
+.classroom-root .home-desk { gap:20px; padding-top:24px; padding-bottom:32px; }
+.classroom-root .home-desk-masthead {display:flex;align-items:center;justify-content:space-between;gap:16px;}
+.classroom-root .home-desk-masthead h1 {font:500 28px/1.15 var(--home-display);letter-spacing:-.025em;margin:0;}
+.classroom-root .home-desk-masthead p {font-size:13px;color:var(--home-muted);margin:8px 0 0;}
+.classroom-root .home-desk-header-actions {display:flex;align-items:center;gap:14px;font-size:14px;flex-wrap:wrap;}
+.classroom-root .home-desk-header-actions>a {min-height:44px;display:flex;align-items:center;}
+.home-desk-primary {background:#252b26;color:#fffefa;border:0;border-radius:8px;padding:10px 16px;min-height:44px;display:inline-flex;align-items:center;justify-content:center;font:500 14px/1.35 Outfit,sans-serif;cursor:pointer;}
+.classroom-root .home-desk-more-menu {position:relative;}
+.classroom-root .home-desk-more-menu summary {min-height:44px;display:flex;align-items:center;cursor:pointer;padding:0 8px;}
+.classroom-root .home-desk-more-menu>div {position:absolute;right:0;top:46px;background:var(--home-surface);box-shadow:0 8px 24px #252b2622;border-radius:10px;z-index:10;min-width:190px;padding:8px;}
+.classroom-root .home-desk-more-menu button {width:100%;text-align:left;padding:10px;min-height:44px;}
+.classroom-root .home-desk-attention {display:flex;align-items:stretch;gap:8px;flex-wrap:wrap;background:var(--home-surface);border-radius:12px;padding:4px 10px;}
+.classroom-root .home-desk-attention button {display:flex;gap:16px;justify-content:space-between;align-items:center;flex:1;min-height:44px;padding:8px 10px;font-size:13px;white-space:nowrap;}
+.classroom-root .home-desk-attention b {font-size:16px;font-weight:500;font-variant-numeric:tabular-nums;}
+.classroom-root .home-desk-main {display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:20px;align-items:start;}
+.classroom-root .home-desk-work-column,.classroom-root .home-desk-side-column {display:grid;gap:20px;min-width:0;}
+.classroom-root .home-desk .classroom-home-region {padding:20px;border-radius:14px;box-shadow:0 2px 0 #252b260b;border:0;background:var(--home-surface);min-width:0;}
+.classroom-root .home-desk .classroom-home-region-head {margin-bottom:4px;gap:10px;}
+.classroom-root .home-desk .classroom-home-region-head h2 {font:500 17px/1.3 var(--home-ui);letter-spacing:-.015em;text-transform:none;}
+.classroom-root .home-desk .classroom-home-region-head a {margin-left:auto;font-size:13px;min-height:44px;display:flex;align-items:center;}
+.classroom-root .home-desk .classroom-home-more {min-height:44px;font-size:13px;padding:0;}
+.classroom-root .home-desk .classroom-home-count {font-size:13px;background:var(--home-plane);min-width:24px;height:24px;font-weight:400;}
+.classroom-root .home-desk .classroom-home-session-task {padding:14px 0;border:0;border-top:1px solid var(--home-line);}
+.classroom-root .home-desk .classroom-home-task-heading {flex-wrap:nowrap;gap:12px;align-items:center;}
+.classroom-root .home-desk .classroom-home-task-heading h3 {font-size:16px;font-weight:500;overflow-wrap:anywhere;}
+.classroom-root .home-desk .classroom-home-task-heading p {font-size:12px;margin-top:4px;}
+.classroom-root .home-desk .classroom-home-task-heading button {font-size:13px;white-space:nowrap;border:0;padding:0 8px;flex-shrink:0;background:var(--home-plane);}
+.classroom-root .home-desk-task-summary {font-size:13px;line-height:1.5;color:var(--home-ink);margin:8px 0 0;}
+.classroom-root .home-desk-task-summary span {display:block;color:var(--home-muted);font-size:12px;margin-top:3px;}
+.classroom-root .home-desk .classroom-home-task-sync {margin:10px 0 0;}
+.home-desk :is(button,a,summary),.home-desk-sheet :is(button,a,summary) {transition:background-color 140ms,color 140ms,transform 140ms;}
+.home-desk button:active,.home-desk-sheet button:active {transform:translateY(1px);}
+.home-desk :is(button,a,summary):hover {text-decoration:underline;text-underline-offset:4px;}
+.home-desk :is(button,a,input,select,summary):focus-visible,.home-desk-sheet :is(button,a,input,select,summary):focus-visible {outline:2px solid #49685e;outline-offset:3px;}
+.home-desk button:disabled,.home-desk-sheet button:disabled {opacity:.55;cursor:wait;}
+.classroom-root .home-desk ul {list-style:none;margin:0;padding:0;}
+.classroom-root .home-desk-empty,.home-desk-empty {font-size:13px;line-height:1.5;color:var(--home-muted,#64665e);margin:8px 0;}
+.classroom-root .home-desk-footnote {font-size:12px;line-height:1.5;color:var(--home-muted);margin:10px 0 0;}
+.classroom-root .home-desk-manual-row {padding:10px 0;border-top:1px solid var(--home-line);}
+.classroom-root .home-desk-manual-line,.home-desk-manual-line {display:flex;align-items:center;gap:10px;min-width:0;}
+.classroom-root .home-desk-manual-line b,.home-desk-manual-line b {font-size:14px;font-weight:400;overflow-wrap:anywhere;}
+.classroom-root .home-desk-check,.home-desk-check {width:44px;height:44px;flex-shrink:0;border:1px solid #a4a69b;border-radius:9px;background:transparent;font-size:18px;}
+.classroom-root .home-desk small,.home-desk-sheet small {display:block;color:var(--home-muted,#64665e);font-size:12px;line-height:1.5;margin-top:4px;overflow-wrap:anywhere;}
+.classroom-root .home-desk-blocker {margin-left:54px;font-size:12px;}
+.classroom-root .home-desk-blocker summary,.home-desk-blocker summary {min-height:32px;align-content:center;cursor:pointer;width:fit-content;}
+.classroom-root .home-desk-blocker form,.home-desk-blocker form {display:grid;gap:8px;margin:8px 0;}
+.classroom-root .home-desk-blocked {color:#814e30;}
+.classroom-root .home-desk-agenda-list li {display:grid;grid-template-columns:110px minmax(0,1fr);gap:3px 12px;padding:10px 0;border-top:1px solid var(--home-line);}
+.classroom-root .home-desk-agenda-list time {font-size:12px;color:var(--home-muted);padding-top:3px;}
+.classroom-root .home-desk-agenda-list li>a,.classroom-root .home-desk-agenda-list li>b {font-size:14px;line-height:1.5;font-weight:500;overflow-wrap:anywhere;}
+.classroom-root .home-desk-agenda-list li>button,.classroom-root .home-desk-agenda-list li>details {grid-column:2;font-size:12px;min-height:32px;text-align:left;}
+.classroom-root .home-desk-agenda-list details summary {min-height:44px;align-content:center;cursor:pointer;}
+.classroom-root .home-desk-agenda-list details button {min-height:44px;padding:8px;}
+.classroom-root .home-desk-decisions li>button {display:flex;justify-content:space-between;align-items:center;gap:12px;padding:10px 0;width:100%;text-align:left;min-height:52px;}
+.classroom-root .home-desk-decisions li+li {border-top:1px solid var(--home-line);}
+.classroom-root .home-desk-decisions b {font-size:14px;font-weight:500;overflow-wrap:anywhere;}
+.classroom-root .home-desk-decision-actions {display:flex;flex-wrap:wrap;gap:4px 16px;margin-top:6px;font-size:13px;}
+.classroom-root .home-desk-decision-actions button {min-height:44px;}
+.classroom-root .home-desk-lower {display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:20px;align-items:start;}
+.classroom-root .home-desk-payment-list li {display:flex;justify-content:space-between;gap:12px;padding:12px 0;border-top:1px solid var(--home-line);font-size:14px;}
+.classroom-root .home-desk-payment-list b {font-weight:500;overflow-wrap:anywhere;}
+.classroom-root .home-desk-payment-list strong {font-weight:400;white-space:nowrap;font-variant-numeric:tabular-nums;}
+.classroom-root .home-desk-correspondence {display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px;}
+.classroom-root .home-desk-subhead {display:flex;justify-content:space-between;align-items:center;gap:6px;font-size:12px;}
+.classroom-root .home-desk h3 {font-size:14px;font-weight:500;margin:8px 0;}
+.classroom-root .home-desk-subhead :is(button,a) {min-height:44px;display:flex;align-items:center;}
+.classroom-root .home-desk-correspondence li {padding:8px 0;border-top:1px solid var(--home-line);}
+.classroom-root .home-desk-correspondence li :is(a,button) {display:block;text-align:left;width:100%;min-height:44px;}
+.classroom-root .home-desk-correspondence li b {font-size:14px;font-weight:500;}
+.classroom-root .home-desk-correspondence li small {overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;}
+.classroom-root .home-desk-student-columns {display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;}
+.classroom-root .home-desk-student-columns li>button {width:100%;text-align:left;min-height:44px;padding:8px 0;font-size:13px;}
+.classroom-root .home-desk-student-columns b {font-weight:400;}
+.home-desk-label,.home-desk-filters label {display:grid;gap:7px;font-size:14px;margin:12px 0;}
+.home-desk-label :is(input,select),.home-desk-filters :is(input,select),.home-desk-blocker input {min-width:0;width:100%;min-height:44px;padding:9px 11px;border:1px solid #b7b9ae;border-radius:8px;color:#252b26;background:#fffefa;font:400 14px/1.5 Outfit,sans-serif;}
+.home-desk-sheet {width:min(100%,720px)!important;max-width:720px!important;overflow-y:auto;border:0!important;background:#f7f6f0!important;color:#252b26!important;font-family:Outfit,sans-serif!important;padding:28px 24px!important;}
+.home-desk-overlay {background:#252b2670!important;}
+.home-desk-sheet>h2 {font:500 26px/1.2 Fraunces,serif;letter-spacing:-.02em;margin-bottom:8px;}
+.home-desk-sheet>p {font-size:14px;line-height:1.5;}
+.home-desk-sheet>button:last-child {width:44px;height:44px;display:flex;justify-content:center;align-items:center;}
+.home-desk-sheet .classroom-home-task-list {list-style:none;padding:0;margin:12px 0;}
+.home-desk-sheet .classroom-home-session-task {padding:16px 0;border-top:1px solid #d7d9ce;}
+.home-desk-sheet .classroom-home-task-heading {display:flex;justify-content:space-between;gap:12px;align-items:center;}
+.home-desk-sheet .classroom-home-task-heading h3 {font-size:16px;}
+.home-desk-sheet .classroom-home-task-heading p {font-size:12px;color:#64665e;}
+.home-desk-sheet :is(button,summary,a) {min-height:44px;cursor:pointer;}
+.home-desk-sheet .classroom-home-task-heading button {font-size:13px;}
+.home-desk-sheet .home-desk-task-summary {font-size:13px;line-height:1.5;}
+.home-desk-sheet .home-desk-task-summary span {display:block;color:#64665e;font-size:12px;}
+.home-desk-sheet .classroom-home-task-sync {font-size:12px;color:#64665e;margin:12px 0;}
+.home-desk-sheet .classroom-home-task-checks {display:grid;grid-template-columns:1fr 1fr;border:0;padding:0;margin:12px 0;gap:4px 12px;}
+.home-desk-sheet .classroom-home-task-checks label,.home-desk-feature-list label {display:flex;align-items:center;gap:8px;min-height:44px;font-size:14px;}
+.home-desk-sheet input[type=checkbox] {accent-color:#252b26;width:18px;height:18px;color-scheme:light;}
+.home-desk-sheet .classroom-home-task-links {display:flex;gap:8px 16px;flex-wrap:wrap;font-size:13px;}
+.home-desk-sheet .classroom-home-task-links :is(button,a) {text-decoration:underline;text-underline-offset:3px;}
+.home-desk-sheet .classroom-home-task-form {display:grid;gap:8px;margin:8px 0;}
+.home-desk-sheet .classroom-home-task-form :is(input,select) {min-width:0;width:100%;min-height:44px;border:1px solid #b7b9ae;border-radius:8px;padding:8px;}
+.home-desk-sheet .classroom-home-sr {position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);}
+.home-desk-filters {display:grid;grid-template-columns:1fr 1fr;gap:0 16px;}
+.home-desk-feature-list {margin:16px 0;}
+.home-desk-confirm {background:#e9ede5;padding:14px;border-radius:10px;font-size:14px;line-height:1.5;margin:16px 0;}
+.home-desk-text-button,.home-desk-danger {padding:10px 12px;min-height:44px;font-size:14px;}
+.home-desk-danger {color:#a62e22;}
+.home-desk-external {display:block;overflow-wrap:anywhere;padding:10px 0;}
+@container classroom-home (max-width: 860px) {.classroom-root .home-desk-main,.classroom-root .home-desk-lower {grid-template-columns:1fr;}.classroom-root .home-desk-correspondence {grid-template-columns:1fr 1fr;}.classroom-root .home-desk-masthead {align-items:flex-start;}.classroom-root .home-desk-header-actions {gap:8px;}.classroom-root .home-desk-masthead h1 {font-size:25px;}}
+@container classroom-home (max-width: 540px) {.classroom-root .home-desk-masthead {display:block;}.classroom-root .home-desk-header-actions {margin-top:12px;justify-content:space-between;}.classroom-root .home-desk-attention {display:grid;grid-template-columns:1fr 1fr;gap:0;padding:4px;}.classroom-root .home-desk-attention button {font-size:12px;gap:8px;}.classroom-root .home-desk .classroom-home-region {padding:16px;}.classroom-root .home-desk-correspondence,.classroom-root .home-desk-student-columns {grid-template-columns:1fr;gap:16px;}.classroom-root .home-desk .classroom-home-task-heading {align-items:flex-start;}.classroom-root .home-desk .classroom-home-task-heading button {font-size:12px;padding:0 8px;}.classroom-root .home-desk .classroom-home-task-heading h3 {font-size:15px;}.classroom-root .home-desk-agenda-list li {grid-template-columns:95px minmax(0,1fr);gap:3px 8px;}.classroom-root .home-desk {gap:14px;padding-top:16px;}.classroom-root .home-desk-main,.classroom-root .home-desk-work-column,.classroom-root .home-desk-side-column {gap:14px;}}
+@media(prefers-reduced-motion:reduce){.home-desk :is(button,a,summary),.home-desk-sheet,.home-desk-overlay {transition:none!important;animation:none!important;}.home-desk button:active,.home-desk-sheet button:active {transform:none;}}
+
+.classroom-root .home-desk-period {font-size:12px;color:var(--home-muted);}
+
+.classroom-root .home-desk .classroom-home-count {color:var(--home-ink);}
+/* Minimum working-text size; dates, source/status captions remain metadata. */
+.classroom-root .home-desk :is(button,a,summary) {font-size:14px!important;}
+.classroom-root .home-desk-task-summary,.home-desk-sheet .home-desk-task-summary,.classroom-root .home-desk-empty,.home-desk-empty {font-size:14px;}
+.classroom-root .home-desk-correspondence li small {font-size:14px;}
+.home-desk-sheet,.home-desk-overlay {animation-duration:160ms!important;transition-duration:160ms!important;}
+@container classroom-home (max-width:380px) {.classroom-root .home-desk .classroom-home-task-heading {display:grid;grid-template-columns:minmax(0,1fr);gap:4px;}.classroom-root .home-desk .classroom-home-task-heading button {justify-self:start;}}
+html.dark .home-desk-sheet {background:#222824!important;color:#efede6!important;}
+html.dark .home-desk-sheet :is(input,select) {background:#1d231f;color:#efede6;border-color:#596156;}
+html.dark .home-desk-sheet :is(.home-desk-empty,small,.classroom-home-task-heading p,.classroom-home-task-sync,.home-desk-task-summary span) {color:#b8bdaf;}
+html.dark .home-desk-confirm {background:#363d37;}
+html.dark :is(.home-desk,.home-desk-sheet) .home-desk-primary {background:#e6e8df;color:#252b26;}
+html.dark .home-desk-sheet input[type=checkbox] {color-scheme:dark;accent-color:#e6e8df;}
+@media(prefers-reduced-motion:reduce){.home-desk-sheet,.home-desk-overlay{animation-duration:0ms!important;transition-duration:0ms!important;}}
+
+/* Native mobile form fields stay at 16px so focusing never zooms the work surface. */
+@media(max-width:600px){.classroom-root .home-desk :is(input,select,textarea),.home-desk-sheet :is(input,select,textarea),.home-preview-toolbar select{font-size:16px!important;}}
