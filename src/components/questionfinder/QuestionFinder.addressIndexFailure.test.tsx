@@ -15,11 +15,13 @@ vi.mock("./useQuestionFinderBanks", () => ({
     lrFailed: false,
     rcFailed: false,
     retry: vi.fn(),
-    lr: [],
+    lr: [{ qid: "known", pt:101, section:2, qnum:1, questionStem:"Which is a flaw?", stimulus:"Known question", qtype:"Flaw" }],
     rcPassages: [],
     rcQuestions: [],
   }),
 }));
+
+vi.mock('@/lib/questionLoader', () => ({ questionBank: { getQuestion: () => ({ qid:'known', pt:101, section:2, qnum:1, stimulus:'Known question', questionStem:'Which is a flaw?', answerChoices:{A:'First',B:'Second',C:'Third',D:'Fourth',E:'Fifth'}, correctAnswer:'B' }) } }));
 
 const GOOD_INDEX = {
   tests: [{ pt: 140, sections: [{ section: 4, lr: [], rc: [{ id: 14, position: 1, title: "A", questions: [{ id: 1588, number: 1 }] }] }] }],
@@ -63,6 +65,19 @@ describe("QuestionFinder address index states", () => {
     expect(fetchMock).toHaveBeenCalledTimes(2);
     expect(within(dialog).queryByRole("alert")).toBeNull();
     expect(within(dialog).getByRole("option", { name: "PT 140" })).toBeInTheDocument();
+  });
+
+  it.each(['loading', 'failed'])('opens typed LR preview when RC index is %s', async state => {
+    const { default: Finder } = await import('./QuestionFinder');
+    globalThis.fetch = vi.fn(() => state === 'loading' ? new Promise(() => {}) : Promise.resolve({ ok:false, status:503 })) as unknown as typeof fetch;
+    render(<MemoryRouter><Finder returnTo='/classroom' bank='lr' /></MemoryRouter>);
+    fireEvent.click(screen.getByRole('button', { name:'Find a question' }));
+    const dialog=screen.getByRole('dialog', { name:'Find a question' });
+    if(state === 'failed') await within(dialog).findByRole('alert');
+    fireEvent.change(within(dialog).getByRole('textbox'), { target:{value:'PT101 S2 Q1'} });
+    expect(within(dialog).getByRole('button', {name:'Open preview'})).toBeEnabled();
+    fireEvent.click(within(dialog).getByRole('button', {name:'Open preview'}));
+    expect(screen.getByRole('button', {name:'Reveal answer'})).toBeInTheDocument();
   });
 
   it("still says Loading while the request is genuinely in flight", async () => {

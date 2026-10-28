@@ -181,8 +181,8 @@ describe("classroom rail access", () => {
     permissions.has_chat_access = false;
     await renderShell("/classroom");
     const messages = railButton(/^Messages/);
-    const find = railButton(/^Find a question/);
-    for (const shortcut of [messages, find]) {
+    expect(railButton(/^Find a question/)).toBeUndefined();
+    for (const shortcut of [messages]) {
       expect(shortcut).not.toBeDisabled();
       expect(shortcut).toHaveAttribute("aria-disabled", "true");
       expect(shortcut).toHaveTextContent("locked for your account");
@@ -199,23 +199,18 @@ describe("classroom rail access", () => {
     expect(screen.getByText(/Locked shortcuts aren.t available/)).toHaveTextContent("Message Joshua about access.");
   });
 
-  it("opens Messages and Find a question for an entitled account", async () => {
+  it("keeps Messages available and removes question lookup from the entitled rail", async () => {
     permissions.has_drill_access = true;
     await renderShell("/classroom");
-    fireEvent.click(railButton(/^Find a question/));
-    expect(screen.getByTestId("where")).toHaveTextContent("/practice/drills");
+    expect(railButton(/^Find a question/)).toBeUndefined();
     fireEvent.click(railButton(/^Messages/));
     expect(screen.getByTestId("where")).toHaveTextContent("/inbox");
   });
 
-  it("carries the sidebar's current route and query into question lookup", async () => {
-    permissions.has_drill_access = true;
+  it("removes question lookup from the teacher rail too", async () => {
+    permissions.is_admin = true;
     await renderShell("/progress/history?view=completed");
-    fireEvent.click(railButton(/^Find a question/));
-    const destination = new URL(screen.getByTestId("where").textContent ?? "", "https://test.invalid");
-    expect(destination.pathname).toBe("/practice/drills");
-    expect(destination.searchParams.get("finder")).toBe("open");
-    expect(destination.searchParams.get("finderReturnTo")).toBe("/progress/history?view=completed");
+    expect(railButton(/^Find a question/)).toBeUndefined();
   });
 });
 

@@ -204,9 +204,13 @@ export function ClassroomHomeView({
   onRetryWork,
   onRefresh,
   refreshing,
+  actorId,
+  permissionsResolved = !loading,
 }: {
   model: ClassroomHomeModel;
   loading: boolean;
+  actorId?: string | null;
+  permissionsResolved?: boolean;
   onOpen: (route: string) => void;
   onMarkDone?: (key: string) => void;
   onClearMessage?: (conversationId: string) => void;
@@ -452,9 +456,9 @@ export function ClassroomHomeView({
 
         <aside className="classroom-home-rail" aria-label="Practice and your week">
           <section className="classroom-home-tools" aria-label="Practice tools" data-home-reveal>
-            <div className="classroom-home-finderbar">
-              <QuestionFinder ref={finderRef} returnTo="/classroom" />
-            </div>
+            {permissionsResolved && model.access.drill ? <div className="classroom-home-finderbar">
+              <QuestionFinder key={actorId ?? "guest"} ref={finderRef} enabled={permissionsResolved && model.access.drill} actorId={actorId} returnTo="/classroom" />
+            </div> : null}
             <nav className="classroom-home-actions" aria-label="Practice actions">
               {model.access.drill ? (
                 <>

@@ -357,8 +357,8 @@ describe("ClassroomHomeView", () => {
     for (const name of ["Start assigned work", "Smart Drill", "Timed section"]) {
       expect(screen.queryByRole("button", { name })).toBeNull();
     }
-    // The finder was never gated on Home; the redesign keeps it that way.
-    expect(screen.getByRole("button", { name: "Find a question" })).toBeInTheDocument();
+    // Home lookup follows the same drill permission as Practice.
+    expect(screen.queryByRole("button", { name: "Find a question" })).not.toBeInTheDocument();
     expect(screen.queryByRole("button", { name: /Inbox,/ })).toBeNull();
     expect(screen.getByLabelText("Next seven days")).toBeInTheDocument();
   });
@@ -1029,4 +1029,29 @@ describe("featured work and Up next", () => {
     expect(queue.querySelectorAll(".classroom-home-row")).toHaveLength(4);
     expect(screen.getByText("8 open assignments · 0 with saved work")).toBeInTheDocument();
   });
+});
+
+
+describe("Home question finder permission lifecycle", () => {
+  it.each([true, false])("does not mount lookup while permissions resolve (drill=%s)", drill => {
+    render(<ClassroomHomeView model={{...EMPTY, access: {...EMPTY.access, drill}}} loading={false} permissionsResolved={false} onOpen={vi.fn()} />);
+    expect(screen.queryByRole("button", {name: "Find a question"})).not.toBeInTheDocument();
+    fireEvent.keyDown(window, {key: "k", ctrlKey: true});
+    expect(screen.queryByRole("dialog", {name: "Find a question"})).not.toBeInTheDocument();
+  });
+  it("unmounts an open lookup on permission revocation", () => {
+    const view = render(<ClassroomHomeView model={EMPTY} actorId="student" loading={false} onOpen={vi.fn()} />);
+    fireEvent.click(screen.getByRole("button", {name: "Find a question"}));
+    expect(screen.getByRole("dialog", {name: "Find a question"})).toBeInTheDocument();
+    view.rerender(<ClassroomHomeView model={{...EMPTY, access: {...EMPTY.access, drill: false}}} actorId="student" loading={false} onOpen={vi.fn()} />);
+    expect(screen.queryByRole("dialog", {name: "Find a question"})).not.toBeInTheDocument();
+  });
+  it("closes the previous actor's lookup when the account changes", () => {
+    const view = render(<ClassroomHomeView model={EMPTY} actorId="actor-a" loading={false} onOpen={vi.fn()} />);
+    fireEvent.click(screen.getByRole("button", {name: "Find a question"}));
+    expect(screen.getByRole("dialog", {name: "Find a question"})).toBeInTheDocument();
+    view.rerender(<ClassroomHomeView model={EMPTY} actorId="actor-b" loading={false} onOpen={vi.fn()} />);
+    expect(screen.queryByRole("dialog", {name: "Find a question"})).not.toBeInTheDocument();
+  });
+
 });

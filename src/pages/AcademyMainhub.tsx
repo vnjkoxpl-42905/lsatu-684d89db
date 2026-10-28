@@ -200,8 +200,19 @@ export default function AcademyMainhub({
   lookupParams.delete("finder");
   lookupParams.delete("finderReturnTo");
   const lookupSearch = lookupParams.toString();
-  const lookupReturnTo = safeRcReturnTo(searchParams.get("finderReturnTo"))
-    ?? `${location.pathname}${lookupSearch ? `?${lookupSearch}` : ""}`;
+  const cleanedPractice = `${location.pathname}${lookupSearch ? `?${lookupSearch}` : ""}`;
+  const sanitizeOrigin = (value: string | null) => {
+    const safe = safeRcReturnTo(value);
+    if (!safe) return cleanedPractice;
+    const parsed = new URL(safe, window.location.origin);
+    parsed.searchParams.delete("finder");
+    parsed.searchParams.delete("finderReturnTo");
+    return `${parsed.pathname}${parsed.search}${parsed.hash}`;
+  };
+  const [finderLaunch, setFinderLaunch] = React.useState<{ origin: string; seed: "LR" | "RC"; kind: "url"; actor: string | null } | null>(null);
+  const acknowledgedFinder = React.useRef<string | null>(null);
+  const finderEnabled = !perms.loading && (perms.is_admin || !!perms.has_drill_access);
+  const lookupReturnTo = finderEnabled && finderLaunch?.actor === (user?.id ?? null) ? finderLaunch.origin : cleanedPractice;
   const questionFinderRef = React.useRef<QuestionFinderHandle>(null);
   const navigate = useNavigate();
   const viewParam = searchParams.get("view");
@@ -232,17 +243,29 @@ export default function AcademyMainhub({
     }
   };
 
+  const sectionParam = searchParams.get(DRILL_SECTION_PARAM);
+  const section = React.useMemo(() => resolveDrillSection(sectionParam), [sectionParam]);
+  React.useEffect(() => { setFinderLaunch(null); acknowledgedFinder.current = null; }, [user?.id]);
+  React.useEffect(() => { if (!finderEnabled) setFinderLaunch(null); }, [finderEnabled]);
   React.useEffect(() => {
-    if (searchParams.get("finder") !== "open") return;
-    questionFinderRef.current?.open();
+    if (searchParams.get("finder") !== "open" || !finderEnabled || acknowledgedFinder.current === location.key) return;
+    const seed: "LR" | "RC" = section === "rc" ? "RC" : "LR";
+    const origin = sanitizeOrigin(searchParams.get("finderReturnTo"));
+    const launch = { origin, seed, kind: "url" as const, actor: user?.id ?? null };
+    if (!questionFinderRef.current?.open({ bank: seed, returnTo: origin, replacePreview: true })) return;
+    setFinderLaunch(launch);
+    acknowledgedFinder.current = location.key;
     const next = new URLSearchParams(searchParams);
     next.delete("finder");
     next.delete("finderReturnTo");
+    if (!next.get(DRILL_SECTION_PARAM)) next.set(DRILL_SECTION_PARAM, section);
     setSearchParams(next, { replace: true });
-  }, [searchParams, setSearchParams]);
-
-  const sectionParam = searchParams.get(DRILL_SECTION_PARAM);
-  const section = React.useMemo(() => resolveDrillSection(sectionParam), [sectionParam]);
+  }, [searchParams, finderEnabled, location.key, section, user?.id, setSearchParams]);
+  const finishFinder = () => {
+    const launch = finderLaunch;
+    setFinderLaunch(null);
+    if (launch?.kind === "url" && launch.actor === (user?.id ?? null)) navigate(launch.origin, { replace: true });
+  };
   const rcBuilderRequested = searchParams.has('builder') || searchParams.get('stage') === 'type-drill'
     || ['saved', 'passages', 'count', 'timing', 'secondsPerPassage', 'reveal', 'start', 'assignment', 'assignmentId', 'ptRun', 'ptLeg', 'timedSection'].some(key => searchParams.has(key));
   const isRcLanding = section === 'rc' && view === 'create' && !rcBuilderRequested;
@@ -319,7 +342,7 @@ export default function AcademyMainhub({
      states its own section and Back is deterministic. Runs once: the guard is
      false as soon as the param exists. */
   React.useEffect(() => {
-    if (sectionParam != null && sectionParam.trim() !== "") return;
+    if (searchParams.get("finder") === "open" || (sectionParam != null && sectionParam.trim() !== "")) return;
     const next = new URLSearchParams(searchParams);
     next.set(DRILL_SECTION_PARAM, section);
     setSearchParams(next, { replace: true });
@@ -471,6 +494,10 @@ export default function AcademyMainhub({
           </div>
           {!(section === "lr" && view === "create" && isLauncherStage) && <SectionToggle section={section} onChange={changeSection} />}
         </nav>
+        <div data-motion-enter className={`drill-observatory-tools${section === "rc" && rcBuilderRequested ? " rc-builder-question-shortcut" : ""}`}>
+          <QuestionJump hideTrigger={section === "lr" && view === "create" && isLauncherStage} key={user?.id ?? "guest"} ref={questionFinderRef} enabled={finderEnabled} actorId={user?.id} returnTo={lookupReturnTo} tone={theme === "dark" ? "dark" : "light"} bank={section} withSearch={false} triggerLabel="Find a question" onDismiss={finishFinder} onPreviewClose={finishFinder} />
+          {searchParams.get("finder") === "open" && !perms.loading && !finderEnabled && <p role="alert">Question finder requires access to Drills.</p>}
+        </div>
         {view === "saved" ? (section === "rc" ? (
           <section data-motion-enter className="rc-page rc-embedded rc-saved-workspace" aria-label="Saved RC drills">
             <h1>Saved RC drills</h1>
@@ -514,9 +541,6 @@ export default function AcademyMainhub({
             })()}
           </section>
         ) : section === "rc" && stage !== "analytics" ? <>
-          <div className={`drill-observatory-tools${rcBuilderRequested ? ' rc-builder-question-shortcut' : ''}`}>
-            <QuestionJump ref={questionFinderRef} returnTo={lookupReturnTo} tone={theme === "dark" ? "dark" : "light"} bank="rc" withSearch={false} triggerLabel="Find a passage or question" />
-          </div>
           {rcBuilderRequested ? <section data-motion-enter className="rc-create-workspace rounded-xl border border-border bg-card p-5 sm:p-7" aria-label="RC drill setup">
             <button type="button" className="rc-practice-back" onClick={closeRcBuilder}>Back to RC practice</button>
             <RcHubSurface embedded showHistory={false} openPickerOnEntry={searchParams.get('builder') === 'manual'} />
@@ -551,15 +575,6 @@ export default function AcademyMainhub({
             dark-on-black in dark theme, the mirror of the 1.07:1 ivory-on-cream
             fail it was written to fix. The section switch beside it follows the
             same stage tokens; the finder's trigger is a dark pill either way. */}
-        {!isLauncherStage && <div data-motion-enter className="drill-observatory-tools">
-          <QuestionJump
-            ref={questionFinderRef}
-            returnTo={lookupReturnTo}
-            tone={theme === "dark" ? "dark" : "light"}
-            bank={section}
-            withSearch={false}
-          />
-        </div>}
 
         {/* The hero stays mounted across section changes (its content swaps in
             place so the LR/RC switch never shows an empty frame), and leaves
