@@ -1,0 +1,210 @@
+{
+  "date": "2026-10-19",
+  "fixture": "full",
+  "attempt": {
+    "id": "b95d8b00-4d91-41ec-852b-e456b0b247e8",
+    "preptest": 101,
+    "section": 1,
+    "passage_ids": [
+      1188,
+      1190,
+      1192,
+      1195
+    ],
+    "elapsed_seconds": 110,
+    "completed": true,
+    "started_at": "2026-10-19T04:00:26.121906+00:00",
+    "finished_at": "2026-10-19T04:02:30.418+00:00"
+  },
+  "recaps": [
+    {
+      "id": "d4c15a93-8de7-4ec0-b5a3-bc26b41bf64b",
+      "recap_key": "p1-para1-recall",
+      "kind": "recall",
+      "voice": "spoken",
+      "recording_state": "saved",
+      "capture_id": "66a441ba-be57-42e4-baac-f5079210948d",
+      "recall_start_ms": 39900,
+      "recall_end_ms": 40899
+    },
+    {
+      "id": "3faa388b-e7df-48bf-9549-7d5db830e363",
+      "recap_key": "p1-para2-recall",
+      "kind": "recall",
+      "voice": "spoken",
+      "recording_state": "saved",
+      "capture_id": "66a441ba-be57-42e4-baac-f5079210948d",
+      "recall_start_ms": 56902,
+      "recall_end_ms": 57903
+    },
+    {
+      "id": "5f72181e-c1cf-49a7-b3d9-087f6b23eb1c",
+      "recap_key": "p1-para3-recall",
+      "kind": "recall",
+      "voice": "spoken",
+      "recording_state": "saved",
+      "capture_id": "66a441ba-be57-42e4-baac-f5079210948d",
+      "recall_start_ms": 59917,
+      "recall_end_ms": 60907
+    },
+    {
+      "id": "c5b00a27-a19f-4af0-a42c-297806b639cb",
+      "recap_key": "p2-para1-recall",
+      "kind": "recall",
+      "voice": "spoken",
+      "recording_state": "saved",
+      "capture_id": "66a441ba-be57-42e4-baac-f5079210948d",
+      "recall_start_ms": 78916,
+      "recall_end_ms": 79902
+    },
+    {
+      "id": "dae285e5-82ad-418f-9e7a-786b5e44acbe",
+      "recap_key": "p2-para2-recall",
+      "kind": "recall",
+      "voice": "spoken",
+      "recording_state": "saved",
+      "capture_id": "66a441ba-be57-42e4-baac-f5079210948d",
+      "recall_start_ms": 81902,
+      "recall_end_ms": 82901
+    },
+    {
+      "id": "537e9ca9-5c87-4dd0-a956-7729a601a755",
+      "recap_key": "p2-para3-recall",
+      "kind": "recall",
+      "voice": "spoken",
+      "recording_state": "saved",
+      "capture_id": "66a441ba-be57-42e4-baac-f5079210948d",
+      "recall_start_ms": 84903,
+      "recall_end_ms": 85903
+    },
+    {
+      "id": "652a81a0-642d-4bb8-83af-b5ce5172d887",
+      "recap_key": "p2-para4-recall",
+      "kind": "recall",
+      "voice": "spoken",
+      "recording_state": "saved",
+      "capture_id": "66a441ba-be57-42e4-baac-f5079210948d",
+      "recall_start_ms": 87902,
+      "recall_end_ms": 88902
+    },
+    {
+      "id": "a85b1227-6a44-46e9-8d1e-27f3614beb40",
+      "recap_key": "p3-para1-recall",
+      "kind": "recall",
+      "voice": "spoken",
+      "recording_state": "saved",
+      "capture_id": "66a441ba-be57-42e4-baac-f5079210948d",
+      "recall_start_ms": 91903,
+      "recall_end_ms": 92903
+    },
+    {
+      "id": "7eee5a92-7303-48e2-ade8-10e9c7ec808e",
+      "recap_key": "p3-para2-recall",
+      "kind": "recall",
+      "voice": "spoken",
+      "recording_state": "saved",
+      "capture_id": "66a441ba-be57-42e4-baac-f5079210948d",
+      "recall_start_ms": 94902,
+      "recall_end_ms": 95904
+    },
+    {
+      "id": "1c400e3e-f684-48ce-8abf-a1b074e9e4f3",
+      "recap_key": "p3-para3-recall",
+      "kind": "recall",
+      "voice": "spoken",
+      "recording_state": "saved",
+      "capture_id": "66a441ba-be57-42e4-baac-f5079210948d",
+      "recall_start_ms": 97903,
+      "recall_end_ms": 98903
+    },
+    {
+      "id": "15d5bc64-97a8-43bf-bc22-16865bf052bb",
+      "recap_key": "p4-para1-recall",
+      "kind": "recall",
+      "voice": "spoken",
+      "recording_state": "saved",
+      "capture_id": "66a441ba-be57-42e4-baac-f5079210948d",
+      "recall_start_ms": 101904,
+      "recall_end_ms": 102906
+    },
+    {
+      "id": "2f0084af-c775-4f51-85ec-95835746af93",
+      "recap_key": "p4-para2-recall",
+      "kind": "recall",
+      "voice": "spoken",
+      "recording_state": "saved",
+      "capture_id": "66a441ba-be57-42e4-baac-f5079210948d",
+      "recall_start_ms": 104904,
+      "recall_end_ms": 105905
+    },
+    {
+      "id": "e83ead18-d787-4ac5-9f41-334f3c3176fe",
+      "recap_key": "p4-para3-recall",
+      "kind": "recall",
+      "voice": "spoken",
+      "recording_state": "saved",
+      "capture_id": "66a441ba-be57-42e4-baac-f5079210948d",
+      "recall_start_ms": 107904,
+      "recall_end_ms": 108908
+    }
+  ],
+  "captures": [
+    {
+      "id": "66a441ba-be57-42e4-baac-f5079210948d",
+      "recording_state": "saved",
+      "duration_ms": 111084,
+      "created_at": "2026-10-19T04:00:36.275804+00:00",
+      "updated_at": "2026-10-19T04:02:29.481152+00:00"
+    }
+  ],
+  "progress": [
+    {
+      "attempt_id": "b95d8b00-4d91-41ec-852b-e456b0b247e8",
+      "passage_position": 1,
+      "passage_id": 1188,
+      "active_ms": 61913,
+      "completed": true,
+      "completed_at": "2026-10-19T04:01:38.347675+00:00",
+      "created_at": "2026-10-19T04:01:38.347675+00:00",
+      "updated_at": "2026-10-19T04:01:38.347675+00:00"
+    },
+    {
+      "attempt_id": "b95d8b00-4d91-41ec-852b-e456b0b247e8",
+      "passage_position": 2,
+      "passage_id": 1190,
+      "active_ms": 26998,
+      "completed": true,
+      "completed_at": "2026-10-19T04:02:06.33436+00:00",
+      "created_at": "2026-10-19T04:02:06.33436+00:00",
+      "updated_at": "2026-10-19T04:02:06.33436+00:00"
+    },
+    {
+      "attempt_id": "b95d8b00-4d91-41ec-852b-e456b0b247e8",
+      "passage_position": 3,
+      "passage_id": 1192,
+      "active_ms": 8999,
+      "completed": true,
+      "completed_at": "2026-10-19T04:02:16.343249+00:00",
+      "created_at": "2026-10-19T04:02:16.343249+00:00",
+      "updated_at": "2026-10-19T04:02:16.343249+00:00"
+    },
+    {
+      "attempt_id": "b95d8b00-4d91-41ec-852b-e456b0b247e8",
+      "passage_position": 4,
+      "passage_id": 1195,
+      "active_ms": 9044,
+      "completed": true,
+      "completed_at": "2026-10-19T04:02:26.40924+00:00",
+      "created_at": "2026-10-19T04:02:26.40924+00:00",
+      "updated_at": "2026-10-19T04:02:26.40924+00:00"
+    }
+  ],
+  "gradeCount": 0,
+  "checks": {
+    "allExpectedSpokenRecapsSaved": true,
+    "oneContinuousSavedCapture": true,
+    "validRecallWindows": true,
+    "completedPassageTimesMatchSelection": true,
+    "noAIGradeRows": true
+  }
+}

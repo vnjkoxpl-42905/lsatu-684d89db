@@ -1,0 +1,26 @@
+{
+  "name": "LSAT U Builder",
+  "settings": {
+    "workbench.secondarySideBar.defaultVisibility": "visible",
+    "workbench.activityBar.compact": true,
+    "workbench.editor.labelFormat": "medium",
+    "workbench.browser.openLocalhostLinks": true,
+    "workbench.browser.showInTitleBar": true,
+    "workbench.browser.dataStorage": "workspace",
+    "terminal.integrated.defaultLocation": "view",
+    "peacock.color": "#2f6f5e"
+  },
+  "extensions": [
+    "anthropic.claude-code",
+    "openai.chatgpt",
+    "ms-playwright.playwright",
+    "usernamehw.errorlens",
+    "gruntfuggly.todo-tree",
+    "johnpapa.vscode-peacock",
+    "eamodio.gitlens",
+    "yzhang.markdown-all-in-one",
+    "ms-edgedevtools.vscode-edge-devtools"
+  ],
+  "keybindings": "../keybindings/lsatu-cockpit.keybindings.json",
+  "tasks": "../../.vscode/tasks.json"
+}

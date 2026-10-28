@@ -1,0 +1,609 @@
+PT,Section,Question,QuestionType,QuestionSubtype,Features,Difficulty,Attempts,QID,Name
+103,2,14,Paradox,Comparison,Comparison | Timeframes | Science | Animals,2,2,4471,The common ancestors of Australian
+103,3,2,Method,Causation,Causation | Anti-Causal | Plausibility,2,2,4484,From the tenth century
+103,3,12,Must be False,Comparison,Comparison | Causation | Causal Chains,2,2,4494,The Levant—the area that borders
+103,3,20,Most Supported,EXCEPT,EXCEPT | Conditional Logic,5,2,4502,Only poetry cannot be translated
+103,2,2,Most Supported,Proposition/Generalization,Proposition/Generalization | Causal Difference-Maker,1,2,4459,Once a child’s imagination becomes
+103,3,5,Flaw,Causation,Causation | Anti-Causal | Rebuttals | Flaw Hybrid | Focused on Evidence,1,2,4487,Consumer: I would like to have
+103,2,4,Flaw,Conditional Logic,Conditional Logic | Famous Flaws | Rebuttals | Inappropriate Appeals,2,2,4461,Politician P: My opponent claims
+103,2,6,Must be True,Conditional Logic,Conditional Logic | Science | Comparison,2,2,4463,The largest volcano on Mars rises
+103,3,7,Most Supported,Comparison,Comparison | Important Pivot | Logical Completion | Causation,2,2,4489,Lack of exercise produces the same
+103,3,16,Method,Rebuttals,Rebuttals,4,2,4498,The recently negotiated North American
+103,3,6,Weaken,Comparison,Comparison | Plans / Recommendations | 2-Speaker,2,3,4488,First legislator: Medical research
+103,2,3,Agree/Disagree,Conditional Logic,Conditional Logic | 2-Speaker,1,3,4460,Trisha: Today’s family is declining
+103,3,1,Paradox,,,1,3,4483,From the tenth century
+107,1,4,Paradox,Animals,Animals | Breadcrumbs,2,3,4740,Cats spend much of their time sleeping;
+103,3,17,Flaw,Conditional Logic,Conditional Logic | Conditional Conclusion,3,3,4499,Parents who wish to provide a strong
+107,1,1,Agree/Disagree,2-Speaker,2-Speaker,3,3,4737,Politician: The funding for the new
+103,2,18,Paradox,Conditional Logic,Conditional Logic,4,3,4475,Each child in a group of young
+103,3,18,Paradox,,,4,3,4500,A stingray without parasites is
+103,3,25,Principle-Conform,Implicit Principles,Implicit Principles,4,3,4507,Credit card companies justify charging
+105,4,15,Most Supported,,,5,3,7447,"Ideally, scientific laws should display"
+103,2,1,Flaw,Conditional Logic,Conditional Logic | Famous Flaws | Inappropriate Appeals,1,3,4458,Insurance that was to become effective
+105,4,2,Paradox,EXCEPT,EXCEPT,1,3,7434,The blues is a modern musical
+105,4,7,Principle-Strengthen,Principles in Answers,Principles in Answers,1,3,7439,"Willett: Lopez and Simmons, a"
+107,1,2,Method,Plans / Recommendations,Plans / Recommendations | 2-Speaker | Comparison | Abstract Answers | Medical | Reduction to Absurd,1,3,4738,The smoker’s response
+103,3,11,Necessary Assumption,Assumes Similarity,Assumes Similarity | Comparison | Argue the Anti-Conclusion | Rebuttals | Analogies,2,3,4493,Lindsey has been judged to be a
+105,4,1,Most Supported,Rebuttals,Rebuttals | Belief / Knowledge / Intent | Important Pivot,2,3,7433,Shortly after Isaac Newton circulated
+105,4,12,Most Supported,Principles in Answers,Principles in Answers | Important Pivot,2,3,7444,Nearly everyone has complained of
+105,4,23,Parallel Flaw,Comparison,Comparison | Rebuttals | Belief / Knowledge / Intent | Battle of Opinions,2,3,7455,Donna claims to have found
+107,1,3,Strengthen,EXCEPT,EXCEPT | Plans / Recommendations | Net Effect,2,3,4739,There should be a greater use of
+107,1,8,Most Supported,Science,Science | Causation | Rebuttals | Medical | Contrapositive Logic | Causal Chains,2,3,4744,Nutritionist: Many people claim
+107,1,25,Paradox,EXCEPT,EXCEPT | Comparison | Timeframes,2,3,4761,The indigenous people of Tasmania
+105,4,8,Weaken,Conditional Logic,Conditional Logic | Necessary vs. Sufficient Flaw | Famous Flaws,3,3,7440,Linguist: Only if a sentence
+105,4,20,Method,,,3,3,7452,James: Chemists have recently invented
+107,1,10,Paradox,Science,Science | Causation | Breadcrumbs | Medical,3,3,4746,The symptoms of hepatitis A appear
+107,1,23,Parallel Flaw,Quantifiers,Quantifiers | Conditional Logic | Conditional Diagramming,4,3,4759,"Linda says that, as a scientist,"
+103,2,11,Strengthen,Comparison,Comparison | Plans / Recommendations | Defender | Unintended Consequence,2,4,4468,Commercial passenger airplanes can be equipped
+103,2,24,Agree/Disagree,Conditional Logic,Conditional Logic | 2-Speaker | Causal Difference-Maker | Principles in Answers,5,4,4481,Monica’s and Hector’s statements
+103,2,13,Necessary Assumption,Causation,Causation | Comparison | Plans / Recommendations | Defender | Plausibility,1,4,4470,A local television station is considering
+106,2,4,Method,Conditional Logic,Conditional Logic | Rebuttals | 2-Speaker | Reduction to Absurd | Faulty Implications,1,4,8344,Whittaker: There can be no such
+107,3,16,Parallel,Conditional Logic,Conditional Logic | Contrapositive Logic | Predictions,1,4,8105,Allowing more steel imports would
+102,4,10,Weaken,,,2,4,7643,The Board of Trustees
+103,1,3,Flaw,Comparison,Comparison | Famous Flaws | Part vs. Whole,2,4,8444,The number of calories in a gram
+103,1,13,Must be False,Conditional Logic,Conditional Logic | Refute a Conditional,2,4,8454,Some people think that in every
+103,2,7,Necessary Assumption,Conditional Logic,Conditional Logic | Argue the Anti-Conclusion | Anti-Causal | Plans / Recommendations | New Concept in Conclusion | Defender,2,4,4464,Speakers of the Caronian language
+103,2,16,Parallel,Conditional Logic,Conditional Logic | Conditional Diagramming,2,4,4473,Every new play that runs for more
+107,1,19,Principle-Conform,Principles in Answers,Principles in Answers | Conditional Logic | Missing Link / Idea | Important Pivot | Intermediate Conclusions | New Concept in Conclusion | Implicit Principles | Links Between Premises,2,4,4755,Arbitrator: The shipping manager
+108,3,3,Paradox,EXCEPT,EXCEPT,2,4,7508,The local fair held its
+108,3,21,Weaken,Causation,Causation | Comparison | Plans / Recommendations | Experiments / Studies | Alternatives | Medical | Sampling Flaw,2,4,7526,Advertisement for a lactase supplement:
+109,4,3,Agree/Disagree,2-Speaker,2-Speaker,2,4,8141,Muriel: I admire Favilla’s novels
+109,4,23,Method,Comparison,Comparison,2,4,8161,The spokesperson proceeds by
+103,3,15,Most Supported,Science,Science | Math-y Stuff,3,4,4497,A person’s dietary consumption
+105,4,5,Weaken,,,3,4,7437,The most reliable way to
+105,4,11,Strengthen,,,3,4,7443,On the basis of research
+105,4,16,Strengthen,,,3,4,7448,The miscarriage of justice in
+107,1,9,Agree/Disagree,2-Speaker,2-Speaker | Causation | Unintended Consequence,3,4,4745,Jean: Our navigational equipment
+103,2,19,Must be True,Conditional Logic,Conditional Logic | EXCEPT,4,4,4476,Anthropologist: Violence is an
+103,2,20,Parallel Flaw,Conditional Logic,Conditional Logic,4,4,4477,"Martha’s friend, who is very knowledgeable"
+103,2,23,Principle-Strengthen,Conditional Logic,Conditional Logic | Principles in Answers,4,4,4480,"In a certain municipality, a judge"
+105,4,24,Principle-Conform,Principles in Answers,Principles in Answers | Conditional Logic | Missing Link / Idea,4,4,7456,If an external force intervenes
+102,4,16,Must be False,Conditional Logic,Conditional Logic,5,4,7649,Essayist: Wisdom and intelligence
+102,4,26,Must be False,,,5,4,7659,"At night, a flock of crows will"
+105,4,21,Must be False,EXCEPT,EXCEPT,5,4,7453,Ethicist: A person who treats
+107,1,18,Must be True,Quantifiers,Quantifiers | Conditional Logic,5,4,4754,Some planning committee members
+107,1,21,Must be True,Conditional Logic,Conditional Logic | Causal Difference-Maker | Important Pivot | Dense Stimulus | Breadcrumbs,5,4,4757,Editorial: The government claims that
+107,1,22,Principle-Strengthen,Principles in Answers,Principles in Answers | Contrapositive Logic | Dense Stimulus | New Concept in Conclusion,5,4,4758,Editorial: The government claims
+107,3,22,Most Supported,Conditional Logic,Conditional Logic | Contrapositive Logic | Rebuttals | Animals,5,4,8111,Biologist: Some speculate that
+102,3,8,Method,Comparison,Comparison | Science | 2-Speaker | Animals,1,4,8398,In responding to the ornithologist’s
+105,4,6,Main Conclusion,Rebuttals,Rebuttals | Plans / Recommendations | Important Pivot | Alternatives,1,4,7438,"Willett: Lopez and Simmons, a"
+105,4,13,Flaw,Causation,Causation | Explain Curious Fact | Famous Flaws | Unproven vs. Proven False,1,4,7445,Television allows us to transmit
+106,1,6,Agree/Disagree,2-Speaker,2-Speaker | Rebuttals | Science | Dense Stimulus | Medical,1,4,4641,Hospital auditor: The Rodriguez family
+106,2,2,Flaw,Comparison,Comparison | Famous Flaws | Part vs. Whole,1,4,8342,"The law firm of Sutherlin, Pérez,"
+106,2,7,Evaluate,Comparison,Comparison | Plans / Recommendations | Net Effect | Math-y Stuff | Argue the Anti-Conclusion | Medical | Percentages | Missing Half the Comparison,1,4,8347,For every 50 dogs that contract
+106,3,10,Method,Conditional Logic,Conditional Logic | Plans / Recommendations | 2-Speaker,1,4,4694,Laura: Harold is obviously lonely.
+107,3,3,Method,Comparison,Comparison | Analogies | 2-Speaker | Unintended Consequence,1,4,8092,Land developer: By attempting to
+108,3,12,Strengthen,Comparison,Comparison | Plans / Recommendations,1,4,7517,Geologist: A geological fault in the mountain
+108,3,25,Method,Causation,Causation | Comparison | Analogies | Rebuttals | 2-Speaker | Reduction to Absurd,1,4,7530,Anthropologist: After mapping the complete
+109,4,1,Flaw,Comparison,Comparison | Famous Flaws | Conditional Conclusion | Sampling Flaw,1,4,8139,"Advertisement: Among popular automobiles, Sturdimades"
+109,4,6,Parallel Flaw,Comparison,Comparison | Plans / Recommendations | Argue the Anti-Conclusion,1,4,8144,A worker for a power company trims
+102,2,2,Parallel Flaw,Conditional Logic,Conditional Logic | Comparison | Conversational Abstraction,2,4,7586,No one wants this job as much as
+102,2,11,Principle-Conform,Weighing Tradeoffs,"Weighing Tradeoffs | Plans / Recommendations | Animals | Principles in Answers | Politics / Government / Law | Natural History / Environment / Anthropology | Claim, not Argument",2,4,7595,A Habitat Conservation Plan (HCP)
+102,4,4,Flaw,Famous Flaws,Famous Flaws | Rebuttals | Ad Hominem,2,4,7637,Columnist: The country is presently
+102,4,5,Principle-Strengthen,Conditional Logic,Conditional Logic | Principles in Answers,2,4,7638,"If the ivory trade continues, experts"
+102,4,19,Method,Comparison,Comparison | Plans / Recommendations | 2-Speaker,2,4,7652,"Inez: In these poor economic times,"
+102,4,20,Parallel,Comparison,Comparison | Analogies,2,4,7653,In some ill-considered popularizations
+102,4,21,Method,,,2,4,7654,Paul responds to Sarah’s argument
+103,1,2,Method,Comparison,Comparison | 2-Speaker,2,4,8443,Lambert: The proposal to raise
+106,1,13,Parallel,Conditional Logic,Conditional Logic | Contrapositive Logic | Untriggered Conditional | Intermediate Conclusions,2,4,4648,The reasoning in the passage is
+106,3,3,Paradox,Causation,Causation | Comparison | Animals,2,4,4687,Birds startled by potential predators
+106,3,23,Principle-Conform,Principles in Stimulus,Principles in Stimulus | Conditional Logic,2,4,4707,Ethicist: It is widely believed
+107,3,11,Method,Conditional Logic,Conditional Logic | Plans / Recommendations | Rebuttals,2,4,8100,Astronomer: Astronomical observations
+107,3,13,Method,Causation,Causation | Comparison,2,4,8102,Charles: During recessions unemployment typically rises
+107,3,21,Paradox,Comparison,Comparison | Math-y Stuff,2,4,8110,A study of the difference in earnings
+108,3,10,Weaken,Causation,Causation | Explain Curious Fact | Alternatives,2,4,7515,Many people joke about Friday
+108,3,17,Paradox,EXCEPT,EXCEPT | Plans / Recommendations,2,4,7522,"Radial keratotomy (RK), a surgery"
+102,2,7,Main Conclusion,Rebuttals,Rebuttals | Main Point | Causation | Analogies | Important Pivot | Politics / Government / Law,3,4,7591,Generations of European-history
+102,3,16,Agree/Disagree,2-Speaker,2-Speaker,3,4,8406,Motorcoach driver: Professional
+102,4,14,Principle-Conform,Principles in Answers,Principles in Answers | Missing Link / Idea,3,4,7647,We have a moral obligation not
+105,2,25,Method,2-Speaker,2-Speaker | Plans / Recommendations,3,4,8290,Tom: Employers complain that people
+105,4,3,Most Supported,Comparison,Comparison | Medical,3,4,7435,Nutritionist: A study revealed that
+105,4,9,Weaken,Conditional Logic,Conditional Logic | Causation | Anti-Causal | Timeframes | Untriggered Conditional,3,4,7441,To allay public concern about
+108,3,26,Agree/Disagree,2-Speaker,2-Speaker | Necessary vs. Sufficient Flaw | Animals,3,4,7531,Anthropologist: After mapping the complete
+102,2,8,Most Supported,Proposition/Generalization,Proposition/Generalization | Causation | Explain Curious Fact | Alternatives,4,4,7592,Toddlers are not being malicious
+106,3,21,Parallel Flaw,Conditional Logic,Conditional Logic | Conditional Diagramming | Necessary vs. Sufficient Flaw | Famous Flaws,4,4,4705,"If the law punishes littering,"
+108,3,14,Parallel Flaw,Plans / Recommendations,Plans / Recommendations | Net Effect | Assumes Difference | Rebuttals | Quantifiers | 2-Speaker,4,4,7519,Wu: Jurgens is dishonest and
+105,4,4,Necessary Assumption,Conditional Logic,Conditional Logic | Missing Link / Idea | Rebuttals | New Concept in Conclusion,2,5,7436,Maude is incessantly engaging in
+105,4,25,Main Conclusion,Comparison,Comparison | Rebuttals | Net Effect | Important Pivot | Main Point,2,5,7457,Some residents of Midville claim
+103,2,5,Weaken,Causation,Causation | Plausibility | Argue the Anti-Conclusion | Assumes Difference,3,5,4462,In defending the Hyperion School
+103,3,3,Strengthen,Causation,Causation | Anti-Causal | Plans / Recommendations | Animals,3,5,4485,Even though trading in ivory has
+106,1,15,Strengthen,Plans / Recommendations,Plans / Recommendations | Defender | Argue the Anti-Conclusion | Predictions | Intermediate Conclusions | Missing Link / Idea,3,5,4650,The town of Springhill frequently must declare
+106,3,15,Weaken,Conditional Logic,Conditional Logic | Refute a Conditional,3,5,4699,Human beings have cognitive faculties
+103,3,19,Flaw,Math-y Stuff,Math-y Stuff | Comparison | Relative vs. Absolute | Statistics | Percentages | Timeframes | Rebuttals | Percent vs. Amount,4,5,4501,"Over the past 20 years, skiing"
+106,1,20,Must be False,Conditional Logic,Conditional Logic | Conditional Diagramming | Contrapositive Logic | Money / Business / Economics | Conditional Chain | Fact Triggers a Rule,5,5,4655,"If the economy is weak, then prices"
+108,3,23,Most Supported,Conditional Logic,Conditional Logic | Dense Stimulus | Politics / Government / Law | Conditional Chain,5,5,7528,Commentator: A political constitution that
+102,3,14,Flaw,,,1,5,8404,Herbalist: Many of my customers
+106,2,12,Principle-Strengthen,Conditional Logic,Conditional Logic | Comparison | Principles in Answers,1,5,8352,After several attempts to distract
+106,2,24,Principle-Strengthen,Conditional Logic,Conditional Logic | Principles in Answers,1,5,8364,Marianne is a professional chess player
+106,3,6,Strengthen,Causation,Causation | Plans / Recommendations | New Concept in Conclusion | Missing Link / Idea | Breadcrumbs,1,5,4690,Jane: Television programs and movies
+106,3,9,Strengthen,Comparison,Comparison | Assumes Difference,1,5,4693,Market research traditionally entails
+109,1,3,Agree/Disagree,2-Speaker,2-Speaker,1,5,5244,Juan: Unlike the ancient Olympic
+102,2,5,Weaken,Comparison,Comparison | Plans / Recommendations | Weighing Tradeoffs | Money / Business / Economics,2,5,7589,Advances in photocopying technology allow criminals
+102,3,6,Method,2-Speaker,2-Speaker,2,5,8396,Legislator: Your agency is responsible
+102,3,11,Method,Comparison,Comparison | 2-Speaker,2,5,8401,Debbie attempts to counter Carl’s
+103,3,4,Role,ROLE,ROLE,2,5,4486,The government has spent heavily
+105,2,2,Weaken,Comparison,Comparison,2,5,8267,A director of the Rexx Pharmaceutical
+105,2,17,Parallel Flaw,Conditional Logic,Conditional Logic,2,5,8282,Whenever a company loses a major
+106,1,3,Parallel Flaw,Famous Flaws,Famous Flaws | Part vs. Whole,2,5,4638,For any given ticket in a 1000-ticket
+106,2,8,Necessary Assumption,Conditional Logic,Conditional Logic | Causation | Plans / Recommendations | Defender | Alternatives | Medical,2,5,8348,The symptoms of mental disorders
+106,3,18,Principle-Strengthen,Principles in Answers,Principles in Answers | Intermediate Conclusions | Conditional Logic | Missing Link / Idea | Science | New Concept in Conclusion,2,5,4702,The human brain and its associated
+107,1,11,Main Conclusion,Science,Science | Refute a Conditional | Rebuttals | Dense Stimulus | Important Pivot | Intermediate Conclusions | Animals | Main Point,2,5,4747,"Of the following, which one most"
+107,3,4,Weaken,Causation,Causation | Comparison | Plans / Recommendations,2,5,8093,Most small children are flat-footed.
+107,3,6,Necessary Assumption,Comparison,Comparison | Assumes Difference | Predictions,2,5,8095,Astorga’s campaign promises are
+107,4,17,Principle-Conform,Principles in Answers,Principles in Answers | Causation | Comparison | Missing Link / Idea | Plans / Recommendations | New Concept in Conclusion | Plausibility | Implicit Principles,2,5,4829,Studies of the reliability of eyewitness
+108,2,5,Necessary Assumption,Conditional Logic,Conditional Logic | Missing Link / Idea | Plans / Recommendations | Untriggered Conditional,2,5,7486,Smith's new grazing land consists
+108,2,8,Most Supported,Proposition/Generalization,Proposition/Generalization,2,5,7489,The traditional way to define
+108,3,1,Necessary Assumption,EXCEPT,EXCEPT | Conditional Logic | Causation | Missing Link / Idea | Plans / Recommendations | Defender | Links Between Premises,2,5,7506,Despite the best efforts of
+108,3,2,Weaken,,,2,5,7507,Astronomer: Mount Shalko is the
+108,3,5,Flaw,Comparison,Comparison | Net Effect,2,5,7510,Researchers have developed a membrane
+108,3,11,Necessary Assumption,Assumes Difference,Assumes Difference | Plans / Recommendations | Comparison | Defender,2,5,7516,The everyday behavior of whales
+108,3,13,Method,,,2,5,7518,Mall manager: By congregating in
+102,2,15,Weaken,Comparison,Comparison | Math-y Stuff | Science | Conditional Logic | Conditional Conclusion,3,5,7599,Some plants have extremely sensitive
+102,2,19,Most Supported,Causation,Causation | Comparison | Science | EXCEPT,3,5,7603,"In all mammalian species, the period"
+102,3,12,Weaken,Comparison,Comparison | 2-Speaker,3,5,8402,Carl: Researchers who perform operations
+102,4,22,Agree/Disagree,2-Speaker,2-Speaker,3,5,7655,The main point at issue between
+103,3,9,Necessary Assumption,Conditional Logic,Conditional Logic | Missing Link / Idea | Defender,3,5,4491,Scientific and technological discoveries
+103,3,13,Parallel Flaw,Famous Flaws,Famous Flaws | Conditional Logic | Necessary vs. Sufficient Flaw | Conditional Conclusion | Only One Premise,3,5,4495,Using rational argument in advertisements
+106,2,21,Agree/Disagree,2-Speaker,2-Speaker,3,5,8361,The point at issue between Wirth
+107,1,6,Must be True,Causation,Causation | Volume Dial | Set of Non-Chaining Rules | Medical,3,5,4742,"These days, drug companies and"
+107,4,1,Strengthen,Comparison,Comparison | Plans / Recommendations | Net Effect | Assumes Similarity | Science | Weighing Tradeoffs,3,5,4813,Combustion of gasoline in automobile
+107,4,11,Strengthen,Causation,Causation | Explain Curious Fact | Alternatives | Plausibility | Animals | Comparison,3,5,4823,Sometimes when their trainer gives
+108,2,4,Paradox,,,3,5,7485,High cholesterol levels are highly
+108,2,9,Evaluate,Refute a Conditional,Refute a Conditional,3,5,7490,Very powerful volcanic eruptions send
+108,2,11,Agree/Disagree,2-Speaker,2-Speaker,3,5,7492,Mario: The field of cognitive
+108,2,17,Most Supported,Comparison,Comparison | Explain Curious Fact | Causal Difference-Maker | Experiments / Studies,3,5,7498,Two hundred randomly selected subjects
+108,3,7,Strengthen,,,3,5,7512,The existing works of ancient
+108,3,22,Principle-Strengthen,Principles in Answers,Principles in Answers | 2-Speaker,3,5,7527,Jim: I hear that the company
+109,4,8,Strengthen,Comparison,Comparison | Plans / Recommendations,3,5,8146,Early in the development of a new
+102,4,13,Paradox,Comparison,Comparison | Causation,4,5,7646,"Unlike other primroses, self-pollinating"
+102,4,15,Must be False,EXCEPT,EXCEPT,4,5,7648,The southern half of a certain
+103,1,12,Most Supported,Conditional Logic,Conditional Logic | Causation,4,5,8453,On their way from their nest to
+103,2,17,Flaw,Assumes Similarity,Assumes Similarity | Timeframes | Rebuttals | Belief / Knowledge / Intent | First Sentence Conclusion | Defender | Conditional Logic | Self-Contradiction | Comparison,4,5,4474,Commissioner: I have been incorrectly
+105,2,23,Most Supported,Causation,Causation,4,5,8288,Chronic back pain is usually caused
+105,4,18,Weaken,,,4,5,7450,In a study in which
+105,4,19,Weaken,,,4,5,7451,A successful chess-playing computer
+106,2,13,Most Supported,Conditional Logic,Conditional Logic | Causation,4,5,8353,Mature white pines intercept almost
+106,3,12,Must be False,EXCEPT,EXCEPT | Famous Flaws | Rebuttals | Part vs. Whole | Quantifiers | Important Pivot,4,5,4696,Letter to the Editor: Your article
+106,3,13,Paradox,Rebuttals,Rebuttals | Science | Dense Stimulus | Experiments / Studies | Animals,4,5,4697,A recent study concludes that prehistoric
+107,3,15,Most Supported,Conditional Logic,Conditional Logic | Causation,4,5,8104,For the condor to survive in the
+107,4,19,Paradox,EXCEPT,EXCEPT | Comparison | Timeframes | Belief / Knowledge / Intent,4,5,4831,In the decade from the mid-1980s
+107,4,22,Must be False,Conditional Logic,Conditional Logic | Refute a Conditional | Quantifiers,4,5,4834,Critic: Most chorale preludes were
+108,3,18,Must be False,EXCEPT,EXCEPT | Conditional Logic | Games-y LR,4,5,7523,Chelas and Stelma are required
+109,4,4,Must be True,Refute a Conditional,Refute a Conditional | Conditional Logic,4,5,8142,John’s statements commit him to
+109,4,7,Must be True,,,4,5,8145,"Currently, the city of Grimchester"
+109,4,14,Most Supported,Causation,Causation,4,5,8152,"When soil is plowed in the spring,"
+109,4,17,Paradox,,,4,5,8155,Council member: The preservation
+102,2,21,Must be True,Conditional Logic,Conditional Logic | Weighing Tradeoffs,5,5,7605,If this parking policy is unpopular
+102,2,22,Parallel,Refute a Conditional,Refute a Conditional | Repetitve Answers,5,5,7606,It is an absurd idea that whatever
+102,3,22,Parallel Flaw,Conditional Logic,Conditional Logic,5,5,8412,Congenial guests and a plentiful
+103,1,22,Evaluate,Conditional Logic,Conditional Logic | Comparison,5,5,8463,"When a planetary system forms,"
+103,1,26,Weaken,Comparison,Comparison | 2-Speaker,5,5,8467,Sasha: Handwriting analysis should be banned
+103,2,15,Flaw,Conditional Logic,Conditional Logic | Famous Flaws,5,5,4472,Editorialist: Society is obligated
+103,2,21,Flaw,Conditional Logic,Conditional Logic,5,5,4478,Attorney for Ziegler: My client
+103,3,22,Must be True,Set of Non-Chaining Rules,Set of Non-Chaining Rules | Games-y LR,5,5,4504,If the statements in the passage
+103,3,23,Principle-Conform,Principles in Stimulus,Principles in Stimulus | Binaries | Games-y LR,5,5,4505,According to the principle stated
+103,3,24,Weaken,Math-y Stuff,Math-y Stuff | Comparison | New Concept in Conclusion | Worst of the Worst,5,5,4506,"Over the last 25 years, the average"
+106,1,11,Must be False,EXCEPT,EXCEPT | Comparison | Animals | Medical | Math-y Stuff,5,5,4646,Sharks have a higher ratio of cartilage
+106,1,17,Paradox,Math-y Stuff,Math-y Stuff,5,5,4652,When a community opens a large
+106,2,10,Most Supported,Explain Curious Fact,Explain Curious Fact | Rebuttals | Plausibility,5,5,8350,The art critic’s response to the
+106,2,26,Paradox,EXCEPT,EXCEPT,5,5,8366,Smoking in bed has long been the
+107,3,24,Flaw,Comparison,Comparison | Famous Flaws | Battle of Opinions,5,5,8113,Mr. Nance: Ms. Chan said that she
+107,4,21,Parallel Flaw,Quantifiers,Quantifiers,5,5,4833,All too many weaklings are also
+109,4,13,Sufficient Assumption,Conditional Logic,Conditional Logic,5,5,8151,Politician: The bill that makes
+109,4,20,Parallel,Conditional Logic,Conditional Logic,5,5,8158,It would be wrong to conclude that
+105,1,3,Strengthen,Comparison,Comparison | Plans / Recommendations | Assumes Difference,1,5,7359,Space programs have recently suffered
+105,1,4,Weaken,Causation,Causation | Explain Curious Fact | Experiments / Studies | Alternatives | Medical,1,5,7360,In an experiment testing whether
+105,1,13,Method,Plans / Recommendations,Plans / Recommendations,1,5,7369,If an artist receives a public
+107,4,6,Main Conclusion,Rebuttals,Rebuttals | Main Point | Important Pivot,1,5,4818,Some judges complain about statutes
+108,2,1,Agree/Disagree,2-Speaker,2-Speaker,1,5,7482,Jorge: It is obvious that
+105,1,12,Parallel,Conditional Logic,Conditional Logic | Conditional Diagramming | Contrapositive Logic,2,5,7368,Alice will volunteer to work
+105,1,22,Parallel Flaw,Comparison,Comparison | Plans / Recommendations | Rebuttals,2,5,7378,Editorial: Supporters of the proposed
+105,1,24,Principle-Strengthen,Principles in Answers,Principles in Answers | Conditional Logic | Missing Link / Idea,2,5,7380,Editorial: Our society has a
+105,2,15,Flaw,Comparison,Comparison | Experiments / Studies | Focused on Evidence,2,5,8280,A report of a government survey
+106,1,14,Must be True,Conditional Logic,Conditional Logic | Conditional Diagramming | Contrapositive Logic | Science,2,5,4649,The axis of Earth’s daily rotation
+107,1,24,Weaken,Breadcrumbs,Breadcrumbs | Argue the Anti-Conclusion | Plans / Recommendations | Unintended Consequence,2,5,4760,Automobile-emission standards are
+107,4,10,Principle-Conform,Implicit Principles,Implicit Principles | Comparison,2,5,4822,Parents should not necessarily
+107,4,12,Most Supported,Conditional Logic,Conditional Logic | Contrapositive Logic | Ruling Out Options | Important Pivot | Plans / Recommendations | Conditional Diagramming,2,5,4824,Editorialist: Drivers with a large
+107,4,16,Agree/Disagree,2-Speaker,2-Speaker,2,5,4828,Franklin: It is inconsistent to
+107,4,25,Flaw,Comparison,Comparison | Plans / Recommendations | Assumes Similarity,2,5,4837,Formal performance evaluations
+108,2,18,Flaw,,,2,5,7499,Sid: The sign says
+109,1,2,Method,Abstract Answers,Abstract Answers | method analogy | Comparison | Analogies,2,5,5243,Sheila: It has been argued
+109,1,15,Parallel Flaw,Conditional Logic,Conditional Logic | Necessary vs. Sufficient Flaw,2,5,5256,People who are good at
+103,1,5,Flaw,Rebuttals,Rebuttals | Focused on Evidence,3,5,8446,Attorneys for a criminal defendant
+105,2,8,Method,Causation,Causation | Abstract Answers | Ruling Out Options | Alternatives,3,5,8273,Millions of female bats rear their
+106,1,8,Paradox,Comparison,Comparison | Assumes Difference | Timeframes | Science,3,5,4643,"Generally speaking, if the same"
+106,1,12,Necessary Assumption,Conditional Logic,Conditional Logic | Rebuttals | Assumes Similarity | Contrapositive Logic | Untriggered Conditional | Missing Link / Idea,3,5,4647,The author’s conclusion in the
+107,3,2,Main Conclusion,,,3,5,8091,"Mayor of Otterville, a suburb of"
+109,4,12,Most Supported,Comparison,Comparison | Math-y Stuff | Important Pivot,3,5,8150,Most adults in country X consume
+107,3,1,Necessary Assumption,Comparison,Comparison | Analogies | Plans / Recommendations | Assumes Similarity | Conditional Conclusion | Plausibility,1,6,8090,Braille is a method of producing
+106,1,4,Principle-Strengthen,Principles in Answers,Principles in Answers | Missing Link / Idea | Conditional Logic | Comparison | Conditional Conclusion | Weighing Tradeoffs | Medical,2,6,4639,Dental researcher: Filling a cavity
+106,2,15,Parallel,Conditional Logic,Conditional Logic | Conditional Diagramming,2,6,8355,Rhonda will see the movie tomorrow
+108,2,20,Necessary Assumption,Conditional Logic,Conditional Logic | Conditional Diagramming | Science | Missing Link / Idea | Contrapositive Logic | Intermediate Conclusions | Two-Pronged Conclusion,2,6,7501,One of the most important
+109,4,11,Necessary Assumption,Comparison,Comparison | Conditional Logic | Missing Link / Idea | Ruling Out Options | New Concept in Conclusion | Animals,2,6,8149,Even though apes are the only nonhuman
+108,3,6,Paradox,Causation,Causation,4,6,7511,Shortly after the power plant
+103,1,23,Paradox,Comparison,Comparison | Math-y Stuff | Money / Business / Economics,5,6,8464,Construction contractors working
+103,2,25,Necessary Assumption,Conditional Logic,Conditional Logic | Rebuttals | Missing Link / Idea | 2-Speaker | Conditional Conclusion | Links Between Premises | Untriggered Conditional,5,6,4482,The argument Hector makes in responding
+105,1,17,Most Supported,Conditional Logic,Conditional Logic | Comparison | Quantifiers,5,6,7373,The difference between manners and
+109,4,24,Weaken,,,5,6,8162,Party spokesperson: The opposition party's
+102,2,3,Most Supported,Causation,Causation | Logical Completion | Causal Chains | Medical,1,6,7587,Many people limit the intake of
+103,1,4,Necessary Assumption,Conditional Logic,Conditional Logic | Causation | Missing Link / Idea | New Concept in Conclusion | Plans / Recommendations,1,6,8445,"In order to increase production,"
+104,1,5,Strengthen,Causation,Causation | Explain Curious Fact | Plausibility,1,6,4539,During the 1980’s Japanese collectors
+105,2,5,Strengthen,Comparison,Comparison,1,6,8270,Archaeologist: A large corporation
+107,4,7,Principle-Strengthen,Principles in Answers,Principles in Answers | Missing Link / Idea | Science | Plans / Recommendations | Weighing Tradeoffs,1,6,4819,Conservationist: The population of a certain wildflower
+108,2,2,Flaw,,,1,6,7483,"John: For 40 years, fluoride"
+102,3,3,Most Supported,Causation,Causation | Comparison,2,6,8393,"In a recession, a decrease in consumer"
+102,3,19,Most Supported,Conditional Logic,Conditional Logic | Science,2,6,8409,When an ordinary piece of steel
+102,4,2,Must be True,Comparison,Comparison,2,6,7635,Twenty professional income-tax
+102,4,8,Flaw,Conditional Logic,Conditional Logic,2,6,7641,Knowledge of an ancient language
+103,1,6,Flaw,Causation,Causation | Comparison,2,6,8447,Videocassette recorders (VCRs)
+103,1,7,Strengthen,Causation,Causation,2,6,8448,The cumbersome spears that were
+103,1,18,Method,Rebuttals,Rebuttals | Abstract Answers | 2-Speaker | Volume Dial,2,6,8459,Politician: A government that taxes
+103,1,19,Most Supported,Conditional Logic,Conditional Logic | Comparison,2,6,8460,"Sponges attach to the ocean floor,"
+104,1,15,Method,Relative vs. Absolute,Relative vs. Absolute | Rebuttals | Math-y Stuff | 2-Speaker | Implied Conclusion,2,6,4549,Tony: Few anarchists have ever
+105,1,2,Role,Rebuttals,Rebuttals | First Sentence Conclusion,2,6,7358,Tennyson's line of poetry
+105,2,13,Agree/Disagree,2-Speaker,2-Speaker,2,6,8278,An issue in dispute between Yolanda
+106,1,19,Flaw,Comparison,Comparison | Timeframes | Belief / Knowledge / Intent | Battle of Opinions,2,6,4654,The postmodern view involves the
+106,2,3,Weaken,Causation,Causation | Comparison,2,6,8343,Opponents of allowing triple-trailer
+106,2,5,Strengthen,Comparison,Comparison | EXCEPT,2,6,8345,A newly developed light bulb is
+106,3,4,Most Supported,EXCEPT,EXCEPT | Causation,2,6,4688,Raising the humidity of a room
+106,3,24,Strengthen,Comparison,Comparison | Explain Curious Fact | Timeframes | Math-y Stuff | Plausibility,2,6,4708,Surviving seventeenth-century Dutch
+107,4,15,Role,ROLE,ROLE | First Sentence Conclusion | Abstract Answers,2,6,4827,Ambiguity inspires interpretation.
+108,2,6,Weaken,,,2,6,7487,News item: The result of a
+108,2,7,Most Supported,Animals,Animals,2,6,7488,When an invading insect threatens
+108,2,16,Parallel,Causation,Causation | Explain Curious Fact | Anti-Causal | Alternatives,2,6,7497,Researcher: Results indicate that the
+108,2,19,Strengthen,,,2,6,7500,Newspaper editorial: Many pharmaceutical companies
+108,3,8,Main Conclusion,Refute a Conditional,Refute a Conditional | Rebuttals,2,6,7513,A metaphor is the application
+109,1,1,Strengthen,,,2,6,5242,Marmosets are the only primates
+109,1,6,Strengthen,,,2,6,5247,A recent national study of
+102,3,20,Parallel,Conditional Logic,Conditional Logic,3,6,8410,Anyone who insists that music videos
+103,1,20,Paradox,Causation,Causation | Comparison,3,6,8461,There is strong evidence that the
+103,2,10,Necessary Assumption,Comparison,Comparison | Plans / Recommendations | Weighing Tradeoffs | Net Effect | Defender,3,6,4467,Commercial passenger airplanes can be equipped
+103,3,10,Flaw,Famous Flaws,Famous Flaws | Causation,3,6,4492,"Tires may be either underinflated,"
+105,1,15,Agree/Disagree,2-Speaker,2-Speaker,3,6,7371,Jessica: The budget surplus should
+105,4,10,Principle-Conform,Implicit Principles,Implicit Principles | Causation | Explain Curious Fact | Alternatives,3,6,7442,In the course of his
+106,2,6,Must be True,Conditional Logic,Conditional Logic,3,6,8346,"The Rienzi, a passenger ship, sank"
+106,2,9,Role,Abstract Answers,Abstract Answers | Intermediate Conclusions | 2-Speaker | First Sentence Conclusion,3,6,8349,The assertion that a later artist
+106,3,8,Must be True,Quantifiers,Quantifiers | Abstract Answers | Set of Non-Chaining Rules,3,6,4692,Some environmentalists question
+106,3,26,Parallel,Rebuttals,Rebuttals,3,6,4710,It is common to respond to a person
+107,1,5,Necessary Assumption,Comparison,Comparison | Missing Link / Idea | Plans / Recommendations | Assumes Similarity | Argue the Anti-Conclusion,3,6,4741,Barnes: The two newest employees
+107,1,13,Parallel,Conditional Logic,Conditional Logic | New Concept in Conclusion | Abstract Answers,3,6,4749,The top priority of the school
+108,2,10,Method,,,3,6,7491,Mario: The field of cognitive
+108,2,21,Parallel Flaw,Comparison,Comparison | Timeframes | Rebuttals | Ad Hominem | Hypocrisy / Conflicting Behavior | Famous Flaws,3,6,7502,The experts who now assure
+109,1,8,Paradox,,,3,6,5249,Few animals brave the midday
+109,1,14,Paradox,,,3,6,5255,After the United Nations Security
+109,4,15,Strengthen,EXCEPT,EXCEPT,3,6,8153,"In 1992, there were over 250 rescues"
+109,4,25,Must be True,Conditional Logic,Conditional Logic,3,6,8163,Essayist: Every contract negotiator
+102,2,14,Paradox,Causation,"Causation | Comparison | Math-y Stuff | Money / Business / Economics | A Difference, Not a Paradox",4,6,7598,As a preliminary to negotiating
+102,3,5,Paradox,Causation,Causation | Comparison,4,6,8395,Adults who work outside the home
+102,3,21,Strengthen,Causation,Causation | Defender | Plausibility,4,6,8411,Medieval Arabs had manuscripts
+102,4,7,Strengthen,Comparison,Comparison,4,6,7640,Consumers will be hurt by the new
+102,4,17,Flaw,Comparison,Comparison | Famous Flaws | Rebuttals | Equivocation,4,6,7650,"Concerned citizen: The mayor, an"
+103,1,16,Agree/Disagree,2-Speaker,2-Speaker,4,6,8457,The point at issue between Henry
+103,3,21,Sufficient Assumption,Missing Link / Idea,Missing Link / Idea | Conditional Logic | New Concept in Conclusion,4,6,4503,The companies that are the prime
+105,1,6,Must be True,Conditional Logic,Conditional Logic | Morality / Ethics / Philosophy | Fact Triggers a Rule,4,6,7362,We should do what will
+105,1,25,Paradox,Math-y Stuff,Math-y Stuff,4,6,7381,A clothing manufacturer reports that
+105,2,18,Paradox,,,4,6,8283,In recent years the climate has
+106,1,10,Principle-Conform,Principles in Answers,Principles in Answers | Principles in Stimulus | Conditional Logic | Contrapositive Logic,4,6,4645,It is a principle of economics
+106,2,20,Parallel Flaw,,,4,6,8360,The report released by the interior
+106,2,25,Weaken,Conditional Logic,Conditional Logic | Plans / Recommendations | Rebuttals | Intermediate Conclusions,4,6,8365,Marianne is a professional chess player
+106,3,17,Weaken,Comparison,Comparison | Assumes Difference,4,6,4701,"In 1992, a major newspaper circulated"
+107,1,7,Flaw,Causation,Causation | Explain Curious Fact | Anti-Causal | Experiments / Studies,4,6,4743,"In Debbie’s magic act, a volunteer"
+107,3,9,Strengthen,Causation,Causation | Comparison,4,6,8098,The official’s conclusion is most
+107,3,17,Most Supported,Comparison,Comparison | Timeframes | Math-y Stuff | Animals | Important Pivot,4,6,8106,Wild cheetahs live in the African
+107,4,9,Weaken,Comparison,Comparison | Net Effect | Predictions | Assumes Similarity | Timeframes,4,6,4821,Because of increases in the price
+107,4,23,Must be True,Science,Science | Conditional Logic | Conditional Diagramming | Math-y Stuff | Breadcrumbs,4,6,4835,Quasars—celestial objects so far
+108,2,13,Agree/Disagree,2-Speaker,2-Speaker,4,6,7494,Ramona: One of the primary
+108,2,14,Strengthen,,,4,6,7495,Essayist: Some researchers criticize British
+108,2,24,Principle-Strengthen,Principles in Answers,Principles in Answers | Weighing Tradeoffs,4,6,7505,Agricultural economist: We can increase
+108,3,16,Principle-Conform,Principles in Stimulus,Principles in Stimulus,4,6,7521,To act responsibly in one's
+108,3,20,Agree/Disagree,2-Speaker,2-Speaker,4,6,7525,"Sarah: Reporters, by allotting time"
+109,4,10,Agree/Disagree,2-Speaker,2-Speaker,4,6,8148,Critic: Some writers have questioned
+109,4,26,Weaken,Conditional Logic,Conditional Logic | Comparison | Net Effect,4,6,8164,A member of the British Parliament
+102,2,13,Most Supported,Comparison,Comparison | Math-y Stuff | Money / Business / Economics | Strongest Claims,5,6,7597,Numismatist: In medieval Spain
+102,3,4,Weaken,Causation,Causation,5,6,8394,Scientists analyzing air bubbles
+103,1,21,Parallel Flaw,Conditional Logic,Conditional Logic | Comparison | Quantifiers,5,6,8462,Not all tenured faculty are full
+103,2,12,Weaken,Causation,Causation | Explain Curious Fact | Comparison,5,6,4469,The higher the average fat intake
+105,2,19,Parallel,Conditional Logic,Conditional Logic,5,6,8284,No one in the French department
+105,2,22,Flaw,Famous Flaws,Famous Flaws | Self-Contradiction,5,6,8287,To hold criminals responsible for
+105,2,24,Must be True,Comparison,Comparison,5,6,8289,"Each December 31 in Country Q,"
+106,1,24,Sufficient Assumption,Conditional Logic,Conditional Logic | Conditional Diagramming | Contrapositive Logic | Intermediate Conclusions | New Concept in Conclusion | Missing Link / Idea | Links Between Premises,5,6,4659,We ought to pay attention only
+106,1,25,Flaw,Science,Science | Worst of the Worst,5,6,4660,"McKinley: A double-blind study,"
+107,1,17,Flaw,Science,Science | New Concept in Conclusion | Argue the Anti-Conclusion,5,6,4753,Columnist: It is impossible for
+107,3,18,Principle-Conform,Principles in Stimulus,Principles in Stimulus | Conditional Logic | Conditional Diagramming,5,6,8107,To classify a work of art as truly
+107,3,19,Necessary Assumption,EXCEPT,EXCEPT | Causation | Comparison | Rebuttals | Anti-Causal | Science | Focused on Evidence | Defender,5,6,8108,Professor Robinson: A large meteorite
+107,4,13,Agree/Disagree,2-Speaker,2-Speaker | Implied Conclusion,5,6,4825,The point about which the supervisor
+109,1,11,Must be True,,,5,6,5252,Researchers have discovered that caffeine
+109,4,18,Flaw,Famous Flaws,Famous Flaws,5,6,8156,Coach: Our team has often been
+109,4,22,Necessary Assumption,Comparison,Comparison | Argue the Anti-Conclusion | Rebuttals | Anti-Causal | Science | Focused on Evidence | Timeframes | Defender | Animals,5,6,8160,Dinosaur expert: Some paleontologists
+106,3,5,Flaw,Abstract Answers,Abstract Answers | 2-Speaker | Causation | Plans / Recommendations,1,6,4689,Maurice’s attempted refutation
+109,3,1,Paradox,Comparison,Comparison,1,6,5295,North American eastern white cedars
+109,3,3,Paradox,EXCEPT,EXCEPT | Science,1,6,5297,The most common bird in Stillwater
+109,3,11,Necessary Assumption,Conditional Logic,Conditional Logic | Rebuttals | Missing Link / Idea | Contrapositive Logic | Dense Stimulus | New Concept in Conclusion,1,6,5305,Some people claim that the
+109,3,13,Most Supported,Causation,Causation | Causal Difference-Maker,1,6,5307,Editorialist: Some people argue that
+109,3,22,Parallel,Science,Science | Conditional Logic | Contrapositive Logic | Conditional Conclusion | Battle of Opinions,1,6,5316,"If relativity theory is correct,"
+108,2,12,Flaw,Comparison,Comparison | Famous Flaws | Sampling Flaw,2,6,7493,"Undoubtedly, one's freedom is always"
+109,3,6,Principle-Strengthen,Principles in Answers,Principles in Answers | Conditional Logic,2,6,5300,The recent cleaning of frescoes
+109,3,10,Most Supported,Science,Science | Causation | Important Pivot,2,6,5304,The importance of the ozone
+102,2,12,Necessary Assumption,Causation,Causation | Argue the Anti-Conclusion | Anti-Causal | Science | Timeframes | Defender | Animals | Natural History / Environment / Anthropology | Counterexample,3,6,7596,It has long been thought that lizards
+102,2,18,Flaw,Ruling Out Options,Ruling Out Options | Argue the Anti-Conclusion | Conditional Logic | Plans / Recommendations,3,6,7602,President of Central Supply Company:
+102,4,12,Parallel Flaw,Causation,Causation | Explain Curious Fact | Circular Reasoning,3,6,7645,The school principal insisted that
+104,1,7,Paradox,Comparison,Comparison | Breadcrumbs,3,6,4541,Because of the recent recession
+105,1,11,Role,Comparison,Comparison | First Sentence Conclusion,3,6,7367,Although the concept of free
+105,2,7,Must be True,EXCEPT,EXCEPT | Conditional Logic | Causation,3,6,8272,The crux of creativity resides
+106,3,19,Necessary Assumption,Causation,Causation | Argue the Anti-Conclusion | Anti-Causal | Math-y Stuff | Defender | Important Pivot,3,6,4703,"On a certain day, nine scheduled"
+109,1,7,Most Supported,Causation,Causation | Causal Difference-Maker,3,6,5248,Consultant: Most workers do not
+107,4,24,Weaken,Causation,Causation | Comparison | Explain Curious Fact | Alternatives | Medical | Statistics ,4,6,4836,"Medical researcher: As expected,"
+109,3,18,Parallel Flaw,Science,Science,4,6,5312,"Studies have shown that photosynthesis,"
+105,2,3,Necessary Assumption,Comparison,Comparison | Plans / Recommendations | Weighing Tradeoffs | Net Effect | Defender | Money / Business / Economics,1,7,8268,"Manager: Our new computer network,"
+105,1,1,Main Conclusion,Rebuttals,Rebuttals | First Sentence Conclusion,2,7,7357,Tennyson's line of poetry
+106,2,14,Flaw,Comparison,Comparison | Causation,3,7,8354,Advertisement: A leading economist
+106,2,23,Weaken,Comparison,Comparison | Causation | Anti-Causal | EXCEPT,3,7,8363,Garbage dumps do not harm wildlife.
+109,1,9,Most Supported,Causation,Causation | Comparison | Quantifiers | Dense Stimulus,3,7,5250,The same task triggers different
+109,3,9,Strengthen,Refute a Conditional,Refute a Conditional | Dense Stimulus,3,7,5303,At some point in any
+102,2,20,Flaw,Science,Science | Conditional Logic | Rebuttals | Belief / Knowledge / Intent,4,7,7604,Physicist: Determinism is the view
+106,2,19,Must be True,Conditional Logic,Conditional Logic | Comparison | Math-y Stuff | Quantifiers,5,7,8359,Nearly all mail that is correctly
+104,1,6,Method,Causation,Causation | Analogies | Rebuttals | Abstract Answers | 2-Speaker | Comparison | Plans / Recommendations | Unintended Consequence | Faulty Implications,1,7,4540,Frankie: If jelly makers were given
+104,4,11,Agree/Disagree,2-Speaker,2-Speaker,1,7,4621,A point at issue between P and
+106,3,1,Must be True,Causation,Causation | Science | Quantifiers | Medical,1,7,4685,Flavonoids are a common component
+109,1,23,Parallel,Conditional Logic,Conditional Logic | Conditional Diagramming | Conditional Chain,1,7,5264,An air traveler in Beijing
+101,3,1,Agree/Disagree,Causation,Causation | 2-Speaker,2,7,7712,Francis: Failure to become properly
+101,3,3,Method,Causation,Causation | Plausibility | 2-Speaker | Reduction to Absurd,2,7,7714,M: The Greek alphabet must have been invented
+102,2,1,Main Conclusion,Predictions,Predictions | Medical,2,7,7585,Psychiatrist: We are learning that
+102,3,1,Flaw,Famous Flaws,Famous Flaws | Rebuttals,2,7,8391,Director of Ace Manufacturing Company:
+104,4,9,Necessary Assumption,Comparison,Comparison | Argue the Anti-Conclusion | Science | Plans / Recommendations | Net Effect | Defender | Assumes Difference,2,7,4619,The only physical factor
+105,2,1,Most Supported,Conditional Logic,Conditional Logic | Causation,2,7,8266,French divers recently found a
+105,2,9,Strengthen,Causation,Causation | Comparison,2,7,8274,Someone who gets sick from eating
+106,1,1,Strengthen,Comparison,Comparison | EXCEPT | Assumes Similarity | Predictions | Plausibility | School / Education ,2,7,4636,A student has taken twelve courses
+106,1,2,Necessary Assumption,Conditional Logic,Conditional Logic | Causation | Net Effect | Conditional Diagramming | Contrapositive Logic | Math-y Stuff | Conditional Conclusion | New Concept in Conclusion,2,7,4637,If the government increases its
+106,1,9,Flaw,Famous Flaws,Famous Flaws | Rebuttals | Belief / Knowledge / Intent,2,7,4644,Political commentators see recent
+109,4,2,Sufficient Assumption,Conditional Logic,Conditional Logic,2,7,8140,"Faced with a financial crisis,"
+101,3,8,Must be True,Conditional Logic,Conditional Logic,3,7,7719,Jones is selling a house to Smith.
+102,3,10,Principle-Conform,Conditional Logic,Conditional Logic | Rebuttals | Missing Link / Idea | Principles in Answers | Assumes Similarity | Timeframes | Abstract Answers,3,7,8400,There are rumors that the Premier
+102,4,1,Main Conclusion,Rebuttals,Rebuttals | First Sentence Conclusion | Comparison | Plans / Recommendations | Main Point,3,7,7634,"Taxpayer: For the last ten years,"
+103,1,1,Flaw,Causation,Causation,3,7,8442,Three-year-old Sara and her playmate
+103,1,15,Strengthen,Causation,Causation | Comparison | Anti-Causal | Plans / Recommendations,3,7,8456,Grow-Again ointment is a proven
+103,1,25,Method,2-Speaker,2-Speaker,3,7,8466,Gregory does which one of the following
+103,2,8,Main Conclusion,First Sentence Conclusion,First Sentence Conclusion | Contrapositive Logic | Rebuttals,3,7,4465,Sociologist: The welfare state
+103,2,9,Most Supported,Causation,Causation | Comparison | Causal Chains,3,7,4466,Early pencil leads were made of
+105,1,5,Weaken,,,3,7,7361,Large discount chains can make
+105,1,10,Weaken,,,3,7,7366,The consequences of surgical errors
+105,1,20,Most Supported,Causation,Causation | Causal Difference-Maker | Causal Connector Language | Causal Chains,3,7,7376,The nature of English literature
+106,2,16,Necessary Assumption,Comparison,Comparison | Conditional Conclusion | Net Effect | Predictions | Defender,3,7,8356,Private industry is trying to attract
+107,1,14,Flaw,Argue the Anti-Conclusion,Argue the Anti-Conclusion | Conditional Logic | Necessary vs. Sufficient Flaw | Famous Flaws | Flaw Hybrid,3,7,4750,Prosecutor: Dr. Yuge has testified
+107,3,7,Flaw,Causation,Causation | Comparison,3,7,8096,Newsletter for community-center
+107,3,23,Parallel Flaw,Causation,Causation,3,7,8112,Several carefully conducted studies
+108,2,15,Necessary Assumption,Comparison,Comparison | Plans / Recommendations | Alternatives | Defender,3,7,7496,"Each of two drugs, S and T"
+108,3,19,Flaw,Causation,Causation | Alternatives | 2-Speaker | Focused on Evidence | Famous Flaws | Rebuttals | Unproven vs. Proven False | Surveys / Polls | Bias / Motive,3,7,7524,Faden: Most of our exercise
+108,3,24,Parallel,,,3,7,7529,Only if a family manages
+109,1,4,Weaken,2-Speaker,2-Speaker | Comparison | Intermediate Conclusions | Focused on Evidence | Disagrees with Evidence,3,7,5245,Juan: Unlike the ancient Olympic
+109,3,12,Method,Abstract Answers,Abstract Answers | Causation | Explain Curious Fact | Alternatives | Implied Conclusion,3,7,5306,Some people claim that the
+109,4,9,Flaw,Conditional Logic,Conditional Logic,3,7,8147,Television news coverage gives
+109,4,16,Necessary Assumption,Conditional Logic,Conditional Logic | Missing Link / Idea | Intermediate Conclusions | Defender,3,7,8154,The familiar slogan “survival of
+102,2,4,Strengthen,Comparison,Comparison | Plans / Recommendations | Weighing Tradeoffs | Net Effect | Dense Stimulus | Money / Business / Economics,4,7,7588,Advances in photocopying technology
+102,2,23,Principle-Strengthen,Conditional Logic,Conditional Logic | Plans / Recommendations | Missing Link / Idea | Principles in Answers,4,7,7607,Politician: Nobody can deny that
+102,2,24,Principle-Conform,Principles in Answers,Principles in Answers | Weighing Tradeoffs | Comparison | Plans / Recommendations,4,7,7608,Trade official: Country X deserves
+102,3,17,Main Conclusion,Rebuttals,Rebuttals | Implied Conclusion | Natural History / Environment / Anthropology | Food / Agriculture,4,7,8407,People cannot devote themselves
+102,4,11,Weaken,EXCEPT,EXCEPT,4,7,7644,"Taken together, some 2,000 stocks"
+103,1,24,Parallel,Conditional Logic,Conditional Logic | Repetitve Answers,4,7,8465,That wall is supported by several
+103,3,14,Weaken,Explain Curious Fact,Explain Curious Fact,4,7,4496,A commercial insect trap consists
+105,1,7,Strengthen,,,4,7,7363,Generic drugs contain exactly the
+105,1,14,Principle-Strengthen,Principles in Answers,Principles in Answers,4,7,7370,If an artist receives a public
+105,2,4,Weaken,Causation,Causation | Argue the Anti-Conclusion | Part vs. Whole | Experiments / Studies,4,7,8269,An ingredient in marijuana known
+106,2,17,Weaken,Comparison,Comparison | 2-Speaker,4,7,8357,Using fossil energy more efficiently
+106,3,14,Main Conclusion,Conditional Logic,Conditional Logic | Intermediate Conclusions | Dense Stimulus | Implied Conclusion,4,7,4698,If citizens do not exercise their
+106,3,20,Flaw,Comparison,Comparison | EXCEPT | Experiments / Studies | Sampling Flaw | Animals | Famous Flaws | First Sentence Conclusion | Argue the Anti-Conclusion,4,7,4704,Game show host: Humans are no better
+107,1,20,Sufficient Assumption,Comparison,Comparison | Assumes Similarity | Timeframes | Math-y Stuff | Dense Stimulus | Statistics | Percentages | Relative vs. Absolute,4,7,4756,The price of a full-fare coach
+107,3,14,Necessary Assumption,Comparison,Comparison | Causation | Intermediate Conclusions | Net Effect | Timeframes | 2-Speaker,4,7,8103,Charles: During recessions unemployment typically rises
+107,3,20,Flaw,Comparison,Comparison | Assumes Difference | Analogies | Argue the Anti-Conclusion,4,7,8109,Pieces of music consist of sounds
+108,2,3,Weaken,Comparison,Comparison | Plans / Recommendations | Net Effect | Causation | Surveys / Polls | Politics / Government / Law,4,7,7484,Columnist: Polls can influence voters
+108,2,23,Necessary Assumption,Conditional Logic,Conditional Logic | Argue the Anti-Conclusion | Math-y Stuff | Ruling Out Options | Predictions | Defender,4,7,7504,"Economist: In any country, inflation"
+108,3,9,Flaw,,,4,7,7514,In a recent poll of
+108,3,15,Flaw,Conditional Logic,Conditional Logic | Missing Link / Idea | Complex Conditionals | Flaw Hybrid,4,7,7520,A survey of historians shows
+109,1,17,Weaken,Comparison,Comparison | Focused on Evidence | Science,4,7,5258,"Expert witness: Ten times, and"
+109,1,18,Principle-Conform,Principles in Answers,Principles in Answers | Abstract Answers | Conditional Logic | Missing Link / Idea,4,7,5259,The use of space-based satellites
+109,3,14,Role,Causation,Causation | Plans / Recommendations | Rebuttals | Implied Conclusion,4,7,5308,Many people think that the
+102,3,18,Sufficient Assumption,Comparison,Comparison | Math-y Stuff | Relative vs. Absolute | Timeframes | Defender | Medical | Percentages | Money / Business / Economics,5,7,8408,"In the past decade, a decreasing"
+103,1,10,Weaken,Comparison,Comparison,5,7,8451,Audiences find a speaker more convincing
+103,2,22,Necessary Assumption,EXCEPT,EXCEPT | Comparison | Missing Link / Idea | Plans / Recommendations | Assumes Difference | Defender,5,7,4479,Most students are bored by history
+104,1,26,Parallel,Anti-Causal,Anti-Causal | Math-y Stuff,5,7,4560,Researcher: The vast majority of
+105,1,19,Strengthen,EXCEPT,EXCEPT,5,7,7375,"Paleontologist: It is widely, but"
+105,2,14,Flaw,Causation,Causation | Comparison,5,7,8279,The reasoning in Arjun’s response
+107,1,16,Weaken,Explain Curious Fact,Explain Curious Fact | Missing Link / Idea | Implicit Principles | Argue the Anti-Conclusion,5,7,4752,We can learn about the living conditions
+107,3,12,Flaw,Comparison,Comparison | Famous Flaws,5,7,8101,Music critic: Some people argue
+109,1,20,Weaken,Science,Science | Causation | Explain Curious Fact | Rebuttals | EXCEPT | Focused on Evidence | Natural History / Environment / Anthropology | Disagrees with Evidence,5,7,5261,Recently discovered prehistoric rock paintings
+109,1,21,Principle-Strengthen,Principles in Answers,Principles in Answers,5,7,5262,Attacks on an opponent’s character
+109,1,22,Flaw,EXCEPT,EXCEPT,5,7,5263,Lawyer: Did Congleton assign the best
+109,3,21,Sufficient Assumption,,,5,7,5315,Some government economists view their
+109,4,19,Weaken,Conditional Logic,Conditional Logic,5,7,8157,Speaker: Contemporary business
+101,3,16,Parallel Flaw,Rebuttals,Rebuttals | Argue the Anti-Conclusion | Focused on Evidence,1,7,7727,"K, a research scientist, was accused"
+104,4,1,Principle-Conform,Principles in Stimulus,Principles in Stimulus | Conditional Logic | Plans / Recommendations,1,7,4611,Politician: Governments should
+104,4,3,Principle-Conform,Principles in Stimulus,Principles in Stimulus | Conditional Logic,1,7,4613,A just government never restricts
+104,4,10,Flaw,Causation,Causation | Necessary vs. Sufficient Flaw | Famous Flaws | Abstract Answers,1,7,4620,Unplugging a peripheral component
+101,3,21,Parallel Flaw,Comparison,Comparison | Math-y Stuff | Conditional Diagramming | Repetitve Answers,2,7,7732,The amount of electricity consumed
+104,1,2,Flaw,Comparison,Comparison | New Concept in Conclusion | Missing Link / Idea | Medical | Math-y Stuff | Flaw Hybrid,2,7,4536,Although 90 percent of the population
+104,1,13,Necessary Assumption,Causation,Causation | Comparison | Timeframes | Predictions | Assumes Similarity,2,7,4547,Problems caused by the leaching
+104,4,17,Must be True,Conditional Logic,Conditional Logic | Contrapositive Logic,2,7,4627,"The Green Ensemble, a nonprofit"
+106,3,2,Flaw,Plans / Recommendations,Plans / Recommendations | Abstract Answers | Comparison | Sampling Flaw,2,7,4686,A number of Grandville’s wealthiest
+109,3,2,Flaw,2-Speaker,2-Speaker | Clarification/Misunderstanding,2,7,5296,Brewer: All children should be given
+102,2,6,Necessary Assumption,Conditional Logic,Conditional Logic | Causation | Science | Alternatives | Necessary vs. Sufficient Flaw | Defender | Conditional Conclusion | Medical | False Positives / False Negatives ,3,7,7590,One test to determine whether a
+102,2,17,Paradox,Causation,Causation | Comparison | Causal Difference-Maker,3,7,7601,Nicotine has long been known to
+109,3,5,Flaw,Comparison,Comparison | Assumes Similarity | Argue the Anti-Conclusion,3,7,5299,The radiation absorbed by someone
+102,4,3,Weaken,Comparison,Comparison | Timeframes | Argue the Anti-Conclusion,2,8,7636,The manager of a nuclear power
+102,4,6,Strengthen,Causation,Causation | Explain Curious Fact | Animals | Plausibility,2,8,7639,The male sage grouse has air sacs
+104,1,11,Parallel Flaw,Causation,Causation | Explain Curious Fact | Famous Flaws | Animals | Necessary vs. Sufficient Flaw,2,8,4545,A local chemical plant produces
+109,3,4,Strengthen,Comparison,Comparison | Plans / Recommendations | Net Effect,2,8,5298,Limited research indicates that therapeutic
+105,1,8,Necessary Assumption,Conditional Logic,Conditional Logic | Missing Link / Idea | Assumes Difference,3,8,7364,Economist: In the interaction between
+105,1,18,Necessary Assumption,Conditional Logic,Conditional Logic | Missing Link / Idea | Links Between Premises,3,8,7374,Sociologist: The intended function of
+105,4,14,Necessary Assumption,Causation,Causation | Missing Link / Idea | Plans / Recommendations | Plausibility,4,8,7446,Citizen: Our legislators need to
+106,2,1,Necessary Assumption,Conditional Logic,Conditional Logic | Dense Stimulus | Defender | Untriggered Conditional,4,8,8341,Critic: People today place an especially
+101,3,24,Principle-Conform,Conditional Logic,Conditional Logic | Conditional Diagramming | Principles in Stimulus | Repetitve Answers | Binaries,5,8,7735,"Ethicist: A society is just when,"
+105,1,21,Necessary Assumption,Rebuttals,Rebuttals | Comparison | Argue the Anti-Conclusion | Defender,5,8,7377,Two doctrines have been greatly
+108,2,22,Role,Refute a Conditional,Refute a Conditional,5,8,7503,One can be at home
+101,3,13,Necessary Assumption,Causation,Causation | Argue the Anti-Conclusion | Missing Link / Idea | Plausibility,1,8,7724,Health officials claim that because
+104,4,2,Strengthen,Comparison,Comparison | Assumes Similarity | Predictions | Defender | Net Effect | Missing Link / Idea,1,8,4612,The average cable television company
+101,3,5,Necessary Assumption,Comparison,Comparison | Argue the Anti-Conclusion | Anti-Causal | Science | Plans / Recommendations | Defender | Food / Agriculture,2,8,7716,Bacteria from food can survive
+101,3,14,Paradox,EXCEPT,EXCEPT | Causation | Comparison,2,8,7725,In an effort to boost sales during
+102,2,9,Flaw,Causation,Causation | Argue the Anti-Conclusion | Explain Curious Fact | Anti-Causal | Alternatives,2,8,7593,Consumer advocate: Last year’s
+104,4,4,Necessary Assumption,Comparison,Comparison | Rebuttals | Anti-Causal | Plans / Recommendations | Net Effect | Defender | Argue the Anti-Conclusion | Politics / Government / Law | Money / Business / Economics,2,8,4614,Mayor: Citing the severity of the city’s winters
+104,4,7,Flaw,Conditional Logic,Conditional Logic | Conditional Diagramming | Necessary vs. Sufficient Flaw | Famous Flaws | Flaw Hybrid | Alternatives,2,8,4617,If you know a lot about history
+108,3,4,Sufficient Assumption,,,2,8,7509,The average 40-year-old North American
+102,2,10,Strengthen,Causation,Causation | Explain Curious Fact | Animals | Plausibility | No Cause No Effect,3,8,7594,Insects can see ultraviolet light
+102,3,2,Necessary Assumption,Comparison,Comparison | Plans / Recommendations | Defender,3,8,8392,A large number of drivers routinely
+102,3,7,Flaw,Causation,Causation | Comparison,3,8,8397,A commonly accepted myth is that
+102,3,13,Necessary Assumption,Comparison,Comparison | Plans / Recommendations | Assumes Difference | Net Effect | Defender,3,8,8403,A company with long-outstanding
+102,4,9,Necessary Assumption,Causation,Causation | Comparison | Plans / Recommendations | Assumes Similarity | Net Effect | Predictions | Defender | Assumes Applicability,3,8,7642,The conclusion drawn depends on
+103,1,8,Necessary Assumption,Causation,Causation | Comparison | Plans / Recommendations | Conditional Conclusion | Defender | Faulty Implications | Medical,3,8,8449,"Based on data collected from policyholders,"
+103,1,14,Necessary Assumption,Causation,Causation | Comparison | Anti-Causal | Plans / Recommendations | Net Effect | Defender,3,8,8455,The Biocarb Company wants to build
+104,1,1,Agree/Disagree,2-Speaker,2-Speaker | Causation | Comparison | Explain Curious Fact | Alternatives,3,8,4535,Powell: Private waste-removal companies
+104,1,9,Must be True,Math-y Stuff,Math-y Stuff | 2-Speaker,3,8,4543,If the sales figures cited by the
+104,1,22,Must be True,Quantifiers,Quantifiers | Conditional Logic | Important Pivot,3,8,4556,Some people believe that saying
+104,1,25,Flaw,EXCEPT,EXCEPT | Plans / Recommendations | Net Effect | Weighing Tradeoffs | Flaw Hybrid | Battle of Opinions,3,8,4559,"When interviewing job candidates,"
+104,4,6,Evaluate,Animals,Animals | Untriggered Conditional | Argue the Anti-Conclusion,3,8,4616,Monarch butterflies spend the winter hibernating
+105,2,6,Most Supported,Conditional Logic,Conditional Logic | Causation | Comparison | Causal Difference-Maker,3,8,8271,Besides laying eggs in her own
+105,2,11,Necessary Assumption,Comparison,Comparison | Plans / Recommendations | Net Effect | Part vs. Whole | Defender,3,8,8276,A certain credit-card company awards
+105,2,12,Weaken,Anti-Causal,Anti-Causal | Causation | Comparison,3,8,8277,It is probably not true that colic
+105,4,22,Sufficient Assumption,,,3,8,7454,Children fall into three groups-nontasters
+107,4,8,Necessary Assumption,Science,Science | Causation | Comparison | Plans / Recommendations | Defender | Missing Link / Idea | Weighing Tradeoffs,3,8,4820,Conservationist: The population of a certain wildflower
+107,4,14,Flaw,Comparison,Comparison | Net Effect | Relative vs. Absolute | Famous Flaws | Argue the Anti-Conclusion,3,8,4826,The plant manager’s argument is
+109,1,5,Main Conclusion,Rebuttals,Rebuttals,3,8,5246,A recent national study of
+109,1,12,Flaw,Comparison,Comparison | Plans / Recommendations | Math-y Stuff | Percentages | Percent vs. Amount,3,8,5253,"A nationwide poll of students,"
+101,3,11,Must be True,Causation,Causation | Comparison | Causal Difference-Maker,4,8,7722,Special kinds of cotton that grow
+101,3,26,Principle-Strengthen,Conditional Logic,Conditional Logic | Principles in Answers | Weighing Tradeoffs,4,8,7737,Columnist on the arts: My elected
+102,2,25,Principle-Strengthen,Principles in Answers,Principles in Answers | Weighing Tradeoffs,4,8,7609,"Jack’s aunt gave him her will,"
+102,3,15,Necessary Assumption,Comparison,Comparison | Causation | Plans / Recommendations | Defender | Animals,4,8,8405,Because of the lucrative but illegal
+105,1,16,Weaken,EXCEPT,EXCEPT,4,8,7372,In a town containing a
+105,2,10,Flaw,Causation,Causation,4,8,8275,Premiums for automobile accident
+106,1,18,Main Conclusion,Rebuttals,Rebuttals | Science | Weighing Tradeoffs | Important Pivot,4,8,4653,Essayist: The way science is conducted
+106,1,21,Necessary Assumption,Conditional Logic,Conditional Logic | Comparison | Refute a Conditional | Rebuttals | Assumes Difference | Defender,4,8,4656,Psychologist: Some astrologers
+107,1,15,Necessary Assumption,Science,Science | Causation | Comparison | Argue the Anti-Conclusion | Assumes Difference | Defender | Dense Stimulus | New Concept in Conclusion | Missing Link / Idea | Medical,4,8,4751,"Ordinary mountain sickness, a common"
+109,1,16,Must be True,EXCEPT,EXCEPT | Principles in Answers | Conditional Logic | Set of Non-Chaining Rules | Games-y LR,4,8,5257,Notice to subscribers: In order
+109,1,24,Flaw,Predictions,Predictions | Math-y Stuff | First Sentence Conclusion | Statistics | Gambler's Fallacy,4,8,5265,Supervisor: Our next budget proposal
+109,3,19,Agree/Disagree,2-Speaker,2-Speaker,4,8,5313,Raphaela: Forcing people to help
+101,3,23,Strengthen,Causation,Causation | Comparison | Explain Curious Fact,5,8,7734,Historians of North American architecture
+102,4,23,Flaw,Conditional Logic,Conditional Logic | Conditional Diagramming | Necessary vs. Sufficient Flaw | Famous Flaws,5,8,7656,Only computer scientists understand
+104,1,20,Most Supported,Quantifiers,Quantifiers | Conditional Logic | Dense Stimulus | Set of Non-Chaining Rules | Comparison,5,8,4554,A poem is any work of art that
+104,1,23,Flaw,Quantifiers,Quantifiers | Math-y Stuff | Statistics | Percentages | Percent vs. Amount | Missing Half the Comparison,5,8,4557,Research indicates that 90 percent
+106,1,23,Weaken,EXCEPT,EXCEPT | Causation | Comparison | Explain Curious Fact | Science | Experiments / Studies | Alternatives | Plausibility,5,8,4658,Further evidence of a connection
+106,3,16,Necessary Assumption,Causation,Causation | Comparison | Argue the Anti-Conclusion | Explain Curious Fact | Timeframes | Conditional Conclusion | Dense Stimulus | Alternatives | Defender | Worst of the Worst,5,8,4700,Historian: We can learn about the
+106,3,25,Weaken,Causation,Causation | Explain Curious Fact | Causal Difference-Maker | Science | Experiments / Studies | Animals | Plausibility,5,8,4709,"The interstitial nucleus, a subregion"
+107,4,20,Strengthen,EXCEPT,EXCEPT | Science | Causation | Explain Curious Fact | Causal Difference-Maker | Dense Stimulus | Animals | Alternatives | Plausibility,5,8,4832,Amphibian populations are declining
+101,2,3,Method,Abstract Answers,Abstract Answers | Science | Causation | Explain Curious Fact | Ruling Out Options,1,8,7689,A group of unusual meteorites was
+101,3,2,Flaw,Comparison,Comparison | Analogies,1,8,7713,Advertisement: Anyone who thinks
+104,4,23,Most Supported,Comparison,Comparison | Important Pivot,2,8,4633,Much of today’s literature is inferior:
+105,1,26,Flaw,Conditional Logic,Conditional Logic | Binaries | Ruling Out Options | Abstract Answers | Argue the Anti-Conclusion,2,8,7382,Marion knows that the bridge
+101,3,17,Method,Causation,Causation | Explain Curious Fact | Abstract Answers,3,8,7728,The argument in the passage proceeds
+101,3,15,Must be True,Quantifiers,Quantifiers,4,8,7726,Dr. Z: Many of the characterizations
+104,4,13,Parallel Flaw,Famous Flaws,Famous Flaws | Part vs. Whole,4,8,4623,Historian: The ancient Greeks failed
+109,3,20,Strengthen,Science,Science | Causation | Explain Curious Fact | Experiments / Studies | Animals | Defender | Alternatives,2,9,5314,Galanin is a protein found
+106,1,26,Strengthen,Causation,Causation | Comparison | Causal Difference-Maker | Dense Stimulus | Plausibility,3,9,4661,"Modern navigation systems, which"
+102,4,24,Weaken,Causation,Causation | Explain Curious Fact | Conditional Conclusion | Animals | Plausibility | Repetitve Answers,4,9,7657,"Sociologist: Research shows, contrary"
+101,2,5,Parallel Flaw,Comparison,Comparison | Math-y Stuff | Part vs. Whole,1,9,7691,"Altogether, the students in Ms."
+101,3,7,Most Supported,Comparison,Comparison,1,9,7718,In response to requests made by
+101,2,2,Most Supported,Comparison,Comparison | Causal Difference-Maker,2,9,7688,All people prefer colors that they
+101,3,6,Weaken,Causation,Causation | Comparison | Science,2,9,7717,Asthmagon was long considered the
+104,1,12,Most Supported,Causation,Causation | Comparison | Causal Difference-Maker | Implied Difference | Causal Connector Language,2,9,4546,Clothes made from natural fibers
+104,4,16,Strengthen,EXCEPT,EXCEPT | Plans / Recommendations | Rebuttals | Important Pivot | New Concept in Conclusion | Plausibility,2,9,4626,Nutrition education in schools
+101,3,9,Weaken,Ruling Out Options,Ruling Out Options,3,9,7720,The play Mankind must have been
+103,1,9,Weaken,Causation,Causation | Explain Curious Fact | Science | Alternatives,3,9,8450,Measurements of the motion of the
+103,1,11,Sufficient Assumption,Comparison,Comparison,3,9,8452,"Five thousand of the 50,000 books"
+104,1,3,Most Supported,Causation,Causation | Comparison | Explain Curious Fact | Important Pivot | Causal Difference-Maker | Rebuttals | Alternatives,3,9,4537,"The statements above, if true,"
+104,1,21,Necessary Assumption,Conditional Logic,Conditional Logic | Causation | Plans / Recommendations | Defender | Untriggered Conditional | Argue the Anti-Conclusion,3,9,4555,In order to pressure the government
+104,4,5,Must be True,Animals,Animals | Breadcrumbs | Conditional Logic | Timeframes | Fact Triggers a Rule,3,9,4615,Ticks attach themselves to host animals to feed
+106,3,7,Method,Conditional Logic,Conditional Logic | Contrapositive Logic | Abstract Answers | 2-Speaker,3,9,4691,"Sam: In a recent survey, over 95"
+107,4,5,Necessary Assumption,Causation,Causation | Comparison | Explain Curious Fact | Causal Chains | Missing Link / Idea | Dense Stimulus | New Concept in Conclusion,3,9,4817,The explanation offered by the
+109,4,5,Sufficient Assumption,Conditional Logic,Conditional Logic,3,9,8143,"Astronaut: Any moon, by definition,"
+101,2,25,Principle-Strengthen,Conditional Logic,Conditional Logic | Principles in Answers,4,9,7711,The publisher of a best-selling
+101,3,25,Flaw,Comparison,Comparison | Relative vs. Absolute | Math-y Stuff,4,9,7736,Economist: In order to decide what
+102,2,16,Necessary Assumption,Assumes Difference,Assumes Difference | Conditional Logic | Causation | Argue the Anti-Conclusion | Plans / Recommendations | Alternatives | Defender,4,9,7600,Political scientist: The dissemination
+102,3,9,Necessary Assumption,Causation,Causation | Comparison | Science | Analogies | Assumes Similarity | Defender | Animals | Plausibility,4,9,8399,Ornithologist: The curvature of the claws
+102,3,24,Most Supported,Causation,Causation | Comparison | Causal Difference-Maker | Important Pivot,4,9,8414,The United States ranks far behind
+102,4,25,Necessary Assumption,Science,Science | Missing Link / Idea | Timeframes | Conditional Conclusion | Predictions | Animals | Conditional Logic,4,9,7658,"The dwarf masked owl, a rare"
+104,4,8,Paradox,Comparison,Comparison,4,9,4618,People always seem to associate high prices
+105,2,16,Necessary Assumption,Conditional Logic,Conditional Logic | Comparison | Science | Assumes Difference | Conditional Conclusion | Defender,4,9,8281,Brown dwarfs—dim red stars that
+105,4,17,Must be True,Conditional Logic,Conditional Logic | Conditional Diagramming,4,9,7449,Everyone who is excessively generous
+106,1,16,Most Supported,Conditional Logic,Conditional Logic | Causation | Binaries | Causal Chains | Science,4,9,4651,Poppy petals function to attract
+106,1,22,Most Supported,Causation,Causation | Comparison | Causal Difference-Maker | Causal Chains,4,9,4657,Under the influence of today’s
+106,3,11,Weaken,Causation,Causation | Explain Curious Fact | Alternatives | Famous Flaws | Math-y Stuff | Statistics | Percentages,4,9,4695,A rise in the percentage of all
+106,3,22,Necessary Assumption,Assumes Difference,Assumes Difference | Science | Causation | Comparison | Anti-Causal | Missing Link / Idea | Timeframes | Defender | Animals | Explain Curious Fact | Intermediate Conclusions | New Concept in Conclusion,4,9,4706,Researcher: The role of chemicals
+107,1,12,Method,Science,Science | Refute a Conditional | Rebuttals | Intermediate Conclusions | Dense Stimulus | Animals | Abstract Answers,4,9,4748,It is well known that many species
+107,3,8,Weaken,EXCEPT,EXCEPT | Causation | Comparison | Explain Curious Fact | Experiments / Studies | Alternatives,4,9,8097,"Each of the following, if true,"
+107,4,4,Necessary Assumption,Causation,Causation | Causal Chains | Defender | Plausibility | New Concept in Conclusion | Missing Link / Idea | Dense Stimulus,4,9,4816,An assumption made in the explanation
+109,1,10,Necessary Assumption,Comparison,Comparison | Missing Link / Idea | Plans / Recommendations | New Concept in Conclusion,4,9,5251,Art historian: Great works of
+109,1,13,Necessary Assumption,Conditional Logic,Conditional Logic | Missing Link / Idea | Abstract Answers | New Concept in Conclusion,4,9,5254,Ethicist: Studies have documented the
+109,3,8,Must be True,Conditional Logic,Conditional Logic | Quantifiers,4,9,5302,Most people invest in the
+109,3,16,Necessary Assumption,Conditional Logic,Conditional Logic | Missing Link / Idea | Dense Stimulus | Timeframes | New Concept in Conclusion,4,9,5310,"Curator: Since ancient times, the"
+109,3,17,Flaw,Famous Flaws,Famous Flaws,4,9,5311,In a business whose owners
+109,3,24,Weaken,Plans / Recommendations,Plans / Recommendations | Causation | Comparison | Argue the Anti-Conclusion,4,9,5318,Dietician: “The French Paradox” refers
+104,1,24,Principle-Strengthen,Principles in Answers,Principles in Answers | First Sentence Conclusion | Intermediate Conclusions | Causation | Comparison | Net Effect | New Concept in Conclusion | Missing Link / Idea,5,9,4558,Folklorist: Oral traditions are
+104,4,25,Flaw,Conditional Logic,Conditional Logic | Conditional Diagramming | Necessary vs. Sufficient Flaw | Assumes Difference | Famous Flaws | Flaw Hybrid,5,9,4635,All any reporter knows about the
+105,1,23,Necessary Assumption,Plans / Recommendations,Plans / Recommendations | Ruling Out Options | Comparison | Defender,5,9,7379,Deep tillage is even more
+101,2,15,Main Conclusion,Main Point,Main Point | Rebuttals | Important Pivot,1,9,7701,The authors of a recent article examined warnings
+104,4,19,Necessary Assumption,Causation,Causation | Explain Curious Fact | Ruling Out Options | Binaries | Alternatives | Defender,4,9,4629,Most people feel that they are
+106,1,5,Weaken,Anti-Causal,Anti-Causal | Causation | Animals | Plausibility | Argue the Anti-Conclusion,2,10,4640,The number of codfish in the North
+109,3,7,Weaken,Causation,Causation | Comparison | Explain Curious Fact | Timeframes | Alternatives,3,10,5301,"Unlike newspapers in the old days,"
+104,1,18,Strengthen,Causation,Causation | Explain Curious Fact | Plausibility,4,10,4552,Astronauts who experience weightlessness
+104,1,19,Must be True,Causation,Causation | Comparison | Causal Chains | Important Pivot | Medical | Anti-Causal,4,10,4553,Pollen and other allergens can
+101,2,24,Sufficient Assumption,Conditional Logic,Conditional Logic | Missing Link / Idea | Conditional Diagramming,5,10,7710,No mathematical proposition can
+101,2,7,Weaken,EXCEPT,EXCEPT,2,10,7693,A neighborhood group plans to protest
+104,4,22,Must be True,Analogies,Analogies | Dense Stimulus | Games-y LR,3,10,4632,The reasoning in the argument could
+105,1,9,Sufficient Assumption,Comparison,Comparison,3,10,7365,All potatoes naturally contain solanine
+106,2,11,Necessary Assumption,Conditional Logic,Conditional Logic | Argue the Anti-Conclusion | Ruling Out Options | Defender,3,10,8351,John works five days each week
+107,4,3,Most Supported,Causation,Causation | Causal Chains | Plans / Recommendations | Rebuttals | Causal Difference-Maker | Important Pivot,3,10,4815,Physical education should teach
+109,1,19,Necessary Assumption,Conditional Logic,Conditional Logic | Causation | Causal Chains | Missing Link / Idea | Dense Stimulus | Links Between Premises,3,10,5260,Historian: The spread of literacy
+109,3,25,Necessary Assumption,Comparison,Comparison | Plans / Recommendations | Assumes Difference | Dense Stimulus | New Concept in Conclusion | Defender,3,10,5319,We are in a new
+101,2,14,Agree/Disagree,Causation,Causation | 2-Speaker,4,10,7700,Steven: The allowable blood alcohol
+101,3,20,Principle-Strengthen,Conditional Logic,Conditional Logic | Abstract Answers | Principles in Answers,4,10,7731,"When the Pinecrest Animal Shelter,"
+104,4,14,Must be True,Math-y Stuff,Math-y Stuff | Conditional Logic | Comparison | Important Pivot | Dense Stimulus | Statistics | Percentages | Percent vs. Amount,4,10,4624,In 1712 the government of Country
+104,4,15,Weaken,Comparison,Comparison | Rebuttals | Alternatives | Argue the Anti-Conclusion | Causation | Explain Curious Fact | Timeframes,4,10,4625,It is often said that beauty is
+105,2,20,Necessary Assumption,Conditional Logic,Conditional Logic | Causation | EXCEPT | Anti-Causal | Contrapositive Logic | Focused on Evidence | Intermediate Conclusions | Defender | Untriggered Conditional,4,10,8285,Each of the following is an assumption
+105,2,21,Method,Abstract Answers,Abstract Answers,4,10,8286,Some people have been promoting
+101,2,18,Paradox,Comparison,Comparison | Math-y Stuff,5,10,7704,Environmental scientist: It is
+101,2,21,Sufficient Assumption,Conditional Logic,Conditional Logic | Missing Link / Idea | Conditional Diagramming | Links Between Premises,5,10,7707,Newspaper editor: Law enforcement
+104,1,8,Weaken,Animals,Animals | Argue the Anti-Conclusion | Plans / Recommendations | Predictions | Breadcrumbs | Unintended Consequence,2,11,4542,"The gray squirrel, introduced into"
+101,3,22,Weaken,Causation,Causation | EXCEPT | Explain Curious Fact | Alternatives,4,11,7733,Letter to the editor: After Baerton’s
+101,2,10,Role,Causation,Causation | First Sentence Conclusion,2,11,7696,Economist: The economy seems to
+104,1,4,Weaken,Causation,Causation | Comparison | Explain Curious Fact | Experiments / Studies | Animals,2,11,4538,In Yasukawa's month-long study
+101,2,9,Principle-Strengthen,Conditional Logic,Conditional Logic | Principles in Answers | Missing Link / Idea,3,11,7695,Historian: Anyone who thinks that
+101,3,4,Flaw,Causation,Causation,3,11,7715,P’s argument is vulnerable to which
+101,3,12,Flaw,,,3,11,7723,People in the tourist industry
+104,1,10,Weaken,Causation,Causation | Explain Curious Fact | Alternatives | 2-Speaker | Argue the Anti-Conclusion,3,11,4544,Sales manager: Last year
+104,4,12,Method,Abstract Answers,Abstract Answers | 2-Speaker | Principles in Stimulus,3,11,4622,Q responds to P’s position by
+101,2,1,Flaw,Missing Link / Idea,Missing Link / Idea | Argue the Anti-Conclusion,4,11,7687,Press release: A comprehensive
+101,3,10,Sufficient Assumption,Conditional Logic,Conditional Logic | Missing Link / Idea,4,11,7721,All material bodies are divisible
+103,1,17,Role,,,4,11,8458,"In Winifred’s response to Henry,"
+104,4,20,Necessary Assumption,Conditional Logic,Conditional Logic | Missing Link / Idea | New Concept in Conclusion,4,11,4630,Art Historian: Robbins cannot pass
+106,1,7,Method,Dense Stimulus,Dense Stimulus | Abstract Answers | 2-Speaker | Medical,4,11,4642,The clinic administrator responds
+101,2,22,Principle-Conform,Comparison,Comparison | Principles in Answers | Causal Difference-Maker | First Sentence Conclusion | Weighing Tradeoffs | Battle of Opinions,5,11,7708,Copernicus’s astronomical system
+101,3,18,Necessary Assumption,Causation,Causation | Rebuttals | Math-y Stuff | Explain Curious Fact | Net Effect | Alternatives | Defender,5,11,7729,The widespread staff reductions
+104,4,18,Weaken,Causation,Causation | Comparison | Explain Curious Fact | Timeframes | Alternatives,5,11,4628,Book publishers have traditionally
+101,2,16,Evaluate,Comparison,Comparison | Part vs. Whole | Rebuttals | Sampling Flaw | Animals,3,12,7702,The answer to which one of the
+107,3,5,Most Supported,Conditional Logic,Conditional Logic | Causation | Conditional Diagramming | Science | Causal Chains,1,12,8094,The chances that tropical storms
+103,3,8,Flaw,Plans / Recommendations,Plans / Recommendations | Abstract Answers,2,12,4490,Grasses and woody plants are planted
+101,2,11,Must be True,Quantifiers,Quantifiers,3,12,7697,"Not surprisingly, there are no"
+101,2,13,Parallel,,,3,12,7699,Carl’s Coffee Emporium stocks only
+102,4,18,Sufficient Assumption,Conditional Logic,Conditional Logic | First Sentence Conclusion | New Concept in Conclusion | Missing Link / Idea | Synthesize Premises,3,12,7651,"Obviously, we cannot in any real"
+107,4,2,Role,First Sentence Conclusion,First Sentence Conclusion | Abstract Answers,3,12,4814,Economist: To the extent that homelessness
+101,2,17,Necessary Assumption,Comparison,Comparison | Plans / Recommendations | Timeframes | Defender,4,12,7703,"After the Second World War, the"
+101,2,20,Weaken,EXCEPT,EXCEPT | Conditional Logic | Comparison | Argue the Anti-Conclusion | Focused on Evidence,4,12,7706,Anthropological studies indicate
+104,4,24,Role,Causation,Causation | Comparison | Explain Curious Fact | Dense Stimulus | Medical,4,12,4634,"Scientists, puzzled about the development"
+101,2,19,Weaken,EXCEPT,EXCEPT | Causation | Comparison | Explain Curious Fact,5,12,7705,In Australia the population that
+104,4,21,Method,Abstract Answers,Abstract Answers | Rebuttals | Dense Stimulus | Principles in Stimulus,5,12,4631,The argument does which one of
+101,2,6,Flaw,Comparison,Comparison | Argue the Anti-Conclusion,3,13,7692,Several excellent candidates have
+101,2,12,Main Conclusion,Main Point,Main Point,4,13,7698,For years scientists have been
+109,1,25,Weaken,Causation,Causation | Explain Curious Fact | Timeframes | Plausibility,1,14,5266,The number of airplanes equipped
+101,3,19,Sufficient Assumption,Quantifiers,Quantifiers | Missing Link / Idea | Conditional Logic | New Concept in Conclusion | Untriggered Conditional | Only One Premise,3,14,7730,Every student who walks to school
+106,2,18,Flaw,Famous Flaws,Famous Flaws | Rebuttals | Abstract Answers,4,14,8358,Dobson: Some historians claim that
+101,2,8,Flaw,Causation,Causation | Famous Flaws,3,15,7694,Sociologist: The claim that there
+102,3,23,Flaw,Causation,Causation | Abstract Answers,3,15,8413,"A museum director, in order to"
+104,1,16,Sufficient Assumption,Conditional Logic,Conditional Logic | Intermediate Conclusions | New Concept in Conclusion | Missing Link / Idea,3,15,4550,Recent research shows that sound
+101,2,4,Strengthen,EXCEPT,EXCEPT | Causation | Comparison | Explain Curious Fact | Experiments / Studies | Breadcrumbs | Plausibility | Focused on Evidence,3,16,7690,Because quitting smoking is very
+109,4,21,Flaw,Conditional Logic,Conditional Logic | Abstract Answers | Necessary vs. Sufficient Flaw | Famous Flaws | Quantifiers | 2-Speaker,3,17,8159,Terry: Some actions considered
+107,4,18,Flaw,Abstract Answers,Abstract Answers | Conditional Logic | First Sentence Conclusion | Intermediate Conclusions,4,19,4830,"All actions are motivated by self-interest,"
+104,1,14,Role,Important Pivot,Important Pivot | Abstract Answers | Weighing Tradeoffs,4,20,4548,Critic: Many popular psychological
+107,3,10,Flaw,Conditional Logic,Conditional Logic | Abstract Answers,4,21,8099,The only motives that influence
+109,3,23,Sufficient Assumption,Conditional Logic,Conditional Logic | Missing Link / Idea | New Concept in Conclusion,3,22,5317,Maria won this year’s local
+106,2,22,Flaw,Rebuttals,Rebuttals | Abstract Answers | 2-Speaker,4,22,8362,Wirth: All efforts to identify a gene
+104,1,17,Role,Conditional Logic,Conditional Logic | First Sentence Conclusion | Abstract Answers,4,23,4551,The stable functioning of a society
+109,3,15,Flaw,Assumes Similarity,Assumes Similarity | Abstract Answers,4,23,5309,Scientists hoping to understand and
+107,3,25,Flaw,Conditional Logic,Conditional Logic | Abstract Answers,5,23,8114,A recent survey showed that 50
+101,2,23,Flaw,Conditional Logic,Conditional Logic | Abstract Answers | Famous Flaws | Dense Stimulus,4,24,7709,Essayist: The existence of a moral
