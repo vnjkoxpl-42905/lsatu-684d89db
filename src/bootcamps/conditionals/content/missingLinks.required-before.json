@@ -1,0 +1,1631 @@
+{
+  "practice": {
+    "missing-bridges": [
+      {
+        "kind": "build-bridge",
+        "id": "missing-bridges-transfer-1",
+        "prompt": "Every woven mat is labelled. Conclude that every woven mat is stored. Construct a sufficient added conditional using the supplied ideas.",
+        "atoms": [
+          {
+            "id": "first",
+            "label": "woven mat",
+            "subject": "the stated case",
+            "domain": "the situation described in this question"
+          },
+          {
+            "id": "second",
+            "label": "labelled item",
+            "subject": "the stated case",
+            "domain": "the situation described in this question"
+          },
+          {
+            "id": "third",
+            "label": "stored item",
+            "subject": "the stated case",
+            "domain": "the situation described in this question"
+          }
+        ],
+        "premises": [
+          {
+            "or": [
+              {
+                "not": {
+                  "atom": "first"
+                }
+              },
+              {
+                "atom": "second"
+              }
+            ]
+          }
+        ],
+        "conclusion": {
+          "or": [
+            {
+              "not": {
+                "atom": "first"
+              }
+            },
+            {
+              "atom": "third"
+            }
+          ]
+        },
+        "hint": "Start from what the existing rule can establish, and reach what the conclusion requires.",
+        "explanation": "Labelled → stored closes the argument; other additions count only if they actually make the conclusion follow."
+      },
+      {
+        "kind": "argument",
+        "id": "missing-bridges-transfer-2",
+        "prompt": "Model R is tested. All tested models are reviewed. The conclusion is that R is approved. Select an added rule that proves it.",
+        "atoms": [
+          {
+            "id": "first",
+            "label": "R tested",
+            "subject": "the stated case",
+            "domain": "the situation described in this question"
+          },
+          {
+            "id": "second",
+            "label": "R reviewed",
+            "subject": "the stated case",
+            "domain": "the situation described in this question"
+          },
+          {
+            "id": "third",
+            "label": "R approved",
+            "subject": "the stated case",
+            "domain": "the situation described in this question"
+          }
+        ],
+        "premises": [
+          {
+            "or": [
+              {
+                "not": {
+                  "atom": "first"
+                }
+              },
+              {
+                "atom": "second"
+              }
+            ]
+          },
+          {
+            "atom": "first"
+          }
+        ],
+        "conclusion": {
+          "atom": "third"
+        },
+        "assumptions": [
+          {
+            "id": "bridge",
+            "text": "If R reviewed, then R approved.",
+            "formula": {
+              "or": [
+                {
+                  "not": {
+                    "atom": "second"
+                  }
+                },
+                {
+                  "atom": "third"
+                }
+              ]
+            }
+          },
+          {
+            "id": "reverse",
+            "text": "If R approved, then R reviewed.",
+            "formula": {
+              "or": [
+                {
+                  "not": {
+                    "atom": "third"
+                  }
+                },
+                {
+                  "atom": "second"
+                }
+              ]
+            },
+            "hint": "This points back toward the existing middle condition rather than reaching the conclusion."
+          },
+          {
+            "id": "inverse",
+            "text": "If not R reviewed, then not R approved.",
+            "formula": {
+              "or": [
+                {
+                  "not": {
+                    "not": {
+                      "atom": "second"
+                    }
+                  }
+                },
+                {
+                  "not": {
+                    "atom": "third"
+                  }
+                }
+              ]
+            },
+            "hint": "This does not establish the needed result for a case meeting the given condition."
+          }
+        ],
+        "correctAssumptionId": "bridge",
+        "hint": "The added rule must make the conclusion unavoidable when combined with these premises.",
+        "explanation": "The R reviewed condition connects to R approved, closing this particular argument.",
+        "sourceRefs": [
+          "src/bootcamps/conditionals/content/foundations.source.ts",
+          "src/bootcamps/conditionals/content/applications.source.ts"
+        ]
+      },
+      {
+        "kind": "build-bridge",
+        "id": "missing-bridges-transfer-3",
+        "prompt": "Surveyed sites are mapped. Conclude that surveyed sites are listed. Build a sufficient added connection.",
+        "atoms": [
+          {
+            "id": "first",
+            "label": "site surveyed",
+            "subject": "the stated case",
+            "domain": "the situation described in this question"
+          },
+          {
+            "id": "second",
+            "label": "site mapped",
+            "subject": "the stated case",
+            "domain": "the situation described in this question"
+          },
+          {
+            "id": "third",
+            "label": "site listed",
+            "subject": "the stated case",
+            "domain": "the situation described in this question"
+          }
+        ],
+        "premises": [
+          {
+            "or": [
+              {
+                "not": {
+                  "atom": "first"
+                }
+              },
+              {
+                "atom": "second"
+              }
+            ]
+          }
+        ],
+        "conclusion": {
+          "or": [
+            {
+              "not": {
+                "atom": "first"
+              }
+            },
+            {
+              "atom": "third"
+            }
+          ]
+        },
+        "hint": "The existing path ends at mapped.",
+        "explanation": "Mapped → listed carries the surveyed site through to the stated conclusion."
+      },
+      {
+        "kind": "build-bridge",
+        "id": "missing-bridges-transfer-4",
+        "prompt": "Parcel P is marked. Marked parcels are sealed. Conclude that P is insured. Build a sufficient added rule.",
+        "atoms": [
+          {
+            "id": "first",
+            "label": "P marked",
+            "subject": "the stated case",
+            "domain": "the situation described in this question"
+          },
+          {
+            "id": "second",
+            "label": "P sealed",
+            "subject": "the stated case",
+            "domain": "the situation described in this question"
+          },
+          {
+            "id": "third",
+            "label": "P insured",
+            "subject": "the stated case",
+            "domain": "the situation described in this question"
+          }
+        ],
+        "premises": [
+          {
+            "atom": "first"
+          },
+          {
+            "or": [
+              {
+                "not": {
+                  "atom": "first"
+                }
+              },
+              {
+                "atom": "second"
+              }
+            ]
+          }
+        ],
+        "conclusion": {
+          "atom": "third"
+        },
+        "hint": "A sufficient addition must reach insurance for P.",
+        "explanation": "Sealed → insured makes insurance follow from the given marking fact and sealing rule."
+      },
+      {
+        "kind": "case",
+        "id": "missing-bridges-transfer-5",
+        "prompt": "The premises say approved → reviewed and reviewed AND signed → valid. Someone concludes approved → valid. Construct a counterexample showing the missing member.",
+        "atoms": [
+          {
+            "id": "first",
+            "label": "approved",
+            "subject": "the stated case",
+            "domain": "the situation described in this question"
+          },
+          {
+            "id": "second",
+            "label": "reviewed",
+            "subject": "the stated case",
+            "domain": "the situation described in this question"
+          },
+          {
+            "id": "third",
+            "label": "signed",
+            "subject": "the stated case",
+            "domain": "the situation described in this question"
+          },
+          {
+            "id": "fourth",
+            "label": "valid",
+            "subject": "the stated case",
+            "domain": "the situation described in this question"
+          }
+        ],
+        "premises": [
+          {
+            "or": [
+              {
+                "not": {
+                  "atom": "first"
+                }
+              },
+              {
+                "atom": "second"
+              }
+            ]
+          },
+          {
+            "or": [
+              {
+                "not": {
+                  "and": [
+                    {
+                      "atom": "second"
+                    },
+                    {
+                      "atom": "third"
+                    }
+                  ]
+                }
+              },
+              {
+                "atom": "fourth"
+              }
+            ]
+          }
+        ],
+        "target": {
+          "or": [
+            {
+              "not": {
+                "atom": "first"
+              }
+            },
+            {
+              "atom": "fourth"
+            }
+          ]
+        },
+        "task": "counterexample",
+        "hint": "Keep every given premise true while making the proposed conclusion false.",
+        "explanation": "An approved reviewed but unsigned invalid item satisfies the premises, so signing or another sufficient repair is needed.",
+        "sourceRefs": [
+          "src/bootcamps/conditionals/content/foundations.source.ts",
+          "src/bootcamps/conditionals/content/applications.source.ts"
+        ]
+      },
+      {
+        "kind": "argument",
+        "id": "missing-bridges-transfer-6",
+        "prompt": "Every indexed recording is catalogued. Conclude that every indexed recording is retained. Select a sufficient bridge.",
+        "atoms": [
+          {
+            "id": "first",
+            "label": "recording indexed",
+            "subject": "the stated case",
+            "domain": "the situation described in this question"
+          },
+          {
+            "id": "second",
+            "label": "recording catalogued",
+            "subject": "the stated case",
+            "domain": "the situation described in this question"
+          },
+          {
+            "id": "third",
+            "label": "recording retained",
+            "subject": "the stated case",
+            "domain": "the situation described in this question"
+          }
+        ],
+        "premises": [
+          {
+            "or": [
+              {
+                "not": {
+                  "atom": "first"
+                }
+              },
+              {
+                "atom": "second"
+              }
+            ]
+          }
+        ],
+        "conclusion": {
+          "or": [
+            {
+              "not": {
+                "atom": "first"
+              }
+            },
+            {
+              "atom": "third"
+            }
+          ]
+        },
+        "assumptions": [
+          {
+            "id": "bridge",
+            "text": "If recording catalogued, then recording retained.",
+            "formula": {
+              "or": [
+                {
+                  "not": {
+                    "atom": "second"
+                  }
+                },
+                {
+                  "atom": "third"
+                }
+              ]
+            }
+          },
+          {
+            "id": "reverse",
+            "text": "If recording retained, then recording catalogued.",
+            "formula": {
+              "or": [
+                {
+                  "not": {
+                    "atom": "third"
+                  }
+                },
+                {
+                  "atom": "second"
+                }
+              ]
+            },
+            "hint": "This points back toward the existing middle condition rather than reaching the conclusion."
+          },
+          {
+            "id": "inverse",
+            "text": "If not recording catalogued, then not recording retained.",
+            "formula": {
+              "or": [
+                {
+                  "not": {
+                    "not": {
+                      "atom": "second"
+                    }
+                  }
+                },
+                {
+                  "not": {
+                    "atom": "third"
+                  }
+                }
+              ]
+            },
+            "hint": "This does not establish the needed result for a case meeting the given condition."
+          }
+        ],
+        "correctAssumptionId": "bridge",
+        "hint": "The added rule must make the conclusion unavoidable when combined with these premises.",
+        "explanation": "The recording catalogued condition connects to recording retained, closing this particular argument.",
+        "sourceRefs": [
+          "src/bootcamps/conditionals/content/foundations.source.ts",
+          "src/bootcamps/conditionals/content/applications.source.ts"
+        ]
+      }
+    ],
+    "sufficient-bridges": [
+      {
+        "kind": "argument",
+        "id": "sufficient-bridges-transfer-1",
+        "prompt": "Every sponsored exhibit is registered. Conclude that sponsored exhibits are insured. Which added rule is sufficient?",
+        "atoms": [
+          {
+            "id": "first",
+            "label": "exhibit sponsored",
+            "subject": "the stated case",
+            "domain": "the situation described in this question"
+          },
+          {
+            "id": "second",
+            "label": "exhibit registered",
+            "subject": "the stated case",
+            "domain": "the situation described in this question"
+          },
+          {
+            "id": "third",
+            "label": "exhibit insured",
+            "subject": "the stated case",
+            "domain": "the situation described in this question"
+          }
+        ],
+        "premises": [
+          {
+            "or": [
+              {
+                "not": {
+                  "atom": "first"
+                }
+              },
+              {
+                "atom": "second"
+              }
+            ]
+          }
+        ],
+        "conclusion": {
+          "or": [
+            {
+              "not": {
+                "atom": "first"
+              }
+            },
+            {
+              "atom": "third"
+            }
+          ]
+        },
+        "assumptions": [
+          {
+            "id": "bridge",
+            "text": "If exhibit registered, then exhibit insured.",
+            "formula": {
+              "or": [
+                {
+                  "not": {
+                    "atom": "second"
+                  }
+                },
+                {
+                  "atom": "third"
+                }
+              ]
+            }
+          },
+          {
+            "id": "reverse",
+            "text": "If exhibit insured, then exhibit registered.",
+            "formula": {
+              "or": [
+                {
+                  "not": {
+                    "atom": "third"
+                  }
+                },
+                {
+                  "atom": "second"
+                }
+              ]
+            },
+            "hint": "This points back toward the existing middle condition rather than reaching the conclusion."
+          },
+          {
+            "id": "inverse",
+            "text": "If not exhibit registered, then not exhibit insured.",
+            "formula": {
+              "or": [
+                {
+                  "not": {
+                    "not": {
+                      "atom": "second"
+                    }
+                  }
+                },
+                {
+                  "not": {
+                    "atom": "third"
+                  }
+                }
+              ]
+            },
+            "hint": "This does not establish the needed result for a case meeting the given condition."
+          }
+        ],
+        "correctAssumptionId": "bridge",
+        "hint": "The added rule must make the conclusion unavoidable when combined with these premises.",
+        "explanation": "The exhibit registered condition connects to exhibit insured, closing this particular argument.",
+        "sourceRefs": [
+          "src/bootcamps/conditionals/content/foundations.source.ts",
+          "src/bootcamps/conditionals/content/applications.source.ts"
+        ]
+      },
+      {
+        "kind": "argument",
+        "id": "sufficient-bridges-transfer-2",
+        "prompt": "A file is selected and therefore edited. The author concludes that it is stored. Which additional rule closes the argument?",
+        "atoms": [
+          {
+            "id": "first",
+            "label": "file selected",
+            "subject": "the stated case",
+            "domain": "the situation described in this question"
+          },
+          {
+            "id": "second",
+            "label": "file edited",
+            "subject": "the stated case",
+            "domain": "the situation described in this question"
+          },
+          {
+            "id": "third",
+            "label": "file stored",
+            "subject": "the stated case",
+            "domain": "the situation described in this question"
+          }
+        ],
+        "premises": [
+          {
+            "atom": "first"
+          },
+          {
+            "or": [
+              {
+                "not": {
+                  "atom": "first"
+                }
+              },
+              {
+                "atom": "second"
+              }
+            ]
+          }
+        ],
+        "conclusion": {
+          "atom": "third"
+        },
+        "assumptions": [
+          {
+            "id": "bridge",
+            "text": "If file edited, then file stored.",
+            "formula": {
+              "or": [
+                {
+                  "not": {
+                    "atom": "second"
+                  }
+                },
+                {
+                  "atom": "third"
+                }
+              ]
+            }
+          },
+          {
+            "id": "reverse",
+            "text": "If file stored, then file edited.",
+            "formula": {
+              "or": [
+                {
+                  "not": {
+                    "atom": "third"
+                  }
+                },
+                {
+                  "atom": "second"
+                }
+              ]
+            },
+            "hint": "This points back toward the existing middle condition rather than reaching the conclusion."
+          },
+          {
+            "id": "inverse",
+            "text": "If not file edited, then not file stored.",
+            "formula": {
+              "or": [
+                {
+                  "not": {
+                    "not": {
+                      "atom": "second"
+                    }
+                  }
+                },
+                {
+                  "not": {
+                    "atom": "third"
+                  }
+                }
+              ]
+            },
+            "hint": "This does not establish the needed result for a case meeting the given condition."
+          }
+        ],
+        "correctAssumptionId": "bridge",
+        "hint": "The added rule must make the conclusion unavoidable when combined with these premises.",
+        "explanation": "The file edited condition connects to file stored, closing this particular argument.",
+        "sourceRefs": [
+          "src/bootcamps/conditionals/content/foundations.source.ts",
+          "src/bootcamps/conditionals/content/applications.source.ts"
+        ]
+      },
+      {
+        "kind": "build-bridge",
+        "id": "sufficient-bridges-transfer-3",
+        "prompt": "Funded sites are approved. Conclude that funded sites are insured. Construct a sufficient added rule.",
+        "atoms": [
+          {
+            "id": "first",
+            "label": "site funded",
+            "subject": "the stated case",
+            "domain": "the situation described in this question"
+          },
+          {
+            "id": "second",
+            "label": "site approved",
+            "subject": "the stated case",
+            "domain": "the situation described in this question"
+          },
+          {
+            "id": "third",
+            "label": "site insured",
+            "subject": "the stated case",
+            "domain": "the situation described in this question"
+          }
+        ],
+        "premises": [
+          {
+            "or": [
+              {
+                "not": {
+                  "atom": "first"
+                }
+              },
+              {
+                "atom": "second"
+              }
+            ]
+          }
+        ],
+        "conclusion": {
+          "or": [
+            {
+              "not": {
+                "atom": "first"
+              }
+            },
+            {
+              "atom": "third"
+            }
+          ]
+        },
+        "hint": "Reach insurance from a condition the premise can establish.",
+        "explanation": "An approval-to-insurance rule closes the argument."
+      },
+      {
+        "kind": "argument",
+        "id": "sufficient-bridges-transfer-4",
+        "prompt": "Every logged account is reviewed. Conclude that logged accounts are verified. Select a sufficient bridge.",
+        "atoms": [
+          {
+            "id": "first",
+            "label": "account logged",
+            "subject": "the stated case",
+            "domain": "the situation described in this question"
+          },
+          {
+            "id": "second",
+            "label": "account reviewed",
+            "subject": "the stated case",
+            "domain": "the situation described in this question"
+          },
+          {
+            "id": "third",
+            "label": "account verified",
+            "subject": "the stated case",
+            "domain": "the situation described in this question"
+          }
+        ],
+        "premises": [
+          {
+            "or": [
+              {
+                "not": {
+                  "atom": "first"
+                }
+              },
+              {
+                "atom": "second"
+              }
+            ]
+          }
+        ],
+        "conclusion": {
+          "or": [
+            {
+              "not": {
+                "atom": "first"
+              }
+            },
+            {
+              "atom": "third"
+            }
+          ]
+        },
+        "assumptions": [
+          {
+            "id": "bridge",
+            "text": "If account reviewed, then account verified.",
+            "formula": {
+              "or": [
+                {
+                  "not": {
+                    "atom": "second"
+                  }
+                },
+                {
+                  "atom": "third"
+                }
+              ]
+            }
+          },
+          {
+            "id": "reverse",
+            "text": "If account verified, then account reviewed.",
+            "formula": {
+              "or": [
+                {
+                  "not": {
+                    "atom": "third"
+                  }
+                },
+                {
+                  "atom": "second"
+                }
+              ]
+            },
+            "hint": "This points back toward the existing middle condition rather than reaching the conclusion."
+          },
+          {
+            "id": "inverse",
+            "text": "If not account reviewed, then not account verified.",
+            "formula": {
+              "or": [
+                {
+                  "not": {
+                    "not": {
+                      "atom": "second"
+                    }
+                  }
+                },
+                {
+                  "not": {
+                    "atom": "third"
+                  }
+                }
+              ]
+            },
+            "hint": "This does not establish the needed result for a case meeting the given condition."
+          }
+        ],
+        "correctAssumptionId": "bridge",
+        "hint": "The added rule must make the conclusion unavoidable when combined with these premises.",
+        "explanation": "The account reviewed condition connects to account verified, closing this particular argument.",
+        "sourceRefs": [
+          "src/bootcamps/conditionals/content/foundations.source.ts",
+          "src/bootcamps/conditionals/content/applications.source.ts"
+        ]
+      },
+      {
+        "kind": "case",
+        "id": "sufficient-bridges-transfer-5",
+        "prompt": "Adding reviewed → logged to logged → reviewed is proposed as enough to prove logged → insured. Construct a counterexample.",
+        "atoms": [
+          {
+            "id": "first",
+            "label": "logged",
+            "subject": "the stated case",
+            "domain": "the situation described in this question"
+          },
+          {
+            "id": "second",
+            "label": "reviewed",
+            "subject": "the stated case",
+            "domain": "the situation described in this question"
+          },
+          {
+            "id": "third",
+            "label": "insured",
+            "subject": "the stated case",
+            "domain": "the situation described in this question"
+          }
+        ],
+        "premises": [
+          {
+            "or": [
+              {
+                "not": {
+                  "atom": "first"
+                }
+              },
+              {
+                "atom": "second"
+              }
+            ]
+          },
+          {
+            "or": [
+              {
+                "not": {
+                  "atom": "second"
+                }
+              },
+              {
+                "atom": "first"
+              }
+            ]
+          }
+        ],
+        "target": {
+          "or": [
+            {
+              "not": {
+                "atom": "first"
+              }
+            },
+            {
+              "atom": "third"
+            }
+          ]
+        },
+        "task": "counterexample",
+        "hint": "Keep every given premise true while making the proposed conclusion false.",
+        "explanation": "The extra reverse can hold while insurance is false, so it does not repair the argument.",
+        "sourceRefs": [
+          "src/bootcamps/conditionals/content/foundations.source.ts",
+          "src/bootcamps/conditionals/content/applications.source.ts"
+        ]
+      },
+      {
+        "kind": "build-bridge",
+        "id": "sufficient-bridges-transfer-6",
+        "prompt": "Form T is selected and selected forms are edited. Conclude that T is approved and stored. Construct a sufficient rule reaching BOTH required results.",
+        "atoms": [
+          {
+            "id": "first",
+            "label": "T selected",
+            "subject": "the stated case",
+            "domain": "the situation described in this question"
+          },
+          {
+            "id": "second",
+            "label": "T edited",
+            "subject": "the stated case",
+            "domain": "the situation described in this question"
+          },
+          {
+            "id": "third",
+            "label": "T approved",
+            "subject": "the stated case",
+            "domain": "the situation described in this question"
+          },
+          {
+            "id": "fourth",
+            "label": "T stored",
+            "subject": "the stated case",
+            "domain": "the situation described in this question"
+          }
+        ],
+        "premises": [
+          {
+            "atom": "first"
+          },
+          {
+            "or": [
+              {
+                "not": {
+                  "atom": "first"
+                }
+              },
+              {
+                "atom": "second"
+              }
+            ]
+          }
+        ],
+        "conclusion": {
+          "and": [
+            {
+              "atom": "third"
+            },
+            {
+              "atom": "fourth"
+            }
+          ]
+        },
+        "hint": "Approval alone does not supply the complete conclusion.",
+        "explanation": "Edited → approved AND stored is sufficient because editing is already established."
+      }
+    ]
+  },
+  "quiz": {
+    "missing-bridges": [
+      {
+        "kind": "choice",
+        "id": "missing-bridges-quiz-1",
+        "prompt": "Every certified basket is a numbered item. The conclusion is that every certified basket is an inventoried item. Which added rule supplies the direct missing connection? Which statement says the same thing?",
+        "options": [
+          {
+            "id": "answer-1",
+            "text": "If something is a numbered item, it is an inventoried item.",
+            "formula": {
+              "or": [
+                {
+                  "not": {
+                    "atom": "second"
+                  }
+                },
+                {
+                  "atom": "third"
+                }
+              ]
+            },
+            "hint": "Compare the complete statement with the original."
+          },
+          {
+            "id": "answer-2",
+            "text": "If something is an inventoried item, it is a numbered item.",
+            "formula": {
+              "or": [
+                {
+                  "not": {
+                    "atom": "third"
+                  }
+                },
+                {
+                  "atom": "second"
+                }
+              ]
+            },
+            "hint": "This adds a guarantee in a direction the sentence has not supplied."
+          },
+          {
+            "id": "answer-3",
+            "text": "If something is not a numbered item, it is not an inventoried item.",
+            "formula": {
+              "or": [
+                {
+                  "not": {
+                    "not": {
+                      "atom": "second"
+                    }
+                  }
+                },
+                {
+                  "not": {
+                    "atom": "third"
+                  }
+                }
+              ]
+            },
+            "hint": "Denying one condition does not by itself deny the other."
+          }
+        ],
+        "correctOptionId": "answer-1",
+        "hint": "This adds a guarantee in a direction the sentence has not supplied.",
+        "explanation": "The added rule makes being a numbered item enough to establish being an inventoried item, closing the argument.",
+        "semantic": {
+          "kind": "equivalent",
+          "target": {
+            "or": [
+              {
+                "not": {
+                  "atom": "second"
+                }
+              },
+              {
+                "atom": "third"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "kind": "choice",
+        "id": "missing-bridges-quiz-2",
+        "prompt": "Every approved model is a tested model. The conclusion is that every approved model is a listed model. Which added rule supplies the direct missing connection? Which statement says the same thing?",
+        "options": [
+          {
+            "id": "answer-2",
+            "text": "If something is a listed model, it is a tested model.",
+            "formula": {
+              "or": [
+                {
+                  "not": {
+                    "atom": "third"
+                  }
+                },
+                {
+                  "atom": "second"
+                }
+              ]
+            },
+            "hint": "This adds a guarantee in a direction the sentence has not supplied."
+          },
+          {
+            "id": "answer-3",
+            "text": "If something is not a tested model, it is not a listed model.",
+            "formula": {
+              "or": [
+                {
+                  "not": {
+                    "not": {
+                      "atom": "second"
+                    }
+                  }
+                },
+                {
+                  "not": {
+                    "atom": "third"
+                  }
+                }
+              ]
+            },
+            "hint": "Denying one condition does not by itself deny the other."
+          },
+          {
+            "id": "answer-1",
+            "text": "If something is a tested model, it is a listed model.",
+            "formula": {
+              "or": [
+                {
+                  "not": {
+                    "atom": "second"
+                  }
+                },
+                {
+                  "atom": "third"
+                }
+              ]
+            },
+            "hint": "Compare the complete statement with the original."
+          }
+        ],
+        "correctOptionId": "answer-1",
+        "hint": "This adds a guarantee in a direction the sentence has not supplied.",
+        "explanation": "The added rule makes being a tested model enough to establish being a listed model, closing the argument.",
+        "semantic": {
+          "kind": "equivalent",
+          "target": {
+            "or": [
+              {
+                "not": {
+                  "atom": "second"
+                }
+              },
+              {
+                "atom": "third"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "kind": "choice",
+        "id": "missing-bridges-quiz-3",
+        "prompt": "Every marked jar is a sealed jar. The conclusion is that every marked jar is a shipped jar. Which added rule supplies the direct missing connection? Which statement says the same thing?",
+        "options": [
+          {
+            "id": "answer-3",
+            "text": "If something is not a sealed jar, it is not a shipped jar.",
+            "formula": {
+              "or": [
+                {
+                  "not": {
+                    "not": {
+                      "atom": "second"
+                    }
+                  }
+                },
+                {
+                  "not": {
+                    "atom": "third"
+                  }
+                }
+              ]
+            },
+            "hint": "Denying one condition does not by itself deny the other."
+          },
+          {
+            "id": "answer-1",
+            "text": "If something is a sealed jar, it is a shipped jar.",
+            "formula": {
+              "or": [
+                {
+                  "not": {
+                    "atom": "second"
+                  }
+                },
+                {
+                  "atom": "third"
+                }
+              ]
+            },
+            "hint": "Compare the complete statement with the original."
+          },
+          {
+            "id": "answer-2",
+            "text": "If something is a shipped jar, it is a sealed jar.",
+            "formula": {
+              "or": [
+                {
+                  "not": {
+                    "atom": "third"
+                  }
+                },
+                {
+                  "atom": "second"
+                }
+              ]
+            },
+            "hint": "This adds a guarantee in a direction the sentence has not supplied."
+          }
+        ],
+        "correctOptionId": "answer-1",
+        "hint": "This adds a guarantee in a direction the sentence has not supplied.",
+        "explanation": "The added rule makes being a sealed jar enough to establish being a shipped jar, closing the argument.",
+        "semantic": {
+          "kind": "equivalent",
+          "target": {
+            "or": [
+              {
+                "not": {
+                  "atom": "second"
+                }
+              },
+              {
+                "atom": "third"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "kind": "choice",
+        "id": "missing-bridges-quiz-4",
+        "prompt": "Every local guide is a trained guide. The conclusion is that every local guide is an insured guide. Which added rule supplies the direct missing connection? Which statement says the same thing?",
+        "options": [
+          {
+            "id": "answer-1",
+            "text": "If something is a trained guide, it is an insured guide.",
+            "formula": {
+              "or": [
+                {
+                  "not": {
+                    "atom": "second"
+                  }
+                },
+                {
+                  "atom": "third"
+                }
+              ]
+            },
+            "hint": "Compare the complete statement with the original."
+          },
+          {
+            "id": "answer-2",
+            "text": "If something is an insured guide, it is a trained guide.",
+            "formula": {
+              "or": [
+                {
+                  "not": {
+                    "atom": "third"
+                  }
+                },
+                {
+                  "atom": "second"
+                }
+              ]
+            },
+            "hint": "This adds a guarantee in a direction the sentence has not supplied."
+          },
+          {
+            "id": "answer-3",
+            "text": "If something is not a trained guide, it is not an insured guide.",
+            "formula": {
+              "or": [
+                {
+                  "not": {
+                    "not": {
+                      "atom": "second"
+                    }
+                  }
+                },
+                {
+                  "not": {
+                    "atom": "third"
+                  }
+                }
+              ]
+            },
+            "hint": "Denying one condition does not by itself deny the other."
+          }
+        ],
+        "correctOptionId": "answer-1",
+        "hint": "This adds a guarantee in a direction the sentence has not supplied.",
+        "explanation": "The added rule makes being a trained guide enough to establish being an insured guide, closing the argument.",
+        "semantic": {
+          "kind": "equivalent",
+          "target": {
+            "or": [
+              {
+                "not": {
+                  "atom": "second"
+                }
+              },
+              {
+                "atom": "third"
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "sufficient-bridges": [
+      {
+        "kind": "choice",
+        "id": "sufficient-bridges-quiz-1",
+        "prompt": "Every funded project is a registered project. The conclusion is that every funded project is an audited project. Which added rule supplies the direct missing connection? Which statement says the same thing?",
+        "options": [
+          {
+            "id": "answer-2",
+            "text": "If something is an audited project, it is a registered project.",
+            "formula": {
+              "or": [
+                {
+                  "not": {
+                    "atom": "third"
+                  }
+                },
+                {
+                  "atom": "second"
+                }
+              ]
+            },
+            "hint": "This adds a guarantee in a direction the sentence has not supplied."
+          },
+          {
+            "id": "answer-3",
+            "text": "If something is not a registered project, it is not an audited project.",
+            "formula": {
+              "or": [
+                {
+                  "not": {
+                    "not": {
+                      "atom": "second"
+                    }
+                  }
+                },
+                {
+                  "not": {
+                    "atom": "third"
+                  }
+                }
+              ]
+            },
+            "hint": "Denying one condition does not by itself deny the other."
+          },
+          {
+            "id": "answer-1",
+            "text": "If something is a registered project, it is an audited project.",
+            "formula": {
+              "or": [
+                {
+                  "not": {
+                    "atom": "second"
+                  }
+                },
+                {
+                  "atom": "third"
+                }
+              ]
+            },
+            "hint": "Compare the complete statement with the original."
+          }
+        ],
+        "correctOptionId": "answer-1",
+        "hint": "This adds a guarantee in a direction the sentence has not supplied.",
+        "explanation": "The added rule makes being a registered project enough to establish being an audited project, closing the argument.",
+        "semantic": {
+          "kind": "equivalent",
+          "target": {
+            "or": [
+              {
+                "not": {
+                  "atom": "second"
+                }
+              },
+              {
+                "atom": "third"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "kind": "choice",
+        "id": "sufficient-bridges-quiz-2",
+        "prompt": "Every admitted trainee is an enrolled trainee. The conclusion is that every admitted trainee is a covered trainee. Which added rule supplies the direct missing connection? Which statement says the same thing?",
+        "options": [
+          {
+            "id": "answer-3",
+            "text": "If something is not an enrolled trainee, it is not a covered trainee.",
+            "formula": {
+              "or": [
+                {
+                  "not": {
+                    "not": {
+                      "atom": "second"
+                    }
+                  }
+                },
+                {
+                  "not": {
+                    "atom": "third"
+                  }
+                }
+              ]
+            },
+            "hint": "Denying one condition does not by itself deny the other."
+          },
+          {
+            "id": "answer-1",
+            "text": "If something is an enrolled trainee, it is a covered trainee.",
+            "formula": {
+              "or": [
+                {
+                  "not": {
+                    "atom": "second"
+                  }
+                },
+                {
+                  "atom": "third"
+                }
+              ]
+            },
+            "hint": "Compare the complete statement with the original."
+          },
+          {
+            "id": "answer-2",
+            "text": "If something is a covered trainee, it is an enrolled trainee.",
+            "formula": {
+              "or": [
+                {
+                  "not": {
+                    "atom": "third"
+                  }
+                },
+                {
+                  "atom": "second"
+                }
+              ]
+            },
+            "hint": "This adds a guarantee in a direction the sentence has not supplied."
+          }
+        ],
+        "correctOptionId": "answer-1",
+        "hint": "This adds a guarantee in a direction the sentence has not supplied.",
+        "explanation": "The added rule makes being an enrolled trainee enough to establish being a covered trainee, closing the argument.",
+        "semantic": {
+          "kind": "equivalent",
+          "target": {
+            "or": [
+              {
+                "not": {
+                  "atom": "second"
+                }
+              },
+              {
+                "atom": "third"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "kind": "choice",
+        "id": "sufficient-bridges-quiz-3",
+        "prompt": "Every surveyed parcel is a mapped parcel. The conclusion is that every surveyed parcel is a priced parcel. Which added rule supplies the direct missing connection? Which statement says the same thing?",
+        "options": [
+          {
+            "id": "answer-1",
+            "text": "If something is a mapped parcel, it is a priced parcel.",
+            "formula": {
+              "or": [
+                {
+                  "not": {
+                    "atom": "second"
+                  }
+                },
+                {
+                  "atom": "third"
+                }
+              ]
+            },
+            "hint": "Compare the complete statement with the original."
+          },
+          {
+            "id": "answer-2",
+            "text": "If something is a priced parcel, it is a mapped parcel.",
+            "formula": {
+              "or": [
+                {
+                  "not": {
+                    "atom": "third"
+                  }
+                },
+                {
+                  "atom": "second"
+                }
+              ]
+            },
+            "hint": "This adds a guarantee in a direction the sentence has not supplied."
+          },
+          {
+            "id": "answer-3",
+            "text": "If something is not a mapped parcel, it is not a priced parcel.",
+            "formula": {
+              "or": [
+                {
+                  "not": {
+                    "not": {
+                      "atom": "second"
+                    }
+                  }
+                },
+                {
+                  "not": {
+                    "atom": "third"
+                  }
+                }
+              ]
+            },
+            "hint": "Denying one condition does not by itself deny the other."
+          }
+        ],
+        "correctOptionId": "answer-1",
+        "hint": "This adds a guarantee in a direction the sentence has not supplied.",
+        "explanation": "The added rule makes being a mapped parcel enough to establish being a priced parcel, closing the argument.",
+        "semantic": {
+          "kind": "equivalent",
+          "target": {
+            "or": [
+              {
+                "not": {
+                  "atom": "second"
+                }
+              },
+              {
+                "atom": "third"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "kind": "choice",
+        "id": "sufficient-bridges-quiz-4",
+        "prompt": "Every selected essay is an edited essay. The conclusion is that every selected essay is a published essay. Which added rule supplies the direct missing connection? Which statement says the same thing?",
+        "options": [
+          {
+            "id": "answer-2",
+            "text": "If something is a published essay, it is an edited essay.",
+            "formula": {
+              "or": [
+                {
+                  "not": {
+                    "atom": "third"
+                  }
+                },
+                {
+                  "atom": "second"
+                }
+              ]
+            },
+            "hint": "This adds a guarantee in a direction the sentence has not supplied."
+          },
+          {
+            "id": "answer-3",
+            "text": "If something is not an edited essay, it is not a published essay.",
+            "formula": {
+              "or": [
+                {
+                  "not": {
+                    "not": {
+                      "atom": "second"
+                    }
+                  }
+                },
+                {
+                  "not": {
+                    "atom": "third"
+                  }
+                }
+              ]
+            },
+            "hint": "Denying one condition does not by itself deny the other."
+          },
+          {
+            "id": "answer-1",
+            "text": "If something is an edited essay, it is a published essay.",
+            "formula": {
+              "or": [
+                {
+                  "not": {
+                    "atom": "second"
+                  }
+                },
+                {
+                  "atom": "third"
+                }
+              ]
+            },
+            "hint": "Compare the complete statement with the original."
+          }
+        ],
+        "correctOptionId": "answer-1",
+        "hint": "This adds a guarantee in a direction the sentence has not supplied.",
+        "explanation": "The added rule makes being an edited essay enough to establish being a published essay, closing the argument.",
+        "semantic": {
+          "kind": "equivalent",
+          "target": {
+            "or": [
+              {
+                "not": {
+                  "atom": "second"
+                }
+              },
+              {
+                "atom": "third"
+              }
+            ]
+          }
+        }
+      }
+    ]
+  }
+}

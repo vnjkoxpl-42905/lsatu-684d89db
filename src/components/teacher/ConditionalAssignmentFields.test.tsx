@@ -39,3 +39,14 @@ it('does not offer unreleased v3 assignments by default', () => {
  render(<ConditionalAssignmentFields value={DEFAULT_CONDITIONAL_TARGET} onChange={vi.fn()}/>);
  expect(screen.queryByRole('option', { name: 'Full course: Chapters 1–7' })).toBeNull();
 });
+
+it('shows a stored full edition truthfully when release is off and disables new activity selection', () => {
+ vi.stubEnv('VITE_CONDITIONAL_FULL_COURSE_ASSIGNMENTS_RELEASED', undefined);
+ const onChange = vi.fn();
+ render(<ConditionalAssignmentFields value={{ scope: 'activity', mode: 'practice', difficulty: 'beginner', curriculumVersion: 3, courseEdition: 'full-conditionals-v3', activityId: 'unless', activitySettings: {} }} onChange={onChange}/>);
+ expect(screen.getByRole('combobox', { name: 'Conditional course edition' })).toHaveValue('full-conditionals-v3');
+ expect(screen.getByRole('option', { name: 'Full course: Chapters 1–7' })).toBeInTheDocument();
+ expect(screen.getByRole('option', { name: 'One activity with settings' })).toBeDisabled();
+ fireEvent.change(screen.getByRole('combobox', { name: 'Conditional assignment scope' }), { target: { value: 'activity' } });
+ expect(onChange).not.toHaveBeenCalled();
+});

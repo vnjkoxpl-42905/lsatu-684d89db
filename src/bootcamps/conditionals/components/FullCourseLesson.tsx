@@ -4,6 +4,7 @@ import { FullCourseDrill } from './FullCourseDrill';
 import { UnlessLesson } from './UnlessLesson';
 import { ExclusionLesson } from './ExclusionLesson';
 import { NegativeTranslationLesson } from './NegativeTranslationLesson';
+import { MissingLinksLesson, MissingLinksEnglishTransfer } from './MissingLinksLesson';
 import './full-course.css';
 
 function Demonstration({ demo }: { demo: Lesson['demos'][number] }) {
@@ -22,6 +23,7 @@ export function FullCourseLesson({ lesson, courseStepId, media }: { lesson: Less
   if (lesson.id === 'exception-language') return <UnlessLesson lesson={lesson} film={media && <LessonFilm media={media}/>} quiz={quiz}/>;
   if (lesson.id === 'exclusion-language') return <ExclusionLesson film={media && <LessonFilm media={media}/>} quiz={quiz}/>;
   if (lesson.id === 'negative-translation') return <NegativeTranslationLesson quiz={quiz}/>;
+  if (lesson.id === 'missing-bridges') return <MissingLinksLesson quiz={quiz}/>;
   const contextHeading = lesson.id === 'exclusion-language' ? 'Not both, not all and cannot' : undefined;
   return <article className="fc-lesson">
     <section className="fc-definition"><h2>What it is</h2>{(contextHeading ? lesson.definition.slice(0, 1) : lesson.definition).map((paragraph, i) => <p key={i}>{paragraph}</p>)}<div className="fc-main-example"><p className="fc-sentence">{lesson.mainExample.sentence}</p><p>{lesson.mainExample.explanation}</p><p className="fc-diagram">{lesson.mainExample.diagram}</p></div>{contextHeading && <details className="fc-context"><summary>{contextHeading}</summary>{lesson.definition.slice(1).map((paragraph, i) => <p key={i}>{paragraph}</p>)}</details>}</section>
@@ -31,5 +33,6 @@ export function FullCourseLesson({ lesson, courseStepId, media }: { lesson: Less
     <section><h2>What it is not</h2><div className="fc-comparisons">{lesson.mistakes.map((example, i) => <div key={i} className={example.correct ? 'fc-right' : 'fc-wrong'}><strong>{example.correct ? '✓ Right' : '× Wrong'}</strong><p>{example.explanation}</p><p className="fc-diagram">{example.diagram}</p></div>)}</div></section>
     <p className="fc-habit">{lesson.habit}</p>
     {quiz}
+    {lesson.id === 'sufficient-bridges' && <MissingLinksEnglishTransfer/>}
   </article>;
 }
