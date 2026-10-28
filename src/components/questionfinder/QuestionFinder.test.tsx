@@ -4,6 +4,7 @@ import { describe, expect, it, vi, beforeEach } from "vitest";
 import QuestionFinder from "./QuestionFinder";
 
 const navigate = vi.fn();
+vi.mock('@/lib/questionLoader', () => ({ questionBank: { getQuestion: (qid: string) => ({ qid, pt:90, section:1, qnum:12, stimulus:'The ecologist considers drought.', questionStem:'Which is a flaw?', answerChoices:{A:'One',B:'Two',C:'Three',D:'Four',E:'Five'}, correctAnswer:'B' }) } }));
 vi.mock("react-router-dom", async () => {
   const actual = await vi.importActual<typeof import("react-router-dom")>("react-router-dom");
   return { ...actual, useNavigate: () => navigate };
@@ -44,7 +45,7 @@ vi.mock("./useQuestionFinderBanks", () => ({
   }),
 }));
 vi.mock("./useFinderAddressIndex", () => ({
-  useFinderAddressIndex: () => ({ tests: [{ pt: 88, sections: [{ section: 3, lr: [], rc: [{ id: 4021, position: 1, title: "Sam Gilliam and the draped canvas", questions: [{ id: 503, number: 3 }] }] }] }, { pt: 90, sections: [{ section: 1, lr: [12], rc: [] }] }, { pt: 140, sections: [{ section: 4, lr: [], rc: [
+  useFinderAddressIndex: () => ({ tests: [{ pt: 88, sections: [{ section: 3, lr: [], rc: [{ id: 4021, position: 2, title: "Sam Gilliam and the draped canvas", questions: [{ id: 503, number: 3 }] }] }] }, { pt: 90, sections: [{ section: 1, lr: [12], rc: [] }] }, { pt: 140, sections: [{ section: 4, lr: [], rc: [
     { id: 14, position: 1, title: "Sam Gilliam", questions: Array.from({ length: 6 }, (_, i) => ({ id: 1588 + i, number: i + 1 })) },
     { id: 15, position: 2, title: "Online Game Currencies", questions: Array.from({ length: 7 }, (_, i) => ({ id: 1594 + i, number: i + 7 })) },
     { id: 16, position: 3, title: "The Origins of Superior Performance", questions: Array.from({ length: 6 }, (_, i) => ({ id: 1601 + i, number: i + 14 })) },
@@ -68,45 +69,47 @@ const type = (dialog: HTMLElement, value: string) =>
 describe("QuestionFinder", () => {
   beforeEach(() => navigate.mockClear());
 
+  it('does not open or load while disabled, including keyboard shortcuts', () => {
+    const view = render(<MemoryRouter><QuestionFinder returnTo='/classroom' enabled={false} actorId='a' /></MemoryRouter>);
+    expect(screen.queryByRole('button', { name: 'Find a question' })).toBeNull();
+    fireEvent.keyDown(window, { key: '/', ctrlKey: false });
+    expect(screen.queryByRole('dialog')).toBeNull();
+    view.rerender(<MemoryRouter><QuestionFinder returnTo='/classroom' enabled actorId='a' /></MemoryRouter>);
+    fireEvent.click(screen.getByRole('button', { name: 'Find a question' }));
+    expect(screen.getByRole('dialog')).toBeInTheDocument();
+    view.rerender(<MemoryRouter><QuestionFinder returnTo='/classroom' enabled actorId='b' /></MemoryRouter>);
+    expect(screen.queryByRole('dialog')).toBeNull();
+  });
+  it('removes an open preview on actor change', () => {
+    const view = render(<MemoryRouter><QuestionFinder returnTo='/classroom' actorId='a' /></MemoryRouter>);
+    fireEvent.click(screen.getByRole('button', { name: 'Find a question' }));
+    const dialog = screen.getByRole('dialog'); type(dialog, 'PT90 S1 Q12');
+    fireEvent.click(within(dialog).getByRole('button', { name: /PT 90/ }));
+    expect(screen.getByRole('button', { name: 'Reveal answer' })).toBeInTheDocument();
+    view.rerender(<MemoryRouter><QuestionFinder returnTo='/classroom' actorId='b' /></MemoryRouter>);
+    expect(screen.queryByRole('dialog')).toBeNull();
+  });
+  it('can hide the trigger while retaining the imperative launcher', () => {
+    render(<MemoryRouter><QuestionFinder returnTo='/classroom' hideTrigger /></MemoryRouter>);
+    expect(screen.queryByRole('button', { name: 'Find a question' })).toBeNull();
+  });
   it("shows the address format before anything is typed, rather than an empty panel", () => {
     const dialog = openFinder();
     expect(within(dialog).getByText("PT90 S1 Q12")).toBeInTheDocument();
   });
 
-  it("selects an LR hit without navigating or creating an attempt", async () => {
-    const dialog = openFinder();
-    type(dialog, "flaw in the reasoning");
-    const row = await within(dialog).findByRole("button", { name: /PT 90/ });
-    fireEvent.click(row);
-    expect(within(dialog).getByRole("textbox")).toHaveValue("PT90 S1 Q12");
+  it("opens an LR hit as a full read-only preview", async () => {
+    const dialog = openFinder(); type(dialog, "flaw in the reasoning");
+    fireEvent.click(await within(dialog).findByRole("button", { name: /PT 90/ }));
+    expect(screen.queryByRole('dialog', { name: 'Find a question' })).toBeNull();
+    expect(screen.getByRole('button', { name: 'Reveal answer' })).toBeInTheDocument();
     expect(navigate).not.toHaveBeenCalled();
   });
-
-  it("explains that an RC hit selects its matching passage address", async () => {
-    const dialog = openFinder();
-    type(dialog, "stretcher frame");
-    expect(await within(dialog).findByText(/select to retain this address/i)).toBeInTheDocument();
-    expect(within(dialog).getByText("7 questions")).toBeInTheDocument();
-  });
-
-  it("selects an RC hit without navigating or creating a session", async () => {
-    const dialog = openFinder();
-    type(dialog, "stretcher frame");
+  it("opens an RC hit directly using validated identity", async () => {
+    const dialog = openFinder(); type(dialog, "stretcher frame");
     fireEvent.click(await within(dialog).findByRole("button", { name: /PT 88/ }));
-    expect(within(dialog).getByRole("textbox")).toHaveValue("PT88 S3 Q3");
-    expect(navigate).not.toHaveBeenCalled();
+    expect(navigate).toHaveBeenCalledWith('/rc/preview?passage=4021&q=503&returnTo=%2Fclassroom', { replace: false, state: { finderPreviewHistory: 'push' } });
   });
-
-  it("retains the selected address when the finder closes and opens again", async () => {
-    const dialog = openFinder("rc");
-    type(dialog, "stretcher frame");
-    fireEvent.click(await within(dialog).findByRole("button", { name: /PT 88/ }));
-    fireEvent.click(within(dialog).getByRole("button", { name: /close the question finder/i }));
-    fireEvent.click(await screen.findByRole("button", { name: /find a question/i }));
-    expect(within(await screen.findByRole("dialog", { name: /find a question/i })).getByRole("textbox")).toHaveValue("PT88 S3 Q3");
-    expect(navigate).not.toHaveBeenCalled();
-  });
-
   it("uses the active RC side and understands a spoken-style full address", async () => {
     const dialog = openFinder("rc");
     type(dialog, "Practice Test 88 section number 3 question number 3");
@@ -124,15 +127,12 @@ describe("QuestionFinder", () => {
     );
   });
 
-  it("selects the highlighted hit on Enter without navigation", async () => {
-    const dialog = openFinder();
-    type(dialog, "PT90 S1 Q12");
-    await within(dialog).findByRole("button", { name: /PT 90/ });
-    fireEvent.keyDown(within(dialog).getByRole("textbox"), { key: "Enter" });
-    expect(within(dialog).getByRole("textbox")).toHaveValue("PT90 S1 Q12");
+  it("opens the highlighted hit on Enter", async () => {
+    const dialog = openFinder(); type(dialog, "PT90 S1 Q12");
+    fireEvent.keyDown(within(dialog).getByRole('textbox'), { key: 'Enter' });
+    expect(screen.getByRole('button', { name: 'Reveal answer' })).toBeInTheDocument();
     expect(navigate).not.toHaveBeenCalled();
   });
-
   it("clears the query on the first Escape and closes on the second", async () => {
     const dialog = openFinder();
     type(dialog, "drought");
@@ -154,16 +154,13 @@ describe("QuestionFinder", () => {
     const dialog = openFinder();
     type(dialog, "PT90 S1 Q99");
     expect(
-      within(dialog).getByText("No question at PT 90 · S1 · Q99."),
+      within(dialog).getByText("PT 90 · S1 · Q99 is unavailable in the loaded bank. Some sections may still be unavailable."),
     ).toBeInTheDocument();
   });
 
-  it("hands set-building to the Drill console instead of doing it here", () => {
-    const dialog = openFinder();
-    fireEvent.click(within(dialog).getByRole("button", { name: /build a set/i }));
-    expect(navigate).toHaveBeenCalledWith("/classroom/drill?section=lr&stage=type-drill");
+  it("does not offer unrelated set building", () => {
+    const dialog = openFinder(); expect(within(dialog).queryByRole('button', { name: /build a set/i })).toBeNull();
   });
-
   it("offers both banks in the test selector without anything being expanded first", () => {
     const dialog = openFinder();
     const test = within(dialog).getByLabelText(/^test$/i);
@@ -203,9 +200,9 @@ describe("QuestionFinder", () => {
     expect(screen.getByText("Question 17")).toBeInTheDocument();
   });
 
-  it("keeps Open question unavailable without an exact RC address", () => {
+  it("keeps Open preview unavailable without an exact RC address", () => {
     const dialog = openFinder();
-    const go = within(dialog).getByRole("button", { name: /^open question$/i });
+    const go = within(dialog).getByRole("button", { name: /^open preview$/i });
     expect(go).toBeDisabled();
     expect(navigate).not.toHaveBeenCalled();
   });
@@ -213,11 +210,11 @@ describe("QuestionFinder", () => {
   it("opens only an explicit exact RC question as a read-only preview", async () => {
     const dialog = openFinder("rc");
     type(dialog, "PT88 S3 Q3");
-    const open = within(dialog).getByRole("button", { name: "Open question" });
+    const open = within(dialog).getByRole("button", { name: "Open preview" });
     await waitFor(() => expect(open).toBeEnabled());
     expect(navigate).not.toHaveBeenCalled();
     fireEvent.click(open);
-    expect(navigate).toHaveBeenCalledWith("/rc/preview?passage=4021&q=503&returnTo=%2Fclassroom");
+    expect(navigate).toHaveBeenCalledWith("/rc/preview?passage=4021&q=503&returnTo=%2Fclassroom", { replace: false, state: { finderPreviewHistory: 'push' } });
   });
   it("keeps the opening origin when its host route changes while lookup remains open", () => {
     const view = render(<MemoryRouter><QuestionFinder returnTo="/practice/drills?section=rc" bank="rc" /></MemoryRouter>);
@@ -225,13 +222,13 @@ describe("QuestionFinder", () => {
     const dialog = screen.getByRole("dialog", { name: "Find a question" });
     type(dialog, "PT140 S4 Q17");
     view.rerender(<MemoryRouter><QuestionFinder returnTo="/rc/preview?passage=16&q=1604" bank="rc" /></MemoryRouter>);
-    fireEvent.click(within(dialog).getByRole("button", { name: "Open question" }));
-    expect(navigate).toHaveBeenCalledWith("/rc/preview?passage=16&q=1604&returnTo=%2Fpractice%2Fdrills%3Fsection%3Drc");
+    fireEvent.click(within(dialog).getByRole("button", { name: "Open preview" }));
+    expect(navigate).toHaveBeenCalledWith("/rc/preview?passage=16&q=1604&returnTo=%2Fpractice%2Fdrills%3Fsection%3Drc", { replace: false, state: { finderPreviewHistory: 'push' } });
   });
 
-  it("keeps LR preview disabled truthfully", () => {
+  it("enables a validated LR preview", () => {
     const dialog = openFinder("lr"); type(dialog, "PT90 S1 Q12");
-    expect(within(dialog).getByRole("button", { name: "Open question" })).toBeDisabled();
+    expect(within(dialog).getByRole("button", { name: "Open preview" })).toBeEnabled();
   });
 
   it("clears an incompatible RC address when switching to LR, including after reopening", async () => {
