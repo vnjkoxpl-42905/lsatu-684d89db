@@ -164,9 +164,13 @@ export function ClassroomHomeView({
   onClearMessage,
   completingKey,
   onRetryWork,
+  actorId,
+  permissionsResolved = !loading,
 }: {
   model: ClassroomHomeModel;
   loading: boolean;
+  actorId?: string | null;
+  permissionsResolved?: boolean;
   onOpen: (route: string) => void;
   onMarkDone?: (key: string) => void;
   onClearMessage?: (conversationId: string) => void;
@@ -295,9 +299,9 @@ export function ClassroomHomeView({
             ) : null}
           </div>
           <div data-motion-item className="classroom-home-top-tools">
-            <div className="classroom-home-finderbar">
-              <QuestionFinder ref={finderRef} returnTo="/classroom" />
-            </div>
+            {permissionsResolved && model.access.drill && <div className="classroom-home-finderbar">
+              <QuestionFinder key={actorId ?? "guest"} ref={finderRef} enabled={permissionsResolved && model.access.drill} actorId={actorId} returnTo="/classroom" />
+            </div>}
             {continueRow && !loading && !model.workFailed ? (
               <button
                 type="button"

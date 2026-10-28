@@ -3,6 +3,8 @@ import { toast } from "sonner";
 import { useClassroomLayout } from "@/components/classroom/shell/classroomLayoutContext";
 import { useClassroomHome } from "./useClassroomHome";
 import ClassroomHomeView from "./ClassroomHomeView";
+import { useAuth } from "@/contexts/AuthContext";
+import { useUserPermissions } from "@/hooks/useUserPermissions";
 import "./home.css";
 
 /**
@@ -12,6 +14,8 @@ import "./home.css";
  */
 export default function ClassroomHome() {
   const navigate = useNavigate();
+  const { user } = useAuth();
+  const permissions = useUserPermissions();
   const { openSection } = useClassroomLayout();
   const { model, loading, markDone, clearMessage, completingKey, retryWork } = useClassroomHome();
 
@@ -19,6 +23,8 @@ export default function ClassroomHome() {
     <ClassroomHomeView
       model={model}
       loading={loading}
+      actorId={user?.id}
+      permissionsResolved={!permissions.loading}
       onOpen={(route) => navigate(route)}
       onSeeAllWork={() => openSection("work")}
       onMarkDone={markDone}

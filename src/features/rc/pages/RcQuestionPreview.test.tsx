@@ -14,7 +14,7 @@ const passage: RcPassage = {
   summaries: { standard: 'Hidden summary', brief: null, anotherWay: null },
   questions: [3, 4].map((id) => ({ questionId: id, position: id, questionType: 'Main point', questionTypeFamily: 'Main point', difficulty: null, prompt: `Question stem ${id}`, correctAnswer: 'A' as const, hasWrittenExplanation: true, explanationBlocks: [{ heading: 'Answer', body: 'Hidden explanation' }], totalResponses: null, features: [], choices: [{ letter: 'A' as const, text: 'Choice text', correct: true, tag: 'Correct', explanation: 'Hidden choice explanation', percent: null, responseCount: null }] })),
 };
-const mount = (query = 'passage=10&q=3&returnTo=%2Fpractice%2Fdrills%3Fsection%3Drc') => render(<MemoryRouter initialEntries={[`/rc/preview?${query}`]}><RcQuestionPreview /></MemoryRouter>);
+const mount = (query = 'passage=10&q=3&returnTo=%2Fpractice%2Fdrills%3Fsection%3Drc', state?: {finderPreviewHistory: 'push' | 'replace'}) => render(<MemoryRouter initialEntries={[{pathname: '/rc/preview', search: `?${query}`, state}]}><RcQuestionPreview /></MemoryRouter>);
 const session = (id: string) => ({ id, userId: 'actor', passageIds: [10], config: { source: 'manual', timing: { mode: 'unlimited' }, reveal: 'per_passage' } });
 beforeEach(() => { vi.clearAllMocks(); localStorage.clear(); sessionStorage.clear(); mocks.exposure.mockResolvedValue(undefined); mocks.user = { id: 'actor' }; mocks.query = null; mocks.load.mockResolvedValue(passage); mocks.get.mockResolvedValue(null); mocks.create.mockImplementation(async (_c, _ids, req) => session(req.id)); });
 afterEach(() => { cleanup(); vi.restoreAllMocks(); });
@@ -129,7 +129,7 @@ describe('read-only RC question lookup', () => {
     mount('passage=10&q=3&returnTo=%2Fmy-work%3Ftab%3Dassigned');
     await screen.findByRole('button', { name: 'Reveal passage and question' });
     fireEvent.click(screen.getByRole('button', { name: /^Back$/ }));
-    expect(mocks.navigate).toHaveBeenCalledWith('/my-work?tab=assigned');
+    expect(mocks.navigate).toHaveBeenCalledWith('/my-work?tab=assigned', { replace: true });
     expect(mocks.create).not.toHaveBeenCalled();
   });
   it('loads, refreshes and closes without backend or device writes or answer leakage', async () => {
@@ -142,7 +142,7 @@ describe('read-only RC question lookup', () => {
     expect(screen.getByText(/PT 140.*Question 3/)).toBeInTheDocument();
     view.unmount(); mount(); await screen.findByRole('button', { name: 'Reveal passage and question' });
     fireEvent.click(screen.getByRole('button', { name: 'Back to Practice' }));
-    expect(mocks.navigate).toHaveBeenCalledWith('/practice/drills?section=rc');
+    expect(mocks.navigate).toHaveBeenCalledWith('/practice/drills?section=rc', { replace: true });
     expect(localSet).not.toHaveBeenCalled(); expect(localRemove).not.toHaveBeenCalled(); expect(sessionSet).not.toHaveBeenCalled(); expect(sessionRemove).not.toHaveBeenCalled(); expect(mocks.create).not.toHaveBeenCalled(); expect(mocks.get).not.toHaveBeenCalled();
     expect(localStorage.getItem('existing-marks')).toBe('unchanged'); expect(sessionStorage.getItem('existing-backup')).toBe('unchanged');
   });
@@ -196,5 +196,21 @@ describe('read-only RC question lookup', () => {
     mocks.get.mockRejectedValueOnce(new Error('Offline')); const view = mount(); fireEvent.click(await screen.findByRole('button', { name: 'Start passage drill' })); await screen.findByRole('alert');
     const firstId = mocks.get.mock.calls[0][0]; view.unmount(); mount(); fireEvent.click(await screen.findByRole('button', { name: 'Start passage drill' }));
     await waitFor(() => expect(mocks.navigate).toHaveBeenCalled()); expect(mocks.create.mock.calls[0][2].id).toBe(firstId);
+  });
+});
+
+
+describe('finder preview history', () => {
+  it('uses the previous entry for a finder-pushed preview', async () => {
+    mount(undefined, {finderPreviewHistory: 'push'});
+    await screen.findByRole('button', {name: 'Reveal passage and question'});
+    fireEvent.click(screen.getByRole('button', {name: 'Back to Practice'}));
+    expect(mocks.navigate).toHaveBeenCalledWith(-1);
+  });
+  it('replaces a finder-replaced preview with its explicit origin', async () => {
+    mount(undefined, {finderPreviewHistory: 'replace'});
+    await screen.findByRole('button', {name: 'Reveal passage and question'});
+    fireEvent.click(screen.getByRole('button', {name: 'Back to Practice'}));
+    expect(mocks.navigate).toHaveBeenCalledWith('/practice/drills?section=rc', {replace: true});
   });
 });
