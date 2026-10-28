@@ -7,7 +7,7 @@ import { firstAnswerDetails } from '@/lib/firstAnswerDetails';
 
 /** Only LR question types persisted with a graded first answer are grouped. */
 export default function ProgressTopics({ studentId, hideWindowControl = false }: { studentId?: string; hideWindowControl?: boolean } = {}) {
-  const [window, setWindow] = useProgressWindow(!studentId);
+  const [window, setWindow] = useProgressWindow();
   const { ledger, asOf, loading, error, resolution, refresh } = useFirstAnswerProgress(window, studentId);
   const [search, setSearch] = useState('');
   const details = useMemo(() => ledger

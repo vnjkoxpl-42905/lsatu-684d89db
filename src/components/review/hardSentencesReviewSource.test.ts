@@ -15,6 +15,15 @@ function chain(data: unknown, error: unknown = null) {
 }
 beforeEach(() => from.mockReset());
 describe('Hard Sentences saved Review source', () => {
+  it('retains valid rows beside malformed cluster and capstone submissions with safe counts', async () => {
+    from.mockImplementation(table => table === 'intro_lr_attempts'
+      ? chain([{ ...cluster, id: 'bad', question_id: 'retired' }, cluster])
+      : chain([{ record_id: 'bad', data: { ...capstone, picked: 'invalid secret payload' } }, { record_id: 'valid', data: capstone }]));
+    const result = await loadHardSentencesReview('student');
+    expect(result.items).toHaveLength(2);
+    expect(result.unavailable).toEqual(['1 Hard Sentences cluster submissions unavailable', '1 Hard Sentences capstone submissions unavailable']);
+    expect(JSON.stringify(result)).not.toContain('invalid secret payload');
+  });
   it('preserves empty lift and repeat submission identity without claiming a first answer', () => {
     const a = parseHardSentencesCluster(cluster, 'student')!;
     const b = parseHardSentencesCluster({ ...cluster, id: 'repeat' }, 'student')!;

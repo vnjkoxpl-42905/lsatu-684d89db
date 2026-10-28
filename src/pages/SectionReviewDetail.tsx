@@ -1,3 +1,4 @@
+import { safeReviewHubReturn } from '@/lib/reviewHubReturn';
 import * as React from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
@@ -16,8 +17,7 @@ export default function SectionReviewDetail() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const requestedReturn = searchParams.get("returnTo");
-  const returnTo = requestedReturn?.split("?")[0] === "/review/to-review"
-    ? requestedReturn : "/review/to-review?reason=skipped";
+  const returnTo = safeReviewHubReturn(requestedReturn) ?? "/review/to-review?reason=skipped";
   const [history, setHistory] = React.useState<SectionHistoryRow | null>(null);
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState<string | null>(null);

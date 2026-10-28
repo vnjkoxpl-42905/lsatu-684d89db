@@ -9,7 +9,7 @@ import type { ReviewEpisode, ReviewEpisodeEvent } from '@/lib/reviewEpisodes';
 import type { FlaggedQuestionRow } from '@/lib/flaggedService';
 
 const fixture = vi.hoisted(() => ({
-  owner: 'student-a', classroomAccess: true, failedCluster: false, failedCapstone: false,
+  flagCalls: [] as boolean[], permissionsLoading:false, owner: 'student-a', classroomAccess: true, failedCluster: false, failedCapstone: false,
   clusters: {} as Record<string, unknown[]>, capstones: {} as Record<string, unknown[]>,
   reads: [] as { table: string; owner: string }[],
   pendingOwner: null as string | null,
@@ -21,12 +21,12 @@ vi.mock('@/lib/reviewEpisodes', async importOriginal => ({ ...await importOrigin
   if (fixture.episodeFailed) throw new Error('episode read failed'); return fixture.episodeRecords[student] ?? { episodes: [], events: [] };
 } }) }));
 vi.mock('@/contexts/AuthContext', () => ({ useAuth: () => ({ user: { id: fixture.owner } }) }));
-vi.mock('@/hooks/useUserPermissions', () => ({ useUserPermissions: () => ({ loading: false, is_admin: false, has_classroom_access: fixture.classroomAccess, has_flagged_access: fixture.flagAccess }) }));
-vi.mock('@/hooks/useFlagged', () => ({ useFlagged: () => ({ data: fixture.flags, isLoading: false, isError: false }) }));
+vi.mock('@/hooks/useUserPermissions', () => ({ useUserPermissions: () => ({ loading: fixture.permissionsLoading, is_admin: false, has_classroom_access: fixture.classroomAccess, has_flagged_access: fixture.flagAccess }) }));
+vi.mock('@/hooks/useFlagged', () => ({ useFlagged: ({enabled}:{enabled:boolean}) => { fixture.flagCalls.push(enabled); return { data: fixture.flags, isLoading: false, isError: false }; } }));
 vi.mock('@/hooks/useJournalEntries', () => ({ useJournalEntries: () => ({ data: [], isLoading: false, isError: false }) }));
 vi.mock('@/components/review/rcReviewSource', () => ({ loadRcReviewQueue: async () => [] }));
 vi.mock('@/components/review/ptReviewSource', () => ({ loadPracticeTestReviewQueue: async () => [] }));
-vi.mock('@/components/review/nativeLabReviewSource', () => ({ loadNativeLabReview: async () => [] }));
+vi.mock('@/components/review/nativeLabReviewSource', () => ({ loadNativeLabReviewResult: async () => ({items:[],unavailable:[]}), loadNativeLabReview: async () => [] }));
 vi.mock('@/components/review/introLrReviewSource', () => ({ loadIntroLrReviewQueue: async () => [] }));
 vi.mock('@/lib/sectionHistory', () => ({ fetchSectionHistory: async () => [] }));
 vi.mock('@/features/activity-centre/api/activitiesClient', () => ({ listAssignmentsForStudent: async () => [], listResponsesForAssignments: async () => [] }));
@@ -63,7 +63,7 @@ function seed(owner = 'student-a') {
   } }];
 }
 beforeEach(() => {
-  Object.assign(fixture, { owner: 'student-a', classroomAccess: true, failedCluster: false, failedCapstone: false,
+  Object.assign(fixture, { flagCalls: [], permissionsLoading:false, owner: 'student-a', classroomAccess: true, failedCluster: false, failedCapstone: false,
     clusters: {}, capstones: {}, reads: [], pendingOwner: null, releases: [], episodeRecords: {}, episodeFailed: false, flags: [], flagAccess: false });
   seed();
 });
@@ -113,7 +113,7 @@ describe('Hard Sentences in the rendered Review queue', () => {
     mount();
     expect(await screen.findByRole('alert')).toHaveTextContent(warning);
     expect(screen.getByRole('link', { name: retained })).toBeInTheDocument();
-    expect(screen.getByText('1 item')).toBeInTheDocument();
+    expect(screen.getByText('At least 1 item')).toBeInTheDocument();
     fixture[failure] = false;
     fireEvent.click(screen.getByRole('button', { name: 'Try again' }));
     await waitFor(() => expect(screen.queryByRole('alert')).not.toBeInTheDocument());
@@ -183,5 +183,40 @@ describe('Hard Sentences in the rendered Review queue', () => {
     expect(link).toHaveAttribute('href', expect.stringContaining('/flagged/PT101.S2.Q1'));
     fireEvent.change(screen.getByRole('combobox', { name: 'Review source' }), { target: { value: 'hard_sentences' } });
     expect(await screen.findByText('No items match these filters')).toBeInTheDocument();
+  });
+});
+
+describe('Review work presentation and source-read intent', () => {
+  it('keeps source coverage collapsed and secondary controls in a phone disclosure', async () => {
+    vi.stubGlobal('matchMedia', () => ({ matches:true,addEventListener:vi.fn(),removeEventListener:vi.fn() }));
+    mount();
+    await screen.findByText('2 items');
+    expect(screen.getByText("What's included").closest('details')).not.toHaveAttribute('open');
+    expect(screen.getByText('Filters', {exact:true}).closest('details')).not.toHaveAttribute('open');
+    expect(screen.getByRole('searchbox', {name:'Find review work'})).toBeInTheDocument();
+    fireEvent.click(screen.getByText('Filters', {exact:true}));
+    expect(screen.getByRole('combobox',{name:'Review area'})).toBeVisible();
+    vi.unstubAllGlobals();
+  });
+  it.each([false,true])('passes the resolved flagged grant to its data hook: %s', async granted => {
+    fixture.flagAccess=granted;
+    mount();
+    await screen.findByText('2 items');
+    expect(fixture.flagCalls.every(value=>value===granted)).toBe(true);
+  });
+  it('does not enable flag reads while permissions are unresolved', () => {
+    fixture.flagAccess=true; fixture.permissionsLoading=true;
+    mount();
+    expect(fixture.flagCalls.every(value=>value===false)).toBe(true);
+  });
+});
+
+describe('Review queue return focus', () => {
+  it.each(['', '&view=table'])('restores the selected saved source in %s view', async view => {
+    const selected=encodeURIComponent('hard-sentences:capstone:student-a-envelope');
+    mount(`/review/to-review?reason=missed&selected=${selected}${view}`);
+    const link=await screen.findByRole('link',{name:/Hard Sentences · Capstone/});
+    await waitFor(()=>expect(link).toHaveFocus());
+    expect(link).toHaveAttribute('aria-current','true');
   });
 });

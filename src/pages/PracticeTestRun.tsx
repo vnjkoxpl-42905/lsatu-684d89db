@@ -1,3 +1,4 @@
+import { safeReviewHubReturn } from '@/lib/reviewHubReturn';
 import * as React from 'react';
 import { useLoadedPracticeTestAcknowledgment } from '@/hooks/useStudentWorkState';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -17,7 +18,7 @@ export function ScoreReport({ run, userId, onExit }: { run: Run; userId: string;
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const requestedReturn = searchParams.get("returnTo");
-  const reviewReturn = requestedReturn?.split("?")[0] === "/review/to-review" ? requestedReturn : null;
+  const reviewReturn = safeReviewHubReturn(requestedReturn);
   const legValue = searchParams.get("leg");
   const legParam = Number(legValue);
   const targetLeg = legValue !== null && Number.isSafeInteger(legParam) && legParam >= 0 && legParam < run.legs.length

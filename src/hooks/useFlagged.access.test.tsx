@@ -1,0 +1,20 @@
+import type { ReactNode } from 'react';
+import { renderHook, waitFor } from '@testing-library/react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { beforeEach, expect, it, vi } from 'vitest';
+import { useFlagged } from './useFlagged';
+const mocks = vi.hoisted(() => ({ user: { id: 'owner' } as { id: string } | null, list: vi.fn() }));
+vi.mock('@/contexts/AuthContext', () => ({ useAuth: () => ({ user: mocks.user }) }));
+vi.mock('@/lib/flaggedService', () => ({ listFlagged: (id: string) => mocks.list(id) }));
+beforeEach(() => { mocks.user = { id: 'owner' }; mocks.list.mockReset().mockResolvedValue([]); });
+it('does not read flagged records while denied/unresolved, including actor changes', async () => {
+  const client = new QueryClient({ defaultOptions: { queries: { retry: false } } });
+  const wrapper = ({ children }: { children: ReactNode }) => <QueryClientProvider client={client}>{children}</QueryClientProvider>;
+  const { rerender } = renderHook(({ enabled }) => useFlagged({ enabled }), { wrapper, initialProps: { enabled: false } });
+  await new Promise(resolve => setTimeout(resolve, 10));
+  expect(mocks.list).not.toHaveBeenCalled();
+  mocks.user = { id: 'other' }; rerender({ enabled: false });
+  expect(mocks.list).not.toHaveBeenCalled();
+  rerender({ enabled: true });
+  await waitFor(() => expect(mocks.list).toHaveBeenCalledExactlyOnceWith('other'));
+});

@@ -1,4 +1,6 @@
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
+import { useReviewViewMemory } from '@/contexts/ReviewViewMemoryContext';
+import { safeReviewHubReturn } from '@/lib/reviewHubReturn';
 import { Link, Navigate, Outlet, useLocation } from "react-router-dom";
 import { Lock } from "lucide-react";
 import { useUserPermissions, type PermissionFlag } from "@/hooks/useUserPermissions";
@@ -28,11 +30,18 @@ function useDestinationPermissions(destination: Destination) {
 }
 
 export function StudentDestination({ destination }: { destination: Destination }) {
-  const { pathname, search } = useLocation();
+  const { pathname, search, hash } = useLocation();
+  const remembered = useReviewViewMemory();
+  useEffect(() => {
+    if (destination === 'review') remembered.remember(`${pathname}${search}${hash}`);
+  }, [destination, pathname, search, hash, remembered]);
   const headingRef = useRef<HTMLElement>(null);
   // Progress tabs carry only a valid window; no other URL state follows a tab link.
   const progressWindow = destination === "progress" ? parseProgressWindow(new URLSearchParams(search).get("window")) : null;
-  const tabTarget = (path: string) => progressWindow ? `${path}?window=${progressWindow}` : path;
+  const currentHubOrigin = destination === 'review' ? safeReviewHubReturn(`${pathname}${search}${hash}`) : null;
+  const tabTarget = (path: string) => destination === 'review'
+    ? (path === pathname && currentHubOrigin ? currentHubOrigin : remembered.target(path))
+    : progressWindow ? `${path}?window=${progressWindow}` : path;
   useClassroomMotion(headingRef, `destination:${destination}`);
   const permissions = useDestinationPermissions(destination);
   const config = DESTINATIONS[destination];
@@ -86,6 +95,17 @@ export function StudentDestination({ destination }: { destination: Destination }
       <nav data-motion-skip className="student-destination-tabs" aria-label={`${config.title} sections`} aria-busy={permissions.loading || (permissions.readingCenterChecking && !permissions.has_classroom_access)}>
         {renderTabs(config.tabs, "primary")}
       </nav>
+      {destination === 'review' ? <nav className="review-hub-utilities" aria-label="Review tools">
+        {[
+          { label: 'Wrong-answer journal', path: '/review/wrong', flags: ['has_journal_access'] },
+          { label: 'Flagged', path: '/review/flagged', flags: ['has_flagged_access'] },
+          { label: 'Imported work', path: '/review/imported', flags: ['has_analytics_access', 'has_drill_access'] },
+        ].map((utility) => {
+          const access = tabAccess(utility as DestinationTab, permissions);
+          return access === 'open' ? <Link key={utility.path} to={tabTarget(utility.path)} aria-current={pathname === utility.path ? 'page' : undefined}>{utility.label}</Link>
+            : <span key={utility.path} aria-disabled="true" title={access === 'checking' ? 'Checking access' : `${utility.label} is locked for your account`}>{utility.label} <span className="sr-only">{access === 'checking' ? '(checking access)' : '(locked)'}</span>{access === 'locked' ? <Lock size={12} aria-hidden="true" /> : null}</span>;
+        })}
+      </nav> : null}
       {showExamTabs ? (
         <nav data-motion-skip className="student-destination-subtabs" aria-label="Practice Exams pages" aria-busy={permissions.loading}>
           {renderTabs(EXAM_TABS, "exams")}

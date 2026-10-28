@@ -19,5 +19,5 @@ export function redirectLegacyHistoryLocation(search: string, hash: string): str
     params.set("historyArea", oldArea);
   }
   params.delete("area");
-  return preserveRedirectLocation("/progress/history", params.toString(), hash);
+  return preserveRedirectLocation("/review/history", params.toString(), hash);
 }
