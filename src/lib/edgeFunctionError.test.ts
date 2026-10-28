@@ -52,3 +52,7 @@ describe("bookingErrorMessage", () => {
     expect(bookingErrorMessage(undefined)).toContain("Something went wrong");
   });
 });
+
+ it("gives neutral teacher recovery guidance for an unknown booking outcome", () => {
+   expect(bookingErrorMessage("booking_outcome_unknown")).toBe("The booking may already exist. Close this confirmation and use Check booking before retrying.");
+ });
