@@ -36,14 +36,13 @@ const ConditionalOpeningPreview = import.meta.env.DEV
 const Drill = safeLazy(() => import("./pages/Drill"));
 const DrillLaunchGate = safeLazy(() => import("./components/drill/DrillLaunchGate"));
 const Analytics = safeLazy(() => import("./pages/Analytics"));
-const DrillHistory = safeLazy(() => import("./pages/DrillHistory"));
 const DrillRuns = safeLazy(() => import("./pages/DrillRuns"));
 const ActivityReviewDetail = safeLazy(() => import("./pages/ActivityReviewDetail"));
 const SectionReviewDetail = safeLazy(() => import("./pages/SectionReviewDetail"));
 const IntroLrReviewDetail = safeLazy(() => import("./pages/IntroLrReviewDetail"));
 const HardSentencesReviewDetail = safeLazy(() => import("./pages/HardSentencesReviewDetail"));
 const NativeLabReviewDetail = safeLazy(() => import("./pages/NativeLabReviewDetail"));
-const ProgressTopics = safeLazy(() => import("./pages/ProgressTopics"));
+const ProgressPage = safeLazy(() => import("./components/analytics/ProgressPage"));
 const RcRedirect = safeLazy(() => import("./features/rc/pages/RcRedirect"));
 const RcQuestionPreview = safeLazy(() => import("./features/rc/pages/RcQuestionPreview"));
 const RcPlayer = safeLazy(() => import("./features/rc/pages/RcPlayer"));
@@ -659,9 +658,10 @@ const App = () => {
 
                     <Route path="/progress" element={<ProtectedRoute allowSignedIn><StudentDestination destination="progress" /></ProtectedRoute>}>
                       <Route index element={<DestinationIndex destination="progress" />} />
+                      {/* One container, three route-derived views; the destination tabs are the only section navigation. */}
                       <Route path="overview" element={<ProtectedRoute flag="has_analytics_access"><Analytics /></ProtectedRoute>} />
-                      <Route path="history" element={<ProtectedRoute flag="has_analytics_access"><DrillHistory /></ProtectedRoute>} />
-                      <Route path="topics" element={<ProtectedRoute flag="has_analytics_access"><ProgressTopics /></ProtectedRoute>} />
+                      <Route path="history" element={<ProtectedRoute flag="has_analytics_access"><ProgressPage view="history" /></ProtectedRoute>} />
+                      <Route path="topics" element={<ProtectedRoute flag="has_analytics_access"><ProgressPage view="types" /></ProtectedRoute>} />
                     </Route>
 
                     <Route path="/library" element={<ProtectedRoute allowSignedIn><StudentDestination destination="library" /></ProtectedRoute>}>

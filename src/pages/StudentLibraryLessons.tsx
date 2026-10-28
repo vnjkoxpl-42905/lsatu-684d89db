@@ -15,12 +15,12 @@ const DRILL_PATH = `/drill?${launchDrill({
 })}`;
 
 function MainConclusionEvidence() {
-  const { ledger, loading, error, resolution, refresh } = useFirstAnswerProgress("all");
+  const { ledger, asOf, loading, error, resolution, refresh } = useFirstAnswerProgress("all");
   const row = useMemo(() => {
     if (!ledger) return null;
-    return firstAnswerDetails(ledger.answers, "all", new Date().toISOString())
+    return firstAnswerDetails(ledger.answers, "all", asOf ?? new Date().toISOString())
       .topics.find((topic) => topic.topic === TOPIC) ?? null;
-  }, [ledger]);
+  }, [ledger, asOf]);
 
   if (loading) return <p role="status">Loading your saved Main Conclusion answers…</p>;
   if (resolution.state === "denied") return <p>Your answer record is unavailable to this account.</p>;

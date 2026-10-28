@@ -52,9 +52,33 @@ export function buildPrototypeModel(answers: GradedQuestionAnswer[], coverage: P
     if (areaUnavailable[area] || areaPartial[area]) progress[area].percent = null;
   }
   if (areaUnavailable.LR || areaPartial.LR) topics.forEach((row) => { row.percent = null; });
-  topics.sort((a, b) => b.denominator - a.denominator || a.topic.localeCompare(b.topic));
+  // Most useful evidence first: the types with the most missed first answers lead.
+  // Unclassified stays reachable but never leads the list.
+  const missedOf = (row: TopicAccuracy) => row.denominator - row.correct;
+  topics.sort((a, b) => Number(a.topic === 'Unclassified') - Number(b.topic === 'Unclassified')
+    || missedOf(b) - missedOf(a) || b.denominator - a.denominator || a.topic.localeCompare(b.topic));
   const allAnswers = orderedDistinctAnswers(answers).filter((answer) => Date.parse(answer.gradedAt) <= Date.parse(asOf));
   return { progress, history: details.history, allAnswers, topics, untypedFirstAnswers: unclassified.length, areaUnavailable, areaPartial, asOf, window };
+}
+
+/**
+ * The one type to look at first: a known type with enough first answers to mean
+ * something and at least one miss. Never derived from incomplete sources.
+ */
+export function recommendedTopic(model: PrototypeModel): TopicAccuracy | null {
+  if (model.areaPartial.LR || model.areaUnavailable.LR) return null;
+  return model.topics.find((row) => row.topic !== 'Unclassified' && row.denominator >= 3 && row.correct < row.denominator) ?? null;
+}
+
+const SOURCE_LABELS: Record<string, string> = {
+  lr_attempts: 'LR practice answers', lr_section_history: 'LR sections', rc_attempts: 'RC answers',
+};
+export const readableSource = (source: string) => SOURCE_LABELS[source] ?? 'Saved answers';
+
+/** Wording that stays honest when an affected source could hold an earlier answer. */
+export function answerLabel(model: Pick<PrototypeModel, 'areaPartial' | 'areaUnavailable'>, answer: { area: ProgressArea; isFirst: boolean }): string {
+  if (!answer.isFirst) return 'Repeat';
+  return model.areaPartial[answer.area] || model.areaUnavailable[answer.area] ? 'First available answer' : 'First answer';
 }
 
 export interface PracticeBucket {

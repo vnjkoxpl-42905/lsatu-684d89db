@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { buildPracticeBuckets, buildPrototypeModel, questionLabel } from './model';
+import { answerLabel, buildPracticeBuckets, buildPrototypeModel, questionLabel, recommendedTopic } from './model';
 import { DEMO_AS_OF, demoAnswers, demoCoverage, getDemoData } from './fixture';
 import type { GradedQuestionAnswer } from '@/lib/firstAnswerProgress';
 
@@ -52,6 +52,38 @@ describe('prototype evidence model', () => {
   it('makes labels readable without changing identity', () => {
     expect(questionLabel('LR:PT101-S2-Q4')).toBe('PT 101 · Section 2 · Question 4');
     expect(questionLabel('RC:12:3')).toBe('Passage 12 · Question 3');
+  });
+});
+
+describe('type ordering and recommendation', () => {
+  const lr = (id: string, topic: string, correct: boolean): GradedQuestionAnswer => ({ ...demoAnswers[1], attemptId: id, questionKey: `LR:${id}`, topic, correct, gradedAt: '2026-10-20T12:00:00Z', answeredAt: undefined });
+  const rows = [
+    ...[1, 2, 3, 4].map((n) => lr(`w${n}`, 'Weaken', n > 3)), // 1 of 4 correct: 3 missed
+    ...[1, 2, 3, 4, 5, 6].map((n) => lr(`f${n}`, 'Flaw', n > 1)), // 5 of 6: 1 missed
+    ...[1, 2, 3].map((n) => lr(`m${n}`, 'Main Conclusion', true)), // no misses
+    ...[1, 2, 3, 4, 5].map((n) => lr(`u${n}`, 'mystery', false)), // Unclassified: 5 missed
+  ];
+
+  it('orders types by missed first answers, keeps Unclassified last and never recommends it', () => {
+    const model = buildPrototypeModel(rows, demoCoverage, 30, DEMO_AS_OF);
+    expect(model.topics.map((row) => row.topic)).toEqual(['Weaken', 'Flaw', 'Main Conclusion', 'Unclassified']);
+    expect(recommendedTopic(model)?.topic).toBe('Weaken');
+    expect(model.progress.LR.denominator).toBe(rows.length);
+  });
+
+  it('recommends nothing with too few answers, no misses, or incomplete sources', () => {
+    expect(recommendedTopic(buildPrototypeModel(rows.slice(0, 2), demoCoverage, 30, DEMO_AS_OF))).toBeNull();
+    expect(recommendedTopic(buildPrototypeModel(rows.filter((row) => row.topic === 'Main Conclusion'), demoCoverage, 30, DEMO_AS_OF))).toBeNull();
+    const partial = { ...demoCoverage, missingSources: [{ source: 'lr_section_history' as const, reason: 'x' }] };
+    expect(recommendedTopic(buildPrototypeModel(rows, partial, 30, DEMO_AS_OF))).toBeNull();
+  });
+
+  it('words first answers as available when an affected source could hold an earlier one', () => {
+    const partial = { ...demoCoverage, missingSources: [{ source: 'rc_sessions' as const, reason: 'x' }] };
+    const model = buildPrototypeModel(rows, partial, 30, DEMO_AS_OF);
+    expect(answerLabel(model, { area: 'RC', isFirst: true })).toBe('First available answer');
+    expect(answerLabel(model, { area: 'LR', isFirst: true })).toBe('First answer');
+    expect(answerLabel(model, { area: 'RC', isFirst: false })).toBe('Repeat');
   });
 });
 

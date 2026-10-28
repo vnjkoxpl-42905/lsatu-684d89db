@@ -76,6 +76,20 @@ describe("visible locked destination sections", () => {
     expect(screen.getByRole("link", { name: "History" })).toHaveAttribute("href", "/progress/history");
     expect(screen.queryByText(/Sections with a lock aren't available/)).toBeNull();
   });
+  it("carries only a valid Progress window across tab links", () => {
+    permissions.has_analytics_access = true;
+    render(<MemoryRouter initialEntries={["/progress/overview?window=14&historyResult=missed&junk=1"]}><StudentDestination destination="progress" /></MemoryRouter>);
+    expect(screen.getByRole("link", { name: "History" })).toHaveAttribute("href", "/progress/history?window=14");
+    expect(screen.getByRole("link", { name: "Topics" })).toHaveAttribute("href", "/progress/topics?window=14");
+    cleanup();
+    render(<MemoryRouter initialEntries={["/progress/overview?window=banana"]}><StudentDestination destination="progress" /></MemoryRouter>);
+    expect(screen.getByRole("link", { name: "History" })).toHaveAttribute("href", "/progress/history");
+  });
+  it("does not add a window to other destinations' tab links", () => {
+    permissions.has_classroom_access = true;
+    render(<MemoryRouter initialEntries={["/my-work/notes?window=14"]}><StudentDestination destination="my-work" /></MemoryRouter>);
+    expect(screen.getByRole("link", { name: "Completed" })).toHaveAttribute("href", "/my-work/completed");
+  });
   it("explains a locked section in visible text tied to the tab", () => {
     permissions.has_chat_access = true;
     render(<MemoryRouter initialEntries={["/progress/overview"]}><StudentDestination destination="progress" /></MemoryRouter>);
