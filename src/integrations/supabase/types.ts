@@ -6812,6 +6812,47 @@ export type Database = {
           },
         ]
       }
+      teacher_home_credit_adds: {
+        Row: {
+          created_at: string
+          delta: number
+          operation_key: string
+          owner_id: string
+          pass_id: string
+          payload_hash: string
+          receipt: Json
+          student_id: string
+        }
+        Insert: {
+          created_at?: string
+          delta: number
+          operation_key: string
+          owner_id: string
+          pass_id: string
+          payload_hash: string
+          receipt: Json
+          student_id: string
+        }
+        Update: {
+          created_at?: string
+          delta?: number
+          operation_key?: string
+          owner_id?: string
+          pass_id?: string
+          payload_hash?: string
+          receipt?: Json
+          student_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "teacher_home_credit_adds_pass_id_fkey"
+            columns: ["pass_id"]
+            isOneToOne: false
+            referencedRelation: "booking_passes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       teacher_home_manual: {
         Row: {
           blocker: string | null
@@ -10133,10 +10174,33 @@ export type Database = {
           storage_path: string
         }[]
       }
+      teacher_home_add_credits: {
+        Args: {
+          _actor: string
+          _apply?: boolean
+          _delta: number
+          _operation: string
+          _pass: string
+          _student: string
+        }
+        Returns: Json
+      }
       teacher_home_authorize: { Args: never; Returns: string }
       teacher_home_consultation_source: {
         Args: { _event: string; _lease: string; _owner: string; _source: Json }
         Returns: undefined
+      }
+      teacher_home_create_pass: {
+        Args: {
+          _actor: string
+          _credits: number
+          _expires_at?: string
+          _session_minutes?: number
+          _slug: string
+          _student: string
+          _token_hash: string
+        }
+        Returns: Json
       }
       teacher_home_label: {
         Args: { _event_id: string; _expected_revision?: number; _kind: string }
@@ -10164,8 +10228,27 @@ export type Database = {
         Returns: Json
       }
       teacher_home_payments: { Args: { _cursor?: string }; Returns: Json }
+      teacher_home_reactivate_pass: {
+        Args: { _actor: string; _pass: string; _student: string }
+        Returns: Json
+      }
       teacher_home_results: { Args: never; Returns: Json }
+      teacher_home_revoke_pass: {
+        Args: { _actor: string; _pass: string; _student: string }
+        Returns: Json
+      }
       teacher_home_roster: { Args: { _owner: string }; Returns: Json }
+      teacher_home_set_access: {
+        Args: {
+          _actor: string
+          _expected_flags: Json
+          _expected_tier: string
+          _flags?: Json
+          _student: string
+          _tier: string
+        }
+        Returns: Json
+      }
       teacher_home_task_counts: { Args: never; Returns: Json }
       teacher_post_session_attempt: {
         Args: { _error?: string; _owner: string; _started: string }
