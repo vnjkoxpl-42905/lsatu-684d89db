@@ -400,10 +400,13 @@ export type Database = {
           created_at: string
           id: string
           instructions: Json
+          issuance: number
           item_count: number | null
           item_format: string
           items: Json
           mode: string | null
+          notification_group_id: string | null
+          notification_policy: string
           revoked_at: string | null
           revoked_by: string | null
           score: number | null
@@ -418,6 +421,7 @@ export type Database = {
           subtitle: string | null
           time_goal_minutes: Json | null
           title: string
+          unlock_at: string | null
         }
         Insert: {
           activity_id?: string | null
@@ -427,10 +431,13 @@ export type Database = {
           created_at?: string
           id?: string
           instructions?: Json
+          issuance?: number
           item_count?: number | null
           item_format?: string
           items?: Json
           mode?: string | null
+          notification_group_id?: string | null
+          notification_policy?: string
           revoked_at?: string | null
           revoked_by?: string | null
           score?: number | null
@@ -445,6 +452,7 @@ export type Database = {
           subtitle?: string | null
           time_goal_minutes?: Json | null
           title: string
+          unlock_at?: string | null
         }
         Update: {
           activity_id?: string | null
@@ -454,10 +462,13 @@ export type Database = {
           created_at?: string
           id?: string
           instructions?: Json
+          issuance?: number
           item_count?: number | null
           item_format?: string
           items?: Json
           mode?: string | null
+          notification_group_id?: string | null
+          notification_policy?: string
           revoked_at?: string | null
           revoked_by?: string | null
           score?: number | null
@@ -472,6 +483,7 @@ export type Database = {
           subtitle?: string | null
           time_goal_minutes?: Json | null
           title?: string
+          unlock_at?: string | null
         }
         Relationships: [
           {
@@ -742,6 +754,187 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
+      }
+      assignment_delivery_control: {
+        Row: {
+          activated_at: string | null
+          enabled: boolean
+          singleton: boolean
+          verified_frontend_sha: string | null
+        }
+        Insert: {
+          activated_at?: string | null
+          enabled?: boolean
+          singleton?: boolean
+          verified_frontend_sha?: string | null
+        }
+        Update: {
+          activated_at?: string | null
+          enabled?: boolean
+          singleton?: boolean
+          verified_frontend_sha?: string | null
+        }
+        Relationships: []
+      }
+      assignment_delivery_events: {
+        Row: {
+          cancelled_at: string | null
+          created_at: string
+          delivered_at: string | null
+          group_id: string | null
+          id: string
+          issuance: number
+          policy: string
+          source_id: string
+          source_table: string
+          student_id: string
+        }
+        Insert: {
+          cancelled_at?: string | null
+          created_at?: string
+          delivered_at?: string | null
+          group_id?: string | null
+          id?: string
+          issuance: number
+          policy: string
+          source_id: string
+          source_table: string
+          student_id: string
+        }
+        Update: {
+          cancelled_at?: string | null
+          created_at?: string
+          delivered_at?: string | null
+          group_id?: string | null
+          id?: string
+          issuance?: number
+          policy?: string
+          source_id?: string
+          source_table?: string
+          student_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "assignment_delivery_events_group_id_fkey"
+            columns: ["group_id"]
+            isOneToOne: false
+            referencedRelation: "assignment_notification_groups"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      assignment_notification_deliveries: {
+        Row: {
+          cohort_key: string
+          delivered_at: string
+          event_id: string | null
+          group_id: string | null
+          id: string
+          student_id: string
+        }
+        Insert: {
+          cohort_key: string
+          delivered_at?: string
+          event_id?: string | null
+          group_id?: string | null
+          id?: string
+          student_id: string
+        }
+        Update: {
+          cohort_key?: string
+          delivered_at?: string
+          event_id?: string | null
+          group_id?: string | null
+          id?: string
+          student_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "assignment_notification_deliveries_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "assignment_delivery_events"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "assignment_notification_deliveries_group_id_fkey"
+            columns: ["group_id"]
+            isOneToOne: false
+            referencedRelation: "assignment_notification_groups"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      assignment_notification_groups: {
+        Row: {
+          collection_opened_at: string | null
+          created_at: string
+          finalized_at: string | null
+          id: string
+          kind: string
+          link: string
+          message: string | null
+          optional_channels_claimed_at: string | null
+          student_id: string
+          title: string
+        }
+        Insert: {
+          collection_opened_at?: string | null
+          created_at?: string
+          finalized_at?: string | null
+          id: string
+          kind?: string
+          link?: string
+          message?: string | null
+          optional_channels_claimed_at?: string | null
+          student_id: string
+          title?: string
+        }
+        Update: {
+          collection_opened_at?: string | null
+          created_at?: string
+          finalized_at?: string | null
+          id?: string
+          kind?: string
+          link?: string
+          message?: string | null
+          optional_channels_claimed_at?: string | null
+          student_id?: string
+          title?: string
+        }
+        Relationships: []
+      }
+      assignment_notification_legacy_links: {
+        Row: {
+          issuance: number
+          notification_id: string
+          source_id: string
+          source_table: string
+          student_id: string
+        }
+        Insert: {
+          issuance: number
+          notification_id: string
+          source_id: string
+          source_table: string
+          student_id: string
+        }
+        Update: {
+          issuance?: number
+          notification_id?: string
+          source_id?: string
+          source_table?: string
+          student_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "assignment_notification_legacy_links_notification_id_fkey"
+            columns: ["notification_id"]
+            isOneToOne: true
+            referencedRelation: "notifications"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       attempts: {
         Row: {
@@ -1611,7 +1804,10 @@ export type Database = {
           description: string | null
           due_at: string | null
           id: string
+          issuance: number
           metadata_json: Json
+          notification_group_id: string | null
+          notification_policy: string
           priority: number
           source_id: string | null
           source_table: string | null
@@ -1633,7 +1829,10 @@ export type Database = {
           description?: string | null
           due_at?: string | null
           id?: string
+          issuance?: number
           metadata_json?: Json
+          notification_group_id?: string | null
+          notification_policy?: string
           priority?: number
           source_id?: string | null
           source_table?: string | null
@@ -1655,7 +1854,10 @@ export type Database = {
           description?: string | null
           due_at?: string | null
           id?: string
+          issuance?: number
           metadata_json?: Json
+          notification_group_id?: string | null
+          notification_policy?: string
           priority?: number
           source_id?: string | null
           source_table?: string | null
@@ -2422,7 +2624,10 @@ export type Database = {
           created_at: string
           guided_drill_id: string
           id: string
+          issuance: number
           level: string | null
+          notification_group_id: string | null
+          notification_policy: string
           question_count: number | null
           question_qids: string[]
           read_card_at: string | null
@@ -2442,7 +2647,10 @@ export type Database = {
           created_at?: string
           guided_drill_id: string
           id?: string
+          issuance?: number
           level?: string | null
+          notification_group_id?: string | null
+          notification_policy?: string
           question_count?: number | null
           question_qids?: string[]
           read_card_at?: string | null
@@ -2462,7 +2670,10 @@ export type Database = {
           created_at?: string
           guided_drill_id?: string
           id?: string
+          issuance?: number
           level?: string | null
+          notification_group_id?: string | null
+          notification_policy?: string
           question_count?: number | null
           question_qids?: string[]
           read_card_at?: string | null
@@ -2565,6 +2776,9 @@ export type Database = {
           completed_at: string | null
           created_at: string
           id: string
+          issuance: number
+          notification_group_id: string | null
+          notification_policy: string
           question_qids: string[]
           score: number | null
           set_description: string | null
@@ -2573,6 +2787,7 @@ export type Database = {
           started_at: string | null
           status: string
           student_id: string
+          unlock_at: string | null
         }
         Insert: {
           assigned_by: string
@@ -2580,6 +2795,9 @@ export type Database = {
           completed_at?: string | null
           created_at?: string
           id?: string
+          issuance?: number
+          notification_group_id?: string | null
+          notification_policy?: string
           question_qids: string[]
           score?: number | null
           set_description?: string | null
@@ -2588,6 +2806,7 @@ export type Database = {
           started_at?: string | null
           status?: string
           student_id: string
+          unlock_at?: string | null
         }
         Update: {
           assigned_by?: string
@@ -2595,6 +2814,9 @@ export type Database = {
           completed_at?: string | null
           created_at?: string
           id?: string
+          issuance?: number
+          notification_group_id?: string | null
+          notification_policy?: string
           question_qids?: string[]
           score?: number | null
           set_description?: string | null
@@ -2603,6 +2825,7 @@ export type Database = {
           started_at?: string | null
           status?: string
           student_id?: string
+          unlock_at?: string | null
         }
         Relationships: [
           {
@@ -3392,6 +3615,11 @@ export type Database = {
       }
       notifications: {
         Row: {
+          assignment_delivery_id: string | null
+          assignment_event_id: string | null
+          assignment_group_id: string | null
+          assignment_superseded_at: string | null
+          assignment_superseded_by_issuance: number | null
           body: string | null
           created_at: string
           id: string
@@ -3402,6 +3630,11 @@ export type Database = {
           user_id: string
         }
         Insert: {
+          assignment_delivery_id?: string | null
+          assignment_event_id?: string | null
+          assignment_group_id?: string | null
+          assignment_superseded_at?: string | null
+          assignment_superseded_by_issuance?: number | null
           body?: string | null
           created_at?: string
           id?: string
@@ -3412,6 +3645,11 @@ export type Database = {
           user_id: string
         }
         Update: {
+          assignment_delivery_id?: string | null
+          assignment_event_id?: string | null
+          assignment_group_id?: string | null
+          assignment_superseded_at?: string | null
+          assignment_superseded_by_issuance?: number | null
           body?: string | null
           created_at?: string
           id?: string
@@ -3490,6 +3728,9 @@ export type Database = {
           assigned_at: string
           assigned_by: string | null
           id: string
+          issuance: number
+          notification_group_id: string | null
+          notification_policy: string
           pt: number
           status: string
           student_id: string
@@ -3499,6 +3740,9 @@ export type Database = {
           assigned_at?: string
           assigned_by?: string | null
           id?: string
+          issuance?: number
+          notification_group_id?: string | null
+          notification_policy?: string
           pt: number
           status?: string
           student_id: string
@@ -3508,6 +3752,9 @@ export type Database = {
           assigned_at?: string
           assigned_by?: string | null
           id?: string
+          issuance?: number
+          notification_group_id?: string | null
+          notification_policy?: string
           pt?: number
           status?: string
           student_id?: string
@@ -6252,6 +6499,36 @@ export type Database = {
           },
         ]
       }
+      student_work_receipts: {
+        Row: {
+          first_opened_at: string
+          issuance: number
+          last_opened_at: string
+          read_at: string
+          source_id: string
+          source_table: string
+          student_id: string
+        }
+        Insert: {
+          first_opened_at: string
+          issuance: number
+          last_opened_at: string
+          read_at: string
+          source_id: string
+          source_table: string
+          student_id: string
+        }
+        Update: {
+          first_opened_at?: string
+          issuance?: number
+          last_opened_at?: string
+          read_at?: string
+          source_id?: string
+          source_table?: string
+          student_id?: string
+        }
+        Relationships: []
+      }
       students: {
         Row: {
           class_id: string
@@ -6323,6 +6600,9 @@ export type Database = {
           created_at: string
           id: string
           interaction_id: string | null
+          issuance: number
+          notification_group_id: string | null
+          notification_policy: string
           pdf_url: string | null
           response_data: Json
           response_saved_at: string | null
@@ -6330,6 +6610,7 @@ export type Database = {
           status: string
           student_id: string
           title: string
+          unlock_at: string | null
           viewed_at: string | null
         }
         Insert: {
@@ -6342,6 +6623,9 @@ export type Database = {
           created_at?: string
           id?: string
           interaction_id?: string | null
+          issuance?: number
+          notification_group_id?: string | null
+          notification_policy?: string
           pdf_url?: string | null
           response_data?: Json
           response_saved_at?: string | null
@@ -6349,6 +6633,7 @@ export type Database = {
           status?: string
           student_id: string
           title: string
+          unlock_at?: string | null
           viewed_at?: string | null
         }
         Update: {
@@ -6361,6 +6646,9 @@ export type Database = {
           created_at?: string
           id?: string
           interaction_id?: string | null
+          issuance?: number
+          notification_group_id?: string | null
+          notification_policy?: string
           pdf_url?: string | null
           response_data?: Json
           response_saved_at?: string | null
@@ -6368,6 +6656,7 @@ export type Database = {
           status?: string
           student_id?: string
           title?: string
+          unlock_at?: string | null
           viewed_at?: string | null
         }
         Relationships: [
@@ -7670,6 +7959,22 @@ export type Database = {
         Args: { exclude_ids?: string[] }
         Returns: string[]
       }
+      acknowledge_assignment_notification_group: {
+        Args: { p_group_id: string }
+        Returns: boolean
+      }
+      acknowledge_student_work: {
+        Args: {
+          p_issuance: number
+          p_source_id: string
+          p_source_table: string
+        }
+        Returns: Json
+      }
+      activate_assignment_delivery: {
+        Args: { p_verified_frontend_sha: string }
+        Returns: Json
+      }
       activity_ai_answer_key_shape_v1: { Args: { key: Json }; Returns: boolean }
       activity_ai_answer_key_valid_v1: { Args: { key: Json }; Returns: boolean }
       activity_ai_reply_v1: {
@@ -7892,14 +8197,30 @@ export type Database = {
           isSetofReturn: false
         }
       }
-      assign_reading_center: {
-        Args: {
-          p_description?: string
-          p_student_id: string
-          p_title?: string
-          p_unlock_at?: string
-        }
-        Returns: Json
+      assign_reading_center:
+        | {
+            Args: {
+              p_description?: string
+              p_student_id: string
+              p_title?: string
+              p_unlock_at?: string
+            }
+            Returns: Json
+          }
+        | {
+            Args: {
+              p_description: string
+              p_notification_group_id: string
+              p_notification_policy: string
+              p_student_id: string
+              p_title: string
+              p_unlock_at: string
+            }
+            Returns: Json
+          }
+      assignment_notification_group_link: {
+        Args: { p_group: string; p_link: string }
+        Returns: string
       }
       attach_single_session_checkout: {
         Args: {
@@ -8142,6 +8463,10 @@ export type Database = {
           isOneToOne: true
           isSetofReturn: false
         }
+      }
+      claim_assignment_notification_channels: {
+        Args: { p_group_id: string }
+        Returns: boolean
       }
       claim_booking_calendar_actions: {
         Args: { _lease_seconds?: number; _limit?: number }
@@ -8676,6 +9001,15 @@ export type Database = {
           isSetofReturn: false
         }
       }
+      finalize_assignment_notification_group: {
+        Args: {
+          p_group_id: string
+          p_link?: string
+          p_message?: string
+          p_title?: string
+        }
+        Returns: Json
+      }
       finalize_single_session_free: {
         Args: {
           _booking_id: string
@@ -8737,6 +9071,27 @@ export type Database = {
           student_id: string
           total: number
           viewed: number
+        }[]
+      }
+      get_assignment_notification_group_items: {
+        Args: { p_group_id: string }
+        Returns: {
+          issuance: number
+          link: string
+          read_at: string
+          source_id: string
+          source_table: string
+          title: string
+        }[]
+      }
+      get_assignment_notification_links: {
+        Args: never
+        Returns: {
+          group_id: string
+          issuance: number
+          notification_id: string
+          source_id: string
+          source_table: string
         }[]
       }
       get_booking_availability: { Args: never; Returns: Json }
@@ -8808,6 +9163,26 @@ export type Database = {
       get_student_progress_user_id: {
         Args: { p_class_id: string }
         Returns: string
+      }
+      get_student_work_access: {
+        Args: never
+        Returns: {
+          available: boolean
+          issuance: number
+          source_id: string
+          source_table: string
+        }[]
+      }
+      get_student_work_receipts: {
+        Args: never
+        Returns: {
+          first_opened_at: string
+          issuance: number
+          last_opened_at: string
+          read_at: string
+          source_id: string
+          source_table: string
+        }[]
       }
       grant_booking_access: {
         Args: {
@@ -8975,6 +9350,10 @@ export type Database = {
           isSetofReturn: false
         }
       }
+      map_student_work_notification_link: {
+        Args: { p_notification_id: string }
+        Returns: undefined
+      }
       match_lsatu_content: {
         Args: {
           kind_filter?: string[]
@@ -8992,6 +9371,18 @@ export type Database = {
           title: string
           url: string
         }[]
+      }
+      materialize_session_bundle_part: {
+        Args: {
+          p_content_markdown: string
+          p_draft_id: string
+          p_expected_part?: Json
+          p_notification_group_id?: string
+          p_part: string
+          p_student_id: string
+          p_title: string
+        }
+        Returns: Json
       }
       mcp_assign_homework_set: {
         Args: {
@@ -9112,6 +9503,10 @@ export type Database = {
       }
       promote_lsat_knowledge_version: {
         Args: { _expected_count: number; _slug: string; _version: string }
+        Returns: Json
+      }
+      publish_assignment_plan_notification: {
+        Args: { p_group_id: string; p_link?: string; p_student_id: string }
         Returns: Json
       }
       purge_single_session_pii: { Args: { _now?: string }; Returns: Json }
@@ -9279,6 +9674,10 @@ export type Database = {
         Args: { _new_slug: string; _new_token_hash: string; _pass_id: string }
         Returns: string
       }
+      release_assignment_notifications: {
+        Args: { p_limit?: number }
+        Returns: number
+      }
       release_section_grading: {
         Args: { p_assignment_id: string; p_attempt_no: number }
         Returns: undefined
@@ -9369,6 +9768,15 @@ export type Database = {
           isOneToOne: true
           isSetofReturn: false
         }
+      }
+      retire_superseded_student_work_alerts: {
+        Args: {
+          p_id: string
+          p_issuance: number
+          p_student: string
+          p_table: string
+        }
+        Returns: undefined
       }
       retrieve_lsat_knowledge: {
         Args: {
@@ -9538,6 +9946,22 @@ export type Database = {
       start_section_focus_attempt: {
         Args: { p_assignment_id: string; p_slugs: string[] }
         Returns: string
+      }
+      student_work_assigned_route: { Args: { p_item: Json }; Returns: string }
+      student_work_evidence_timestamp: {
+        Args: { p_text: string }
+        Returns: string
+      }
+      student_work_mirror_identity: { Args: { p_item: Json }; Returns: Json }
+      student_work_native_row: {
+        Args: { p_id: string; p_table: string }
+        Returns: Json
+      }
+      student_work_native_table: { Args: { p_table: string }; Returns: boolean }
+      student_work_row_active: { Args: { p_row: Json }; Returns: boolean }
+      student_work_state: {
+        Args: { p_id: string; p_student: string; p_table: string }
+        Returns: Json
       }
       take_abandoned_booking_uploads: {
         Args: { _limit?: number; _older_than?: string }
