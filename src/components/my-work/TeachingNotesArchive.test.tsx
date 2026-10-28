@@ -102,6 +102,21 @@ describe('TeachingNotesArchive', () => {
     await waitFor(() => expect(screen.queryByRole('combobox')).not.toBeInTheDocument());
     expect(screen.getByRole('searchbox', { name: 'Search notes' })).not.toHaveFocus();
   });
+  it.each(['pointer', 'keyboard'] as const)('uses the final %s modality inside the portal rather than its opening modality', async (selection) => {
+    show('/my-work/notes?type=smartboard_recap');
+    if (selection === 'pointer') openTypes();
+    else {
+      const down = new MouseEvent('pointerdown', { bubbles: true, button: 0, ctrlKey: false });
+      Object.defineProperty(down, 'pointerType', { value: 'mouse' }); fireEvent(screen.getByRole('combobox'), down);
+    }
+    const option = await screen.findByRole('option', { name: 'All types' }); act(() => option.focus());
+    if (selection === 'pointer') { fireEvent.pointerDown(option, { pointerType: 'touch' }); fireEvent.click(option, { detail: 1 }); }
+    else fireEvent.keyDown(option, { key: 'Enter' });
+    await waitFor(() => expect(screen.queryByRole('combobox')).not.toBeInTheDocument());
+    const search = screen.getByRole('searchbox', { name: 'Search notes' });
+    if (selection === 'keyboard') await waitFor(() => expect(search).toHaveFocus());
+    else expect(search).not.toHaveFocus();
+  });
   it('signals a portaled type choice against the archive ref before committing the URL', async () => {
     state.data[0].type = 'session_recap'; show();
     listIntent.mockImplementation((element, intent) => {
@@ -191,11 +206,18 @@ describe('TeachingNotesArchive', () => {
   });
   it('restores a true reader POP to the original stored archive history entry', () => {
     function ReaderBack() { const navigate = useNavigate(); return <button onClick={() => navigate(-1)}>Browser Back</button>; }
-    sessionStorage.setItem('my-work-notes-anchor:student-a:/my-work/notes', JSON.stringify({ id: 'note-4', ids: ['note-4'], archiveEntryKey: 'archive-history' }));
-    render(<MemoryRouter initialEntries={[{ pathname: '/my-work/notes', key: 'archive-history' }, '/classroom/item/note-4']} initialIndex={1}><Routes><Route path="/my-work/notes" element={<TeachingNotesArchive />} /><Route path="/classroom/item/:id" element={<ReaderBack />} /></Routes></MemoryRouter>);
+    render(<MemoryRouter initialEntries={[{ pathname: '/my-work/notes', key: 'default' }]}><Routes><Route path="/my-work/notes" element={<TeachingNotesArchive />} /><Route path="/classroom/item/:id" element={<ReaderBack />} /></Routes></MemoryRouter>);
+    fireEvent.click(screen.getByRole('link', { name: /Reference 4\./ }));
+    expect(JSON.parse(sessionStorage.getItem('my-work-notes-anchor:student-a:/my-work/notes')!)).toMatchObject({ archiveEntryKey: 'default', documentId: expect.any(String) });
     fireEvent.click(screen.getByRole('button', { name: 'Browser Back' }));
     expect(screen.getByRole('link', { name: /Reference 4\./ })).toHaveFocus();
     expect(listIntent).toHaveBeenCalledWith(document.querySelector('.teaching-notes-home'), 'restore');
+  });
+  it.each([undefined, 'other-document'])('ignores a stale default POP anchor from document %s', (documentId) => {
+    sessionStorage.setItem('my-work-notes-anchor:student-a:/my-work/notes', JSON.stringify({ id: 'note-4', ids: ['note-4'], archiveEntryKey: 'default', documentId }));
+    render(<MemoryRouter initialEntries={[{ pathname: '/my-work/notes', key: 'default' }]}><TeachingNotesArchive /></MemoryRouter>);
+    expect(screen.getByRole('link', { name: /Reference 4\./ })).not.toHaveFocus();
+    expect(listIntent).not.toHaveBeenCalled();
   });
   it('discards an old archive anchor when an unrelated reader returns by the fallback route', () => {
     function Reader() { const { id } = useParams(); return <><Link to="/elsewhere">Leave by rail</Link><Link to="/my-work/notes" state={{ notesArchiveReturn: id }}>Back to notes</Link></>; }

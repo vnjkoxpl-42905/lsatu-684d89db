@@ -1,7 +1,8 @@
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import React from "react";
 import { act, cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { MemoryRouter, Route, Routes, useLocation } from "react-router-dom";
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { afterAll, afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 const { permissions, readingCenter, railPrefs } = vi.hoisted(() => ({
   permissions: {} as Record<string, boolean>, readingCenter: { allowed: false, isPending: false },
@@ -65,6 +66,9 @@ beforeEach(() => {
   window.matchMedia = window.matchMedia ?? ((() => ({ matches: false, addEventListener() {}, removeEventListener() {} })) as never);
 });
 afterEach(cleanup);
+// Registering ScrollTrigger starts an app-lifetime polling interval. JSDOM
+// ends after this suite, so stop that plugin service after component cleanup.
+afterAll(() => ScrollTrigger.disable());
 
 it("shares the shell context with the real orientation hook across layout remounts", async () => {
   const snapshots: Array<{ name: string; shared: boolean }> = [];

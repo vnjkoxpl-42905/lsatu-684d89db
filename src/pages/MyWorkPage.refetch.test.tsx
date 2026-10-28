@@ -1,12 +1,16 @@
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import React from 'react';
 import { act, cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { MemoryRouter } from 'react-router-dom';
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterAll, afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 const evidenceState = vi.hoisted(() => ({ broken: false }));
 beforeEach(() => { evidenceState.broken = false; });
 afterEach(cleanup);
+// Registering ScrollTrigger starts an app-lifetime polling interval. JSDOM
+// ends after this suite, so stop that plugin service after component cleanup.
+afterAll(() => ScrollTrigger.disable());
 
 let finishPlanRead: ((result: { data: null; error: Error }) => void) | undefined;
 

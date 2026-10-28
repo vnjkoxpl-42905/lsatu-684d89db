@@ -8,6 +8,7 @@ export function WorkFilterSelect({ label, allLabel, value, options, onChange }: 
   onChange: (value: string, focusedWithin: boolean, modality: 'keyboard' | 'pointer') => void;
 }) {
   const labelId = useId();
+  const valueId = useId();
   const triggerRef = useRef<HTMLButtonElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const [open, setOpen] = useState(false);
@@ -26,7 +27,7 @@ export function WorkFilterSelect({ label, allLabel, value, options, onChange }: 
       const focusedWithin = !!active && (triggerRef.current?.contains(active) || contentRef.current?.contains(active));
       onChange(next === 'all' ? '' : next, Boolean(focusedWithin), modalityRef.current);
     }}>
-      <SelectTrigger ref={triggerRef} aria-labelledby={labelId} className="notes-select-trigger" onPointerDown={() => recordModality('pointer')} onKeyDown={() => recordModality('keyboard')}><SelectValue /></SelectTrigger>
+      <SelectTrigger ref={triggerRef} aria-labelledby={`${labelId} ${valueId}`} className="notes-select-trigger" onPointerDown={() => recordModality('pointer')} onKeyDown={() => recordModality('keyboard')}><SelectValue id={valueId} /></SelectTrigger>
       <SelectContent onPointerDownCapture={() => recordModality('pointer')} onKeyDownCapture={() => recordModality('keyboard')} ref={setContentRef} className="notes-select-content" data-input-modality={modality}>
         <SelectItem className="notes-select-option" value="all">{allLabel}</SelectItem>
         {options.map((option) => <SelectItem key={option.value} className="notes-select-option" value={option.value}>{option.label}</SelectItem>)}

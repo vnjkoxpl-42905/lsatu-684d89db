@@ -880,3 +880,492 @@ Host: snapshotmatches;154tests/typecheck/buildpass. AcceptDATE-CAL-1 forcegregor
 }
 
 Host: snapshotmatches159tests/typecheck/buildpass. AcceptexplicitreaderreturnIDmustmatchsavedanchorbeforepushrestore; preservePOPentrykey. AcceptfailedemptyClearfocusfallbackRetrybutton. Implementtestsandfreshinspect.
+
+## Continued inspection6: APPROVED with4lowdetails
+
+{
+  "verdict": "APPROVED",
+  "summary": "I read the scoped implementation by hand and found no material correctness, access or spec-fidelity defects. I traced callers in ClassroomMotionContent, StudentDestination, ClassroomLayout, App routes and ClassroomRouteViews. Shared-hook owner registration, nearest-owner resolution, the reduced-motion no-op owner and cleanup match plan item 1. The single DOM-ordered list batch (paused tweens, step=min(.05,.15/(n-1)), restart(true), 240ms/y8/no blur) and the preserved non-list caps match item 2. Restore intent runs in the layout phase and hands its marker to the replacement owner (item 3). Subject and work-type validity comes from a domain whitelist with a hasOwnProperty guard. Access filtering happens before counts and options, absent valid selections are kept, and invalid values fail open (item 4). StudentDestination applies the list-only policy, and ready markers were removed only together with that policy (item 5). Month keys and row labels share one local-calendar helper. I found four low-severity issues: a band of rows that stays visible but transparent at rest, unlabelled shared dates in the reader, an unplanned change to the reader's entrance motion, and notes-select modality tracking. None blocks approval. This verdict comes from reading code only. I ran nothing, inspected no screenshots, and did not treat the host-reported test, build or browser results as verified.",
+  "findings": [
+    {
+      "id": "R1-bottom-band-hidden-rows",
+      "severity": "low",
+      "path": "src/hooks/useClassroomMotion.ts:185-213",
+      "evidence": "A list row counts as 'below' when rect.top >= viewport bottom - 100. It is then created as a paused fromTo with immediateRender:true and a ScrollTrigger start of 'clamp(top bottom-=100)', so it renders at opacity 0 straight away. If a row's top edge falls inside the last 100px of the viewport (common on a 390x844 phone with ~150px cards), that part of the card is on screen but transparent. It stays blank until the user scrolls past the start point or interacts. Generic blocks already behaved this way, but this opt-in makes it the default for every notes and work row. It also conflicts with the documented claim that no rows are hidden at rest.",
+      "fix": "For list rows only, base 'below' on rect.top >= viewport bottom (no 100px margin), and use a matching trigger start such as 'clamp(top bottom)'. Rows that are partly visible on first paint would then join the immediate in-view batch. Add a test with a row whose top sits within the bottom 100px."
+    },
+    {
+      "id": "R2-reader-date-not-labelled-shared",
+      "severity": "low",
+      "path": "src/components/classroom/ClassroomRouteViews.tsx:173-190, 312-316",
+      "evidence": "The archive now labels dates 'Shared <date>' using teachingNoteDate. The note reader, which this change wraps in the My Work notes styling, still renders DetailHeading with a bare formatClassroomDate(created_at) next to the kind, for example 'October 25, 2026 | Session recap'. A student reading a session recap can take that as the lesson date, which the brief prohibits ('Date shown means date shared, not lesson date').",
+      "fix": "For NOTE_TYPES, prefix the reader dateline with 'Shared', or set title='Date shared' on it. Optionally reuse teachingNoteDate(...).label so the archive and reader format the date the same way."
+    },
+    {
+      "id": "R3-reader-wrapper-changes-generic-entrance",
+      "severity": "low",
+      "path": "src/components/classroom/ClassroomRouteViews.tsx:362-364; src/hooks/useClassroomMotion.ts:145-153",
+      "evidence": "Note readers now render as a single <section class='my-work-notes-page classroom-note-reader'> and carry no data-motion markers. When cached items are present (the usual case when opening a note from the archive, since both use useClassroomItems), the hook's initial generic fallback stops descending at a single section child. The whole reader, including Ask/Back actions, then enters as one 14px blurred block. Before, the dateline, title, standfirst and article entered as separate staggered blocks. This is a motion change to a shared shell caller outside the planned My Work opt-in.",
+      "fix": "Use a div wrapper (or display:contents) so the fallback still descends, or mark the reader's internal blocks explicitly with data-motion-item. Then add a ClassroomRouteViews motion-composition test."
+    },
+    {
+      "id": "R4-notes-select-modality-not-captured-in-portal",
+      "severity": "low",
+      "path": "src/components/my-work/TeachingNotesArchive.tsx:66-70 and the SelectContent props",
+      "evidence": "WorkFilterSelect records the input modality on SelectContent through onPointerDownCapture and onKeyDownCapture. The notes Type select records modality only on the trigger. If the menu is opened with the keyboard and an option ('All types', when no other type exists) is then chosen with the pointer, changeType still sees selectModality==='keyboard'. It then moves focus to the search field, which on touch devices can open the on-screen keyboard. This conflicts with the pointer behaviour pinned by the existing tests.",
+      "fix": "Add onPointerDownCapture={() => setSelectModality('pointer')} and onKeyDownCapture={() => setSelectModality('keyboard')} to the notes SelectContent, and read the value through a ref as WorkFilterSelect does."
+    }
+  ],
+  "coverage": [
+    "Read in full: src/hooks/useClassroomMotion.ts, src/components/my-work/WorkFilterSelect.tsx, src/pages/MyWorkPage.tsx, src/components/my-work/teachingNoteDates.ts, src/hooks/useNotesArchiveScroll.ts, src/hooks/useNotesSelectMotion.ts, src/components/classroom/shell/ClassroomMotionContent.tsx",
+    "Read in part: src/pages/StudentDestination.tsx (hook usage and content wrapper), src/components/classroom/ClassroomRouteViews.tsx (lines 146-364, plus formatClassroomDate), src/pages/myWorkNotesRefinement.css (lines 1-64, plus the selector list for scoping)",
+    "Reviewed through the provided tracked diff: TeachingNotesArchive.tsx and tests, useClassroomMotion.test.tsx, MyWorkPage organization and readingCenter tests, StudentDestination.test.tsx, assignedWorkOrganization.ts, myWorkNotes.css, myWorkOrganization.css, MyWorkNotesPage.tsx, the preview harness and its start script, ClassroomRouteViews.notes.test.tsx, and docs/verification/platform-motion-20261022.md",
+    "Traced callers: App.tsx My Work and classroom item routes, the ClassroomLayout mounts of ClassroomMotionContent, the StudentDestination heading owner, and the classroomMotionKey behaviour for /classroom/item and /classroom/recaps",
+    "Checked plan items 1-5 against the code: intent ordering before setParams (including portal callbacks), sticky keyboard settlement, paginate re-enable, restore marker hand-off and microtask cleanup, the list-only eligibility exclusion and generic fallback, domain whitelists and the access-first visible filter, and month-key and label agreement"
+  ],
+  "limitations": [
+    "I executed no tests, typecheck, build or browser checks. Every runtime and test claim comes from the host and is unverified.",
+    "I did not open the screenshots in the external design report (stagger-*.png) or the JSON traces, so I did no visual inspection.",
+    "Untracked files I did not read directly: src/components/my-work/teachingNotesArchiveData.ts, teachingNoteDates.test.ts, useNotesArchiveScroll.test.ts, MyWorkPage.refetch.test.tsx and myWorkNotesRefinement.css beyond line 64. I also did not read the full test bodies outside the diff.",
+    "I did not read the internals of useAssignedTodoFeed, MyWorkGate, ProtectedRoute, PrescribedWeek or src/components/ui/select.tsx. Behaviour that depends on them is inferred.",
+    "Finding R1 rests on GSAP's documented immediateRender and ScrollTrigger semantics, not on runtime observation. Finding R3 assumes ProtectedRoute renders its children without a wrapper element.",
+    "Everything outside the explicit scope is unreviewed and not approved, including supabase/functions/mcp/index.ts and the rest of the dirty checkout, other shell callers' runtime behaviour, production RLS and read-state, and physical phone or Safari behaviour."
+  ]
+}
+
+Host: snapshotmatches163tests/typecheck/buildpass. AcceptR1listviewportbottomthreshold, R2Sharedreaderdate NOTE_TYPESonly, R3preservereadergenericfallbackthroughdivwrapper, R4portalmodalitycapture/ref. Implementtargetedregressionsandfreshinspectperuser.
+
+## Continued inspection7: APPROVED withhistoryidentity/detachedlistlows
+
+{
+  "verdict": "APPROVED",
+  "summary": "I found no material defects in the scoped changes, and the implementation matches the authorized remediation. The shared hook registers each owner in a WeakMap and resolves intents from the nearest registered ancestor. Reduced-motion owners get a no-op handler, and owners are removed on unmount. Every list tween starts paused and joins one rAF batch sorted by DOM order. The stagger step is min(.05, .15/(n-1)), the preset is 240ms / y8 / opacity with no blur, and the 4-per-group and 24-total caps still apply to non-list content. Filter and restore intents settle current, queued and pending rows and keep later rows immediate. Pointer pagination (detail>0) turns animation back on unless the user has used the keyboard. Restoration calls 'restore' in the layout phase before focus. When the child's layout effect runs before the parent owner registers, the data-motion-list-restore marker and the initial focus check cover the gap. StudentDestination marks only my-work content as list-only, and the eligibility rule stops both the generic fallback and the wrapper's ancestors from animating while still finding explicit list rows. In My Work, Subject and kind validity come from fixed lists rather than loaded rows. Access filtering runs before options and counts are built. A valid filter that matches nothing keeps the selector and Clear filters visible, and invalid values (including inherited object keys) are ignored as before. The Notes month key and row labels use the same local Gregorian calendar, and the reader also formats in local time. I found only two low-severity edge cases. These are code-reading conclusions; I did not run any tests or browsers.",
+  "findings": [
+    {
+      "id": "R1-pop-default-key",
+      "severity": "low",
+      "path": "src/components/my-work/TeachingNotesArchive.tsx (restore useLayoutEffect, matchingPop)",
+      "evidence": "A Back-navigation (POP) is accepted as a return to the original archive entry when anchor.archiveEntryKey === location.key. On BrowserRouter, any fresh document entry with no history state has the key 'default'. Scenario: the student loads /my-work/notes directly (key 'default') and clicks a note; remember() stores archiveEntryKey 'default'. They leave through the rail, so the anchor is kept because the PUSH carries no notesArchiveReturn state. Later, in the same tab, a full-document load of /my-work/notes produces another 'default' POP entry. matchingPop is true, so the stale anchor focuses and scrolls to an old note and settles all list reveals for that visit. The existing test 'ignores stale anchors on a direct default POP' uses an anchor without an archiveEntryKey, so it does not cover this case.",
+      "fix": "Don't store an archiveEntryKey when location.key is 'default', or require location.key !== 'default' for matchingPop. Add a test where the stored archiveEntryKey is 'default' and the page arrives by POP with key 'default'."
+    },
+    {
+      "id": "R2-detached-batch-entries",
+      "severity": "low",
+      "path": "src/hooks/useClassroomMotion.ts (queueListEntry / records)",
+      "evidence": "Rows removed by a non-filter refetch or route-state change before the rAF stay in the `entering` map. The batch includes them, so n grows, the stagger step shrinks, and compareDocumentPosition gives an implementation-specific order for disconnected nodes. `records` also keeps every detached row and tween for the whole visit, so settleLists() and the resize pass keep visiting dead entries after repeated filtering or month regrouping. Visible rows still settle, but timing can drift from the 150ms/50ms contract and memory grows during long sessions.",
+      "fix": "In the rAF callback, drop entries whose element is no longer connected (element.isConnected) before sorting. In discover(), remove records for disconnected elements after killing their ScrollTrigger."
+    }
+  ],
+  "coverage": [
+    "Read in full: src/hooks/useClassroomMotion.ts (current file), src/components/my-work/WorkFilterSelect.tsx, src/components/my-work/teachingNoteDates.ts, src/hooks/useNotesArchiveScroll.ts, src/hooks/useNotesSelectMotion.ts, src/pages/MyWorkPage.tsx, src/pages/StudentDestination.tsx, src/pages/myWorkNotesRefinement.css, src/components/classroom/shell/ClassroomMotionContent.tsx.",
+    "Read from the supplied tracked diff: TeachingNotesArchive.tsx and its tests, assignedWorkOrganization.ts, ClassroomRouteViews.tsx and its notes test, useClassroomMotion.test.tsx, MyWorkPage organization and readingCenter tests, StudentDestination test, MyWorkNotesPage.tsx, myWorkNotes.css, myWorkOrganization.css, both preview scripts, and docs/verification/platform-motion-20261022.md.",
+    "Traced related code: every non-test caller of useClassroomMotion (TeacherSmartboard, StudentDossier, TeacherWorkspaceShell, the Reading Center AppShell, StudentDestination heading, ClassroomMotionContent inside ClassroomLayout). None is a DOM ancestor of the My Work content, so intent resolution cannot reach an unrelated owner. Also checked NOTE_TYPES, TEACHING_NOTE_TYPES/archiveNoteType and the reader's formatClassroomDate (local time zone, consistent with teachingNoteDate).",
+    "Visual inspection: I opened and actually viewed stagger-work-phone.png (Guided drill selected, 2 of 4, groups and controls crisp at 390 wide) and stagger-notes-desktop.png (month section, lead row, charcoal Unread badges, 'Shared' dates, Type select). Neither showed a visual defect."
+  ],
+  "limitations": [
+    "I did not run any tests, typecheck, build, browser session or motion recording. The test counts and runtime traces in the plan and docs are host-reported and I did not verify them.",
+    "I did not open stagger-notes-phone.png, stagger-work-desktop.png, stagger-scroll-trace.json or stagger-viewport-checks.json. Reduced motion, overflow at 320/684/768/1024/1280 and keyboard runs were not visually checked.",
+    "I read useAssignedTodoFeed.ts, components/ui/select.tsx, teachingNotesArchiveData.ts, MyWorkPage.refetch.test.tsx, useNotesArchiveScroll.test.ts and teachingNoteDates.test.ts only indirectly or not at all. Their contracts are inferred from callers and the diff.",
+    "Real GSAP/ScrollTrigger timing (for example onEnter when a fast scroll jumps past a row), physical phone and Safari focus behaviour, production RLS and read state, and authenticated backend acceptance are not certified. The preview harness is synthetic.",
+    "The rest of the dirty checkout was not reviewed, including supabase/functions/mcp/index.ts and anything outside the explicit scope paths. This is not whole-repository approval."
+  ]
+}
+
+Host: snapshotmatches171tests/typecheck/buildpass. AcceptR1documentidentityforPOPdefaultcollisionwithoutbreakinggenuineinitialdefaultBack. AcceptR2prunedetachedlistqueueandrecordspreservinggenericbehavior. Regressiontestsandfreshinspectioncontinue.
+
+## Continued inspection8: APPROVED withoneaccessiblenamefinding
+
+{
+  "verdict": "APPROVED",
+  "summary": "I found no material correctness, security or spec-fidelity defects in the scoped remediation. These five remediation items are implemented as the plan describes:\n\n1. **Filter, restore and pagination intents.** `notifyClassroomListIntent` uses a module WeakMap and stops at the first registered owner. The archive, MyWorkPage filters and Clear filters call it before updating search params. Restore intent and the restore marker work even when the archive restores itself before the parent motion owner registers. Pointer Load more re-enables reveals; keyboard Load more does not.\n2. **One reveal batch.** Visible, async, paginated and below-fold rows share one frame queue, sorted in reading order. Delay spacing is min(.05, .15/(n-1)), rows use 8px / opacity / 240ms with no blur, and normal page sections keep their old 4-per-group / 24-per-page caps.\n3. **Return from the reader.** It settles every row before focus or scroll, and stale anchors only restore on a matching browser Back to the same history entry or an explicit return from the reader.\n4. **Filter values.** Subject and work type are checked against fixed lists, with `hasOwnProperty` blocking names like `toString`. Valid values that match no rows stay selected with Clear filters available, invalid values are ignored, and access filtering happens before matching and counting.\n5. **`list-only` policy.** The policy covers the My Work wrapper and the generic fallback, while other destinations keep their default entrance.\n\nThe motion key is the path only, so changing filters in the URL does not re-run or replay the hook. I traced callers, and `ClassroomMotionContent` is the only owner above the archive and work list; the StudentDestination heading has its own separate boundary.\n\nOne low-severity accessibility issue remains.",
+  "findings": [
+    {
+      "id": "WFS-LABEL-IN-NAME",
+      "severity": "low",
+      "path": "src/components/my-work/WorkFilterSelect.tsx:23-29",
+      "evidence": "The trigger's accessible name comes only from an sr-only span (\"Assignment type\" / \"Assignment subject\") via aria-labelledby. The only visible text is the value (\"All work types\", \"Guided drill\"). A voice-control user saying \"click All work types\" or \"click Type\" will not match the accessible name (WCAG 2.5.3 Label in Name). Sighted users also get no visible label, unlike the notes archive Type filter, which has a visible \"Type\" label (TeachingNotesArchive.tsx). The old subject <select> also used an sr-only label, so this is a continued pattern, not a regression in this pass.",
+      "fix": "Show a short visible label (e.g. \"Type\" / \"Subject\") the same way the archive's teaching-notes-type-label does (visible on desktop, visually hidden at narrow widths if needed). Alternatively, make the accessible name include the visible value, e.g. aria-labelledby=\"{labelId} {triggerId}\"."
+    }
+  ],
+  "coverage": [
+    "Read the plan and the full tracked diff for every changed file in the manifest.",
+    "Read the untracked/new files in full: src/components/my-work/WorkFilterSelect.tsx, src/components/my-work/teachingNoteDates.ts, src/hooks/useNotesArchiveScroll.ts, src/hooks/useNotesSelectMotion.ts, src/pages/myWorkNotesRefinement.css.",
+    "Read src/hooks/useClassroomMotion.ts lines 24-170, including classroomMotionKey (path-only key for /my-work/*, so filter URL changes don't re-run the hook), owner registration and restore-marker consumption, eligibility with the list-only policy, the batch scheduler, settle and prune.",
+    "Traced callers: ClassroomMotionContent.tsx (the single shell owner, used in ClassroomLayout), StudentDestination.tsx (heading-only local boundary), and grep of the other callers (TeacherWorkspaceShell, Reading Center AppShell, StudentDossier, TeacherSmartboard). None of these is a nested owner above the My Work archive or work list.",
+    "Read ClassroomRouteViews.tsx lines 255-369: Back to notes passes notesArchiveReturn state; the interactive-lesson iframe branch is unwrapped; the note reader wrapper is applied; reader dates use the same local timezone as archive dates.",
+    "Checked MyWorkPage access gating: Reading Center library-only filtering and general access are applied before subject/type options, counts and matching.",
+    "Checked the classroom.css overflow declarations to see what scrolls the page (only the sidebar card shows overflow: auto among the lines read)."
+  ],
+  "limitations": [
+    "I did not open the host screenshots or JSON traces under C:/Users/Joshu/dev/ai-os/design/reviews/my-work-taste-v2-20261027/, so there was no visual inspection. Visual and material hierarchy, overflow at 320\u20131440, and how the menu looks in the portal were not independently verified.",
+    "I did not run tests, typecheck, build or the browser preview. Host-reported test counts (56, 90) and build results are unverified.",
+    "Real GSAP/ScrollTrigger behaviour is only checked in mocked tests. In particular, whether onEnter fires when a scroll jumps past a whole row in one frame (scrollbar drag, End key with focus outside the list root) can't be confirmed from code. If it doesn't, a paused row could stay at opacity 0. This needs a real-browser check.",
+    "I did not review src/hooks/useAssignedTodoFeed.ts, src/components/ui/select.tsx, teachingNotesArchiveData.ts, MyWorkNotesPage.tsx (beyond its diff), the test files beyond their diffs, or ClassroomLayout's real scroll owner in depth.",
+    "I did not review the broader dirty checkout outside the explicit scope, including supabase/functions/mcp/index.ts and the docs/plans files. This is not a whole-repository approval.",
+    "Production RLS, persisted read state, the authenticated backend, physical phones/Safari, and every other shared caller's runtime behaviour were not reviewed or certified. The synthetic preview harness is not proof of backend acceptance."
+  ]
+}
+
+Host: snapshotmatches175tests/typecheck/buildpass. AcceptWFS-LABEL-IN-NAME includevisiblevaluewithfieldlabelinnativecomboboxaccessiblenamewithoutvisualredesign; testsandfreshinspectioncontinue.
+
+## Continued inspection9: APPROVED withpurepagescrollkeylow
+
+{
+  "verdict": "APPROVED",
+  "summary": "I read every changed file in scope plus the related callers and found no material defect. The scoped implementation matches the five authorized remediation items.\n\n1. **Boundary intent.** `notifyClassroomListIntent` walks the ancestors of the element it is given and stops at the first registered owner. That owner lookup lives in a module WeakMap, which reduced-motion owners also register in, and owners are removed on unmount. The notes code (search, Unread, type, Clear) and the My Work code (`updateFilter`, Clear) both signal `filter` synchronously through their page or section ref before calling `setParams`. That includes choices made in the portaled menus.\n2. **Batching.** All list tweens start paused. Visible rows, rows that load later, Load more rows and scroll-entered rows all go through one per-frame queue. The queue drops disconnected rows, sorts by DOM order and spaces delays with step=min(.05,.15/(n-1)). Ordinary non-list blocks keep their old preset, their 4-per-group / 24-total caps and their 100px margin.\n3. **Restore.** Restore is signalled in the layout phase, before focus or scroll. When the shell owner is not registered yet (returning from the reader changes the motion key), a `data-motion-list-restore` marker covers the gap. Path-scoped storage, the nearest-survivor rule and read-state are unchanged.\n4. **Filter validity.** Subject and type values are checked against fixed lists of known values (`hasOwnProperty` blocks names like `toString`). A valid selection stays chosen even when no loaded row has it. Options and counts come only from rows the student is allowed to see. Invalid values are ignored and show all work, as before.\n5. **list-only policy.** `data-motion-policy=\"list-only\"` is set only on the My Work content wrapper. It blocks animation of the wrapper and its generic children while still letting explicit list rows reveal. The redundant loading/ready markers were removed in the same change. Other destinations and other hook callers (TeacherWorkspaceShell, the Reading Center AppShell, StudentDossier, TeacherSmartboard, the StudentDestination heading) see no behaviour change unless they opt in.\n\nI opened three host screenshots and could see them: notes-phone, work-desktop and work-phone. Notes-phone and work-desktop look consistent with the brief. In work-phone the two visible rows have different text insets, which I could not explain from the CSS (see limitations).\n\nRemaining issue: one low-severity finding about keyboard scrolling turning off reveals.",
+  "findings": [
+    {
+      "id": "F1-scroll-keys-sticky",
+      "severity": "low",
+      "path": "src/hooks/useClassroomMotion.ts",
+      "evidence": "useList (lines 266-269) treats every keydown inside the root as keyboard list use. The only keys excluded are Meta, Control, Shift, Alt and Escape. It sets keyboardInteraction=true and calls settleLists(), and handleIntent('paginate') then refuses to clear listInteraction for the rest of the visit (line 263). Example: in Chromium, a pointer click on 'Load more notes' or 'Unread' leaves focus on that button inside the root. If the student then scrolls with PageDown, End or the arrow keys, every queued or pending scroll-triggered reveal settles at once, and later pointer Load more rows never reveal. The keydown fires while focus is on that button even though the key only scrolls the page and never reaches a row. The brief asks for reveals 'as they scroll' and for keyboard-reached content to be immediate, so pure page scrolling is caught by a rule meant for keyboard travel between rows.",
+      "fix": "Count keydown as list use only when it can move focus or edit content: Tab, Enter or Space on a row or control, or keys typed in input/textarea/contenteditable/combobox. Ignore PageUp, PageDown, Home, End and arrow keys when the target is not an editable element or a list row; Space on a button already counts as activation. Add a test showing that PageDown after a pointer Load more keeps the queued reveal and still allows a later pointer paginate."
+    }
+  ],
+  "coverage": [
+    "Read in full: src/hooks/useClassroomMotion.ts (current), src/components/my-work/WorkFilterSelect.tsx, src/pages/MyWorkPage.tsx, src/pages/StudentDestination.tsx, src/components/my-work/teachingNoteDates.ts, src/hooks/useNotesArchiveScroll.ts, src/hooks/useNotesSelectMotion.ts, src/pages/myWorkNotesRefinement.css, src/pages/myWorkOrganization.css, src/components/classroom/shell/ClassroomMotionContent.tsx",
+    "Read the full supplied diff for: TeachingNotesArchive.tsx and its tests, ClassroomRouteViews.tsx and its notes test, assignedWorkOrganization.ts, useClassroomMotion.test.tsx, MyWorkPage.organization and readingCenter tests, StudentDestination.tsx and its test, myWorkNotes.css, MyWorkNotesPage.tsx, scripts/verification/my-work-preview.tsx, start-my-work-preview.mjs and docs/verification/platform-motion-20261022.md",
+    "Traced callers: every useClassroomMotion caller (ClassroomMotionContent, StudentDestination heading, TeacherWorkspaceShell, the Reading Center AppShell, StudentDossier, TeacherSmartboard), App.tsx route nesting for /my-work (all three tabs sit inside StudentDestination's list-only wrapper), test mocks of the hook module, formatClassroomDate/NOTE_TYPES, and classroom.css student-work-row rules",
+    "Checked the React commit-order path for reader Back when the motion key changes (old owner removed, child restore leaves a marker, the new owner picks it up on its first discovery), restore when notes load asynchronously, the order of filter intent and URL commit, pointer vs keyboard pagination, pruning of removed rows, and that options/counts cannot be inferred from rows the student is not allowed to see",
+    "Images opened and visually inspected: stagger-notes-phone.png, stagger-work-desktop.png, stagger-work-phone.png"
+  ],
+  "limitations": [
+    "I did not run any tests, typecheck, build or browser. The host's claims (90 tests passed, rendered checks, the stagger-scroll-trace timings) are unverified.",
+    "Real GSAP/ScrollTrigger behaviour is not covered by the unit tests, which mock GSAP: for example, whether once:true kills a paused list tween, and progress(1) after scrollTrigger.kill(). Only the host's runtime trace speaks to it.",
+    "I did not open stagger-notes-desktop.png, stagger-scroll-trace.json, stagger-viewport-checks.json or REPORT.md.",
+    "In stagger-work-phone.png the first 'To start' row is tinted, probably a sticky :hover after a tap (the hover rule in classroom.css applies on touch devices too), and its text inset differs from the 'Progress to confirm' row (about 59px vs 78px from the edge). I could not attribute this to any CSS in scope. The host should re-capture to confirm the rows line up on phone.",
+    "No physical phone or Safari, production authentication/RLS, persistent read-state or Supabase acceptance was reviewed. The preview fixture is synthetic.",
+    "Not reviewed: the broader dirty checkout outside the scoped paths, including supabase/functions/mcp/index.ts, untracked docs/plans files and .taste-skill/. This is not whole-repository approval."
+  ]
+}
+
+Host: snapshotmatches175tests/typecheck/buildpass. Acceptclassifykeyboardfocus/edit/activationversusnoneditablepagescroll; preserveimmediatekeyboardreachedcontentwithoutdisablingpurepagereveals. PreviouslyreportedphoneinsethistoricalartifactwasfixedCSSspecificityinpriorround; refreshhostrenderedproofasneeded.
+
+## Continued inspection10: BLOCKED by Claude session quota
+
+Fresh inspection failed before model work, no completedreview/noapproval. Result claudex-jk37sikm/result.json. stdoutfirstparty429 usage_limit_reached: sessionlimit resets1am America/Toronto, meaning2026-10-28 01:00EDT fromverifiedcurrent2026-10-27 22:41EDT. Nofallbackorblindretry. Finalpurepagekeydowncorrectionstillindependentlyunreviewed; allpreviousreportedfindingsimplemented. No commit/push/publish. Hostfinalproofinprogress.
+
+## Latest status: Claude quota blocks the final inspection
+
+2026-10-27: The user authorized continuing beyond the former round limit until no unresolved findings and explicitly prohibited pushing. Every finding from completed inspections has been corrected. The last correction distinguishes pure page-scroll keys from keyboard focus/editing/activation, preserving scroll reveals.
+
+Claude Opus 5.5 Medium could not inspect this correction: first-party API 429 usage_limit_reached, session resets 2026-10-28 01:00 America/Toronto. Failed run: claudex-jk37sikm/result.json. Last completed run: claudex-neg1uqpr/result.json, APPROVED with one low finding, now fixed but not independently re-reviewed. This is not a clean final independent sign-off. No provider/model fallback was used.
+
+Final local proof: 193 tests passed across 9 suites; JSON full rerun exited0 with no reported errors (final-tests.json). A preceding run passed all193 assertions but exited1 with one after-teardown timer error attributed to the refetch test environment. An isolated rerun and full JSON rerun were clean. GSAP import-time timers are a plausible cause, not established without the lost stack; no speculative mock or product edit was made. Typecheck and production build exit0; existing build warnings remain. Scoped diffcheck exit0; final source files match the failed inspection's frozen snapshot. Unrelated backend hash unchanged.
+
+Real-browser refreshed checks: 390px fast jump to archive bottom left all4visible rows fully revealed after650ms, no horizontal overflow. Current390px assigned-work rows all compute flex-start and content left43.153px. New screenshot capture was disrupted by hot reload/emulation and is diagnostic only; older preserved readable screenshots remain historical. Browser overrides were reset. Production authentication/RLS/read-state, physical phones and Safari are not certified.
+
+No commit, push or publication. Resume with a fresh inspect invocation using the same repo, approved plan, base and exact scopes from claudex-jk37sikm/result.json after quota reset. Do not treat the failed invocation as approval or resume its failed session. Continue supported fixes and fresh reviews until no unresolved findings.
+
+
+## 2026-10-28: resumed note transition plan review
+
+{
+  "verdict": "REVISE",
+  "summary": "The core reader entrance in `src/hooks/useNoteReaderTransition.ts` is mostly sound. One GSAP owner lives in the persistent shell. Rapid changes cancel the previous sequence by rebasing from the current x offset. Delayed content joins through a MutationObserver keyed by `playedKey`, so it does not replay. The ResizeObserver guard handles scrollbar width changes, and the generic owner skips the reader through `.classroom-motion-local`. I found two medium defects that need fixing. First, the stage-travel tween runs on every ClassroomLayout navigation, not just archive-to-reader. Second, the saved stage position and rail state go stale whenever the rail appears or disappears without a route change. In that case the original abrupt jump can come back, or the stage can slide when it should not. I also found smaller gaps against the plan: CSS transitions stay disabled for the whole route instead of only during the entrance, the stage offset reads wrong under the archive CSS override, and interactive-lesson notes are not covered. Required proof items 3\u20136 were not visible in the repository.",
+  "findings": [
+    {
+      "id": "NRT-1",
+      "severity": "medium",
+      "path": "src/hooks/useNoteReaderTransition.ts",
+      "evidence": "`navigateRef.current` runs for every `location.pathname`/`location.key` change in ClassroomLayout (`ClassroomLayout.tsx:934`). In `play()`, `newShell = shellKey !== currentKey` is true on every navigation. Line 76 then tweens `main` by `fromLeft - destinationLeft` whenever the stage edge moved, and no route or mode is checked. Example: going from `/flagged` (flagged rail visible) to `/review`, or from `/journal` to `/practice`, or a reader's 'Back to notes' whose `returnTo` is `/my-work`. Each changes the stage left edge by about 320px, so the whole stage gets a 0.52s x-tween on routes the plan never covered. On those routes `data-note-transition-mode` is undefined, so the column's max-width/padding CSS transitions (`classroom.css:842-852`) run at the same time as the transform, which is the conflict the plan says to disable. The transform also creates a containing block for any `position: fixed` descendants of the stage while it plays. This breaks 'Preserve generic animation behavior elsewhere' and the archive-to-reader-only scope.",
+      "fix": "Only run the stage/rail shell sequence when the destination is a note reader (`expectedId` is set) and the previous settled route was the notes archive, or at least when entering reader mode. For every other navigation, call `measure()` and return without adding a stage tween. Add a test showing that a rail-toggling non-note navigation (for example `/flagged` \u2192 `/review`) creates no stage tween."
+    },
+    {
+      "id": "NRT-2",
+      "severity": "medium",
+      "path": "src/hooks/useNoteReaderTransition.ts",
+      "evidence": "`previousLeft` and `previousRail` only update in `navigate`, in `play`, or in `onResize`. `onResize` watches the root and the window, not the stage or rail, so it misses changes to the stage edge that leave the root's size alone. The rail can mount or unmount without a navigation in two ways. (a) `openSection` sets `selectedSection` on `/classroom` (`ClassroomLayout.tsx:1001,1059`), which renders the notes rail while the route stays the same. When the user then clicks a rail note, `fromLeft` still holds the stale 280px, `destinationLeft` is 600, and `previousRail` is false. The stage slides 320px even though nothing moved, and the rail paper, which was already on screen, fades back in from opacity 0. (b) The notes rail is gated on `!permissions.loading` (`ClassroomLayout.tsx:1002-1005`). If permissions are still loading when the reader commits, `hasRail` is false, so `enteringRail` is false. When the rail mounts afterwards, `play()` reaches only the reader blocks, or returns early if the reader is already shown. The stage then jumps 280\u2192600 with no tween, which is the original defect.",
+      "fix": "Track the settled geometry continuously: observe the stage and rail elements (or their parent) with the ResizeObserver, and refresh `previousLeft`/`previousRail` whenever no owned timeline is running. If the rail or stage edge changes after commit but under the same `currentKey`, treat it as a late shell change: tween from the last settled left edge and run the rail entrance. Add tests for a rail opened in place followed by a note click, and for a rail that mounts after commit."
+    },
+    {
+      "id": "NRT-3",
+      "severity": "low",
+      "path": "src/styles/note-reader-transition.css",
+      "evidence": "Lines 2-3 set `transition: none !important` on `.classroom-column`/`.classroom-stage` for the whole time `data-note-transition-mode` is present. ClassroomLayout sets that attribute to 'reader' for every `/classroom/item/*` route, including non-note items such as self-contained homework and documents (`ClassroomLayout.tsx:1131`), and to 'archive' for `/my-work/notes`. The plan says to disable conflicting column transitions during the entrance and restore them afterward. Here they stay off for the life of the route and also on routes that are not notes.",
+      "fix": "Turn the suppression on only while the owned timeline is active, for example with an attribute the hook sets in `play()` and removes on complete, kill or revert. Alternatively, limit the reader mode to note items."
+    },
+    {
+      "id": "NRT-4",
+      "severity": "low",
+      "path": "src/hooks/useNoteReaderTransition.ts",
+      "evidence": "On a reader\u2192archive navigation, line 76 still runs `fromTo(main, {x: 320})`, but `note-reader-transition.css:4` forces `transform: none !important` in archive mode, so nothing moves on screen while GSAP's x stays non-zero for 0.52s. If the user reopens a note within that window, line 90 reads `gsap.getProperty(stage,'x')` (for example 200) and computes `fromLeft = 280 + 200`. The reader stage then travels about 120px instead of 320px.",
+      "fix": "Skip the stage tween when the destination is archive mode, which NRT-1 would cover. Alternatively, compute the visual offset as the difference between `getBoundingClientRect().left` and the untransformed layout position, rather than trusting the GSAP x property."
+    },
+    {
+      "id": "NRT-5",
+      "severity": "low",
+      "path": "src/components/classroom/ClassroomRouteViews.tsx",
+      "evidence": "The interactive-lesson note branch (lines 289-310) returns an iframe without a `data-note-reader` wrapper. On a PUSH into that note, `scrollToReader` is never used, so the reader stays at the archive's deep scroll offset and the content gets no coordinated reveal. Meanwhile the shell/rail sequence still runs, because `expectedId` is set. The plan says a new note PUSH may reset the reader to the top before measurement.",
+      "fix": "Wrap the interactive-lesson branch in `data-note-reader={item.id}`, with the back button and iframe as reader blocks. Alternatively, have the hook scroll to the top on a reader PUSH once ClassroomItemView settles, whether or not the marker is present."
+    }
+  ],
+  "coverage": [
+    "The plan text in full",
+    "src/hooks/useNoteReaderTransition.ts (complete)",
+    "src/hooks/useNoteReaderTransition.test.tsx (complete)",
+    "src/styles/note-reader-transition.css (complete)",
+    "src/components/classroom/shell/ClassroomLayout.tsx: hook wiring, mode attribute, activeSection/permissions gating, openSection/selectedSection, rail/stage markup, SectionList notes rows and openRow",
+    "src/hooks/useClassroomMotion.ts (complete): the generic-owner exclusion through .classroom-motion-local and EXCLUDED",
+    "src/components/classroom/shell/ClassroomMotionContent.tsx",
+    "src/hooks/useClassroomRailMotion.ts: confirmed it animates only the primary-nav marker",
+    "src/components/classroom/ClassroomRouteViews.tsx ClassroomItemView: reader markers, read-state invalidation, interactive-lesson branch",
+    "src/components/classroom/classroom.css: root, stage, column and section-list geometry, z-index, and the existing geometry transitions",
+    "scripts/verification/my-work-preview.tsx: how the fixture wires the hook and shell markup (grep only)"
+  ],
+  "limitations": [
+    "I could not run the tests, typecheck, build or browser playback, so this review does not claim that any of them pass.",
+    "I found no saved natural-playback recordings, stage-position samples or phone/desktop screenshots for this transition in the repository's docs/verification. Proof items 3\u20135 are unverified. The before-evidence the plan cites (C:/Users/Joshu/dev/ai-os/design/...) is outside this worktree and I did not inspect it.",
+    "The unit tests mock gsap entirely, so timing, clearProps and immediateRender behaviour is untested at unit level. The fixture in scripts/verification/my-work-preview.tsx re-creates the shell markup instead of mounting ClassroomLayout, and its mode logic differs (it marks 'reader' only when readerId is set). It may therefore miss production-only paths such as NRT-1 and NRT-2.",
+    "I did not inspect MyWorkNotesPage/TeachingNotesArchive scroll-anchor and focus-restoration code in detail, so I am taking it on trust that POP restoration is unaffected beyond the hook not scrolling on POP.",
+    "Other modified files in the branch (supabase/functions/mcp/index.ts, StudentDestination, MyWorkPage, etc.) were not reviewed for this scope."
+  ]
+}
+
+Host dispositions: accept NRT-2 late/in-place rail geometry, modify NRT-3 to active owned suppression plus archive prelayout restoration exception, accept NRT-5 interactive note boundary. NRT-1 and NRT-4 causal claims conflict with the current play guard that returns when expectedId is absent; add explicit non-item navigation and rapid archive reopen regressions, then ask Claude to reassess. No final approval. No commit/push/publish.
+
+
+## Note transition review2 and fresh expanded inspection1
+
+Result: claudex-373buamr
+{
+  "verdict": "APPROVED",
+  "summary": "The revision fixes the material issues from the first review. NRT-1 and NRT-4 are withdrawn: I was wrong. The early return in `play()` (`if (disposed || !expectedId) return`, now line 54, and also in the version I reviewed before) already stops non-item destinations and archive Back from creating any stage tween. Those two findings came from my misreading, not from a defect. NRT-2 is resolved: `synchronizeGeometry()` re-measures settled geometry whenever no animation is running. It now catches a rail that mounts in place or late under the same route key, both through the MutationObserver (which runs before paint) and through ResizeObserver, which now watches the real stage and rail. A late rail starts from the last visual left edge, and reader blocks that already played do not replay. NRT-3 is resolved as modified: suppression now follows `data-note-transition-active`, which is set in `play()` and cleared on completion, on an early bail-out and in `reset()`. The archive-mode transform and transition exception is now stated in the plan on purpose. NRT-5 is resolved: the interactive-lesson iframe branch now has `data-note-reader`, `classroom-motion-local` and block markers, and keeps its sandbox, srcDoc, sizing and Back control. Sidebar selections carry the archive origin through `notesArchiveOrigin` in `openRow`. One small gap against the plan's 'no stale anchor' rule remains (NRT-6, low). It does not block approval. The required final rerun and natural-playback proof are still outstanding on the host side.",
+  "findings": [
+    {
+      "id": "NRT-6",
+      "severity": "low",
+      "path": "src/components/classroom/ClassroomRouteViews.tsx",
+      "evidence": "`archiveReturnId = archiveOrigin?.id ?? itemId` (line 203). A reader with no explicit origin still sends `notesArchiveReturn: itemId` from both Back buttons (lines 299, 363). TeachingNotesArchive.tsx:79-81 accepts any return id that matches the stored `anchor.id`. Scenario: the student opens note X from the default archive, which stores the anchor {id:X, ids:[...]}. They leave through the primary nav, so the anchor is never consumed. Later they reach X from Home or a notification link with no state and press 'Back to notes'. The archive then restores the old session's anchor: it scrolls to X and focuses it, and the restore intent cuts short the list entrance. The plan says an unrelated reader with no explicit origin must not restore a stale archive anchor. ClassroomNotesJourney.test.tsx:59 only covers an anchor id that differs from the reader, so this same-id case is untested.",
+      "fix": "If there is no validated `archiveOrigin`, navigate to `notesReturnTo` without `notesArchiveReturn` (or with an explicit null). Add a journey test where the stale anchor id equals the reader id opened without an origin."
+    }
+  ],
+  "coverage": [
+    "src/hooks/useNoteReaderTransition.ts (current version, complete): checked the expectedId guard, the active-attribute lifecycle, synchronizeGeometry/observeGeometry, the late-rail path, onResize ordering, focus/Tab/reduced-motion finish and dispose",
+    "src/styles/note-reader-transition.css (current version, complete)",
+    "src/components/classroom/ClassroomRouteViews.tsx ClassroomItemView, including the interactive-lesson branch and read-state reconciliation",
+    "src/lib/myWorkNotesNavigation.ts (complete): checked validateNotesReturnTo and notesArchiveOrigin",
+    "src/components/my-work/TeachingNotesArchive.tsx: anchor storage, the POP/return restore gate and the card origin state",
+    "src/components/classroom/ClassroomNotesJourney.test.tsx: the stale-anchor and B\u2192A\u2192archive history tests",
+    "Context from the earlier pass that this revision still relies on: ClassroomLayout wiring, the activeSection/permissions gating and openRow, useClassroomMotion's exclusion of the reader, and the classroom.css stage/rail geometry and z-index"
+  ],
+  "limitations": [
+    "I could not run the tests, typecheck, build or browser playback, so I do not claim that any of them pass. The host says the final expanded rerun and build are still needed.",
+    "I did not inspect the natural-playback recordings, stage-position samples or phone/desktop screenshots the host mentions, so proof items 3\u20134 are unverified from my side.",
+    "The unit tests for the hook mock GSAP, so real timeline semantics (immediateRender, clearProps, onComplete after `finish()`) are checked only by reading the source.",
+    "I did not re-read the new hook regressions the host cites (flagged-to-review creating zero timelines, rapid archive reopen). I re-checked the guard they depend on in the source instead.",
+    "The broader earlier remediation (my-work-scroll-filters-gemini-review.md) and the other modified files in the branch, including supabase/functions/mcp/index.ts, were not re-reviewed in this pass."
+  ]
+}
+
+Result: claudex-hwanxrbj
+{
+  "verdict": "REVISE",
+  "summary": "I read the source of the new reader-transition owner (`useNoteReaderTransition` and its CSS), the reader markers in ClassroomRouteViews, the shell wiring and origin carry-through in ClassroomLayout, the `notesArchiveOrigin` helper, archive restoration in TeachingNotesArchive, `useNotesArchiveScroll` and the shared list-motion changes in `useClassroomMotion`. I found no high or medium defects. The main paths look correct from the source: archive-to-reader stage inversion, rapid-cancel rebasing, rail arriving late under the same key, ending in an untransformed state, no replay of already visible content on refetch, reduced motion and archive-mode transform suppression. The NRT-6 fix holds: with no validated origin the reader sends `state: null`, and the archive's `returningId == null` guard then skips restoration. Three low findings remain. One is in the pure page-scroll key correction, which had not been inspected before. The other two are scope leaks: the stage/rail entrance applies to non-note items, and unused reader markers were added to views that have no reader owner.",
+  "findings": [
+    {
+      "id": "FIN-1",
+      "severity": "low",
+      "path": "src/hooks/useClassroomMotion.ts",
+      "evidence": "In `useList`, `rowTravel` treats ArrowUp/Down/Left/Right, Home, End, PageUp and PageDown as list travel whenever the target is inside `[data-motion-list] [data-motion-item]`, and it then sets the sticky `keyboardInteraction = true`. The archive cards (`TeachingNotesArchive.tsx`) and assigned-work row links have no roving or arrow-key handler, so these keys on a focused card just scroll the page. Failure scenario: a pointer user returns from a reader. The archive restore focuses the original card (`target.focus` in the layout effect). The user presses PageDown or ArrowDown to scroll. That makes `keyboardInteraction` sticky, so the user's later pointer 'Load more notes' (`paginate`) can no longer reset `listInteraction`, and the new rows never reveal. This contradicts the stated rule that pure page-scroll keys do not suppress scroll reveals. The test row `['ArrowDown','a']` / `['PageDown','a']` in `useClassroomMotion.test.tsx` locks in this behavior.",
+      "fix": "Count arrow/Home/End/Page keys as row travel only when the list really handles them (for example an explicit `data-motion-list-keyboard` opt-in or a roving-tabindex container). Otherwise treat them like the pointer-focused-button case, or require `event.target.matches(':focus-visible')` before making the interaction sticky. Update the test matrix to match."
+    },
+    {
+      "id": "FIN-2",
+      "severity": "low",
+      "path": "src/components/classroom/shell/ClassroomLayout.tsx",
+      "evidence": "`data-note-transition-mode` is set to 'reader' for every `/classroom/item/` path. In `useNoteReaderTransition.ts`, `readerId()` gives an `expectedId` for any item route, so `play()` runs the stage x-inversion and rail paper/row stagger (`newShell`, `enteringRail`) even when there is no `[data-note-reader]`. Example: a homework or TA item opened from a route with no rail (or a different stage edge) gets a 320px stage tween and a rail stagger. At the same time, ClassroomMotionContent still runs its generic blur entrance on that item's content. The plan says non-note items keep their existing behavior and that the reader must have no competing tween owner. The test 'does not scroll a non-note item with no owned reader marker' checks scrolling only, not stage or rail travel.",
+      "fix": "Own the shell tween only for note readers. Either defer stage/rail work until a matching `[data-note-reader]` exists or loading is resolved, or set mode/`expectedId` only when the item is a note (for example a `data-note-transition-owned` attribute on the reader wrapper that `play()` requires before animating the stage). Add a test showing that a non-note item route gets no stage/rail tween."
+    },
+    {
+      "id": "FIN-3",
+      "severity": "low",
+      "path": "src/components/classroom/ClassroomRouteViews.tsx",
+      "evidence": "`data-note-reader-block` was added to `ClassroomRecapsView` (h1), `ClassroomUploadsView` (h1), `ClassroomAssignmentView` (actions) and `ClassroomTAAssignmentView` (article, actions). None of these views renders a `[data-note-reader]` wrapper, so the reader owner never targets them; `play()` only queries blocks inside `reader`. The markers are dead and suggest these views are reader-owned when they are not, which risks future mis-scoping (for example the reduced-motion selector in `note-reader-transition.css` matches them).",
+      "fix": "Remove `data-note-reader-block` from non-note views, or deliberately bring those views under the reader owner and test it."
+    }
+  ],
+  "coverage": [
+    "Read in full: src/hooks/useNoteReaderTransition.ts, src/styles/note-reader-transition.css, src/hooks/useNotesArchiveScroll.ts",
+    "Read ClassroomItemView in src/components/classroom/ClassroomRouteViews.tsx (lines 195-370 plus the diff), including the interactive branch, which is limited to note types",
+    "Reviewed every diff hunk in the provided TRACKED DIFF: ClassroomLayout wiring and openRow origin carry, TeachingNotesArchive restoration/POP/origin logic, the notesArchiveOrigin helper and tests, useClassroomMotion list ownership, intents and the page-scroll key logic, MyWorkPage filters/focus, StudentDestination list-only policy, CSS edits, the preview fixture and its launcher script",
+    "Grepped classroom.css transitions to check how the stage/column padding and max-width transitions interact with data-note-transition-active and archive-mode suppression",
+    "Grepped ClassroomLayout notes rail routes to confirm returnTo/origin propagation for rail selections",
+    "Listed the test names in src/hooks/useNoteReaderTransition.test.tsx (did not read the bodies)",
+    "Traced the NRT-6 regression: a reader with no origin sends state null, and the archive returns without restoring or consuming the anchor"
+  ],
+  "limitations": [
+    "I could not run tests, typecheck, builds or a browser. Every behavioral conclusion comes from reading source, and no claim here says tests passed.",
+    "I did not read in full: useNoteReaderTransition.test.tsx bodies, ClassroomNotesJourney.test.tsx, ClassroomLayout.test.tsx, useNotesArchiveScroll.test.ts, MyWorkPage.refetch.test.tsx, WorkFilterSelect.tsx, useNotesSelectMotion.ts, teachingNoteDates.ts/test, myWorkNotesRefinement.css. These are in scope and in the manifest but their contents were not shown in the diff, so their correctness is not confirmed.",
+    "I did not read docs/plans/my-work-scroll-filters-gemini-review.md. Earlier-remediation fidelity was checked only through the code in the diff.",
+    "I did not inspect the host evidence outside the repo (local-desktop-final-trace.json, PNGs). GSAP runtime behavior, such as re-enabling a completed timeline when blocks are appended for delayed content, is inferred from GSAP semantics, not observed.",
+    "The fixture uses the real secondary rail and stage geometry but not the full authenticated ClassroomLayout (permissions, profile readiness, mobile flyout), so integrated production behavior is unverified.",
+    "Out-of-scope areas are unreviewed: supabase/functions/mcp/index.ts (excluded as unrelated), the rest of classroom.css beyond its transition rules, and all other repository files. This is not whole-repository approval."
+  ]
+}
+
+Host: NRT6 same-id stale origin corrected with25focusedtests. Expanded239tests and typecheck/build passed before the new inspection findings. Accept FIN1 pure scroll on focused links, FIN2 note-only shell ownership, FIN3 remove unused nonnote markers. Currentsourcecorrections inprogress, nofinalapproval, no commit/push/publish.
+
+
+## Continued plan review3 and expanded inspection2
+
+Result: claudex-d9q3vm1x
+{
+  "verdict": "APPROVED",
+  "summary": "I re-checked this revision against the earlier findings and the host's FIN-1, FIN-2, FIN-3 and NRT-6 dispositions. All of them are resolved in source. FIN-2: `play()` in `useNoteReaderTransition.ts` now only coordinates the stage and rail when it finds a matching reader marker or a matching `data-note-target-id` row in the real notes rail. An item it cannot confirm records its current geometry as the baseline and marks the shell as settled, so later confirmation reveals only the reader. A rail that mounts late because of permissions still starts from the last settled edge. The MutationObserver also watches `data-note-target-id`. The rail lists every note, so a note opened from deep in the archive is still confirmed. FIN-3: the shared heading, standfirst and article block markers are now conditional on note types. NRT-6: both Back buttons send `state: null` when there is no validated origin. FIN-1: plain arrow, Page, Home and End keys on ordinary links no longer lock list reveals off. The new files `WorkFilterSelect`, `useNotesSelectMotion` and `teachingNoteDates` are sound apart from one minor replay. I found two low-severity residuals and nothing material. This approval covers the source and plan only. Browser acceptance and the final build and test rerun remain host-side evidence that I did not verify.",
+  "findings": [
+    {
+      "id": "FIN-4",
+      "severity": "low",
+      "path": "src/hooks/useClassroomMotion.ts",
+      "evidence": "Line 273 treats `' '`/`'Spacebar'` on any `a[href]` (and on any `[data-motion-list] [data-motion-item]` row) as activation. That sets `keyboardInteraction = true` and permanently settles the lists. Native links activate on Enter, not Space: Space scrolls the page. Scenario: Back restores focus to an archive card `<Link>` (`TeachingNotesArchive.tsx:87`), and the student presses Space to page down. After that, a pointer Load more cannot re-enable reveals, because `handleIntent('paginate')` only clears `listInteraction` when `!keyboardInteraction` (line 263). This works against FIN-1's stated goal that pure scrolling on a restored card keeps pointer pagination eligible. The test at `useClassroomMotion.test.tsx:245` (`[' ', 'a']`) asserts this behaviour.",
+      "fix": "Treat Space as activation only for button-like targets (`button, [role=button], [role=menuitem]`, plus rows that are not native links). Treat Space or Shift+Space on `a[href]` as scrolling. Update the test matrix to match."
+    },
+    {
+      "id": "FIN-5",
+      "severity": "low",
+      "path": "src/components/my-work/WorkFilterSelect.tsx",
+      "evidence": "`setContentRef` depends on `motionRef`, which `useNotesSelectMotion` rebuilds whenever `open` or `modality` changes. Scenario: the student opens a filter with the keyboard, so modality is 'keyboard' and the menu opens without motion, then clicks an option with the mouse. `onPointerDownCapture` records 'pointer', the callback ref is re-invoked on the already-open node, and `fromTo` restarts the menu from opacity 0.6, scale 0.98 just as the selection is made. The menu visibly flickers as it closes. Replay on a modality change is not covered.",
+      "fix": "Animate only on the transition from closed to open, for example by keeping the open-time modality in a ref and tracking whether this open has already animated. Do not re-run the entrance when only the modality changes while the menu is open."
+    }
+  ],
+  "coverage": [
+    "docs/plans/my-work-note-reader-transition.md (current text, as provided)",
+    "docs/plans/my-work-scroll-filters-gemini-review.md (read in full)",
+    "src/hooks/useNoteReaderTransition.ts (current version, complete): the confirmation gate, unconfirmed baseline, late-rail synchronization, active-attribute lifecycle, observers, finish/reset/dispose",
+    "src/hooks/useNoteReaderTransition.test.tsx (complete): cases for confirmed and unknown items, delayed rail, rail opened in place, non-item toggles, archive reopen, reduced motion, completion and reset",
+    "src/hooks/useNotesSelectMotion.ts (complete)",
+    "src/components/my-work/WorkFilterSelect.tsx (complete)",
+    "src/components/my-work/teachingNoteDates.ts (complete)",
+    "src/styles/note-reader-transition.css (current, from the previous round; the host reported no change)",
+    "src/hooks/useClassroomMotion.ts keyboard classification in useList, plus the FIN-1 test matrix in useClassroomMotion.test.tsx",
+    "src/components/classroom/ClassroomRouteViews.tsx: block-marker conditionals, interactive reader and archiveReturnState",
+    "src/components/classroom/shell/ClassroomLayout.tsx: noteRows (all notes), data-note-target-id rows and the openRow origin chain",
+    "Searched for every data-note-reader/data-note-target-id producer and test"
+  ],
+  "limitations": [
+    "I could not run tests, typecheck, build or a browser, so nothing here claims that they pass. The hook tests mock GSAP, so real timeline timing, clearProps and immediateRender behaviour is checked only by reading the source.",
+    "I did not open the host's design-directory evidence (natural stage trace, the desktop and phone screenshots including local-reader-phone-calibrated.png), so proof items 3\u20134 are unverified from my side.",
+    "This round I did not re-read in full teachingNoteDates.test.ts, TeachingNotesArchive.tsx beyond the restore and card paths, useNotesArchiveScroll.ts, MyWorkPage.tsx, assignedWorkOrganization.ts, the My Work CSS files, select.tsx or scripts/verification/*. Earlier rounds covered them, or they are outside the changes the host lists.",
+    "The broader dirty checkout, including the unrelated supabase/functions/mcp/index.ts edit, was not reviewed.",
+    "The plan's own step 6 asks for a final source inspection in a fresh session, which this round does not replace."
+  ]
+}
+
+Result: claudex-ds66687h
+{
+  "verdict": "APPROVED",
+  "summary": "I found no material defects in the final scope. That covers the note reader transition (`useNoteReaderTransition`, the shell markers in ClassroomLayout, the reader blocks in ClassroomRouteViews and `note-reader-transition.css`), the carrying of archive origin, the NRT-6 fix, and the earlier scroll/filter remediation, including the page-scroll key correction in `useClassroomMotion`.\n\nWhat I checked holds up:\n- **Archive to reader:** the stage starts from the last settled edge and finishes at its new position. Geometry transitions are switched off before the new edge is measured. Archive mode keeps its forced `transform: none` and no-transition rules, so the child's anchor restore never measures a stage that is still moving.\n- **Rapid changes:** a route change part-way through an entrance restarts from the stage's current visual position, and `scope.revert` clears any hidden rail or reader styles.\n- **Confirmation guard:** stage and rail motion only run once a matching rail row or reader marker exists. Non-note items, which have neither, get no shell motion. Delayed content reveals only the reader, and refetches under the same route don't replay it.\n- **Generic entrance:** the reader is marked `classroom-motion-local`, so the shared entrance skips it.\n- **NRT-6 is fixed:** `ClassroomItemView` sends `notesArchiveReturn` only when `notesArchiveOrigin` validates both the origin and the URL `returnTo`. `TeachingNotesArchive` returns early when there is no returning id. `ClassroomNotesJourney.test.tsx` tests both the unrelated-note and same-note stale-anchor cases.\n- **Sidebar note selection:** `openRow` passes along only an origin that validates against the current `returnTo`.\n\nThree low-severity items remain, listed below. These are source-inspection results only: I ran no tests or builds and played no motion recordings.",
+  "findings": [
+    {
+      "id": "FIN-1",
+      "severity": "low",
+      "path": "src/hooks/useClassroomMotion.ts",
+      "evidence": "In `useList`, Space counts as activation whenever the target is inside a list row or matches `a[href]`. Browsers don't activate links on Space: they scroll the page. Example: Back restores focus to an archive card link, the user presses Space or Shift+Space to page down, and `keyboardInteraction` becomes true and stays true. All list rows are settled at once, and a later pointer Load more no longer reveals its rows for the rest of the visit. That conflicts with the intent of the final page-scroll correction, which `useClassroomMotion.test.tsx` checks for PageDown/arrows/Home/End on a restored card link but not for Space. The test `keeps meaningful ' ' interaction on a` actually requires the sticky behaviour.",
+      "fix": "Treat Space as activation only for buttons and button-role elements, not for `a[href]` or list rows. Add Space to the 'preserves pointer pagination after %s on an archive-restored ordinary card link' cases, and drop `[' ', 'a']` from the sticky-activation table."
+    },
+    {
+      "id": "FIN-2",
+      "severity": "low",
+      "path": "src/hooks/useNoteReaderTransition.ts",
+      "evidence": "The navigation layout effect (line 170) has no dependency list, so it runs on every ClassroomLayout render. When the key is unchanged it still calls `synchronizeGeometry`, `observeGeometry` and `play`. Each call reads `getBoundingClientRect` on the stage and rail, which forces a synchronous layout on every shell re-render (profile, permissions, theme, menu state and so on), not just on navigation. Correctness isn't affected, but it adds layout work to unrelated updates.",
+      "fix": "Re-run the same-key path only when pathname, navigationKey or navigationType change, or when the existing MutationObserver/ResizeObserver report a relevant change. Those observers already cover late rails and late readers."
+    },
+    {
+      "id": "FIN-3",
+      "severity": "low",
+      "path": "src/components/classroom/ClassroomRouteViews.tsx",
+      "evidence": "Line 1 adds `import { notesArchiveOrigin } from '@/lib/myWorkNotesNavigation';` above `import * as React`, and line 6 still imports `validateNotesReturnTo` from the same module. That is a duplicate module import placed out of the file's existing order, unlike the surrounding code.",
+      "fix": "Merge them into one `import { notesArchiveOrigin, validateNotesReturnTo } from \"@/lib/myWorkNotesNavigation\";` in the existing import position."
+    }
+  ],
+  "coverage": [
+    "Read in full: src/hooks/useNoteReaderTransition.ts, src/styles/note-reader-transition.css, src/hooks/useNotesArchiveScroll.ts, src/hooks/useNotesSelectMotion.ts, src/components/my-work/WorkFilterSelect.tsx, src/pages/myWorkNotesRefinement.css.",
+    "Read from the supplied tracked diff: useClassroomMotion.ts (list ownership, intents, rAF batching, page-scroll key handling, prune/resize/print), TeachingNotesArchive.tsx (restore/POP/origin/focus recovery), ClassroomRouteViews.tsx, ClassroomLayout.tsx, myWorkNotesNavigation.ts, MyWorkPage.tsx, StudentDestination.tsx, the CSS changes, the preview fixture/script, the docs addendum and the changed tests.",
+    "Read in the repo: the ClassroomLayout source around openRow/SectionList, activeSection, rootClass and StageFallback; the ClassroomItemView source, including the interactive and detail-action branches; classroom.css stage, column, rail and sidebar geometry and transitions; the notes palette variables in myWorkNotes.css.",
+    "Traced related callers: App.tsx imports ClassroomItemView eagerly (no Suspense-delayed reader); the full archive \u2192 reader \u2192 rail \u2192 Back/POP chain in ClassroomNotesJourney.test.tsx; the test titles in useNoteReaderTransition.test.tsx.",
+    "Rechecked NRT-6: same-id and unrelated stale anchors are not restored when the reader has no validated origin."
+  ],
+  "limitations": [
+    "I could not run tests, typecheck, builds or a browser, so I make no claim that any tests passed or that the motion behaves as described at runtime. The mocked-GSAP unit tests don't prove browser motion either.",
+    "I did not open the host evidence outside the worktree (C:/Users/Joshu/dev/ai-os/design/reviews/.../note-reader-transition/: local-desktop-final-trace.json, local-reader-phone-final.png, local-reader-desktop.png). Desktop/phone visual proof and the sampled stage positions are unverified by me.",
+    "I read only the titles of useNoteReaderTransition.test.tsx, not the test bodies, and did not open TeachingNotesArchive.test.tsx or teachingNoteDates.ts/test beyond the diff. MyWorkPage.refetch.test.tsx and ClassroomLayout.test.tsx are listed in the scope but not in the manifest, and I did not inspect them.",
+    "As the host notes, the fixture is synthetic: it uses the real secondary rail and stage geometry but not the full authenticated ClassroomLayout, permissions timing or production data.",
+    "Out of scope and not reviewed: supabase/functions/mcp/index.ts (an unrelated backend edit), the untracked docs/plans and verification artefacts other than the plan text supplied, and the rest of the repository. This review does not approve the whole repository.",
+    "I did not independently re-review docs/plans/my-work-scroll-filters-gemini-review.md beyond comparing the implemented behaviour with the docs addendum in platform-motion-20261022.md."
+  ]
+}
+
+Host accepts all3 lowfindings: Space-link scroll classification, navigation dependency gating with late-root initialization, duplicate import merge. Test-only plugin teardown added after confirmed ScrollTrigger _sync after-jsdom error. 249assertionspassed butprocesspreviouslyexit1, notcleanproof. No productglobaldisable. Correctionsinprogress; nextfreshinspectionrequired. No commit/push/publish.
+
+
+## Expanded inspection3: one scrollbar reveal low
+{
+  "verdict": "APPROVED",
+  "summary": "I found no material defects in the final expanded scope, checked against both plans. The reader transition has one root-scoped owner in the persistent shell: useNoteReaderTransition, mounted in ClassroomLayout. Rail paper and rows are animated only when a matching data-note-target-id row or data-note-reader marker confirms the note. Stage movement uses an inverted x transform rebased from the last settled edge, and column/stage CSS transitions are suppressed only while data-note-transition-active is set or in archive mode. Rapid navigation, resize, focus, Tab, reduced-motion change and unmount all finish or revert the GSAP context. Note-to-note selection animates only reader blocks. playedKey/shellKey prevent replay on refetch. Reader PUSH scrolls instantly to the top; POP and archive Back do not. Interactive lessons get the reader marker and block markers while keeping the iframe's sandbox and srcDoc unchanged. Non-note items get no markers and no shell tween. The reader is a classroom-motion-local boundary, so the generic owner skips it. NRT-6 is fixed: ClassroomItemView and the rail's openRow only pass notesArchiveReturn or notesArchiveOrigin when notesArchiveOrigin() validates an explicit origin, so a reader opened without an origin returns with null state and the archive never restores from it. The pure page-scroll key correction is also confirmed: Space/Spacebar counts as activation only on button, [role=button] or [role=menuitem], never on links; arrows, Home, End and Page keys on ordinary links or buttons are ignored; modifier keys and Escape are excluded. The test-only afterAll(ScrollTrigger.disable()) in the ClassroomLayout and refetch suites uses real, unmocked gsap/ScrollTrigger, so the call is valid, and no production code disables ScrollTrigger. One low finding remains: a width-only ResizeObserver change, such as a classic scrollbar appearing, cuts short a delayed reader entrance.",
+  "findings": [
+    {
+      "id": "NRT-F1",
+      "severity": "low",
+      "path": "src/hooks/useNoteReaderTransition.ts",
+      "evidence": "onResize (lines 149-154) calls finish(); reset(); whenever the stage width changes by 1px or more, even when window.innerWidth is unchanged. With classic, non-overlay scrollbars (the user's Windows desktop), the reader can be on a short DetailLoading page when it opens an uncached note (e.g. from a notification link), and the delayed-content path then reveals only the reader blocks (newShell false, newReader true). When the long article arrives, the page grows, the vertical scrollbar appears and the stage narrows by about 15px. On the next frame the ResizeObserver sees the width change and calls finish(), so the planned delayed-content stagger jumps straight to its end state. The same applies if the scrollbar appears during a confirmed shell tween. Content still ends visible and untransformed, so this loses the reveal rather than hiding anything. The local trace (archive and reader both long, scrollbar present throughout) would not exercise this.",
+      "fix": "When window.innerWidth is unchanged and stage()'s left edge has not moved (the rail is unchanged), treat a width-only stage change as idle geometry. Update lastWidth (and measure() when not animating) instead of calling finish()/reset(). Keep finish()/reset() for real viewport changes and rail/edge changes. Add a hook test where the stage width shrinks at the same innerWidth after a delayed reader starts its block timeline, and assert the timeline is not progressed to 1."
+    }
+  ],
+  "coverage": [
+    "Read the full diff in the prompt for every tracked file in the manifest",
+    "src/hooks/useNoteReaderTransition.ts (full): ownership, confirmation gating, rebasing, late-rail sync, observers, cleanup, StrictMode remount path",
+    "src/styles/note-reader-transition.css (full) against the classroom.css stage/column transitions (lines 806-862), section-list breakpoints (3536-3559, 1023px stacking) and section-list sticky/z-index rules",
+    "src/components/classroom/shell/ClassroomLayout.tsx lines 930-1259 (root, rail, stage, mobile overlay SectionList, activeSection permission gating) plus the openRow/data-note-target-id diff",
+    "src/components/classroom/shell/ClassroomMotionContent.tsx (display:contents boundary)",
+    "src/components/classroom/ClassroomRouteViews.tsx ClassroomItemView lines 196-300 plus diff (interactive branch, NOTE_TYPES wrappers, archiveReturnState)",
+    "src/hooks/useNotesArchiveScroll.ts (full)",
+    "src/hooks/useClassroomMotion.ts diff: list ownership, intents, key classification (Space/link fix), restore markers, prune and print paths",
+    "src/components/my-work/TeachingNotesArchive.tsx diff: POP/documentId anchor matching, origin/return id validation, focus recovery",
+    "src/lib/myWorkNotesNavigation.ts notesArchiveOrigin validation",
+    "src/pages/myWorkNotesRefinement.css (full) and myWorkNotes.css scoping lines 1-49 for reader wrapper side effects",
+    "src/App.tsx route wiring for ClassroomItemView, /my-work/notes and the recaps redirect",
+    "Test names in useNoteReaderTransition.test.tsx and ClassroomNotesJourney.test.tsx; the ScrollTrigger afterAll cleanup in the ClassroomLayout and MyWorkPage.refetch suites (gsap not mocked there)",
+    "The fixture script and preview server diffs"
+  ],
+  "limitations": [
+    "I could not run tests, typecheck, builds or a browser. Nothing here claims tests passed or that motion plays correctly; mocked-GSAP unit tests do not prove real browser behavior.",
+    "I did not open the host evidence files (local-desktop-final-trace.json, local-reader-phone-final.png and the other files in the external ai-os review directory); their claims are unverified by me.",
+    "The synthetic fixture uses the real secondary rail and production stage geometry, not the full authenticated ClassroomLayout with real permissions, profile readiness or Supabase data.",
+    "I read the bodies of useNoteReaderTransition.test.tsx, ClassroomNotesJourney.test.tsx, WorkFilterSelect.tsx, useNotesSelectMotion.ts and teachingNoteDates.ts only through the diff or test names, not in full as standalone files.",
+    "Files outside the inspection scope are unreviewed. That includes supabase/functions/mcp/index.ts (excluded as unrelated), App.tsx routing beyond the lines cited, classroom-rail-motion.css, the overlay motion hooks and the rest of the repository. This review does not approve the whole repository.",
+    "I did not re-read docs/plans/my-work-scroll-filters-gemini-review.md itself; I checked earlier-remediation fidelity against the diff and the host's summary of corrected items."
+  ]
+}
+HostacceptsNRT-F1: preserveactiveentranceonclassic-scrollbarwidth-onlychanges,sameviewport+sameuntransformededge. Implement/testandnewdelayedreaderfixture; thenfreshinspection. Previousclean252tests exit0, no teardownerror; currentlaterhookfixpending. No commit/push/publish.
+
+
+## FINAL 2026-10-28: zero remaining findings in inspected scope
+
+{
+  "verdict": "APPROVED",
+  "summary": "I found no material correctness, spec-fidelity, security or edge-case defects in the expanded scope against my-work-note-reader-transition.md. I read the new reader-transition owner, its CSS and its wiring into ClassroomLayout and ClassroomRouteViews. I also read the origin/return-state chain from the archive card through the rail to Back and archive restoration, and the list-motion intents.\n\nThe hook does what the plan requires:\n- One owner for the whole shell, scoped to the root. The stage is inverted with a transform only (no width tween), and the paper/rail/reader-block sequence ends by about 900ms.\n- A rapid route change rebases from the stage's current visual offset and reverts the previous animation.\n- Delayed content joins the sequence once. playedKey and shellKey stop replays on refetch or remount.\n- An unconfirmed item, or a non-note item, gets no shell tween. A late rail under the same key is coordinated without replaying the reader. Reduced motion and focus inside the reader skip the animation.\n- Unmount, resize and Tab finish and clean up the animation.\n\nResize after NRT-F1: a scrollbar that only changes the stage width, with the same window width, the same untransformed edge and the same rail state, keeps the active motion. A change to the viewport or the edge still settles it.\n\nGeometry suppression, NRT-3: `data-note-transition-active` is set before the destination is measured. An earlier measure() can start the column max-width/padding transition, but setting `transition: none` then cancels it to its end value, so the inversion is computed from final geometry. Archive mode keeps the immediate transform and transition suppression for child anchor restoration, which runs in the layout phase before the parent owner.\n\nStage and rail stacking: the rail has z-index 10 (classroom.css:683), so the translated, opaque stage slides under it and does not hide the rail stagger.\n\nStale anchors, NRT-6: the reader sends `notesArchiveReturn` only when a validated origin exists. Without one the archive does not restore anything. A mismatched id removes the stale anchor. A POP restore must match both the history entry key and the document id.\n\nSpace on links is now treated as page scroll, not activation. The ScrollTrigger.disable() in afterAll is test-only and limited to two suites.\n\nI did not run any tests and make no claim that they pass. The mocked-GSAP unit tests do not prove browser behaviour.",
+  "findings": [],
+  "coverage": [
+    "Read in full: src/hooks/useNoteReaderTransition.ts and src/styles/note-reader-transition.css. Traced every state variable through navigate, play, synchronizeGeometry, onResize, the mutation observer, the focus/key/reduce handlers and dispose.",
+    "Read the test names in src/hooks/useNoteReaderTransition.test.tsx: archive-to-reader, note-to-note, delayed content, unknown item, delayed rail, reduced motion, root mounted late, narrow width, rapid rebase, resize/focus, non-item, rail opened in place, suppression release, unrelated render, scrollbar-only width change and edge change.",
+    "Read the ClassroomLayout source: hook placement, data-note-transition-mode/stage/rail markers, sectionFromPath (item routes map to the notes section), activeSection permission gating, openRow origin propagation, and data-note-target-id (notes rows only).",
+    "Read the ClassroomRouteViews diff: interactive iframe reader boundary, the classroom-motion-local wrapper, block markers only for note types, and Back state carrying only a validated origin id.",
+    "Read the ClassroomMotionContent and useClassroomMotion diffs: the reader is excluded from the generic owner through classroom-motion-local; list ownership, intents, restore-marker handoff between outgoing and incoming owners, the pure page-scroll key filter and the Space-on-links fix.",
+    "Read the TeachingNotesArchive diff: layout-phase anchor restore, POP entry-key/document-id matching, explicit return-id check, modifier-click exclusion, filter/paginate intents, focus recovery.",
+    "Read src/lib/myWorkNotesNavigation.ts notesArchiveOrigin validation and its tests.",
+    "Read in full: useNotesArchiveScroll.ts, useNotesSelectMotion.ts, WorkFilterSelect.tsx and teachingNoteDates.ts.",
+    "Read the MyWorkPage diff and StudentDestination list-only policy diff.",
+    "Checked classroom.css stage/column transitions, section-list sticky z-index 10, and window-level scrolling (stage has no overflow container). Searched myWorkNotes.css and myWorkNotesRefinement.css for selectors now reaching the reader wrapper.",
+    "Read the fixture and preview-server diffs in scripts/verification, and the afterAll ScrollTrigger.disable() test cleanup in the ClassroomLayout and refetch suites."
+  ],
+  "limitations": [
+    "I could not run tests, typecheck, build or a browser. I make no claim that any suite passes, and mocked-GSAP tests do not show real playback.",
+    "I did not open the host evidence outside the worktree (C:/Users/Joshu/dev/ai-os/design/reviews/.../note-reader-transition traces and screenshots). Visual quality of the stagger, the screenshots and the rAF sample trace are not verified by me.",
+    "The synthetic fixture uses the real secondary rail and stage classes but not the full authenticated ClassroomLayout (auth, profile, permission timing, overlays). Behaviour in the signed-in production shell is not proven by this review.",
+    "I only skimmed the gemini-review remediation doc (my-work-scroll-filters-gemini-review.md) and the earlier-inspection dispositions. I relied on the current source rather than re-deriving every earlier finding. I skimmed rather than read in full the large test files (useClassroomMotion.test.tsx, TeachingNotesArchive.test.tsx, MyWorkPage.organization.test.tsx, ClassroomNotesJourney.test.tsx, useNotesArchiveScroll.test.ts, teachingNoteDates.test.ts).",
+    "Not reviewed (out of scope): supabase/functions/mcp/index.ts and every file outside the listed inspection paths, including the ui/select primitives, classroomData groupNotes, the markNoteRead internals and the rest of classroom.css. This is not a whole-repository approval."
+  ]
+}
+
+Hostfinalproof:254tests/13suites exit0 nounhandlederror; typecheck/fullproductionbuild/fixturebuild/scopeddiffcheck exit0. final-snapshot-proof.json verifies inspectedhashesstillmatch/backendunchanged. Naturalclassic-scrollbar delayedreadertrace showswidth841.194to818.507 samewindow1441 with33intermediateopacityframes; allvisible/untransformedatrest. No sourceeditsafterreview. Fullruntime/visualqualificationin externalREPORT.md. No commit/push/merge/publish.

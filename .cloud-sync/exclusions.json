@@ -312,6 +312,18 @@
     "reason": "excluded file"
   },
   {
+    "path": ".taste-skill/note-reader-final-build.log",
+    "reason": "excluded file"
+  },
+  {
+    "path": ".taste-skill/note-reader-final-tests-clean.log",
+    "reason": "excluded file"
+  },
+  {
+    "path": ".taste-skill/note-reader-final-tests-rerun.log",
+    "reason": "excluded file"
+  },
+  {
     "path": ".taste-skill/prod-preview.log",
     "reason": "excluded file"
   },

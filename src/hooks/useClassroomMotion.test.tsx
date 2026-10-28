@@ -2,6 +2,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { cleanup, fireEvent, render, renderHook, screen, waitFor } from '@testing-library/react';
 import { useRef } from 'react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 const mock = vi.hoisted(() => ({ fromTo: vi.fn(), set: vi.fn(), revert: vi.fn(), media: vi.fn(), reduced: false }));
 vi.mock('gsap', () => ({ gsap: {
   registerPlugin: vi.fn(),
@@ -22,12 +23,20 @@ import { ClassroomMotionContent } from '@/components/classroom/shell/ClassroomMo
 import { TeachingNotesArchive } from '@/components/my-work/TeachingNotesArchive';
 import type { ClassroomItem } from '@/hooks/useClassroomItems';
 import MyWorkPage from '@/pages/MyWorkPage';
+import { ClassroomItemView } from '@/components/classroom/ClassroomRouteViews';
 const archiveFixture = vi.hoisted(() => ({ data: [] as ClassroomItem[], loading: false }));
 const workFixture = vi.hoisted(() => ({ rows: [] as any[] }));
 vi.mock('@/contexts/AuthContext', () => ({ useAuth: () => ({ user: { id: 'motion-student' } }) }));
 vi.mock('@/hooks/useClassroomItems', () => ({ useClassroomItems: () => ({ data: archiveFixture.data, isLoading: archiveFixture.loading, error: null }) }));
 vi.mock('@/hooks/useAssignedTodoFeed', () => ({ useAssignedTodoFeed: () => ({ rows: workFixture.rows, loading: false, failed: false, retry: vi.fn() }), routeWithReturnTo: (route: string, returnTo: string) => `${route}?returnTo=${encodeURIComponent(returnTo)}` }));
 vi.mock('@/components/classroom/PrescribedWeek', () => ({ default: () => null }));
+vi.mock('@/hooks/useStudentAssignments', () => ({ useStudentAssignment: vi.fn(), useStudentTAAssignment: vi.fn(), markTAAssignmentCompleted: vi.fn(), markTAAssignmentViewed: vi.fn() }));
+vi.mock('@/hooks/useExternalWorkUploads', () => ({ useStudentExternalUploads: vi.fn() }));
+vi.mock('@/hooks/useHomeworkSets', () => ({ useHomeworkSet: vi.fn() }));
+vi.mock('@/components/classroom/StructuredTAAssignmentWorkspace', () => ({ default: () => null }));
+vi.mock('@/components/classroom/ClassroomMarkdown', () => ({ default: () => null }));
+vi.mock('@/lib/markNoteRead', async importOriginal => ({ ...await importOriginal<typeof import('@/lib/markNoteRead')>(), markNoteRead: vi.fn().mockResolvedValue(undefined) }));
+vi.mock('@/lib/drillLaunch', () => ({ launchDrill: vi.fn() }));
 afterEach(() => { cleanup(); sessionStorage.clear(); document.body.innerHTML = ''; mock.reduced = false; vi.useRealTimers(); vi.clearAllMocks(); vi.restoreAllMocks(); vi.unstubAllGlobals(); });
 describe('classroom motion navigation identity', () => {
   it('waits for remembered section resolution and normalizes legacy RC setup', () => {
@@ -69,7 +78,7 @@ describe('reference motion safety', () => {
       if (vars.clearProps) { element.style.opacity = ''; element.style.filter = ''; }
       else { element.style.opacity = String(vars.opacity); element.style.filter = String(vars.filter); }
     });
-    mock.fromTo.mockImplementation(() => { const animation = { delay: vi.fn(), play: vi.fn(), restart: vi.fn(), progress: vi.fn(), scrollTrigger: { refresh: vi.fn(), kill: vi.fn() } }; animation.delay.mockReturnValue(animation); return animation; });
+    mock.fromTo.mockImplementation(() => { const animation = { delay: vi.fn(), play: vi.fn(), restart: vi.fn(), progress: vi.fn(), kill: vi.fn(), scrollTrigger: { refresh: vi.fn(), kill: vi.fn() } }; animation.delay.mockReturnValue(animation); return animation; });
     return { root, run: () => renderHook(() => useClassroomMotion({ current: root }, 'destination')) };
   }
   it('uses the verified uniform preset and bounds a group to four blocks', () => {
@@ -149,6 +158,27 @@ describe('reference motion safety', () => {
     root.lastElementChild!.append(added); await Promise.resolve(); frame!(0);
     expect(mock.fromTo.mock.results[2].value.delay).toHaveBeenCalledWith(0);
   });
+  it('drops removed queued rows before computing the connected DOM-order batch', () => {
+    let frame: FrameRequestCallback | undefined;
+    vi.spyOn(window, 'requestAnimationFrame').mockImplementation(callback => { frame = callback; return 99; });
+    const { root, run } = mount('<ul data-motion-list><li data-motion-item data-motion-id="one">One</li><li data-motion-item data-motion-id="removed">Removed</li><li data-motion-item data-motion-id="three">Three</li></ul>'); run();
+    root.querySelectorAll('li')[1].remove(); frame!(0);
+    const [first, removed, third] = mock.fromTo.mock.results.map(result => result.value);
+    expect(first.delay).toHaveBeenCalledWith(0); expect(third.delay).toHaveBeenCalledWith(0.05);
+    expect(removed.restart).not.toHaveBeenCalled(); expect(removed.kill).toHaveBeenCalledOnce();
+  });
+  it('prunes removed list records before resize/filter and keeps reinserted identities visible without replay', async () => {
+    vi.useFakeTimers(); let resized: () => void = () => {};
+    vi.stubGlobal('ResizeObserver', class { constructor(callback: () => void) { resized = callback; } observe() {} disconnect() {} });
+    const { root, run } = mount('<ul data-motion-list><li data-motion-item data-motion-id="one" data-below>One</li></ul>'); run();
+    const row = root.querySelector('li')!, tween = mock.fromTo.mock.results[0].value;
+    row.style.opacity = '0'; row.remove(); await Promise.resolve();
+    expect(tween.kill).toHaveBeenCalledOnce(); expect(tween.scrollTrigger.kill).toHaveBeenCalledOnce();
+    resized(); vi.advanceTimersByTime(100); notifyClassroomListIntent(root, 'filter');
+    expect(tween.progress).not.toHaveBeenCalled(); expect(tween.scrollTrigger.refresh).not.toHaveBeenCalled();
+    root.firstElementChild!.append(row); await Promise.resolve();
+    expect(mock.fromTo).toHaveBeenCalledTimes(1); expect(row.style.opacity).toBe('');
+  });
   it('settles explicit portal/filter intent, cancels queued entries, and permits pointer pagination later', async () => {
     let frame: FrameRequestCallback | undefined;
     vi.spyOn(window, 'requestAnimationFrame').mockImplementation(callback => { frame = callback; return 94; });
@@ -184,6 +214,45 @@ describe('reference motion safety', () => {
     root.firstElementChild!.append(more); await Promise.resolve();
     expect(mock.fromTo).toHaveBeenCalledTimes(2);
     expect(mock.fromTo.mock.calls[1][2]).toMatchObject({ paused: true });
+  });
+  it.each(['PageUp', 'PageDown', 'Home', 'End', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'])('keeps queued scroll reveals and pointer pagination after %s on a pointer-focused button', async (key) => {
+    let frame: FrameRequestCallback | undefined;
+    vi.spyOn(window, 'requestAnimationFrame').mockImplementation(callback => { frame = callback; return 101; });
+    const { root, run } = mount('<button>Load more</button><ul data-motion-list><li data-motion-item data-motion-id="one" data-below>One</li></ul>'); run();
+    const button = root.querySelector('button')!; button.focus();
+    const tween = mock.fromTo.mock.results[0].value;
+    mock.fromTo.mock.calls[0][2].scrollTrigger.onEnter({ animation: tween });
+    button.dispatchEvent(new KeyboardEvent('keydown', { key, bubbles: true }));
+    expect(tween.progress).not.toHaveBeenCalled(); frame!(0);
+    expect(tween.restart).toHaveBeenCalledWith(true);
+    notifyClassroomListIntent(root, 'paginate');
+    const more = document.createElement('li'); more.dataset.motionItem = ''; more.dataset.motionId = 'two'; geometry(more);
+    root.querySelector('ul')!.append(more); await Promise.resolve();
+    expect(mock.fromTo).toHaveBeenCalledTimes(2);
+  });
+  it.each([...['PageDown', 'ArrowDown', 'Home', 'End', 'PageUp', 'ArrowUp', 'ArrowLeft', 'ArrowRight'].map(key => ({ key, shiftKey: false })), { key: ' ', shiftKey: false }, { key: ' ', shiftKey: true }, { key: 'Spacebar', shiftKey: false }])('preserves pointer pagination after $key shift=$shiftKey on an archive-restored ordinary card link', async ({ key, shiftKey }) => {
+    const { root, run } = mount('<ul data-motion-list><li data-motion-item data-motion-id="one"><a href="#one">One</a></li></ul>'); run();
+    const link = root.querySelector('a')!; link.focus();
+    notifyClassroomListIntent(root, 'restore');
+    link.dispatchEvent(new KeyboardEvent('keydown', { key, shiftKey, bubbles: true }));
+    notifyClassroomListIntent(root, 'paginate');
+    const more = document.createElement('li'); more.dataset.motionItem = ''; more.dataset.motionId = 'two'; geometry(more);
+    root.querySelector('ul')!.append(more); await Promise.resolve();
+    expect(mock.fromTo).toHaveBeenCalledTimes(2);
+    expect(mock.fromTo.mock.calls[1][2]).toMatchObject({ paused: true });
+  });
+  it.each([
+    ['Tab', 'button'], ['Enter', 'button'], [' ', 'button'], ['Enter', 'a'],
+    ['ArrowLeft', 'input'], ['x', 'textarea'], ['End', '[contenteditable]'], ['ArrowDown', '[role="combobox"]'],
+  ])('keeps meaningful %s interaction on %s immediate and sticky', async (key, selector) => {
+    const { root, run } = mount('<button>Control</button><input /><textarea></textarea><div contenteditable="true"></div><div role="combobox" tabindex="0"></div><ul data-motion-list><li data-motion-item data-motion-id="one"><a href="#one">One</a></li></ul>'); run();
+    const target = root.querySelector(selector)!;
+    target.dispatchEvent(new KeyboardEvent('keydown', { key, bubbles: true }));
+    expect(mock.fromTo.mock.results[0].value.progress).toHaveBeenCalledWith(1);
+    notifyClassroomListIntent(root, 'paginate');
+    const more = document.createElement('li'); more.dataset.motionItem = ''; more.dataset.motionId = 'two'; geometry(more);
+    root.querySelector('ul')!.append(more); await Promise.resolve();
+    expect(mock.fromTo).toHaveBeenCalledTimes(1);
   });
   it('resolves only the nearest registered owner, including reduced-motion owners, and unregisters', () => {
     const outer = mount('<div data-motion-list><a data-motion-item>Outer</a></div><div class="classroom-motion-local"><div data-motion-list><a data-motion-item>Inner</a></div></div>');
@@ -270,7 +339,7 @@ describe('reference motion safety', () => {
     Object.defineProperties(scroller, { scrollHeight: { value: 4000 }, clientHeight: { value: 600 } });
     run();
     expect(mock.fromTo).toHaveBeenCalledTimes(2);
-    mock.fromTo.mock.calls.forEach(call => expect(call[2]).toMatchObject({ paused: true, scrollTrigger: { scroller, once: true, start: 'clamp(top bottom-=100)', toggleActions: 'none none none none' } }));
+    mock.fromTo.mock.calls.forEach(call => expect(call[2]).toMatchObject({ paused: true, scrollTrigger: { scroller, once: true, start: 'clamp(top bottom)', toggleActions: 'none none none none' } }));
     const first = mock.fromTo.mock.results[0].value, second = mock.fromTo.mock.results[1].value;
     mock.fromTo.mock.calls[1][2].scrollTrigger.onEnter({ animation: second });
     mock.fromTo.mock.calls[0][2].scrollTrigger.onEnter({ animation: first });
@@ -422,6 +491,19 @@ describe('reference motion safety', () => {
     expect(tween.progress).toHaveBeenCalledWith(1);
     expect(tween.scrollTrigger.kill).toHaveBeenCalledOnce();
   });
+  it.each([false, true])('immediately batches a partly visible list row in the bottom viewport band, nested=%s', (nested) => {
+    let frame: FrameRequestCallback | undefined;
+    vi.spyOn(window, 'requestAnimationFrame').mockImplementation(callback => { frame = callback; return 98; });
+    const { root, run } = mount(nested ? '<div style="overflow-y:auto"><ul data-motion-list><li data-motion-item>Bottom band</li></ul></div>' : '<ul data-motion-list><li data-motion-item>Bottom band</li></ul>');
+    if (nested) {
+      const scroller = root.firstElementChild as HTMLElement;
+      Object.defineProperties(scroller, { scrollHeight: { value: 4000 }, clientHeight: { value: 600 } });
+      geometry(scroller, 200); geometry(root.querySelector('li')!, 750);
+    } else geometry(root.querySelector('li')!, window.innerHeight - 50);
+    run(); const call = mock.fromTo.mock.calls[0];
+    expect(call[2].scrollTrigger).toBeUndefined(); expect(call[2].paused).toBe(true);
+    frame!(0); expect(mock.fromTo.mock.results[0].value.restart).toHaveBeenCalledWith(true);
+  });
 });
 
 describe('real notes archive motion composition', () => {
@@ -438,7 +520,7 @@ describe('real notes archive motion composition', () => {
     if (empty) archiveFixture.data = [];
     mock.fromTo.mockImplementation((element: HTMLElement, from: Record<string, unknown>) => {
       element.style.opacity = String(from.opacity);
-      const animation = { delay: vi.fn(), restart: vi.fn(), progress: vi.fn(), scrollTrigger: { refresh: vi.fn(), kill: vi.fn() } };
+      const animation = { delay: vi.fn(), restart: vi.fn(), progress: vi.fn(), kill: vi.fn(), scrollTrigger: { refresh: vi.fn(), kill: vi.fn() } };
       animation.delay.mockReturnValue(animation);
       animation.progress.mockImplementation(() => { element.style.opacity = ''; return animation; });
       animation.restart.mockImplementation(() => { element.style.opacity = ''; return animation; });
@@ -483,6 +565,19 @@ describe('real notes archive motion composition', () => {
     document.querySelectorAll<HTMLElement>('.teaching-note-card').forEach(row => expect(row.style.opacity).not.toBe('0'));
     expect(screen.getByRole('link', { name: /Read Real note 4\./ })).toHaveAccessibleName(/Shared/);
   });
+  it('leaves marked cached reader blocks to their dedicated motion owner', () => {
+    const setupView = setup(); setupView.unmount(); mock.fromTo.mockClear();
+    archiveFixture.data = [{ id: 'cached-reader', title: 'Cached teaching note', type: 'note', created_at: '2026-10-27T12:00:00Z', description: 'A standfirst.', content_html: '<p>Authored lesson content.</p>', metadata_json: {}, status: 'assigned' } as ClassroomItem];
+    render(<QueryClientProvider client={new QueryClient()}><MemoryRouter initialEntries={['/classroom/item/cached-reader']}><ClassroomMotionContent><Routes><Route path="/classroom/item/:itemId" element={<ClassroomItemView />} /></Routes></ClassroomMotionContent></MemoryRouter></QueryClientProvider>);
+    const wrapper = document.querySelector('.classroom-note-reader')!;
+    expect(wrapper.tagName).toBe('DIV');
+    const targets = mock.fromTo.mock.calls.map(([element]) => element as HTMLElement);
+    expect(targets).toEqual([]);
+    expect(wrapper).toHaveClass('classroom-motion-local');
+    expect(wrapper.querySelectorAll('[data-note-reader-block]')).toHaveLength(5);
+    expect(targets).not.toContain(wrapper);
+    expect(targets.some(element => element.contains(screen.getByRole('button', { name: 'Back to notes' })))).toBe(false);
+  });
   it('consumes a scoped cached restore marker when no anchored row survives and focus falls back to the heading', async () => {
     sessionStorage.setItem('my-work-notes-anchor:motion-student:/my-work/notes', JSON.stringify({ id: 'removed', ids: ['removed'], pointer: true }));
     const view = setup('/my-work/notes', false, 'removed', true);
@@ -505,7 +600,7 @@ describe('real notes archive motion composition', () => {
     const workCalls = () => mock.fromTo.mock.calls.filter(([element]) => element.matches('li[data-motion-item]'));
     expect(workCalls()).toHaveLength(2);
     const initial = workCalls().map(call => mock.fromTo.mock.results[mock.fromTo.mock.calls.indexOf(call)].value);
-    const trigger = screen.getByRole('combobox', { name: 'Assignment type' });
+    const trigger = screen.getByRole('combobox', { name: /^Assignment type\b/ });
     const down = new MouseEvent('pointerdown', { bubbles: true, button: 0, ctrlKey: false });
     Object.defineProperty(down, 'pointerType', { value: 'mouse' }); fireEvent(trigger, down);
     const option = await screen.findByRole('option', { name: 'Guided drill' });

@@ -41,14 +41,14 @@ describe('My Work organization', () => {
     ['subject=rc', 'Assignment subject', 'All subjects'],
   ])('keeps pointer portal reset away from Search: %s', async (query, label, allLabel) => {
     state.rows = [row('a')]; open(false, `/my-work/to-do?${query}`);
-    const trigger = screen.getByRole('combobox', { name: label });
+    const trigger = screen.getByRole('combobox', { name: new RegExp(`^${label} `) });
     trigger.focus();
     fireEvent.keyDown(trigger, { key: 'ArrowDown' });
     const all = await screen.findByRole('option', { name: allLabel });
     act(() => all.focus());
     fireEvent.pointerDown(all, { pointerType: 'touch', button: 0 });
     fireEvent.click(all, { detail: 1 });
-    expect(screen.queryByRole('combobox', { name: label })).not.toBeInTheDocument();
+    expect(screen.queryByRole('combobox', { name: new RegExp(`^${label} `) })).not.toBeInTheDocument();
     expect(screen.getByRole('searchbox')).not.toHaveFocus();
     expect(screen.getByRole('region', { name: 'Work to do' })).toHaveFocus();
   });
@@ -67,10 +67,10 @@ describe('My Work organization', () => {
     state.rows = [row('private', { kind: 'activity' }), row('rc', { sourceTable: 'reading_center', refId: 'library', workSection: 'rc', title: 'Reading Center library' }), row('invalid', { sourceTable: 'reading_center', refId: 'private-library', workSection: 'mixed' })];
     const view = open(false, '/my-work/to-do?kind=Reading+Center');
     const assertDenied = () => {
-      expect(screen.getByRole('combobox', { name: 'Assignment type' })).toHaveTextContent('Reading Center');
+      expect(screen.getByRole('combobox', { name: /^Assignment type / })).toHaveTextContent('Reading Center');
       expect(screen.getByText('0 of 0 to do')).toBeInTheDocument();
       expect(screen.queryByRole('link')).not.toBeInTheDocument();
-      expect(screen.queryByRole('combobox', { name: 'Assignment subject' })).not.toBeInTheDocument();
+      expect(screen.queryByRole('combobox', { name: /^Assignment subject / })).not.toBeInTheDocument();
     };
     assertDenied();
     state.readingCenterAccess = true;
@@ -79,7 +79,7 @@ describe('My Work organization', () => {
     expect(screen.getByText('1 of 1 to do')).toBeInTheDocument();
     expect(screen.queryByText('Assignment private')).not.toBeInTheDocument();
     expect(screen.queryByText('Assignment invalid')).not.toBeInTheDocument();
-    const type = screen.getByRole('combobox', { name: 'Assignment type' });
+    const type = screen.getByRole('combobox', { name: /^Assignment type / });
     fireEvent.keyDown(type, { key: 'ArrowDown' });
     expect(await screen.findByRole('option', { name: 'Reading Center' })).toBeInTheDocument();
     expect(screen.queryByRole('option', { name: 'Activity' })).not.toBeInTheDocument();
@@ -94,13 +94,13 @@ describe('My Work organization', () => {
     ['subject=rc', 'Assignment subject', 'All subjects'],
   ])('recovers keyboard focus when clearing an absent selected filter: %s', async (query, label, allLabel) => {
     state.rows = [row('a')]; open(false, `/my-work/to-do?${query}`);
-    const trigger = screen.getByRole('combobox', { name: label });
+    const trigger = screen.getByRole('combobox', { name: new RegExp(`^${label} `) });
     trigger.focus();
     fireEvent.keyDown(trigger, { key: 'ArrowDown' });
     const all = await screen.findByRole('option', { name: allLabel });
     act(() => all.focus());
     fireEvent.keyDown(all, { key: 'Enter' });
-    expect(screen.queryByRole('combobox', { name: label })).not.toBeInTheDocument();
+    expect(screen.queryByRole('combobox', { name: new RegExp(`^${label} `) })).not.toBeInTheDocument();
     expect(screen.getByRole('searchbox')).toHaveFocus();
   });
   it('does not move focus when a feed refresh removes an unselected picker', () => {
@@ -111,14 +111,14 @@ describe('My Work organization', () => {
     state.rows = [row('a')];
     view.rerender(<MemoryRouter><MyWorkPage completed={false} /></MemoryRouter>);
     expect(link).toHaveFocus();
-    expect(screen.queryByRole('combobox', { name: 'Assignment type' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('combobox', { name: /^Assignment type / })).not.toBeInTheDocument();
   });
 
   it('keeps a valid absent work type selected during a partial feed refresh', () => {
     state.failed = true;
     state.rows = [row('a', { kind: 'activity' })];
     const view = open(false, '/my-work/to-do?kind=Guided+drill');
-    expect(screen.getByRole('combobox', { name: 'Assignment type' })).toHaveTextContent('Guided drill');
+    expect(screen.getByRole('combobox', { name: /^Assignment type / })).toHaveTextContent('Guided drill');
     expect(screen.getByText('No assignments match these filters.')).toBeInTheDocument();
     expect(screen.queryByRole('link')).not.toBeInTheDocument();
     state.rows = [...state.rows, row('b')];
@@ -131,7 +131,7 @@ describe('My Work organization', () => {
     const view = open(false, '/my-work/to-do?kind=Guided+drill');
     state.rows = [row('a', { status: 'completed' })];
     view.rerender(<MemoryRouter><MyWorkPage completed={false} /></MemoryRouter>);
-    expect(screen.getByRole('combobox', { name: 'Assignment type' })).toHaveTextContent('Guided drill');
+    expect(screen.getByRole('combobox', { name: /^Assignment type / })).toHaveTextContent('Guided drill');
     expect(screen.getByText('No assignments match these filters.')).toBeInTheDocument();
     fireEvent.click(screen.getByRole('button', { name: 'Clear filters' }));
     expect(screen.getByText('Nothing is assigned right now.')).toBeInTheDocument();
@@ -139,14 +139,14 @@ describe('My Work organization', () => {
   });
   it('preserves a valid absent subject with other rows present', () => {
     state.rows = [row('a')]; open(false, '/my-work/to-do?subject=rc');
-    expect(screen.getByRole('combobox', { name: 'Assignment subject' })).toHaveTextContent('Reading Comprehension');
+    expect(screen.getByRole('combobox', { name: /^Assignment subject / })).toHaveTextContent('Reading Comprehension');
     expect(screen.queryByRole('link')).not.toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Clear filters' })).toBeInTheDocument();
   });
   it('keeps both valid selected options and Clear filters when no rows exist', () => {
     state.rows = []; open(false, '/my-work/to-do?subject=rc&kind=Activity');
-    expect(screen.getByRole('combobox', { name: 'Assignment subject' })).toHaveTextContent('Reading Comprehension');
-    expect(screen.getByRole('combobox', { name: 'Assignment type' })).toHaveTextContent('Activity');
+    expect(screen.getByRole('combobox', { name: /^Assignment subject / })).toHaveTextContent('Reading Comprehension');
+    expect(screen.getByRole('combobox', { name: /^Assignment type / })).toHaveTextContent('Activity');
     expect(screen.getByText('0 of 0 to do')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Clear filters' })).toBeInTheDocument();
   });
@@ -156,7 +156,7 @@ describe('My Work organization', () => {
     expect(screen.getByRole('alert')).toHaveTextContent('could not load your assignments or confirm');
     expect(screen.queryByText('No assignments match these filters.')).not.toBeInTheDocument();
     expect(screen.queryByText(/Your saved work is still shown/)).not.toBeInTheDocument();
-    expect(screen.getByRole('combobox', { name: 'Assignment type' })).toHaveTextContent('Guided drill');
+    expect(screen.getByRole('combobox', { name: /^Assignment type / })).toHaveTextContent('Guided drill');
     expect(screen.getByRole('button', { name: 'Clear filters' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Try again' })).toBeInTheDocument();
   });
@@ -185,8 +185,10 @@ describe('My Work organization', () => {
   });
   it('combines subject and search filters and preserves the query on guided drill return', async () => {
     state.rows = [row('a'), row('b', { title: 'Passage review', workSection: 'rc' })]; open();
-    fireEvent.keyDown(screen.getByRole('combobox', { name: 'Assignment subject' }), { key: 'ArrowDown' });
+    expect(screen.getByRole('combobox', { name: /^Assignment subject / })).toHaveAccessibleName('Assignment subject All subjects');
+    fireEvent.keyDown(screen.getByRole('combobox', { name: /^Assignment subject / }), { key: 'ArrowDown' });
     fireEvent.keyDown(await screen.findByRole('option', { name: 'Reading Comprehension' }), { key: 'Enter' });
+    expect(screen.getByRole('combobox', { name: /^Assignment subject / })).toHaveAccessibleName('Assignment subject Reading Comprehension');
     fireEvent.change(screen.getByRole('searchbox'), { target: { value: 'Passage' } });
     const link = screen.getByRole('link', { name: /Passage review/ });
     const target = new URL(link.getAttribute('href')!, 'https://example.test');
@@ -200,10 +202,12 @@ describe('My Work organization', () => {
     state.failed = false;
     state.rows = [row('a'), row('b', { kind: 'activity', title: 'Recall passage' })];
     open();
-    fireEvent.keyDown(screen.getByRole('combobox', { name: 'Assignment type' }), { key: 'ArrowDown' });
+    expect(screen.getByRole('combobox', { name: /^Assignment type / })).toHaveAccessibleName('Assignment type All work types');
+    fireEvent.keyDown(screen.getByRole('combobox', { name: /^Assignment type / }), { key: 'ArrowDown' });
     notifyIntent.mockImplementationOnce(() => { expect(screen.getAllByRole('link', { hidden: true })).toHaveLength(2); });
     fireEvent.keyDown(await screen.findByRole('option', { name: 'Activity' }), { key: 'Enter' });
     expect(notifyIntent).toHaveBeenCalledTimes(1);
+    expect(screen.getByRole('combobox', { name: /^Assignment type / })).toHaveAccessibleName('Assignment type Activity');
     fireEvent.change(screen.getByRole('searchbox'), { target: { value: 'Recall' } });
     expect(screen.queryByText('Assignment a')).not.toBeInTheDocument();
     const target = new URL(screen.getByRole('link', { name: /Recall passage/ }).getAttribute('href')!, 'https://example.test');

@@ -1,4 +1,4 @@
-import { notesDetailRoute, validateNotesReturnTo } from "@/lib/myWorkNotesNavigation";
+import { notesArchiveOrigin, notesDetailRoute, validateNotesReturnTo } from "@/lib/myWorkNotesNavigation";
 import * as React from "react";
 import {
   ChevronsUpDown,
@@ -55,6 +55,7 @@ import "@/components/classroom/classroom.css";
 import "@/styles/classroom-motion.css";
 import "@/styles/classroom-rail-motion.css";
 import { ClassroomMotionContent } from "./ClassroomMotionContent";
+import { useNoteReaderTransition } from '@/hooks/useNoteReaderTransition';
 import { ClassroomLayoutContext, type ClassroomSection } from "./classroomLayoutContext";
 
 const SECTION_TITLES: Record<ClassroomSection, string> = {
@@ -554,7 +555,7 @@ function StandardSectionList({
   onClose?: () => void;
 }) {
   const navigate = useNavigate();
-  const { pathname, search } = useLocation();
+  const { pathname, search, state: navigationState } = useLocation();
   const itemsQuery = useClassroomItems();
   const homeworkQuery = useStudentAssignments();
   const taQuery = useStudentTAAssignments();
@@ -640,7 +641,9 @@ function StandardSectionList({
 
   const openRow = (route: string) => {
     onClose?.();
-    navigate(route);
+    const returnTo = validateNotesReturnTo(new URLSearchParams(search).get('returnTo'));
+    const origin = section === 'notes' ? notesArchiveOrigin(navigationState, returnTo) : null;
+    navigate(route, { state: origin ? { notesArchiveOrigin: origin } : null });
   };
 
   return (
@@ -696,6 +699,7 @@ function StandardSectionList({
                 <button
                   type="button"
                   key={item.id}
+                  data-note-target-id={item.id}
                   className={`classroom-panel-item${activeId === item.id ? " classroom-panel-item-active" : ""}`}
                   onClick={() => openRow(notesDetailRoute(item.id, validateNotesReturnTo(new URLSearchParams(search).get("returnTo"))))}
                 >
@@ -927,6 +931,8 @@ export default function ClassroomLayout() {
   const { theme } = useTheme();
   const navigate = useNavigate();
   const location = useLocation();
+  const transitionRoot = React.useRef<HTMLDivElement>(null);
+  useNoteReaderTransition(transitionRoot, location.pathname, location.key);
   const params = useParams();
   const [profileReady, setProfileReady] = React.useState(false);
   const [displayName, setDisplayName] = React.useState("");
@@ -1123,7 +1129,7 @@ export default function ClassroomLayout() {
 
   return (
     <ClassroomLayoutContext.Provider value={contextValue}>
-      <div className={`${rootClass}${reviewFromQueue ? " classroom-root-review-return" : ""}`}>
+      <div ref={transitionRoot} data-note-transition-mode={location.pathname.startsWith('/classroom/item/') ? 'reader' : location.pathname === '/my-work/notes' ? 'archive' : undefined} className={`${rootClass}${reviewFromQueue ? " classroom-root-review-return" : ""}`}>
         <div className="classroom-mobile-bar">
           <button
             type="button"
@@ -1199,7 +1205,7 @@ export default function ClassroomLayout() {
         ) : null}
 
         {activeSection && !reviewFromQueue ? (
-          <aside className="classroom-section-list">
+          <aside data-note-transition-rail className="classroom-section-list">
             <SectionList section={activeSection} activeId={activeId} />
           </aside>
         ) : null}
@@ -1221,7 +1227,7 @@ export default function ClassroomLayout() {
             </React.Suspense>
           </main>
         ) : (
-          <main className="classroom-stage">
+          <main data-note-transition-stage className="classroom-stage">
             <div className="classroom-column">
               <React.Suspense fallback={<StageFallback />}>
                 <ClassroomMotionContent><Outlet context={contextValue} /></ClassroomMotionContent>
@@ -1252,3 +1258,5 @@ export default function ClassroomLayout() {
     </ClassroomLayoutContext.Provider>
   );
 }
+
+export { SectionList as ClassroomSectionList };

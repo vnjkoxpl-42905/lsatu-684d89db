@@ -111,18 +111,32 @@ export function useClassroomMotion(ref: RefObject<HTMLElement>, motionKey: strin
           return undefined;
         };
         const viewport = (scroller?: HTMLElement) => ({ top: scroller?.getBoundingClientRect().top ?? 0, height: scroller?.clientHeight ?? window.innerHeight });
-        const inView = (element: HTMLElement, scroller?: HTMLElement) => {
+        const inView = (element: HTMLElement, scroller?: HTMLElement, list = false) => {
           const box = viewport(scroller), rect = element.getBoundingClientRect();
-          return rect.top < box.top + box.height - 100 && rect.bottom > box.top;
+          return rect.top < box.top + box.height - (list ? 0 : 100) && rect.bottom > box.top;
         };
         const entering = new Map<gsap.core.Tween, HTMLElement>();
+        const pruneListRecords = () => {
+          for (let index = records.length - 1; index >= 0; index--) {
+            const record = records[index];
+            if (!record.list || record.element.isConnected) continue;
+            entering.delete(record.tween);
+            record.tween.scrollTrigger?.kill(); record.tween.kill();
+            gsap.set(record.element, { clearProps: 'transform,opacity,filter' });
+            seen.delete(record.element);
+            // Keep the completed identity: a refetch/reinsertion stays readable
+            // without replaying an already discovered domain row.
+            records.splice(index, 1);
+          }
+        };
         let revealFrame: number | undefined;
         const queueListEntry = (tween: gsap.core.Tween, element: HTMLElement) => {
           entering.set(tween, element);
           if (revealFrame !== undefined) return;
           revealFrame = requestAnimationFrame(() => {
             revealFrame = undefined;
-            const batch = [...entering.entries()].sort((a, b) => {
+            pruneListRecords();
+            const batch = [...entering.entries()].filter(([, element]) => element.isConnected).sort((a, b) => {
               const order = a[1].compareDocumentPosition(b[1]);
               return order & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : order & Node.DOCUMENT_POSITION_PRECEDING ? 1 : 0;
             });
@@ -141,6 +155,7 @@ export function useClassroomMotion(ref: RefObject<HTMLElement>, motionKey: strin
         };
         let count = 0;
         const discover = (initial = false) => {
+          pruneListRecords();
           let candidates = Array.from(root.querySelectorAll<HTMLElement>(selector));
           if (!candidates.length && initial) {
             let parent = root;
@@ -183,9 +198,10 @@ export function useClassroomMotion(ref: RefObject<HTMLElement>, motionKey: strin
             const scroller = scrollContainer(element);
             if (scroller === null) { completedIds.add(id); return; }
             const box = viewport(scroller), rect = element.getBoundingClientRect();
-            const below = rect.top >= box.top + box.height - 100;
+            const margin = list ? 0 : 100;
+            const below = rect.top >= box.top + box.height - margin;
             const maximum = scroller ? scroller.scrollHeight - scroller.clientHeight : Math.max(document.documentElement.scrollHeight, document.body.scrollHeight) - window.innerHeight;
-            const start = rect.top - box.top + (scroller?.scrollTop ?? window.scrollY) - box.height + 100;
+            const start = rect.top - box.top + (scroller?.scrollTop ?? window.scrollY) - box.height + margin;
             const reachable = below && maximum > 0 && start <= maximum;
             if (below && !reachable) { completedIds.add(id); return; }
             if (element.closest('[aria-busy="true"], [data-motion-ready="false"]')) {
@@ -204,7 +220,7 @@ export function useClassroomMotion(ref: RefObject<HTMLElement>, motionKey: strin
               { y: 0, opacity: 1, ...(list ? {} : { filter: 'blur(0px)' }), duration: preset.duration, ease: preset.ease,
                 delay: list ? 0 : 0.05 + (reachable ? 0 : 0.15 * index), ...(list ? { paused: true } : {}), clearProps: 'transform,opacity,filter',
                 ...(reachable ? { immediateRender: true, scrollTrigger: {
-                  trigger: element, scroller, start: 'clamp(top bottom-=100)', once: true,
+                  trigger: element, scroller, start: list ? 'clamp(top bottom)' : 'clamp(top bottom-=100)', once: true,
                   toggleActions: list ? 'none none none none' : 'play none none none',
                   ...(list ? { onEnter: (trigger: ScrollTrigger) => { if (trigger.animation) { listEntry.entered = true; queueListEntry(trigger.animation as gsap.core.Tween, element); } } } : {}),
                 } } : {}),
@@ -217,17 +233,17 @@ export function useClassroomMotion(ref: RefObject<HTMLElement>, motionKey: strin
         let timer: ReturnType<typeof setTimeout> | undefined;
         const resize = typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(() => {
           clearTimeout(timer);
-          timer = setTimeout(() => records.forEach(record => {
+          timer = setTimeout(() => { pruneListRecords(); records.forEach(record => {
             if (!record.tween.scrollTrigger) return;
             if (record.list && record.listEntry.entered) return;
-            if (inView(record.element, record.scroller)) settle(record);
+            if (inView(record.element, record.scroller, record.list)) settle(record);
             else record.tween.scrollTrigger.refresh();
-          }), 100);
+          }); }, 100);
         });
         Array.from(root.children).forEach(element => resize?.observe(element));
         // New section nodes/readiness only. Text, timer ticks and animation styles never replay.
         const mutations = new MutationObserver(changes => {
-          const relevant = changes.some(change => change.type === 'attributes' || Array.from(change.addedNodes).some(node => node instanceof HTMLElement && (node.matches(selector) || node.querySelector(selector))));
+          const relevant = records.some(record => record.list && !record.element.isConnected) || changes.some(change => change.type === 'attributes' || Array.from(change.addedNodes).some(node => node instanceof HTMLElement && (node.matches(selector) || node.querySelector(selector))));
           if (relevant) scope.add(() => discover());
         });
         mutations.observe(root, { subtree: true, childList: true, attributes: true, attributeFilter: ['aria-busy', 'data-motion-ready'] });
@@ -238,6 +254,7 @@ export function useClassroomMotion(ref: RefObject<HTMLElement>, motionKey: strin
         };
         // Once someone starts using a list, filtering and keyboard travel must stay immediate.
         const settleLists = () => {
+          pruneListRecords();
           listInteraction = true;
           records.filter(record => record.list).forEach(settle);
           pending.forEach((waiting, id) => { if (waiting.element.closest('[data-motion-list]')) scope.add(() => finishPending(id)); });
@@ -247,7 +264,18 @@ export function useClassroomMotion(ref: RefObject<HTMLElement>, motionKey: strin
           settleLists();
         };
         const useList = (event: Event) => {
-          if (event instanceof KeyboardEvent && ['Meta', 'Control', 'Shift', 'Alt', 'Escape'].includes(event.key)) return;
+          if (event instanceof KeyboardEvent) {
+            const key = event.key;
+            if (['Meta', 'Control', 'Shift', 'Alt', 'Escape'].includes(key)) return;
+            const target = event.target instanceof Element ? event.target : null;
+            const editing = target?.closest('input, textarea, [contenteditable]:not([contenteditable="false"]), [role="combobox"], [role="listbox"], [role="option"]');
+            const row = target?.closest('[data-motion-list] [data-motion-item]');
+            const activation = key === 'Enter' && (row || target?.closest('button, a[href], [role="button"], [role="link"], [role="menuitem"]'))
+              || [' ', 'Spacebar'].includes(key) && target?.closest('button, [role="button"], [role="menuitem"]');
+            // Ordinary links and buttons do not rove on arrows/Home/Page keys.
+            // Those scroll the page, including after archive focus restoration.
+            if (key !== 'Tab' && !editing && !activation) return;
+          }
           keyboardInteraction = true; settleLists();
         };
         root.addEventListener('keydown', useList); root.addEventListener('input', useList); root.addEventListener('change', useList);

@@ -14,6 +14,8 @@ import { teachingNoteDate } from './teachingNoteDates';
 
 const typeLabels = { note: 'Notes', session_recap: 'Session recaps', announcement: 'Announcements', smartboard_recap: 'Whiteboard recaps' };
 const kinds: Partial<Record<ClassroomItem['type'], string>> = { note: 'Note', session_recap: 'Session recap', announcement: 'Announcement', smartboard_recap: 'Whiteboard recap' };
+// History's initial "default" key is reused across full-document loads.
+const archiveDocumentId = globalThis.crypto?.randomUUID?.() ?? `${Date.now()}-${Math.random()}`;
 function dateLabel(value: string, monthOnly = false) {
   const date = teachingNoteDate(value);
   return monthOnly ? date.month : date.label;
@@ -27,6 +29,8 @@ export function TeachingNotesArchive({ onOpenPersonalNotes }: { onOpenPersonalNo
   const recoverTypeFocus = useRef(false);
   const recoverClearFocus = useRef(false);
   const [selectModality, setSelectModality] = useState<'keyboard' | 'pointer'>('keyboard');
+  const selectModalityRef = useRef(selectModality);
+  function recordSelectModality(next: 'keyboard' | 'pointer') { selectModalityRef.current = next; setSelectModality(next); }
   const [selectOpen, setSelectOpen] = useState(false);
   const selectMotionRef = useNotesSelectMotion(selectOpen, selectModality);
   const returnToNote = useNotesArchiveScroll();
@@ -67,10 +71,10 @@ export function TeachingNotesArchive({ onOpenPersonalNotes }: { onOpenPersonalNo
     try {
       const stored = sessionStorage.getItem(storageKey);
       if (!stored) return;
-      const anchor = JSON.parse(stored) as { id: string; ids: string[]; pointer?: boolean; archiveEntryKey?: string };
+      const anchor = JSON.parse(stored) as { id: string; ids: string[]; pointer?: boolean; archiveEntryKey?: string; documentId?: string };
       // A URL match alone is not a reader return: stale keys may be reached by
       // filters or pagination. POP must identify the original archive entry.
-      const matchingPop = navigationType === 'POP' && anchor.archiveEntryKey && anchor.archiveEntryKey === location.key;
+      const matchingPop = navigationType === 'POP' && anchor.documentId === archiveDocumentId && anchor.archiveEntryKey && anchor.archiveEntryKey === location.key;
       if (!matchingPop) {
         const returningId = location.state?.notesArchiveReturn;
         if (returningId == null) return;
@@ -96,7 +100,7 @@ export function TeachingNotesArchive({ onOpenPersonalNotes }: { onOpenPersonalNo
   }
   function changeType(value: string) {
     const focus = document.activeElement;
-    recoverTypeFocus.current = selectModality === 'keyboard' && value === 'all-types' && availableTypes.length <= 1 && !!focus?.closest('.notes-select-trigger, .notes-select-content');
+    recoverTypeFocus.current = selectModalityRef.current === 'keyboard' && value === 'all-types' && availableTypes.length <= 1 && !!focus?.closest('.notes-select-trigger, .notes-select-content');
     update('type', value === 'all-types' ? '' : value);
   }
   function clearFilters(event: MouseEvent<HTMLButtonElement>) {
@@ -107,13 +111,13 @@ export function TeachingNotesArchive({ onOpenPersonalNotes }: { onOpenPersonalNo
     setParams(next, { state: null });
   }
   function remember(id: string, pointer: boolean) {
-    try { sessionStorage.setItem(storageKey, JSON.stringify({ id, ids: filtered.map((note) => note.id), pointer, archiveEntryKey: location.key })); } catch { /* Browser storage may be unavailable. */ }
+    try { sessionStorage.setItem(storageKey, JSON.stringify({ id, ids: filtered.map((note) => note.id), pointer, archiveEntryKey: location.key, documentId: archiveDocumentId })); } catch { /* Browser storage may be unavailable. */ }
   }
   function card(note: ClassroomItem, featured = false) {
     const body = text.get(note.id) ?? '';
     const description = note.description?.trim();
     const excerpt = description || (body.startsWith(note.title) && (!body[note.title.length] || /[\s.:;!?]/.test(body[note.title.length])) ? body.slice(note.title.length).replace(/^[\s.:;!?]+/, '') : body);
-    return <Link key={note.id} data-motion-item data-motion-id={`teaching-note:${note.id}`} aria-label={`Read ${note.title}. ${kinds[note.type] ?? 'Note'}. Shared ${dateLabel(note.created_at)}. ${isNoteUnread(note) ? 'Unread' : 'Read'}.`} to={notesDetailRoute(note.id, archivePath)} onClick={(event) => { if (!event.defaultPrevented && event.button === 0 && !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey) remember(note.id, event.detail > 0); }} ref={(node) => { if (node) cards.current.set(note.id, node); else cards.current.delete(note.id); }} data-read-state={isNoteUnread(note) ? 'unread' : 'read'} className={`teaching-note-card${featured ? ' teaching-note-lead' : ''}`}>
+    return <Link key={note.id} data-motion-item data-motion-id={`teaching-note:${note.id}`} aria-label={`Read ${note.title}. ${kinds[note.type] ?? 'Note'}. Shared ${dateLabel(note.created_at)}. ${isNoteUnread(note) ? 'Unread' : 'Read'}.`} to={notesDetailRoute(note.id, archivePath)} state={{ notesArchiveOrigin: { id: note.id, returnTo: archivePath } }} onClick={(event) => { if (!event.defaultPrevented && event.button === 0 && !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey) remember(note.id, event.detail > 0); }} ref={(node) => { if (node) cards.current.set(note.id, node); else cards.current.delete(note.id); }} data-read-state={isNoteUnread(note) ? 'unread' : 'read'} className={`teaching-note-card${featured ? ' teaching-note-lead' : ''}`}>
       <span className="teaching-note-document" aria-hidden="true"><FileText size={featured ? 30 : 22} /></span>
       <span className="teaching-note-card-content"><span className="teaching-note-meta">{featured ? 'Most recent · ' : ''}{kinds[note.type] ?? 'Note'}{isNoteUnread(note) ? <span className="teaching-note-unread">Unread</span> : null}</span>
       <strong className="teaching-note-title">{note.title}</strong><time dateTime={note.created_at} title="Date shared"><span className="teaching-note-date-label">Shared </span>{dateLabel(note.created_at)}</time>
@@ -137,7 +141,7 @@ export function TeachingNotesArchive({ onOpenPersonalNotes }: { onOpenPersonalNo
       </div>
     {query.isLoading && !query.data ? <p role="status" className="teaching-notes-state">Loading your notes…</p> : query.error ? <div role="alert" className="teaching-notes-state"><p>Your notes could not be loaded. Try again to see the complete archive.</p><button type="button" className="classroom-button" onClick={() => void query.refetch()}>Try again</button></div> : !notes.length ? <div className="teaching-notes-empty"><BookOpen size={28} aria-hidden="true" /><h3>Your notes will live here.</h3><p>Notes and recaps shared after your sessions will be easy to find here.</p></div> : <>
       <div className="teaching-notes-archive-heading"><span role="status">{filtered.length} {filtered.length === 1 ? 'note' : 'notes'}{search || unreadOnly || selectedType ? ' found' : ''}</span></div>
-      <div className="teaching-notes-controls"><label className="teaching-notes-search"><Search size={18} aria-hidden="true" /><span className="sr-only">Search notes</span><input ref={searchRef} type="search" value={search} placeholder="Search titles and notes…" onChange={(event) => update('q', event.target.value, true)} /></label><div className="teaching-notes-filters" role="group" aria-label="Filter notes"><button type="button" aria-label="All" aria-pressed={!unreadOnly} onClick={() => update('filter', '')}>All <span className="teaching-notes-filter-count" aria-hidden="true">{scopeNotes.length}</span></button><button type="button" aria-label="Unread" aria-pressed={unreadOnly} onClick={() => update('filter', 'unread')}>Unread <span className="teaching-notes-filter-count" aria-hidden="true">{unreadCount}</span></button></div>{showTypes ? <div className="teaching-notes-type"><span className="teaching-notes-type-label" id={typeLabelId}>Type</span><Select open={selectOpen} onOpenChange={setSelectOpen} value={selectedType || 'all-types'} onValueChange={changeType}><SelectTrigger className="notes-select-trigger" aria-labelledby={typeLabelId} onPointerDown={() => setSelectModality('pointer')} onKeyDown={() => setSelectModality('keyboard')}><SelectValue /></SelectTrigger><SelectContent ref={selectMotionRef} className="notes-select-content" data-input-modality={selectModality}><SelectItem className="notes-select-option" value="all-types">All types</SelectItem>{TEACHING_NOTE_TYPES.filter((type) => availableTypes.includes(type) || type === selectedType).map((type) => <SelectItem className="notes-select-option" key={type} value={type}>{typeLabels[type]}</SelectItem>)}</SelectContent></Select></div> : null}</div>
+      <div className="teaching-notes-controls"><label className="teaching-notes-search"><Search size={18} aria-hidden="true" /><span className="sr-only">Search notes</span><input ref={searchRef} type="search" value={search} placeholder="Search titles and notes…" onChange={(event) => update('q', event.target.value, true)} /></label><div className="teaching-notes-filters" role="group" aria-label="Filter notes"><button type="button" aria-label="All" aria-pressed={!unreadOnly} onClick={() => update('filter', '')}>All <span className="teaching-notes-filter-count" aria-hidden="true">{scopeNotes.length}</span></button><button type="button" aria-label="Unread" aria-pressed={unreadOnly} onClick={() => update('filter', 'unread')}>Unread <span className="teaching-notes-filter-count" aria-hidden="true">{unreadCount}</span></button></div>{showTypes ? <div className="teaching-notes-type"><span className="teaching-notes-type-label" id={typeLabelId}>Type</span><Select open={selectOpen} onOpenChange={setSelectOpen} value={selectedType || 'all-types'} onValueChange={changeType}><SelectTrigger className="notes-select-trigger" aria-labelledby={typeLabelId} onPointerDown={() => recordSelectModality('pointer')} onKeyDown={() => recordSelectModality('keyboard')}><SelectValue /></SelectTrigger><SelectContent onPointerDownCapture={() => recordSelectModality('pointer')} onKeyDownCapture={() => recordSelectModality('keyboard')} ref={selectMotionRef} className="notes-select-content" data-input-modality={selectModality}><SelectItem className="notes-select-option" value="all-types">All types</SelectItem>{TEACHING_NOTE_TYPES.filter((type) => availableTypes.includes(type) || type === selectedType).map((type) => <SelectItem className="notes-select-option" key={type} value={type}>{typeLabels[type]}</SelectItem>)}</SelectContent></Select></div> : null}</div>
       {!filtered.length ? <div className="teaching-notes-no-results"><p>No notes match these filters.</p><button className="classroom-button" type="button" onClick={clearFilters}>Clear filters</button></div> : groups.map((group) => <section key={group.key} aria-label={hasMultipleMonths ? group.label : 'All notes'}>{hasMultipleMonths ? <h3 className="teaching-notes-month">{group.label}</h3> : null}<div className="teaching-notes-grid" data-motion-list>{group.notes.map((note) => card(note, note.id === leadId))}</div></section>)}
       {visible.length < filtered.length ? <button className="classroom-button teaching-notes-load" type="button" onClick={(event) => { if (event.detail > 0) notifyClassroomListIntent(archiveRef.current, 'paginate'); update('shown', String(shown + 12)); }}>Load more notes <span>({filtered.length - visible.length} remaining)</span></button> : null}
     </>}

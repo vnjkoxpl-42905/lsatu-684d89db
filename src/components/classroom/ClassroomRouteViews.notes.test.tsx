@@ -15,13 +15,45 @@ vi.mock("@/components/classroom/ClassroomMarkdown", () => ({ default: () => null
 vi.mock("@/lib/drillLaunch", () => ({ launchDrill: vi.fn() }));
 import { ClassroomItemView } from "./ClassroomRouteViews";
 function Where() { const location = useLocation(); return <output data-reader-return={String(location.state?.notesArchiveReturn ?? '')}>{location.pathname}{location.search}</output>; }
-beforeEach(() => { markRead.mockReset(); markRead.mockResolvedValue(undefined); fixture.item.student_id = "reader"; fixture.item.status = "assigned"; fixture.item.metadata_json = {}; });
+beforeEach(() => { markRead.mockReset(); markRead.mockResolvedValue(undefined); fixture.item.student_id = "reader"; fixture.item.status = "assigned"; fixture.item.metadata_json = {}; fixture.item.type = "note"; fixture.item.content_html = "<p>Full note</p>"; });
 afterEach(cleanup);
 describe("note detail return links", () => {
+  it('registers an interactive note as a ready locally owned reader without changing its iframe contract', () => {
+    fixture.item.content_html = '<meta name="lsatu-interactive-lesson"><p>Lesson</p>';
+    const view = render(<QueryClientProvider client={new QueryClient()}><MemoryRouter initialEntries={['/classroom/item/one']}><Routes><Route path="/classroom/item/:itemId" element={<ClassroomItemView />} /></Routes></MemoryRouter></QueryClientProvider>);
+    const reader = view.container.querySelector('[data-note-reader="one"]');
+    expect(reader).toHaveClass('classroom-motion-local');
+    expect(reader?.querySelectorAll('[data-note-reader-block]')).toHaveLength(2);
+    expect(screen.getByRole('button', { name: 'Back to notes' })).toHaveAttribute('data-note-reader-block');
+    const iframe = screen.getByTitle('Stored note interactive lesson');
+    expect(iframe).toHaveAttribute('data-note-reader-block');
+    expect(iframe).toHaveAttribute('sandbox', 'allow-scripts allow-forms');
+    expect(iframe).toHaveAttribute('srcDoc', fixture.item.content_html);
+  });
+  it.each(['note', 'session_recap'])('labels the %s reader date as shared and preserves separate entrance blocks', (type) => {
+    fixture.item.type = type;
+    const view = render(<QueryClientProvider client={new QueryClient()}><MemoryRouter initialEntries={['/classroom/item/one']}><Routes><Route path="/classroom/item/:itemId" element={<ClassroomItemView />} /></Routes></MemoryRouter></QueryClientProvider>);
+    const dateline = view.container.querySelector('.classroom-dateline time');
+    expect(dateline).toHaveTextContent(/^Shared /);
+    expect(dateline).toHaveAttribute('dateTime', fixture.item.created_at);
+    const wrapper = view.container.querySelector('.classroom-note-reader')!;
+    expect(wrapper.tagName).toBe('DIV');
+    expect(wrapper.querySelector(':scope > .classroom-dateline')).toBeInTheDocument();
+    expect(wrapper.querySelector(':scope > .classroom-title')).toBeInTheDocument();
+    expect(wrapper.querySelector(':scope > .classroom-prose')).toBeInTheDocument();
+    expect(wrapper).not.toHaveAttribute('data-motion-item');
+  });
+  it('keeps non-note item datelines unprefixed and unwrapped', () => {
+    fixture.item.type = 'homework';
+    const view = render(<QueryClientProvider client={new QueryClient()}><MemoryRouter initialEntries={['/classroom/item/one']}><Routes><Route path="/classroom/item/:itemId" element={<ClassroomItemView />} /></Routes></MemoryRouter></QueryClientProvider>);
+    expect(view.container.querySelector('.classroom-dateline time')).not.toHaveTextContent('Shared');
+    expect(view.container.querySelector('.classroom-note-reader')).toBeNull();
+    expect(view.container.querySelector('[data-note-reader-block]')).toBeNull();
+  });
   it.each([false, true])("restores archive state for interactive=%s", async interactive => {
     fixture.item.content_html = interactive ? '<meta name="lsatu-interactive-lesson"><p>Lesson</p>' : "<p>Full note</p>";
     const returnTo = "/my-work/notes?q=conditionals&filter=unread&shown=24";
-    render(<QueryClientProvider client={new QueryClient()}><MemoryRouter initialEntries={[`/classroom/item/one?${new URLSearchParams({ returnTo })}`]}><Routes><Route path="/classroom/item/:itemId" element={<ClassroomItemView />} /><Route path="*" element={<Where />} /></Routes></MemoryRouter></QueryClientProvider>);
+    render(<QueryClientProvider client={new QueryClient()}><MemoryRouter initialEntries={[{ pathname: "/classroom/item/one", search: `?${new URLSearchParams({ returnTo })}`, state: { notesArchiveOrigin: { id: "one", returnTo } } }]}><Routes><Route path="/classroom/item/:itemId" element={<ClassroomItemView />} /><Route path="*" element={<Where />} /></Routes></MemoryRouter></QueryClientProvider>);
     fireEvent.click(await screen.findByRole("button", { name: "Back to notes" }));
     await waitFor(() => expect(screen.getByRole("status")).toHaveTextContent(returnTo));
     expect(screen.getByRole('status')).toHaveAttribute('data-reader-return', 'one');

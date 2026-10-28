@@ -2,7 +2,7 @@ import * as React from "react";
 import "@/pages/myWorkNotes.css";
 import "@/pages/myWorkNotesRefinement.css";
 import { Navigate, useNavigate, useParams, useLocation } from "react-router-dom";
-import { validateNotesReturnTo } from "@/lib/myWorkNotesNavigation";
+import { notesArchiveOrigin, validateNotesReturnTo } from "@/lib/myWorkNotesNavigation";
 import { htmlToArchiveText } from "@/components/my-work/teachingNotesArchiveData";
 import { toast } from "sonner";
 import { useClassroomItems, type ClassroomItem } from "@/hooks/useClassroomItems";
@@ -174,19 +174,21 @@ function DetailHeading({
   date,
   kind,
   title,
+  shared = false,
 }: {
   date: string;
   kind: string;
   title: string;
+  shared?: boolean;
 }) {
   return (
     <>
-      <div className="classroom-dateline">
-        <time>{formatClassroomDate(date)}</time>
+      <div data-note-reader-block={shared ? "" : undefined} className="classroom-dateline">
+        <time dateTime={date}>{shared ? "Shared " : ""}{formatClassroomDate(date)}</time>
         <span>|</span>
         <span>{kind}</span>
       </div>
-      <h1 className="classroom-title">{title}</h1>
+      <h1 data-note-reader-block={shared ? "" : undefined} className="classroom-title">{title}</h1>
     </>
   );
 }
@@ -196,6 +198,8 @@ export function ClassroomItemView() {
   const location = useLocation();
   const notesReturnTo = validateNotesReturnTo(new URLSearchParams(location.search).get("returnTo"));
   const navigate = useNavigate();
+  const archiveOrigin = notesArchiveOrigin(location.state, notesReturnTo);
+  const archiveReturnState = archiveOrigin ? { notesArchiveReturn: archiveOrigin.id } : null;
   const query = useClassroomItems();
   const item = React.useMemo(
     () => (query.data ?? []).find((candidate) => candidate.id === itemId) ?? null,
@@ -286,15 +290,17 @@ export function ClassroomItemView() {
     item.content_html?.includes('<meta name="lsatu-interactive-lesson"')
   ) {
     return (
-      <div className="w-full">
+      <div data-note-reader={item.id} className="w-full classroom-motion-local">
         <button
+          data-note-reader-block
           type="button"
           className="classroom-button mb-4"
-          onClick={() => navigate(notesReturnTo, { state: { notesArchiveReturn: itemId } })}
+          onClick={() => navigate(notesReturnTo, { state: archiveReturnState })}
         >
           Back to notes
         </button>
         <iframe
+          data-note-reader-block
           title={`${item.title} interactive lesson`}
           srcDoc={item.content_html}
           sandbox="allow-scripts allow-forms"
@@ -311,22 +317,24 @@ export function ClassroomItemView() {
           name a student would actually use. */}
       <DetailHeading
         date={item.created_at}
+        shared={NOTE_TYPES.has(item.type)}
         kind={noteKind(item.type)}
         title={item.title}
       />
       {/* Authored content, not an empty state. It was inheriting
           .classroom-empty-copy, which is the class for "there is nothing here". */}
       {item.description ? (
-        <p className="classroom-note-standfirst">{item.description}</p>
+        <p data-note-reader-block={NOTE_TYPES.has(item.type) ? "" : undefined} className="classroom-note-standfirst">{item.description}</p>
       ) : null}
       {/* Rendered, not printed. This was `<p>{item.content_markdown}</p>`, and
           the bodies arriving here are real markdown: the AI TA bundle writes
           `- [ ] `, `**n. prompt**` and `_Answer:_` out of `body_markdown`. With
           no `white-space` on `.classroom-prose p`, a recap reached the student
           as one run-on line with its own syntax showing. */}
-      <ClassroomMarkdown assignmentContext={assignmentContext}>{item.content_markdown}</ClassroomMarkdown>
+      {NOTE_TYPES.has(item.type) && item.content_markdown ? <div data-note-reader-block><ClassroomMarkdown assignmentContext={assignmentContext}>{item.content_markdown}</ClassroomMarkdown></div> : <ClassroomMarkdown assignmentContext={assignmentContext}>{item.content_markdown}</ClassroomMarkdown>}
       {safeHtml ? (
         <article
+          data-note-reader-block={NOTE_TYPES.has(item.type) ? "" : undefined}
           className="classroom-prose"
           dangerouslySetInnerHTML={{ __html: safeHtml }}
         />
@@ -338,7 +346,7 @@ export function ClassroomItemView() {
           exists because the reading column was otherwise navigable only by
           browser back. */}
       {NOTE_TYPES.has(item.type) ? (
-        <div className="classroom-detail-actions">
+        <div data-note-reader-block className="classroom-detail-actions">
           <button
             type="button"
             className="classroom-button classroom-button-primary"
@@ -351,7 +359,7 @@ export function ClassroomItemView() {
           <button
             type="button"
             className="classroom-button"
-            onClick={() => navigate(notesReturnTo, { state: { notesArchiveReturn: itemId } })}
+            onClick={() => navigate(notesReturnTo, { state: archiveReturnState })}
           >
             Back to notes
           </button>
@@ -360,7 +368,7 @@ export function ClassroomItemView() {
     </>
   );
   return NOTE_TYPES.has(item.type)
-    ? <section className="my-work-notes-page classroom-note-reader">{content}</section>
+    ? <div data-note-reader={item.id} className="my-work-notes-page classroom-note-reader classroom-motion-local">{content}</div>
     : content;
 }
 
