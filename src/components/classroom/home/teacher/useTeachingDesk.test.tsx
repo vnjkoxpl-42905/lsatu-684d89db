@@ -219,8 +219,12 @@ describe("Teacher desk data boundaries", () => {
     const query = client
       .getQueryCache()
       .find({ queryKey: deskKey("actor", "email") })!;
-    expect(query.options.staleTime).toBe(120_000);
-    const focus = query.options.refetchOnWindowFocus as () => boolean;
+    const providerOptions = query.options as typeof query.options & {
+      staleTime: number;
+      refetchOnWindowFocus: () => boolean;
+    };
+    expect(providerOptions.staleTime).toBe(120_000);
+    const focus = providerOptions.refetchOnWindowFocus;
     expect(focus()).toBe(false);
     const emailCalls = () =>
       mocks.invoke.mock.calls.filter(
