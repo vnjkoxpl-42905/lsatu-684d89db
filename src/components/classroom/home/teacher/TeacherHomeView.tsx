@@ -55,14 +55,12 @@ function TeacherDeskContent({
     ? filterStudents(students, search).slice(0, 5)
     : [];
   const jump = (id: string) => {
-    document
-      .getElementById(id)
-      ?.scrollIntoView({
-        behavior: matchMedia("(prefers-reduced-motion: reduce)").matches
-          ? "instant"
-          : "smooth",
-        block: "start",
-      });
+    document.getElementById(id)?.scrollIntoView({
+      behavior: matchMedia("(prefers-reduced-motion: reduce)").matches
+        ? "instant"
+        : "smooth",
+      block: "start",
+    });
     document.getElementById(id)?.focus({ preventScroll: true });
   };
   const count = (state: string, count: number | undefined) =>
@@ -113,7 +111,7 @@ function TeacherDeskContent({
             {count(
               model.postSession?.state ?? "setup",
               model.postSession?.data?.total ??
-                model.postSession?.data?.tasks.length,
+                model.postSession?.data?.tasks?.length,
             )}
           </b>
         </button>
@@ -129,7 +127,13 @@ function TeacherDeskContent({
         </button>
         <button onClick={() => jump("home-correspondence")}>
           <span>Email</span>
-          <b>{count(desk.email.state, desk.email.data?.count)}{desk.email.state === "ready" && desk.email.data?.count_is_lower_bound ? "+" : ""}</b>
+          <b>
+            {count(desk.email.state, desk.email.data?.count)}
+            {desk.email.state === "ready" &&
+            desk.email.data?.count_is_lower_bound
+              ? "+"
+              : ""}
+          </b>
         </button>
       </nav>
       <div className="home-desk-main">
@@ -159,7 +163,7 @@ function TeacherDeskContent({
             </header>
             <DeskStatus region={desk.agenda} noun="primary calendar" />
             {desk.agenda.state === "ready" ? (
-              desk.agenda.data?.events.length ? (
+              desk.agenda.data?.events?.length ? (
                 <ul className="home-desk-agenda-list">
                   {desk.agenda.data.events.slice(0, 3).map((event) => (
                     <li key={event.id}>
@@ -250,7 +254,7 @@ function TeacherDeskContent({
             </header>
             <DeskStatus region={desk.payments} noun="payment decisions" />
             {desk.payments.state === "ready" ? (
-              desk.payments.data?.attention.length ? (
+              desk.payments.data?.attention?.length ? (
                 <ul>
                   {desk.payments.data.attention.slice(0, 2).map((p) => (
                     <li key={p.id}>
@@ -317,7 +321,7 @@ function TeacherDeskContent({
           </header>
           <DeskStatus region={desk.payments} noun="payment activity" />
           {desk.payments.state === "ready" ? (
-            desk.payments.data?.recent.length ? (
+            desk.payments.data?.recent?.length ? (
               <ul className="home-desk-payment-list">
                 {desk.payments.data.recent.slice(0, 3).map((p) => (
                   <li key={p.id}>
@@ -362,7 +366,7 @@ function TeacherDeskContent({
                   enquiries” to include enquiries.
                 </p>
               ) : null}
-              {desk.email.data?.threads.length ? (
+              {desk.email.data?.threads?.length ? (
                 <ul>
                   {desk.email.data.threads.slice(0, 2).map((thread) => (
                     <li key={thread.id}>

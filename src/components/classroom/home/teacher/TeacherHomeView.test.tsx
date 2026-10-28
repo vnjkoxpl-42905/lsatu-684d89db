@@ -245,6 +245,64 @@ describe("TeacherHomeView", () => {
   });
 });
 
+describe("Teacher Home provider setup rendering", () => {
+  it("keeps the desk rendered when email has the live array-free setup envelope", () => {
+    const email = {
+      state: "setup" as const,
+      data: {
+        ok: false,
+        setup_required: true,
+        error: "student_email_setup_required",
+        fetched_at: "2026-10-28T16:21:40.683Z",
+      } as any,
+    };
+    render(
+      <TeacherHomeView
+        model={{
+          ...READY,
+          desk: {
+            manual: { state: "error" },
+            agenda: {
+              state: "ready",
+              data: {
+                events: [],
+                next_cursor: null,
+                fetched_at: "2026-10-28T16:21:40.683Z",
+              },
+            },
+            email,
+            payments: {
+              state: "ready",
+              data: { recent: [], attention: [], total: 0, attention_total: 0 },
+            },
+            results: { state: "ready", data: [] },
+            access: { state: "ready", data: [] },
+          },
+        }}
+        onOpen={vi.fn()}
+      />,
+    );
+    expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(
+      "Joshua",
+    );
+    expect(
+      screen.getByRole("heading", { name: "After-session work" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { name: "My list" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(/student and enquiry email is not connected yet/),
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByText("No unread student or enquiry email."),
+    ).toBeNull();
+    expect(
+      screen.getByRole("heading", { name: "Next up" }),
+    ).toBeInTheDocument();
+  });
+});
+
 describe("teacherHomeModel", () => {
   const thread = (patch: Partial<Conversation>): Conversation => ({
     id: "c1",
