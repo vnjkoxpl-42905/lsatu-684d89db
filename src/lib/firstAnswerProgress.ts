@@ -83,6 +83,8 @@ export interface RcSessionSourceRow {
   excluded_from_analytics: boolean;
   practice_test_run_id: string | null;
   timed_section_sitting_id?: string | null;
+  /** Legacy parent provenance can live only here (practiceTestRunId, timedSectionSittingId). */
+  config?: unknown;
 }
 
 export interface PracticeTestSourceRow {
@@ -151,6 +153,35 @@ export function adaptLrSections(
   return answers;
 }
 
+export type RcParentResolution = { kind: 'none' } | { kind: 'run'; id: string } | { kind: 'malformed' };
+
+function configRecord(config: unknown): Record<string, unknown> | null {
+  return config && typeof config === 'object' && !Array.isArray(config) ? config as Record<string, unknown> : null;
+}
+
+/** An explicit non-empty string column wins; otherwise a non-empty string config id. */
+function stringIdentity(column: unknown, configValue: unknown): { kind: 'none' } | { kind: 'id'; id: string } | { kind: 'malformed' } {
+  if (typeof column === 'string' && column.trim()) return { kind: 'id', id: column.trim() };
+  if (column !== null && column !== undefined && typeof column !== 'string') return { kind: 'malformed' };
+  if (typeof configValue === 'string' && configValue.trim()) return { kind: 'id', id: configValue.trim() };
+  if (configValue !== null && configValue !== undefined && typeof configValue !== 'string') return { kind: 'malformed' };
+  return { kind: 'none' };
+}
+
+/**
+ * Parent practice-test identity for an RC session. Legacy sessions can carry it only in
+ * config. A malformed (non-string) identity is not treated as ordinary released work.
+ */
+export function resolveRcPracticeTestParent(session: Pick<RcSessionSourceRow, 'practice_test_run_id' | 'config'>): RcParentResolution {
+  const resolved = stringIdentity(session.practice_test_run_id, configRecord(session.config)?.practiceTestRunId);
+  return resolved.kind === 'id' ? { kind: 'run', id: resolved.id } : resolved;
+}
+
+/** Timed-sitting provenance only labels the mode; completion is the session's own. */
+function hasTimedSitting(session: Pick<RcSessionSourceRow, 'timed_section_sitting_id' | 'config'>): boolean {
+  return stringIdentity(session.timed_section_sitting_id, configRecord(session.config)?.timedSectionSittingId).kind === 'id';
+}
+
 /** RC rows count only after their session, and any enclosing full test, finishes. */
 export function adaptRcAttempts(
   attempts: RcAttemptSourceRow[],
@@ -163,18 +194,22 @@ export function adaptRcAttempts(
     if (attempt.user_id !== studentId || !attempt.selected || typeof attempt.is_correct !== 'boolean') return [];
     const session = sessionsById.get(attempt.session_id);
     if (!session || session.status !== 'completed' || !validDate(session.completed_at) || session.excluded_from_analytics) return [];
-    if (session.practice_test_run_id && !completedRunIds.has(session.practice_test_run_id)) return [];
+    const parent = resolveRcPracticeTestParent(session);
+    if (parent.kind === 'malformed') return [];
+    if (parent.kind === 'run' && !completedRunIds.has(parent.id)) return [];
+    // Eligible at session completion. A pick made before then becomes graded at
+    // completion; a later review attempt keeps the date it was actually saved.
+    const saved = validDate(attempt.created_at) ? attempt.created_at : null;
+    const gradedAt = saved && Date.parse(saved) > Date.parse(session.completed_at) ? saved : session.completed_at;
     return [{
       attemptId: `rc_attempts:${attempt.id}`,
       questionKey: `RC:${attempt.passage_id}:${attempt.question_id}`,
       area: 'RC' as const,
       source: 'rc_attempts' as const,
-      mode: session.practice_test_run_id ? 'practice-test' : session.timed_section_sitting_id ? 'timed-section' : 'rc-drill',
+      mode: parent.kind === 'run' ? 'practice-test' : hasTimedSitting(session) ? 'timed-section' : 'rc-drill',
       correct: attempt.is_correct,
-      // The answer is not eligible for diagnostic accuracy until graded work
-      // is submitted, so the window uses session completion rather than pick time.
-      gradedAt: session.completed_at,
-      answeredAt: attempt.created_at,
+      gradedAt,
+      answeredAt: saved ?? gradedAt,
     }];
   });
 }

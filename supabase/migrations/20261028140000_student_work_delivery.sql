@@ -492,7 +492,7 @@ create or replace function public.acknowledge_student_work(p_source_table text,p
 returns jsonb language plpgsql security definer set search_path=public as $$
 declare actor uuid:=auth.uid();s jsonb;r public.student_work_receipts%rowtype; stamp timestamptz:=now();
 begin
- if actor is null or public.has_role(actor,'admin') then raise exception 'Only the assigned student may acknowledge work' using errcode='42501'; end if;
+ if actor is null then raise exception 'Only the assigned account may acknowledge work' using errcode='42501'; end if;
  if not public.student_work_native_table(p_source_table) and p_source_table<>'classroom_items' then raise exception 'Unknown work identity' using errcode='42501'; end if;
  execute format('select 1 from public.%I where id=$1 and student_id=$2 for update',p_source_table) using p_source_id,actor;
  perform 1 from public.classroom_items where student_id=actor and source_table=p_source_table for share;

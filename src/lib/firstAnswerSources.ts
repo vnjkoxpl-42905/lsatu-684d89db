@@ -54,7 +54,7 @@ const readRcAttempts = (studentId: string) => allPages<RcAttemptSourceRow>(async
 
 const readRcSessions = (studentId: string) => allPages<RcSessionSourceRow>(async (from, to) => {
   const result = await supabase.from('rc_drill_sessions')
-    .select('id,user_id,status,completed_at,excluded_from_analytics,practice_test_run_id,timed_section_sitting_id')
+    .select('id,user_id,status,completed_at,excluded_from_analytics,practice_test_run_id,timed_section_sitting_id,config')
     .eq('user_id', studentId).order('id').range(from, to);
   return result as unknown as { data: RcSessionSourceRow[] | null; error: { message: string } | null };
 });

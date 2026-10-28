@@ -20,7 +20,7 @@ function parallelSql(script) {
  });
 }
 const load=(path)=>readFileSync(new URL('../'+path,import.meta.url),'utf8');
-const migrations=['20261028140000_student_work_delivery.sql','20261028141000_student_work_mcp_writers.sql','20261028142000_reading_center_delivery_policy.sql','20261028143000_section_attempt_delivery_policy.sql','20261028144000_session_bundle_materialization.sql'].map(n=>load('supabase/migrations/'+n));
+const migrations=['20261028140000_student_work_delivery.sql','20261028141000_student_work_mcp_writers.sql','20261028142000_reading_center_delivery_policy.sql','20261028143000_section_attempt_delivery_policy.sql','20261028144000_session_bundle_materialization.sql','20261028145000_student_work_owner_acknowledgment.sql'].map(n=>load('supabase/migrations/'+n));
 for(const oldIndex of [false,true]) {
  sql([load('scripts/sql/student-work-baseline.sql'),oldIndex?"create unique index notifications_unique_unread_assignment on public.notifications(user_id,link) where type='assignment' and not read;":'',...migrations,load('scripts/sql/student-work-assertions.sql')].join('\n'));
  // Independent PostgreSQL sessions prove simultaneous publication materializes

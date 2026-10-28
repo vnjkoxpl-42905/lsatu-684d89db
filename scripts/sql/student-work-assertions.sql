@@ -323,3 +323,15 @@ select public.expect_failure($c$select * from public.get_assignment_notification
 select public.expect_failure($c$select public.finalize_assignment_notification_group('60000000-0000-0000-0000-999999999999')$c$,'student finalization forbidden');
 select public.assert_true((select count(*)=0 from public.get_student_work_receipts()),'cross-owner receipt hidden');
 reset role;
+
+-- Administrators can be assignment owners. Previewing another student's work
+-- still cannot create receipts or clear their alerts. Completion stays separate.
+select set_config('request.jwt.claim.sub','10000000-0000-0000-0000-000000000001',false);
+insert into classroom_items(id,student_id,type,title,status,notification_policy,metadata_json)
+values('78700000-0000-0000-0000-000000000001','10000000-0000-0000-0000-000000000001','note','Own administrator note','assigned','suppressed','{"kept":"yes"}');
+set role authenticated;
+select public.acknowledge_student_work('classroom_items','78700000-0000-0000-0000-000000000001',1);
+select public.assert_true((select count(*)=1 from public.get_student_work_receipts() where source_id='78700000-0000-0000-0000-000000000001'),'administrator acknowledges their own assigned document');
+select public.assert_true((select status='assigned' and completed_at is null and metadata_json->>'kept'='yes' and metadata_json->>'read_at' is not null from classroom_items where id='78700000-0000-0000-0000-000000000001'),'administrator owner read preserves completion and authored metadata');
+select public.expect_failure($c$select public.acknowledge_student_work('classroom_items','60000000-0000-0000-0000-000000000001',1)$c$,'administrator preview cannot acknowledge another student');
+reset role;

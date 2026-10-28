@@ -11,7 +11,7 @@ type ResultFilter = 'all' | 'correct' | 'missed';
 type AnswerFilter = 'all' | 'first' | 'repeat';
 
 export default function FirstAnswerHistoryPanel({ window, studentId }: { window: ProgressWindow; studentId?: string }) {
-  const { ledger, loading, error, resolution, refresh } = useFirstAnswerProgress(window, studentId);
+  const { ledger, asOf, loading, error, resolution, refresh } = useFirstAnswerProgress(window, studentId);
   const [params, setParams] = useSearchParams();
   const [dense, setDense] = useState(() => ['question', 'source'].includes(params.get('historySort') ?? ''));
   const area = (['LR', 'RC'].includes(params.get('historyArea') ?? '') ? params.get('historyArea') : 'all') as AreaFilter;
@@ -33,8 +33,8 @@ export default function FirstAnswerHistoryPanel({ window, studentId }: { window:
     }, { replace: true });
   };
   const details = useMemo(() => ledger
-    ? firstAnswerDetails(ledger.answers, window, new Date().toISOString())
-    : null, [ledger, window]);
+    ? firstAnswerDetails(ledger.answers, window, asOf ?? new Date().toISOString())
+    : null, [ledger, window, asOf]);
   const filtered = useMemo(() => filterProgressHistory(details?.history ?? [], { area, result, answer, source, mode, topic, search, sort }),
     [details, area, result, answer, source, mode, topic, search, sort]);
   const options = (field: 'source' | 'mode' | 'topic') => [...new Set((details?.history ?? []).map((row) => row[field]).filter(Boolean))].sort();
