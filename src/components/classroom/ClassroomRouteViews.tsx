@@ -1,7 +1,9 @@
 import * as React from "react";
-import { Navigate, useNavigate, useParams } from "react-router-dom";
+import { Navigate, useNavigate, useParams, useLocation } from "react-router-dom";
+import { validateNotesReturnTo } from "@/lib/myWorkNotesNavigation";
+import { htmlToArchiveText } from "@/components/my-work/teachingNotesArchiveData";
 import { toast } from "sonner";
-import { useClassroomItems } from "@/hooks/useClassroomItems";
+import { useClassroomItems, type ClassroomItem } from "@/hooks/useClassroomItems";
 import {
   markTAAssignmentCompleted,
   markTAAssignmentViewed,
@@ -17,6 +19,7 @@ import { sectionDirectionsRoute } from "@/lib/sectionDirections";
 import { useQueryClient } from "@tanstack/react-query";
 import { isSelfContainedItem, resolveItemRoute } from "@/lib/classroomItems";
 import { launchDrill } from "@/lib/drillLaunch";
+import { useAuth } from "@/contexts/AuthContext";
 import { markNoteRead } from "@/lib/markNoteRead";
 import { rcAssignmentHtml } from "@/lib/rcAssignmentLinks";
 import {
@@ -87,8 +90,8 @@ function stripMarkdown(source: string) {
  * First ~55 words of a note, for the landing preview.
  *
  * Notes are authored HTML and may carry their own <style>, so the tags are
- * stripped through a detached element rather than a regex, and any <style> or
- * <script> subtree is dropped first so CSS text never leaks into the excerpt.
+ * reduced through the shared sanitized, inert archive extractor so preview
+ * extraction never inserts authored markup into a live document element.
  */
 function noteExcerpt(item: {
   description: string | null;
@@ -99,10 +102,7 @@ function noteExcerpt(item: {
   if (!source) return "";
   let text = source;
   if (/[<>]/.test(source)) {
-    const holder = document.createElement("div");
-    holder.innerHTML = source;
-    holder.querySelectorAll("style, script").forEach((node) => node.remove());
-    text = holder.textContent ?? "";
+    text = htmlToArchiveText(source);
   } else {
     text = stripMarkdown(text);
   }
@@ -191,6 +191,8 @@ function DetailHeading({
 
 export function ClassroomItemView() {
   const { itemId } = useParams<{ itemId: string }>();
+  const location = useLocation();
+  const notesReturnTo = validateNotesReturnTo(new URLSearchParams(location.search).get("returnTo"));
   const navigate = useNavigate();
   const query = useClassroomItems();
   const item = React.useMemo(
@@ -199,26 +201,30 @@ export function ClassroomItemView() {
   );
 
   const queryClient = useQueryClient();
+  const { user } = useAuth();
+  const readAttempts = React.useRef(new Set<string>());
 
-  // Opening a note marks it read and clears the bell entry that pointed at it.
-  // Deliberately not gated on status: the status update is guarded on
-  // 'assigned' inside markNoteRead so it is a no-op on a second visit, while
-  // the notification clear still has to run, because a note can be read on one
-  // device and leave its bell entry standing on another.
+  // Reconcile the originating account even when a quick Back unmounts this view.
   React.useEffect(() => {
-    if (!item || !NOTE_TYPES.has(item.type)) return;
-    let cancelled = false;
-    void markNoteRead(item)
-      .then(() => {
-        if (!cancelled) void queryClient.invalidateQueries({ queryKey: ["classroom-items"] });
+    const viewerId = user?.id;
+    if (!item || !viewerId || item.student_id !== viewerId || !NOTE_TYPES.has(item.type)) return;
+    const attemptKey = `${viewerId}:${item.id}`;
+    if (readAttempts.current.has(attemptKey)) return;
+    readAttempts.current.add(attemptKey);
+    void markNoteRead(item, viewerId)
+      .then((readItem) => {
+        if (!readItem) return;
+        const readAt = readItem.metadata_json?.read_at;
+        if (typeof readAt === 'string' && readAt) queryClient.setQueryData<ClassroomItem[]>(['classroom-items', viewerId], (rows) => rows?.map((row) => row.id === readItem.id ? { ...row, metadata_json: { ...row.metadata_json, read_at: readAt } } : row));
+        void queryClient.invalidateQueries({ queryKey: ['classroom-items', viewerId] });
+        void queryClient.invalidateQueries({ queryKey: ['notifications', viewerId] });
+        void queryClient.invalidateQueries({ queryKey: ['notifications-unread-count', viewerId] });
       })
-      .catch(() => {
-        // Read state is a convenience. A failure here must never block the note.
+      .catch((error) => {
+        readAttempts.current.delete(attemptKey);
+        console.warn('Could not confirm note read state', error);
       });
-    return () => {
-      cancelled = true;
-    };
-  }, [item, queryClient]);
+  }, [item, queryClient, user?.id]);
 
   React.useEffect(() => {
     if (!item) return;
@@ -282,7 +288,7 @@ export function ClassroomItemView() {
         <button
           type="button"
           className="classroom-button mb-4"
-          onClick={() => navigate("/classroom/recaps")}
+          onClick={() => navigate(notesReturnTo)}
         >
           Back to notes
         </button>
@@ -343,9 +349,9 @@ export function ClassroomItemView() {
           <button
             type="button"
             className="classroom-button"
-            onClick={() => navigate("/classroom/recaps")}
+            onClick={() => navigate(notesReturnTo)}
           >
-            Back to notes and recaps
+            Back to notes
           </button>
         </div>
       ) : null}

@@ -10,6 +10,7 @@ const state = vi.hoisted(() => ({
 }));
 vi.mock('@/contexts/AuthContext', () => ({ useAuth: () => ({ user: state.user ? { id: state.user } : null, authReady: state.ready }) }));
 vi.mock('@/hooks/useUserPermissions', () => ({ useUserPermissions: () => ({ loading: false, is_admin: state.admin, has_classroom_access: state.classroom }) }));
+vi.mock('@/hooks/useClassroomMotion', () => ({ useClassroomMotion: () => undefined }));
 vi.mock('@/integrations/supabase/client', () => ({ supabase: { rpc: state.rpc } }));
 vi.mock('@/hooks/useAssignedTodoFeed', () => ({
   useAssignedTodoFeed: () => ({ loading: false, failed: false, retry: vi.fn(), rows: [
@@ -47,9 +48,9 @@ describe('My Work with a specific Reading Center grant', () => {
     expect(screen.queryByText('Other coursework')).toBeNull(); expect(screen.queryByText('Weekly plan')).toBeNull();
     expect(screen.queryByText('Wrong source')).toBeNull();
     expect(screen.getByText('1 to do')).toBeTruthy();
-    expect(screen.getByRole('link', { name: 'To do' })).toBeTruthy();
+    expect(screen.getByRole('link', { name: 'Assigned work' })).toBeTruthy();
     expect(screen.getByRole('link', { name: 'Completed' })).toBeTruthy();
-    expect(screen.queryByRole('link', { name: 'Notes & recaps' })).toBeNull();
+    expect(screen.queryByRole('link', { name: 'Notes' })).toBeNull();
   });
   it('removes the assignment list when its grant is revoked or scheduled', async () => {
     const view = open(); expect(await screen.findByText('Reading Center')).toBeTruthy();

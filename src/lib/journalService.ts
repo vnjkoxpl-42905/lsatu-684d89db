@@ -222,18 +222,19 @@ export async function updatePageMeta(
 }
 
 /** Save a student's plain-text note in one write, scoped to the signed-in owner. */
-export async function updateMyNotePage(id: string, title: string, body: TiptapDoc): Promise<JournalPage> {
+export async function updateMyNotePage(id: string, title: string, body: TiptapDoc, expectedUpdatedAt?: string): Promise<JournalPage> {
   const userId = await requireUserId();
-  const { data, error } = await supabase
+  let request = supabase
     .from('journal_pages')
     .update({ title, body: body as unknown as Json })
     .eq('id', id)
     .eq('user_id', userId)
-    .eq('type', 'doc')
-    .select('*')
+    .eq('type', 'doc');
+  if (expectedUpdatedAt) request = request.eq('updated_at', expectedUpdatedAt);
+  const { data, error } = await request.select('*')
     .maybeSingle();
   if (error) throw error;
-  if (!data) throw new Error('This note could not be saved to your account.');
+  if (!data) throw new Error(expectedUpdatedAt ? 'This note changed in your account. Save again to choose which version to keep.' : 'This note could not be saved to your account.');
   return toPage(data);
 }
 

@@ -292,26 +292,26 @@ function CourseHome({ steps, url }: { steps: OpeningCourseStep[]; url: OpeningCo
             </span>
           </CourseVolume>
           <div className="oc-topic-work">
-            <p className="oc-topic-counts">{summary.lessonsDone} of {summary.lessonTotal} required lessons · {summary.drillsDone} of {summary.drillTotal} required drills</p>
+            {summary.requiredTotal > 0 && <div className="oc-topic-progress-label"><strong>Required work</strong><span>{summary.requiredDone} of {summary.requiredTotal} complete</span></div>}
+            <p className="oc-topic-counts">Lessons {summary.lessonsDone} of {summary.lessonTotal} · Drills {summary.drillsDone} of {summary.drillTotal}</p>
             {summary.requiredTotal > 0 ? <div className="oc-topic-progress" role="progressbar" aria-label={`Chapter ${part} completion`} aria-valuemin={0} aria-valuemax={summary.requiredTotal} aria-valuenow={summary.requiredDone} aria-valuetext={`${summary.requiredDone} of ${summary.requiredTotal} required steps completed`}><span style={{ width:`${summary.percent}%` }}/></div> : <p className="oc-topic-counts">Optional · No required steps</p>}
-            <p className="oc-topic-choice-label">Choose your work</p>
-            <nav className="oc-topic-actions" aria-label={`Chapter ${part} activities`}>
-              {all.some(step => step.type === 'note') && <Link aria-label={`Chapter ${part}: ${chapterTitles[part]} lessons`} to={courseListUrl(url, chapterView(part), { chapter:part, content:'lessons' })}><strong>Lessons</strong><span>Read and learn</span></Link>}
-              {all.some(step => step.type === 'drill') && <Link aria-label={`Chapter ${part}: ${chapterTitles[part]} drills`} to={courseListUrl(url, chapterView(part), { chapter:part, content:'drills' })}><strong>Drills</strong><span>Practise the skill</span></Link>}
-              {cards.length > 0 && <Link aria-label={`Chapter ${part}: ${chapterTitles[part]} flashcards`} to={courseBrowseUrl(url, 'flashcards', part)}><strong>Flashcards</strong><span>Test your recall</span></Link>}
+            <nav className="oc-topic-actions" aria-label={`Chapter ${part} activities`} style={{'--oc-choices':Number(all.some(step => step.type === 'note')) + Number(all.some(step => step.type === 'drill')) + Number(cards.length > 0)} as CSSProperties}>
+              {all.some(step => step.type === 'note') && <Link aria-label={`Chapter ${part}: ${chapterTitles[part]} lessons`} to={courseListUrl(url, chapterView(part), { chapter:part, content:'lessons' })}><BookOpen size={16} aria-hidden/><strong>Lessons</strong></Link>}
+              {all.some(step => step.type === 'drill') && <Link aria-label={`Chapter ${part}: ${chapterTitles[part]} drills`} to={courseListUrl(url, chapterView(part), { chapter:part, content:'drills' })}><DrillGlyph size={16}/><strong>Drills</strong></Link>}
+              {cards.length > 0 && <Link aria-label={`Chapter ${part}: ${chapterTitles[part]} flashcards`} to={courseBrowseUrl(url, 'flashcards', part)}><CardsGlyph size={16}/><strong>Flashcards</strong></Link>}
             </nav>
-            {lessonCount > 0 && <details className="oc-topic-lessons"><summary>Lesson progress<span>{all.filter(step => step.type === 'note' && saved[step.id]?.status === 'done').length} of {lessonCount}</span></summary><ol>{all.filter(step => step.type === 'note').map(lesson => <li key={lesson.id}><Link to={courseStepLink(lesson, saved[lesson.id], url).href}><span>{lesson.lessonNumber} {lesson.title}{!required(lesson) && ' · Optional'}</span><span className="oc-lesson-state" data-status={courseStepStatus(saved[lesson.id])}>{courseStepStatus(saved[lesson.id]) === 'completed' ? <><Check size={13} aria-hidden/>Completed</> : courseStepStatus(saved[lesson.id]) === 'in-progress' ? 'In progress' : 'Not started'}</span></Link></li>)}</ol></details>}
+            {lessonCount > 0 && <details className="oc-topic-lessons"><summary>Lesson progress{lessonCount !== summary.lessonTotal && ' (including optional)'}<span>{all.filter(step => step.type === 'note' && saved[step.id]?.status === 'done').length} of {lessonCount}</span></summary><ol>{all.filter(step => step.type === 'note').map(lesson => <li key={lesson.id}><Link to={courseStepLink(lesson, saved[lesson.id], url).href}><span>{lesson.lessonNumber} {lesson.title}{!required(lesson) && ' · Optional'}</span><span className="oc-lesson-state" data-status={courseStepStatus(saved[lesson.id])}>{courseStepStatus(saved[lesson.id]) === 'completed' ? <><Check size={13} aria-hidden/>Completed</> : courseStepStatus(saved[lesson.id]) === 'in-progress' ? 'In progress' : 'Not started'}</span></Link></li>)}</ol></details>}
           </div>
         </li>;
       })}
       <li className="oc-practice">
         <div className="oc-practice-art" aria-hidden/>
         <h3>Practice and review</h3>
-        {nextDrill ? <Link className="oc-practice-next" to={url(nextDrill.id)}>
+        {nextDrill ? <Link className="oc-practice-next" to={courseStepLink(nextDrill,saved[nextDrill.id],url).href}>
           <span className="oc-practice-next-label">{saved[nextDrill.id]?.status === 'started' ? 'Continue drill' : 'Next drill'} · Chapter {nextDrill.part ?? 1}</span>
           <span className="oc-practice-next-title">{nextDrill.title}</span>
-          <ArrowRight size={18} aria-hidden/>
-        </Link> : <p className="oc-practice-next oc-practice-next-done">Every drill is done. Redo any of them from the full list.</p>}
+          <span className="oc-practice-next-action">{saved[nextDrill.id]?.status === 'started' ? 'Continue drill' : 'Start drill'}</span>
+        </Link> : <p className="oc-practice-next oc-practice-next-done">{drillTotal > 0 ? 'Every required drill is done. Revisit any drill from the full list.' : 'No required drills in this view. Choose an available activity to practise.'}</p>}
         <div className="oc-practice-links">
           <Link to={url('centre')}><DrillGlyph size={20}/><strong>Practice centre</strong><span>All conditional activities</span></Link>
           <Link to={url('practice')}><DrillGlyph size={20}/><strong>All drills</strong><span>{drillsDone} of {drillTotal} done</span></Link>

@@ -20,21 +20,31 @@ import type { ClassroomItem } from '@/hooks/useClassroomItems';
  * trigger permits it alongside status and completed_at, so this is a write the
  * database already sanctions for a student on their own row.
  */
-export async function markNoteRead(item: ClassroomItem) {
-  if (isReadInMetadata(item)) {
-    await clearNoteNotifications(item.id);
-    return;
+export async function markNoteRead(item: ClassroomItem, viewerId: string): Promise<ClassroomItem> {
+  const { data: auth, error: authError } = await supabase.auth.getUser();
+  if (authError) throw authError;
+  if (!viewerId || auth.user?.id !== viewerId || item.student_id !== viewerId) {
+    throw new Error('This note does not belong to the signed-in reader.');
   }
-  // Merged rather than replaced: metadata_json already carries `kind`, and on
-  // a drill-linked note the assignment id too. A blind overwrite would drop them.
+  if (isReadInMetadata(item)) {
+    await clearNoteNotifications(item.id, viewerId);
+    return item;
+  }
   const next = { ...(item.metadata_json ?? {}), read_at: new Date().toISOString() };
-  const { error } = await supabase
+  const { data, error } = await supabase
     .from('classroom_items')
     .update({ metadata_json: next })
-    .eq('id', item.id);
+    .eq('id', item.id)
+    .eq('student_id', viewerId)
+    .select('*')
+    .maybeSingle();
   if (error) throw error;
-
-  await clearNoteNotifications(item.id);
+  const persisted = data as ClassroomItem | null;
+  if (!persisted || persisted.id !== item.id || persisted.student_id !== viewerId || !isReadInMetadata(persisted)) {
+    throw new Error('The note could not be marked read.');
+  }
+  await clearNoteNotifications(item.id, viewerId);
+  return persisted;
 }
 
 export function isReadInMetadata(item: Pick<ClassroomItem, 'metadata_json' | 'status'>) {
@@ -51,10 +61,11 @@ export function isReadInMetadata(item: Pick<ClassroomItem, 'metadata_json' | 'st
  * route, because a note can be announced by more than one notification and
  * older ones were written with a different path.
  */
-export async function clearNoteNotifications(itemId: string) {
+export async function clearNoteNotifications(itemId: string, viewerId: string) {
   const { error } = await supabase
     .from('notifications')
     .update({ read: true })
+    .eq('user_id', viewerId)
     .like('link', `%${itemId}%`)
     .eq('read', false);
   // A stale bell entry is a much smaller problem than a note that will not

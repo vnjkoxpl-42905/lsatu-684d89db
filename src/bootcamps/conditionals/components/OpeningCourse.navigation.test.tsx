@@ -224,3 +224,17 @@ it('keeps card discovery in Flashcards and related navigation outside an active 
   render(<MemoryRouter><OpeningCourseScreen view="sufficient-practice" run steps={NAV_STEPS} url={courseUrl(identity)}/></MemoryRouter>);
   expect(screen.queryByRole('navigation',{name:'This topic'})).toBeNull();
 });
+
+
+it('continues the next started Home drill in its saved runner',()=>{
+  const result=mount('home','',{'foundation-practice':{status:'started',updatedAt:'2026-10-27'}});
+  expect(result.container.querySelector('.oc-practice-next')).toHaveAttribute('href',expect.stringContaining('run=1'));
+  expect(result.save).not.toHaveBeenCalled();
+});
+it('never calls optional-only Home drills complete',()=>{
+  const optional=applyConditionalRequirements(COURSE_STEP_REGISTRY.filter(step=>step.part===2),{source:'snapshot',revision:'fixture',requiredStepIds:[]});
+  mount('home','',{},optional);
+  expect(screen.getByText('No required drills in this view. Choose an available activity to practise.')).toBeVisible();
+  expect(screen.queryByText(/Every required drill is done/)).toBeNull();
+  expect(screen.queryByText('0 of 0 complete')).toBeNull();
+});

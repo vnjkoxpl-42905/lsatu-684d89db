@@ -514,15 +514,24 @@
 .oc-topic-counts{margin:0 0 10px;font-size:.8125rem;line-height:1.5;color:var(--oc-muted)}
 .oc-topic-progress{height:5px;border-radius:3px;background:var(--oc-line);overflow:hidden;margin-bottom:16px}
 .oc-topic-progress>span{display:block;height:100%;background:var(--oc-ink)}
-.oc-topic-choice-label{margin:0 0 9px;font-size:.8125rem;line-height:1.4;font-weight:500;color:var(--oc-muted)}
-.oc-topic-actions{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:8px;margin:0 0 16px}
-.oc-topic-actions a{display:flex;flex-direction:column;justify-content:center;gap:5px;min-height:76px;padding:12px 8px;border:1px solid var(--oc-control-line);border-radius:7px;background:var(--oc-surface);box-shadow:0 1px 1px rgb(40 38 32 / 4%);color:var(--oc-ink);text-align:center;text-decoration:none;transition:background-color 140ms,border-color 140ms,box-shadow 140ms}
+/* 21st.dev Halaska segmented-control inspiration, adapted as direct navigation.
+   Home has no selected view: the shared thumb only follows hover/keyboard focus. */
+.oc-topic-progress-label{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:9px;font-size:.8125rem;line-height:1.4}
+.oc-topic-progress-label strong{font-weight:500}
+.oc-topic-progress-label>span{color:var(--oc-muted);font-variant-numeric:tabular-nums}
+.oc-topic-actions{--oc-choices:3;position:relative;isolation:isolate;display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:0;padding:5px;margin:0 0 18px;border-radius:10px;background:#d7d9ce;box-shadow:inset 0 1px 3px rgb(45 54 41 / 12%)}
+.oc-topic-actions::before{content:"";position:absolute;z-index:-1;top:5px;left:5px;height:calc(100% - 10px);width:calc((100% - 10px)/var(--oc-choices));border-radius:6px;background:#eceee4;box-shadow:0 1px 2px rgb(24 33 14 / 10%),inset 0 1px 0 rgb(255 255 255 / 60%);opacity:0;pointer-events:none;transition:transform 180ms ease,opacity 100ms}
+.oc-topic-actions:has(a:hover)::before,.oc-topic-actions:has(a:focus-visible)::before{opacity:1}
+.oc-topic-actions:has(a:nth-child(2):hover)::before,.oc-topic-actions:has(a:nth-child(2):focus-visible)::before{transform:translateX(100%)}
+.oc-topic-actions:has(a:nth-child(3):hover)::before,.oc-topic-actions:has(a:nth-child(3):focus-visible)::before{transform:translateX(200%)}
+.oc-topic-actions a{display:flex;align-items:center;justify-content:center;gap:6px;min-width:0;min-height:44px;padding:10px 4px;border:0;border-radius:6px;background:transparent;box-shadow:none;color:#252d27;text-align:center;text-decoration:none}
 .oc-topic-actions a strong{font-size:.875rem;line-height:1.3;font-weight:600}
-.oc-topic-actions a span{font-size:.75rem;line-height:1.4;font-weight:400;color:var(--oc-muted)}
-.oc-topic-actions a:hover{background:var(--oc-hover);border-color:var(--oc-ink)}
-.oc-topic-actions a:active{background:var(--oc-hover);box-shadow:inset 0 1px 2px rgb(40 38 32 / 10%)}
-.oc-topic-actions a:focus-visible{outline:2px solid var(--oc-ink);outline-offset:3px}
-@media(prefers-reduced-motion:reduce){.oc-topic-actions a{transition:none}}
+.oc-topic-actions a svg{flex-shrink:0;color:#505b4a}
+.oc-topic-actions a:active{background:rgb(37 45 39 / 9%);box-shadow:inset 0 1px 2px rgb(37 45 39 / 10%)}
+.oc-topic-actions a:focus-visible{outline:2px solid #353e31;outline-offset:2px}
+@media(hover:none){.oc-topic-actions::before{display:none}}
+@media(max-width:360px){.oc-topic-actions a svg{display:none}}
+@media(prefers-reduced-motion:reduce){.oc-topic-actions::before{transition:none}}
 .oc-topic-lessons{border-top:1px solid var(--oc-line);margin-top:8px}
 .oc-topic-lessons summary{display:flex;justify-content:space-between;align-items:center;gap:8px;min-height:44px;padding:10px 0;font-size:.8125rem;font-weight:600;cursor:pointer}
 .oc-topic-lessons summary span{color:var(--oc-muted);font-weight:400}
@@ -544,7 +553,7 @@
 .oc-path-row{text-decoration:none}
 .oc-path-row .oc-path-arrow{opacity:1}
 @media(max-width:1100px){.oc-home .oc-volumes{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:640px){.oc-home .oc-volumes{grid-template-columns:minmax(0,1fr)}.oc-topic-card .oc-vol-body{min-height:180px}.oc-home-section-row{display:block}.oc-home-section-row .oc-index-filters{max-width:none;margin-top:12px}.oc-topic-actions{gap:8px}.oc-index-filters label{flex-basis:100%}.oc-related-work>a{width:100%}}
+@media(max-width:640px){.oc-home .oc-volumes{grid-template-columns:minmax(0,1fr)}.oc-topic-card .oc-vol-body{min-height:180px}.oc-home-section-row{display:block}.oc-home-section-row .oc-index-filters{max-width:none;margin-top:12px}.oc-index-filters label{flex-basis:100%}.oc-related-work>a{width:100%}}
 
 /* Keep chapter choices close to the next step, with quiet contact depth. */
 .oc-home .oc-hero{min-height:340px;padding:32px;margin-bottom:24px;gap:24px;box-shadow:0 3px 12px rgb(0 0 0 / .06)}
@@ -566,3 +575,45 @@
 .oc-chapter-hero-num{font-size:4.5rem;opacity:.45}
 .oc-course-screen .co-flashcard-tools h1{font-size:2rem}
 @media(max-width:640px){.oc-chapter-hero{padding:24px;min-height:240px}.oc-course-screen .oc-chapter-hero h1{font-size:1.75rem}.oc-chapter-hero-num{font-size:3rem;opacity:.2}}
+
+/* Home review desk: one charcoal material, with tactile controls instead of white cards. */
+.oc-workspace .oc-home .oc-practice{background:#292e2c;color:#f3f0e8;border:1px solid #393e3b;box-shadow:inset 0 1px 0 rgb(255 255 255 / 9%),0 12px 22px -18px rgb(24 28 25 / 55%);gap:20px;padding:24px;align-self:start}
+.oc-workspace .oc-home .oc-practice-art{filter:grayscale(1);opacity:.12;mask-image:linear-gradient(180deg,#000,transparent 80%)}
+.oc-workspace .oc-home .oc-practice h3{color:#f3f0e8;font-size:1.4rem}
+.oc-workspace .oc-home .oc-practice-next{display:flex;align-items:flex-start;flex-direction:column;gap:9px;padding:18px;background:#3b423e;border:1px solid #515a53;box-shadow:inset 0 1px 0 rgb(255 255 255 / 7%),0 6px 12px -9px #101713;color:#faf7ef;border-radius:10px}
+.oc-workspace .oc-home .oc-practice-next:hover{background:#454e47}
+.oc-workspace .oc-home .oc-practice-next-label{color:#d4d9d0;font-size:.75rem}
+.oc-workspace .oc-home .oc-practice-next-title{font-size:1.25rem;line-height:1.35}
+.oc-workspace .oc-home .oc-practice-next-action{display:inline-flex;align-items:center;min-height:36px;padding:5px 13px;margin-top:3px;border-radius:18px;background:#cbd3c1;color:#222b23;font-size:.8125rem;font-weight:600;box-shadow:inset 0 1px 0 rgb(255 255 255 / 40%),0 2px 3px rgb(0 0 0 / 12%)}
+.oc-workspace .oc-home .oc-practice-links{gap:0}
+.oc-workspace .oc-home .oc-practice-links a{grid-template-columns:auto minmax(0,1fr);padding:14px 3px;column-gap:14px;min-height:76px;border:0;border-top:1px solid rgb(239 237 226 / 14%);border-radius:0;background:transparent;box-shadow:none;color:#f3f0e8;transition:background-color 140ms}
+.oc-workspace .oc-home .oc-practice-links a:first-child{border-top:0}
+.oc-workspace .oc-home .oc-practice-links a:hover{background:rgb(255 255 255 / 6%)}
+.oc-workspace .oc-home .oc-practice-links a:active{background:rgb(0 0 0 / 14%)}
+.oc-workspace .oc-home .oc-practice-links a svg{padding:10px;border:1px solid rgb(239 237 226 / 20%);border-radius:50%;background:linear-gradient(145deg,#454d46,#343a36);color:#e5e9dc;box-shadow:inset 0 1px 0 rgb(255 255 255 / 8%),0 3px 5px rgb(0 0 0 / 10%)}
+.oc-workspace .oc-home .oc-practice-links a span{color:#c4cbc0}
+.oc-workspace .oc-home .oc-practice-links a::after{display:none}
+.oc-workspace .oc-home :is(.oc-practice-next,.oc-practice-links a):focus-visible{outline:2px solid #dae4ca;outline-offset:3px}
+@media(prefers-reduced-motion:reduce){.oc-workspace .oc-home .oc-practice-links a{transition:none}}
+
+.oc-home .oc-topic-work{padding:20px;display:flex;flex-direction:column}
+.oc-home .oc-topic-counts{font-size:.8125rem;margin:0 0 12px;order:2}
+.oc-home .oc-topic-progress-label{order:0}
+.oc-home .oc-topic-progress{order:1;height:4px;margin-bottom:9px}
+.oc-home .oc-topic-actions{order:3;margin-top:5px}
+.oc-home .oc-topic-lessons{order:4;margin-top:0;border-color:var(--oc-line)}
+.oc-home .oc-topic-card{background:#eeece4;border-color:transparent;box-shadow:0 1px 2px rgb(52 56 44 / 5%)}
+.oc-home .oc-home-shortcuts a{background:#e9e8df;border-color:transparent;border-radius:7px}
+.oc-home .oc-home-shortcuts a:hover{background:#dedfd3}
+.oc-home .oc-home-shortcuts a:active{box-shadow:inset 0 1px 2px rgb(37 45 39 / 12%)}
+.oc-home .oc-home-shortcuts a:focus-visible{outline:2px solid var(--oc-ink);outline-offset:3px}
+@media(max-width:640px){.oc-home .oc-topic-work{padding:16px}}
+
+/* Release fixes: keep light Home materials legible in either host theme. */
+.oc-home .oc-topic-card{--oc-ink:#252d27;--oc-muted:#60665b;--oc-line:#d5d8cb;--oc-control-line:#aeb4a4;color:var(--oc-ink)}
+.oc-home .oc-home-shortcuts a{color:#252d27}
+/* Focus wins over a stationary pointer; keyboard movement has no tracking delay. */
+.oc-topic-actions:has(a:focus-visible)::before{transition:none}
+.oc-topic-actions:has(a:nth-child(1):focus-visible)::before{transform:translateX(0)}
+.oc-topic-actions:has(a:nth-child(2):focus-visible)::before{transform:translateX(100%)}
+.oc-topic-actions:has(a:nth-child(3):focus-visible)::before{transform:translateX(200%)}
