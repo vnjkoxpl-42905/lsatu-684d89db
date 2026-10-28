@@ -9,8 +9,11 @@ The approved contract is the 2026-10-28 section of `brainstorms/2026-09-27-teach
 Apply these migrations in order, only if not already applied:
 
 1. `20261027190000_teacher_post_session.sql`
-2. `20261028100000_teacher_home_desk.sql`
-3. `20261028101000_teacher_home_access_booking.sql`
+2. `20261028090000_teacher_home_profile_identity_repair.sql`
+3. `20261028100000_teacher_home_desk.sql`
+4. `20261028101000_teacher_home_access_booking.sql`
+
+The first deployment applied the base as managed migration `0040_teacher_post_session`; do not reapply it. The desk migration rolled back because production profile and section-result `class_id` columns are text. Apply the identity repair to the existing base functions before applying the corrected desk and access migrations. Preserve the historical managed migration. The corrected harnesses use production column types and exercise this partial-deployment recovery path.
 
 Deploy `teacher-post-session-sync`, `admin-manage-users`, and `booking-pass-admin` from this exact reviewed repository snapshot. The worker's no-JWT route remains protected by single-use scheduler tickets; owner requests authenticate the pinned administrator. Do not generate a substitute implementation, widen permissions, post recaps, assign work, alter access, grant credits, or send mail as part of deployment.
 
