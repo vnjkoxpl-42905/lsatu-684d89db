@@ -217,3 +217,13 @@
 .cc-settings-panel .cc-settings { margin:0; padding-top:8px; }
 .cc-settings-panel>summary:focus-visible { outline:2px solid var(--cc-ink); outline-offset:4px; }
 @media(max-width:600px) { .cc-settings-panel { margin:20px 0; } .cc-settings-panel>summary { padding:12px 16px; } }
+
+/* The centre's reading plane stays legible inside either course theme.
+   Workbench navigation and setup own their styles in a separate scoped file. */
+.cc-centre--home {
+  --cc-ink:#252d27; --cc-muted:#596151; --cc-line:#cccec2;
+  --cc-raised:#e5e5db; --cc-control:#a8af9d; --cc-surface:#f3f0e9;
+  background:var(--cc-surface); border-radius:12px;
+}
+.cc-centre--home .cc-heading { margin-bottom:24px; }
+.cc-centre--home .cc-course-name { display:none; }

@@ -43,3 +43,28 @@ Preserve task formats and existing refinements. Use clear copy, complete conditi
 
 ## Evidence boundaries
 Inventory is source-verified. Local UI and automated checks are recorded separately in the design/implementation evidence. Source RLS supports authenticated reads of published guided definitions and owned progress; it is not a current live student acceptance result. This work creates no production runs, assignments, notifications, migrations or deployment.
+
+## Practice centre structure interview reopened
+
+Joshua rejected the implemented open-list appearance as insufficiently organised and requested two distinct directions before further changes, then invoked grill-with-docs-claude. Earlier A approval covered the prior implementation only; the next layout remains undecided. No app edit is authorized by this interview.
+
+Confirmed requirements and glossary above remain unchanged. Current homepage has all ten permitted collections, no aggregate progress data, stable presentation-group filtering and existing activity links. The problem is structural and visual: text-like row affordances, repeated dividers, equal competing columns and detached review modules. These are host interpretations of Joshua's supplied screenshot, not measured usability findings.
+
+Pending questions sent together:
+1. Primary discovery: skill first (host recommendation), named activity first, or chapter first. Trade-off: novice orientation vs direct known-activity lookup vs course sequence.
+2. Entry: open existing activity immediately with settings inside (host recommendation), or add preview/setup first. Trade-off: shortest navigation vs more context before launch.
+
+After answers, update existing docs/implementation-plans/2026-10-27-practice-centre-design.md rather than creating a competing plan. Develop two distinct visual structures with actual content before user selects. Preserve existing local implementation while comparing proposals. No new ADR needed for a reversible visual choice. Codex coordinates and would build after authorization; Claude independently reviews the settled revised plan and later inspects code in a fresh session. Default five plan rounds, two fix rounds, two inspection rounds, no requested model/effort overrides. Claude's last finished-code attempt was HTTP429 usage_limit_reached, not an approval; do not retry blindly or substitute providers. Review diagnostics remain outside checkout. Source references: conditionals/CONTEXT.md, ConditionalActivityCentre.tsx, activityRegistry.ts and prior evidence under docs/design-evidence/practice-centre-a-20261027.
+
+### Confirmed discovery and entry decisions
+Joshua selected skill first: translate, connect rules, recall, apply. He selected preview and settings before entering the activity, overriding the host recommendation of immediate entry. Do not implement immediate launch from catalogue cards for this next direction. Starting from the preview must retain configured topic/mode and existing account/run identity; merely viewing a preview must never create a run or completion credit.
+
+The two next visual proposals should therefore compare a split workbench (activity choice beside a preview on desktop, adapted to phone) with an inline expansion (preview directly below selected activity), not compare the now-rejected immediate-entry catalogue with a preview flow.
+
+Next pending question: read-only unanswered example + settings (recommended), playable sample, or instructions/settings only. This determines whether preview introduces a second exercise flow. User has not yet answered. Do not infer permission to add a playable drill. No app edits made in this interview.
+
+### Category clarity refinement requested
+Joshua found Translate/Connect rules/Recall/Apply unclear and requested 21st.dev MCP research. Search and full retrieval of Origin UI Radio Group Card demo 747 informed selection cards with a title, description and checked control in the isolated prototype. Proposed labels: Translate sentences, Connect conditional rules, Review flashcards, Practise LSAT questions and Mixed conditional practice. The broad bank is proposed as a separate category. Counts describe full-course collections only, not progress or constrained-grant availability. Desktop and phone screenshots were opened; overflow, category selection, activity selection, settings and stub Start checks passed. No real app changes, package installation, run creation or publication. Grouping proposals await user acceptance. Component reference: https://21st.dev/@originui/components/radio-group
+
+### Preview contents confirmed
+Joshua selected instructions and settings only. No example sentence, sample answer, playable sample, new grading flow or progress credit belongs in the preview. Flow: choose skill, choose activity, read instructions/configure permitted settings, Start existing activity. Propose split-workbench versus inline-expansion designs before app changes.

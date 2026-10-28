@@ -21,13 +21,57 @@ describe('the integrated conditional activity centre', () => {
     mount({ grant: g3 });
     fireEvent.click(screen.getByRole('button', { name: 'Filters' }));
     const select = screen.getByRole('combobox', { name: 'Activity type' });
-    expect(screen.queryByRole('link', { name: 'Open Missing Links' })).toBeNull();
-    fireEvent.change(select, { target: { value: 'Recall and apply' } });
-    expect(screen.getByRole('link', { name: 'Open Sentence flashcards' })).toBeVisible();
-    expect(screen.queryByRole('link', { name: 'Open Unless Drill' })).toBeNull();
+    expect(screen.queryByRole('link', { name: 'Missing Links' })).toBeNull();
+    expect(screen.getByRole('link', { name: 'Unless Drill' })).toBeVisible();
+    fireEvent.change(select, { target: { value: 'flashcards' } });
+    expect(screen.getByRole('link', { name: 'Sentence flashcards' })).toBeVisible();
+    expect(screen.queryByRole('link', { name: 'Unless Drill' })).toBeNull();
     expect(screen.queryByTestId('skill-player')).toBeNull();
     fireEvent.change(select, { target: { value: 'all' } });
-    expect(screen.getByRole('link', { name: 'Open Unless Drill' })).toBeVisible();
+    expect(screen.getByRole('link', { name: 'Unless Drill' })).toBeVisible();
+  });
+  it('keeps one named link per activity and preserves every configured destination', () => {
+    mount();
+    const cases: ConditionalActivityConfig[] = [
+      { activity: 'rephrase' }, { activity: 'diagram' }, { activity: 'sort' }, { activity: 'unless' },
+      { activity: 'linking' }, { activity: 'missing-links' }, { activity: 'must-be-true' },
+      { activity: 'legacy-practice' }, { activity: 'translate-cards' }, { activity: 'guided' },
+    ];
+    const rows = document.querySelectorAll('.cc-home-activities>li');
+    expect(rows).toHaveLength(10);
+    for (const row of rows) {
+      const links = within(row as HTMLElement).getAllByRole('link');
+      expect(links).toHaveLength(1);
+      expect(links[0]).toHaveAccessibleDescription();
+    }
+    const destinations = Array.from(document.querySelectorAll('.cc-home-activity')).map(link => link.getAttribute('href'));
+    for (const value of cases) expect(destinations).toContain(href(config(value)));
+  });
+  it('recovers a stale group filter when the permitted assignment changes', () => {
+    const view = mount();
+    fireEvent.click(screen.getByRole('button', { name: 'Filters' }));
+    fireEvent.change(screen.getByRole('combobox', { name: 'Activity type' }), { target: { value: 'guided' } });
+    expect(screen.getByRole('link', { name: 'Guided LSAT questions' })).toBeVisible();
+    view.rerender(<MemoryRouter><ConditionalActivityCentre userId="actor-7" grant={g3} href={href} courseHref="/course"/></MemoryRouter>);
+    expect(screen.getByRole('link', { name: 'Unless Drill' })).toBeVisible();
+    expect(screen.queryByRole('link', { name: 'Missing Links' })).toBeNull();
+    expect(screen.getByRole('combobox', { name: 'Activity type' })).toHaveValue('all');
+  });
+  it('shows a useful no-access state without redundant filters', () => {
+    mount({ grant: undefined });
+    expect(screen.getByRole('status')).toHaveTextContent('no activities available');
+    expect(screen.queryByRole('button', { name: 'Filters' })).toBeNull();
+    expect(document.querySelectorAll('.cc-home-activity')).toHaveLength(0);
+  });
+  it('can reset a selected group and keeps recall separate from guided application', () => {
+    mount();
+    fireEvent.click(screen.getByRole('button', { name: 'Filters' }));
+    fireEvent.change(screen.getByRole('combobox', { name: 'Activity type' }), { target: { value: 'flashcards' } });
+    expect(screen.getByRole('link', { name: 'Sentence flashcards' })).toBeVisible();
+    expect(screen.queryByRole('link', { name: 'Guided LSAT questions' })).toBeNull();
+    fireEvent.click(screen.getByRole('button', { name: 'Show all activities' }));
+    expect(screen.getByRole('link', { name: 'Guided LSAT questions' })).toBeVisible();
+    expect(screen.getByRole('region', { name: 'Recall a translation' })).not.toContainElement(screen.getByRole('link', { name: 'Guided LSAT questions' }));
   });
   it('collapses settings without remounting the active sentence player', async () => {
     mount({ config: config({ activity: 'translate-cards', groups: ['g3'] }) });
@@ -39,7 +83,7 @@ describe('the integrated conditional activity centre', () => {
   });
   it('lists the ten full-course collections without mounting any hidden players', () => {
     mount();
-    for (const title of ['Conditional Rephrase', 'Linking', 'Missing Links', 'Must Be True', 'Sort indicator words', 'Diagram practice', 'Sentence flashcards', 'Unless Drill', 'Conditional bank practice', 'Guided LSAT questions']) expect(screen.getByRole('link', { name: `Open ${title}` })).toBeTruthy();
+    for (const title of ['Conditional Rephrase', 'Linking', 'Missing Links', 'Must Be True', 'Sort indicator words', 'Diagram practice', 'Sentence flashcards', 'Unless Drill', 'Conditional bank practice', 'Guided LSAT questions']) expect(screen.getByRole('link', { name: title })).toBeTruthy();
     expect(screen.queryByTestId('embedded-player')).toBeNull();
     expect(screen.queryByTestId('skill-player')).toBeNull();
     expect(screen.queryByTestId('unless-player')).toBeNull();
@@ -47,17 +91,17 @@ describe('the integrated conditional activity centre', () => {
   });
   it('shows the exact assigned activity and settings without unrelated collections', () => {
     mount({ grant: { target: { scope: 'activity', activityId: 'missing-links', activitySettings: { level: 'words' } }, unitIds: [] } });
-    const link = screen.getByRole('link', { name: 'Open Missing Links' });
+    const link = screen.getByRole('link', { name: 'Missing Links' });
     expect(link.getAttribute('href')).toContain('level=words');
-    expect(screen.queryByRole('link', { name: 'Open Conditional Rephrase' })).toBeNull();
-    expect(screen.queryByRole('link', { name: 'Open Guided LSAT questions' })).toBeNull();
+    expect(screen.queryByRole('link', { name: 'Conditional Rephrase' })).toBeNull();
+    expect(screen.queryByRole('link', { name: 'Guided LSAT questions' })).toBeNull();
   });
   it('gives a Group 3 grant its matching translation activities without Missing Links or guided sets', () => {
     mount({ grant: g3 });
-    for (const title of ['Conditional Rephrase', 'Diagram practice', 'Sentence flashcards', 'Unless Drill']) expect(screen.getByRole('link', { name: `Open ${title}` })).toBeTruthy();
-    expect(screen.queryByRole('link', { name: 'Open Missing Links' })).toBeNull();
-    expect(screen.queryByRole('link', { name: 'Open Guided LSAT questions' })).toBeNull();
-    expect(screen.queryByRole('link', { name: 'Open Sort indicator words' })).toBeNull();
+    for (const title of ['Conditional Rephrase', 'Diagram practice', 'Sentence flashcards', 'Unless Drill']) expect(screen.getByRole('link', { name: title })).toBeTruthy();
+    expect(screen.queryByRole('link', { name: 'Missing Links' })).toBeNull();
+    expect(screen.queryByRole('link', { name: 'Guided LSAT questions' })).toBeNull();
+    expect(screen.queryByRole('link', { name: 'Sort indicator words' })).toBeNull();
   });
   it('denies a forged activity config before any player mounts', () => {
     mount({ grant: g3, config: config({ activity: 'missing-links', level: 'words' }) });

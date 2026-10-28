@@ -16,6 +16,7 @@ import { createEditionCourseStore, editionStorageScope } from './courseProgress'
 import { applyConditionalRequirements, resolveConditionalRequirements } from './courseRequirements';
 import { clearSkillQuery } from './skillPractice';
 import { ConditionalActivityCentre } from './components/ConditionalActivityCentre';
+import { conditionalPracticeSetupKey } from './components/practiceSetupState';
 import { conditionalLegacyPracticeUnits } from './centreAccess';
 import { ConditionalActivityIdentity } from './activityIdentity';
 import { CONDITIONAL_ACTIVITY_QUERY_KEYS, conditionalActivityAllowed, conditionalActivitySearch, normalizeConditionalActivityConfig, parseConditionalActivitySearch, type ConditionalActivityConfig } from './activityRegistry';
@@ -231,7 +232,9 @@ function ActivityCentreRoute() {
   const config = activityId ? parseConditionalActivitySearch(params, activityId) : undefined;
   if (!isAdmin && !active) return <section className="cb-card"><h1>No conditional activity is available.</h1><Link to="/classroom">Back to Classroom</Link></section>;
   const href = (next?: ConditionalActivityConfig) => conditionalCentreUrl(contextual.toString(), next);
-  return <ConditionalActivityCentre userId={userId!} grant={active} isAdmin={isAdmin} config={config} href={href} courseHref={courseUrl(contextual.toString())('lessons')} renderLegacy={chosen => {
+  const setupEdition = active && 'courseEdition' in active.target && active.target.courseEdition ? String(active.target.courseEdition) : params.get('edition') ?? 'conditionals-v1';
+  const setupScope = conditionalPracticeSetupKey(userId!, active?.id ?? (isAdmin ? 'admin' : 'unassigned'), setupEdition);
+  return <ConditionalActivityCentre userId={userId!} setupScope={setupScope} grant={active} isAdmin={isAdmin} config={config} href={href} courseHref={courseUrl(contextual.toString())('lessons')} renderLegacy={chosen => {
     const eligible = conditionalLegacyPracticeUnits(active, chosen, isAdmin);
     const nextSelection: PathSelection = { ...selection, scope: 'practice', allowedUnits: eligible, unitId: chosen.unit, area: undefined, assignedLevel: true, difficulty: chosen.difficulty ?? 'beginner', phase: 'conditional', practiceOnly: true };
     return <WorkContext.Provider value={{ ...work, selection: nextSelection }}><Practice simulator={chosen.mode === 'simulator'} hardLanguage={chosen.mode === 'hard-sentences'} centreConfig={chosen}/></WorkContext.Provider>;
