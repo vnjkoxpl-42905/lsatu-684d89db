@@ -128,3 +128,75 @@ describe('persisted source eligibility', () => {
     expect(result.RC.correct).toBe(0);
   });
 });
+
+describe('RC grading date and provenance corrections', () => {
+  const session = (over: Record<string, unknown> = {}) => ({ id: 'rc-1', user_id: student, status: 'completed', completed_at: '2026-09-27T00:00:00Z', excluded_from_analytics: false, practice_test_run_id: null, ...over });
+  const attempt = (id: string, created: string, over: Record<string, unknown> = {}) => ({ id, user_id: student, session_id: 'rc-1', passage_id: 11, question_id: 1, selected: 'B', is_correct: true, created_at: created, ...over });
+  const one = (a: ReturnType<typeof attempt>, s = session(), runs: string[] = []) => adaptRcAttempts([a], [s as never], student, new Set(runs));
+
+  it('grades a pre-completion pick at completion and keeps a later review at its saved date', () => {
+    expect(one(attempt('pick', '2026-09-26T00:00:00Z'))[0].gradedAt).toBe('2026-09-27T00:00:00Z');
+    expect(one(attempt('pick', '2026-09-26T00:00:00Z'))[0].answeredAt).toBe('2026-09-26T00:00:00Z');
+    expect(one(attempt('review', '2026-10-01T00:00:00Z'))[0].gradedAt).toBe('2026-10-01T00:00:00Z');
+  });
+
+  it('never introduces an invalid date from a bad created_at', () => {
+    const [answer] = one(attempt('bad', 'not-a-date'));
+    expect(answer.gradedAt).toBe('2026-09-27T00:00:00Z');
+    expect(Number.isFinite(Date.parse(answer.answeredAt!))).toBe(true);
+    expect(one(attempt('x', '2026-09-26T00:00:00Z'), session({ completed_at: null }))).toEqual([]);
+  });
+
+  it('lets a cross-session first answer win when an old session was reviewed later', () => {
+    const old = session({ id: 'old', completed_at: '2026-09-05T00:00:00Z' });
+    const recent = session({ id: 'recent', completed_at: '2026-09-07T00:00:00Z' });
+    const answers = adaptRcAttempts([
+      attempt('old-review', '2026-09-09T00:00:00Z', { session_id: 'old', is_correct: true }),
+      attempt('recent-pick', '2026-09-06T00:00:00Z', { session_id: 'recent', is_correct: false }),
+    ], [old, recent] as never, student, new Set());
+    const result = projectFirstAnswerProgress({ answers, window: 'all', asOf: '2026-10-01T00:00:00Z', coverage });
+    expect(result.RC).toMatchObject({ correct: 0, denominator: 1, evidenceAttemptIds: ['rc_attempts:recent-pick'] });
+    expect(result.repeatCount).toBe(1);
+  });
+
+  it('excludes a review record saved after asOf from every projection', () => {
+    const answers = one(attempt('future', '2026-12-01T00:00:00Z'));
+    const result = projectFirstAnswerProgress({ answers, window: 'all', asOf: '2026-10-01T00:00:00Z', coverage });
+    expect(result.RC.denominator).toBe(0);
+    expect(result.repeatCount).toBe(0);
+  });
+
+  it.each([
+    ['column', { practice_test_run_id: 'run-1' }],
+    ['config', { config: { practiceTestRunId: 'run-1' } }],
+    ['trimmed config', { config: { practiceTestRunId: '  run-1 ' } }],
+    ['empty column, config id', { practice_test_run_id: '', config: { practiceTestRunId: 'run-1' } }],
+  ])('gates %s parent provenance on a completed practice test', (_name, over) => {
+    expect(one(attempt('a', '2026-09-26T00:00:00Z'), session(over), [])).toEqual([]);
+    expect(one(attempt('a', '2026-09-26T00:00:00Z'), session(over), ['run-1'])[0].mode).toBe('practice-test');
+  });
+
+  it('treats empty and null identities as absent and an unknown parent as unreleased', () => {
+    expect(one(attempt('a', '2026-09-26T00:00:00Z'), session({ practice_test_run_id: '', config: { practiceTestRunId: '' } }))).toHaveLength(1);
+    expect(one(attempt('a', '2026-09-26T00:00:00Z'), session({ config: { practiceTestRunId: null } }))).toHaveLength(1);
+    expect(one(attempt('a', '2026-09-26T00:00:00Z'), session({ config: { practiceTestRunId: 'unknown' } }), ['run-1'])).toEqual([]);
+  });
+
+  it('excludes malformed non-string identities and lets a valid column beat a conflicting config', () => {
+    expect(one(attempt('a', '2026-09-26T00:00:00Z'), session({ config: { practiceTestRunId: 42 } }), ['42'])).toEqual([]);
+    expect(one(attempt('a', '2026-09-26T00:00:00Z'), session({ practice_test_run_id: 7 }), ['7'])).toEqual([]);
+    const conflicting = session({ practice_test_run_id: 'run-1', config: { practiceTestRunId: 'run-2' } });
+    expect(one(attempt('a', '2026-09-26T00:00:00Z'), conflicting, ['run-1'])).toHaveLength(1);
+    expect(one(attempt('a', '2026-09-26T00:00:00Z'), conflicting, ['run-2'])).toEqual([]);
+  });
+
+  it('uses timed sitting provenance for mode only', () => {
+    expect(one(attempt('a', '2026-09-26T00:00:00Z'), session({ config: { timedSectionSittingId: 'sit-1' } }))[0].mode).toBe('timed-section');
+    expect(one(attempt('a', '2026-09-26T00:00:00Z'), session({ timed_section_sitting_id: 'sit-1' }))[0].mode).toBe('timed-section');
+  });
+
+  it('keeps unfinished sessions out for both column and config parents', () => {
+    expect(one(attempt('a', '2026-09-26T00:00:00Z'), session({ status: 'in_progress', config: { practiceTestRunId: 'run-1' } }), ['run-1'])).toEqual([]);
+    expect(one(attempt('a', '2026-09-26T00:00:00Z'), session({ status: 'in_progress', practice_test_run_id: 'run-1' }), ['run-1'])).toEqual([]);
+  });
+});
