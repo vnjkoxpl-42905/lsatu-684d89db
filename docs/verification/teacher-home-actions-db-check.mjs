@@ -11,7 +11,7 @@ try {
  await db.exec(`create role anon;create role authenticated;create role service_role;create schema auth;
  create table auth.users(id uuid primary key,email text);
  create table user_roles(user_id uuid,role text);
- create table profiles(class_id uuid primary key,display_name text,archived_at timestamptz,access_tier text,${flags.map(k=>k+' boolean not null default false').join(',')});
+ create table profiles(class_id text primary key,display_name text,archived_at timestamptz,access_tier text,${flags.map(k=>k+' boolean not null default false').join(',')});
  create table booking_passes(id uuid primary key default gen_random_uuid(),student_id uuid,student_name text,student_email text,total_credits integer,used_credits integer default 0,session_length_minutes integer default 70,status text default 'active',expires_at timestamptz,created_by uuid,token_hash text,booking_slug text,created_at timestamptz default now());
  insert into auth.users values('${owner}','owner@example.com'),('${student}','student@example.com'),('${other}','other@example.com');
  insert into user_roles values('${owner}','admin');

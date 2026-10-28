@@ -72,7 +72,7 @@ declare t teacher_post_session_tasks;p profiles;begin
  if _field='recap_done' then t.recap_done=_value;elsif _field='notes_done' then t.notes_done=_value;else t.work_assigned=_value;end if;
  elsif _action='attach_transcript' and _doc_id ~ '^[A-Za-z0-9_-]{10,200}$' then t.transcript_doc_id=_doc_id;t.transcript_source='manual';t.transcript_status='linked';
  elsif _action='match_student' then
- select * into p from profiles where class_id=_student_id and archived_at is null;
+ select * into p from profiles where class_id=_student_id::text and archived_at is null;
  if not found or has_role(_student_id,'admin') then raise exception 'invalid_student';end if;
  t.student_id=_student_id;t.student_name=p.display_name;t.match_state='matched';t.manual_match=true;
  else raise exception 'invalid_action';end if;
@@ -129,7 +129,7 @@ declare f jsonb;accepted jsonb:='[]';unresolved jsonb:='[]';student uuid;slug te
  for f in select value from jsonb_array_elements(_folders) loop
  student:=(f->>'student_id')::uuid;slug:=f->>'local_slug';
  if slug !~ '^[a-z0-9][a-z0-9_-]{0,100}$' or (f->>'folder_id') !~ '^[A-Za-z0-9_-]{10,200}$'
- or not exists(select 1 from profiles where class_id=student and archived_at is null) or has_role(student,'admin')
+ or not exists(select 1 from profiles where class_id=student::text and archived_at is null) or has_role(student,'admin')
  or (select count(*) from jsonb_array_elements(_folders) x where x->>'local_slug'=slug or x->>'student_id'=student::text)>1
  or exists(select 1 from teacher_student_folders where owner_id=_owner and ((local_slug=slug and student_id<>student) or (student_id=student and local_slug<>slug))) then
  unresolved:=unresolved||jsonb_build_array(jsonb_build_object('slug',slug,'reason','existing_or_manifest_identity_conflict'));continue;end if;

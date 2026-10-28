@@ -5,7 +5,7 @@ DECLARE p public.profiles%rowtype; k text; wanted jsonb; actual jsonb; practice 
 BEGIN
  LOCK TABLE public.user_roles IN SHARE MODE;
  IF NOT EXISTS(SELECT 1 FROM public.user_roles WHERE user_id=_actor AND role='admin') THEN RAISE EXCEPTION 'forbidden'; END IF;
- SELECT * INTO p FROM public.profiles WHERE class_id=_student FOR UPDATE;
+ SELECT * INTO p FROM public.profiles WHERE class_id=_student::text FOR UPDATE;
  IF NOT FOUND OR p.archived_at IS NOT NULL OR EXISTS(SELECT 1 FROM public.user_roles WHERE user_id=_student AND role='admin') THEN RAISE EXCEPTION 'ineligible_student'; END IF;
  actual=to_jsonb(p);
  IF p.access_tier IS DISTINCT FROM _expected_tier THEN RAISE EXCEPTION 'access_conflict_refresh'; END IF;
@@ -25,8 +25,8 @@ BEGIN
  END IF;
  -- Tier drift trigger establishes defaults on a changed tier. Apply custom switches
  -- in a second statement under the same row lock/transaction, never a partial save.
- UPDATE public.profiles SET access_tier=_tier WHERE class_id=_student;
- UPDATE public.profiles SET has_drill_access=(wanted->>'has_drill_access')::boolean,has_practice_access=(wanted->>'has_practice_access')::boolean,has_classroom_access=(wanted->>'has_classroom_access')::boolean,has_chat_access=(wanted->>'has_chat_access')::boolean,has_schedule_access=(wanted->>'has_schedule_access')::boolean WHERE class_id=_student RETURNING * INTO p;
+ UPDATE public.profiles SET access_tier=_tier WHERE class_id=_student::text;
+ UPDATE public.profiles SET has_drill_access=(wanted->>'has_drill_access')::boolean,has_practice_access=(wanted->>'has_practice_access')::boolean,has_classroom_access=(wanted->>'has_classroom_access')::boolean,has_chat_access=(wanted->>'has_chat_access')::boolean,has_schedule_access=(wanted->>'has_schedule_access')::boolean WHERE class_id=_student::text RETURNING * INTO p;
  actual=to_jsonb(p);
  IF actual->>'access_tier' IS DISTINCT FROM _tier THEN RAISE EXCEPTION 'access_verification_failed'; END IF;
  FOREACH k IN ARRAY ARRAY['has_drill_access','has_practice_access','has_classroom_access','has_chat_access','has_schedule_access'] LOOP
@@ -56,7 +56,7 @@ BEGIN
  IF _apply IS NULL OR _operation IS NULL OR _delta IS NULL OR _delta NOT BETWEEN 1 AND 50 THEN RAISE EXCEPTION 'invalid_add'; END IF;
  -- Serializes the same operation even if an altered retry names another pass.
  PERFORM pg_advisory_xact_lock(hashtextextended(_actor::text||_operation::text,0));
- PERFORM 1 FROM public.profiles WHERE class_id=_student FOR UPDATE;
+ PERFORM 1 FROM public.profiles WHERE class_id=_student::text FOR UPDATE;
  SELECT * INTO p FROM public.booking_passes WHERE id=_pass FOR UPDATE;
  IF NOT FOUND OR p.student_id IS DISTINCT FROM _student THEN RAISE EXCEPTION 'pass_owner_mismatch'; END IF;
 
@@ -76,7 +76,7 @@ BEGIN
   INSERT INTO public.teacher_home_credit_adds(owner_id,pass_id,operation_key,student_id,delta,payload_hash,receipt) VALUES(_actor,_pass,_operation,_student,_delta,h,r);
   RETURN r||jsonb_build_object('receipt',null,'pass',to_jsonb(p),'not_applied',true);
  END IF;
- PERFORM 1 FROM public.profiles WHERE class_id=_student AND archived_at IS NULL FOR UPDATE;
+ PERFORM 1 FROM public.profiles WHERE class_id=_student::text AND archived_at IS NULL FOR UPDATE;
  IF NOT FOUND OR EXISTS(SELECT 1 FROM public.user_roles WHERE user_id=_student AND role='admin') THEN RAISE EXCEPTION 'ineligible_student'; END IF;
  IF p.status NOT IN ('active','paused','exhausted') OR (p.expires_at IS NOT NULL AND p.expires_at<=now()) THEN RAISE EXCEPTION 'pass_not_addable'; END IF;
  UPDATE public.booking_passes SET total_credits=total_credits+_delta,status=CASE WHEN status='exhausted' THEN 'active' ELSE status END WHERE id=_pass RETURNING * INTO p;
@@ -93,7 +93,7 @@ DECLARE p public.booking_passes%rowtype; student public.profiles%rowtype;
 BEGIN
  LOCK TABLE public.user_roles IN SHARE MODE;
  IF NOT EXISTS(SELECT 1 FROM public.user_roles WHERE user_id=_actor AND role='admin') THEN RAISE EXCEPTION 'forbidden'; END IF;
- SELECT * INTO student FROM public.profiles WHERE class_id=_student FOR UPDATE;
+ SELECT * INTO student FROM public.profiles WHERE class_id=_student::text FOR UPDATE;
  IF NOT FOUND OR student.archived_at IS NOT NULL OR EXISTS(SELECT 1 FROM public.user_roles WHERE user_id=_student AND role='admin') THEN RAISE EXCEPTION 'ineligible_student'; END IF;
  IF _session_minutes IS NULL OR _session_minutes NOT BETWEEN 15 AND 480 OR (_expires_at IS NOT NULL AND _expires_at<=now()) THEN RAISE EXCEPTION 'invalid_pass_terms'; END IF;
  IF _credits IS NULL OR _credits NOT BETWEEN 1 AND 50 OR _slug IS NULL OR _token_hash IS NULL THEN RAISE EXCEPTION 'invalid_pass'; END IF;
@@ -113,7 +113,7 @@ DECLARE p public.booking_passes%rowtype;
 BEGIN
  LOCK TABLE public.user_roles IN SHARE MODE;
  IF NOT EXISTS(SELECT 1 FROM public.user_roles WHERE user_id=_actor AND role='admin') THEN RAISE EXCEPTION 'forbidden'; END IF;
- PERFORM 1 FROM public.profiles WHERE class_id=_student AND archived_at IS NULL FOR UPDATE;
+ PERFORM 1 FROM public.profiles WHERE class_id=_student::text AND archived_at IS NULL FOR UPDATE;
  IF NOT FOUND OR EXISTS(SELECT 1 FROM public.user_roles WHERE user_id=_student AND role='admin') THEN RAISE EXCEPTION 'ineligible_student'; END IF;
  SELECT * INTO p FROM public.booking_passes WHERE id=_pass FOR UPDATE;
  IF NOT FOUND OR p.student_id IS DISTINCT FROM _student THEN RAISE EXCEPTION 'pass_owner_mismatch'; END IF;
@@ -129,7 +129,7 @@ DECLARE p public.booking_passes%rowtype; old_total integer; old_used integer; ol
 BEGIN
  LOCK TABLE public.user_roles IN SHARE MODE;
  IF NOT EXISTS(SELECT 1 FROM public.user_roles WHERE user_id=_actor AND role='admin') THEN RAISE EXCEPTION 'forbidden'; END IF;
- PERFORM 1 FROM public.profiles WHERE class_id=_student AND archived_at IS NULL FOR UPDATE;
+ PERFORM 1 FROM public.profiles WHERE class_id=_student::text AND archived_at IS NULL FOR UPDATE;
  IF NOT FOUND OR EXISTS(SELECT 1 FROM public.user_roles WHERE user_id=_student AND role='admin') THEN RAISE EXCEPTION 'ineligible_student'; END IF;
  SELECT * INTO p FROM public.booking_passes WHERE id=_pass FOR UPDATE;
  IF NOT FOUND OR p.student_id IS DISTINCT FROM _student THEN RAISE EXCEPTION 'pass_owner_mismatch'; END IF;
