@@ -82,6 +82,8 @@ const clearConversationFromHome = vi.fn(async () => {});
 vi.mock("@/hooks/useInbox", () => ({
   useInbox: () => ({
     clearConversationFromHome,
+    // The canonical unread-conversation total every badge shows.
+    unreadCount: thread.unread ? 1 : 0,
     conversations: [
       {
         id: CONVO_ID,

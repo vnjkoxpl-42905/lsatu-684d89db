@@ -1,8 +1,10 @@
+vi.mock('@/hooks/useStudentWorkState', () => ({ useLoadedStudentWorkAcknowledgment: vi.fn(), useLoadedPracticeTestAcknowledgment: vi.fn() }));
 import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { ActivityRunner } from "./ActivityRunner";
-import { readCachedRuns, createPracticeRun, cachePracticeRun } from "../conditionals/practiceStore";
+import { readCachedRuns, createPracticeRun, cachePracticeRun, isConditionalRephraseRun } from "../conditionals/practiceStore";
+import type { ActivityAssignment } from '../api/types';
 import { getGeneralPhase } from "../conditionals/generalPhases";
 import { buildPaperDiagramChoices, buildLegacyPaperDiagramChoices } from "../worlds/switchyard/diagramChoices";
 
@@ -57,6 +59,44 @@ function mount(id: string) {
 function run() { return createPracticeRun("user-1", "general", [], { sourceUrl: "/activities/assign-1", items: [item] }); }
 describe("saved General sessions", () => {
   beforeEach(() => { localStorage.clear(); vi.clearAllMocks(); cacheFails = false; listItemResponses.mockResolvedValue([]); activityState.assignment = assignment; sync.mockResolvedValue(undefined); });
+  it('resumes an owned legacy standalone snapshot inside the bootcamp without rewriting it or its original assignment', async () => {
+    const saved = createPracticeRun('user-1', 'general', [], { sourceUrl: '/activities/11111111-1111-4111-8111-111111111111', items: [item] });
+    const definition = { ...assignment, id: 'authored-practice', items: [{ ...item, prompt: 'A revised authored prompt.' }] } as ActivityAssignment;
+    render(<MemoryRouter initialEntries={[`/bootcamp/conditionals/opening-practice?assignment=course-row&edition=full-conditionals-v3&practiceRun=${saved.id}`]}><ActivityRunner practiceDefinition={definition} practiceUserId="user-1" localOnly timing="timed" /></MemoryRouter>);
+    expect(await screen.findByRole('button', { name: /diagrammed it/ })).toBeInTheDocument();
+    expect(screen.getByText(item.prompt)).toBeInTheDocument();
+    expect(screen.queryByText('A revised authored prompt.')).not.toBeInTheDocument();
+    expect(screen.getByText('Phase 1: Untimed')).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: /diagrammed it/ }));
+    expect(readCachedRuns('user-1')[0].general).toEqual(saved.general);
+    expect(sync).not.toHaveBeenCalled();
+    expect(listItemResponses).not.toHaveBeenCalled();
+    expect(recordItemResponse).not.toHaveBeenCalled();
+    expect(completeAssignment).not.toHaveBeenCalled();
+  });
+  it('recognizes only General Rephrase snapshots for the central collection', () => {
+    const saved = run();
+    expect(isConditionalRephraseRun({ ...saved, general: { ...saved.general!, collectionId: 'conditional-rephrase' } })).toBe(true);
+    expect(isConditionalRephraseRun({ ...saved, general: { ...saved.general!, sourceUrl: '/unrelated' } })).toBe(false);
+    expect(isConditionalRephraseRun({ ...saved, mode: 'linking' })).toBe(false);
+  });
+  it('resumes a bootcamp-created General snapshot through the current owned standalone assignment', async () => {
+    const saved = createPracticeRun('user-1', 'general', [], { sourceUrl: '/bootcamp/conditionals/centre/rephrase', collectionId: 'conditional-rephrase', items: [item] });
+    mount(saved.id);
+    expect(await screen.findByRole('button', { name: /diagrammed it/ })).toBeInTheDocument();
+    expect(readCachedRuns('user-1')[0].general!.sourceUrl).toBe('/bootcamp/conditionals/centre/rephrase');
+    expect(recordItemResponse).not.toHaveBeenCalled();
+    expect(completeAssignment).not.toHaveBeenCalled();
+  });
+  it('does not resume a broader old snapshot through an exact topic assignment', async () => {
+    const saved = createPracticeRun('user-1', 'general', [], { sourceUrl: '/activities/11111111-1111-4111-8111-111111111111', items: [item, { ...item, order: 2 }] });
+    const definition = { ...assignment, id: 'authored-practice' } as ActivityAssignment;
+    render(<MemoryRouter initialEntries={[`/bootcamp/conditionals/opening-practice?practiceRun=${saved.id}`]}><ActivityRunner practiceDefinition={definition} localOnly practiceUserId="user-1" allowedItemOrders={[1]} /></MemoryRouter>);
+    expect(await screen.findByRole('alert')).toHaveTextContent('outside this assignment');
+    expect(screen.queryByRole('button', { name: /diagrammed it/ })).not.toBeInTheDocument();
+    expect(readCachedRuns('user-1')[0].general!.items).toHaveLength(2);
+    expect(recordItemResponse).not.toHaveBeenCalled();
+  });
   it("restores paper stage, selected choices, feedback and completed state without touching assignment scores", async () => {
     const saved = run();
     let page = mount(saved.id);

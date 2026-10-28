@@ -340,6 +340,10 @@
     "reason": "link"
   },
   {
+    "path": "docs/verification/my-work-notes/sync-preview.log",
+    "reason": "excluded file"
+  },
+  {
     "path": "node_modules",
     "reason": "link"
   },
@@ -361,6 +365,10 @@
   },
   {
     "path": "supabase/functions/handle-email-events/index.ts",
+    "reason": "credential assignment redacted in snapshot"
+  },
+  {
+    "path": "supabase/functions/teacher-post-session-sync/desk.ts",
     "reason": "credential assignment redacted in snapshot"
   }
 ]

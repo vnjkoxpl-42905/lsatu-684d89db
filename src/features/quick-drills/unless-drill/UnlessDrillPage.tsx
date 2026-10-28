@@ -1,8 +1,10 @@
 import UnlessDrill from "./UnlessDrill";
+import { useClassroomDestinationAcknowledgment } from '@/hooks/useClassroomDestinationAcknowledgment';
 import "@/features/conditional-refresher/conditional-refresher.css";
 
 /** The Unless drill on its own, so it can be assigned without the rest of the refresher. */
 export default function UnlessDrillPage() {
+  useClassroomDestinationAcknowledgment(true);
   return (
     <div className="cir-root">
       <div className="cir-shell">

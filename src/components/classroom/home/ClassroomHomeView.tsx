@@ -1,20 +1,32 @@
 /**
- * Classroom Home, presentational half.
+ * Classroom Home for a student, presentational half.
  *
  * Takes a finished model and renders it. Split from the live hook so the whole
  * page can be driven with fixtures in a test, and so the only thing that can
  * put a number on this screen is the model.
  *
- * Layout follows the design handoff: the top panel, assigned work, an optional
- * message from Joshua, then the week band. Class names are all `classroom-home-*`;
- * the values live in `home.css`.
+ * Reading order is the priority order, in the DOM and therefore for keyboard
+ * and screen-reader users, at every width: a short greeting, then the ONE
+ * featured next action on the ink surface and what comes after it, then the
+ * practice tools and supporting context (next session, test day, a message,
+ * the week). On a wide screen the second half sits in a quieter right rail;
+ * on a phone it simply follows. The "Up next" list never repeats the featured
+ * row. Class names are all `classroom-home-*`; the values live in `home.css`.
  */
 
 import * as React from "react";
-import { ArrowRight, Bell, CalendarPlus, Timer, Zap } from "lucide-react";
+import {
+  ArrowRightIcon,
+  BellIcon,
+  CalendarIcon,
+  LightningBoltIcon,
+  ReloadIcon,
+  TimerIcon,
+} from "@radix-ui/react-icons";
 import { SwipeableDeleteRow } from "@/components/inbox/SwipeableDeleteRow";
 import type {
   ClassroomHomeModel,
+  HomeHero,
   HomeMessage,
   HomeRow,
 } from "./homeModel";
@@ -24,6 +36,8 @@ import { markReportCardSeen } from "./reportCardSeen";
 import { launchDrill } from "@/lib/drillLaunch";
 import { pickContinueWork } from "./homeModel";
 import { nextActionFor } from "./homeNextAction";
+import { useHomeFeedback } from "./useHomeFeedback";
+import { HomeWeekStrip } from "./HomeWeekStrip";
 import QuestionFinder, { type QuestionFinderHandle } from "@/components/questionfinder/QuestionFinder";
 
 function WorkRow({
@@ -37,11 +51,20 @@ function WorkRow({
   onMarkDone?: (key: string) => void;
   completing?: boolean;
 }) {
-  // The row is one button, so the "Done" control has to sit beside it rather
-  // than inside it. Clearing work is a real write, so it never rides along with
-  // a navigation click.
+  // The row is one button, so the "Mark done" control sits beside it rather
+  // than inside it. Clearing work is a real write, so it never rides along
+  // with a navigation click.
+  const status = row.overdue
+    ? "Overdue"
+    : row.dueToday
+      ? "Due today"
+      : row.workStatus === "in_progress"
+        ? "In progress"
+        : row.isNew
+          ? "New"
+          : null;
   return (
-    <div className="classroom-home-row-wrap">
+    <li className="classroom-home-row-wrap">
       <button
         type="button"
         className="classroom-home-row"
@@ -55,11 +78,12 @@ function WorkRow({
           <span className="classroom-home-row-title">{row.title}</span>
           <span className="classroom-home-row-meta">{row.meta}</span>
         </span>
-        <span
-          className={`classroom-home-pill${row.emphasis ? " classroom-home-pill-accent" : ""}`}
-        >
-          {row.actionLabel}
-        </span>
+        {status ? (
+          <span className={`classroom-home-status${row.overdue || row.dueToday ? " classroom-home-status-urgent" : ""}`}>
+            {status}
+          </span>
+        ) : null}
+        <span className="classroom-home-pill">{row.actionLabel}</span>
       </button>
       {row.canComplete && onMarkDone ? (
         <button
@@ -72,22 +96,9 @@ function WorkRow({
           {completing ? "Saving…" : "Mark done"}
         </button>
       ) : null}
-    </div>
+    </li>
   );
 }
-
-function MessagePreviewBody({ message }: { message: HomeMessage }) {
-  return (
-    <span className="classroom-home-message-body">
-      <span className="classroom-home-message-head">
-        <b>{message.from}</b>
-        <time>{message.timeLabel}</time>
-      </span>
-      <span className="classroom-home-message-text">{`“${message.body}”`}</span>
-    </span>
-  );
-}
-
 
 function MessagePreviewButton({
   message,
@@ -102,14 +113,16 @@ function MessagePreviewButton({
       className="classroom-home-message"
       onClick={() => onOpen(message.route)}
     >
-      <i className="classroom-home-shine" aria-hidden="true" />
-      <span className="classroom-home-avatar">
+      <span className="classroom-home-avatar" aria-hidden="true">
         {message.initial}
-        {message.unread ? (
-          <i className="classroom-home-avatar-dot" aria-hidden="true" />
-        ) : null}
       </span>
-      <MessagePreviewBody message={message} />
+      <span className="classroom-home-message-body">
+        <span className="classroom-home-message-head">
+          <b>{message.from}</b>
+          <time>{message.timeLabel}</time>
+        </span>
+        <span className="classroom-home-message-text">{message.body}</span>
+      </span>
     </button>
   );
 }
@@ -128,33 +141,58 @@ function nextSessionLabel(iso: string) {
   return withinWeek ? `${day} ${time}` : `${day}, ${time}`;
 }
 
-function DailyCount({ value }: { value: number }) {
-  const [shown, setShown] = React.useState(value);
-  React.useEffect(() => {
-    const day = new Intl.DateTimeFormat("en-CA").format(new Date());
-    const key = `classroom-home:test-days-animated:${day}`;
-    const reduced = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
-    try {
-      if (reduced || window.localStorage.getItem(key)) return;
-      window.localStorage.setItem(key, "1");
-    } catch {
-      if (reduced) return;
-    }
-    let frame = 0;
-    let start: number | null = null;
-    setShown(0);
-    const tick = (time: number) => {
-      start ??= time;
-      const progress = Math.min(1, (time - start) / 650);
-      setShown(Math.round(value * progress));
-      if (progress < 1) frame = requestAnimationFrame(tick);
-    };
-    frame = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(frame);
-  }, [value]);
-  return <strong aria-label={String(value)}>{shown}</strong>;
+function HeroProgress({ progress }: { progress: NonNullable<HomeHero["progress"]> }) {
+  return (
+    <aside className="classroom-home-progress" aria-label="Progress">
+      <span className="classroom-home-progress-count">
+        <b>{progress.completed ?? progress.total}</b>
+        <span>
+          {progress.completed === null
+            ? progress.unit
+            : `of ${progress.total} ${progress.unit}`}
+        </span>
+      </span>
+      {progress.completed !== null ? (
+        <div
+          className="classroom-home-ticks"
+          role="progressbar"
+          aria-label={`${progress.completed} of ${progress.total} ${progress.unit} answered`}
+          aria-valuemin={0}
+          aria-valuemax={progress.total}
+          aria-valuenow={progress.completed}
+        >
+          {Array.from({ length: progress.total }, (_, index) => (
+            <span
+              key={index}
+              className={
+                index < (progress.completed ?? 0)
+                  ? "classroom-home-tick classroom-home-tick-done"
+                  : "classroom-home-tick"
+              }
+            />
+          ))}
+        </div>
+      ) : null}
+    </aside>
+  );
 }
 
+function WorkSkeleton() {
+  return (
+    <div className="classroom-home-skeleton" aria-busy="true" aria-label="Loading your work">
+      <span className="classroom-home-skeleton-feature" aria-hidden="true" />
+      {[0, 1, 2].map((index) => (
+        <span key={index} className="classroom-home-skeleton-row" aria-hidden="true">
+          <i />
+          <span>
+            <i />
+            <i />
+          </span>
+        </span>
+      ))}
+    </div>
+  );
+}
 
 export function ClassroomHomeView({
   model,
@@ -164,30 +202,49 @@ export function ClassroomHomeView({
   onClearMessage,
   completingKey,
   onRetryWork,
+  onRefresh,
+  refreshing,
+  actorId,
+  permissionsResolved = !loading,
 }: {
   model: ClassroomHomeModel;
   loading: boolean;
+  actorId?: string | null;
+  permissionsResolved?: boolean;
   onOpen: (route: string) => void;
   onMarkDone?: (key: string) => void;
   onClearMessage?: (conversationId: string) => void;
   completingKey?: string | null;
   onRetryWork?: () => void;
+  /** Re-read the student's own assignments; Home has no push for them. */
+  onRefresh?: () => void;
+  refreshing?: boolean;
 
   /** Kept for callers; the hero no longer duplicates the sidebar's Assigned work link. */
   onSeeAllWork?: () => void;
 }) {
+  const rootRef = React.useRef<HTMLDivElement>(null);
+  useHomeFeedback(rootRef);
   const finderRef = React.useRef<QuestionFinderHandle>(null);
   const continueRow = pickContinueWork(
     model.continueRow !== undefined ? (model.continueRow ? [model.continueRow] : []) : model.rows,
     model.access,
     model.isAdmin,
   );
-  // The Continue card already offers this work at the top of the page; a hero
-  // for the same item would list it a second time above its own row.
-  const hero =
-    !loading && !model.workFailed && model.hero && !(continueRow && model.hero.row.route === continueRow.route)
-      ? model.hero
-      : null;
+  const showWork = !loading && !model.workFailed;
+  /*
+   * One featured item. Continue (the earliest real deadline) wins; the hero is
+   * shown only when there is no Continue, or when it names the same row and
+   * can add its prose and progress to it. Either way the featured key is left
+   * out of the list below, so no assignment is offered twice.
+   */
+  const featuredContinue = showWork ? continueRow : null;
+  const heroForContinue =
+    featuredContinue && model.hero && model.hero.row.key === featuredContinue.key ? model.hero : null;
+  const featuredHero = showWork && !featuredContinue ? model.hero : null;
+  const featuredKey = featuredContinue?.key ?? featuredHero?.row.key ?? null;
+  const upNext = model.rows.filter((row) => row.key !== featuredKey);
+  const remainingNew = Math.max(0, model.newCount - ((featuredContinue ?? featuredHero?.row)?.isNew ? 1 : 0));
   const [briefing, setBriefing] = React.useState<SectionBriefingData | null>(null);
 
   /**
@@ -195,9 +252,6 @@ export function ClassroomHomeView({
    * instructions. Opening it raises those instructions over Home instead of
    * navigating: the student is one Escape from where they were, and Enter is
    * the only thing that starts a clock.
-   *
-   * Keyed by route so the hero, the work rows, and anything else that opens by
-   * route all behave the same without a second callback threaded through.
    */
   const briefingByRoute = React.useMemo(() => {
     const map = new Map<string, SectionBriefingData>();
@@ -219,14 +273,7 @@ export function ClassroomHomeView({
     [briefingByRoute, onOpen],
   );
 
-  /*
-   * Opening a Report Card is what closes it.
-   *
-   * "Assigned to you" is a list of work outstanding, and a card she has read is
-   * not outstanding. There is nothing for her to tick off, so the row has no
-   * Done control: pressing through to the card is the whole signal, and the
-   * Section Library keeps the Attempt afterwards.
-   */
+  /* Opening a Report Card is what closes it; there is nothing to tick off. */
   const handleOpenRow = React.useCallback(
     (row: { key: string; route: string }) => {
       const report = /^report:(.+):(\d+)$/.exec(row.key);
@@ -238,13 +285,15 @@ export function ClassroomHomeView({
 
   const testDate = model.daysToTest;
   const testDateLabel = testDate === 1 ? "day to test day" : "days to test day";
-  const nextAction = continueRow ? nextActionFor(continueRow) : null;
+  const nextAction = featuredContinue ? nextActionFor(featuredContinue) : null;
+  const featuredRow = featuredContinue ?? featuredHero?.row ?? null;
+  const featuredHeroData = heroForContinue ?? featuredHero;
+  const booked = !model.isAdmin && model.homeBooking.state === "booked" ? model.homeBooking : null;
+  const showSummary = !model.workFailed && !!model.workSummary && model.workSummary.open > 0;
+  const hasContext = showSummary || !!booked || testDate !== null;
 
   return (
-    <div data-motion-group data-motion-ready={loading ? "false" : "true"} className="classroom-home">
-      <div className="classroom-home-glow classroom-home-glow-a" aria-hidden="true" />
-      <div className="classroom-home-glow classroom-home-glow-b" aria-hidden="true" />
-
+    <div ref={rootRef} data-motion-skip data-role-home="student" className="classroom-home classroom-home-student">
       {briefing ? (
         <SectionBriefing
           briefing={briefing}
@@ -253,76 +302,163 @@ export function ClassroomHomeView({
         />
       ) : null}
 
-      <section data-motion-enter data-motion-group className="classroom-home-top" aria-label="Today">
+      <section className="classroom-home-top" aria-label="Today" data-home-reveal>
         <header className="classroom-home-masthead">
-          <div className="classroom-home-masthead-text">
-            <span className="classroom-home-eyebrow">
-              <i className="classroom-home-eyebrow-dot" aria-hidden="true" />
-              {model.dateline}
-            </span>
-            <h1 data-motion-item className="classroom-home-title">
-              {model.greeting}
-              {model.displayName ? <>, <em>{model.displayName}</em>.</> : "."}
-            </h1>
-            <p data-motion-item className="classroom-home-subtitle" role={model.workFailed ? "alert" : undefined}>{model.subtitle}</p>
-            {model.workFailed && onRetryWork ? (
-              <button type="button" className="classroom-home-work-retry" onClick={onRetryWork}>Retry assigned work</button>
-            ) : model.workSummary && model.workSummary.open > 0 ? (
-              <p className="classroom-home-work-summary">
-                {model.workSummary.open} open {model.workSummary.open === 1 ? 'assignment' : 'assignments'}
-                {' · '}{model.workSummary.inProgress} with saved work
-              </p>
-            ) : null}
-            {!model.isAdmin && model.homeBooking.state === "booked" ? (
-              <button
-                type="button"
-                className="classroom-home-next-session-line"
-                onClick={() => handleOpen("/booking")}
-              >
-                Next session: {nextSessionLabel(model.homeBooking.startsAt)}
-              </button>
-            ) : null}
-            {testDate !== null ? (
-              <div className="classroom-home-stat-row">
-                <div
-                  className="classroom-home-stat classroom-home-test-days"
-                  aria-label={`${testDate} ${testDateLabel}`}
+          <p className="classroom-home-dateline">
+            <span>{model.dateline}</span>
+          </p>
+          <h1 className="classroom-home-title">
+            {model.greeting}
+            {model.displayName ? <>, <span>{model.displayName}</span>.</> : "."}
+          </h1>
+          <p className="classroom-home-subtitle" role={model.workFailed ? "alert" : undefined}>{model.subtitle}</p>
+          {model.workFailed && onRetryWork ? (
+            <button type="button" className="classroom-home-quiet-button classroom-home-work-retry" onClick={onRetryWork}>
+              <ReloadIcon aria-hidden="true" />
+              Retry assigned work
+            </button>
+          ) : null}
+        </header>
+      </section>
+
+      <div className="classroom-home-grid">
+        <section className="classroom-home-work" aria-label="Assigned to you" data-home-reveal>
+          {loading ? (
+            <WorkSkeleton />
+          ) : (
+            <>
+              {featuredRow ? (
+                <section
+                  className="classroom-home-focus classroom-home-feature"
+                  aria-label={featuredContinue ? "Next assignment" : "Pick up where you left off"}
                 >
-                  <DailyCount value={testDate} />
-                  <span>{testDateLabel}</span>
-                </div>
-              </div>
-            ) : null}
-          </div>
-          <div data-motion-item className="classroom-home-top-tools">
-            <div className="classroom-home-finderbar">
-              <QuestionFinder ref={finderRef} returnTo="/classroom" />
-            </div>
-            {continueRow && !loading && !model.workFailed ? (
-              <button
-                type="button"
-                className="classroom-home-action classroom-home-action-continue"
-                aria-label={`${nextAction?.label ?? 'Open'} assigned work`}
-                onClick={() => handleOpenRow(continueRow)}
-              >
-                <span className="classroom-home-continue-copy">
-                  <span className="classroom-home-action-top">
-                    {continueRow.overdue
-                      ? "OVERDUE"
-                      : continueRow.dueToday
-                        ? "DUE TODAY"
-                        : "ASSIGNED TO YOU"}
-                  </span>
-                  <strong>{continueRow.title}</strong>
-                  <small>{continueRow.meta}</small>
-                  {nextAction ? <small>{nextAction.reason}</small> : null}
-                </span>
-                <span className="classroom-home-continue-label">{nextAction?.label}</span>
-                <span className="classroom-home-continue-arrow">
-                  <ArrowRight size={21} aria-hidden="true" />
-                </span>
-              </button>
-            ) : null}
+                  <div className="classroom-home-feature-main">
+                    <span className="classroom-home-feature-eyebrow">
+                      {featuredContinue
+                        ? featuredContinue.overdue
+                          ? "Overdue"
+                          : featuredContinue.dueToday
+                            ? "Due today"
+                            : featuredContinue.workStatus === "in_progress"
+                              ? "In progress"
+                              : "Next assignment"
+                        : featuredHero!.eyebrow}
+                    </span>
+                    <h2>{featuredRow.title}</h2>
+                    <p className="classroom-home-feature-meta">
+                      {featuredHeroData ? (
+                        <>
+                          <span className="classroom-home-tag">{featuredHeroData.kindLabel.toLowerCase().replace(/^./, (letter) => letter.toUpperCase())}</span>
+                          {featuredHeroData.meta}
+                        </>
+                      ) : (
+                        featuredRow.meta
+                      )}
+                    </p>
+                    {nextAction && !featuredHeroData?.prose && !featuredContinue?.dueToday && !featuredContinue?.overdue ? <p className="classroom-home-feature-reason">{nextAction.reason}</p> : null}
+                    {featuredHeroData?.prose ? (
+                      <p className="classroom-home-feature-prose">{featuredHeroData.prose}</p>
+                    ) : null}
+                    <div className="classroom-home-focus-actions">
+                      {featuredContinue ? (
+                        <button
+                          type="button"
+                          className="classroom-home-cta"
+                          aria-label={`${nextAction?.label ?? "Open"} assigned work`}
+                          onClick={() => handleOpenRow(featuredContinue)}
+                        >
+                          {nextAction?.label ?? "Open"}
+                          <ArrowRightIcon aria-hidden="true" />
+                        </button>
+                      ) : (
+                        <button
+                          type="button"
+                          className="classroom-home-cta"
+                          onClick={() => handleOpenRow(featuredHero!.row)}
+                        >
+                          {featuredHero!.primaryLabel}
+                          <ArrowRightIcon aria-hidden="true" />
+                        </button>
+                      )}
+                      {featuredRow.canComplete && onMarkDone ? (
+                        <button
+                          type="button"
+                          className="classroom-home-focus-link"
+                          disabled={completingKey === featuredRow.key}
+                          aria-label={`Mark ${featuredRow.title} as done`}
+                          onClick={() => onMarkDone(featuredRow.key)}
+                        >
+                          {completingKey === featuredRow.key ? "Saving…" : "Mark done"}
+                        </button>
+                      ) : null}
+                    </div>
+                  </div>
+                  {featuredHeroData?.progress ? <HeroProgress progress={featuredHeroData.progress} /> : null}
+                </section>
+              ) : null}
+
+              <section className="classroom-home-region classroom-home-upnext" aria-labelledby="classroom-home-upnext-title">
+                <header className="classroom-home-region-head">
+                  <h2 id="classroom-home-upnext-title">{featuredRow ? "Up next" : "Assigned to you"}</h2>
+                  {!model.workFailed && remainingNew > 0 ? (
+                    <span className="classroom-home-badge">{remainingNew} new</span>
+                  ) : null}
+                  {onRefresh ? (
+                    <button
+                      type="button"
+                      className="classroom-home-quiet-button classroom-home-region-action"
+                      onClick={onRefresh}
+                      disabled={refreshing}
+                    >
+                      <ReloadIcon aria-hidden="true" />
+                      {refreshing ? "Refreshing" : "Refresh"}
+                    </button>
+                  ) : null}
+                </header>
+                {upNext.length ? (
+                  <ul className="classroom-home-rows">
+                    {upNext.map((row) => (
+                      <WorkRow
+                        key={row.key}
+                        row={row}
+                        onOpen={() => handleOpenRow(row)}
+                        onMarkDone={onMarkDone}
+                        completing={completingKey === row.key}
+                      />
+                    ))}
+                  </ul>
+                ) : (
+                  <div className="classroom-home-empty">
+                    <p>
+                      {model.workFailed
+                        ? "Some assigned work could not load. Retry above."
+                        : featuredRow
+                          ? "Nothing else is assigned right now."
+                          : "Nothing assigned right now."}
+                    </p>
+                    {!model.workFailed && !featuredRow && model.access.drill ? (
+                      <p className="classroom-home-empty-hint">Smart Drill builds practice from your recent answers.</p>
+                    ) : null}
+                  </div>
+                )}
+                {model.assignedWorkRoute ? (
+                  <footer className="classroom-home-region-foot">
+                    <button type="button" className="classroom-home-more" onClick={() => onOpen(model.assignedWorkRoute!)}>
+                      View all assigned work
+                      <ArrowRightIcon aria-hidden="true" />
+                    </button>
+                  </footer>
+                ) : null}
+              </section>
+            </>
+          )}
+        </section>
+
+        <aside className="classroom-home-rail" aria-label="Practice and your week">
+          <section className="classroom-home-tools" aria-label="Practice tools" data-home-reveal>
+            {permissionsResolved && model.access.drill ? <div className="classroom-home-finderbar">
+              <QuestionFinder key={actorId ?? "guest"} ref={finderRef} enabled={permissionsResolved && model.access.drill} actorId={actorId} returnTo="/classroom" />
+            </div> : null}
             <nav className="classroom-home-actions" aria-label="Practice actions">
               {model.access.drill ? (
                 <>
@@ -339,7 +475,7 @@ export function ClassroomHomeView({
                       )
                     }
                   >
-                    <Zap size={16} aria-hidden="true" />
+                    <LightningBoltIcon aria-hidden="true" />
                     Smart Drill
                   </button>
                   <button
@@ -348,7 +484,7 @@ export function ClassroomHomeView({
                     aria-label="Timed section"
                     onClick={() => handleOpen("/testing")}
                   >
-                    <Timer size={16} aria-hidden="true" />
+                    <TimerIcon aria-hidden="true" />
                     Timed section
                   </button>
                 </>
@@ -360,25 +496,25 @@ export function ClassroomHomeView({
                   aria-label={`Inbox, ${model.unreadMessages} unread`}
                   onClick={() => handleOpen("/inbox")}
                 >
-                  <Bell size={16} aria-hidden="true" />
+                  <BellIcon aria-hidden="true" />
                   Inbox
-                  {model.unreadMessages > 0 ? <span>{model.unreadMessages}</span> : null}
+                  {model.unreadMessages > 0 ? <span className="classroom-home-count">{model.unreadMessages}</span> : null}
                 </button>
               ) : null}
               {!model.isAdmin && model.homeBooking.state === "credits" ? (
                 <button
                   type="button"
-                  className="classroom-home-action classroom-home-booking-action"
+                  className="classroom-home-action"
                   onClick={() => handleOpen("/booking")}
                 >
-                  <CalendarPlus size={16} aria-hidden="true" />
+                  <CalendarIcon aria-hidden="true" />
                   Book · {model.homeBooking.creditsRemaining} left
                 </button>
               ) : null}
               {!model.isAdmin && model.homeBooking.state === "payPerSession" ? (
                 <button
                   type="button"
-                  className="classroom-home-action classroom-home-booking-action"
+                  className="classroom-home-action"
                   onClick={() => {
                     if (model.homeBooking.state !== "payPerSession") return;
                     if (model.homeBooking.external) {
@@ -388,234 +524,76 @@ export function ClassroomHomeView({
                     }
                   }}
                 >
-                  <CalendarPlus size={16} aria-hidden="true" />
+                  <CalendarIcon aria-hidden="true" />
                   Book a session
                 </button>
               ) : null}
             </nav>
-          </div>
-        </header>
-      </section>
+          </section>
 
-      {hero || !(model.isAdmin && !model.rows.length) ? (
-        <section data-motion-reveal className="classroom-home-card classroom-home-main-card" aria-label="Assigned work">
-          <div className="classroom-home-main-content">
-          {/* ── hero ─────────────────────────────────────────────────────── */}
-          {hero ? (
-            <section className="classroom-home-hero" aria-label="Pick up where you left off">
-              <i className="classroom-home-sheet classroom-home-sheet-back" aria-hidden="true" />
-              <i className="classroom-home-sheet classroom-home-sheet-front" aria-hidden="true" />
-              <div className="classroom-home-hero-panel">
-                <i className="classroom-home-hero-glow" aria-hidden="true" />
-                <div className="classroom-home-hero-body">
-                  <div className="classroom-home-hero-main">
-                    <span className="classroom-home-hero-eyebrow">
-                      <i aria-hidden="true" />
-                      {hero.eyebrow}
-                    </span>
-                    <div className="classroom-home-hero-heading">
-                      <h2>{hero.row.title}</h2>
-                      <span className="classroom-home-hero-meta">
-                        <span className="classroom-home-tag">{hero.kindLabel}</span>
-                        {hero.meta}
-                      </span>
-                    </div>
-                    {hero.prose ? (
-                      <p className="classroom-home-hero-prose">{hero.prose}</p>
-                    ) : null}
-                    <div className="classroom-home-hero-actions">
-                      <button
-                        type="button"
-                        className="classroom-home-cta"
-                        onClick={() => handleOpenRow(hero.row)}
-                      >
-                        {hero.primaryLabel}
-                        <ArrowRight size={15} strokeWidth={2.2} />
-                      </button>
-                      {hero.row.canComplete && onMarkDone ? (
-                        <button
-                          type="button"
-                          className="classroom-home-ghost"
-                          disabled={completingKey === hero.row.key}
-                          onClick={() => onMarkDone(hero.row.key)}
-                        >
-                          {completingKey === hero.row.key ? "Saving…" : "Mark done"}
-                        </button>
-                      ) : null}
+          {hasContext ? (
+            <ul className="classroom-home-context" aria-label="Where you stand" data-home-reveal>
+              {showSummary ? (
+                <li className="classroom-home-work-summary">
+                  {model.workSummary!.open} open {model.workSummary!.open === 1 ? 'assignment' : 'assignments'}
+                  {' · '}{model.workSummary!.inProgress} with saved work
+                </li>
+              ) : null}
+              {booked ? (
+                <li>
+                  <button
+                    type="button"
+                    className="classroom-home-next-session-line"
+                    onClick={() => handleOpen("/booking")}
+                  >
+                    <CalendarIcon aria-hidden="true" />
+                    Next session: {nextSessionLabel(booked.startsAt)}
+                  </button>
+                </li>
+              ) : null}
+              {testDate !== null ? (
+                <li className="classroom-home-test-days" aria-label={`${testDate} ${testDateLabel}`}>
+                  <strong>{testDate}</strong>
+                  <span>{testDateLabel}</span>
+                </li>
+              ) : null}
+            </ul>
+          ) : null}
 
-                    </div>
-                  </div>
-
-                  {hero.progress ? (
-                    <aside className="classroom-home-progress" aria-label="Progress">
-                      <span className="classroom-home-progress-label">PROGRESS</span>
-                      <span className="classroom-home-progress-count">
-                        <b>{hero.progress.completed ?? hero.progress.total}</b>
-                        <span>
-                          {hero.progress.completed === null
-                            ? hero.progress.unit
-                            : `of ${hero.progress.total} ${hero.progress.unit}`}
-                        </span>
-                      </span>
-                      {hero.progress.completed !== null ? (
-                        <div
-                          className="classroom-home-ticks"
-                          role="progressbar"
-                          aria-valuemin={0}
-                          aria-valuemax={hero.progress.total}
-                          aria-valuenow={hero.progress.completed}
-                        >
-                          {Array.from({ length: hero.progress.total }, (_, index) => (
-                            <span
-                              key={index}
-                              className={
-                                index < (hero.progress!.completed ?? 0)
-                                  ? "classroom-home-tick classroom-home-tick-done"
-                                  : "classroom-home-tick"
-                              }
-                            />
-                          ))}
-                        </div>
-                      ) : null}
-                      {hero.progress.estimateMinutes ? (
-                        <span className="classroom-home-progress-note">
-                          About {hero.progress.estimateMinutes} minutes.
-                        </span>
-                      ) : null}
-                    </aside>
-                  ) : null}
-                </div>
-              </div>
+          {model.access.messages && model.message ? (
+            <section className="classroom-home-region classroom-home-message-card" aria-label="From Joshua" data-home-reveal>
+              <header className="classroom-home-region-head">
+                <h2>{`From ${model.message.from}`}</h2>
+                {model.unreadMessages > 0 ? (
+                  <span className="classroom-home-badge">{model.unreadMessages} unread</span>
+                ) : null}
+              </header>
+              {onClearMessage ? (
+                <SwipeableDeleteRow
+                  key={model.message.id}
+                  label={`message from ${model.message.from}`}
+                  rounded="rounded-lg"
+                  actionLabel="Clear"
+                  actionGerund="clearing"
+                  onDelete={() => onClearMessage(model.message!.id)}
+                >
+                  <MessagePreviewButton message={model.message} onOpen={handleOpen} />
+                </SwipeableDeleteRow>
+              ) : (
+                <MessagePreviewButton message={model.message} onOpen={handleOpen} />
+              )}
             </section>
           ) : null}
 
-            {/*
-              A teacher has no assigned work by definition, so the card is dropped
-              rather than shown empty — an "assigned to you" panel on the admin
-              account only ever held verification leftovers.
-            */}
-            {model.isAdmin && !model.rows.length ? null : (
-            <section className="classroom-home-assigned" aria-label="Assigned to you">
-              <header className="classroom-home-card-head">
-                <span className="classroom-home-card-label">ASSIGNED TO YOU</span>
-                {model.newCount > 0 ? (
-                  <span className="classroom-home-badge">
-                    {model.newCount} NEW
-                  </span>
-                ) : null}
-              </header>
-              {model.rows.length ? (
-                <div className="classroom-home-rows">
-                  {model.rows.map((row) => (
-                    <WorkRow
-                      key={row.key}
-                      row={row}
-                      onOpen={() => handleOpenRow(row)}
-                      onMarkDone={onMarkDone}
-                      completing={completingKey === row.key}
-                    />
 
-                  ))}
-                </div>
-              ) : (
-                <p className="classroom-home-empty">
-                  {model.workFailed ? "Some assigned work could not load. Retry above." : loading ? "Loading your work…" : "Nothing assigned right now."}
-                </p>
-              )}
-            </section>
-            )}
-          </div>
-        </section>
-      ) : null}
-
-      {model.access.messages && model.message ? (
-        <section data-motion-reveal className="classroom-home-thread classroom-home-message-card" aria-label="From Joshua">
-          <header className="classroom-home-rule">
-            <span className="classroom-home-card-label classroom-home-card-label-muted">
-              {`FROM ${model.message.from.toUpperCase()}`}
-            </span>
-            <i aria-hidden="true" />
-            {model.unreadMessages > 0 ? (
-              <span className="classroom-home-badge">{model.unreadMessages} NEW</span>
-            ) : null}
-          </header>
-          <div className="classroom-home-stack">
-            <i className="classroom-home-note classroom-home-note-back" aria-hidden="true" />
-            <i className="classroom-home-note classroom-home-note-front" aria-hidden="true" />
-            {onClearMessage ? (
-              <SwipeableDeleteRow
-                key={model.message.id}
-                label={`message from ${model.message.from}`}
-                rounded="rounded-xl"
-                actionLabel="Clear"
-                actionGerund="clearing"
-                onDelete={() => onClearMessage(model.message!.id)}
-              >
-                <MessagePreviewButton message={model.message} onOpen={handleOpen} />
-              </SwipeableDeleteRow>
-            ) : (
-              <MessagePreviewButton message={model.message} onOpen={handleOpen} />
-            )}
-          </div>
-        </section>
-      ) : null}
-
-      {/* ── this week ────────────────────────────────────────────────── */}
-      <section data-motion-reveal className="classroom-home-week" aria-label="Next seven days">
-        <header className="classroom-home-rule">
-          <span className="classroom-home-card-label">NEXT SEVEN DAYS</span>
-          <i className="classroom-home-rule-draw" aria-hidden="true" />
-          <span className="classroom-home-week-range">{model.weekLabel}</span>
-        </header>
-        <div className="classroom-home-days">
-          {model.week.map((day) => {
-            const tone = day.isToday
-              ? " classroom-home-day-today"
-              : day.label
-                ? " classroom-home-day-item"
-                : day.isWeekend
-                  ? " classroom-home-day-rest"
-                  : " classroom-home-day-open";
-            const body = (
-              <>
-                <span className="classroom-home-day-head">
-                  <span className="classroom-home-day-abbr">{day.abbr}</span>
-                  <span className="classroom-home-day-num">{day.dayNum}</span>
-                </span>
-                <span className="classroom-home-day-label">
-                  {day.label ? (
-                    <>
-                      <i aria-hidden="true" />
-                      {day.label}
-                    </>
-                  ) : day.isWeekend ? (
-                    "Rest"
-                  ) : (
-                    "Open"
-                  )}
-                </span>
-              </>
-            );
-
-            // The band still reads without schedule access; it just stops being
-            // a control, rather than becoming a button onto a locked route.
-            return model.access.schedule ? (
-              <button
-                key={day.iso}
-                type="button"
-                className={`classroom-home-day${tone}`}
-                onClick={() => handleOpen("/schedule")}
-              >
-                {body}
-              </button>
-            ) : (
-              <div key={day.iso} className={`classroom-home-day${tone}`}>
-                {body}
-              </div>
-            );
-          })}
-        </div>
-      </section>
+        </aside>
+      </div>
+      <HomeWeekStrip
+        days={model.week}
+        range={model.weekLabel}
+        onDayOpen={model.access.schedule ? () => handleOpen("/schedule") : undefined}
+        emptyLabel={loading ? "Loading…" : model.workFailed ? "Unavailable" : "No items shown"}
+      />
     </div>
   );
 }

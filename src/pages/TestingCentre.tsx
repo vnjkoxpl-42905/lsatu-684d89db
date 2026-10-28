@@ -13,6 +13,7 @@
  * door hands off to the same two runners, one leg at a time.
  */
 import * as React from "react";
+import { parseWorkIdentity, withWorkIdentity } from '@/lib/studentWorkIdentity';
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -521,7 +522,9 @@ export default function TestingCentre() {
     setActionError(null);
     try {
       const runId = await prepareOfficialPracticeTest(user.id, blueprint.pt, pace, sectionSeconds);
-      navigate(practiceTestPath(runId));
+      const identity=parseWorkIdentity(searchParams.toString());
+      // Carry the requested assignment only when the student starts that PT.
+      navigate(identity && blueprint.pt===selectedPt ? withWorkIdentity(practiceTestPath(runId),identity) : practiceTestPath(runId));
     } catch (error) {
       setActionError(error instanceof Error ? error.message : "This exam is unavailable. Try again before starting.");
     }

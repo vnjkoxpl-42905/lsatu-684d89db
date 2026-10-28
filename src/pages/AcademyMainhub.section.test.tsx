@@ -1,9 +1,13 @@
-import { fireEvent, render, screen, within } from "@testing-library/react";
+import { fireEvent, render, screen, within, waitFor } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { MemoryRouter, useLocation, useNavigate } from "react-router-dom";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { RcDrillSession } from "@/features/rc/lib/rcTypes";
 import AcademyMainhub from "./AcademyMainhub";
+
+const finderActor = vi.hoisted(() => ({id: "student-1"}));
+const finderLrQuestion = vi.hoisted(() => ({qid: "PT151-S2-Q8", pt: 151, section: 2, qnum: 8, qtype: "main_conclusion", difficulty: 3, stimulus: "Sample stimulus", questionStem: "Sample question stem", answerChoices: {A: "Alpha", B: "Beta", C: "Gamma", D: "Delta", E: "Epsilon"}, correctAnswer: "A"}));
+const finderPermissions = vi.hoisted(() => ({ loading: false, has_drill_access: true }));
 
 vi.mock("@/features/rc/lib/rcBank", () => ({ loadAllIndexPassages: vi.fn(async () => []) }));
 vi.mock("@/lib/drillRunLedger", () => ({ listStandaloneDrillRuns: vi.fn(async () => []) }));
@@ -18,7 +22,7 @@ vi.mock("@/lib/standaloneDrillHistory", async () => ({ ...await vi.importActual<
 ] }));
 
 vi.mock("@/components/questionfinder/useQuestionFinderBanks", () => ({
-  useQuestionFinderBanks: () => ({ lr: [], rcPassages: [], rcQuestions: [], loading: false, error: null, lrFailed: false, rcFailed: false }),
+  useQuestionFinderBanks: () => ({ lr: [finderLrQuestion], rcPassages: [], rcQuestions: [], loading: false, error: null, lrFailed: false, rcFailed: false }),
 }));
 vi.mock("@/components/questionfinder/useFinderAddressIndex", () => ({
   useFinderAddressIndex: () => ({ tests: [{ pt: 140, sections: [{ section: 4, lr: [], rc: [{ id: 16, position: 3, title: "Origins", questions: [{ id: 1604, number: 17 }] }] }] }], loading: false, failed: false, retry: vi.fn() }),
@@ -26,13 +30,17 @@ vi.mock("@/components/questionfinder/useFinderAddressIndex", () => ({
 
 vi.mock("@/contexts/AuthContext", () => ({
   useAuth: () => ({
-    user: { id: "student-1", email: "student@example.com" },
+    user: { id: finderActor.id, email: "student@example.com" },
     authReady: true,
   }),
 }));
 
 vi.mock("@/integrations/supabase/client", () => ({
   supabase: {
+    channel: vi.fn(() => ({ on: vi.fn().mockReturnThis(), subscribe: vi.fn().mockReturnThis() })),
+    removeChannel: vi.fn(async () => undefined),
+    auth: { getUser: vi.fn(async () => ({ data: { user: { id: finderActor.id } }, error: null })) },
+    rpc: vi.fn(async () => ({ data: [], error: null })),
     from: vi.fn(() => ({
       select: vi.fn().mockReturnThis(),
       eq: vi.fn().mockReturnThis(),
@@ -49,6 +57,7 @@ vi.mock("@/hooks/useUserPermissions", () => ({
     has_bootcamp_access: true,
     has_chat_access: true,
     has_practice_access: true,
+    ...finderPermissions,
     has_activity_access: true,
     has_schedule_access: true,
     has_analytics_access: true,
@@ -86,6 +95,7 @@ vi.mock("@/components/drill/QuestionPicker", () => ({
 
 vi.mock("@/lib/questionLoader", () => ({
   questionBank: {
+    getQuestion: (qid: string) => qid === finderLrQuestion.qid ? finderLrQuestion : undefined,
     getAllQuestions: () => [
       {
         qid: "PT151-S2-Q8",
@@ -171,26 +181,28 @@ vi.mock("@/features/rc/components/RcSessionHistory", () => ({
 
 /** Shows the live query string so a test can assert what the switch wrote. */
 function UrlProbe() {
-  const { search } = useLocation();
-  return <div data-testid="url">{search}</div>;
+  const { pathname, search } = useLocation();
+  return <><div data-testid="url">{search}</div><div data-testid="pathname">{pathname}</div></>;
 }
 
 /** Drives the router's own history — MemoryRouter does not use window.history. */
 function BackButton() {
   const navigate = useNavigate();
+  const location = useLocation();
   return (
-    <button type="button" onClick={() => navigate(-1)}>
+    <><button onClick={() => navigate(`${location.pathname}${location.search}`, {replace: true})}>refresh route</button><button type="button" onClick={() => navigate(-1)}>
       go back
-    </button>
+    </button></>
   );
 }
 
-function renderHub(entry: string) {
+function renderHub(entry: string, previous?: string) {
   const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
   return render(
     <QueryClientProvider client={queryClient}>
       <MemoryRouter
-        initialEntries={[entry]}
+        initialEntries={previous ? [previous, entry] : [entry]}
+        initialIndex={previous ? 1 : 0}
         future={{ v7_relativeSplatPath: true, v7_startTransition: true }}
       >
         <AcademyMainhub />
@@ -219,14 +231,17 @@ describe("AcademyMainhub — the LR/RC section switch", () => {
     vi.mocked(ledger.listStandaloneDrillRuns).mockReset().mockResolvedValue([]);
     window.HTMLElement.prototype.scrollIntoView = vi.fn();
     window.localStorage.clear();
+    finderActor.id = "student-1";
+    finderPermissions.loading = false;
+    finderPermissions.has_drill_access = true;
   });
 
   it("returns a question preview to its Practice route instead of the scored drill destination", () => {
     renderHub("/practice/drills?section=rc");
-    fireEvent.click(screen.getByRole("button", { name: "Find a passage or question" }));
+    fireEvent.click(screen.getByRole("button", { name: "Find a question" }));
     const dialog = screen.getByRole("dialog", { name: "Find a question" });
     fireEvent.change(within(dialog).getByRole("textbox"), { target: { value: "PT140 S4 Q17" } });
-    fireEvent.click(within(dialog).getByRole("button", { name: "Open question" }));
+    fireEvent.click(within(dialog).getByRole("button", { name: "Open preview" }));
     expect(url().get("returnTo")).toBe("/practice/drills?section=rc");
     expect(url().get("q")).toBe("1604");
   });
@@ -237,7 +252,7 @@ describe("AcademyMainhub — the LR/RC section switch", () => {
     expect(url().get("finder")).toBeNull();
     expect(url().get("finderReturnTo")).toBeNull();
     fireEvent.change(within(dialog).getByRole("textbox"), { target: { value: "PT140 S4 Q17" } });
-    fireEvent.click(within(dialog).getByRole("button", { name: "Open question" }));
+    fireEvent.click(within(dialog).getByRole("button", { name: "Open preview" }));
     expect(url().get("returnTo")).toBe("/progress/history?view=completed");
   });
 
@@ -558,6 +573,9 @@ describe("AcademyMainhub — Escape leaves a stage", () => {
   beforeEach(() => {
     window.HTMLElement.prototype.scrollIntoView = vi.fn();
     window.localStorage.clear();
+    finderActor.id = "student-1";
+    finderPermissions.loading = false;
+    finderPermissions.has_drill_access = true;
   });
 
   it("closes an open stage and returns the hub", () => {
@@ -593,5 +611,130 @@ describe("AcademyMainhub — Escape leaves a stage", () => {
     expect(url().get("stage")).toBe("type-drill");
     expect(screen.getByRole("region", { name: "Unified LR drill builder" })).toBeInTheDocument();
     dialog.remove();
+  });
+});
+
+
+describe("Question finder URL ownership", () => {
+  beforeEach(() => {
+    localStorage.clear();
+    finderActor.id = "student-1";
+    finderPermissions.loading = false;
+    finderPermissions.has_drill_access = true;
+    window.HTMLElement.prototype.scrollIntoView = vi.fn();
+  });
+  const launch = (query = "section=rc", origin = "/my-work?tab=assigned") =>
+    `/practice/drills?${query}&finder=open&finderReturnTo=${encodeURIComponent(origin)}`;
+  const openRc = () => {
+    const dialog = screen.getByRole("dialog", {name: "Find a question"});
+    fireEvent.change(within(dialog).getByRole("textbox"), {target: {value: "PT140 S4 Q17"}});
+    fireEvent.click(within(dialog).getByRole("button", {name: "Open preview"}));
+  };
+  it.each(["view=create", "view=in-progress", "view=completed", "view=saved", "stage=analytics", "stage=launcher"])("opens exactly one finder across %s", state => {
+    renderHub(launch(`section=rc&${state}`));
+    expect(screen.getAllByRole("dialog", {name: "Find a question"})).toHaveLength(1);
+    expect(url().get("finder")).toBeNull();
+    expect(url().get("finderReturnTo")).toBeNull();
+  });
+  it.each([["lr", "rc", "LR"], ["rc", "lr", "RC"], ["invalid", "rc", "LR"]])("seeds explicit %s against remembered %s", (stated, remembered, expected) => {
+    localStorage.setItem("lsatu.drill.section", remembered);
+    renderHub(launch(`section=${stated}`));
+    const dialog = screen.getByRole("dialog", {name: "Find a question"});
+    expect(within(dialog).getByRole("button", {name: expected})).toHaveAttribute("aria-pressed", "true");
+  });
+  it("falls back to the remembered bank when no section is stated", () => {
+    localStorage.setItem("lsatu.drill.section", "rc");
+    renderHub(launch("view=saved"));
+    const dialog = screen.getByRole("dialog", {name: "Find a question"});
+    expect(within(dialog).getByRole("button", {name: "RC"})).toHaveAttribute("aria-pressed", "true");
+  });
+  it("cancels to the retained origin with replace and strips recursive launch parameters", () => {
+    renderHub(launch("section=rc", "/my-work?tab=assigned&finder=open&finderReturnTo=%2Fclassroom"), "/classroom");
+    fireEvent.click(screen.getByRole("button", {name: "Close the question finder"}));
+    expect(screen.getByTestId("pathname")).toHaveTextContent("/my-work");
+    expect(url().get("finder")).toBeNull();
+    fireEvent.click(screen.getByRole("button", {name: "go back"}));
+    expect(screen.getByTestId("pathname")).toHaveTextContent("/classroom");
+  });
+  it("replaces the temporary Practice stop when opening RC preview", () => {
+    renderHub(launch(), "/my-work?tab=assigned");
+    openRc();
+    expect(screen.getByTestId("pathname")).toHaveTextContent("/rc/preview");
+    expect(url().get("returnTo")).toBe("/my-work?tab=assigned");
+    fireEvent.click(screen.getByRole("button", {name: "go back"}));
+    expect(screen.getByTestId("pathname")).toHaveTextContent("/my-work");
+    expect(url().get("finder")).toBeNull();
+    expect(screen.queryByRole("dialog", {name: "Find a question"})).not.toBeInTheDocument();
+  });
+  it("pushes RC preview from a direct Practice trigger so browser Back returns to Practice", () => {
+    renderHub("/practice/drills?section=rc", "/classroom");
+    fireEvent.click(screen.getByRole("button", {name: "Find a question"}));
+    openRc();
+    fireEvent.click(screen.getByRole("button", {name: "go back"}));
+    expect(screen.getByTestId("pathname")).toHaveTextContent("/practice/drills");
+    expect(screen.queryByRole("dialog", {name: "Find a question"})).not.toBeInTheDocument();
+  });
+  it("returns a URL-launched LR preview to its origin by replacing the temporary entry", () => {
+    renderHub(launch("section=lr"), "/classroom");
+    const dialog = screen.getByRole("dialog", {name: "Find a question"});
+    fireEvent.change(within(dialog).getByRole("textbox"), {target: {value: "PT151 S2 Q8"}});
+    fireEvent.click(within(dialog).getByRole("button", {name: "Open preview"}));
+    expect(screen.getByText("Read-only preview. This does not start or score a drill.")).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", {name: "Back"}));
+    expect(screen.getByTestId("pathname")).toHaveTextContent("/my-work");
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", {name: "go back"}));
+    expect(screen.getByTestId("pathname")).toHaveTextContent("/classroom");
+  });
+  it("keeps one open dialog across repeated route effects, then closes it on actor change", () => {
+    renderHub(launch("section=rc"));
+    fireEvent.click(screen.getByRole("button", {name: "refresh route"}));
+    expect(screen.getAllByRole("dialog", {name: "Find a question"})).toHaveLength(1);
+    finderActor.id = "student-2";
+    fireEvent.click(screen.getByRole("button", {name: "refresh route"}));
+    expect(screen.queryByRole("dialog", {name: "Find a question"})).not.toBeInTheDocument();
+    expect(url().get("finder")).toBeNull();
+  });
+  it("forgets a revoked URL origin before a newly granted direct launch", () => {
+    renderHub(launch("section=rc"));
+    finderPermissions.has_drill_access = false;
+    fireEvent.click(screen.getByRole("button", {name: "refresh route"}));
+    expect(screen.queryByRole("dialog", {name: "Find a question"})).not.toBeInTheDocument();
+    finderPermissions.has_drill_access = true;
+    fireEvent.click(screen.getByRole("button", {name: "refresh route"}));
+    fireEvent.click(screen.getByRole("button", {name: "Find a question"}));
+    fireEvent.click(screen.getByRole("button", {name: "Close the question finder"}));
+    expect(screen.getByTestId("pathname")).toHaveTextContent("/practice/drills");
+  });
+  it("keeps a launcher controller mounted with its visible trigger hidden", () => {
+    renderHub("/practice/drills?section=lr&stage=type-drill");
+    expect(screen.queryByRole("button", {name: "Find a question"})).not.toBeInTheDocument();
+    fireEvent.keyDown(window, {key: "k", ctrlKey: true});
+    expect(screen.getByRole("dialog", {name: "Find a question"})).toBeInTheDocument();
+  });
+  it("preserves the RC builder shortcut layout wrapper", () => {
+    renderHub("/practice/drills?section=rc&builder=manual");
+    expect(screen.getByRole("button", {name: "Find a question"}).closest(".drill-observatory-tools")).toHaveClass("rc-builder-question-shortcut");
+  });
+  it("waits for permissions without consuming the launch", () => {
+    finderPermissions.loading = true;
+    renderHub(launch());
+    expect(url().get("finder")).toBe("open");
+    expect(screen.queryByRole("dialog", {name: "Find a question"})).not.toBeInTheDocument();
+  });
+  it("explains a denied URL launch without consuming or opening it", () => {
+    finderPermissions.has_drill_access = false;
+    renderHub(launch());
+    expect(url().get("finder")).toBe("open");
+    expect(screen.getByRole("alert")).toHaveTextContent("requires access to Drills");
+    expect(screen.queryByRole("dialog", {name: "Find a question"})).not.toBeInTheDocument();
+    fireEvent.keyDown(window, {key: "k", ctrlKey: true});
+    expect(screen.queryByRole("dialog", {name: "Find a question"})).not.toBeInTheDocument();
+  });
+  it("falls back to cleaned Practice when the origin is external", () => {
+    renderHub(launch("section=rc", "https://example.com"));
+    fireEvent.click(screen.getByRole("button", {name: "Close the question finder"}));
+    expect(screen.getByTestId("pathname")).toHaveTextContent("/practice/drills");
+    expect(url().get("finder")).toBeNull();
   });
 });

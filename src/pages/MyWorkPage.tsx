@@ -9,14 +9,18 @@ import { READING_CENTER_SOURCE } from '@/lib/readingCenterAccess';
 import { groupAssignedWork, workKindLabel, workDateLabel, WORK_SUBJECT_LABELS, WORK_KINDS } from '@/components/my-work/assignedWorkOrganization';
 import { WorkFilterSelect } from '@/components/my-work/WorkFilterSelect';
 import { notifyClassroomListIntent } from '@/hooks/useClassroomMotion';
+import AssignmentUpdate from '@/components/my-work/AssignmentUpdate';
 import './myWorkNotesRefinement.css';
 import './myWorkOrganization.css';
 
 export default function MyWorkPage({ completed }: { completed: boolean }) {
+  const [pageParams] = useSearchParams();
+  const groupId = pageParams.get("workGroup");
   const permissions = useUserPermissions();
   const readingCenter = useReadingCenterAccess(!permissions.is_admin);
   const generalAccess = permissions.is_admin || permissions.has_classroom_access;
   if (permissions.loading) return <p role="status" className="student-destination-message">Loading your work…</p>;
+  if (groupId && /^[0-9a-f-]{36}$/i.test(groupId)) return <AssignmentUpdate groupId={groupId} generalAccess={generalAccess} readingCenterAllowed={readingCenter.allowed && !permissions.is_admin} />;
   // The prescribed week sits above the to-do list so a student can scan the
   // whole week Joshua set before working down the list. It reads its own
   // query, so a failed plan read never hides assignments and vice versa.
@@ -40,8 +44,7 @@ function MyWorkList({ completed, generalAccess, readingCenterAllowed }: { comple
   const search = params.get('q') ?? '';
   const requestedSubject = params.get('subject') ?? '';
   const requestedKind = params.get('kind') ?? '';
-  const { rows, loading, failed, retry, evidenceWarnings = [] } = useAssignedTodoFeed();
-  const visible = rows.filter((row) => row.sourceTable === READING_CENTER_SOURCE
+  const { rows, loading, failed, retry, evidenceWarnings = [] } = useAssignedTodoFeed();  const visible = rows.filter((row) => row.sourceTable === READING_CENTER_SOURCE
     ? readingCenterAllowed && row.refId === 'library'
     : generalAccess).filter((row) => (row.status === "completed") === completed);
   // A selected filter is intent, independent of partial feed contents and completion.
@@ -78,7 +81,7 @@ function MyWorkList({ completed, generalAccess, readingCenterAllowed }: { comple
   );
 
   return (
-    <section ref={sectionRef} tabIndex={-1} className="student-work-list my-work-organized" aria-label={completed ? "Completed work" : "Work to do"}>
+    <section ref={sectionRef} data-work-sync="issuance-read-20261028" tabIndex={-1} className="student-work-list my-work-organized" aria-label={completed ? "Completed work" : "Work to do"}>
       {failed && (
         <div className="student-destination-message" role="alert">
           <p>{rows.length === 0 ? "We could not load your assignments or confirm whether any match these filters." : evidenceWarnings.length > 0 ? `Could not confirm ${evidenceWarnings.join(", ")}. Available saved work is still shown.` : "Some assignments could not refresh. Your saved work is still shown."}</p>
@@ -99,9 +102,9 @@ function MyWorkList({ completed, generalAccess, readingCenterAllowed }: { comple
             <li key={row.key} data-motion-item data-motion-id={`assigned-work:${row.key}`}>
               <Link to={routeWithReturnTo(row.route, pathname + locationSearch)} className="student-work-row">
                 <span>
-                  <strong>{row.title}</strong>
+                  <strong>{row.title}{!completed && row.isUnread ? <span className="my-work-unread-label">Unread</span> : null}</strong>
                   <small>{row.subtitle}</small>
-                  <span className="my-work-row-meta">{row.title !== workKindLabel(row) && <span>{workKindLabel(row)}</span>}{workDateLabel(row.createdAt) && <span>Assigned <time dateTime={row.createdAt}>{workDateLabel(row.createdAt)}</time></span>}{row.dueAt && workDateLabel(row.dueAt) && <span className="my-work-due">Due <time dateTime={row.dueAt}>{workDateLabel(row.dueAt)}</time></span>}</span>
+                  <span className="my-work-row-meta">{!completed && row.openedAt && !row.isUnread ? <span>Read</span> : null}{row.title !== workKindLabel(row) && <span>{workKindLabel(row)}</span>}{workDateLabel(row.createdAt) && <span>Assigned <time dateTime={row.createdAt}>{workDateLabel(row.createdAt)}</time></span>}{row.dueAt && workDateLabel(row.dueAt) && <span className="my-work-due">Due <time dateTime={row.dueAt}>{workDateLabel(row.dueAt)}</time></span>}</span>
                 </span>
                 <span className="my-work-row-action"><span className="student-work-status">{row.progressUnverified ? "Progress unverified" : row.status === "in_progress" ? "In progress" : completed ? "Completed" : "Assigned"}</span><ArrowRight size={18} aria-hidden="true" /></span>
               </Link>

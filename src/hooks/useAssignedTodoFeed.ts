@@ -1,6 +1,9 @@
 import { useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useAuth } from '@/contexts/AuthContext';
+import { useStudentWorkAccessReceipts } from '@/hooks/useStudentWorkState';
+import { deduplicateEquivalentClassroomItems, withWorkIdentity, type StudentWorkIdentity } from '@/lib/studentWorkIdentity';
+import type { StudentWorkAccess, StudentWorkReceipt } from '@/lib/studentWorkState';
 import { useStudentAssignments, useStudentTAAssignments } from '@/hooks/useStudentAssignments';
 import { useClassroomItems, type ClassroomItem } from '@/hooks/useClassroomItems';
 import type { WeeklyPlanItem } from '@/hooks/useWeeklyPlan';
@@ -22,7 +25,10 @@ import { loadActivityWorkEvidence, loadAssignmentWorkEvidence, type GuidedWorkEv
  */
 export interface AssignedTodoRow {
   key: string;
-  kind: 'homework' | 'ta' | 'activity' | 'guided' | 'bootcamp' | 'plan';
+  kind: 'homework' | 'ta' | 'activity' | 'guided' | 'bootcamp' | 'plan' | 'practice_test' | 'link';
+  workIdentity?: StudentWorkIdentity;
+  openedAt?: string | null;
+  isUnread?: boolean;
   refId: string;
   /** The table `refId` points into, so a classroom_items row can be matched to it. */
   sourceTable: string;
@@ -66,6 +72,8 @@ const WORK_ITEM_KIND: Partial<Record<ClassroomItem['type'], AssignedTodoRow['kin
   activity: 'activity',
   bootcamp_module: 'bootcamp',
   weekly_plan_task: 'plan',
+  practice_test: 'practice_test',
+  link:'link',
 };
 
 /**
@@ -98,6 +106,9 @@ export function routeWithReturnTo(route: string, from: string): string {
  * it to the same destination the raw row would have used.
  */
 export interface AssignedFeedSources {
+  access?: StudentWorkAccess[];
+  receipts?: StudentWorkReceipt[];
+  practiceTests?: {id:string;pt:number;status:string;assigned_at:string;issuance?:number}[];
   hw: ReturnType<typeof useStudentAssignments>['assignments'];
   ta: ReturnType<typeof useStudentTAAssignments>['assignments'];
   guided: GuidedRow[];
@@ -118,6 +129,9 @@ export interface AssignedFeedSources {
  * duplicate-assignment rules can be tested without standing up five queries.
  */
 export function buildAssignedRows({
+  access,
+  receipts = [],
+  practiceTests = [],
   hw,
   ta,
   guided,
@@ -206,7 +220,10 @@ export function buildAssignedRows({
       });
     }
 
-    for (const item of items) {
+    for (const a of practiceTests) put({key:`pt-${a.id}`,kind:'practice_test',refId:a.id,sourceTable:'practice_test_assignments',title:`Practice Test ${a.pt}`,subtitle:'Practice test',status:normalizeStatus(a.status),createdAt:a.assigned_at,dueAt:null,route:`/testing?pt=${a.pt}`});
+
+    // Ascending stable order means the newest eligible mirror wins.
+    for (const item of deduplicateEquivalentClassroomItems(items).sort((a,b)=>a.created_at.localeCompare(b.created_at)||a.id.localeCompare(b.id))) {
       const kind = WORK_ITEM_KIND[item.type];
       if (!kind) continue; // notes and recaps are reading material, not work
       // The plan item can be checked off independently of its classroom mirror.
@@ -218,8 +235,15 @@ export function buildAssignedRows({
       if (kind === 'plan' && (!planStatus || planStatus === 'skipped')) continue;
       const route = resolveItemRoute(item);
       if (!route) continue;
-      const sourceTable = item.source_table ?? 'classroom_items';
-      const refId = item.source_id ?? item.id;
+      let sourceTable = item.source_table ?? 'classroom_items';
+      let refId = item.source_id ?? item.id;
+      if (sourceTable === 'practice_test_assignments' && /^practice_test:\d+$/.test(refId)) {
+        const native = practiceTests.find(test => test.pt === Number(refId.split(':')[1]));
+        if (!native) continue;
+        refId = native.id;
+      }
+      // Route aliases are standalone work, never a fictitious source UUID.
+      if (!['homework_assignments','ta_assignments','guided_drill_assignments','activity_assignments','practice_test_assignments'].includes(sourceTable)) { sourceTable='classroom_items'; refId=item.id; }
       const identity = studentWorkKey({ sourceTable, assignmentId: refId });
       const existing = byIdentity.get(identity);
       // Completion wins over the mirror. A student who finished the underlying
@@ -245,8 +269,9 @@ export function buildAssignedRows({
       byIdentity.set(identity, {
         key: `ci-${item.id}`,
         kind,
-        refId,
-        sourceTable,
+        refId:sourceTable==='classroom_items'?(item.source_id??item.id):refId,
+        sourceTable:sourceTable==='classroom_items'?(item.source_table??'classroom_items'):sourceTable,
+        workIdentity:{sourceTable,sourceId:refId,issuance:(item as ClassroomItem & {issuance?:number}).issuance??1},
         title: item.title || existing?.title || 'Assigned work',
         // The item carries no question count, so keep the source row's subtitle
         // when there is one.
@@ -256,7 +281,7 @@ export function buildAssignedRows({
         dueAt: item.due_at,
         // The mirror row was written before the section rule existed, so the
         // source row's directions route wins over the item's classroom link.
-        route: existing?.selfCompleting ? existing.route : route,
+        route: existing && (existing.selfCompleting || sourceTable==='practice_test_assignments') ? existing.route : route,
         selfCompleting:
           (item.metadata_json as { kind?: string } | null)?.kind === 'timed_section' ||
           !!existing?.selfCompleting,
@@ -266,7 +291,12 @@ export function buildAssignedRows({
     }
 
     // Open work first, then completed; newest within each bucket.
-    return [...byIdentity.values()].map(row => {
+    return [...byIdentity.values()].filter(row => !access || access.some(entry=>entry.available && entry.source_table===(row.workIdentity?.sourceTable??row.sourceTable) && entry.source_id===(row.workIdentity?.sourceId??row.refId))).map(row => {
+      const canonical=row.workIdentity??{sourceTable:row.sourceTable,sourceId:row.refId,issuance:1};
+      const current=access?.find(entry=>entry.available && entry.source_table===canonical.sourceTable && entry.source_id===canonical.sourceId);
+      const workIdentity={...canonical,issuance:current?.issuance??canonical.issuance};
+      const receipt=receipts.find(entry=>entry.source_table===canonical.sourceTable && entry.source_id===canonical.sourceId && entry.issuance===workIdentity.issuance);
+      row={...row,workIdentity,openedAt:receipt?.first_opened_at??null,isUnread:!receipt?.read_at,route:access?withWorkIdentity(row.route,workIdentity):row.route};
       const family = row.sourceTable === 'guided_drill_assignments' ? 'guided' : row.sourceTable === 'homework_assignments' ? 'homework' : null;
       const uncertain = family
         ? assignmentEvidenceUnavailable || (assignmentWorkEvidence && assignmentProgressUnverified(assignmentWorkEvidence, family, row.refId))
@@ -291,6 +321,8 @@ export function useAssignedTodoFeed(): {
 } {
   const { user } = useAuth();
   const userId = user?.id;
+  const workState=useStudentWorkAccessReceipts();
+  const practiceTestsQuery=useQuery({queryKey:['todo-feed:practice-tests',userId],enabled:!!userId,queryFn:async()=>{const {data,error}=await supabase.from('practice_test_assignments').select('*').eq('student_id',userId!);if(error)throw error;return data??[];}});
   const { assignments: hw, loading: hwLoading, error: hwError, refresh: hwRefresh } = useStudentAssignments();
   const { assignments: ta, loading: taLoading, error: taError, refresh: taRefresh } = useStudentTAAssignments();
   const itemsQuery = useClassroomItems();
@@ -343,8 +375,8 @@ export function useAssignedTodoFeed(): {
 
   const items = useMemo(() => itemsQuery.data ?? [], [itemsQuery.data]);
   const rows = useMemo(
-    () => buildAssignedRows({ hw, ta, guided, activities, items, guidedEvidence, homeworkEvidence, activityEvidence, weeklyPlanStatusById, assignmentWorkEvidence: assignmentEvidence, assignmentEvidenceUnavailable: evidenceError || !assignmentEvidence, activityEvidenceUnavailable: activityEvidenceError || activityEvidenceLoading }),
-    [hw, ta, guided, activities, items, guidedEvidence, homeworkEvidence, activityEvidence, weeklyPlanStatusById, assignmentEvidence, evidenceError, activityEvidenceError, activityEvidenceLoading],
+    () => workState.data ? buildAssignedRows({ access:workState.data.access,receipts:workState.data.receipts,practiceTests:practiceTestsQuery.data??[],hw, ta, guided, activities, items, guidedEvidence, homeworkEvidence, activityEvidence, weeklyPlanStatusById, assignmentWorkEvidence: assignmentEvidence, assignmentEvidenceUnavailable: evidenceError || !assignmentEvidence, activityEvidenceUnavailable: activityEvidenceError || activityEvidenceLoading }) : [],
+    [workState.data,practiceTestsQuery.data,hw, ta, guided, activities, items, guidedEvidence, homeworkEvidence, activityEvidence, weeklyPlanStatusById, assignmentEvidence, evidenceError, activityEvidenceError, activityEvidenceLoading],
   );
 
   const retry = useMemo(
@@ -357,16 +389,17 @@ export function useAssignedTodoFeed(): {
       void actRefetch();
       void itemsQuery.refetch();
       void planRefetch();
+      void workState.refetch(); void practiceTestsQuery.refetch();
     },
-    [hwRefresh, taRefresh, guidedRefetch, evidenceRefetch, actRefetch, activityEvidenceRefetch, itemsQuery, planRefetch],
+    [hwRefresh, taRefresh, guidedRefetch, evidenceRefetch, actRefetch, activityEvidenceRefetch, itemsQuery, planRefetch,workState.refetch,practiceTestsQuery.refetch],
   );
 
   const evidenceWarnings = assignmentEvidenceWarnings(assignmentEvidence);
   return {
     rows,
     evidenceWarnings,
-    loading: rows.length === 0 && (hwLoading || taLoading || guidedLoading || evidenceLoading || actLoading || activityEvidenceLoading || itemsQuery.isLoading || (hasPlanMirrors && !weeklyPlanStatusById && !planError && planFetching)),
-    failed: evidenceWarnings.length > 0 || !!hwError || !!taError || guidedError || evidenceError || actError || activityEvidenceError || itemsQuery.isError || planError,
+    loading: workState.isLoading || practiceTestsQuery.isLoading || (rows.length === 0 && (hwLoading || taLoading || guidedLoading || evidenceLoading || actLoading || activityEvidenceLoading || itemsQuery.isLoading || (hasPlanMirrors && !weeklyPlanStatusById && !planError && planFetching))),
+    failed: workState.isError || practiceTestsQuery.isError || evidenceWarnings.length > 0 || !!hwError || !!taError || guidedError || evidenceError || actError || activityEvidenceError || itemsQuery.isError || planError,
     retry,
   };
 }

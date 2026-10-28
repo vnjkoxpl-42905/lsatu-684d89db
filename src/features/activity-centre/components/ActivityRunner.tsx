@@ -15,15 +15,17 @@ import { draftKey, flushOutbox, queueAttempt, type PendingAttempt } from "../dra
 import type { RunScore } from "../progress";
 import { syncClassroomItemStatusBySource } from "@/lib/classroomItems";
 import { useAuth } from "@/contexts/AuthContext";
+import { useLoadedStudentWorkAcknowledgment } from '@/hooks/useStudentWorkState';
 import { rrcExitPath } from '@/features/reading-center/lib/rrcNavigation';
 import { MAX_ATTEMPTS } from "../api/types";
-import type { JudgeSource, Verdict } from "../api/types";
-import { cachePracticeRun, createPracticeRun, loadPracticeRuns, readCachedRuns, syncPracticeRun, practiceSaveMessage, type PracticeRun } from "../conditionals/practiceStore";
+import type { ActivityAssignment, JudgeSource, Verdict } from "../api/types";
+import { cachePracticeRun, createPracticeRun, isConditionalRephraseRun, loadPracticeRuns, readCachedRuns, syncPracticeRun, practiceSaveMessage, type ConditionalPracticeTiming, type PracticeRun } from "../conditionals/practiceStore";
 import { repairConditionalItem } from "../content/repairConditionalItems";
 import { buildPaperDiagramChoices, buildLegacyPaperDiagramChoices } from "../worlds/switchyard/diagramChoices";
 import { getGeneralPhase } from "../conditionals/generalPhases";
 import { PaperDiagramPanel } from "./PaperDiagramPanel";
 import { ActivityIntro } from "./ActivityIntro";
+import { DrillEntrance } from '../conditionals/DrillEntrance';
 import { ActivityHeroPanel } from "./ActivityHeroPanel";
 import { ActivityProgress } from "./ActivityProgress";
 import { RELATIONSHIP_ANSWER_PROMPT } from "../relationshipPresentation";
@@ -62,6 +64,13 @@ export interface ActivityRunnerProps {
    * Own General Conditional previews save a separate practice session.
    */
   preview?: boolean;
+  /** Authored conditional practice supplied only by an already-authorized bootcamp host. Never an assignment writer. */
+  practiceDefinition?: ActivityAssignment;
+  practiceUserId?: string;
+  localOnly?: boolean;
+  backUrl?: string;
+  timing?: ConditionalPracticeTiming;
+  allowedItemOrders?: readonly number[];
 }
 
 /**
@@ -77,16 +86,16 @@ export interface ActivityRunnerProps {
 export function ActivityRunner(props: ActivityRunnerProps = {}) {
   const params = useParams<{ assignmentId: string; activityId: string }>();
   const location = useLocation();
-  const key = `${props.assignmentId ?? params.assignmentId ?? params.activityId ?? "none"}:${new URLSearchParams(location.search).get("practiceRun") ?? ""}`;
+  const key = `${props.practiceDefinition?.id ?? props.assignmentId ?? params.assignmentId ?? params.activityId ?? "none"}:${new URLSearchParams(location.search).get("practiceRun") ?? ""}:${props.allowedItemOrders?.join(',') ?? 'all'}`;
   return <ActivityRunnerInstance key={key} {...props} />;
 }
 
-function ActivityRunnerInstance({ assignmentId: assignmentIdProp, preview = false }: ActivityRunnerProps = {}) {
+function ActivityRunnerInstance({ assignmentId: assignmentIdProp, preview = false, practiceDefinition, practiceUserId, localOnly = false, backUrl, timing, allowedItemOrders }: ActivityRunnerProps = {}) {
   const params = useParams<{ assignmentId: string; activityId: string }>();
   // The routed preview names an ACTIVITY, not an assignment: it runs off the
   // definition and no row exists to name. Everything else names an assignment.
-  const previewActivityId = preview ? params.activityId : undefined;
-  const assignmentId = assignmentIdProp ?? params.assignmentId;
+  const previewActivityId = preview && !practiceDefinition ? params.activityId : undefined;
+  const assignmentId = practiceDefinition ? undefined : assignmentIdProp ?? params.assignmentId;
   const navigate = useNavigate();
   const location = useLocation();
   const requestedPracticeId = new URLSearchParams(location.search).get("practiceRun");
@@ -113,12 +122,13 @@ function ActivityRunnerInstance({ assignmentId: assignmentIdProp, preview = fals
   // Centre. Returning to the intro keeps `index`, so the Start action resumes on
   // the same question rather than restarting the Activity.
   const handleBackToIntro = routed ? () => setPhase("intro") : undefined;
-  const handleLeave = routed ? () => {
+  const handleLeave = backUrl ? () => navigate(backUrl) : routed ? () => {
     if (isRrc && user) {
       void rrcExitPath(user.id).then(path => navigate(path));
     } else navigate(isGeneral ? "/activities/conditionals" : "/activities");
   } : undefined;
-  const { user } = useAuth();
+  const { user: authenticatedUser } = useAuth();
+  const user = localOnly && practiceUserId ? { id: practiceUserId, email: "" } : authenticatedUser;
 
   // "Activity not found." was shown for two very different situations: an id
   // that is not real, and an assignment that IS real but was issued to another
@@ -130,7 +140,10 @@ function ActivityRunnerInstance({ assignmentId: assignmentIdProp, preview = fals
   // once the probe answers, so the wrong sentence is shown first and the right
   // one arrives as a flicker. "unknown" keeps the spinner up instead.
   const [ownership, setOwnership] = useState<"unknown" | "elsewhere" | "absent">("unknown");
-  const { assignment, loading, error } = useStudentActivity(assignmentId, previewActivityId);
+  const fetched = useStudentActivity(assignmentId, previewActivityId);
+  const assignment = practiceDefinition ?? fetched.assignment;
+  const loading = !practiceDefinition && fetched.loading;
+  const error = practiceDefinition ? null : fetched.error;
   const confirmedCompletion = assignment?.status === "completed" && Boolean(assignment.completed_at);
 
   /**
@@ -144,6 +157,7 @@ function ActivityRunnerInstance({ assignmentId: assignmentIdProp, preview = fals
    */
   const viewingSomeoneElse = Boolean(assignment && user && assignment.student_id !== user.id);
   const isGeneral = assignment?.title === "Conditional Rephrase";
+  const AnswerSurface = backUrl ? 'section' : 'main';
   const isRrc = assignment?.mode === 'section-library' ||
     (assignment?.mode === 'section' && assignment?.item_format === 'spoken-recall');
   useEffect(() => {
@@ -161,14 +175,15 @@ function ActivityRunnerInstance({ assignmentId: assignmentIdProp, preview = fals
     savedPracticeRef.current = next;
     setSavedPractice(next);
     setPracticeError(null);
-    setSaveStatus("Saved on this device; syncing...");
+    setSaveStatus(localOnly ? "Preview: saved on this device" : "Saved on this device; syncing...");
+    if (localOnly) return true;
     void syncPracticeRun(user.id, next.id).then(() => setSaveStatus("Saved to your account")).catch(error => {
       const message = practiceSaveMessage(error);
       setSaveStatus(message);
       toast({ title: "Practice account sync unavailable", description: message });
     });
     return true;
-  }, [user, viewingSomeoneElse]);
+  }, [user, viewingSomeoneElse, localOnly]);
   const updatePractice = useCallback((change: Partial<PracticeRun>) => {
     const run = savedPracticeRef.current;
     return run ? persistPractice({ ...run, ...change, updatedAt: new Date().toISOString() }) : false;
@@ -209,7 +224,7 @@ function ActivityRunnerInstance({ assignmentId: assignmentIdProp, preview = fals
 
   // Ungraded run with no DB writes / score overwrite. True for teacher previews
   // and for a "Practice again" re-run of a completed activity.
-  const [practice, setPractice] = useState(preview || Boolean(requestedPracticeId));
+  const [practice, setPractice] = useState(preview || Boolean(practiceDefinition) || Boolean(requestedPracticeId));
   /** No row is written under this run: a practice re-run, a preview, or an admin looking. Saved practice owns a separate row. */
   const readOnly = practice || viewingSomeoneElse;
 
@@ -252,6 +267,7 @@ function ActivityRunnerInstance({ assignmentId: assignmentIdProp, preview = fals
   const [responses, setResponses] = useState<Record<number, string>>({});
   const [hydrated, setHydrated] = useState(false);
   const [progressLoadFailed, setProgressLoadFailed] = useState(false);
+  useLoadedStudentWorkAcknowledgment({sourceTable:'activity_assignments',sourceId:assignment?.id,studentId:assignment?.student_id,ready:!!assignment && !loading && !error && hydrated && !progressLoadFailed && !preview && !practiceDefinition && !localOnly && !viewingSomeoneElse});
   const [completionError, setCompletionError] = useState(false);
   const closeoutRef = useRef<{ verdicts: Record<number, Verdict | null>; phase: "done" | "report" } | null>(null);
   const closingRef = useRef(false);
@@ -307,7 +323,9 @@ function ActivityRunnerInstance({ assignmentId: assignmentIdProp, preview = fals
    */
   const world = useMemo(() => worldForTitle(assignment?.title), [assignment?.title]);
   const currentItem = items[index];
-  const generalPhase = getGeneralPhase(index);
+  const practiceTiming = savedPractice?.general ? savedPractice.general.timing ?? 'progressive' : timing;
+  const generalPhase = practiceTiming === "untimed" ? { number: 1 as const, seconds: null, label: "Untimed practice" }
+    : practiceTiming === "timed" ? { number: 2 as const, seconds: 45 as const, label: "45 seconds per diagram" } : getGeneralPhase(index);
   const timedGeneral = isGeneral && generalPhase.seconds !== null && !viewingSomeoneElse;
   const [assignedPaper, setAssignedPaper] = useState<{ key: string; deadline?: string; ready: boolean } | null>(null);
   const assignedPaperKey = user && assignment ? `lsatu:general-paper:v1:${user.id}:${assignment.id}:${index}` : "";
@@ -433,8 +451,9 @@ function ActivityRunnerInstance({ assignmentId: assignmentIdProp, preview = fals
         try {
           if (!isGeneral || viewingSomeoneElse) throw new Error("This saved session is not available for this activity and account.");
           let run = readCachedRuns(user.id).find(r => r.id === requestedPracticeId);
-          if (!run) run = (await loadPracticeRuns(user.id)).find(r => r.id === requestedPracticeId);
-          if (!run?.general || run.mode !== "general" || run.general.sourceUrl !== location.pathname || !run.general.items.length) throw new Error("Saved session not found. Check your account and connection, then reload.");
+          if (!run && !localOnly) run = (await loadPracticeRuns(user.id)).find(r => r.id === requestedPracticeId);
+          if (!run?.general || run.userId !== user.id || (!isConditionalRephraseRun(run) && run.general.sourceUrl !== location.pathname)) throw new Error("Saved session not found. Check your account and connection, then reload.");
+          if (allowedItemOrders && run.general.items.some(item => !allowedItemOrders.includes(item.order))) throw new Error('This saved session includes questions outside this assignment. Open it from your full conditional bootcamp or original activity.');
           savedPracticeRef.current = run;
           setSavedPractice(run);
           const outcomes: Record<number, Verdict | null> = {};
@@ -452,7 +471,7 @@ function ActivityRunnerInstance({ assignmentId: assignmentIdProp, preview = fals
         return;
       }
       // Teacher preview: always enter at the intro, never load saved progress.
-      if (preview) {
+      if (preview || practiceDefinition) {
         setPhase("intro");
         setHydrated(true);
         return;
@@ -624,20 +643,22 @@ function ActivityRunnerInstance({ assignmentId: assignmentIdProp, preview = fals
       }
       setHydrated(true);
     })();
-  }, [assignment, user, items, hydrated, preview, readOnly, startSectionOnOpen, syncClassroom, isGeneral, location.pathname, requestedPracticeId, viewingSomeoneElse, confirmedCompletion, closeAssignment]);
+  }, [assignment, user, items, hydrated, preview, readOnly, startSectionOnOpen, syncClassroom, isGeneral, location.pathname, requestedPracticeId, viewingSomeoneElse, confirmedCompletion, closeAssignment, localOnly, practiceDefinition]);
 
   const beginGeneralPractice = useCallback((selected: typeof items) => {
     if (!user || viewingSomeoneElse || !isGeneral) return false;
     try {
-      const next = createPracticeRun(user.id, "general", [], { sourceUrl: location.pathname, items: selected.map(repairConditionalItem) });
+      const next = createPracticeRun(user.id, "general", [], { sourceUrl: location.pathname, items: selected.map(repairConditionalItem), collectionId: "conditional-rephrase", ...(timing ? { timing } : {}) });
       if (!persistPractice(next)) return false;
-      navigate(`${location.pathname}?practiceRun=${encodeURIComponent(next.id)}`, { replace: true });
+      const nextParams = new URLSearchParams(location.search);
+      nextParams.set("practiceRun", next.id);
+      navigate(`${location.pathname}?${nextParams}`, { replace: true });
       return true;
     } catch { setPracticeError("This browser cannot save a new session. Check device storage and retry."); return false; }
-  }, [user, viewingSomeoneElse, isGeneral, location.pathname, navigate, persistPractice]);
+  }, [user, viewingSomeoneElse, isGeneral, location.pathname, location.search, navigate, persistPractice, timing]);
 
   const handleStart = useCallback(async () => {
-    if (isGeneral && preview && !viewingSomeoneElse && !savedPracticeRef.current) { beginGeneralPractice(items); return; }
+    if (isGeneral && (preview || practiceDefinition) && !viewingSomeoneElse && !savedPracticeRef.current) { beginGeneralPractice(items); return; }
     setEntered(false);
     setPhase("running");
     if (!readOnly && assignment && assignment.status === "assigned") {
@@ -648,7 +669,7 @@ function ActivityRunnerInstance({ assignmentId: assignmentIdProp, preview = fals
       }
       void syncClassroom("in_progress");
     }
-  }, [assignment, readOnly, syncClassroom, isGeneral, preview, viewingSomeoneElse, beginGeneralPractice, items]);
+  }, [assignment, readOnly, syncClassroom, isGeneral, preview, viewingSomeoneElse, beginGeneralPractice, items, practiceDefinition]);
 
   const handleRecord = useCallback(
     async (args: {
@@ -918,7 +939,7 @@ function ActivityRunnerInstance({ assignmentId: assignmentIdProp, preview = fals
       <div className="activity-centre act-home" data-world={world?.slug}>
         {adminBanner}
         {practiceError && <p role="alert" className="p-4">{practiceError}</p>}
-        <ActivityIntro
+        {isGeneral && backUrl ? <DrillEntrance mode="general" title="Conditional Rephrase" headingLevel={2} timingPlan={timing ?? 'progressive'} onStart={handleStart} questionCount={items.length} startLabel={index > 0 ? 'Continue practice' : 'Start practice'} /> : <ActivityIntro
           title={assignment.title}
           subtitle={assignment.subtitle}
           instructions={assignment.instructions}
@@ -951,7 +972,7 @@ function ActivityRunnerInstance({ assignmentId: assignmentIdProp, preview = fals
           showHistory={!practice && !viewingSomeoneElse}
           onStart={handleStart}
           onExit={handleLeave}
-        />
+        />}
       </div>
     );
   }
@@ -1144,7 +1165,7 @@ function ActivityRunnerInstance({ assignmentId: assignmentIdProp, preview = fals
         )}
         {/* The answer column stands on the world's own ground; the work cards
             inside keep their light reading surface. */}
-        <main className="min-h-screen bg-[hsl(var(--aw-page,var(--background)))]">
+        <AnswerSurface className="min-h-screen bg-[hsl(var(--aw-page,var(--background)))]">
           {isGeneral && <ActivityProgress completed={items.filter(item => Object.prototype.hasOwnProperty.call(verdicts, item.order)).length} total={items.length} />}
           {saveStatus && savedPractice && <p role="status" className="px-6 pt-4 text-sm">{saveStatus}</p>}
           {practiceError && <p role="alert" className="px-6 pt-4 text-sm">{practiceError}</p>}
@@ -1216,7 +1237,7 @@ function ActivityRunnerInstance({ assignmentId: assignmentIdProp, preview = fals
             onNext={handleNext}
           />
           )}
-        </main>
+        </AnswerSurface>
       </div>
     </div>
   );

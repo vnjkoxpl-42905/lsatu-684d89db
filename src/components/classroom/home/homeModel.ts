@@ -11,6 +11,13 @@
 
 import { localDayISO, parseLocalDay } from "@/lib/localDate";
 import type { SectionBriefing } from "@/lib/sectionBriefing";
+import { DESTINATIONS, tabAccess } from "@/lib/destinationAccess";
+
+/** A tab-specific grant, rather than a tier's default My Work URL. */
+export function assignedWorkPath(permissions: Parameters<typeof tabAccess>[1]): string | null {
+  const tab = DESTINATIONS["my-work"].tabs.find((candidate) => candidate.label === "Assigned work");
+  return tab && tabAccess(tab, permissions) === "open" ? tab.path : null;
+}
 
 export type HomeKind =
   | "activity"
@@ -19,6 +26,8 @@ export type HomeKind =
   | "ta"
   | "bootcamp"
   | "plan"
+  | "practice_test"
+  | "link"
   | "recap"
   | "note";
 
@@ -165,6 +174,8 @@ export interface ClassroomHomeModel {
   /** True when the viewer is staff looking at their own classroom. */
   isAdmin: boolean;
   access: HomeAccess;
+  /** Null while the destination is checking or locked. */
+  assignedWorkRoute?: string | null;
 
 
   dateline: string;
@@ -282,6 +293,8 @@ export const KIND_LABEL: Record<HomeKind, string> = {
   ta: "From Joshua",
   bootcamp: "Bootcamp",
   plan: "Weekly plan",
+  practice_test: "Practice test",
+  link: "Link",
   recap: "Recap",
   note: "Note",
 };
@@ -293,6 +306,8 @@ export const KIND_TONE: Record<HomeKind, HomeTone> = {
   ta: "activity",
   bootcamp: "drill",
   plan: "activity",
+  practice_test: "drill",
+  link: "activity",
   recap: "recap",
   note: "recap",
 };
@@ -304,6 +319,8 @@ const PRIMARY_LABEL: Record<HomeKind, { start: string; resume: string }> = {
   ta: { start: "Open the assignment", resume: "Pick it back up" },
   bootcamp: { start: "Open the bootcamp", resume: "Pick it back up" },
   plan: { start: "Open the plan", resume: "Pick it back up" },
+  practice_test: { start: "Open the test", resume: "Pick it back up" },
+  link: { start: "Open the link", resume: "Open the link" },
   recap: { start: "Read it", resume: "Read it" },
   note: { start: "Read it", resume: "Read it" },
 };
@@ -355,7 +372,8 @@ export function subtitleFor(dueToday: number, openWork: number, unread: number):
     );
   }
   if (unread > 0) {
-    parts.push(unread === 1 ? "One unread message." : `${Count(unread)} unread messages.`);
+    // Counted in conversations, the unit every badge uses since 2026-10-22.
+    parts.push(unread === 1 ? "One unread conversation." : `${Count(unread)} unread conversations.`);
   }
   return parts.join(" ");
 }
@@ -433,8 +451,14 @@ export function buildWeek(
   });
 }
 
-/** Reading matter and completed Report Cards are not work to continue. */
-export function pickContinueWork(rows: HomeRow[], access: HomeAccess, _isAdmin: boolean): HomeRow | null {
+/**
+ * Reading matter and completed Report Cards are not work to continue.
+ *
+ * The third argument is kept for callers but no longer decides anything: an
+ * admin never reaches the student Home at all (ClassroomHome dispatches on the
+ * resolved role), so there is no admin case for this function to handle.
+ */
+export function pickContinueWork(rows: HomeRow[], access: HomeAccess, _isAdmin?: boolean): HomeRow | null {
   const deadline = (row: HomeRow) => {
     if (!row.dueAt) return Infinity;
     const time = (parseLocalDay(row.dueAt) ?? new Date(row.dueAt)).getTime();

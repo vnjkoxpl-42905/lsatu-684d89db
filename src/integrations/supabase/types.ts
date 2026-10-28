@@ -6497,6 +6497,207 @@ export type Database = {
         }
         Relationships: []
       }
+      teacher_post_session_events: {
+        Row: {
+          action: string
+          actor_id: string | null
+          created_at: string
+          detail: Json
+          id: number
+          owner_id: string
+          task_id: string
+        }
+        Insert: {
+          action: string
+          actor_id?: string | null
+          created_at?: string
+          detail?: Json
+          id?: never
+          owner_id: string
+          task_id: string
+        }
+        Update: {
+          action?: string
+          actor_id?: string | null
+          created_at?: string
+          detail?: Json
+          id?: never
+          owner_id?: string
+          task_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "teacher_post_session_events_task_id_fkey"
+            columns: ["task_id"]
+            isOneToOne: false
+            referencedRelation: "teacher_post_session_tasks"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      teacher_post_session_settings: {
+        Row: {
+          activation_cutoff: string | null
+          calendar_id: string
+          catching_up: boolean
+          covered_through: string | null
+          drive_root_id: string | null
+          enabled: boolean
+          last_attempt_at: string | null
+          last_error: string | null
+          last_success_at: string | null
+          lease_token: string | null
+          lease_until: string | null
+          owner_id: string
+          updated_checkpoint: string | null
+        }
+        Insert: {
+          activation_cutoff?: string | null
+          calendar_id: string
+          catching_up?: boolean
+          covered_through?: string | null
+          drive_root_id?: string | null
+          enabled?: boolean
+          last_attempt_at?: string | null
+          last_error?: string | null
+          last_success_at?: string | null
+          lease_token?: string | null
+          lease_until?: string | null
+          owner_id: string
+          updated_checkpoint?: string | null
+        }
+        Update: {
+          activation_cutoff?: string | null
+          calendar_id?: string
+          catching_up?: boolean
+          covered_through?: string | null
+          drive_root_id?: string | null
+          enabled?: boolean
+          last_attempt_at?: string | null
+          last_error?: string | null
+          last_success_at?: string | null
+          lease_token?: string | null
+          lease_until?: string | null
+          owner_id?: string
+          updated_checkpoint?: string | null
+        }
+        Relationships: []
+      }
+      teacher_post_session_tasks: {
+        Row: {
+          calendar_id: string
+          ends_at: string
+          event_id: string
+          handled_at: string | null
+          id: string
+          manual_match: boolean
+          match_state: string
+          notes_done: boolean
+          owner_id: string
+          recap_done: boolean
+          revision: number
+          source_checked_at: string
+          source_state: string
+          source_title: string
+          source_updated_at: string
+          starts_at: string
+          student_id: string | null
+          student_name: string | null
+          transcript_doc_id: string | null
+          transcript_source: string | null
+          transcript_status: string
+          work_assigned: boolean
+        }
+        Insert: {
+          calendar_id: string
+          ends_at: string
+          event_id: string
+          handled_at?: string | null
+          id?: string
+          manual_match?: boolean
+          match_state: string
+          notes_done?: boolean
+          owner_id: string
+          recap_done?: boolean
+          revision?: number
+          source_checked_at?: string
+          source_state: string
+          source_title: string
+          source_updated_at: string
+          starts_at: string
+          student_id?: string | null
+          student_name?: string | null
+          transcript_doc_id?: string | null
+          transcript_source?: string | null
+          transcript_status?: string
+          work_assigned?: boolean
+        }
+        Update: {
+          calendar_id?: string
+          ends_at?: string
+          event_id?: string
+          handled_at?: string | null
+          id?: string
+          manual_match?: boolean
+          match_state?: string
+          notes_done?: boolean
+          owner_id?: string
+          recap_done?: boolean
+          revision?: number
+          source_checked_at?: string
+          source_state?: string
+          source_title?: string
+          source_updated_at?: string
+          starts_at?: string
+          student_id?: string | null
+          student_name?: string | null
+          transcript_doc_id?: string | null
+          transcript_source?: string | null
+          transcript_status?: string
+          work_assigned?: boolean
+        }
+        Relationships: [
+          {
+            foreignKeyName: "teacher_post_session_tasks_owner_id_fkey"
+            columns: ["owner_id"]
+            isOneToOne: false
+            referencedRelation: "teacher_post_session_settings"
+            referencedColumns: ["owner_id"]
+          },
+        ]
+      }
+      teacher_student_folders: {
+        Row: {
+          aliases: string[]
+          folder_id: string
+          local_slug: string
+          owner_id: string
+          student_id: string
+        }
+        Insert: {
+          aliases?: string[]
+          folder_id: string
+          local_slug: string
+          owner_id: string
+          student_id: string
+        }
+        Update: {
+          aliases?: string[]
+          folder_id?: string
+          local_slug?: string
+          owner_id?: string
+          student_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "teacher_student_folders_owner_id_fkey"
+            columns: ["owner_id"]
+            isOneToOne: false
+            referencedRelation: "teacher_post_session_settings"
+            referencedColumns: ["owner_id"]
+          },
+        ]
+      }
       teacher_todo_dismissals: {
         Row: {
           admin_user_id: string
@@ -6526,6 +6727,38 @@ export type Database = {
           source_kind?: string
         }
         Relationships: []
+      }
+      teacher_worker_tickets: {
+        Row: {
+          expires_at: string
+          id: string
+          owner_id: string
+          used_at: string | null
+          worker: string
+        }
+        Insert: {
+          expires_at: string
+          id?: string
+          owner_id: string
+          used_at?: string | null
+          worker: string
+        }
+        Update: {
+          expires_at?: string
+          id?: string
+          owner_id?: string
+          used_at?: string | null
+          worker?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "teacher_worker_tickets_owner_id_fkey"
+            columns: ["owner_id"]
+            isOneToOne: false
+            referencedRelation: "teacher_post_session_settings"
+            referencedColumns: ["owner_id"]
+          },
+        ]
       }
       teaching_assets: {
         Row: {
@@ -9313,6 +9546,61 @@ export type Database = {
           storage_path: string
         }[]
       }
+      teacher_post_session_attempt: {
+        Args: { _error?: string; _owner: string; _started: string }
+        Returns: undefined
+      }
+      teacher_post_session_claim: { Args: { _owner: string }; Returns: Json }
+      teacher_post_session_finish: {
+        Args: {
+          _catching: boolean
+          _covered: string
+          _error?: string
+          _expected: string
+          _lease: string
+          _owner: string
+          _updated: string
+        }
+        Returns: undefined
+      }
+      teacher_post_session_home: { Args: never; Returns: Json }
+      teacher_post_session_import_folders: {
+        Args: {
+          _calendar: string
+          _dry_run?: boolean
+          _folders: Json
+          _owner: string
+          _root: string
+        }
+        Returns: Json
+      }
+      teacher_post_session_renew: {
+        Args: { _lease: string; _owner: string }
+        Returns: undefined
+      }
+      teacher_post_session_source: {
+        Args: { _event: string; _lease: string; _owner: string; _source: Json }
+        Returns: undefined
+      }
+      teacher_post_session_task_json: {
+        Args: {
+          t: Database["public"]["Tables"]["teacher_post_session_tasks"]["Row"]
+        }
+        Returns: Json
+      }
+      teacher_post_session_update: {
+        Args: {
+          _action: string
+          _doc_id?: string
+          _expected_revision: number
+          _field?: string
+          _student_id?: string
+          _task_id: string
+          _value?: boolean
+        }
+        Returns: Json
+      }
+      teacher_worker_consume: { Args: { _ticket: string }; Returns: string }
       timed_practice_test_capability_v1: { Args: never; Returns: Json }
       timed_pt_actor_v1: { Args: never; Returns: string }
       timed_pt_check_keys_v1: {

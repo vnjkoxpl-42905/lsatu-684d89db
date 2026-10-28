@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useLoadedStudentWorkAcknowledgment } from '@/hooks/useStudentWorkState';
 import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { useStudentAssignment } from "@/hooks/useStudentAssignments";
 import { useUserSettings } from "@/contexts/UserSettingsContext";
@@ -31,6 +32,7 @@ export default function SectionDirectionsPage() {
     () => (assignment ? singleSectionOf(assignment.question_qids ?? []) : null),
     [assignment],
   );
+  useLoadedStudentWorkAcknowledgment({sourceTable:'homework_assignments',sourceId:assignment?.id,studentId:assignment?.student_id,ready:!!assignment && !!section && !loading && !error && profileTimingStatus!=='loading'});
 
   if (loading && !assignment) {
     return (

@@ -1,3 +1,4 @@
+import { newAssignmentDelivery } from '@/lib/assignmentDelivery';
 import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
@@ -158,7 +159,7 @@ export default function AssignmentBuilder({ studentId, adminUserId, onClose, onA
           i.metadata_json?.bootcamp_id === bootcampId &&
           (bootcampId !== 'conditionals' || (conditionalTarget.courseEdition
             ? protectedConditionalTarget(i)?.courseEdition === conditionalTarget.courseEdition && i.metadata_json?.conditional_target_key === conditionalTargetKey(conditionalTarget)
-              && hasCurrentConditionalRequirements(conditionalTarget, i.metadata_json?.conditional_requirements)
+              && (conditionalTarget.scope === 'activity' || hasCurrentConditionalRequirements(conditionalTarget, i.metadata_json?.conditional_requirements))
             : (i.metadata_json?.conditional_target_key ?? 'course') === conditionalTargetKey(conditionalTarget))) &&
           i.status !== 'archived' &&
           i.status !== 'completed',
@@ -254,7 +255,11 @@ export default function AssignmentBuilder({ studentId, adminUserId, onClose, onA
         item = created;
         notify = first.notify;
       } else {
+        const delivery = newAssignmentDelivery();
         item = await createClassroomItem({
+
+          ...delivery,
+          notificationPolicy: ['session_recap', 'smartboard_recap', 'announcement'].includes(type) ? 'message' : delivery.notificationPolicy,
           studentId,
           createdBy: adminUserId,
           type,
@@ -268,6 +273,9 @@ export default function AssignmentBuilder({ studentId, adminUserId, onClose, onA
         });
 
         notify = await notifyStudentOfClassroomItem({
+          notificationGroupId: delivery.notificationGroupId!,
+          notificationChannel: ['session_recap', 'smartboard_recap', 'announcement'].includes(type) ? 'message' : 'assignment',
+          unlockAt: item.unlock_at,
           adminUserId,
           studentId,
           title: title.trim(),
@@ -280,7 +288,7 @@ export default function AssignmentBuilder({ studentId, adminUserId, onClose, onA
       qc.invalidateQueries({ queryKey: ['classroom-items'] });
 
       const summary = notify ? summarizeNotifyResult(notify) : 'Assigned';
-      if (notify && notify.inbox_ok && notify.bell_ok && notify.email_ok) {
+      if (notify && notify.bell_ok && (notify.optional_channels_skipped || (notify.inbox_ok && notify.email_ok))) {
         toast.success(summary);
       } else {
         toast.warning(summary, {

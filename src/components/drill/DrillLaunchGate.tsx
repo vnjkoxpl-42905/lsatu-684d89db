@@ -43,6 +43,8 @@ import { manualSectionCoverage, manualSectionsEnabled, newManualSectionHref, sec
 
 interface Props {
   children: React.ReactNode;
+  /** Resolved by an enclosing authorized activity. Never supplied from a raw URL. */
+  launch?: DrillLaunch;
 }
 
 const EMPTY_SPEC: DrillRunSpec = {};
@@ -56,7 +58,7 @@ function mergeUnclaimedParams(canonical: string, existing: URLSearchParams): str
   return merged.toString();
 }
 
-export default function DrillLaunchGate({ children }: Props) {
+export default function DrillLaunchGate({ children, launch: embeddedLaunch }: Props) {
   const [searchParams] = useSearchParams();
   const location = useLocation();
   const navigate = useNavigate();
@@ -67,12 +69,13 @@ export default function DrillLaunchGate({ children }: Props) {
     null,
   );
 
-  const namedInUrl = !!searchParams.get('drill') || !!searchParams.get('mode');
+  const namedInUrl = !!embeddedLaunch || !!searchParams.get('drill') || !!searchParams.get('mode');
 
   const { launch, parseError } = React.useMemo<{
     launch: DrillLaunch | null;
     parseError: string | null;
   }>(() => {
+    if (embeddedLaunch) return { launch: embeddedLaunch, parseError: null };
     try {
       const fromUrl = parseDrillLaunch(searchParams);
       if (fromUrl) return { launch: fromUrl, parseError: null };
@@ -104,7 +107,7 @@ export default function DrillLaunchGate({ children }: Props) {
       };
     }
     return { launch: fromState, parseError: null };
-  }, [searchParams, location.state]);
+  }, [searchParams, location.state, embeddedLaunch]);
 
   // Stable name for this run. The rewrite below produces the same key, which is
   // what stops the effect from resolving the same launch a second time.
@@ -113,7 +116,7 @@ export default function DrillLaunchGate({ children }: Props) {
   const requestedStandaloneRunId = launch && ['questions', 'filter', 'smart-drill', 'saved-set'].includes(launch.kind)
     ? searchParams.get('run') : null;
   const resolutionKey = `${user?.id ?? ''}:${launchKey ?? ''}:${requestedGuidedRunId ?? requestedStandaloneRunId ?? ''}`;
-  const protectedResume = searchParams.get('timedSectionSittingId');
+  const protectedResume = embeddedLaunch ? null : searchParams.get('timedSectionSittingId');
   const eligible = launch?.kind === 'section' && !launch.ptLeg && !launch.sealed &&
     !searchParams.has('assignment') && !searchParams.has('assignmentId') && !searchParams.has('legacySectionResume') &&
     manualSectionCoverage('lr', launch.pt, launch.section);

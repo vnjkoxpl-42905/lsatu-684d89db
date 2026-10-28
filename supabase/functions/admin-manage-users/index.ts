@@ -83,7 +83,7 @@ async function verifyAdmin(req: Request) {
 // People page manages students, and an administrator removed by one of these
 // actions could lock the whole platform out of its own role management.
 async function assertNotAdminAccount(
-  admin: ReturnType<typeof createClient>,
+  admin: Awaited<ReturnType<typeof verifyAdmin>>["admin"],
   class_id: string,
   email: string,
 ) {
@@ -308,6 +308,18 @@ Deno.serve(async (req) => {
       // on, Tier 3 leaves the floor (Classroom, Messages, Schedule) and turns
       // the other nine off, Tier 2 keeps whatever switches are there and only
       // changes the label. One update, so the student never sits half-applied.
+      if (action === "set_home_tier" || action === "set_custom_access") {
+        if ((action === "set_home_tier" && !["tier_1", "tier_3"].includes(body.tier)) ||
+            (action === "set_custom_access" && body.tier !== "tier_2")) return jsonRes({ error: "invalid_tier" }, 400);
+        const { data, error } = await admin.rpc("teacher_home_set_access", {
+          _actor: callerId, _student: body.class_id, _expected_tier: body.expected_tier,
+          _expected_flags: body.expected_flags, _tier: body.tier, _flags: body.flags ?? null,
+        });
+        if (error) return jsonRes({ error: error.message }, error.message === "forbidden" ? 403 : /conflict|ineligible/.test(error.message) ? 409 : error.message === "access_verification_failed" ? 500 : 400);
+        if (!data || data.class_id !== body.class_id) return jsonRes({ error: "access_verification_failed" }, 500);
+        return jsonRes({ profile: data });
+      }
+
       if (action === "set_tier") {
         const { class_id, tier } = body;
         if (!class_id || !TIERS.includes(tier)) {

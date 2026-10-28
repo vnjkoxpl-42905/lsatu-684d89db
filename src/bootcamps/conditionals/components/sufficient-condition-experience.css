@@ -20,7 +20,7 @@
   --co-polish-muted: oklch(46% .03 252);
   background: oklch(97% .012 82);
 }
-.oc-course-screen:has(.oc-course-body:not([hidden]) :is([data-reference-source="2"],[data-reference-source="4"])) [data-course-heading] h1 { font-size:clamp(2.15rem,4vw,3.5rem); }
+.oc-course-screen:has(.oc-course-body:not([hidden]) :is([data-reference-source="2"],[data-reference-source="4"])) [data-course-heading] h1 { font-size:clamp(1.75rem,2.8vw,2.5rem); }
 .oc-course-screen .oc-course-body:not([hidden]) :is([data-reference-source="2"],[data-reference-source="4"]).cr-course-section { background:transparent; padding-inline:0; }
 .cr-sufficiency>blockquote { background:transparent; border:0; border-block:1px solid var(--sc-line); border-radius:0; padding:1.5rem 0; color:var(--sc-ink); }
 .cr-sufficiency .sc-eyebrow { font-family:inherit; font-size:.78rem; line-height:1.5; letter-spacing:.04em; font-weight:600; margin:0 0 .6rem; }
@@ -135,7 +135,7 @@
 .cr-sufficiency .nc-statement blockquote { margin:0 0 1.5rem; padding:0; border:0; font-size:clamp(1.55rem,3vw,2.1rem); line-height:1.6; }
 .nc-statement-if,.nc-statement-then { display:block; }
 .nc-statement-then { position:relative; width:fit-content; max-width:100%; color:var(--sc-ink); background:oklch(92% .055 83); border-bottom:3px solid var(--sc-brass); padding:.15em .25em; border-radius:.15em; }
-.nc-statement-emphasis { animation:nc-required-emphasis 3.2s ease-in-out infinite; }
+.nc-statement-emphasis { background:oklch(92% .055 83); }
 .nc-statement-roles { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:1.5rem; }
 .nc-statement-roles>div { border-left:3px solid var(--sc-ink); padding-left:1rem; min-width:0; }
 .nc-statement-roles>div:last-child { border-left-color:var(--sc-brass); }
@@ -144,7 +144,6 @@
 .cr-sufficiency .nc-statement-roles p { margin:.5rem 0 0; font-size:.95rem; }
 .cr-sufficiency .nc-statement-key { margin:1.5rem 0 .5rem; padding-top:1rem; border-top:1px solid var(--sc-line); font-size:.95rem; }
 .nc-verdict { animation:nc-verdict-enter 220ms ease-out; }
-@keyframes nc-required-emphasis { 0%,100% { background:oklch(92% .055 83); } 40% { background:oklch(85% .1 83); } }
 @keyframes nc-verdict-enter { from { opacity:.55; transform:translateY(3px); } to { opacity:1; transform:translateY(0); } }
 @media(max-width:640px) { .nc-statement-roles { grid-template-columns:minmax(0,1fr); } }
 @media(prefers-reduced-motion:reduce) { .nc-statement-emphasis,.nc-verdict { animation:none!important; } }

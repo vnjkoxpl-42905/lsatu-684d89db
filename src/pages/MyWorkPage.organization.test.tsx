@@ -1,3 +1,5 @@
+const groupAck = vi.hoisted(() => vi.fn());
+vi.mock('@/hooks/useStudentWorkState', () => ({ useAssignmentGroupAcknowledgment: groupAck }));
 import React from 'react';
 import { act, render, screen, fireEvent, within } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
@@ -226,3 +228,14 @@ describe('My Work organization', () => {
     expect(screen.queryByText('Weekly plan')).not.toBeInTheDocument();
   });
 });
+
+ it('shows unread independently of saved progress and completed work', () => {
+ state.rows = [row('new', {isUnread:true}), row('started',{status:'in_progress',isUnread:false,openedAt:'2026-10-28T12:00:00Z'})];
+ const view=open();
+ expect(screen.getAllByText('Unread')).toHaveLength(1);
+ expect(screen.getByRole('link', {name:/Assignment started/})).toHaveTextContent('In progress');
+ expect(screen.getByRole('link', {name:/Assignment started/})).toHaveTextContent('Read');
+ view.unmount();state.rows=[row('finished',{status:'completed',isUnread:true})];open(true);
+ expect(screen.queryByText('Unread')).not.toBeInTheDocument();
+ expect(screen.getByText('Completed')).toBeInTheDocument();
+ });

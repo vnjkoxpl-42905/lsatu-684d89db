@@ -1,12 +1,12 @@
 {
   "repository": "vnjkoxpl-42905/lsatu-684d89db",
-  "source_head": "e4035d9c8ec97a3aaec01b0b3464533872328bc8",
+  "source_head": "5497ff9e25039179e2757441782bf97f8c816517",
   "source_branch": "codex/my-work-organization-20261027",
   "snapshot_branch": "codex/local-sync/laptop-le9a083p/lsatu-my-work-20261026",
   "encrypted_original_context": {
     "enabled": true,
     "format": 2,
-    "file_count": 77,
+    "file_count": 78,
     "paths": [
       "lsatu-my-work-20261026/.agents/skills/notebooklm/tests/cassettes/artifacts_delete.yaml",
       "lsatu-my-work-20261026/.agents/skills/notebooklm/tests/cassettes/artifacts_export_report.yaml",
@@ -84,8 +84,9 @@
       "lsatu-my-work-20261026/scripts/verification/start-rc-builder-preview.mjs",
       "lsatu-my-work-20261026/src/contexts/AuthContext.tsx",
       "lsatu-my-work-20261026/src/lib/googleDrive.ts",
-      "lsatu-my-work-20261026/supabase/functions/handle-email-events/index.ts"
+      "lsatu-my-work-20261026/supabase/functions/handle-email-events/index.ts",
+      "lsatu-my-work-20261026/supabase/functions/teacher-post-session-sync/desk.ts"
     ],
-    "ciphertext_sha256": "c6da805923debc7cf84921d7b19dd893dac1325f5ccddceb977331f5fc13b718"
+    "ciphertext_sha256": "ae73b012f46fc9c9bfe5c27faed73b9681be3ab641efafcc509ca94f46387175"
   }
 }

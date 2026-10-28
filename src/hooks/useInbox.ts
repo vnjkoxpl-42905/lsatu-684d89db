@@ -23,6 +23,9 @@ export interface Conversation {
   participants: Participant[];
   last_message?: { body: string; created_at: string; sender_id: string } | null;
   unread: boolean;
+  /** Newest incoming unread message, independent of the latest overall send. */
+  latest_unread_message?: { body: string; created_at: string; sender_id: string } | null;
+  latest_unread_at?: string | null;
   /**
    * The viewer's own Home card is cleared through this instant. A message at or
    * before it is not news on Home; a newer one is. Null means never cleared.
@@ -77,7 +80,7 @@ export function useInbox() {
     // Get conversations the user participates in. A swallowed error here (and
     // in each read below) yielded null -> an empty inbox rendered as if the
     // student had no messages: a swallowed-error AND a truthful-UI violation.
-    // On any failure we set an error, KEEP the prior conversations, and stop.
+    // On a required read failure we keep the prior conversations and stop.
     const { data: myParts, error: partsError } = await supabase
       .from('conversation_participants')
       .select('conversation_id, last_read_at, home_cleared_at')
@@ -100,10 +103,10 @@ export function useInbox() {
     }
 
     const lastReadMap = new Map<string, number>(
-      (myParts ?? []).map((p) => [
-        p.conversation_id,
-        p.last_read_at ? new Date(p.last_read_at).getTime() : 0,
-      ])
+      (myParts ?? []).map((p) => {
+        const timestamp = p.last_read_at ? new Date(p.last_read_at).getTime() : 0;
+        return [p.conversation_id, Number.isFinite(timestamp) ? timestamp : 0];
+      })
     );
 
     const homeClearedMap = new Map<string, string | null>(
@@ -181,8 +184,9 @@ export function useInbox() {
     // Match the rail badge: a conversation is unread when it contains any
     // incoming message newer than this viewer's read timestamp, even if a
     // later message in the thread was sent by the viewer.
-    const oldestReadAt = Math.min(...lastReadMap.values());
-    const unreadMessages: Array<{ conversation_id: string; created_at: string }> = [];
+    const readTimes = Array.from(lastReadMap.values()).filter(Number.isFinite);
+    const oldestReadAt = readTimes.length ? Math.min(...readTimes) : 0;
+    const unreadMessages: Array<{ id: string; conversation_id: string; created_at: string }> = [];
     for (let offset = 0; ; offset += 500) {
       const { data: page, error: unreadMessagesError } = await supabase
         .from('messages').select('id, conversation_id, created_at')
@@ -197,11 +201,38 @@ export function useInbox() {
       unreadMessages.push(...(page ?? []));
       if ((page?.length ?? 0) < 500) break;
     }
-    const unreadConversationIds = new Set(
-      (unreadMessages ?? [])
-        .filter((m) => new Date(m.created_at).getTime() > (lastReadMap.get(m.conversation_id) ?? 0))
-        .map((m) => m.conversation_id),
-    );
+    const newestUnread = new Map<string, (typeof unreadMessages)[number]>();
+    for (const message of unreadMessages) {
+      const timestamp = new Date(message.created_at).getTime();
+      if (timestamp <= (lastReadMap.get(message.conversation_id) ?? 0)) continue;
+      const previous = newestUnread.get(message.conversation_id);
+      if (!previous || timestamp > new Date(previous.created_at).getTime()
+        || (timestamp === new Date(previous.created_at).getTime() && message.id > previous.id)) {
+        newestUnread.set(message.conversation_id, message);
+      }
+    }
+    const unreadConversationIds = new Set(newestUnread.keys());
+    const unreadPreviewMap = new Map<string, { body: string; created_at: string; sender_id: string }>();
+    // Read full bodies only for one newest unread incoming message per thread.
+    // Keep the paginated unread scan lean, even for long-unread conversations.
+    const previewIds = Array.from(newestUnread.values(), (message) => message.id);
+    for (let offset = 0; offset < previewIds.length; offset += 100) {
+      const { data: previews, error: previewError } = await supabase
+        .from('messages').select('id, conversation_id, body, created_at, sender_id')
+        .in('id', previewIds.slice(offset, offset + 100));
+      if (!isCurrent()) return;
+      if (previewError) {
+        // The unread scan already established fresh counts and timestamps.
+        // An optional body preview must not prevent that snapshot from loading.
+        console.warn('[inbox] load unread previews failed:', previewError);
+        continue;
+      }
+      for (const message of previews ?? []) {
+        unreadPreviewMap.set(message.conversation_id, {
+          body: message.body, created_at: message.created_at, sender_id: message.sender_id,
+        });
+      }
+    }
 
     // Per-conversation attachment presence via RPC — exact across ALL messages in
     // the conversation. The old stopgap only inspected recently-fetched messages,
@@ -237,6 +268,8 @@ export function useInbox() {
         participants: parts,
         last_message: lastMsg,
         unread,
+        latest_unread_message: unreadPreviewMap.get(c.id) ?? null,
+        latest_unread_at: newestUnread.get(c.id)?.created_at ?? null,
         home_cleared_at: homeClearedMap.get(c.id) ?? null,
         hasAttachments: attachmentConvIds.has(c.id),
       };
@@ -345,6 +378,7 @@ export function useInbox() {
 
   return {
     conversations: ownedConversations,
+    loaded: !!user && conversationOwner === user.id,
     loading: loading || (!!user && conversationOwner !== user.id && !error),
     error,
     unreadCount,

@@ -10,11 +10,24 @@ vi.mock('@/hooks/useClassroomItems', async () => {
   const { useQuery } = await import('@tanstack/react-query');
   return { useClassroomItems: () => useQuery({ queryKey: ['classroom-items', 'reader'], queryFn: async () => [...fixture.items], staleTime: Infinity }) };
 });
-vi.mock('@/lib/markNoteRead', () => ({ isReadInMetadata: (item: any) => item.status === 'completed' || !!item.metadata_json?.read_at, markNoteRead: async (item: any) => {
-  const updated = { ...item, metadata_json: { ...item.metadata_json, read_at: '2026-10-28T12:00:00Z' } };
-  fixture.items = fixture.items.map(row => row.id === item.id ? updated : row);
-  return updated;
-} }));
+vi.mock('@/lib/markNoteRead', () => ({ isReadInMetadata: (item: any) => item.status === 'completed' || !!item.metadata_json?.read_at }));
+// The journey exercises routing and archive restoration. The real foreground,
+// ownership and RPC failure rules have their own receipt-hook tests.
+vi.mock('@/hooks/useStudentWorkState', async () => {
+  const { useEffect } = await import('react');
+  const { useQueryClient } = await import('@tanstack/react-query');
+  return { useLoadedStudentWorkAcknowledgment: ({ sourceTable, sourceId, studentId, ready }: { sourceTable: string; sourceId?: string; studentId?: string; ready: boolean }) => {
+    const client = useQueryClient();
+    useEffect(() => {
+      if (!ready || sourceTable !== 'classroom_items' || studentId !== 'reader') return;
+      const item = fixture.items.find(row => row.id === sourceId && row.student_id === studentId);
+      if (!item || item.metadata_json?.read_at) return;
+      const updated = { ...item, metadata_json: { ...item.metadata_json, read_at: '2026-10-28T12:00:00Z' } };
+      fixture.items = fixture.items.map(row => row.id === item.id ? updated : row);
+      client.setQueryData<any[]>(['classroom-items', studentId], rows => rows?.map(row => row.id === item.id ? updated : row));
+    }, [client, sourceTable, sourceId, studentId, ready]);
+  } };
+});
 vi.mock('@/contexts/AuthContext', () => ({ useAuth: () => ({ user: { id: 'reader' } }) }));
 vi.mock('@/hooks/useStudentAssignments', () => ({ useStudentAssignments: () => ({ assignments: [] }), useStudentTAAssignments: () => ({ assignments: [] }), useStudentAssignment: vi.fn(), useStudentTAAssignment: vi.fn(), markTAAssignmentCompleted: vi.fn(), markTAAssignmentViewed: vi.fn() }));
 vi.mock('@/hooks/useFlagged', () => ({ useFlagged: () => ({ data: [] }) }));
@@ -40,6 +53,11 @@ function show(path = archivePath) {
   client.setQueryData(['classroom-items', 'reader'], [...fixture.items]);
   return render(<QueryClientProvider client={client}><MemoryRouter initialEntries={[path]}><Journey /></MemoryRouter></QueryClientProvider>);
 }
+async function expectOpened(id: string) {
+  await waitFor(() => expect(fixture.items.find(item => item.id === id)).toMatchObject({
+    student_id: 'reader', status: 'assigned', metadata_json: { read_at: '2026-10-28T12:00:00Z' },
+  }));
+}
 beforeEach(() => {
   sessionStorage.clear(); intent.mockReset(); HTMLElement.prototype.scrollIntoView = vi.fn();
   fixture.items = ['a', 'b', 'c'].map((id, i) => ({ id, student_id: 'reader', type: i === 1 ? 'session_recap' : 'note', title: `Reference ${id}`, created_at: `2026-10-${25 - i}T12:00:00Z`, status: 'assigned', metadata_json: {}, content_html: '<p>Full note</p>' }));
@@ -48,8 +66,10 @@ it('returns archive A through real rail B to the nearest surviving filtered row,
   show();
   fireEvent.click(screen.getByRole('link', { name: /^Read Reference a\./ }));
   await screen.findByRole('heading', { level: 1, name: 'Reference a' });
+  await expectOpened('a');
   fireEvent.click(within(screen.getByRole('complementary', { name: 'Notes rail' })).getByRole('button', { name: /^Reference b/ }));
   await screen.findByRole('heading', { level: 1, name: 'Reference b' });
+  await expectOpened('b');
   fireEvent.click(screen.getByRole('button', { name: 'Back to notes' }));
   await waitFor(() => expect(screen.getByRole('link', { name: /^Read Reference c\./ })).toHaveFocus());
   expect(screen.getByRole('status', { name: 'Journey location' })).toHaveTextContent(archivePath);
@@ -71,8 +91,10 @@ it('preserves archive origin through native history Back from B to A to archive'
   show();
   fireEvent.click(screen.getByRole('link', { name: /^Read Reference a\./ }));
   await screen.findByRole('heading', { level: 1, name: 'Reference a' });
+  await expectOpened('a');
   fireEvent.click(within(screen.getByRole('complementary', { name: 'Notes rail' })).getByRole('button', { name: /^Reference b/ }));
   await screen.findByRole('heading', { level: 1, name: 'Reference b' });
+  await expectOpened('b');
   fireEvent.click(screen.getByRole('button', { name: 'History Back' }));
   await screen.findByRole('heading', { level: 1, name: 'Reference a' });
   fireEvent.click(screen.getByRole('button', { name: 'History Back' }));

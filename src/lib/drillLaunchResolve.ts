@@ -164,8 +164,9 @@ export async function resolveDrillLaunch(
           throw new DeadDrillLinkError('That guided assignment does not match this drill.');
         }
       } else if (launch.drillId) {
-        drill = await getGuidedDrill(launch.drillId);
-        if (!drill) drill = getLocalGuidedDrillBySlug(launch.drillId);
+        // Bundled definitions deliberately use their slug as identity. A slug
+        // is not a UUID and must not be queried against the database id column.
+        drill = getLocalGuidedDrillBySlug(launch.drillId) ?? await getGuidedDrill(launch.drillId);
       }
 
       if (!drill) {

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useLoadedPracticeTestAcknowledgment } from '@/hooks/useStudentWorkState';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { getPracticeTestDeviceId } from '@/lib/practiceTestStore';
@@ -19,6 +20,7 @@ export default function TimedPracticeTestRun({ ownerId, runId }: { ownerId: stri
   const scope = React.useMemo(() => ({ client, active: true, inFlight: false }), [client]);
   React.useEffect(() => { scope.active = true; return () => { scope.active = false; }; }, [scope]);
   const [loaded, setLoaded] = React.useState(false);
+  useLoadedPracticeTestAcknowledgment(snapshot?.run.pt,loaded&&!!snapshot&&!error,ownerId);
   const [tick, setTick] = React.useState(() => performance.now());
   const [pending, setPending] = React.useState(() => client.readPending());
   const [rejection, setRejection] = React.useState(() => client.readRejection());

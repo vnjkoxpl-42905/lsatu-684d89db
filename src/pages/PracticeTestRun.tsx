@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useLoadedPracticeTestAcknowledgment } from '@/hooks/useStudentWorkState';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useSearchParams } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -157,6 +158,7 @@ export default function PracticeTestRunPage() {
   const [protectedRun, setProtectedRun] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
   const [revision, reload] = React.useReducer(n => n + 1, 0);
+  useLoadedPracticeTestAcknowledgment(run?.pt,!!run && !protectedRun && !error,ownerId);
   React.useEffect(() => {
     let active = true;
     setRun(undefined); setProtectedRun(false); setError(null);

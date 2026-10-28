@@ -1,9 +1,13 @@
+import { useClassroomDestinationAcknowledgment } from '@/hooks/useClassroomDestinationAcknowledgment';
 import { useCallback, useEffect, useRef, useState } from "react";
 import {
   DIAGRAM_ITEMS, FLASHCARDS, GROUPS, GROUP_LABEL, INDICATOR_POOL,
   negateToken, type DiagramItem, type GroupId,
 } from "./content";
 import { Diagram, Side, Tok } from "./Notation";
+import { useSearchParams } from 'react-router-dom';
+import { useAuth } from '@/contexts/AuthContext';
+import { ConditionalSkillActivity } from './ConditionalSkillActivity';
 import UnlessDrill from "@/features/quick-drills/unless-drill/UnlessDrill";
 import "./conditional-refresher.css";
 
@@ -36,27 +40,33 @@ function shuffle<T>(items: T[]): T[] {
 
 /* -------------------------------------------------------------------------- */
 
+const TAB_ACTIVITIES = ['', 'sort', 'translate-cards', 'diagram', 'unless'] as const;
 export default function ConditionalIndicatorsRefresher() {
-  const [tab, setTab] = useState<Tab>("Cheat Sheet");
-  return (
-    <div className="cir-root">
-      <div className="cir-shell">
-        <h1 className="cir-title">Conditional indicators</h1>
-        <p className="cir-sub">Your progress on this page is saved in this browser.</p>
-        <div className="cir-tabs" role="tablist" aria-label="Conditional indicators sections">
-          {TABS.map(t => (
-            <button key={t} type="button" role="tab" aria-selected={tab === t}
-              className="cir-tab" onClick={() => setTab(t)}>{t}</button>
-          ))}
-        </div>
-        {tab === "Cheat Sheet" && <CheatSheet />}
-        {tab === "Sort Drills" && <SortDrills />}
-        {tab === "Flashcards" && <Flashcards />}
-        {tab === "Diagram Drills" && <DiagramDrills />}
-        {tab === "Unless Drill" && <UnlessDrill />}
-      </div>
-    </div>
-  );
+  useClassroomDestinationAcknowledgment(true);
+  const [params, setParams] = useSearchParams();
+  const { user } = useAuth();
+  const activity = params.get('activity') ?? '';
+  const tabIndex = TAB_ACTIVITIES.indexOf(activity as typeof TAB_ACTIVITIES[number]);
+  const groups = (params.get('groups') ?? 'g1,g2,g3,g4').split(',') as GroupId[];
+  const stage = params.get('stage') ?? 'translate';
+  const review = params.get('review') ?? 'all';
+  const validSettings = ['translate', 'contrapositive'].includes(stage) && ['all', 'needs'].includes(review);
+  const update = (key: string, value: string) => setParams(current => { const next = new URLSearchParams(current); if (value) next.set(key, value); else next.delete(key); if (key !== 'item') next.delete('item'); return next; });
+  const scope = user?.id ?? 'anonymous';
+  return <div className="cir-root"><div className="cir-shell">
+    <h1 className="cir-title">Conditional indicators</h1>
+    <p className="cir-sub">Optional practice. Your work is saved in this browser for this learner.</p>
+    <div className="cir-tabs" role="tablist" aria-label="Conditional indicators sections">{TABS.map((tab, index) => <button key={tab} type="button" role="tab" aria-selected={index === tabIndex} className="cir-tab" onClick={() => update('activity', TAB_ACTIVITIES[index])}>{tab}</button>)}</div>
+    {tabIndex === 0 && <CheatSheet />}
+    {tabIndex > 0 && tabIndex < 4 && <fieldset className="cir-settings"><legend>Practice settings</legend>
+      <div className="cir-group-settings">{GROUPS.map(group => <label key={group.id}><input type="checkbox" checked={groups.includes(group.id)} onChange={() => update('groups', groups.includes(group.id) ? groups.filter(id => id !== group.id).join(',') : [...groups, group.id].join(','))} />Group {group.n}</label>)}</div>
+      {activity !== 'sort' && <label>Task <select value={stage} onChange={event => update('stage', event.target.value)}><option value="translate">Translate</option><option value="contrapositive">Add the contrapositive</option></select></label>}
+      {activity === 'translate-cards' && <label>Review <select value={review} onChange={event => update('review', event.target.value)}><option value="all">All cards</option><option value="needs">Needs practice</option></select></label>}
+    </fieldset>}
+    {tabIndex > 0 && tabIndex < 4 && validSettings && <ConditionalSkillActivity kind={activity as 'sort' | 'translate-cards' | 'diagram'} groups={groups} stage={stage as 'translate' | 'contrapositive'} review={review as 'all' | 'needs'} storageScope={scope} itemId={params.get('item') ?? undefined} />}
+    {(tabIndex < 0 || !validSettings) && <p>This practice link has unavailable settings. Choose a section and valid settings above.</p>}
+    {tabIndex === 4 && <UnlessDrill />}
+  </div></div>;
 }
 
 /* --------------------------------- Cheat ---------------------------------- */
@@ -89,126 +99,6 @@ function CheatSheet() {
         <div>Or: <Side text="A or B" /></div>
         <div>Conditional: <Diagram left="A" right="/B" /></div>
       </div>
-    </section>
-  );
-}
-
-/* ------------------------------- Sort drills ------------------------------- */
-
-function SortDrills() {
-  const [queue, setQueue] = useState(() => shuffle(INDICATOR_POOL));
-  const [index, setIndex] = useState(0);
-  const [picked, setPicked] = useState<GroupId | null>(null);
-  const [correct, setCorrect] = useState(0);
-  const item = queue[index];
-  const finished = index >= queue.length;
-
-  const choose = (group: GroupId) => {
-    if (picked) return;
-    setPicked(group);
-    if (group === item.group) setCorrect(c => c + 1);
-    writeSaved({ sort: { done: index + 1, correct: correct + (group === item.group ? 1 : 0) } });
-  };
-  const next = () => { setPicked(null); setIndex(i => i + 1); };
-  const restart = () => { setQueue(shuffle(INDICATOR_POOL)); setIndex(0); setPicked(null); setCorrect(0); };
-
-  return (
-    <section className="cir-card">
-      <div className="cir-bar" role="progressbar" aria-label="Sort drill progress"
-        aria-valuemin={0} aria-valuemax={queue.length} aria-valuenow={Math.min(index, queue.length)}>
-        <span style={{ width: `${Math.round((Math.min(index, queue.length) / queue.length) * 100)}%` }} />
-      </div>
-      {finished ? (
-        <>
-          <p className="cir-prompt">Pool complete.</p>
-          <div className="cir-actions"><button type="button" className="cir-btn" onClick={restart}>Run it again</button></div>
-        </>
-      ) : (
-        <>
-          <p className="cir-meta">Which group?</p>
-          <p className="cir-prompt">{item.word}</p>
-          <div className="cir-choices">
-            {GROUPS.map(g => {
-              const state = !picked ? "" : g.id === item.group ? " is-right" : g.id === picked ? " is-wrong" : "";
-              return (
-                <button key={g.id} type="button" className={`cir-choice${state}`} disabled={!!picked}
-                  onClick={() => choose(g.id)}>{GROUP_LABEL[g.id]}</button>
-              );
-            })}
-          </div>
-          {picked && (
-            <>
-              <p className="cir-feedback">
-                {picked === item.group ? "Right." : "Not quite."} <strong>{item.word}</strong> is {GROUP_LABEL[item.group]}.
-              </p>
-              <div className="cir-actions"><button type="button" className="cir-btn" onClick={next}>Next</button></div>
-            </>
-          )}
-        </>
-      )}
-    </section>
-  );
-}
-
-/* ------------------------------- Flashcards -------------------------------- */
-
-function Flashcards() {
-  const [queue, setQueue] = useState(() => shuffle(FLASHCARDS));
-  const [index, setIndex] = useState(0);
-  const [step, setStep] = useState<1 | 2 | 3>(1);
-  const card = queue[index];
-  const done = index >= queue.length;
-
-  const rate = (value: "again" | "needs" | "got") => {
-    const flash = { ...(readSaved().flash ?? {}), [card.id]: value };
-    writeSaved({ flash });
-    if (value === "again") setQueue(q => [...q, card]);
-    setStep(1);
-    setIndex(i => i + 1);
-  };
-
-  if (done) {
-    return (
-      <section className="cir-card">
-        <p className="cir-prompt">Deck complete.</p>
-        <div className="cir-actions">
-          <button type="button" className="cir-btn" onClick={() => { setQueue(shuffle(FLASHCARDS)); setIndex(0); setStep(1); }}>Shuffle again</button>
-        </div>
-      </section>
-    );
-  }
-
-  return (
-    <section className="cir-card">
-      <div className="cir-bar"><span style={{ width: `${Math.round((index / queue.length) * 100)}%` }} /></div>
-      <p className="cir-meta">Card {index + 1} of {queue.length}</p>
-      <p className="cir-prompt">{card.front}</p>
-      <div className="cir-step"><b>Step 1.</b> Translate it — write the diagram out on your paper before you go on.</div>
-      {step >= 2 && (
-        <div className="cir-step"><b>Step 2.</b> Say the diagram out loud as ordinary English: &ldquo;If &hellip;, then &hellip;&rdquo; using the actual complete ideas and every negative.</div>
-      )}
-      {step < 3 ? (
-        <div className="cir-actions">
-          <button type="button" className="cir-btn" onClick={() => setStep(s => (s === 1 ? 2 : 3))}>
-            {step === 1 ? "I have the diagram" : "I said it in English"}
-          </button>
-        </div>
-      ) : (
-        <>
-          <div className="cir-reveal">
-            <div className="cir-reveal-row"><span>Conditional</span><p>{card.conditional}</p></div>
-            <div className="cir-reveal-row"><span>Contrapositive</span><p>{card.contrapositive}</p></div>
-            <div className="cir-reveal-row"><span>In English</span><p>{card.englishConditional}</p></div>
-            <div className="cir-reveal-row"><span>Contrapositive in English</span><p>{card.englishContrapositive}</p></div>
-            {card.note && <div className="cir-reveal-row"><span>Why</span><p>{card.note}</p></div>}
-          </div>
-          <div className="cir-actions">
-            <button type="button" className="cir-btn ghost" onClick={() => rate("again")}>Again</button>
-            <button type="button" className="cir-btn ghost" onClick={() => rate("needs")}>Needs work</button>
-            <button type="button" className="cir-btn" onClick={() => rate("got")}>Got it</button>
-          </div>
-        </>
-      )}
     </section>
   );
 }

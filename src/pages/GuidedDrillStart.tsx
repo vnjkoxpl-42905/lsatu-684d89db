@@ -26,6 +26,7 @@ import {
   type PracticePool,
 } from '@/bootcamps/main-conclusion/data/practiceDrillPools';
 import { useAuth } from '@/contexts/AuthContext';
+import { useLoadedStudentWorkAcknowledgment } from '@/hooks/useStudentWorkState';
 import { loadPracticeSession } from '@/bootcamps/main-conclusion/lib/practiceSessionStore';
 import {
   buildGuidedLaunchReturnPath,
@@ -45,7 +46,7 @@ import {
 } from '@/lib/guidedDrillSession';
 import { PracticeSetResults } from '@/components/drill/PracticeSetResults';
 import type { DrillSession } from '@/types/drill';
-import { launchDrill } from '@/lib/drillLaunch';
+import { launchDrill, type DrillLaunch } from '@/lib/drillLaunch';
 import { listStandaloneDrillRuns, type StandaloneDrillRun } from '@/lib/drillRunLedger';
 import { Button } from '@/components/ui/button';
 
@@ -79,12 +80,20 @@ export interface GuidedDrillStartProps {
   assignmentId?: string;
   /** When embedded, called instead of navigating away on return. */
   onReturn?: () => void;
+  /** A containing course keeps launch and run navigation in its own shell. */
+  onLaunch?: (launch: DrillLaunch, runId?: string) => void;
+  /** Routing context only. The containing route owns authorization. */
+  launchReturnTo?: string;
+  onResults?: (runId: string) => void;
 }
 
 export default function GuidedDrillStart({
   slug: slugProp,
   assignmentId: assignmentIdProp,
   onReturn,
+  onLaunch,
+  launchReturnTo: embeddedReturnTo,
+  onResults,
 }: GuidedDrillStartProps = {}) {
   const params = useParams<{ assignmentId?: string; slug?: string }>();
   const assignmentId = assignmentIdProp ?? params.assignmentId;
@@ -112,12 +121,12 @@ export default function GuidedDrillStart({
     [searchParams, resumeQids],
   );
   const launchReturnTo = React.useMemo(
-    () => buildGuidedLaunchReturnPath({
+    () => embeddedReturnTo ?? buildGuidedLaunchReturnPath({
       assignmentId,
       slug,
       originReturnTo,
     }),
-    [assignmentId, slug, originReturnTo],
+    [assignmentId, slug, originReturnTo, embeddedReturnTo],
   );
   const [resolvedGuidedDrillId, setResolvedGuidedDrillId] = React.useState<string | null>(null);
 
@@ -285,6 +294,7 @@ export default function GuidedDrillStart({
   }, [assignmentId, slug]);
 
   const drill = assignment?.guided_drill ?? directDrill;
+  useLoadedStudentWorkAcknowledgment({sourceTable:'guided_drill_assignments',sourceId:assignment?.id,studentId:assignment?.student_id,ready:!!assignment && !!drill && !loading && !qbLoading});
   const launchPage = React.useMemo(() => (
     findGuidedDrillHtmlByDrill(drill) ?? findGuidedDrillHtmlBySlug(slug)
   ), [drill, slug]);
@@ -391,19 +401,24 @@ export default function GuidedDrillStart({
       toast.error('This saved guided drill could not be found in your account.');
       return;
     }
-    const launch = launchDrill({
+    const launchSpec: DrillLaunch = {
         kind: 'guided-drill',
         drillId: drill.id,
         assignmentId: assignment?.id,
-        durationMinutes: drill.estimated_minutes ?? undefined,
+        durationMinutes: onLaunch ? undefined : drill.estimated_minutes ?? undefined,
         options: {
           returnTo: launchReturnTo,
           label: drill.title,
           initialIndex: resumeIndex ?? undefined,
         },
-      });
+      };
+    if (onLaunch) {
+      onLaunch(launchSpec, resumeRun?.id);
+      return;
+    }
+    const launch = launchDrill(launchSpec);
     navigate(`/drill?${launch}${resumeRun ? `&run=${encodeURIComponent(resumeRun.id)}` : ''}`);
-  }, [assignment, drill, navigate, qbLoading, bootcampOverride, slug, resumeQids, resumeIndex, storedGuided, launchReturnTo, requestedRunId, guidedRuns, activeGuidedRun]);
+  }, [assignment, drill, navigate, qbLoading, bootcampOverride, slug, resumeQids, resumeIndex, storedGuided, launchReturnTo, requestedRunId, guidedRuns, activeGuidedRun, onLaunch]);
 
   if (loading) {
     return <div className="min-h-screen bg-background text-foreground p-8">Loading...</div>;
@@ -452,7 +467,7 @@ export default function GuidedDrillStart({
         <div className="space-y-3">{completedGuidedRuns.map((run) => (
           <div key={run.id} className="flex items-center justify-between gap-3 rounded-xl border border-border bg-card p-4">
             <div><strong>{new Date(run.updated_at).toLocaleDateString()}</strong><p className="text-sm text-muted-foreground">{run.session.attempts.length} answered</p></div>
-            <Button variant="outline" onClick={() => navigate(`/practice/drills/runs/${run.id}?view=results`)}>Results & review</Button>
+            <Button variant="outline" onClick={() => onResults ? onResults(run.id) : navigate(`/practice/drills/runs/${run.id}?view=results`)}>Results & review</Button>
           </div>
         ))}{legacyCompletedVisible && <div className="flex items-center justify-between gap-3 rounded-xl border border-border bg-card p-4">
           <div><strong>Earlier sitting</strong><p className="text-sm text-muted-foreground">Saved before individual sittings were available</p></div>
