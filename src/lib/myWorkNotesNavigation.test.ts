@@ -1,7 +1,16 @@
 import { describe, expect, it } from "vitest";
-import { notesDetailRoute, validateNotesReturnTo } from "./myWorkNotesNavigation";
+import { notesArchiveOrigin, notesDetailRoute, validateNotesReturnTo } from "./myWorkNotesNavigation";
 
 describe("notes return navigation", () => {
+  it('accepts only a canonical matching explicit archive origin', () => {
+    const returnTo = '/my-work/notes?q=rule&filter=unread&type=note&shown=24';
+    expect(notesArchiveOrigin({ notesArchiveOrigin: { id: 'a', returnTo } }, returnTo)).toEqual({ id: 'a', returnTo });
+    expect(notesArchiveOrigin({ notesArchiveOrigin: { id: 'a', returnTo } }, '/my-work/notes')).toBeNull();
+    expect(notesArchiveOrigin({ notesArchiveOrigin: { id: 'a', returnTo: 'https://evil.test' } }, '/my-work/notes')).toBeNull();
+    expect(notesArchiveOrigin({ notesArchiveOrigin: { id: true, returnTo } }, returnTo)).toBeNull();
+    expect(notesArchiveOrigin({ notesArchiveOrigin: { id: 'a', returnTo: '/my-work/notes?view=mine' } }, '/my-work/notes')).toBeNull();
+    expect(notesArchiveOrigin(null, returnTo)).toBeNull();
+  });
   it.each([null, "https://evil.test/my-work/notes", "//evil.test/my-work/notes", "/my-work/notes/other", "/my-work/notes/../to-do", "/my-work/notes\\evil", "/classroom"])('rejects %s', value => {
     expect(validateNotesReturnTo(value)).toBe("/my-work/notes");
   });

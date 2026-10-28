@@ -1,6 +1,6 @@
 .classroom-root .my-work-notes-page { color: var(--classroom-ink); }
-.classroom-root.classroom-root-destination .classroom-column, .classroom-root .student-destination, .classroom-root .student-destination-heading { min-width: 0; }
-.classroom-root .student-destination-heading p { max-width: 100%; overflow-wrap: anywhere; white-space: normal; }
+.classroom-root.classroom-root-destination:has(.my-work-notes-page, .my-work-organized) .classroom-column, .classroom-root:has(.my-work-notes-page, .my-work-organized) .student-destination, .classroom-root:has(.my-work-notes-page, .my-work-organized) .student-destination-heading { min-width: 0; }
+.classroom-root:has(.my-work-notes-page, .my-work-organized) .student-destination-heading p { max-width: 100%; overflow-wrap: anywhere; white-space: normal; }
 .classroom-root .my-work-notes-heading { align-items: start; display: flex; gap: 20px; justify-content: space-between; }
 .classroom-root .my-work-notes-heading h2 { font-family: Georgia, serif; font-size: 25px; font-weight: 400; margin: 0; }
 .classroom-root .my-work-notes-heading p { color: var(--classroom-meta-text); font-size: 14px; margin: 8px 0 0; }

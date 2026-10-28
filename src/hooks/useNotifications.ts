@@ -26,6 +26,9 @@ export interface Notification {
   /** Who the notification is ABOUT (profiles.class_id), as opposed to user_id. */
   subject_class_id?: string | null;
   status?: NotificationStatus | null;
+  assignmentIdentity?: { sourceTable: string; sourceId: string; issuance: number };
+  assignmentGroupId?: string;
+  assignmentMappingUnavailable?: boolean;
 }
 
 const PAGE_SIZE = 30;
@@ -44,7 +47,16 @@ export async function loadNotifications(userId: string): Promise<Notification[]>
     console.error("[notifications:list] failed", { userId, error: err });
     throw new Error(err.message);
   }
-  return (data ?? []) as Notification[];
+  const { data: links, error: linkError } = await supabase.rpc('get_assignment_notification_links' as never);
+  if (linkError) {
+    console.error('[notifications:assignment-links] failed', linkError);
+    return (data ?? []).map((notification) => ({ ...notification, assignmentMappingUnavailable: true })) as Notification[];
+  }
+  const mapped = new Map((links as unknown as Array<{ notification_id: string; source_table: string | null; source_id: string | null; issuance: number; group_id: string | null }> ?? []).map((link) => [link.notification_id, link]));
+  return (data ?? []).map((notification) => {
+    const link = mapped.get(notification.id);
+    return { ...notification, ...(link?.source_table && link.source_id ? { assignmentIdentity: { sourceTable: link.source_table, sourceId: link.source_id, issuance: link.issuance } } : {}), ...(link?.group_id ? { assignmentGroupId: link.group_id } : {}) };
+  }) as Notification[];
 }
 
 export const notificationsUnreadQueryKey = (userId: string | undefined) =>

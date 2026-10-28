@@ -1,3 +1,4 @@
+import { newAssignmentDelivery } from '@/lib/assignmentDelivery';
 import { useEffect, useMemo, useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { ChevronLeft, ChevronRight, Loader2, Plus, X } from 'lucide-react';
@@ -112,7 +113,11 @@ export default function StudentSchedulePanel({
     try {
       const unlockAt = startOfDay(pickedDay).toISOString();
       const dueAt = endOfDay(pickedDay).toISOString();
+      const delivery = newAssignmentDelivery();
       const item = await createClassroomItem({
+
+        ...delivery,
+          notificationPolicy: ['session_recap', 'smartboard_recap', 'announcement'].includes(type) ? 'message' : delivery.notificationPolicy,
         studentId,
         createdBy: user.id,
         type,
@@ -124,6 +129,9 @@ export default function StudentSchedulePanel({
         status: 'assigned',
       });
       const notify = await notifyStudentOfClassroomItem({
+          notificationGroupId: delivery.notificationGroupId!,
+          notificationChannel: ['session_recap', 'smartboard_recap', 'announcement'].includes(type) ? 'message' : 'assignment',
+          unlockAt: item.unlock_at,
         adminUserId: user.id,
         studentId,
         title: title.trim(),
@@ -134,11 +142,12 @@ export default function StudentSchedulePanel({
       qc.invalidateQueries({ queryKey: ['classroom-items'] });
 
       const summary = summarizeNotifyResult(notify);
-      if (notify.inbox_ok && notify.bell_ok && notify.email_ok) {
+      if (notify.bell_ok && (notify.optional_channels_skipped || (notify.inbox_ok && notify.email_ok))) {
         toast.success(summary);
       } else {
         toast.warning(summary, {
           description: notify.email_error ?? notify.inbox_error ?? notify.bell_error,
+          action: notify.retryBell ? { label: 'Retry notification', onClick: () => void notify.retryBell!().then(() => toast.success('Bell notification delivered')).catch(() => toast.error('Notification failed. Try again.')) } : undefined,
         });
       }
       setTitle('');

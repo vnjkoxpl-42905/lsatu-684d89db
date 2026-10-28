@@ -15,6 +15,7 @@ import { draftKey, flushOutbox, queueAttempt, type PendingAttempt } from "../dra
 import type { RunScore } from "../progress";
 import { syncClassroomItemStatusBySource } from "@/lib/classroomItems";
 import { useAuth } from "@/contexts/AuthContext";
+import { useLoadedStudentWorkAcknowledgment } from '@/hooks/useStudentWorkState';
 import { rrcExitPath } from '@/features/reading-center/lib/rrcNavigation';
 import { MAX_ATTEMPTS } from "../api/types";
 import type { ActivityAssignment, JudgeSource, Verdict } from "../api/types";
@@ -266,6 +267,7 @@ function ActivityRunnerInstance({ assignmentId: assignmentIdProp, preview = fals
   const [responses, setResponses] = useState<Record<number, string>>({});
   const [hydrated, setHydrated] = useState(false);
   const [progressLoadFailed, setProgressLoadFailed] = useState(false);
+  useLoadedStudentWorkAcknowledgment({sourceTable:'activity_assignments',sourceId:assignment?.id,studentId:assignment?.student_id,ready:!!assignment && !loading && !error && hydrated && !progressLoadFailed && !preview && !practiceDefinition && !localOnly && !viewingSomeoneElse});
   const [completionError, setCompletionError] = useState(false);
   const closeoutRef = useRef<{ verdicts: Record<number, Verdict | null>; phase: "done" | "report" } | null>(null);
   const closingRef = useRef(false);

@@ -1,3 +1,4 @@
+import { assignmentNotificationNavigation } from '@/lib/assignmentNotificationRoute';
 // StudentCornerBubble — proactive bottom-right bubble for students.
 //
 // Pops once for each genuinely new event (an admin message arriving in the
@@ -52,6 +53,7 @@ type BubbleEvent =
       preview: string;
       link: string | null;
       notifId: string;
+      acknowledgeOnClick: boolean;
     };
 
 function truncate(s: string, n = 120): string {
@@ -143,7 +145,8 @@ export function StudentCornerBubble() {
           kind: 'notification',
           title: newest.title || 'New notification',
           preview: truncate(newest.body || ''),
-          link: newest.link,
+          link: assignmentNotificationNavigation(newest).route,
+          acknowledgeOnClick: assignmentNotificationNavigation(newest).acknowledgeOnClick,
           notifId: newest.id,
         });
       }
@@ -201,8 +204,9 @@ export function StudentCornerBubble() {
 
   const openItem = () => {
     if (event.kind === 'notification') {
-      void markRead(event.notifId);
-      navigate(event.link || '/inbox');
+      if (event.acknowledgeOnClick) void markRead(event.notifId);
+      if (event.link && /^https?:\/\//i.test(event.link)) window.location.assign(event.link);
+      else navigate(event.link || '/inbox');
     } else {
       navigate(`/inbox/${encodeURIComponent(event.conversationId)}`);
     }

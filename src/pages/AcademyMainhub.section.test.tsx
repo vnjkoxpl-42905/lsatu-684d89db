@@ -37,6 +37,10 @@ vi.mock("@/contexts/AuthContext", () => ({
 
 vi.mock("@/integrations/supabase/client", () => ({
   supabase: {
+    channel: vi.fn(() => ({ on: vi.fn().mockReturnThis(), subscribe: vi.fn().mockReturnThis() })),
+    removeChannel: vi.fn(async () => undefined),
+    auth: { getUser: vi.fn(async () => ({ data: { user: { id: finderActor.id } }, error: null })) },
+    rpc: vi.fn(async () => ({ data: [], error: null })),
     from: vi.fn(() => ({
       select: vi.fn().mockReturnThis(),
       eq: vi.fn().mockReturnThis(),

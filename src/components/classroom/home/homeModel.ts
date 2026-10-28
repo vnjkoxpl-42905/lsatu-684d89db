@@ -26,6 +26,8 @@ export type HomeKind =
   | "ta"
   | "bootcamp"
   | "plan"
+  | "practice_test"
+  | "link"
   | "recap"
   | "note";
 
@@ -291,6 +293,8 @@ export const KIND_LABEL: Record<HomeKind, string> = {
   ta: "From Joshua",
   bootcamp: "Bootcamp",
   plan: "Weekly plan",
+  practice_test: "Practice test",
+  link: "Link",
   recap: "Recap",
   note: "Note",
 };
@@ -302,6 +306,8 @@ export const KIND_TONE: Record<HomeKind, HomeTone> = {
   ta: "activity",
   bootcamp: "drill",
   plan: "activity",
+  practice_test: "drill",
+  link: "activity",
   recap: "recap",
   note: "recap",
 };
@@ -313,6 +319,8 @@ const PRIMARY_LABEL: Record<HomeKind, { start: string; resume: string }> = {
   ta: { start: "Open the assignment", resume: "Pick it back up" },
   bootcamp: { start: "Open the bootcamp", resume: "Pick it back up" },
   plan: { start: "Open the plan", resume: "Pick it back up" },
+  practice_test: { start: "Open the test", resume: "Pick it back up" },
+  link: { start: "Open the link", resume: "Open the link" },
   recap: { start: "Read it", resume: "Read it" },
   note: { start: "Read it", resume: "Read it" },
 };

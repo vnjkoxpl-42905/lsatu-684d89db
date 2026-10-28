@@ -94,7 +94,7 @@ export function StudentDestination({ destination }: { destination: Destination }
           {permissions.has_chat_access || permissions.is_admin ? " If that looks wrong, message Joshua." : null}
         </p>
       ) : null}
-      <div data-motion-enter={pathname === "/practice/drills" || (destination === "progress" && pathname.endsWith("/overview")) ? undefined : ""} className="student-destination-content">
+      <div data-motion-policy={destination === 'my-work' ? 'list-only' : undefined} data-motion-enter={destination === 'my-work' || pathname === "/practice/drills" || (destination === "progress" && pathname.endsWith("/overview")) ? undefined : ""} className="student-destination-content">
         <DestinationHeadingContext.Provider value>
           <Outlet />
         </DestinationHeadingContext.Provider>

@@ -1,9 +1,12 @@
+vi.mock('@/components/notifications/NotificationBell', () => ({ default: () => <button aria-label="Notifications">Notifications</button> }));
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import React from "react";
-import { act, cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { act, cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { MemoryRouter, Route, Routes, useLocation } from "react-router-dom";
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { afterAll, afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-const { permissions, readingCenter, railPrefs } = vi.hoisted(() => ({
+const { permissions, readingCenter, railPrefs, unreadFeed } = vi.hoisted(() => ({
+  unreadFeed: { rows: [] as any[], loading: false, failed: false },
   permissions: {} as Record<string, boolean>, readingCenter: { allowed: false, isPending: false },
   railPrefs: { order: { classroom: [] as string[] }, hidden: [] as string[] },
 }));
@@ -22,7 +25,7 @@ vi.mock("@/hooks/useClassroomItems", () => ({ useClassroomItems: () => ({ items:
 vi.mock("@/hooks/useFlagged", () => ({ useFlagged: () => ({ flagged: [], loading: false }) }));
 vi.mock("@/hooks/useJournalEntries", () => ({ useJournalEntries: () => ({ entries: [], loading: false }) }));
 vi.mock("@/hooks/useStudentAssignments", () => ({ useStudentAssignments: () => ({ data: [] }), useStudentTAAssignments: () => ({ data: [] }) }));
-vi.mock("@/hooks/useAssignedTodoFeed", () => ({ useAssignedTodoFeed: () => ({ items: [] }), routeWithReturnTo: (route: string) => route }));
+vi.mock("@/hooks/useAssignedTodoFeed", () => ({ useAssignedTodoFeed: () => unreadFeed, routeWithReturnTo: (route: string) => route }));
 vi.mock("@/lib/routePreload", () => ({ preloadDrillHub: vi.fn() }));
 
 import ClassroomLayout from "./ClassroomLayout";
@@ -65,6 +68,9 @@ beforeEach(() => {
   window.matchMedia = window.matchMedia ?? ((() => ({ matches: false, addEventListener() {}, removeEventListener() {} })) as never);
 });
 afterEach(cleanup);
+// Registering ScrollTrigger starts an app-lifetime polling interval. JSDOM
+// ends after this suite, so stop that plugin service after component cleanup.
+afterAll(() => ScrollTrigger.disable());
 
 it("shares the shell context with the real orientation hook across layout remounts", async () => {
   const snapshots: Array<{ name: string; shared: boolean }> = [];
@@ -235,4 +241,11 @@ describe("mobile menu", () => {
     await waitFor(() => expect(screen.queryByRole("dialog", { name: "Classroom menu" })).toBeNull());
     expect(screen.getByTestId("where")).toHaveTextContent("/review/to-review");
   });
+});
+
+it('counts unread work without treating incomplete work as unread', async () => {
+ Object.assign(permissions, NONE, {has_classroom_access:true});
+ unreadFeed.rows=[{status:'assigned',isUnread:true,sourceTable:'homework_assignments'}, {status:'in_progress',isUnread:false,sourceTable:'guided_drill_assignments'}, {status:'completed',isUnread:true,sourceTable:'activity_assignments'}];
+ try {await renderShell('/my-work/to-do');expect(within(rail()).getByRole('button',{name:/My Work.*1.*unread notes and assignments/})).toBeInTheDocument();}
+ finally {unreadFeed.rows=[];}
 });

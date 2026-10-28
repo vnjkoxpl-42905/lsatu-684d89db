@@ -152,3 +152,9 @@ describe('resolveItemRoute', () => {
     expect(resolveItemRoute(item)).toBe('/drill?assignmentId=set%20a%2Fb');
   });
 });
+
+describe('assigned link destinations', () => {
+  it.each(['/reading-center', '/bootcamp/conditionals?level=1', '/classroom/quick-drill'])('preserves an internal saved destination %s', (route) => expect(resolveItemRoute(makeItem({ type: 'link', source_id: route }))).toBe(route));
+  it('preserves external http(s) links without adding student identity parameters', () => expect(resolveItemRoute(makeItem({ type: 'link', source_id: 'https://example.com/article?q=1' }))).toBe('https://example.com/article?q=1'));
+  it.each(['//example.com', '/\\example.com', 'javascript:alert(1)', 'data:text/html,hello', 'missing-scheme'])('rejects unsafe saved link %s', (source) => expect(resolveItemRoute(makeItem({ type: 'link', source_id: source }))).toBeNull());
+});
