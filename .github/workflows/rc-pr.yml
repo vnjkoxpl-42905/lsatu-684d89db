@@ -1,0 +1,69 @@
+name: RC practice checks
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/rc-pr.yml'
+      - 'src/features/rc/**'
+      - 'src/components/inbox/**'
+      - 'src/pages/Inbox*'
+      - 'src/lib/inboxQuestionContext*'
+      - 'src/components/timed/**'
+      - 'src/components/testing/**'
+      - 'src/components/drill/DrillSplit*'
+      - 'src/components/drill/SectionSelector*'
+      - 'src/components/drill/QuestionPicker*'
+      - 'src/components/drill/LrQuestionInspectList*'
+      - 'src/components/drill/lr-builder.css'
+      - 'src/lib/timed*'
+      - 'src/lib/timed*/**'
+      - 'src/lib/practiceTest*'
+      - 'src/lib/drill*'
+      - 'src/lib/savedSets*'
+      - 'src/lib/questionExposure*'
+      - 'src/pages/SavedSets*'
+      - 'src/components/drill/official/OfficialDrillToolbar*'
+      - 'src/contexts/AuthContext*'
+      - 'src/lib/standaloneDrillHistory*'
+      - 'src/pages/AcademyMainhub*'
+      - 'public/data/rc/**'
+      - 'scripts/*rc*'
+      - 'scripts/verification/*rc*'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'tsconfig*.json'
+      - 'vite.config.*'
+      - 'vitest.config.*'
+      - 'src/test/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: rc-pr-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    # Inert build/test values. This job has no account credentials or deployment step.
+    env:
+      VITE_SUPABASE_URL: https://example.invalid
+      VITE_SUPABASE_PUBLISHABLE_KEY: ci-placeholder-not-a-credential
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      # @lovable.dev/email-js optionally peers @react-email/render>=1 while the edge
+      # email templates pin 0.0.x. Strict peer resolution cannot satisfy both.
+      - run: npm ci --legacy-peer-deps
+      - run: npm run typecheck
+      - name: Verify reviewed RC corrections survive bank rebuilds
+        run: node --test scripts/verification/rc-authored-corrections.test.mjs scripts/verification/rc-source-correction.test.mjs
+      - name: Test RC and its shared runners
+        run: npx vitest run src/features/rc src/components/timed src/components/testing src/lib/timedSection src/lib/standaloneDrillHistory.test.ts src/components/drill/SectionSelector.test.tsx src/components/drill/QuestionPicker.test.tsx src/components/drill/official/OfficialDrillToolbar.test.tsx src/pages/AcademyMainhub src/components/questionfinder src/pages/Inbox.test.tsx src/components/inbox src/lib/inboxQuestionContext.test.ts src/lib/savedSets.rcIsolation.test.ts src/lib/drillLaunchResolve.test.ts src/pages/SavedSets.inspect.test.tsx
+      - run: npm run build

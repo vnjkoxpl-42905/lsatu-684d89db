@@ -1,0 +1,641 @@
+<title>Read, Recall, Colour Homepage</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* ---------- document chrome (theme-aware) ---------- */
+:root{
+  --doc:#f4f7f7; --doc-2:#ffffff; --doc-line:#e2e9ea; --doc-line-2:#eef3f3;
+  --doc-text:#0b1215; --doc-text-2:#57686e; --doc-text-3:#8598a0; --doc-accent:#0b7d6b;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --doc:#090d0e; --doc-2:#111718; --doc-line:#222c2e; --doc-line-2:#1a2223;
+    --doc-text:#e6edee; --doc-text-2:#93a4a9; --doc-text-3:#6d7f85; --doc-accent:#3ec9ac;
+  }
+}
+:root[data-theme="dark"]{
+  --doc:#090d0e; --doc-2:#111718; --doc-line:#222c2e; --doc-line-2:#1a2223;
+  --doc-text:#e6edee; --doc-text-2:#93a4a9; --doc-text-3:#6d7f85; --doc-accent:#3ec9ac;
+}
+
+/* ---------- product surface: committed light ---------- */
+:root{
+  --field:#f4f7f7;        /* the ground the card floats on */
+  --card:#ffffff;         /* the card itself */
+  --sunk:#fafcfc;         /* recessed areas: drawer, aside */
+  --ring:#e4ebec;         /* 1px ring — the entire elevation language */
+  --ring-2:#eef3f3;       /* internal hairline */
+  --ink:#0a1113;
+  --ink-2:#55666c;
+  --ink-3:#8a9aa0;
+  --teal:#0b9a83;
+  --teal-hover:#0a8a76;
+  --teal-deep:#06554a;
+  --teal-ring:rgba(11,154,131,.28);
+  --teal-wash:rgba(11,154,131,.055);
+  --teal-soft:#cfeae3;
+}
+
+*{box-sizing:border-box;}
+body{margin:0;background:var(--doc);color:var(--doc-text);
+  font-family:"Instrument Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased;}
+.wrap{max-width:1060px;margin:0 auto;padding:48px 26px 88px;}
+.eyebrow{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--doc-text-3);}
+h1{font-size:36px;font-weight:600;letter-spacing:-.032em;line-height:1.08;margin:10px 0 0;
+  text-wrap:balance;}
+.standfirst{max-width:64ch;color:var(--doc-text-2);font-size:16px;margin:14px 0 0;}
+.standfirst b{color:var(--doc-text);font-weight:600;}
+
+.frame{margin:30px 0 0;border-radius:11px;overflow-x:auto;background:var(--doc-2);
+  box-shadow:0 0 0 1px var(--doc-line);}
+.chrome{display:flex;align-items:center;gap:7px;padding:9px 13px;
+  box-shadow:inset 0 -1px 0 var(--doc-line);}
+.cdot{width:9px;height:9px;border-radius:50%;background:var(--doc-line);}
+.curl{margin-left:8px;font-family:"IBM Plex Mono",monospace;font-size:10.5px;color:var(--doc-text-3);}
+
+.changes{margin:34px 0 0;border-radius:10px;background:var(--doc-2);overflow:hidden;
+  box-shadow:0 0 0 1px var(--doc-line);}
+.changes h3{margin:0;padding:14px 18px;box-shadow:inset 0 -1px 0 var(--doc-line);font-size:14px;
+  font-weight:600;letter-spacing:-.012em;}
+.chg{display:grid;grid-template-columns:154px 1fr;gap:20px;padding:12px 18px;
+  box-shadow:inset 0 -1px 0 var(--doc-line-2);font-size:14px;color:var(--doc-text-2);}
+.chg:last-child{box-shadow:none;}
+.chg .k{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--doc-text-3);padding-top:3px;}
+.chg b{color:var(--doc-text);font-weight:600;}
+.foot{margin-top:34px;color:var(--doc-text-3);font-size:12.5px;font-family:"IBM Plex Mono",monospace;}
+@media (max-width:720px){
+  .wrap{padding:32px 16px 64px;} h1{font-size:28px;} .chg{grid-template-columns:1fr;gap:4px;}
+}
+
+/* ============================================================
+   THE APP
+   ============================================================ */
+.app{width:1000px;min-width:1000px;color:var(--ink);background:var(--field);
+  font-family:"Instrument Sans",sans-serif;padding:0 0 26px;}
+
+/* platform chrome: this page sits inside one library */
+.plat{display:flex;align-items:center;justify-content:space-between;height:48px;
+  padding:0 26px;background:var(--card);box-shadow:inset 0 -1px 0 var(--ring);}
+.plat-l{display:flex;align-items:center;gap:0;}
+.mark{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;
+  letter-spacing:-.018em;padding-right:20px;}
+.mark i{width:16px;height:16px;border-radius:4px;background:var(--teal);display:block;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.34), 0 1px 2px rgba(6,85,74,.3);}
+.nav{display:flex;gap:2px;}
+.nav a{font-size:13px;color:var(--ink-3);text-decoration:none;padding:5px 11px;border-radius:6px;}
+.nav a.on{color:var(--ink);background:var(--teal-wash);box-shadow:0 0 0 1px var(--ring);}
+.plat-r{display:flex;align-items:center;gap:12px;}
+.avatar{width:26px;height:26px;border-radius:50%;background:var(--sunk);
+  box-shadow:0 0 0 1px var(--ring);display:grid;place-items:center;
+  font-size:10.5px;font-weight:600;color:var(--ink-2);letter-spacing:.02em;}
+
+/* the card */
+.sheet{margin:20px 26px 0;background:var(--card);border-radius:12px;
+  box-shadow:0 0 0 1px var(--ring), 0 1px 2px rgba(10,17,19,.035), 0 8px 24px -12px rgba(10,17,19,.09);
+  overflow:hidden;}
+
+/* breadcrumb strip */
+.crumbs{display:flex;align-items:center;justify-content:space-between;padding:0 30px;height:42px;
+  background:linear-gradient(180deg,var(--teal-wash) 0%, rgba(11,154,131,0) 100%);
+  box-shadow:inset 0 -1px 0 var(--ring-2);}
+.crumbs .path{font-size:12.5px;color:var(--ink-3);display:flex;align-items:center;gap:7px;}
+.crumbs .path b{color:var(--ink-2);font-weight:500;}
+.crumbs .path i{color:var(--ink-3);font-style:normal;opacity:.6;}
+.meta{display:flex;align-items:center;gap:0;font-family:"IBM Plex Mono",monospace;font-size:10.5px;
+  letter-spacing:.1em;color:var(--ink-3);}
+.meta span{padding:0 13px;box-shadow:inset 1px 0 0 var(--ring-2);}
+.meta span:first-child{box-shadow:none;padding-left:0;}
+.meta span:last-child{padding-right:0;}
+.meta b{color:var(--ink);font-weight:500;font-variant-numeric:tabular-nums;}
+
+/* header */
+.head{padding:30px 30px 26px;display:grid;grid-template-columns:1fr auto;gap:52px;align-items:end;}
+.chip{display:inline-flex;align-items:center;gap:7px;height:23px;padding:0 9px 0 8px;
+  border-radius:5px;background:var(--teal-wash);box-shadow:0 0 0 1px var(--teal-ring);
+  font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.15em;
+  text-transform:uppercase;color:var(--teal-deep);}
+.chip i{width:5px;height:5px;border-radius:50%;background:var(--teal);display:block;}
+.title{font-size:38px;font-weight:600;letter-spacing:-.036em;line-height:1.04;margin:14px 0 0;}
+.tagline{color:var(--ink-2);font-size:15px;margin:12px 0 0;max-width:50ch;line-height:1.6;}
+
+.cta{display:flex;flex-direction:column;align-items:flex-end;gap:11px;}
+.start{position:relative;background:var(--teal);color:#fff;border:0;border-radius:8px;
+  padding:0 28px;height:44px;font-family:"Instrument Sans",sans-serif;font-weight:600;
+  font-size:14.5px;letter-spacing:-.012em;cursor:pointer;white-space:nowrap;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.26), 0 1px 2px rgba(6,85,74,.32),
+             0 6px 16px -6px rgba(6,85,74,.42);
+  transition:background .16s ease, box-shadow .16s ease, transform .16s ease;}
+.start:hover{background:var(--teal-hover);transform:translateY(-1px);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.26), 0 2px 3px rgba(6,85,74,.3),
+             0 10px 22px -8px rgba(6,85,74,.46);}
+.start:active{transform:translateY(0);}
+.start:focus-visible{outline:2px solid var(--teal);outline-offset:3px;}
+.brief{background:none;border:0;color:var(--ink-2);font-size:12.5px;cursor:pointer;
+  font-family:"Instrument Sans",sans-serif;padding:0;display:flex;align-items:center;gap:6px;
+  transition:color .16s ease;}
+.brief svg{width:12px;height:12px;stroke:currentColor;stroke-width:1.5;fill:none;}
+.brief:hover{color:var(--teal-deep);}
+.brief:focus-visible{outline:2px solid var(--teal);outline-offset:3px;border-radius:3px;}
+
+/* stats strip */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);margin:0 30px 24px;
+  background:var(--sunk);border-radius:9px;box-shadow:0 0 0 1px var(--ring);overflow:hidden;}
+.stat{padding:13px 18px 14px;box-shadow:inset 1px 0 0 var(--ring-2);}
+.stat:first-child{box-shadow:none;}
+.sk{display:block;font-family:"IBM Plex Mono",monospace;font-size:9.5px;letter-spacing:.15em;
+  text-transform:uppercase;color:var(--ink-3);}
+.sv{display:block;font-size:22px;font-weight:600;letter-spacing:-.03em;margin-top:6px;
+  font-variant-numeric:tabular-nums;line-height:1;}
+.sv em{font-style:normal;font-size:14px;font-weight:400;color:var(--ink-3);letter-spacing:-.01em;}
+.sv.down{color:var(--teal-deep);}
+.sd{display:block;font-size:11.5px;color:var(--ink-3);margin-top:6px;}
+
+/* method */
+.mhead{display:flex;align-items:baseline;justify-content:space-between;padding:0 30px 11px;}
+.mhead h2{margin:0;font-size:12.5px;font-weight:600;letter-spacing:-.008em;}
+.mhead span{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--ink-3);}
+
+.beats{display:grid;grid-template-columns:repeat(4,1fr);
+  box-shadow:inset 0 1px 0 var(--ring-2), inset 0 -1px 0 var(--ring-2);}
+.beat{position:relative;text-align:left;background:none;border:0;padding:17px 24px 19px 22px;
+  cursor:pointer;font-family:"Instrument Sans",sans-serif;color:inherit;
+  box-shadow:inset -1px 0 0 var(--ring-2);
+  transition:background .18s ease;}
+.beat:last-child{box-shadow:none;}
+.beat::before{content:"";position:absolute;left:0;right:0;top:-1px;height:2px;
+  background:var(--teal);transform:scaleX(0);transform-origin:left;
+  transition:transform .24s cubic-bezier(.4,0,.2,1);}
+.beat:hover{background:var(--sunk);}
+.beat[aria-selected="true"]{background:var(--teal-wash);}
+.beat:hover::before,.beat[aria-selected="true"]::before{transform:scaleX(1);}
+.beat:focus-visible{outline:2px solid var(--teal);outline-offset:-3px;border-radius:2px;}
+.beat .n{font-family:"IBM Plex Mono",monospace;font-size:10px;color:var(--ink-3);
+  letter-spacing:.12em;font-variant-numeric:tabular-nums;}
+.beat .l{font-size:14.5px;font-weight:600;margin:7px 0 0;letter-spacing:-.016em;}
+.beat .d{color:var(--ink-2);font-size:12.5px;margin:6px 0 0;line-height:1.55;}
+.beat .go{display:flex;align-items:center;gap:5px;font-family:"IBM Plex Mono",monospace;
+  font-size:9.5px;letter-spacing:.11em;text-transform:uppercase;color:var(--teal-deep);
+  margin-top:12px;opacity:0;transform:translateX(-3px);
+  transition:opacity .18s ease, transform .18s ease;}
+.beat:hover .go,.beat[aria-selected="true"] .go,.beat:focus-visible .go{opacity:1;transform:none;}
+
+/* drawer */
+.drawer{background:var(--sunk);display:none;box-shadow:inset 0 1px 0 var(--ring-2);}
+.drawer[data-open="true"]{display:block;}
+.dr-tabs{display:flex;align-items:center;gap:22px;padding:0 30px;
+  box-shadow:inset 0 -1px 0 var(--ring-2);}
+.dr-tab{background:none;border:0;color:var(--ink-3);font-family:"Instrument Sans",sans-serif;
+  font-size:12.5px;padding:11px 0 10px;cursor:pointer;position:relative;
+  transition:color .16s ease;}
+.dr-tab::after{content:"";position:absolute;left:0;right:0;bottom:0;height:2px;
+  background:var(--teal);transform:scaleX(0);transition:transform .2s ease;}
+.dr-tab[aria-selected="true"]{color:var(--ink);font-weight:500;}
+.dr-tab[aria-selected="true"]::after{transform:scaleX(1);}
+.dr-tab:hover{color:var(--ink-2);}
+.dr-tab:focus-visible{outline:2px solid var(--teal);outline-offset:-2px;border-radius:2px;}
+.dr-note{margin-left:auto;font-size:11.5px;color:var(--ink-3);}
+
+.dr-view[hidden]{display:none;}
+.drawer-in{padding:22px 30px 24px;display:grid;grid-template-columns:1fr 300px;gap:40px;}
+.dr-label{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.15em;
+  text-transform:uppercase;color:var(--teal-deep);}
+.dr-title{font-size:21px;font-weight:600;letter-spacing:-.026em;margin:7px 0 0;}
+.dr-body{color:var(--ink-2);font-size:13.5px;line-height:1.65;margin:9px 0 0;max-width:56ch;}
+.dr-quote{margin:13px 0 0;padding:12px 15px;background:var(--card);border-radius:7px;
+  box-shadow:0 0 0 1px var(--ring), inset 3px 0 0 var(--teal);
+  font-size:13px;color:var(--ink);line-height:1.6;}
+.dr-quote em{color:var(--ink-3);font-style:normal;}
+
+.transport{display:flex;align-items:center;gap:11px;margin:17px 0 0;}
+.play{width:32px;height:32px;border-radius:50%;background:var(--teal);border:0;flex:none;
+  display:grid;place-items:center;cursor:pointer;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.26), 0 1px 2px rgba(6,85,74,.3),
+             0 4px 10px -4px rgba(6,85,74,.4);
+  transition:transform .16s ease;}
+.play:hover{transform:scale(1.06);}
+.play svg{width:10px;height:10px;fill:#fff;margin-left:2px;}
+.play:focus-visible{outline:2px solid var(--teal);outline-offset:3px;}
+.time{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--ink-3);
+  font-variant-numeric:tabular-nums;flex:none;}
+.track{display:grid;grid-template-columns:1.4fr 1fr .8fr 1.6fr;gap:2px;flex:1;}
+.seg{height:22px;background:var(--card);border-radius:4px;display:flex;align-items:center;
+  padding:0 8px;overflow:hidden;cursor:pointer;box-shadow:0 0 0 1px var(--ring);
+  transition:background .16s ease;}
+.seg span{font-family:"IBM Plex Mono",monospace;font-size:9px;letter-spacing:.1em;
+  color:var(--ink-3);white-space:nowrap;}
+.seg.done{background:var(--teal-soft);box-shadow:0 0 0 1px var(--teal-ring);}
+.seg.done span{color:var(--teal-deep);}
+.seg.now{background:var(--teal);box-shadow:inset 0 1px 0 rgba(255,255,255,.24),
+  0 0 0 1px var(--teal);}
+.seg.now span{color:#fff;}
+
+.dr-side h4,.aside h4{margin:0 0 9px;font-family:"IBM Plex Mono",monospace;font-size:10px;
+  letter-spacing:.15em;text-transform:uppercase;color:var(--ink-3);font-weight:500;}
+.dr-side p{color:var(--ink-2);font-size:12.5px;line-height:1.6;margin:0 0 10px;}
+.close{background:var(--card);border:0;color:var(--ink-2);border-radius:7px;padding:8px 15px;
+  font-size:12px;cursor:pointer;font-family:"Instrument Sans",sans-serif;
+  box-shadow:0 0 0 1px var(--ring), 0 1px 2px rgba(10,17,19,.04);
+  transition:color .16s ease, box-shadow .16s ease;}
+.close:hover{color:var(--ink);box-shadow:0 0 0 1px var(--teal-ring), 0 1px 2px rgba(10,17,19,.05);}
+.close:focus-visible{outline:2px solid var(--teal);outline-offset:2px;}
+
+#view-full{padding:22px 30px 26px;}
+.essay{column-count:2;column-gap:48px;max-height:326px;overflow-y:auto;padding-right:8px;}
+.essay section{break-inside:avoid;margin:0 0 20px;}
+.essay h3{font-size:13.5px;font-weight:600;letter-spacing:-.014em;margin:0 0 7px;color:var(--ink);}
+.essay p{font-size:12.5px;line-height:1.65;color:var(--ink-2);margin:0 0 8px;}
+.essay p strong{color:var(--ink);font-weight:600;}
+.essay p.xref{color:var(--teal-deep);}
+
+/* runs */
+.runs{padding:22px 30px 26px;display:grid;grid-template-columns:1fr 286px;gap:44px;
+  align-items:start;box-shadow:inset 0 1px 0 var(--ring-2);}
+.rtable{width:100%;border-collapse:collapse;}
+.rtable caption{text-align:left;font-family:"IBM Plex Mono",monospace;font-size:10px;
+  letter-spacing:.15em;text-transform:uppercase;color:var(--ink-3);padding-bottom:11px;}
+.rtable th{text-align:left;font-family:"IBM Plex Mono",monospace;font-size:9.5px;
+  letter-spacing:.11em;text-transform:uppercase;color:var(--ink-3);font-weight:400;
+  padding:0 12px 8px 0;box-shadow:inset 0 -1px 0 var(--ring-2);}
+.rtable th.r,.rtable td.r{text-align:right;padding-right:0;}
+.rtable td{padding:11px 12px 11px 0;box-shadow:inset 0 -1px 0 var(--ring-2);font-size:13px;
+  color:var(--ink-2);font-variant-numeric:tabular-nums;}
+.rtable tbody tr{transition:background .14s ease;}
+.rtable tbody tr:hover td{background:var(--sunk);}
+.rtable td.d{color:var(--ink);font-weight:500;width:88px;}
+.rtable td.t{font-family:"IBM Plex Mono",monospace;font-size:12.5px;color:var(--ink);width:74px;}
+.rtable td.c{width:82px;}
+.ticks{display:flex;gap:2px;justify-content:flex-end;min-width:154px;}
+.ticks i{width:4px;height:15px;border-radius:1.5px;background:var(--teal);display:block;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.22);}
+.ticks i.miss{background:var(--ring-2);box-shadow:inset 0 0 0 1px rgba(10,17,19,.05);}
+
+.aside{background:var(--sunk);border-radius:9px;padding:16px 18px 18px;
+  box-shadow:0 0 0 1px var(--ring);}
+.aside p{color:var(--ink-2);font-size:12.5px;line-height:1.6;margin:0 0 11px;}
+.aside p:last-child{margin-bottom:0;}
+.aside p b{color:var(--ink);font-weight:600;}
+.key{font-family:"IBM Plex Mono",monospace;font-size:10.5px;border-radius:4px;padding:2px 6px;
+  color:var(--ink);background:var(--card);
+  box-shadow:0 0 0 1px var(--ring), 0 1px 0 var(--ring);}
+
+@media (prefers-reduced-motion:reduce){
+  .beat,.beat::before,.beat .go,.start,.play,.dr-tab::after,.seg,.rtable tbody tr{transition:none;}
+  .start:hover,.play:hover{transform:none;}
+}
+</style>
+
+<div class="wrap">
+  <div class="eyebrow">Section launch surface · Finished draft · For review</div>
+  <h1>Read, Recall, Colour, finished</h1>
+  <p class="standfirst">
+    The complete page. Ring elevation over a two-tone ground, teal as the only colour, and a density pass
+    so it reads like software rather than a landing page. <b>Every number is derived from run history or
+    the section record</b> — the stimulus ticks show which stimuli got The Recall, so the two Aug 31
+    misses are visible at a glance. Click any beat to open the briefing.
+  </p>
+
+  <div class="frame">
+    <div class="chrome"><i class="cdot"></i><i class="cdot"></i><i class="cdot"></i>
+      <span class="curl">lsatprep.study / library / read-recall-colour / pt105-s2</span></div>
+
+    <div class="app">
+      <!-- platform chrome -->
+      <div class="plat">
+        <div class="plat-l">
+          <span class="mark"><i></i> LSAT U</span>
+          <nav class="nav">
+            <a href="#" class="on">Library</a><a href="#">Practice</a><a href="#">Tests</a>
+            <a href="#">Review</a>
+          </nav>
+        </div>
+        <div class="plat-r"><span class="avatar">JF</span></div>
+      </div>
+
+      <div class="sheet">
+        <div class="crumbs">
+          <span class="path">Library <i>/</i> Out Loud <i>/</i> <b>Read, Recall, Colour</b></span>
+          <span class="meta">
+            <span>PT105 · SECTION 2</span>
+            <span><b>25</b> STIMULI</span>
+            <span>EST <b>25</b> MIN</span>
+          </span>
+        </div>
+
+        <div class="head">
+          <div>
+            <span class="chip"><i></i> Out Loud</span>
+            <h2 class="title">Read, Recall, Colour</h2>
+            <p class="tagline">Read it, say it back, react to it. Then the stimulus disappears and you
+              say the whole argument back from memory.</p>
+          </div>
+          <div class="cta">
+            <button class="start">Start the section</button>
+            <button class="brief">
+              <svg viewBox="0 0 14 14"><circle cx="7" cy="7" r="5.6"></circle>
+                <path d="M5.7 4.6l3.6 2.4-3.6 2.4z" fill="currentColor" stroke="none"></path></svg>
+              Watch the briefing · 2:14
+            </button>
+          </div>
+        </div>
+
+        <div class="stats">
+          <div class="stat"><span class="sk">Last run</span><span class="sv">24:10</span>
+            <span class="sd">Sep 2</span></div>
+          <div class="stat"><span class="sk">Trend</span><span class="sv down">−6:52</span>
+            <span class="sd">across 3 runs</span></div>
+          <div class="stat"><span class="sk">Recalled</span><span class="sv">73<em>/75</em></span>
+            <span class="sd">97.3% of stimuli</span></div>
+          <div class="stat"><span class="sk">Target</span><span class="sv">25:00</span>
+            <span class="sd">met on 1 of 3</span></div>
+        </div>
+
+        <div class="mhead">
+          <h2>The method</h2>
+          <span>Select a beat to hear it</span>
+        </div>
+
+        <div class="beats" role="tablist">
+          <button class="beat" role="tab" aria-selected="false" data-beat="0">
+            <span class="n">01</span><span class="l">Read it.</span>
+            <span class="d">Intake only. About a sentence, with full intonation so every word gets its
+              weight.</span>
+            <span class="go">Hear this beat →</span>
+          </button>
+          <button class="beat" role="tab" aria-selected="false" data-beat="1">
+            <span class="n">02</span><span class="l">Say it back.</span>
+            <span class="d">Look away and say it back in your own words, like telling a friend.</span>
+            <span class="go">Hear this beat →</span>
+          </button>
+          <button class="beat" role="tab" aria-selected="false" data-beat="2">
+            <span class="n">03</span><span class="l">Colour it.</span>
+            <span class="d">React. A doubt, a question, an example, a joke. One or two seconds.</span>
+            <span class="go">Hear this beat →</span>
+          </button>
+          <button class="beat" role="tab" aria-selected="false" data-beat="3">
+            <span class="n">04</span><span class="l">The Recall.</span>
+            <span class="d">The stimulus disappears. The entire argument from memory, every detail.</span>
+            <span class="go">Hear this beat →</span>
+          </button>
+        </div>
+
+        <div class="drawer" id="drawer" data-open="false">
+          <div class="dr-tabs">
+            <button class="dr-tab" data-view="beat" aria-selected="true">This beat</button>
+            <button class="dr-tab" data-view="full" aria-selected="false">The full briefing</button>
+            <span class="dr-note">Worth reading properly once. After that, skim and go.</span>
+          </div>
+
+          <div class="dr-view" id="view-full" hidden>
+            <div class="essay">
+              <section>
+                <h3>You can understand every sentence and still arrive with nothing.</h3>
+                <p>You follow a stimulus, sentence by sentence, and it all makes sense as it goes. Then
+                  you get down to answer choice C and realise you are holding almost none of it. That is
+                  not a comprehension problem. It is a retention problem, and it is the one this drill
+                  was built for.</p>
+                <p>Understanding is necessary for everything and sufficient for nothing. If the argument
+                  is not still with you while you work the answers, your understanding never got the
+                  chance to help.</p>
+              </section>
+              <section>
+                <h3>What you actually do.</h3>
+                <p>Three beats through the stimulus, then a fourth once you have got all of it. You decide
+                  how much to take on at a time, and nothing on the screen is tracking where you are.</p>
+                <p>Space is the only key, and you press it twice per stimulus. The first press takes the
+                  text away and asks you for the whole argument from memory. The second moves you on.</p>
+                <p class="xref">The four beats are above. Click any of them to hear it.</p>
+              </section>
+              <section>
+                <h3>Simpler is not the same as shorter.</h3>
+                <p>Do not give back the gist, or the summary, or the important parts. You cannot know
+                  which parts were important until you have read the whole thing, so filtering on the way
+                  through mostly means quietly throwing out the piece you were going to need.</p>
+                <p><strong>Efficiency is never a licence to leave information out.</strong></p>
+              </section>
+              <section>
+                <h3>You will think you have nothing to say. Everybody does.</h3>
+                <p>You will open your mouth to colour something and find nothing there. That lasts about a
+                  week. It is not that you have no thoughts. It is that nobody has ever asked you for one
+                  in the middle of reading before, and the habit takes a few sessions to wake up.</p>
+              </section>
+              <section>
+                <h3>Look away. That part is on you.</h3>
+                <p>While you are working the stimulus, nothing on the screen hides. The whole thing stays
+                  readable, which means the only thing stopping you rereading a line while you say it back
+                  is you, looking away from it.</p>
+                <p>That is deliberate. It is the version that still works on paper, and on test day. A
+                  screen that hides the text for you is a crutch that cannot come with you.</p>
+              </section>
+              <section>
+                <h3>Twenty-five minutes, and what that number means.</h3>
+                <p>The goal is twenty-five minutes for a whole section, and it only counts if every
+                  stimulus got recalled, coloured, and given The Recall. The clock in the corner counts up,
+                  not down.</p>
+                <p>It is not a race. It is the pace at which this stops being a study exercise and starts
+                  being how you read under a clock.</p>
+              </section>
+            </div>
+          </div>
+
+          <div class="drawer-in dr-view" id="view-beat">
+            <div>
+              <div class="dr-label" id="dr-label">Briefing · beat 1 of 4</div>
+              <h3 class="dr-title" id="dr-title">Read it.</h3>
+              <p class="dr-body" id="dr-body"></p>
+              <div class="dr-quote" id="dr-quote"></div>
+              <div class="transport">
+                <button class="play" aria-label="Play this beat">
+                  <svg viewBox="0 0 10 12"><path d="M0 0l10 6-10 6z"></path></svg>
+                </button>
+                <span class="time" id="dr-time">0:00</span>
+                <div class="track" id="dr-track">
+                  <div class="seg" data-seg="0"><span>READ IT</span></div>
+                  <div class="seg" data-seg="1"><span>SAY IT BACK</span></div>
+                  <div class="seg" data-seg="2"><span>COLOUR</span></div>
+                  <div class="seg" data-seg="3"><span>THE RECALL</span></div>
+                </div>
+                <span class="time">2:14</span>
+              </div>
+            </div>
+            <div class="dr-side">
+              <h4>Why this beat</h4>
+              <p id="dr-why"></p>
+              <button class="close" id="dr-close">Close briefing</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="runs">
+          <table class="rtable">
+            <caption>Your last three runs</caption>
+            <thead><tr><th>Date</th><th>Time</th><th>Recalled</th>
+              <th class="r">Stimulus by stimulus</th></tr></thead>
+            <tbody id="rbody"></tbody>
+          </table>
+
+          <div class="aside">
+            <h4>Before you start</h4>
+            <p>Everything here is out loud. The whole section records in <b>one take</b>, and it never
+              pauses.</p>
+            <p><span class="key">Space</span> is the only key, and you press it twice per stimulus.
+              Nothing advances on its own.</p>
+            <p>One a day holds you steady. <b>The second one is where you improve.</b></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="changes">
+    <h3>The thirteen details, and what each one fixes</h3>
+    <div class="chg"><span class="k">Ring elevation</span>
+      <span>Every raised surface is <b>box-shadow 0 0 0 1px</b>, not a border. Rings sit outside the box
+        model, so nothing shifts by a pixel when an element lifts, and corners stay perfectly round.
+        This is Vercel's entire elevation language.</span></div>
+    <div class="chg"><span class="k">Two-tone ground</span>
+      <span>The card is pure white; the field behind it is a cool <b>#f4f7f7</b>. One value of separation
+        is enough to read as depth. Three would read as a template.</span></div>
+    <div class="chg"><span class="k">Layered shadow</span>
+      <span>The card carries three stacked shadows: the ring, a 1px contact shadow, and a wide soft
+        one at negative spread. <b>Real objects cast more than one.</b></span></div>
+    <div class="chg"><span class="k">Inner highlight</span>
+      <span>Start, the play button and the logo mark all carry <b>inset 0 1px 0 rgba(255,255,255,.26)</b>
+        along the top edge. That single line is what makes a filled button look moulded rather than
+        printed.</span></div>
+    <div class="chg"><span class="k">Display tracking</span>
+      <span>The title runs at <b>-0.036em</b>. Large type needs negative tracking or it looks loose;
+        this is the number that separates set type from default type.</span></div>
+    <div class="chg"><span class="k">Inset hairlines</span>
+      <span>Internal rules are <b>inset box-shadows</b>, so a row can be hovered, tinted or removed
+        without a border collapsing against its neighbour.</span></div>
+    <div class="chg"><span class="k">Divider hierarchy</span>
+      <span>Two line weights, not one: <b>#e4ebec</b> separates objects, <b>#eef3f3</b> separates rows
+        inside one. A single grey for both is the most common amateur tell.</span></div>
+    <div class="chg"><span class="k">Tabular figures</span>
+      <span>Every time, count and stat is <b>font-variant-numeric: tabular-nums</b> and right-aligned,
+        so digits stack in a column instead of shimmering.</span></div>
+    <div class="chg"><span class="k">Motion with intent</span>
+      <span>The beat's teal rule wipes in from the left on a <b>cubic-bezier(.4,0,.2,1)</b>; Start lifts
+        1px and deepens its shadow. Nothing else moves.</span></div>
+    <div class="chg"><span class="k">Optical gutters</span>
+      <span>The beat cells pad <b>22px left, 24px right</b>. Equal padding reads unbalanced next to a
+        vertical rule; the eye wants slightly more on the closed side.</span></div>
+    <div class="chg"><span class="k">Label system</span>
+      <span>One micro-label style everywhere: 10px mono, <b>.15em</b> tracking, uppercase, tertiary
+        grey. Repetition of one style is what makes a page feel systematic.</span></div>
+    <div class="chg"><span class="k">Focus states</span>
+      <span>Every control has a real <b>:focus-visible</b> ring with offset, including the segments and
+        the tabs. Missing focus states are visible even to people who never tab.</span></div>
+    <div class="chg"><span class="k">Platform frame</span>
+      <span>The library nav sits above the card, so the page reads as <b>one surface inside one
+        product</b> rather than a standalone screen.</span></div>
+    <div class="chg"><span class="k">Density</span>
+      <span>A four-cell stat strip and a per-stimulus tick row. Enterprise software reads expensive
+        partly because it is <b>dense with real information</b>, and an airy page reads as marketing.</span></div>
+  </div>
+
+  <div class="changes" style="margin-top:22px">
+    <h3>Where every number comes from</h3>
+    <div class="chg"><span class="k">25 stimuli</span>
+      <span>The section record. Per section, so a 23-stimulus section says 23.</span></div>
+    <div class="chg"><span class="k">Trend −6:52</span>
+      <span>First run 31:02 minus last run 24:10. <b>Computed, not assessed.</b></span></div>
+    <div class="chg"><span class="k">73 of 75</span>
+      <span>Stimuli given The Recall across the three runs: 25 + 25 + 23.</span></div>
+    <div class="chg"><span class="k">Target 25:00</span>
+      <span>The stated goal in the briefing. "Met on 1 of 3" counts the runs under it.</span></div>
+    <div class="chg"><span class="k">The ticks</span>
+      <span>One per stimulus, filled where The Recall happened. Aug 31 shows gaps at 9 and 17.
+        <b>Nothing here is scored by the app</b> — it records what was done, not how well.</span></div>
+  </div>
+
+  <p class="foot">Teal appears in eight places and nowhere else. Run screen unchanged.</p>
+</div>
+
+<script>
+(function(){
+  var BEATS = [
+    {title:"Read it.",
+     body:"Intake only. Nothing comes back out yet. Take on about a sentence, with full intonation so every word gets its weight. When you are unsure how much to take, take less. What gets lost when you grab too much is always the front of it.",
+     quote:"<em>“Most residents of the district switched to the new service within a single year…”</em>",
+     why:"Reading built for getting to the end drops the connecting words. This beat is where you stop doing that."},
+    {title:"Say it back.",
+     body:"Look away from the screen and say it back in your own words, out loud, like you are telling a friend what it said. Out of order is fine. Casual is fine. Laughing is fine.",
+     quote:"<em>“So basically almost everyone moved over, and it happened fast, inside a year.”</em>",
+     why:"Reading while you recall jams. Looking away is the only thing stopping you sliding back into the author's exact words."},
+    {title:"Colour it.",
+     body:"React. A doubt, a question, an example, a joke, a feeling. One or two seconds is plenty. It does not have to be clever, it has to be yours. The reaction is what makes the sentence yours instead of the author's.",
+     quote:"<em>“Who measured that, though? That feels like a stretch.”</em>",
+     why:"You will think you have nothing to say. Everybody does, and it lasts about a week."},
+    {title:"The Recall.",
+     body:"Press space. The stimulus disappears and does not come back. Now say the entire argument back from memory, out loud, with every detail you can still hold. This is the part that gets scored.",
+     quote:"<em>“Right, so: most residents in the district switched to the new service, and that happened within one year, and from that the council concluded…”</em>",
+     why:"Fewer words is fine when they cover the same ideas. Fewer ideas is not."}
+  ];
+  var TIMES = ["0:00","0:41","1:09","1:28"];
+
+  // run history: `missed` holds the 1-based stimulus numbers with no Recall
+  var RUNS = [
+    {date:"Sep 2",  time:"24:10", missed:[]},
+    {date:"Sep 1",  time:"27:45", missed:[]},
+    {date:"Aug 31", time:"31:02", missed:[9,17]}
+  ];
+  var N = 25;
+  document.getElementById('rbody').innerHTML = RUNS.map(function(r){
+    var ticks = "";
+    for (var i=1; i<=N; i++){
+      ticks += '<i class="' + (r.missed.indexOf(i)>-1 ? 'miss' : '') + '"></i>';
+    }
+    return '<tr><td class="d">' + r.date + '</td><td class="t">' + r.time + '</td>' +
+           '<td class="c">' + (N - r.missed.length) + ' of ' + N + '</td>' +
+           '<td class="r"><span class="ticks">' + ticks + '</span></td></tr>';
+  }).join('');
+
+  var drawer = document.getElementById('drawer');
+  var tabs = [].slice.call(document.querySelectorAll('.beat'));
+  var segs = [].slice.call(document.querySelectorAll('.seg'));
+  var dtabs = [].slice.call(document.querySelectorAll('.dr-tab'));
+
+  function view(name){
+    dtabs.forEach(function(t){
+      t.setAttribute('aria-selected', t.dataset.view===name ? 'true':'false');
+    });
+    document.getElementById('view-beat').hidden = (name!=='beat');
+    document.getElementById('view-full').hidden = (name!=='full');
+  }
+
+  function open(i){
+    var b = BEATS[i];
+    document.getElementById('dr-label').textContent = 'Briefing · beat ' + (i+1) + ' of 4';
+    document.getElementById('dr-title').textContent = b.title;
+    document.getElementById('dr-body').textContent = b.body;
+    document.getElementById('dr-quote').innerHTML = b.quote;
+    document.getElementById('dr-why').textContent = b.why;
+    document.getElementById('dr-time').textContent = TIMES[i];
+    drawer.setAttribute('data-open','true');
+    tabs.forEach(function(t,n){ t.setAttribute('aria-selected', n===i ? 'true':'false'); });
+    segs.forEach(function(s,n){ s.className = 'seg' + (n<i ? ' done' : (n===i ? ' now' : '')); });
+    view('beat');
+  }
+
+  tabs.forEach(function(t){
+    t.addEventListener('click', function(){ open(parseInt(t.dataset.beat,10)); });
+  });
+  segs.forEach(function(s){
+    s.addEventListener('click', function(){ open(parseInt(s.dataset.seg,10)); });
+  });
+  dtabs.forEach(function(t){ t.addEventListener('click', function(){ view(t.dataset.view); }); });
+  document.querySelector('.brief').addEventListener('click', function(){
+    drawer.setAttribute('data-open','true'); view('full');
+  });
+  document.getElementById('dr-close').addEventListener('click', function(){
+    drawer.setAttribute('data-open','false');
+    tabs.forEach(function(t){ t.setAttribute('aria-selected','false'); });
+  });
+
+  open(2);
+})();
+</script>

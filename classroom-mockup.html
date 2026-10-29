@@ -1,0 +1,355 @@
+<!doctype html>
+<html lang="en" class="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Classroom — mockup v3</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Roboto+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   Tokens + gradients parsed from jeffsu.org main.min.css.
+   Everything scoped under .classroom-root. Nothing in :root.
+   ============================================================ */
+.classroom-root{
+  --line:#F3E3D6;            /* orange-2 — every light border */
+  --ink:#43403C;             /* gray-1  */
+  --ink-body:#43403C;
+  --meta:rgb(166,162,158);   /* mono meta colour, used at .7 */
+  --hover:rgba(246,235,225,.4);  /* orange-3 @ 40% */
+  --dash:rgba(0,0,0,.15);
+  --link:#FF8906;            /* prose links + the one accent button. NOTHING else */
+  --active:#43403C;          /* active pill bg — gray-1 */
+  --active-ink:#FFFFFF;
+  --meta-soft:rgba(67,64,60,.4); /* text-gray-1 text-opacity-40 — dates */
+  --panel:#FFFFFF;           /* panel BASE under the wash */
+  --page:#FFFFFF;            /* reading surface — plain white, no wash */
+  --trigger:#FEFCF7;         /* orange-4 */
+  --radius:8px; --t:300ms;
+}
+html.dark .classroom-root{
+  --line:#17161C;            /* gray-10 */
+  --ink:#FFFFFE;             /* gray-15 */
+  --ink-body:#E5E5E5;        /* gray-18 */
+  --meta:rgb(167,169,190);   /* gray-17 */
+  --hover:rgba(68,64,60,.4);
+  --dash:rgba(255,255,255,.15);
+  --panel:#0A0913;           /* gray-14 — sidebars, DARKER than the page */
+  --page:#0F0E17;            /* gray-13 */
+  --trigger:#0A0913;
+  --link:#FF8906;
+  --active:#3D3C48;          /* dark active pill */
+  --active-ink:#E5E5E5;
+  --meta-soft:rgb(167,169,190);
+}
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0;padding:0;background:#fff}
+html.dark,html.dark body{background:#0F0E17}
+
+.classroom-root{
+  font-family:'Outfit',ui-sans-serif,system-ui,sans-serif;
+  font-weight:500;                       /* source sets font-medium on body */
+  color:var(--ink); background:var(--page);
+  display:flex; align-items:flex-start;
+  transition:background-color var(--t) ease,color var(--t) ease;
+  font-variant-numeric:tabular-nums; min-height:100vh;
+}
+
+/* ---- the per-panel wash. Each panel owns its own pair of layers ---- */
+.pbg{position:absolute;inset:0;border-radius:inherit;overflow:hidden;pointer-events:none;z-index:0}
+.pbg i{position:absolute;inset:0;display:block;transition:opacity var(--t) ease}
+.pbg .l1{background-image:linear-gradient(161.15deg,rgba(254,252,247,.4) 12.73%,rgba(243,227,214,.4) 72.95%);opacity:1}
+.pbg .l2{background-image:linear-gradient(161.15deg,rgba(41,37,36,.4) 12.73%,rgba(68,64,60,.4) 72.95%);opacity:0}
+html.dark .pbg .l1{opacity:0}
+html.dark .pbg .l2{opacity:1}
+.panel-in{position:relative;z-index:1;display:flex;flex-direction:column;min-height:100%}
+
+/* ---------------- sidebar : w-80 card in an 8px gutter ---------------- */
+.sidebar{width:336px;flex:0 0 336px;padding:8px;height:100vh;position:sticky;top:0;z-index:2}
+.sidebar > .card{position:relative;height:100%;border:1px solid var(--line);border-radius:var(--radius);
+  background:var(--panel);padding:24px;overflow:auto;
+  transition:background-color var(--t) ease,border-color var(--t) ease}
+.brand{display:flex;align-items:center;gap:9px;margin-bottom:24px}
+.brand i{width:22px;height:22px;border-radius:6px;background:var(--ink);color:var(--panel);
+  display:grid;place-items:center;font-size:11px;font-weight:700;font-style:normal}
+.brand span{font-family:'Roboto Mono',monospace;font-size:.75rem;font-weight:500;letter-spacing:.04em;text-transform:uppercase}
+.grp{margin-bottom:18px}
+.grp>b{display:block;font-family:'Roboto Mono',monospace;font-size:.75rem;font-weight:500;letter-spacing:.04em;
+  text-transform:uppercase;color:var(--meta);opacity:.7;padding:0 8px;margin-bottom:6px}
+.nav{display:flex;align-items:center;gap:8px;padding:7px 8px;border-radius:var(--radius);font-size:14px;
+  color:var(--ink);text-decoration:none;transition:background-color var(--t) ease;cursor:pointer;line-height:1.45}
+.nav:hover{background:var(--hover)}
+.nav.on{background:var(--active);color:var(--active-ink);font-weight:500}
+.nav.on em{color:var(--active-ink);opacity:.6}
+.nav em{margin-left:auto;font-style:normal;font-family:'Roboto Mono',monospace;font-size:.75rem;color:var(--meta);opacity:.7}
+.foot{margin-top:auto;border-top:1px solid var(--line);padding-top:12px;display:flex;align-items:center;gap:9px}
+.av{width:28px;height:28px;border-radius:50%;background:var(--hover);border:1px solid var(--line);
+  display:grid;place-items:center;font-size:12px;font-weight:600;flex:0 0 auto}
+.who{font-size:13px;line-height:1.25}
+.who small{display:block;font-family:'Roboto Mono',monospace;font-size:.75rem;color:var(--meta);opacity:.7}
+.ib{margin-left:auto;background:none;border:1px solid var(--line);border-radius:7px;width:28px;height:28px;
+  cursor:pointer;color:var(--meta);transition:all var(--t) ease}
+
+/* ------------- secondary sidebar : rounded-r, border-l-0, -ml-4 ------------- */
+.seclist{width:336px;flex:0 0 336px;padding:8px 8px 8px 0;height:100vh;position:sticky;top:0;
+  margin-left:-16px;z-index:1;display:none}
+.seclist.show{display:block}
+.seclist > .card{position:relative;height:100%;border:1px solid var(--line);border-left:0;
+  border-radius:0 var(--radius) var(--radius) 0;background:var(--panel);padding:24px 28px;overflow:auto;
+  transition:background-color var(--t) ease,border-color var(--t) ease}
+.seclist h4{font-size:14px;font-weight:700;margin:0 0 20px}
+.plist{display:grid;gap:4px;margin:0 -8px}
+.pitem{position:relative;padding:8px;border-radius:var(--radius);cursor:pointer;transition:background-color var(--t) ease}
+.pitem:hover{background:var(--hover)}
+.pitem.on{background:var(--active)}
+.pitem h3{font-size:14px;font-weight:500;margin:0 0 4px;line-height:1.45;color:var(--ink)}
+.pitem.on h3{color:var(--active-ink)}
+.pitem time{font-size:.75rem;color:var(--meta-soft)}
+.pitem.on time{color:var(--active-ink);opacity:.6}
+
+/* ---------------- reading column : plain white, no wash ---------------- */
+.stage{flex:1 1 auto;min-width:0;display:flex;justify-content:center;padding:0 24px}
+.col{width:100%;max-width:720px;padding:80px 0 120px}
+
+.dateline{display:flex;gap:6px;align-items:center;font-size:14px;font-weight:500;
+  color:var(--meta-soft);margin-bottom:16px}
+h1.title{font-size:30px;font-weight:700;letter-spacing:-.02em;line-height:1.15;margin:0 0 24px}
+@media(min-width:1024px){h1.title{font-size:36px}}
+
+.msg{border:1px solid var(--line);border-radius:var(--radius);padding:20px;margin-bottom:48px;
+  transition:border-color var(--t) ease}
+.msg header{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.msg header .av{width:32px;height:32px}
+.msg header strong{font-size:14px;font-weight:600}
+.msg header time{margin-left:auto;font-family:'Roboto Mono',monospace;font-size:.75rem;color:var(--meta);opacity:.7}
+.msg p{font-size:16px;line-height:1.7;margin:0;color:var(--ink-body)}
+.msg p.clamp{display:-webkit-box;-webkit-line-clamp:5;-webkit-box-orient:vertical;overflow:hidden}
+.acts{display:flex;gap:8px;margin-top:16px}
+.btn{font:500 13px 'Outfit',sans-serif;padding:8px 14px;border-radius:var(--radius);border:1px solid var(--line);
+  background:none;color:var(--ink);cursor:pointer;transition:all var(--t) ease}
+.btn:hover{background:var(--hover)}
+.btn.pri{background:var(--link);border-color:var(--link);color:#fff}
+
+section{margin-bottom:48px}
+.sh{display:flex;align-items:baseline;gap:10px;margin-bottom:14px}
+h2{font-size:20px;font-weight:600;letter-spacing:-.01em;margin:0}
+.sh span{margin-left:auto;font-family:'Roboto Mono',monospace;font-size:.75rem;color:var(--meta);opacity:.7}
+
+.row{display:flex;align-items:center;gap:8px;min-width:0;position:relative;padding:10px 0}
+.row+.row{border-top:1px solid var(--line)}
+.row p{margin:0;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.5}
+.dash{flex:1 1 auto;min-width:16px;height:1px;align-self:center;
+  background-image:repeating-linear-gradient(to right,var(--dash) 0 4px,transparent 4px 8px)}
+.st{font-family:'Roboto Mono',monospace;font-size:.75rem;font-weight:500;color:var(--meta);opacity:.7;white-space:nowrap}
+.st.due{color:var(--ink);opacity:1}
+.row a{position:absolute;inset:0;opacity:0}
+.row:hover p{color:var(--link)}
+
+/* ---- rich note content: the source's article treatment ---- */
+.prose p{font-size:16px;line-height:1.75;color:var(--ink-body);margin:0 0 20px}
+.prose a{color:var(--link);text-decoration:none;transition:color var(--t) ease}
+.prose a:hover{color:var(--ink)}
+.prose h2{margin:36px 0 14px}
+.prose ol{font-size:16px;line-height:1.75;color:var(--ink-body);padding-left:22px;margin:0 0 20px}
+.prose li{margin-bottom:10px}
+.prose blockquote{margin:0 0 22px;padding:2px 0 2px 18px;border-left:4px solid var(--ink);
+  font-size:16px;line-height:1.7;color:var(--ink-body)}
+.prose figure{margin:0 0 24px}
+.prose figure img{display:block;width:100%;border-radius:var(--radius);border:1px solid var(--line)}
+.prose figure figcaption{font-family:'Roboto Mono',monospace;font-size:.75rem;color:var(--meta);opacity:.7;margin-top:8px}
+.callout{display:flex;gap:12px;border:1px solid var(--line);border-radius:var(--radius);
+  padding:14px 16px;margin:0 0 24px;background:var(--hover)}
+.callout b{font-weight:600}
+.callout .emo{font-size:18px;line-height:1.4}
+.callout div{font-size:15px;line-height:1.65;color:var(--ink-body)}
+
+.note-meta{font-family:'Roboto Mono',monospace;font-size:.75rem;line-height:1.7;color:var(--meta);opacity:.75;
+  border:1px dashed var(--line);border-radius:var(--radius);padding:12px 14px;margin-bottom:32px}
+.skel{height:13px;border-radius:4px;background:var(--line);margin:10px 0;animation:p 1.4s ease-in-out infinite}
+@keyframes p{0%,100%{opacity:.5}50%{opacity:1}}
+.err{border:1px solid var(--line);border-radius:var(--radius);padding:12px 14px;display:flex;align-items:center;gap:12px}
+.err p{margin:0;font-size:14px}
+
+.bar{position:sticky;top:0;z-index:60;background:#131313;color:#ddd;
+  font-family:'Roboto Mono',monospace;font-size:11px;padding:8px 14px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.bar b{color:#fff;margin-right:4px}
+.bar button{font:11px 'Roboto Mono',monospace;background:#272727;color:#ddd;border:1px solid #3b3b3b;
+  border-radius:5px;padding:4px 9px;cursor:pointer}
+.bar button.on{background:#FF8906;border-color:#FF8906;color:#111}
+.bar i{margin-left:auto;opacity:.6;font-style:normal}
+
+.trigger{display:none;width:100%;height:48px;align-items:center;justify-content:space-between;padding:0 16px;
+  border:1px solid var(--line);border-radius:var(--radius);background:var(--trigger);
+  font-size:14px;color:var(--ink);cursor:pointer;margin-bottom:32px}
+@media(max-width:1279px){
+  .seclist{display:none !important}
+  .trigger.avail{display:flex}
+}
+@media(max-width:1023px){
+  .sidebar{display:none}
+  .col{padding:32px 0 90px}
+  .row{flex-direction:column;align-items:flex-start;gap:2px}
+  .dash{display:none}
+}
+</style>
+</head>
+<body>
+
+<div class="bar">
+  <b>MOCKUP v3</b>
+  <button id="v1" class="on" onclick="go('index')">Classroom index · 2 col</button>
+  <button id="v2" onclick="go('notes')">Notes open · 3 col</button>
+  <button onclick="th()">light / dark</button>
+  <button id="v3" onclick="states()">loading + error</button>
+  <i>real rows from production · gradient is per-panel</i>
+</div>
+
+<div class="classroom-root">
+
+  <aside class="sidebar">
+    <div class="card">
+      <div class="pbg"><i class="l1"></i><i class="l2"></i></div>
+      <div class="panel-in">
+        <div class="brand"><i>L</i><span>LSAT U</span></div>
+
+        <div class="grp"><b>Classroom</b>
+          <a class="nav on" id="n-room" onclick="go('index')">Your room</a>
+          <a class="nav" id="n-notes" onclick="go('notes')">Notes and recaps <em>›</em></a>
+          <a class="nav" id="n-work" onclick="go('work')">Assigned work <em>›</em></a>
+        </div>
+        <div class="grp"><b>Study</b>
+          <a class="nav" onclick="leave('Drill')">Drill</a>
+          <a class="nav" onclick="leave('Practice')">Practice</a>
+          <a class="nav" onclick="leave('Bootcamps')">Bootcamps</a>
+          <a class="nav" onclick="leave('Activities')">Activities</a>
+        </div>
+        <div class="grp"><b>Review</b>
+          <a class="nav" onclick="leave('Wrong answers')">Wrong answers <em>24</em></a>
+          <a class="nav" onclick="leave('Flagged')">Flagged</a>
+          <a class="nav" onclick="leave('Analytics')">Analytics</a>
+        </div>
+        <div class="grp"><b>Admin</b>
+          <a class="nav" onclick="leave('Messages')">Messages</a>
+          <a class="nav" onclick="leave('Schedule')">Schedule</a>
+          <a class="nav" onclick="leave('Booking')">Booking</a>
+        </div>
+
+        <div class="foot">
+          <div class="av">L</div>
+          <div class="who"><span>Lexi A</span><small>Student</small></div>
+          <button class="ib" onclick="th()">◐</button>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <aside class="seclist" id="seclist">
+    <div class="card">
+      <div class="pbg"><i class="l1"></i><i class="l2"></i></div>
+      <div class="panel-in">
+        <h4 id="sec-title">Notes and recaps</h4>
+        <div class="plist" id="plist"></div>
+      </div>
+    </div>
+  </aside>
+
+  <div class="stage"><div class="col" id="col"></div></div>
+</div>
+
+<script>
+const OPENER = `Great work Monday. You took a hard passage you had never seen, labeled every paragraph's move, and went 5 for 5. Since you rightly want the verdicts stated plainly: organization was E, the analogy question was A, the detail question was B, the inference was E, and the final "most likely described" question was C. All correct.`;
+
+const PH = 'data:image/svg+xml;utf8,' + encodeURIComponent(
+ '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080"><rect width="1920" height="1080" fill="#F6EBE1"/><g fill="#B3B0AC" font-family="monospace" text-anchor="middle"><text x="960" y="520" font-size="52">Compare · Explain · Evaluate · Recommend</text><text x="960" y="600" font-size="30">an image inside a note, full width of the column</text></g></svg>');
+
+const NOTES = [
+  ['Reading for the author’s purpose','22 Jul 2026'],
+  ['Conditional logic: the contrapositive drill','17 Jul 2026'],
+  ['Flaw types recap','12 Jul 2026'],
+  ['Why blind review is non-negotiable','04 Jul 2026'],
+  ['Pacing: how to spend the last 8 minutes','28 Jun 2026'],
+  ['Necessary vs sufficient, one more time','19 Jun 2026']
+];
+const WORK = [
+  ['Engaging With The Passage','assigned 25 Jul 2026'],
+  ['Intro to LR','in progress']
+];
+
+let view='index', showStates=false, active=0;
+
+function th(){document.documentElement.classList.toggle('dark');document.documentElement.classList.toggle('light')}
+function leave(n){alert('Navigates away to '+n+'.\n\nStudy and Review destinations leave the Classroom.\nThey do not open the section list.')}
+function states(){showStates=!showStates;document.getElementById('v3').className=showStates?'on':'';render()}
+function go(v){view=v;active=0;
+  document.getElementById('v1').className=v==='index'?'on':'';
+  document.getElementById('v2').className=v==='notes'?'on':'';
+  document.getElementById('n-room').className='nav'+(v==='index'?' on':'');
+  document.getElementById('n-notes').className='nav'+(v==='notes'?' on':'');
+  document.getElementById('n-work').className='nav'+(v==='work'?' on':'');
+  render()}
+function pick(i){active=i;render()}
+
+function render(){
+  const showList = (view==='notes'||view==='work');
+  document.getElementById('seclist').classList.toggle('show',showList);
+  const rows = view==='work'?WORK:NOTES;
+
+  if(showList){
+    document.getElementById('sec-title').textContent = view==='notes'?'Notes and recaps':'Assigned work';
+    document.getElementById('plist').innerHTML = rows.map(function(r,i){
+      return '<div class="pitem '+(i===active?'on':'')+'" onclick="pick('+i+')"><h3>'+r[0]+'</h3><time>'+r[1]+'</time></div>';
+    }).join('');
+  }
+
+  var h='';
+  if(showList){
+    var r=rows[active];
+    h += '<button class="trigger avail" onclick="alert(\'Below xl this opens the section list as an overlay.\')">'+(view==='notes'?'Notes and recaps':'Assigned work')+' <span>&#8801;</span></button>';
+    h += '<div class="dateline"><time>'+r[1]+'</time><span>|</span><span>'+(view==='notes'?'Note':'Assignment')+'</span></div>';
+    h += '<h1 class="title">'+r[0]+'</h1>';
+    h += '<div class="prose">'
+      + '<p>'+OPENER+'</p>'
+      + '<h2>What to carry forward</h2>'
+      + '<ol><li>Every part of the passage is making one of four moves: Compare, Explain, Evaluate, Recommend. Stop asking "what is this saying" and ask "what is the author doing."</li>'
+      + '<li>The moves nest. Sentences serve the paragraph, paragraphs serve the passage. Any purpose question is answered top down.</li>'
+      + '<li>Evaluate and Recommend can never be missed. The author’s default is neutral, so any flavour is the author judging.</li></ol>'
+      + '<figure><img src="'+PH+'" alt=""><figcaption>The four moves, and how they nest</figcaption></figure>'
+      + '<div class="callout"><div class="emo">&#128161;</div><div><b>The one non-negotiable:</b> blind review every drill. Before checking answers, redo every question you were not fully sure of, take as long as you need, then score both passes.</div></div>'
+      + '<h2>The weakly worded tiebreaker</h2>'
+      + '<blockquote>Down to two? The more conservative, weakly worded answer is easier to prove, so it usually wins. Usually. It is a pattern, not a guarantee.</blockquote>'
+      + '<p>Assessing how much proof an answer demands is the other half of reading comp, and it is the whole focus of <a href="#">Friday’s session</a>.</p>'
+      + '</div>';
+  } else {
+    h += '<div class="dateline"><time>Sunday, 26 July 2026</time><span>|</span><span>Classroom</span></div>';
+    h += '<h1 class="title">Welcome back, Lexi</h1>';
+    h += '<div class="msg"><header><div class="av">J</div><strong>Joshua</strong><time>JUL 22</time></header>'
+       + '<p class="clamp">'+OPENER+'</p>'
+       + '<div class="acts"><button class="btn pri" onclick="go(\'notes\')">Read it</button><button class="btn">Reply</button></div></div>';
+
+    if(showStates){
+      h += '<section><div class="sh"><h2>Assigned work</h2><span>LOADING</span></div>'
+         + '<div class="note-meta">STATE 1 of 3 &mdash; loading. A skeleton, never a blank.</div>'
+         + '<div class="skel" style="width:76%"></div><div class="skel" style="width:52%"></div><div class="skel" style="width:64%"></div></section>';
+      h += '<section><div class="sh"><h2>Assigned work</h2><span>ERROR</span></div>'
+         + '<div class="note-meta">STATE 2 of 3 &mdash; the request failed. Without this the page renders as "nothing assigned" and quietly lies to a student who has work due.</div>'
+         + '<div class="err"><p>Could not load your assigned work.</p><button class="btn" style="margin-left:auto">Try again</button></div></section>';
+    }
+
+    h += '<div class="note-meta">LEXI A &mdash; real rows: 1 classroom item (bootcamp module, assigned), 1 message from you (22 Jul), 0 attempts, 0 wrong answers.<br><br>Sections with no data are absent, not empty. The page is SHORT, not hollow. Her own newer message (26 Jul) is correctly not shown here &mdash; the block filters to your messages only.</div>';
+
+    h += '<section><div class="sh"><h2>Up next</h2><span>1 ITEM</span></div>'
+       + '<div class="row"><a href="#" onclick="go(\'work\');return false"></a><p>Engaging With The Passage</p><div class="dash"></div><div class="st due">ASSIGNED</div></div></section>';
+
+    h += '<section><div class="sh"><h2>Notes and recaps</h2><span>6 POSTED</span></div>'
+       + NOTES.slice(0,3).map(function(n,i){
+           return '<div class="row"><a href="#" onclick="go(\'notes\');pick('+i+');return false"></a><p>'+n[0]+'</p><div class="dash"></div><div class="st">'+n[1].toUpperCase()+'</div></div>';
+         }).join('')
+       + '</section>';
+  }
+  document.getElementById('col').innerHTML=h;
+}
+render();
+</script>
+</body>
+</html>

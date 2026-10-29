@@ -1,0 +1,5453 @@
+{
+  "asOf": "2026-10-28T19:05:14.024002+00:00",
+  "lrAttempts": [
+    {
+      "correct": false,
+      "id": "00000000-0000-4000-8000-000000000001",
+      "mode": "full-section",
+      "qid": "PT102-S2-Q4",
+      "qtype": "Strengthen",
+      "selected_answer": "D",
+      "timestamp_iso": "2026-08-29T02:41:32.703+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": false,
+      "id": "00000000-0000-4000-8000-000000000003",
+      "mode": "full-section",
+      "qid": "PT106-S1-Q5",
+      "qtype": "Weaken",
+      "selected_answer": "E",
+      "timestamp_iso": "2026-08-29T06:37:37.441+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": true,
+      "id": "00000000-0000-4000-8000-000000000004",
+      "mode": "full-section",
+      "qid": "PT108-S2-Q4",
+      "qtype": "Paradox",
+      "selected_answer": "D",
+      "timestamp_iso": "2026-08-29T07:17:20.478+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": false,
+      "id": "00000000-0000-4000-8000-000000000005",
+      "mode": "full-section",
+      "qid": "PT105-S1-Q15",
+      "qtype": "Agree/Disagree",
+      "selected_answer": "D",
+      "timestamp_iso": "2026-08-29T06:25:27.149+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": true,
+      "id": "00000000-0000-4000-8000-000000000006",
+      "mode": "full-section",
+      "qid": "PT105-S1-Q3",
+      "qtype": "Strengthen",
+      "selected_answer": "C",
+      "timestamp_iso": "2026-08-29T06:25:25.473+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": true,
+      "id": "00000000-0000-4000-8000-000000000007",
+      "mode": "full-section",
+      "qid": "PT105-S1-Q17",
+      "qtype": "Most Strongly Supported",
+      "selected_answer": "A",
+      "timestamp_iso": "2026-08-29T06:25:27.603+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": true,
+      "id": "00000000-0000-4000-8000-000000000008",
+      "mode": "adaptive",
+      "qid": "PT115-S4-Q3",
+      "qtype": "Method of Reasoning",
+      "selected_answer": "E",
+      "timestamp_iso": "2026-09-14T00:55:51.841+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": false,
+      "id": "00000000-0000-4000-8000-000000000009",
+      "mode": "practice-set",
+      "qid": "PT159-S3-Q6",
+      "qtype": "Weaken",
+      "selected_answer": "B",
+      "timestamp_iso": "2026-07-09T23:33:17.634+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": true,
+      "id": "00000000-0000-4000-8000-000000000010",
+      "mode": "adaptive",
+      "qid": "PT112-S1-Q19",
+      "qtype": "Flaw",
+      "selected_answer": "C",
+      "timestamp_iso": "2026-06-12T13:02:59.873+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": false,
+      "id": "00000000-0000-4000-8000-000000000011",
+      "mode": "practice-set",
+      "qid": "PT138-S3-Q11",
+      "qtype": "Main Conclusion",
+      "selected_answer": "A",
+      "timestamp_iso": "2026-07-25T09:49:31.192+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": false,
+      "id": "00000000-0000-4000-8000-000000000012",
+      "mode": "full-section",
+      "qid": "PT105-S1-Q8",
+      "qtype": "Necessary Assumption",
+      "selected_answer": "B",
+      "timestamp_iso": "2026-08-29T06:25:26.098+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": false,
+      "id": "00000000-0000-4000-8000-000000000013",
+      "mode": "practice-set",
+      "qid": "PT159-S3-Q20",
+      "qtype": "Main Conclusion",
+      "selected_answer": "A",
+      "timestamp_iso": "2026-07-09T23:33:22.268+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": true,
+      "id": "00000000-0000-4000-8000-000000000014",
+      "mode": "full-section",
+      "qid": "PT140-S1-Q15",
+      "qtype": "Most Strongly Supported",
+      "selected_answer": "B",
+      "timestamp_iso": "2026-09-29T12:07:01.6+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": false,
+      "id": "00000000-0000-4000-8000-000000000015",
+      "mode": "practice-set",
+      "qid": "PT118-S4-Q1",
+      "qtype": "Main Conclusion",
+      "selected_answer": "A",
+      "timestamp_iso": "2026-07-25T09:49:30.262+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": true,
+      "id": "00000000-0000-4000-8000-000000000016",
+      "mode": "full-section",
+      "qid": "PT105-S1-Q26",
+      "qtype": "Flaw",
+      "selected_answer": "D",
+      "timestamp_iso": "2026-08-29T06:25:29.484+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": false,
+      "id": "00000000-0000-4000-8000-000000000017",
+      "mode": "practice-set",
+      "qid": "PT159-S1-Q11",
+      "qtype": "Weaken",
+      "selected_answer": "A",
+      "timestamp_iso": "2026-07-09T23:33:21.422+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": false,
+      "id": "00000000-0000-4000-8000-000000000018",
+      "mode": "full-section",
+      "qid": "PT106-S1-Q3",
+      "qtype": "Parallel Flaw",
+      "selected_answer": "C",
+      "timestamp_iso": "2026-08-29T06:37:36.96+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": false,
+      "id": "00000000-0000-4000-8000-000000000019",
+      "mode": "full-section",
+      "qid": "PT107-S3-Q3",
+      "qtype": "Method of Reasoning",
+      "selected_answer": "C",
+      "timestamp_iso": "2026-08-29T08:02:14.32+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": false,
+      "id": "00000000-0000-4000-8000-000000000020",
+      "mode": "full-section",
+      "qid": "PT105-S1-Q6",
+      "qtype": "Must Be True",
+      "selected_answer": "E",
+      "timestamp_iso": "2026-08-29T06:25:25.67+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": false,
+      "id": "00000000-0000-4000-8000-000000000021",
+      "mode": "adaptive",
+      "qid": "PT106-S1-Q17",
+      "qtype": "Paradox",
+      "selected_answer": "B",
+      "timestamp_iso": "2026-05-20T09:35:37.709+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": true,
+      "id": "00000000-0000-4000-8000-000000000022",
+      "mode": "adaptive",
+      "qid": "PT135-S4-Q20",
+      "qtype": "Unknown",
+      "selected_answer": "D",
+      "timestamp_iso": "2026-07-09T23:34:53.213+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": false,
+      "id": "00000000-0000-4000-8000-000000000023",
+      "mode": "full-section",
+      "qid": "PT138-S4-Q24",
+      "qtype": "Most Strongly Supported",
+      "selected_answer": "D",
+      "timestamp_iso": "2026-09-29T11:30:00.811+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": false,
+      "id": "00000000-0000-4000-8000-000000000024",
+      "mode": "full-section",
+      "qid": "PT102-S2-Q3",
+      "qtype": "Most Strongly Supported",
+      "selected_answer": "C",
+      "timestamp_iso": "2026-08-29T02:41:32.427+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": false,
+      "id": "00000000-0000-4000-8000-000000000025",
+      "mode": "full-section",
+      "qid": "PT105-S1-Q18",
+      "qtype": "Necessary Assumption",
+      "selected_answer": "B",
+      "timestamp_iso": "2026-08-29T06:25:27.734+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": false,
+      "id": "00000000-0000-4000-8000-000000000026",
+      "mode": "adaptive",
+      "qid": "PT132-S4-Q17",
+      "qtype": "Unknown",
+      "selected_answer": "B",
+      "timestamp_iso": "2026-06-12T13:03:35.096+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": false,
+      "id": "00000000-0000-4000-8000-000000000027",
+      "mode": "adaptive",
+      "qid": "PT105-S1-Q5",
+      "qtype": "Weaken",
+      "selected_answer": "D",
+      "timestamp_iso": "2026-05-19T07:54:34.267+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": false,
+      "id": "00000000-0000-4000-8000-000000000028",
+      "mode": "full-section",
+      "qid": "PT108-S2-Q5",
+      "qtype": "Necessary Assumption",
+      "selected_answer": "E",
+      "timestamp_iso": "2026-08-29T07:17:20.585+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": false,
+      "id": "00000000-0000-4000-8000-000000000029",
+      "mode": "full-section",
+      "qid": "PT105-S1-Q10",
+      "qtype": "Weaken",
+      "selected_answer": "D",
+      "timestamp_iso": "2026-08-29T06:25:26.42+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": true,
+      "id": "00000000-0000-4000-8000-000000000030",
+      "mode": "full-section",
+      "qid": "PT107-S3-Q2",
+      "qtype": "Main Conclusion",
+      "selected_answer": "B",
+      "timestamp_iso": "2026-08-29T08:02:14.211+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": false,
+      "id": "00000000-0000-4000-8000-000000000031",
+      "mode": "full-section",
+      "qid": "PT105-S1-Q19",
+      "qtype": "Strengthen",
+      "selected_answer": "C",
+      "timestamp_iso": "2026-08-29T06:25:27.987+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": false,
+      "id": "00000000-0000-4000-8000-000000000032",
+      "mode": "full-section",
+      "qid": "PT106-S1-Q6",
+      "qtype": "Agree/Disagree",
+      "selected_answer": "A",
+      "timestamp_iso": "2026-08-29T06:37:37.666+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": false,
+      "id": "00000000-0000-4000-8000-000000000033",
+      "mode": "full-section",
+      "qid": "PT105-S1-Q21",
+      "qtype": "Necessary Assumption",
+      "selected_answer": "D",
+      "timestamp_iso": "2026-08-29T06:25:28.209+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": true,
+      "id": "00000000-0000-4000-8000-000000000034",
+      "mode": "full-section",
+      "qid": "PT106-S1-Q2",
+      "qtype": "Necessary Assumption",
+      "selected_answer": "B",
+      "timestamp_iso": "2026-08-29T06:37:36.845+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": true,
+      "id": "00000000-0000-4000-8000-000000000035",
+      "mode": "adaptive",
+      "qid": "PT135-S1-Q21",
+      "qtype": "Necessary Assumption",
+      "selected_answer": "D",
+      "timestamp_iso": "2026-07-10T05:05:35.752+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": true,
+      "id": "00000000-0000-4000-8000-000000000036",
+      "mode": "full-section",
+      "qid": "PT106-S3-Q24",
+      "qtype": "Strengthen",
+      "selected_answer": "D",
+      "timestamp_iso": "2026-07-02T21:59:59.962+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": false,
+      "id": "00000000-0000-4000-8000-000000000037",
+      "mode": "full-section",
+      "qid": "PT105-S1-Q2",
+      "qtype": "Role",
+      "selected_answer": "B",
+      "timestamp_iso": "2026-08-29T06:25:25.249+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": false,
+      "id": "00000000-0000-4000-8000-000000000038",
+      "mode": "full-section",
+      "qid": "PT105-S2-Q3",
+      "qtype": "Necessary Assumption",
+      "selected_answer": "C",
+      "timestamp_iso": "2026-08-29T07:39:18.81+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": false,
+      "id": "00000000-0000-4000-8000-000000000039",
+      "mode": "full-section",
+      "qid": "PT109-S1-Q2",
+      "qtype": "Method of Reasoning",
+      "selected_answer": "B",
+      "timestamp_iso": "2026-08-29T08:12:54.247+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": true,
+      "id": "00000000-0000-4000-8000-000000000040",
+      "mode": "full-section",
+      "qid": "PT106-S3-Q24",
+      "qtype": "Strengthen",
+      "selected_answer": "D",
+      "timestamp_iso": "2026-07-02T22:00:00.082+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": true,
+      "id": "00000000-0000-4000-8000-000000000041",
+      "mode": "full-section",
+      "qid": "PT105-S1-Q13",
+      "qtype": "Parallel Reasoning",
+      "selected_answer": "B",
+      "timestamp_iso": "2026-08-29T06:25:26.943+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": true,
+      "id": "00000000-0000-4000-8000-000000000042",
+      "mode": "adaptive",
+      "qid": "PT103-S1-Q9",
+      "qtype": "Weaken",
+      "selected_answer": "B",
+      "timestamp_iso": "2026-07-10T06:20:20.899+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": false,
+      "id": "00000000-0000-4000-8000-000000000043",
+      "mode": "full-section",
+      "qid": "PT105-S1-Q1",
+      "qtype": "Main Conclusion",
+      "selected_answer": "A",
+      "timestamp_iso": "2026-08-29T06:25:24.983+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": false,
+      "id": "00000000-0000-4000-8000-000000000044",
+      "mode": "full-section",
+      "qid": "PT105-S1-Q12",
+      "qtype": "Method of Reasoning",
+      "selected_answer": "A",
+      "timestamp_iso": "2026-08-29T06:25:26.73+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": false,
+      "id": "00000000-0000-4000-8000-000000000045",
+      "mode": "full-section",
+      "qid": "PT102-S2-Q21",
+      "qtype": "Must Be True",
+      "selected_answer": "A",
+      "timestamp_iso": "2026-08-29T02:41:36.948+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": false,
+      "id": "00000000-0000-4000-8000-000000000046",
+      "mode": "full-section",
+      "qid": "PT107-S1-Q2",
+      "qtype": "Method of Reasoning",
+      "selected_answer": "B",
+      "timestamp_iso": "2026-08-29T06:54:04.962+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": false,
+      "id": "00000000-0000-4000-8000-000000000047",
+      "mode": "full-section",
+      "qid": "PT106-S1-Q4",
+      "qtype": "Principle-Strengthen",
+      "selected_answer": "D",
+      "timestamp_iso": "2026-08-29T06:37:37.197+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": false,
+      "id": "00000000-0000-4000-8000-000000000048",
+      "mode": "adaptive",
+      "qid": "PT106-S2-Q13",
+      "qtype": "Unknown",
+      "selected_answer": "D",
+      "timestamp_iso": "2026-05-19T07:54:45.31+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": false,
+      "id": "00000000-0000-4000-8000-000000000049",
+      "mode": "full-section",
+      "qid": "PT102-S2-Q20",
+      "qtype": "Flaw",
+      "selected_answer": "E",
+      "timestamp_iso": "2026-08-29T02:41:36.71+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": true,
+      "id": "00000000-0000-4000-8000-000000000050",
+      "mode": "full-section",
+      "qid": "PT108-S2-Q6",
+      "qtype": "Weaken",
+      "selected_answer": "A",
+      "timestamp_iso": "2026-08-29T07:17:20.792+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": false,
+      "id": "00000000-0000-4000-8000-000000000051",
+      "mode": "practice-set",
+      "qid": "PT159-S3-Q22",
+      "qtype": "Must Be True",
+      "selected_answer": "A",
+      "timestamp_iso": "2026-07-09T23:33:22.571+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": false,
+      "id": "00000000-0000-4000-8000-000000000052",
+      "mode": "full-section",
+      "qid": "PT102-S2-Q19",
+      "qtype": "Most Strongly Supported",
+      "selected_answer": "D",
+      "timestamp_iso": "2026-08-29T02:41:36.477+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": false,
+      "id": "00000000-0000-4000-8000-000000000053",
+      "mode": "adaptive",
+      "qid": "PT106-S3-Q7",
+      "qtype": "Method of Reasoning",
+      "selected_answer": "B",
+      "timestamp_iso": "2026-05-20T10:01:43.553+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": true,
+      "id": "00000000-0000-4000-8000-000000000054",
+      "mode": "full-section",
+      "qid": "PT110-S2-Q1",
+      "qtype": "Flaw",
+      "selected_answer": "A",
+      "timestamp_iso": "2026-08-29T08:15:15.828+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": false,
+      "id": "00000000-0000-4000-8000-000000000055",
+      "mode": "practice-set",
+      "qid": "PT159-S1-Q20",
+      "qtype": "Principle-Conform",
+      "selected_answer": "A",
+      "timestamp_iso": "2026-07-09T23:33:20.385+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": false,
+      "id": "00000000-0000-4000-8000-000000000056",
+      "mode": "full-section",
+      "qid": "PT109-S1-Q3",
+      "qtype": "Agree/Disagree",
+      "selected_answer": "C",
+      "timestamp_iso": "2026-08-29T08:12:54.499+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": false,
+      "id": "00000000-0000-4000-8000-000000000057",
+      "mode": "full-section",
+      "qid": "PT102-S2-Q9",
+      "qtype": "Flaw",
+      "selected_answer": "D",
+      "timestamp_iso": "2026-08-29T02:41:34.118+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": false,
+      "id": "00000000-0000-4000-8000-000000000058",
+      "mode": "adaptive",
+      "qid": "PT106-S3-Q12",
+      "qtype": "Unknown",
+      "selected_answer": "B",
+      "timestamp_iso": "2026-05-20T07:15:10.194+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": true,
+      "id": "00000000-0000-4000-8000-000000000059",
+      "mode": "abstract:d2",
+      "qid": "d2-q01",
+      "qtype": "abstract",
+      "selected_answer": "conclusion",
+      "timestamp_iso": "2026-05-14T14:59:10.721+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": false,
+      "id": "00000000-0000-4000-8000-000000000060",
+      "mode": "full-section",
+      "qid": "PT102-S2-Q6",
+      "qtype": "Necessary Assumption",
+      "selected_answer": "A",
+      "timestamp_iso": "2026-08-29T02:41:33.203+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": false,
+      "id": "00000000-0000-4000-8000-000000000061",
+      "mode": "practice-set",
+      "qid": "PT139-S4-Q1",
+      "qtype": "Main Conclusion",
+      "selected_answer": "A",
+      "timestamp_iso": "2026-07-25T09:49:31.424+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": false,
+      "id": "00000000-0000-4000-8000-000000000062",
+      "mode": "full-section",
+      "qid": "PT102-S2-Q7",
+      "qtype": "Main Conclusion",
+      "selected_answer": "B",
+      "timestamp_iso": "2026-08-29T02:41:33.447+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": false,
+      "id": "00000000-0000-4000-8000-000000000063",
+      "mode": "full-section",
+      "qid": "PT102-S2-Q5",
+      "qtype": "Weaken",
+      "selected_answer": "E",
+      "timestamp_iso": "2026-08-29T02:41:32.964+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": false,
+      "id": "00000000-0000-4000-8000-000000000064",
+      "mode": "full-section",
+      "qid": "PT109-S1-Q1",
+      "qtype": "Strengthen",
+      "selected_answer": "A",
+      "timestamp_iso": "2026-08-29T08:12:53.934+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": false,
+      "id": "00000000-0000-4000-8000-000000000065",
+      "mode": "full-section",
+      "qid": "PT104-S1-Q1",
+      "qtype": "Agree/Disagree",
+      "selected_answer": "A",
+      "timestamp_iso": "2026-08-29T05:42:49.823+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": true,
+      "id": "00000000-0000-4000-8000-000000000066",
+      "mode": "full-section",
+      "qid": "PT105-S1-Q11",
+      "qtype": "Role",
+      "selected_answer": "E",
+      "timestamp_iso": "2026-08-29T06:25:26.625+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": false,
+      "id": "00000000-0000-4000-8000-000000000067",
+      "mode": "full-section",
+      "qid": "PT107-S1-Q5",
+      "qtype": "Necessary Assumption",
+      "selected_answer": "E",
+      "timestamp_iso": "2026-08-29T06:54:05.43+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": true,
+      "id": "00000000-0000-4000-8000-000000000068",
+      "mode": "practice-set",
+      "qid": "PT158-S4-Q20",
+      "qtype": "Agree/Disagree",
+      "selected_answer": "A",
+      "timestamp_iso": "2026-08-11T13:35:08.828+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": false,
+      "id": "00000000-0000-4000-8000-000000000069",
+      "mode": "full-section",
+      "qid": "PT108-S2-Q3",
+      "qtype": "Weaken",
+      "selected_answer": "C",
+      "timestamp_iso": "2026-08-29T07:17:20.268+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": true,
+      "id": "00000000-0000-4000-8000-000000000070",
+      "mode": "full-section",
+      "qid": "PT105-S1-Q4",
+      "qtype": "Weaken",
+      "selected_answer": "D",
+      "timestamp_iso": "2026-08-29T06:25:25.573+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": true,
+      "id": "00000000-0000-4000-8000-000000000071",
+      "mode": "adaptive",
+      "qid": "PT105-S1-Q20",
+      "qtype": "Most Strongly Supported",
+      "selected_answer": "A",
+      "timestamp_iso": "2026-05-20T07:03:39.872+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": true,
+      "id": "00000000-0000-4000-8000-000000000072",
+      "mode": "adaptive",
+      "qid": "PT107-S4-Q22",
+      "qtype": "Unknown",
+      "selected_answer": "C",
+      "timestamp_iso": "2026-07-10T06:18:27.593+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": false,
+      "id": "00000000-0000-4000-8000-000000000073",
+      "mode": "practice-set",
+      "qid": "PT159-S1-Q1",
+      "qtype": "Flaw",
+      "selected_answer": "A",
+      "timestamp_iso": "2026-09-28T18:12:24.974+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": true,
+      "id": "00000000-0000-4000-8000-000000000074",
+      "mode": "abstract:d2",
+      "qid": "d2-q06",
+      "qtype": "abstract",
+      "selected_answer": "conclusion",
+      "timestamp_iso": "2026-05-14T14:59:40.349+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": false,
+      "id": "00000000-0000-4000-8000-000000000075",
+      "mode": "full-section",
+      "qid": "PT159-S1-Q10",
+      "qtype": "Most Strongly Supported",
+      "selected_answer": "A",
+      "timestamp_iso": "2026-09-29T12:06:02.58+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": false,
+      "id": "00000000-0000-4000-8000-000000000076",
+      "mode": "adaptive",
+      "qid": "PT127-S1-Q17",
+      "qtype": "Must Be True",
+      "selected_answer": "A",
+      "timestamp_iso": "2026-07-10T06:16:56.475+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": true,
+      "id": "00000000-0000-4000-8000-000000000077",
+      "mode": "abstract:d2",
+      "qid": "d2-q08",
+      "qtype": "abstract",
+      "selected_answer": "pivot",
+      "timestamp_iso": "2026-05-14T14:59:54.312+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": false,
+      "id": "00000000-0000-4000-8000-000000000078",
+      "mode": "full-section",
+      "qid": "PT159-S1-Q1",
+      "qtype": "Flaw",
+      "selected_answer": "A",
+      "timestamp_iso": "2026-09-28T16:33:04.474+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": true,
+      "id": "00000000-0000-4000-8000-000000000079",
+      "mode": "abstract:d2",
+      "qid": "d2-q02",
+      "qtype": "abstract",
+      "selected_answer": "support",
+      "timestamp_iso": "2026-05-14T14:59:18.356+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": true,
+      "id": "00000000-0000-4000-8000-000000000080",
+      "mode": "practice-set",
+      "qid": "PT102-S2-Q16",
+      "qtype": "Necessary Assumption",
+      "selected_answer": "E",
+      "timestamp_iso": "2026-08-26T20:08:34.146+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": false,
+      "id": "00000000-0000-4000-8000-000000000081",
+      "mode": "full-section",
+      "qid": "PT102-S2-Q16",
+      "qtype": "Necessary Assumption",
+      "selected_answer": "A",
+      "timestamp_iso": "2026-08-29T02:41:35.739+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": false,
+      "id": "00000000-0000-4000-8000-000000000082",
+      "mode": "full-section",
+      "qid": "PT108-S2-Q2",
+      "qtype": "Flaw",
+      "selected_answer": "B",
+      "timestamp_iso": "2026-08-29T07:17:20.054+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": false,
+      "id": "00000000-0000-4000-8000-000000000083",
+      "mode": "full-section",
+      "qid": "PT102-S2-Q25",
+      "qtype": "Sufficient Assumption",
+      "selected_answer": "E",
+      "timestamp_iso": "2026-08-29T02:41:37.801+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": false,
+      "id": "00000000-0000-4000-8000-000000000084",
+      "mode": "full-section",
+      "qid": "PT104-S1-Q2",
+      "qtype": "Flaw",
+      "selected_answer": "B",
+      "timestamp_iso": "2026-08-29T05:42:50.535+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": false,
+      "id": "00000000-0000-4000-8000-000000000085",
+      "mode": "full-section",
+      "qid": "PT102-S2-Q8",
+      "qtype": "Most Strongly Supported",
+      "selected_answer": "C",
+      "timestamp_iso": "2026-08-29T02:41:33.847+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": false,
+      "id": "00000000-0000-4000-8000-000000000086",
+      "mode": "full-section",
+      "qid": "PT130-S1-Q23",
+      "qtype": "Principle-Conform",
+      "selected_answer": "D",
+      "timestamp_iso": "2026-09-29T11:28:47.737+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": false,
+      "id": "00000000-0000-4000-8000-000000000087",
+      "mode": "adaptive",
+      "qid": "PT106-S3-Q11",
+      "qtype": "Weaken",
+      "selected_answer": "E",
+      "timestamp_iso": "2026-05-19T07:54:22.704+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": false,
+      "id": "00000000-0000-4000-8000-000000000088",
+      "mode": "adaptive",
+      "qid": "PT106-S3-Q7",
+      "qtype": "Method of Reasoning",
+      "selected_answer": "B",
+      "timestamp_iso": "2026-05-20T09:36:21.563+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": true,
+      "id": "00000000-0000-4000-8000-000000000089",
+      "mode": "practice-set",
+      "qid": "PT118-S1-Q1",
+      "qtype": "Main Conclusion",
+      "selected_answer": "A",
+      "timestamp_iso": "2026-07-25T09:49:30.118+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": true,
+      "id": "00000000-0000-4000-8000-000000000090",
+      "mode": "full-section",
+      "qid": "PT107-S1-Q1",
+      "qtype": "Agree/Disagree",
+      "selected_answer": "A",
+      "timestamp_iso": "2026-08-29T06:54:04.788+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": false,
+      "id": "00000000-0000-4000-8000-000000000091",
+      "mode": "full-section",
+      "qid": "PT102-S2-Q14",
+      "qtype": "Paradox",
+      "selected_answer": "D",
+      "timestamp_iso": "2026-08-29T02:41:35.201+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": false,
+      "id": "00000000-0000-4000-8000-000000000092",
+      "mode": "full-section",
+      "qid": "PT102-S2-Q22",
+      "qtype": "Parallel Reasoning",
+      "selected_answer": "B",
+      "timestamp_iso": "2026-08-29T02:41:37.19+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": false,
+      "id": "00000000-0000-4000-8000-000000000093",
+      "mode": "adaptive",
+      "qid": "PT143-S3-Q1",
+      "qtype": "Most Strongly Supported",
+      "selected_answer": "E",
+      "timestamp_iso": "2026-05-20T07:03:30.211+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": true,
+      "id": "00000000-0000-4000-8000-000000000094",
+      "mode": "adaptive",
+      "qid": "PT140-S3-Q11",
+      "qtype": "Must Be True",
+      "selected_answer": "A",
+      "timestamp_iso": "2026-07-10T07:46:55.462+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": true,
+      "id": "00000000-0000-4000-8000-000000000095",
+      "mode": "practice-set",
+      "qid": "PT130-S3-Q11",
+      "qtype": "Necessary Assumption",
+      "selected_answer": "D",
+      "timestamp_iso": "2026-10-02T20:31:35.665+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": false,
+      "id": "00000000-0000-4000-8000-000000000096",
+      "mode": "full-section",
+      "qid": "PT102-S2-Q11",
+      "qtype": "Principle-Conform",
+      "selected_answer": "A",
+      "timestamp_iso": "2026-08-29T02:41:34.476+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": false,
+      "id": "00000000-0000-4000-8000-000000000097",
+      "mode": "adaptive",
+      "qid": "PT120-S4-Q19",
+      "qtype": "Unknown",
+      "selected_answer": "B",
+      "timestamp_iso": "2026-06-09T13:16:22.923+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": true,
+      "id": "00000000-0000-4000-8000-000000000098",
+      "mode": "full-section",
+      "qid": "PT105-S1-Q9",
+      "qtype": "Sufficient Assumption",
+      "selected_answer": "C",
+      "timestamp_iso": "2026-08-29T06:25:26.317+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": true,
+      "id": "00000000-0000-4000-8000-000000000099",
+      "mode": "full-section",
+      "qid": "PT107-S1-Q4",
+      "qtype": "Paradox",
+      "selected_answer": "D",
+      "timestamp_iso": "2026-08-29T06:54:05.329+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": false,
+      "id": "00000000-0000-4000-8000-000000000100",
+      "mode": "adaptive",
+      "qid": "PT146-S2-Q17",
+      "qtype": "Most Strongly Supported",
+      "selected_answer": "C",
+      "timestamp_iso": "2026-09-02T01:04:35.22+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": true,
+      "id": "00000000-0000-4000-8000-000000000101",
+      "mode": "adaptive",
+      "qid": "PT106-S3-Q7",
+      "qtype": "Method of Reasoning",
+      "selected_answer": "C",
+      "timestamp_iso": "2026-05-20T06:19:09.989+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": true,
+      "id": "00000000-0000-4000-8000-000000000102",
+      "mode": "adaptive",
+      "qid": "PT143-S4-Q23",
+      "qtype": "Principle-Conform",
+      "selected_answer": "D",
+      "timestamp_iso": "2026-07-10T05:23:49.187+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": true,
+      "id": "00000000-0000-4000-8000-000000000103",
+      "mode": "adaptive",
+      "qid": "PT106-S3-Q7",
+      "qtype": "Method of Reasoning",
+      "selected_answer": "C",
+      "timestamp_iso": "2026-05-19T07:54:10.366+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": true,
+      "id": "00000000-0000-4000-8000-000000000104",
+      "mode": "practice-set",
+      "qid": "PT159-S1-Q2",
+      "qtype": "Method of Reasoning",
+      "selected_answer": "C",
+      "timestamp_iso": "2026-09-28T18:12:25.324+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": false,
+      "id": "00000000-0000-4000-8000-000000000105",
+      "mode": "adaptive",
+      "qid": "PT138-S4-Q24",
+      "qtype": "Most Strongly Supported",
+      "selected_answer": "D",
+      "timestamp_iso": "2026-09-29T11:29:31.578+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": false,
+      "id": "00000000-0000-4000-8000-000000000106",
+      "mode": "full-section",
+      "qid": "PT105-S2-Q1",
+      "qtype": "Most Strongly Supported",
+      "selected_answer": "A",
+      "timestamp_iso": "2026-08-29T07:39:18.262+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": true,
+      "id": "00000000-0000-4000-8000-000000000107",
+      "mode": "full-section",
+      "qid": "PT102-S2-Q23",
+      "qtype": "Principle-Strengthen",
+      "selected_answer": "C",
+      "timestamp_iso": "2026-08-29T02:41:37.431+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": false,
+      "id": "00000000-0000-4000-8000-000000000108",
+      "mode": "full-section",
+      "qid": "PT105-S1-Q7",
+      "qtype": "Strengthen",
+      "selected_answer": "A",
+      "timestamp_iso": "2026-08-29T06:25:25.881+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": false,
+      "id": "00000000-0000-4000-8000-000000000109",
+      "mode": "adaptive",
+      "qid": "PT109-S3-Q20",
+      "qtype": "Strengthen",
+      "selected_answer": "A",
+      "timestamp_iso": "2026-06-12T12:25:25.416+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": true,
+      "id": "00000000-0000-4000-8000-000000000110",
+      "mode": "full-section",
+      "qid": "PT106-S1-Q1",
+      "qtype": "Strengthen",
+      "selected_answer": "A",
+      "timestamp_iso": "2026-08-29T06:37:36.723+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": true,
+      "id": "00000000-0000-4000-8000-000000000111",
+      "mode": "abstract:d2",
+      "qid": "d2-q07",
+      "qtype": "abstract",
+      "selected_answer": "support",
+      "timestamp_iso": "2026-05-14T14:59:45.581+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": false,
+      "id": "00000000-0000-4000-8000-000000000112",
+      "mode": "adaptive",
+      "qid": "PT108-S3-Q11",
+      "qtype": "Necessary Assumption",
+      "selected_answer": "A",
+      "timestamp_iso": "2026-07-09T23:24:14.659+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": false,
+      "id": "00000000-0000-4000-8000-000000000113",
+      "mode": "full-section",
+      "qid": "PT105-S2-Q2",
+      "qtype": "Weaken",
+      "selected_answer": "B",
+      "timestamp_iso": "2026-08-29T07:39:18.579+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": false,
+      "id": "00000000-0000-4000-8000-000000000114",
+      "mode": "adaptive",
+      "qid": "PT118-S4-Q11",
+      "qtype": "Evaluate",
+      "selected_answer": "B",
+      "timestamp_iso": "2026-06-12T04:28:44.907+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": true,
+      "id": "00000000-0000-4000-8000-000000000115",
+      "mode": "full-section",
+      "qid": "PT102-S2-Q1",
+      "qtype": "Main Conclusion",
+      "selected_answer": "A",
+      "timestamp_iso": "2026-08-29T02:41:31.906+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": true,
+      "id": "00000000-0000-4000-8000-000000000116",
+      "mode": "adaptive",
+      "qid": "PT106-S3-Q7",
+      "qtype": "Method of Reasoning",
+      "selected_answer": "C",
+      "timestamp_iso": "2026-05-20T04:30:02.13+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": false,
+      "id": "00000000-0000-4000-8000-000000000117",
+      "mode": "full-section",
+      "qid": "PT105-S1-Q16",
+      "qtype": "Weaken",
+      "selected_answer": "E",
+      "timestamp_iso": "2026-08-29T06:25:27.356+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": false,
+      "id": "00000000-0000-4000-8000-000000000118",
+      "mode": "full-section",
+      "qid": "PT102-S2-Q18",
+      "qtype": "Flaw",
+      "selected_answer": "C",
+      "timestamp_iso": "2026-08-29T02:41:36.242+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": false,
+      "id": "00000000-0000-4000-8000-000000000119",
+      "mode": "adaptive",
+      "qid": "PT106-S3-Q15",
+      "qtype": "Weaken",
+      "selected_answer": "E",
+      "timestamp_iso": "2026-05-19T07:54:30.426+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": false,
+      "id": "00000000-0000-4000-8000-000000000120",
+      "mode": "full-section",
+      "qid": "PT102-S2-Q24",
+      "qtype": "Principle-Conform",
+      "selected_answer": "D",
+      "timestamp_iso": "2026-08-29T02:41:37.555+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": true,
+      "id": "00000000-0000-4000-8000-000000000121",
+      "mode": "full-section",
+      "qid": "PT115-S4-Q3",
+      "qtype": "Method of Reasoning",
+      "selected_answer": "E",
+      "timestamp_iso": "2026-09-29T11:28:47.564+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": true,
+      "id": "00000000-0000-4000-8000-000000000122",
+      "mode": "practice-set",
+      "qid": "PT159-S1-Q2",
+      "qtype": "Method of Reasoning",
+      "selected_answer": "C",
+      "timestamp_iso": "2026-09-28T18:14:17.103+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": false,
+      "id": "00000000-0000-4000-8000-000000000123",
+      "mode": "full-section",
+      "qid": "PT102-S2-Q13",
+      "qtype": "Most Strongly Supported",
+      "selected_answer": "C",
+      "timestamp_iso": "2026-08-29T02:41:34.957+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": false,
+      "id": "00000000-0000-4000-8000-000000000124",
+      "mode": "practice-set",
+      "qid": "PT128-S2-Q13",
+      "qtype": "Main Conclusion",
+      "selected_answer": "A",
+      "timestamp_iso": "2026-07-25T09:49:30.574+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": true,
+      "id": "00000000-0000-4000-8000-000000000125",
+      "mode": "practice-set",
+      "qid": "PT159-S3-Q15",
+      "qtype": "Flaw",
+      "selected_answer": "A",
+      "timestamp_iso": "2026-07-09T23:33:19.952+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": false,
+      "id": "00000000-0000-4000-8000-000000000126",
+      "mode": "practice-set",
+      "qid": "PT159-S1-Q5",
+      "qtype": "Weaken",
+      "selected_answer": "A",
+      "timestamp_iso": "2026-07-09T23:33:21.991+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": false,
+      "id": "00000000-0000-4000-8000-000000000127",
+      "mode": "full-section",
+      "qid": "PT105-S1-Q23",
+      "qtype": "Necessary Assumption",
+      "selected_answer": "A",
+      "timestamp_iso": "2026-08-29T06:25:28.675+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": true,
+      "id": "00000000-0000-4000-8000-000000000128",
+      "mode": "adaptive",
+      "qid": "PT106-S3-Q7",
+      "qtype": "Method of Reasoning",
+      "selected_answer": "C",
+      "timestamp_iso": "2026-05-20T07:15:00.506+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": false,
+      "id": "00000000-0000-4000-8000-000000000129",
+      "mode": "full-section",
+      "qid": "PT107-S3-Q1",
+      "qtype": "Necessary Assumption",
+      "selected_answer": "A",
+      "timestamp_iso": "2026-08-29T08:02:13.9+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": true,
+      "id": "00000000-0000-4000-8000-000000000130",
+      "mode": "adaptive",
+      "qid": "PT106-S3-Q7",
+      "qtype": "Method of Reasoning",
+      "selected_answer": "C",
+      "timestamp_iso": "2026-05-20T07:03:18.963+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": false,
+      "id": "00000000-0000-4000-8000-000000000131",
+      "mode": "full-section",
+      "qid": "PT108-S2-Q1",
+      "qtype": "Agree/Disagree",
+      "selected_answer": "A",
+      "timestamp_iso": "2026-08-29T07:17:19.824+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": false,
+      "id": "00000000-0000-4000-8000-000000000132",
+      "mode": "full-section",
+      "qid": "PT101-S2-Q1",
+      "qtype": "Flaw",
+      "selected_answer": "A",
+      "timestamp_iso": "2026-08-28T17:34:21.694+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": true,
+      "id": "00000000-0000-4000-8000-000000000133",
+      "mode": "adaptive",
+      "qid": "PT111-S3-Q6",
+      "qtype": "Parallel Flaw",
+      "selected_answer": "B",
+      "timestamp_iso": "2026-07-10T05:25:02.812+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": true,
+      "id": "00000000-0000-4000-8000-000000000134",
+      "mode": "full-section",
+      "qid": "PT107-S3-Q4",
+      "qtype": "Weaken",
+      "selected_answer": "D",
+      "timestamp_iso": "2026-08-29T08:02:14.53+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": false,
+      "id": "00000000-0000-4000-8000-000000000135",
+      "mode": "full-section",
+      "qid": "PT102-S2-Q17",
+      "qtype": "Paradox",
+      "selected_answer": "B",
+      "timestamp_iso": "2026-08-29T02:41:35.974+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": false,
+      "id": "00000000-0000-4000-8000-000000000136",
+      "mode": "full-section",
+      "qid": "PT105-S1-Q24",
+      "qtype": "Principle-Strengthen",
+      "selected_answer": "B",
+      "timestamp_iso": "2026-08-29T06:25:28.905+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": false,
+      "id": "00000000-0000-4000-8000-000000000137",
+      "mode": "adaptive",
+      "qid": "PT102-S4-Q11",
+      "qtype": "Unknown",
+      "selected_answer": "A",
+      "timestamp_iso": "2026-07-09T23:22:50.935+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": false,
+      "id": "00000000-0000-4000-8000-000000000138",
+      "mode": "practice-set",
+      "qid": "PT131-S3-Q9",
+      "qtype": "Main Conclusion",
+      "selected_answer": "A",
+      "timestamp_iso": "2026-07-25T09:49:30.987+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": true,
+      "id": "00000000-0000-4000-8000-000000000139",
+      "mode": "full-section",
+      "qid": "PT124-S3-Q20",
+      "qtype": "Necessary Assumption",
+      "selected_answer": "D",
+      "timestamp_iso": "2026-10-21T20:19:48.003+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": false,
+      "id": "00000000-0000-4000-8000-000000000140",
+      "mode": "adaptive",
+      "qid": "PT130-S1-Q23",
+      "qtype": "Principle-Conform",
+      "selected_answer": "D",
+      "timestamp_iso": "2026-09-14T00:55:57.223+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": true,
+      "id": "00000000-0000-4000-8000-000000000141",
+      "mode": "abstract:d2",
+      "qid": "d2-q03",
+      "qtype": "abstract",
+      "selected_answer": "pivot",
+      "timestamp_iso": "2026-05-14T14:59:22.174+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": false,
+      "id": "00000000-0000-4000-8000-000000000142",
+      "mode": "practice-set",
+      "qid": "PT158-S4-Q22",
+      "qtype": "Most Strongly Supported",
+      "selected_answer": "D",
+      "timestamp_iso": "2026-08-11T13:35:09.545+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": true,
+      "id": "00000000-0000-4000-8000-000000000143",
+      "mode": "abstract:d2",
+      "qid": "d2-q04",
+      "qtype": "abstract",
+      "selected_answer": "opposing-view",
+      "timestamp_iso": "2026-05-14T14:59:28.53+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": true,
+      "id": "00000000-0000-4000-8000-000000000144",
+      "mode": "full-section",
+      "qid": "PT159-S3-Q1",
+      "qtype": "Principle-Conform",
+      "selected_answer": "B",
+      "timestamp_iso": "2026-09-28T16:35:37.491+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": true,
+      "id": "00000000-0000-4000-8000-000000000145",
+      "mode": "full-section",
+      "qid": "PT107-S1-Q3",
+      "qtype": "Strengthen",
+      "selected_answer": "C",
+      "timestamp_iso": "2026-08-29T06:54:05.222+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": false,
+      "id": "00000000-0000-4000-8000-000000000146",
+      "mode": "full-section",
+      "qid": "PT104-S1-Q3",
+      "qtype": "Most Strongly Supported",
+      "selected_answer": "C",
+      "timestamp_iso": "2026-08-29T05:42:50.749+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": true,
+      "id": "00000000-0000-4000-8000-000000000147",
+      "mode": "abstract:d2",
+      "qid": "d2-q09",
+      "qtype": "abstract",
+      "selected_answer": "opposing-view",
+      "timestamp_iso": "2026-05-14T14:59:59.493+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": true,
+      "id": "00000000-0000-4000-8000-000000000148",
+      "mode": "practice-set",
+      "qid": "PT159-S1-Q1",
+      "qtype": "Flaw",
+      "selected_answer": "E",
+      "timestamp_iso": "2026-09-28T18:14:16.965+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": true,
+      "id": "00000000-0000-4000-8000-000000000149",
+      "mode": "full-section",
+      "qid": "PT113-S2-Q7",
+      "qtype": "Most Strongly Supported",
+      "selected_answer": "B",
+      "timestamp_iso": "2026-09-29T12:09:27.272+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": false,
+      "id": "00000000-0000-4000-8000-000000000150",
+      "mode": "practice-set",
+      "qid": "PT159-S3-Q12",
+      "qtype": "Strengthen",
+      "selected_answer": "A",
+      "timestamp_iso": "2026-07-09T23:33:21.711+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": false,
+      "id": "00000000-0000-4000-8000-000000000151",
+      "mode": "full-section",
+      "qid": "PT102-S2-Q15",
+      "qtype": "Weaken",
+      "selected_answer": "E",
+      "timestamp_iso": "2026-08-29T02:41:35.442+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": false,
+      "id": "00000000-0000-4000-8000-000000000152",
+      "mode": "full-section",
+      "qid": "PT105-S1-Q22",
+      "qtype": "Parallel Flaw",
+      "selected_answer": "E",
+      "timestamp_iso": "2026-08-29T06:25:28.463+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": false,
+      "id": "00000000-0000-4000-8000-000000000153",
+      "mode": "full-section",
+      "qid": "PT104-S1-Q5",
+      "qtype": "Strengthen",
+      "selected_answer": "E",
+      "timestamp_iso": "2026-08-29T05:42:51.172+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": false,
+      "id": "00000000-0000-4000-8000-000000000154",
+      "mode": "practice-set",
+      "qid": "PT159-S3-Q10",
+      "qtype": "Parallel Flaw",
+      "selected_answer": "A",
+      "timestamp_iso": "2026-07-09T23:33:20.75+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": true,
+      "id": "00000000-0000-4000-8000-000000000155",
+      "mode": "full-section",
+      "qid": "PT102-S2-Q10",
+      "qtype": "Strengthen",
+      "selected_answer": "E",
+      "timestamp_iso": "2026-08-29T02:41:34.359+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": true,
+      "id": "00000000-0000-4000-8000-000000000156",
+      "mode": "abstract:d2",
+      "qid": "d2-q05",
+      "qtype": "abstract",
+      "selected_answer": "concession",
+      "timestamp_iso": "2026-05-14T14:59:36.319+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": false,
+      "id": "00000000-0000-4000-8000-000000000157",
+      "mode": "practice-set",
+      "qid": "PT159-S3-Q3",
+      "qtype": "Agree/Disagree",
+      "selected_answer": "A",
+      "timestamp_iso": "2026-07-09T23:33:21.106+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": false,
+      "id": "00000000-0000-4000-8000-000000000158",
+      "mode": "full-section",
+      "qid": "PT102-S2-Q2",
+      "qtype": "Parallel Flaw",
+      "selected_answer": "B",
+      "timestamp_iso": "2026-08-29T02:41:32.103+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": true,
+      "id": "00000000-0000-4000-8000-000000000159",
+      "mode": "adaptive",
+      "qid": "PT133-S3-Q26",
+      "qtype": "Paradox",
+      "selected_answer": "A",
+      "timestamp_iso": "2026-06-12T04:10:54.029+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": true,
+      "id": "00000000-0000-4000-8000-000000000160",
+      "mode": "adaptive",
+      "qid": "PT146-S3-Q18",
+      "qtype": "Main Conclusion",
+      "selected_answer": "C",
+      "timestamp_iso": "2026-07-10T06:24:26.192+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": false,
+      "id": "00000000-0000-4000-8000-000000000161",
+      "mode": "full-section",
+      "qid": "PT102-S2-Q12",
+      "qtype": "Necessary Assumption",
+      "selected_answer": "B",
+      "timestamp_iso": "2026-08-29T02:41:34.713+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": false,
+      "id": "00000000-0000-4000-8000-000000000162",
+      "mode": "full-section",
+      "qid": "PT104-S1-Q4",
+      "qtype": "Weaken",
+      "selected_answer": "D",
+      "timestamp_iso": "2026-08-29T05:42:50.961+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": false,
+      "id": "00000000-0000-4000-8000-000000000163",
+      "mode": "full-section",
+      "qid": "PT105-S1-Q25",
+      "qtype": "Paradox",
+      "selected_answer": "C",
+      "timestamp_iso": "2026-08-29T06:25:29.273+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": true,
+      "id": "00000000-0000-4000-8000-000000000164",
+      "mode": "full-section",
+      "qid": "PT105-S1-Q14",
+      "qtype": "Principle-Strengthen",
+      "selected_answer": "C",
+      "timestamp_iso": "2026-08-29T06:25:27.044+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": false,
+      "id": "00000000-0000-4000-8000-000000000165",
+      "mode": "adaptive",
+      "qid": "PT104-S4-Q9",
+      "qtype": "Necessary Assumption",
+      "selected_answer": "B",
+      "timestamp_iso": "2026-06-12T14:12:37.484+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "correct": false,
+      "id": "00000000-0000-4000-8000-000000000166",
+      "mode": "practice-set",
+      "qid": "PT158-S4-Q21",
+      "qtype": "Principle-Conform",
+      "selected_answer": "B",
+      "timestamp_iso": "2026-08-11T13:35:09.151+00:00",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    }
+  ],
+  "lrSections": [
+    {
+      "completed_at": "2026-08-28T17:34:25.624012+00:00",
+      "id": "00000000-0000-4000-8000-000000000167",
+      "mode": "full-section",
+      "practice_test_leg": null,
+      "practice_test_run_id": null,
+      "questions_json": [],
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "completed_at": "2026-08-29T08:18:10.297847+00:00",
+      "id": "00000000-0000-4000-8000-000000000168",
+      "mode": "full-section",
+      "practice_test_leg": null,
+      "practice_test_run_id": null,
+      "questions_json": [
+        {
+          "correctAnswer": "A",
+          "difficulty": 1,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT110-S2-Q1",
+          "qnum": 1,
+          "qtype": "Flaw",
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "E",
+          "difficulty": 2,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT110-S2-Q2",
+          "qnum": 2,
+          "qtype": "Sufficient Assumption",
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "E",
+          "difficulty": 2,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT110-S2-Q3",
+          "qnum": 3,
+          "qtype": "Flaw",
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "C",
+          "difficulty": 2,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT110-S2-Q4",
+          "qnum": 4,
+          "qtype": "Most Strongly Supported",
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "B",
+          "difficulty": 1,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT110-S2-Q5",
+          "qnum": 5,
+          "qtype": "Paradox",
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "B",
+          "difficulty": 3,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT110-S2-Q6",
+          "qnum": 6,
+          "qtype": "Parallel Reasoning",
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "A",
+          "difficulty": 2,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT110-S2-Q7",
+          "qnum": 7,
+          "qtype": "Paradox",
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "A",
+          "difficulty": 2,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT110-S2-Q8",
+          "qnum": 8,
+          "qtype": "Method of Reasoning",
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "D",
+          "difficulty": 4,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT110-S2-Q9",
+          "qnum": 9,
+          "qtype": "Flaw",
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "D",
+          "difficulty": 4,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT110-S2-Q10",
+          "qnum": 10,
+          "qtype": "Sufficient Assumption",
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "C",
+          "difficulty": 4,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT110-S2-Q11",
+          "qnum": 11,
+          "qtype": "Flaw",
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "A",
+          "difficulty": 4,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT110-S2-Q12",
+          "qnum": 12,
+          "qtype": "Weaken",
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "B",
+          "difficulty": 3,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT110-S2-Q13",
+          "qnum": 13,
+          "qtype": "Necessary Assumption",
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "C",
+          "difficulty": 4,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT110-S2-Q14",
+          "qnum": 14,
+          "qtype": "Strengthen",
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "C",
+          "difficulty": 3,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT110-S2-Q15",
+          "qnum": 15,
+          "qtype": "Main Conclusion",
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "B",
+          "difficulty": 4,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT110-S2-Q16",
+          "qnum": 16,
+          "qtype": "Necessary Assumption",
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "A",
+          "difficulty": 4,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT110-S2-Q17",
+          "qnum": 17,
+          "qtype": "Weaken",
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "B",
+          "difficulty": 3,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT110-S2-Q18",
+          "qnum": 18,
+          "qtype": "Main Conclusion",
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "D",
+          "difficulty": 3,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT110-S2-Q19",
+          "qnum": 19,
+          "qtype": "Most Strongly Supported",
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "D",
+          "difficulty": 2,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT110-S2-Q20",
+          "qnum": 20,
+          "qtype": "Principle-Strengthen",
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "E",
+          "difficulty": 2,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT110-S2-Q21",
+          "qnum": 21,
+          "qtype": "Necessary Assumption",
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "E",
+          "difficulty": 3,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT110-S2-Q22",
+          "qnum": 22,
+          "qtype": "Role",
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "E",
+          "difficulty": 5,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT110-S2-Q23",
+          "qnum": 23,
+          "qtype": "Must Be True",
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "B",
+          "difficulty": 4,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT110-S2-Q24",
+          "qnum": 24,
+          "qtype": "Parallel Flaw",
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "C",
+          "difficulty": 4,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT110-S2-Q25",
+          "qnum": 25,
+          "qtype": "Weaken",
+          "switchCount": 0,
+          "timeMs": 0
+        }
+      ],
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "completed_at": "2026-08-29T08:02:19.968754+00:00",
+      "id": "00000000-0000-4000-8000-000000000169",
+      "mode": "full-section",
+      "practice_test_leg": null,
+      "practice_test_run_id": null,
+      "questions_json": [
+        {
+          "correctAnswer": "C",
+          "difficulty": 1,
+          "flagged": false,
+          "initialAnswer": "A",
+          "initialCorrect": false,
+          "qid": "PT107-S3-Q1",
+          "qnum": 1,
+          "qtype": "Necessary Assumption",
+          "switchCount": 0,
+          "timeMs": 11024
+        },
+        {
+          "correctAnswer": "B",
+          "difficulty": 3,
+          "flagged": false,
+          "initialAnswer": "B",
+          "initialCorrect": true,
+          "qid": "PT107-S3-Q2",
+          "qnum": 2,
+          "qtype": "Main Conclusion",
+          "switchCount": 0,
+          "timeMs": 982
+        },
+        {
+          "correctAnswer": "D",
+          "difficulty": 1,
+          "flagged": false,
+          "initialAnswer": "C",
+          "initialCorrect": false,
+          "qid": "PT107-S3-Q3",
+          "qnum": 3,
+          "qtype": "Method of Reasoning",
+          "switchCount": 0,
+          "timeMs": 986
+        },
+        {
+          "correctAnswer": "D",
+          "difficulty": 2,
+          "flagged": false,
+          "initialAnswer": "D",
+          "initialCorrect": true,
+          "qid": "PT107-S3-Q4",
+          "qnum": 4,
+          "qtype": "Weaken",
+          "switchCount": 0,
+          "timeMs": 987
+        },
+        {
+          "correctAnswer": "A",
+          "difficulty": 1,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT107-S3-Q5",
+          "qnum": 5,
+          "qtype": "Most Strongly Supported",
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "E",
+          "difficulty": 2,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT107-S3-Q6",
+          "qnum": 6,
+          "qtype": "Necessary Assumption",
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "E",
+          "difficulty": 3,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT107-S3-Q7",
+          "qnum": 7,
+          "qtype": "Flaw",
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "A",
+          "difficulty": 4,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT107-S3-Q8",
+          "qnum": 8,
+          "qtype": "Weaken",
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "C",
+          "difficulty": 4,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT107-S3-Q9",
+          "qnum": 9,
+          "qtype": "Strengthen",
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "B",
+          "difficulty": 4,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT107-S3-Q10",
+          "qnum": 10,
+          "qtype": "Flaw",
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "E",
+          "difficulty": 2,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT107-S3-Q11",
+          "qnum": 11,
+          "qtype": "Method of Reasoning",
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "B",
+          "difficulty": 5,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT107-S3-Q12",
+          "qnum": 12,
+          "qtype": "Flaw",
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "C",
+          "difficulty": 2,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT107-S3-Q13",
+          "qnum": 13,
+          "qtype": "Method of Reasoning",
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "D",
+          "difficulty": 4,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT107-S3-Q14",
+          "qnum": 14,
+          "qtype": "Necessary Assumption",
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "D",
+          "difficulty": 4,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT107-S3-Q15",
+          "qnum": 15,
+          "qtype": "Most Strongly Supported",
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "E",
+          "difficulty": 1,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT107-S3-Q16",
+          "qnum": 16,
+          "qtype": "Parallel Reasoning",
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "D",
+          "difficulty": 4,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT107-S3-Q17",
+          "qnum": 17,
+          "qtype": "Most Strongly Supported",
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "B",
+          "difficulty": 5,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT107-S3-Q18",
+          "qnum": 18,
+          "qtype": "Principle-Conform",
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "A",
+          "difficulty": 5,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT107-S3-Q19",
+          "qnum": 19,
+          "qtype": "Necessary Assumption",
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "E",
+          "difficulty": 4,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT107-S3-Q20",
+          "qnum": 20,
+          "qtype": "Flaw",
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "D",
+          "difficulty": 2,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT107-S3-Q21",
+          "qnum": 21,
+          "qtype": "Paradox",
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "D",
+          "difficulty": 5,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT107-S3-Q22",
+          "qnum": 22,
+          "qtype": "Most Strongly Supported",
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "E",
+          "difficulty": 3,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT107-S3-Q23",
+          "qnum": 23,
+          "qtype": "Parallel Flaw",
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "C",
+          "difficulty": 5,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT107-S3-Q24",
+          "qnum": 24,
+          "qtype": "Flaw",
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "B",
+          "difficulty": 5,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT107-S3-Q25",
+          "qnum": 25,
+          "qtype": "Flaw",
+          "switchCount": 0,
+          "timeMs": 0
+        }
+      ],
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "completed_at": "2026-09-28T16:33:16.913838+00:00",
+      "id": "00000000-0000-4000-8000-000000000170",
+      "mode": "full-section",
+      "practice_test_leg": 0,
+      "practice_test_run_id": "00000000-0000-4000-8000-000000000171",
+      "questions_json": [
+        {
+          "answerTrail": [
+            {
+              "answer": "A",
+              "atMs": 10351
+            }
+          ],
+          "correctAnswer": "E",
+          "difficulty": 2,
+          "flagged": false,
+          "initialAnswer": "A",
+          "initialCorrect": false,
+          "qid": "PT159-S1-Q1",
+          "qnum": 1,
+          "qtype": "Flaw",
+          "questionFeatures": [
+            "Famous Flaws",
+            "Sampling",
+            "Anti-Causal",
+            "Rebuttals"
+          ],
+          "reasoningTypes": [
+            "Causation"
+          ],
+          "switchCount": 0,
+          "timeMs": 10351
+        },
+        {
+          "correctAnswer": "C",
+          "difficulty": 2,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT159-S1-Q2",
+          "qnum": 2,
+          "qtype": "Method of Reasoning",
+          "questionFeatures": [
+            "Analogies",
+            "Plans / Recommendations",
+            "Rebuttals"
+          ],
+          "reasoningTypes": [
+            "Comparative Reasoning"
+          ],
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "B",
+          "difficulty": 2,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT159-S1-Q3",
+          "qnum": 3,
+          "qtype": "Agree/Disagree",
+          "questionFeatures": [
+            "Plans / Recommendations"
+          ],
+          "reasoningTypes": [
+            "Causation"
+          ],
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "E",
+          "difficulty": 2,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT159-S1-Q4",
+          "qnum": 4,
+          "qtype": "Paradox",
+          "reasoningTypes": [
+            "Comparative Reasoning"
+          ],
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "E",
+          "difficulty": 2,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT159-S1-Q5",
+          "qnum": 5,
+          "qtype": "Weaken",
+          "questionFeatures": [
+            "Explain Curious Fact",
+            "Plans / Recommendations",
+            "Plausibility"
+          ],
+          "reasoningTypes": [
+            "Causation"
+          ],
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "E",
+          "difficulty": 2,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT159-S1-Q6",
+          "qnum": 6,
+          "qtype": "Necessary Assumption",
+          "questionFeatures": [
+            "Explain Curious Fact",
+            "Assumes Difference",
+            "Plausibility",
+            "Rebuttals"
+          ],
+          "reasoningTypes": [
+            "Causation"
+          ],
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "A",
+          "difficulty": 2,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT159-S1-Q7",
+          "qnum": 7,
+          "qtype": "Strengthen",
+          "questionFeatures": [
+            "Volume Dial",
+            "Missing Link / Idea"
+          ],
+          "reasoningTypes": [
+            "Causation",
+            "Comparative Reasoning"
+          ],
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "A",
+          "difficulty": 1,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT159-S1-Q8",
+          "qnum": 8,
+          "qtype": "Most Strongly Supported",
+          "questionFeatures": [
+            "Explain Curious Fact",
+            "Logical Completion",
+            "Plausibility",
+            "Timeframes"
+          ],
+          "reasoningTypes": [
+            "Causation"
+          ],
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "B",
+          "difficulty": 1,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT159-S1-Q9",
+          "qnum": 9,
+          "qtype": "Paradox",
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "E",
+          "difficulty": 3,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT159-S1-Q10",
+          "qnum": 10,
+          "qtype": "Most Strongly Supported",
+          "questionFeatures": [
+            "Belief / Knowledge / Intent",
+            "Important Pivot",
+            "Logical Completion",
+            "Quantifiers"
+          ],
+          "reasoningTypes": [
+            "Comparative Reasoning"
+          ],
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "E",
+          "difficulty": 5,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT159-S1-Q11",
+          "qnum": 11,
+          "qtype": "Weaken",
+          "questionFeatures": [
+            "Plans / Recommendations"
+          ],
+          "reasoningTypes": [
+            "Comparative Reasoning"
+          ],
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "D",
+          "difficulty": 2,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT159-S1-Q12",
+          "qnum": 12,
+          "qtype": "Most Strongly Supported",
+          "questionFeatures": [
+            "Contrapositive Logic",
+            "Quantifiers"
+          ],
+          "reasoningTypes": [
+            "Conditional Reasoning"
+          ],
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "B",
+          "difficulty": 5,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT159-S1-Q13",
+          "qnum": 13,
+          "qtype": "Method of Reasoning",
+          "questionFeatures": [
+            "Rebuttals"
+          ],
+          "reasoningTypes": [
+            "Conditional Reasoning"
+          ],
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "C",
+          "difficulty": 4,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT159-S1-Q14",
+          "qnum": 14,
+          "qtype": "Principle-Conform",
+          "reasoningTypes": [
+            "Conditional Reasoning"
+          ],
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "E",
+          "difficulty": 5,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT159-S1-Q15",
+          "qnum": 15,
+          "qtype": "Flaw",
+          "questionFeatures": [
+            "Famous Flaws",
+            "Rebuttals",
+            "Analogies"
+          ],
+          "reasoningTypes": [
+            "Comparative Reasoning"
+          ],
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "A",
+          "difficulty": 3,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT159-S1-Q16",
+          "qnum": 16,
+          "qtype": "Strengthen",
+          "questionFeatures": [
+            "Explain Curious Fact",
+            "Anti-Causal",
+            "Plausibility"
+          ],
+          "reasoningTypes": [
+            "Causation",
+            "Comparative Reasoning"
+          ],
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "A",
+          "difficulty": 5,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT159-S1-Q17",
+          "qnum": 17,
+          "qtype": "Necessary Assumption",
+          "questionFeatures": [
+            "Defender"
+          ],
+          "reasoningTypes": [
+            "Conditional Reasoning",
+            "Comparative Reasoning"
+          ],
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "A",
+          "difficulty": 5,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT159-S1-Q18",
+          "qnum": 18,
+          "qtype": "Must Be True",
+          "questionFeatures": [
+            "Contrapositive Logic"
+          ],
+          "reasoningTypes": [
+            "Conditional Reasoning"
+          ],
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "A",
+          "difficulty": 5,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT159-S1-Q19",
+          "qnum": 19,
+          "qtype": "Flaw",
+          "questionFeatures": [
+            "Famous Flaws"
+          ],
+          "reasoningTypes": [
+            "Conditional Reasoning"
+          ],
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "B",
+          "difficulty": 4,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT159-S1-Q20",
+          "qnum": 20,
+          "qtype": "Principle-Conform",
+          "questionFeatures": [
+            "Missing Link / Idea",
+            "Science",
+            "First Sentence Conclusion"
+          ],
+          "reasoningTypes": [
+            "Conditional Reasoning"
+          ],
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "D",
+          "difficulty": 5,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT159-S1-Q21",
+          "qnum": 21,
+          "qtype": "Flaw",
+          "questionFeatures": [
+            "Sufficient vs. Necessary Flaw",
+            "Famous Flaws"
+          ],
+          "reasoningTypes": [
+            "Conditional Reasoning"
+          ],
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "B",
+          "difficulty": 5,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT159-S1-Q22",
+          "qnum": 22,
+          "qtype": "Must Be True",
+          "questionFeatures": [
+            "Contrapositive Logic"
+          ],
+          "reasoningTypes": [
+            "Conditional Reasoning"
+          ],
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "A",
+          "difficulty": 1,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT159-S1-Q23",
+          "qnum": 23,
+          "qtype": "Parallel Reasoning",
+          "questionFeatures": [
+            "Assumes Similarity",
+            "Timeframes"
+          ],
+          "reasoningTypes": [
+            "Conditional Reasoning"
+          ],
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "D",
+          "difficulty": 5,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT159-S1-Q24",
+          "qnum": 24,
+          "qtype": "Most Strongly Supported",
+          "questionFeatures": [
+            "Logical Completion",
+            "Rebuttals"
+          ],
+          "reasoningTypes": [
+            "Causation"
+          ],
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "D",
+          "difficulty": 5,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT159-S1-Q25",
+          "qnum": 25,
+          "qtype": "Parallel Flaw",
+          "questionFeatures": [
+            "Sufficient vs. Necessary Flaw"
+          ],
+          "reasoningTypes": [
+            "Conditional Reasoning"
+          ],
+          "switchCount": 0,
+          "timeMs": 0
+        }
+      ],
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "completed_at": "2026-08-29T02:42:44.665214+00:00",
+      "id": "00000000-0000-4000-8000-000000000172",
+      "mode": "full-section",
+      "practice_test_leg": null,
+      "practice_test_run_id": null,
+      "questions_json": [],
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "completed_at": "2026-08-29T08:15:21.012623+00:00",
+      "id": "00000000-0000-4000-8000-000000000173",
+      "mode": "full-section",
+      "practice_test_leg": null,
+      "practice_test_run_id": null,
+      "questions_json": [
+        {
+          "correctAnswer": "A",
+          "difficulty": 1,
+          "flagged": false,
+          "initialAnswer": "A",
+          "initialCorrect": true,
+          "qid": "PT110-S2-Q1",
+          "qnum": 1,
+          "qtype": "Flaw",
+          "switchCount": 0,
+          "timeMs": 4740
+        },
+        {
+          "correctAnswer": "E",
+          "difficulty": 2,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT110-S2-Q2",
+          "qnum": 2,
+          "qtype": "Sufficient Assumption",
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "E",
+          "difficulty": 2,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT110-S2-Q3",
+          "qnum": 3,
+          "qtype": "Flaw",
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "C",
+          "difficulty": 2,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT110-S2-Q4",
+          "qnum": 4,
+          "qtype": "Most Strongly Supported",
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "B",
+          "difficulty": 1,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT110-S2-Q5",
+          "qnum": 5,
+          "qtype": "Paradox",
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "B",
+          "difficulty": 3,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT110-S2-Q6",
+          "qnum": 6,
+          "qtype": "Parallel Reasoning",
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "A",
+          "difficulty": 2,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT110-S2-Q7",
+          "qnum": 7,
+          "qtype": "Paradox",
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "A",
+          "difficulty": 2,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT110-S2-Q8",
+          "qnum": 8,
+          "qtype": "Method of Reasoning",
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "D",
+          "difficulty": 4,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT110-S2-Q9",
+          "qnum": 9,
+          "qtype": "Flaw",
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "D",
+          "difficulty": 4,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT110-S2-Q10",
+          "qnum": 10,
+          "qtype": "Sufficient Assumption",
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "C",
+          "difficulty": 4,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT110-S2-Q11",
+          "qnum": 11,
+          "qtype": "Flaw",
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "A",
+          "difficulty": 4,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT110-S2-Q12",
+          "qnum": 12,
+          "qtype": "Weaken",
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "B",
+          "difficulty": 3,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT110-S2-Q13",
+          "qnum": 13,
+          "qtype": "Necessary Assumption",
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "C",
+          "difficulty": 4,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT110-S2-Q14",
+          "qnum": 14,
+          "qtype": "Strengthen",
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "C",
+          "difficulty": 3,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT110-S2-Q15",
+          "qnum": 15,
+          "qtype": "Main Conclusion",
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "B",
+          "difficulty": 4,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT110-S2-Q16",
+          "qnum": 16,
+          "qtype": "Necessary Assumption",
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "A",
+          "difficulty": 4,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT110-S2-Q17",
+          "qnum": 17,
+          "qtype": "Weaken",
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "B",
+          "difficulty": 3,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT110-S2-Q18",
+          "qnum": 18,
+          "qtype": "Main Conclusion",
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "D",
+          "difficulty": 3,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT110-S2-Q19",
+          "qnum": 19,
+          "qtype": "Most Strongly Supported",
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "D",
+          "difficulty": 2,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT110-S2-Q20",
+          "qnum": 20,
+          "qtype": "Principle-Strengthen",
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "E",
+          "difficulty": 2,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT110-S2-Q21",
+          "qnum": 21,
+          "qtype": "Necessary Assumption",
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "E",
+          "difficulty": 3,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT110-S2-Q22",
+          "qnum": 22,
+          "qtype": "Role",
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "E",
+          "difficulty": 5,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT110-S2-Q23",
+          "qnum": 23,
+          "qtype": "Must Be True",
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "B",
+          "difficulty": 4,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT110-S2-Q24",
+          "qnum": 24,
+          "qtype": "Parallel Flaw",
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "C",
+          "difficulty": 4,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT110-S2-Q25",
+          "qnum": 25,
+          "qtype": "Weaken",
+          "switchCount": 0,
+          "timeMs": 0
+        }
+      ],
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "completed_at": "2026-08-29T07:39:38.849393+00:00",
+      "id": "00000000-0000-4000-8000-000000000174",
+      "mode": "full-section",
+      "practice_test_leg": null,
+      "practice_test_run_id": null,
+      "questions_json": [],
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "completed_at": "2026-08-29T07:17:53.028002+00:00",
+      "id": "00000000-0000-4000-8000-000000000175",
+      "mode": "full-section",
+      "practice_test_leg": null,
+      "practice_test_run_id": null,
+      "questions_json": [],
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "completed_at": "2026-08-29T08:12:59.98519+00:00",
+      "id": "00000000-0000-4000-8000-000000000176",
+      "mode": "full-section",
+      "practice_test_leg": null,
+      "practice_test_run_id": null,
+      "questions_json": [
+        {
+          "correctAnswer": "E",
+          "difficulty": 2,
+          "flagged": false,
+          "initialAnswer": "A",
+          "initialCorrect": false,
+          "qid": "PT109-S1-Q1",
+          "qnum": 1,
+          "qtype": "Strengthen",
+          "switchCount": 0,
+          "timeMs": 3459
+        },
+        {
+          "correctAnswer": "A",
+          "difficulty": 2,
+          "flagged": false,
+          "initialAnswer": "B",
+          "initialCorrect": false,
+          "qid": "PT109-S1-Q2",
+          "qnum": 2,
+          "qtype": "Method of Reasoning",
+          "switchCount": 0,
+          "timeMs": 983
+        },
+        {
+          "correctAnswer": "A",
+          "difficulty": 1,
+          "flagged": false,
+          "initialAnswer": "C",
+          "initialCorrect": false,
+          "qid": "PT109-S1-Q3",
+          "qnum": 3,
+          "qtype": "Agree/Disagree",
+          "switchCount": 0,
+          "timeMs": 988
+        },
+        {
+          "correctAnswer": "D",
+          "difficulty": 3,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT109-S1-Q4",
+          "qnum": 4,
+          "qtype": "Weaken",
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "E",
+          "difficulty": 3,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT109-S1-Q5",
+          "qnum": 5,
+          "qtype": "Main Conclusion",
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "D",
+          "difficulty": 2,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT109-S1-Q6",
+          "qnum": 6,
+          "qtype": "Strengthen",
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "B",
+          "difficulty": 3,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT109-S1-Q7",
+          "qnum": 7,
+          "qtype": "Most Strongly Supported",
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "E",
+          "difficulty": 3,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT109-S1-Q8",
+          "qnum": 8,
+          "qtype": "Paradox",
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "A",
+          "difficulty": 3,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT109-S1-Q9",
+          "qnum": 9,
+          "qtype": "Most Strongly Supported",
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "D",
+          "difficulty": 4,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT109-S1-Q10",
+          "qnum": 10,
+          "qtype": "Necessary Assumption",
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "E",
+          "difficulty": 5,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT109-S1-Q11",
+          "qnum": 11,
+          "qtype": "Must Be True",
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "B",
+          "difficulty": 3,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT109-S1-Q12",
+          "qnum": 12,
+          "qtype": "Flaw",
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "B",
+          "difficulty": 4,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT109-S1-Q13",
+          "qnum": 13,
+          "qtype": "Necessary Assumption",
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "B",
+          "difficulty": 3,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT109-S1-Q14",
+          "qnum": 14,
+          "qtype": "Paradox",
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "C",
+          "difficulty": 2,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT109-S1-Q15",
+          "qnum": 15,
+          "qtype": "Parallel Flaw",
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "C",
+          "difficulty": 4,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT109-S1-Q16",
+          "qnum": 16,
+          "qtype": "Must Be True",
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "C",
+          "difficulty": 4,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT109-S1-Q17",
+          "qnum": 17,
+          "qtype": "Weaken",
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "A",
+          "difficulty": 4,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT109-S1-Q18",
+          "qnum": 18,
+          "qtype": "Principle-Conform",
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "D",
+          "difficulty": 3,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT109-S1-Q19",
+          "qnum": 19,
+          "qtype": "Necessary Assumption",
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "C",
+          "difficulty": 5,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT109-S1-Q20",
+          "qnum": 20,
+          "qtype": "Weaken",
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "C",
+          "difficulty": 5,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT109-S1-Q21",
+          "qnum": 21,
+          "qtype": "Principle-Strengthen",
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "B",
+          "difficulty": 5,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT109-S1-Q22",
+          "qnum": 22,
+          "qtype": "Flaw",
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "B",
+          "difficulty": 1,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT109-S1-Q23",
+          "qnum": 23,
+          "qtype": "Parallel Reasoning",
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "C",
+          "difficulty": 4,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT109-S1-Q24",
+          "qnum": 24,
+          "qtype": "Flaw",
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "D",
+          "difficulty": 1,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT109-S1-Q25",
+          "qnum": 25,
+          "qtype": "Weaken",
+          "switchCount": 0,
+          "timeMs": 0
+        }
+      ],
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "completed_at": "2026-08-29T05:43:07.141862+00:00",
+      "id": "00000000-0000-4000-8000-000000000177",
+      "mode": "full-section",
+      "practice_test_leg": null,
+      "practice_test_run_id": null,
+      "questions_json": [],
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "completed_at": "2026-08-29T06:25:56.261014+00:00",
+      "id": "00000000-0000-4000-8000-000000000178",
+      "mode": "full-section",
+      "practice_test_leg": null,
+      "practice_test_run_id": null,
+      "questions_json": [],
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "completed_at": "2026-09-28T16:35:49.842759+00:00",
+      "id": "00000000-0000-4000-8000-000000000179",
+      "mode": "full-section",
+      "practice_test_leg": 2,
+      "practice_test_run_id": "00000000-0000-4000-8000-000000000171",
+      "questions_json": [
+        {
+          "answerTrail": [
+            {
+              "answer": "B",
+              "atMs": 8264
+            }
+          ],
+          "correctAnswer": "B",
+          "difficulty": 2,
+          "flagged": false,
+          "initialAnswer": "B",
+          "initialCorrect": true,
+          "qid": "PT159-S3-Q1",
+          "qnum": 1,
+          "qtype": "Principle-Conform",
+          "questionFeatures": [
+            "First Sentence Conclusion",
+            "Missing Link / Idea"
+          ],
+          "reasoningTypes": [
+            "Conditional Reasoning"
+          ],
+          "switchCount": 0,
+          "timeMs": 8264
+        },
+        {
+          "correctAnswer": "B",
+          "difficulty": 2,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT159-S3-Q2",
+          "qnum": 2,
+          "qtype": "Necessary Assumption",
+          "questionFeatures": [
+            "Explain Curious Fact",
+            "Plausibility"
+          ],
+          "reasoningTypes": [
+            "Causation"
+          ],
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "C",
+          "difficulty": 1,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT159-S3-Q3",
+          "qnum": 3,
+          "qtype": "Agree/Disagree",
+          "questionFeatures": [
+            "2-Speaker",
+            "Focused on Evidence",
+            "Plans / Recommendations"
+          ],
+          "reasoningTypes": [
+            "Conditional Reasoning"
+          ],
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "D",
+          "difficulty": 3,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT159-S3-Q4",
+          "qnum": 4,
+          "qtype": "Flaw",
+          "questionFeatures": [
+            "Famous Flaws",
+            "Rebuttals"
+          ],
+          "reasoningTypes": [
+            "Comparative Reasoning"
+          ],
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "A",
+          "difficulty": 2,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT159-S3-Q5",
+          "qnum": 5,
+          "qtype": "Sufficient Assumption",
+          "questionFeatures": [
+            "Missing Link / Idea",
+            "New Concept in Conclusion",
+            "Rebuttals",
+            "Timeframes"
+          ],
+          "reasoningTypes": [
+            "Conditional Reasoning",
+            "Comparative Reasoning"
+          ],
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "E",
+          "difficulty": 3,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT159-S3-Q6",
+          "qnum": 6,
+          "qtype": "Weaken",
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "B",
+          "difficulty": 2,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT159-S3-Q7",
+          "qnum": 7,
+          "qtype": "Paradox",
+          "reasoningTypes": [
+            "Comparative Reasoning"
+          ],
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "E",
+          "difficulty": 2,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT159-S3-Q8",
+          "qnum": 8,
+          "qtype": "Role",
+          "questionFeatures": [
+            "Important Pivot",
+            "Rebuttals"
+          ],
+          "reasoningTypes": [
+            "Comparative Reasoning"
+          ],
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "D",
+          "difficulty": 3,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT159-S3-Q9",
+          "qnum": 9,
+          "qtype": "Weaken",
+          "questionFeatures": [
+            "Anti-Causal",
+            "Net Effect",
+            "Plans / Recommendations",
+            "Weighing Tradeoffs"
+          ],
+          "reasoningTypes": [
+            "Causation"
+          ],
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "B",
+          "difficulty": 3,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT159-S3-Q10",
+          "qnum": 10,
+          "qtype": "Parallel Flaw",
+          "questionFeatures": [
+            "Famous Flaws",
+            "Relative vs. Absolute",
+            "Timeframes"
+          ],
+          "reasoningTypes": [
+            "Comparative Reasoning"
+          ],
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "E",
+          "difficulty": 2,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT159-S3-Q11",
+          "qnum": 11,
+          "qtype": "Paradox",
+          "questionFeatures": [
+            "Explain Curious Fact",
+            "Alternatives",
+            "Timeframes"
+          ],
+          "reasoningTypes": [
+            "Causation"
+          ],
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "D",
+          "difficulty": 3,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT159-S3-Q12",
+          "qnum": 12,
+          "qtype": "Strengthen",
+          "questionFeatures": [
+            "Explain Curious Fact",
+            "Percentages",
+            "Plausibility",
+            "Timeframes"
+          ],
+          "reasoningTypes": [
+            "Causation"
+          ],
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "A",
+          "difficulty": 1,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT159-S3-Q13",
+          "qnum": 13,
+          "qtype": "Main Conclusion",
+          "questionFeatures": [
+            "Important Pivot"
+          ],
+          "reasoningTypes": [
+            "Comparative Reasoning"
+          ],
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "D",
+          "difficulty": 3,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT159-S3-Q14",
+          "qnum": 14,
+          "qtype": "Principle-Conform",
+          "questionFeatures": [
+            "Important Pivot",
+            "Principles in Answers",
+            "Proposition/Generalization"
+          ],
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "A",
+          "difficulty": 5,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT159-S3-Q15",
+          "qnum": 15,
+          "qtype": "Flaw",
+          "questionFeatures": [
+            "2-Speaker"
+          ],
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "A",
+          "difficulty": 5,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT159-S3-Q16",
+          "qnum": 16,
+          "qtype": "Role",
+          "questionFeatures": [
+            "Rebuttals",
+            "Dense Stimulus",
+            "Contrapositive Logic"
+          ],
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "E",
+          "difficulty": 4,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT159-S3-Q17",
+          "qnum": 17,
+          "qtype": "Sufficient Assumption",
+          "questionFeatures": [
+            "Missing Link / Idea",
+            "Conditional Conclusion",
+            "New Concept in Conclusion"
+          ],
+          "reasoningTypes": [
+            "Conditional Reasoning"
+          ],
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "C",
+          "difficulty": 5,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT159-S3-Q18",
+          "qnum": 18,
+          "qtype": "Parallel Reasoning",
+          "questionFeatures": [
+            "Quantifiers",
+            "Repetitive Answers"
+          ],
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "C",
+          "difficulty": 5,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT159-S3-Q19",
+          "qnum": 19,
+          "qtype": "Most Strongly Supported",
+          "questionFeatures": [
+            "Causal Chains",
+            "Science"
+          ],
+          "reasoningTypes": [
+            "Causation"
+          ],
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "C",
+          "difficulty": 5,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT159-S3-Q20",
+          "qnum": 20,
+          "qtype": "Main Conclusion",
+          "questionFeatures": [
+            "Dense Stimulus",
+            "Science"
+          ],
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "D",
+          "difficulty": 3,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT159-S3-Q21",
+          "qnum": 21,
+          "qtype": "Flaw",
+          "questionFeatures": [
+            "Net Effect",
+            "Plans / Recommendations"
+          ],
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "D",
+          "difficulty": 5,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT159-S3-Q22",
+          "qnum": 22,
+          "qtype": "Must Be True",
+          "questionFeatures": [
+            "Math-y Stuff",
+            "Quantifiers"
+          ],
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "C",
+          "difficulty": 4,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT159-S3-Q23",
+          "qnum": 23,
+          "qtype": "Flaw",
+          "questionFeatures": [
+            "Math-y Stuff",
+            "Quantifiers"
+          ],
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "D",
+          "difficulty": 5,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT159-S3-Q24",
+          "qnum": 24,
+          "qtype": "Principle-Conform",
+          "questionFeatures": [
+            "Untriggered Conditional",
+            "Principles in Stimulus"
+          ],
+          "reasoningTypes": [
+            "Conditional Reasoning"
+          ],
+          "switchCount": 0,
+          "timeMs": 0
+        },
+        {
+          "correctAnswer": "E",
+          "difficulty": 5,
+          "flagged": false,
+          "initialAnswer": "—",
+          "initialCorrect": false,
+          "qid": "PT159-S3-Q25",
+          "qnum": 25,
+          "qtype": "Flaw",
+          "questionFeatures": [
+            "Famous Flaws",
+            "Rebuttals",
+            "Science",
+            "Timeframes"
+          ],
+          "switchCount": 0,
+          "timeMs": 0
+        }
+      ],
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    }
+  ],
+  "practiceTests": [
+    {
+      "completed_at": null,
+      "id": "00000000-0000-4000-8000-000000000180",
+      "status": "in-progress",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "completed_at": "2026-09-28T16:35:41.944+00:00",
+      "id": "00000000-0000-4000-8000-000000000171",
+      "status": "complete",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "completed_at": null,
+      "id": "qa-timed-rc-ui-00000000-0000-4000-8000-000000000181",
+      "status": "in-progress",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "completed_at": null,
+      "id": "qa-timed-v1-00000000-0000-4000-8000-000000000182",
+      "status": "in-progress",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    }
+  ],
+  "rcAttempts": [
+    {
+      "created_at": "2026-10-18T08:45:48.47591+00:00",
+      "id": "00000000-0000-4000-8000-000000000183",
+      "is_correct": false,
+      "passage_id": 1190,
+      "question_id": 7672,
+      "selected": null,
+      "session_id": "00000000-0000-4000-8000-000000000184",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "created_at": "2026-09-28T16:34:45.345345+00:00",
+      "id": "00000000-0000-4000-8000-000000000185",
+      "is_correct": null,
+      "passage_id": 1759,
+      "question_id": 10757,
+      "selected": null,
+      "session_id": "00000000-0000-4000-8000-000000000186",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "created_at": "2026-10-18T08:45:48.47591+00:00",
+      "id": "00000000-0000-4000-8000-000000000187",
+      "is_correct": false,
+      "passage_id": 1188,
+      "question_id": 7665,
+      "selected": null,
+      "session_id": "00000000-0000-4000-8000-000000000184",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "created_at": "2026-08-27T10:11:26.457455+00:00",
+      "id": "00000000-0000-4000-8000-000000000188",
+      "is_correct": false,
+      "passage_id": 218,
+      "question_id": 2372,
+      "selected": "A",
+      "session_id": "00000000-0000-4000-8000-000000000189",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "created_at": "2026-10-18T08:45:48.47591+00:00",
+      "id": "00000000-0000-4000-8000-000000000190",
+      "is_correct": false,
+      "passage_id": 1190,
+      "question_id": 7671,
+      "selected": null,
+      "session_id": "00000000-0000-4000-8000-000000000184",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "created_at": "2026-08-27T10:11:27.795689+00:00",
+      "id": "00000000-0000-4000-8000-000000000191",
+      "is_correct": false,
+      "passage_id": 218,
+      "question_id": 2375,
+      "selected": "A",
+      "session_id": "00000000-0000-4000-8000-000000000189",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "created_at": "2026-08-28T16:58:58.643628+00:00",
+      "id": "00000000-0000-4000-8000-000000000192",
+      "is_correct": null,
+      "passage_id": 1190,
+      "question_id": 7670,
+      "selected": null,
+      "session_id": "00000000-0000-4000-8000-000000000193",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "created_at": "2026-09-28T16:34:28.685127+00:00",
+      "id": "00000000-0000-4000-8000-000000000194",
+      "is_correct": null,
+      "passage_id": 1757,
+      "question_id": 10738,
+      "selected": null,
+      "session_id": "00000000-0000-4000-8000-000000000186",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "created_at": "2026-10-18T00:56:11.520921+00:00",
+      "id": "00000000-0000-4000-8000-000000000195",
+      "is_correct": null,
+      "passage_id": 218,
+      "question_id": 2376,
+      "selected": null,
+      "session_id": "00000000-0000-4000-8000-000000000196",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "created_at": "2026-08-28T16:58:55.678311+00:00",
+      "id": "00000000-0000-4000-8000-000000000197",
+      "is_correct": null,
+      "passage_id": 1188,
+      "question_id": 7665,
+      "selected": null,
+      "session_id": "00000000-0000-4000-8000-000000000193",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "created_at": "2026-09-28T16:34:24.182883+00:00",
+      "id": "00000000-0000-4000-8000-000000000198",
+      "is_correct": null,
+      "passage_id": 1756,
+      "question_id": 10733,
+      "selected": null,
+      "session_id": "00000000-0000-4000-8000-000000000186",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "created_at": "2026-09-30T17:53:24.959958+00:00",
+      "id": "00000000-0000-4000-8000-000000000199",
+      "is_correct": true,
+      "passage_id": 1188,
+      "question_id": 7660,
+      "selected": "B",
+      "session_id": "00000000-0000-4000-8000-000000000200",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "created_at": "2026-09-28T16:34:37.788321+00:00",
+      "id": "00000000-0000-4000-8000-000000000201",
+      "is_correct": null,
+      "passage_id": 1758,
+      "question_id": 10748,
+      "selected": null,
+      "session_id": "00000000-0000-4000-8000-000000000186",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "created_at": "2026-09-28T16:34:32.231448+00:00",
+      "id": "00000000-0000-4000-8000-000000000202",
+      "is_correct": null,
+      "passage_id": 1757,
+      "question_id": 10742,
+      "selected": null,
+      "session_id": "00000000-0000-4000-8000-000000000186",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "created_at": "2026-10-18T08:45:48.47591+00:00",
+      "id": "00000000-0000-4000-8000-000000000203",
+      "is_correct": false,
+      "passage_id": 1195,
+      "question_id": 7685,
+      "selected": null,
+      "session_id": "00000000-0000-4000-8000-000000000184",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "created_at": "2026-08-06T13:06:07.148749+00:00",
+      "id": "00000000-0000-4000-8000-000000000204",
+      "is_correct": false,
+      "passage_id": 74,
+      "question_id": 516,
+      "selected": "A",
+      "session_id": "00000000-0000-4000-8000-000000000205",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "created_at": "2026-08-28T16:59:02.012814+00:00",
+      "id": "00000000-0000-4000-8000-000000000206",
+      "is_correct": null,
+      "passage_id": 1192,
+      "question_id": 7678,
+      "selected": null,
+      "session_id": "00000000-0000-4000-8000-000000000193",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "created_at": "2026-10-18T08:45:48.47591+00:00",
+      "id": "00000000-0000-4000-8000-000000000207",
+      "is_correct": false,
+      "passage_id": 1192,
+      "question_id": 7675,
+      "selected": null,
+      "session_id": "00000000-0000-4000-8000-000000000184",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "created_at": "2026-09-28T16:34:40.328417+00:00",
+      "id": "00000000-0000-4000-8000-000000000208",
+      "is_correct": null,
+      "passage_id": 1758,
+      "question_id": 10751,
+      "selected": null,
+      "session_id": "00000000-0000-4000-8000-000000000186",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "created_at": "2026-10-18T00:56:12.69492+00:00",
+      "id": "00000000-0000-4000-8000-000000000209",
+      "is_correct": null,
+      "passage_id": 218,
+      "question_id": 2377,
+      "selected": null,
+      "session_id": "00000000-0000-4000-8000-000000000196",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "created_at": "2026-08-28T16:59:01.206037+00:00",
+      "id": "00000000-0000-4000-8000-000000000210",
+      "is_correct": null,
+      "passage_id": 1192,
+      "question_id": 7676,
+      "selected": null,
+      "session_id": "00000000-0000-4000-8000-000000000193",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "created_at": "2026-10-18T08:45:48.47591+00:00",
+      "id": "00000000-0000-4000-8000-000000000211",
+      "is_correct": false,
+      "passage_id": 1192,
+      "question_id": 7676,
+      "selected": null,
+      "session_id": "00000000-0000-4000-8000-000000000184",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "created_at": "2026-08-27T10:40:22.187343+00:00",
+      "id": "00000000-0000-4000-8000-000000000212",
+      "is_correct": false,
+      "passage_id": 218,
+      "question_id": 2371,
+      "selected": "B",
+      "session_id": "00000000-0000-4000-8000-000000000189",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "created_at": "2026-09-28T16:34:44.520923+00:00",
+      "id": "00000000-0000-4000-8000-000000000213",
+      "is_correct": null,
+      "passage_id": 1759,
+      "question_id": 10756,
+      "selected": null,
+      "session_id": "00000000-0000-4000-8000-000000000186",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "created_at": "2026-10-18T08:45:48.47591+00:00",
+      "id": "00000000-0000-4000-8000-000000000214",
+      "is_correct": false,
+      "passage_id": 1188,
+      "question_id": 7664,
+      "selected": null,
+      "session_id": "00000000-0000-4000-8000-000000000184",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "created_at": "2026-08-28T16:59:00.347916+00:00",
+      "id": "00000000-0000-4000-8000-000000000215",
+      "is_correct": null,
+      "passage_id": 1192,
+      "question_id": 7674,
+      "selected": null,
+      "session_id": "00000000-0000-4000-8000-000000000193",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "created_at": "2026-08-06T13:06:06.65844+00:00",
+      "id": "00000000-0000-4000-8000-000000000216",
+      "is_correct": true,
+      "passage_id": 74,
+      "question_id": 515,
+      "selected": "B",
+      "session_id": "00000000-0000-4000-8000-000000000205",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "created_at": "2026-08-28T16:58:57.49041+00:00",
+      "id": "00000000-0000-4000-8000-000000000217",
+      "is_correct": null,
+      "passage_id": 1190,
+      "question_id": 7668,
+      "selected": null,
+      "session_id": "00000000-0000-4000-8000-000000000193",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "created_at": "2026-10-18T08:45:48.47591+00:00",
+      "id": "00000000-0000-4000-8000-000000000218",
+      "is_correct": false,
+      "passage_id": 1195,
+      "question_id": 7683,
+      "selected": null,
+      "session_id": "00000000-0000-4000-8000-000000000184",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "created_at": "2026-08-28T16:58:56.088303+00:00",
+      "id": "00000000-0000-4000-8000-000000000219",
+      "is_correct": null,
+      "passage_id": 1190,
+      "question_id": 7666,
+      "selected": null,
+      "session_id": "00000000-0000-4000-8000-000000000193",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "created_at": "2026-10-18T08:45:48.47591+00:00",
+      "id": "00000000-0000-4000-8000-000000000220",
+      "is_correct": false,
+      "passage_id": 1190,
+      "question_id": 7666,
+      "selected": null,
+      "session_id": "00000000-0000-4000-8000-000000000184",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "created_at": "2026-08-28T16:58:59.535952+00:00",
+      "id": "00000000-0000-4000-8000-000000000221",
+      "is_correct": null,
+      "passage_id": 1190,
+      "question_id": 7672,
+      "selected": null,
+      "session_id": "00000000-0000-4000-8000-000000000193",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "created_at": "2026-08-27T11:55:03.851517+00:00",
+      "id": "00000000-0000-4000-8000-000000000222",
+      "is_correct": true,
+      "passage_id": 218,
+      "question_id": 2371,
+      "selected": "A",
+      "session_id": "00000000-0000-4000-8000-000000000189",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "created_at": "2026-10-18T00:56:07.622007+00:00",
+      "id": "00000000-0000-4000-8000-000000000223",
+      "is_correct": null,
+      "passage_id": 218,
+      "question_id": 2373,
+      "selected": null,
+      "session_id": "00000000-0000-4000-8000-000000000196",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "created_at": "2026-08-28T16:58:56.648113+00:00",
+      "id": "00000000-0000-4000-8000-000000000224",
+      "is_correct": null,
+      "passage_id": 1190,
+      "question_id": 7667,
+      "selected": null,
+      "session_id": "00000000-0000-4000-8000-000000000193",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "created_at": "2026-08-28T16:59:00.793907+00:00",
+      "id": "00000000-0000-4000-8000-000000000225",
+      "is_correct": null,
+      "passage_id": 1192,
+      "question_id": 7675,
+      "selected": null,
+      "session_id": "00000000-0000-4000-8000-000000000193",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "created_at": "2026-10-18T08:45:48.47591+00:00",
+      "id": "00000000-0000-4000-8000-000000000226",
+      "is_correct": false,
+      "passage_id": 1190,
+      "question_id": 7669,
+      "selected": null,
+      "session_id": "00000000-0000-4000-8000-000000000184",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "created_at": "2026-10-18T08:45:48.47591+00:00",
+      "id": "00000000-0000-4000-8000-000000000227",
+      "is_correct": false,
+      "passage_id": 1188,
+      "question_id": 7662,
+      "selected": null,
+      "session_id": "00000000-0000-4000-8000-000000000184",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "created_at": "2026-09-28T16:34:31.353784+00:00",
+      "id": "00000000-0000-4000-8000-000000000228",
+      "is_correct": null,
+      "passage_id": 1757,
+      "question_id": 10741,
+      "selected": null,
+      "session_id": "00000000-0000-4000-8000-000000000186",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "created_at": "2026-08-28T16:58:55.289732+00:00",
+      "id": "00000000-0000-4000-8000-000000000229",
+      "is_correct": null,
+      "passage_id": 1188,
+      "question_id": 7664,
+      "selected": null,
+      "session_id": "00000000-0000-4000-8000-000000000193",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "created_at": "2026-08-28T16:58:54.052867+00:00",
+      "id": "00000000-0000-4000-8000-000000000230",
+      "is_correct": null,
+      "passage_id": 1188,
+      "question_id": 7661,
+      "selected": null,
+      "session_id": "00000000-0000-4000-8000-000000000193",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "created_at": "2026-09-28T16:39:26.848445+00:00",
+      "id": "00000000-0000-4000-8000-000000000231",
+      "is_correct": false,
+      "passage_id": 733,
+      "question_id": 4522,
+      "selected": "D",
+      "session_id": "00000000-0000-4000-8000-000000000232",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "created_at": "2026-08-28T16:59:04.845846+00:00",
+      "id": "00000000-0000-4000-8000-000000000233",
+      "is_correct": null,
+      "passage_id": 1195,
+      "question_id": 7684,
+      "selected": null,
+      "session_id": "00000000-0000-4000-8000-000000000193",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "created_at": "2026-09-28T16:34:38.679756+00:00",
+      "id": "00000000-0000-4000-8000-000000000234",
+      "is_correct": null,
+      "passage_id": 1758,
+      "question_id": 10749,
+      "selected": null,
+      "session_id": "00000000-0000-4000-8000-000000000186",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "created_at": "2026-08-27T10:11:25.735731+00:00",
+      "id": "00000000-0000-4000-8000-000000000235",
+      "is_correct": true,
+      "passage_id": 218,
+      "question_id": 2371,
+      "selected": "A",
+      "session_id": "00000000-0000-4000-8000-000000000189",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "created_at": "2026-10-18T08:45:48.47591+00:00",
+      "id": "00000000-0000-4000-8000-000000000236",
+      "is_correct": false,
+      "passage_id": 1192,
+      "question_id": 7678,
+      "selected": null,
+      "session_id": "00000000-0000-4000-8000-000000000184",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "created_at": "2026-08-28T16:59:03.377654+00:00",
+      "id": "00000000-0000-4000-8000-000000000237",
+      "is_correct": null,
+      "passage_id": 1195,
+      "question_id": 7681,
+      "selected": null,
+      "session_id": "00000000-0000-4000-8000-000000000193",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "created_at": "2026-08-28T16:59:01.60961+00:00",
+      "id": "00000000-0000-4000-8000-000000000238",
+      "is_correct": null,
+      "passage_id": 1192,
+      "question_id": 7677,
+      "selected": null,
+      "session_id": "00000000-0000-4000-8000-000000000193",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "created_at": "2026-08-28T16:59:05.711787+00:00",
+      "id": "00000000-0000-4000-8000-000000000239",
+      "is_correct": null,
+      "passage_id": 1195,
+      "question_id": 7686,
+      "selected": null,
+      "session_id": "00000000-0000-4000-8000-000000000193",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "created_at": "2026-10-18T08:45:48.47591+00:00",
+      "id": "00000000-0000-4000-8000-000000000240",
+      "is_correct": false,
+      "passage_id": 1192,
+      "question_id": 7677,
+      "selected": null,
+      "session_id": "00000000-0000-4000-8000-000000000184",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "created_at": "2026-09-28T16:34:41.976924+00:00",
+      "id": "00000000-0000-4000-8000-000000000241",
+      "is_correct": null,
+      "passage_id": 1759,
+      "question_id": 10753,
+      "selected": null,
+      "session_id": "00000000-0000-4000-8000-000000000186",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "created_at": "2026-08-28T16:59:04.420675+00:00",
+      "id": "00000000-0000-4000-8000-000000000242",
+      "is_correct": null,
+      "passage_id": 1195,
+      "question_id": 7683,
+      "selected": null,
+      "session_id": "00000000-0000-4000-8000-000000000193",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "created_at": "2026-10-18T00:56:53.300742+00:00",
+      "id": "00000000-0000-4000-8000-000000000243",
+      "is_correct": false,
+      "passage_id": 218,
+      "question_id": 2371,
+      "selected": "B",
+      "session_id": "00000000-0000-4000-8000-000000000196",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "created_at": "2026-09-28T16:38:44.105405+00:00",
+      "id": "00000000-0000-4000-8000-000000000244",
+      "is_correct": false,
+      "passage_id": 733,
+      "question_id": 4521,
+      "selected": "C",
+      "session_id": "00000000-0000-4000-8000-000000000232",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "created_at": "2026-09-28T16:34:25.06654+00:00",
+      "id": "00000000-0000-4000-8000-000000000245",
+      "is_correct": null,
+      "passage_id": 1756,
+      "question_id": 10734,
+      "selected": null,
+      "session_id": "00000000-0000-4000-8000-000000000186",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "created_at": "2026-09-28T16:34:36.899336+00:00",
+      "id": "00000000-0000-4000-8000-000000000246",
+      "is_correct": null,
+      "passage_id": 1758,
+      "question_id": 10747,
+      "selected": null,
+      "session_id": "00000000-0000-4000-8000-000000000186",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "created_at": "2026-10-18T00:56:08.928203+00:00",
+      "id": "00000000-0000-4000-8000-000000000247",
+      "is_correct": null,
+      "passage_id": 218,
+      "question_id": 2374,
+      "selected": null,
+      "session_id": "00000000-0000-4000-8000-000000000196",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "created_at": "2026-10-18T00:56:04.504789+00:00",
+      "id": "00000000-0000-4000-8000-000000000248",
+      "is_correct": true,
+      "passage_id": 218,
+      "question_id": 2371,
+      "selected": "A",
+      "session_id": "00000000-0000-4000-8000-000000000196",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "created_at": "2026-08-28T16:59:02.900521+00:00",
+      "id": "00000000-0000-4000-8000-000000000249",
+      "is_correct": null,
+      "passage_id": 1195,
+      "question_id": 7680,
+      "selected": null,
+      "session_id": "00000000-0000-4000-8000-000000000193",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "created_at": "2026-09-28T16:34:35.106457+00:00",
+      "id": "00000000-0000-4000-8000-000000000250",
+      "is_correct": null,
+      "passage_id": 1757,
+      "question_id": 10745,
+      "selected": null,
+      "session_id": "00000000-0000-4000-8000-000000000186",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "created_at": "2026-08-28T16:58:57.99968+00:00",
+      "id": "00000000-0000-4000-8000-000000000251",
+      "is_correct": null,
+      "passage_id": 1190,
+      "question_id": 7669,
+      "selected": null,
+      "session_id": "00000000-0000-4000-8000-000000000193",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "created_at": "2026-10-18T08:45:48.47591+00:00",
+      "id": "00000000-0000-4000-8000-000000000252",
+      "is_correct": false,
+      "passage_id": 1195,
+      "question_id": 7684,
+      "selected": null,
+      "session_id": "00000000-0000-4000-8000-000000000184",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "created_at": "2026-09-28T16:34:27.746804+00:00",
+      "id": "00000000-0000-4000-8000-000000000253",
+      "is_correct": null,
+      "passage_id": 1756,
+      "question_id": 10737,
+      "selected": null,
+      "session_id": "00000000-0000-4000-8000-000000000186",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "created_at": "2026-10-18T08:45:48.47591+00:00",
+      "id": "00000000-0000-4000-8000-000000000254",
+      "is_correct": false,
+      "passage_id": 1195,
+      "question_id": 7681,
+      "selected": null,
+      "session_id": "00000000-0000-4000-8000-000000000184",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "created_at": "2026-09-28T16:34:25.944325+00:00",
+      "id": "00000000-0000-4000-8000-000000000255",
+      "is_correct": null,
+      "passage_id": 1756,
+      "question_id": 10735,
+      "selected": null,
+      "session_id": "00000000-0000-4000-8000-000000000186",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "created_at": "2026-09-28T16:34:42.810663+00:00",
+      "id": "00000000-0000-4000-8000-000000000256",
+      "is_correct": null,
+      "passage_id": 1759,
+      "question_id": 10754,
+      "selected": null,
+      "session_id": "00000000-0000-4000-8000-000000000186",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "created_at": "2026-09-28T16:34:30.504327+00:00",
+      "id": "00000000-0000-4000-8000-000000000257",
+      "is_correct": null,
+      "passage_id": 1757,
+      "question_id": 10740,
+      "selected": null,
+      "session_id": "00000000-0000-4000-8000-000000000186",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "created_at": "2026-10-18T08:45:48.47591+00:00",
+      "id": "00000000-0000-4000-8000-000000000258",
+      "is_correct": false,
+      "passage_id": 1192,
+      "question_id": 7673,
+      "selected": null,
+      "session_id": "00000000-0000-4000-8000-000000000184",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "created_at": "2026-10-18T08:45:48.47591+00:00",
+      "id": "00000000-0000-4000-8000-000000000259",
+      "is_correct": false,
+      "passage_id": 1192,
+      "question_id": 7674,
+      "selected": null,
+      "session_id": "00000000-0000-4000-8000-000000000184",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "created_at": "2026-10-18T08:45:48.47591+00:00",
+      "id": "00000000-0000-4000-8000-000000000260",
+      "is_correct": false,
+      "passage_id": 1195,
+      "question_id": 7680,
+      "selected": null,
+      "session_id": "00000000-0000-4000-8000-000000000184",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "created_at": "2026-10-18T08:45:48.47591+00:00",
+      "id": "00000000-0000-4000-8000-000000000261",
+      "is_correct": false,
+      "passage_id": 1192,
+      "question_id": 7679,
+      "selected": null,
+      "session_id": "00000000-0000-4000-8000-000000000184",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "created_at": "2026-10-18T08:45:48.47591+00:00",
+      "id": "00000000-0000-4000-8000-000000000262",
+      "is_correct": false,
+      "passage_id": 1188,
+      "question_id": 7661,
+      "selected": null,
+      "session_id": "00000000-0000-4000-8000-000000000184",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "created_at": "2026-08-28T16:58:59.921274+00:00",
+      "id": "00000000-0000-4000-8000-000000000263",
+      "is_correct": null,
+      "passage_id": 1192,
+      "question_id": 7673,
+      "selected": null,
+      "session_id": "00000000-0000-4000-8000-000000000193",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "created_at": "2026-08-27T11:52:34.075712+00:00",
+      "id": "00000000-0000-4000-8000-000000000264",
+      "is_correct": false,
+      "passage_id": 218,
+      "question_id": 2371,
+      "selected": "C",
+      "session_id": "00000000-0000-4000-8000-000000000189",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "created_at": "2026-08-27T10:11:26.940147+00:00",
+      "id": "00000000-0000-4000-8000-000000000265",
+      "is_correct": false,
+      "passage_id": 218,
+      "question_id": 2373,
+      "selected": "A",
+      "session_id": "00000000-0000-4000-8000-000000000189",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "created_at": "2026-08-28T16:59:02.424819+00:00",
+      "id": "00000000-0000-4000-8000-000000000266",
+      "is_correct": null,
+      "passage_id": 1192,
+      "question_id": 7679,
+      "selected": null,
+      "session_id": "00000000-0000-4000-8000-000000000193",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "created_at": "2026-09-28T16:34:46.173102+00:00",
+      "id": "00000000-0000-4000-8000-000000000267",
+      "is_correct": null,
+      "passage_id": 1759,
+      "question_id": 10758,
+      "selected": null,
+      "session_id": "00000000-0000-4000-8000-000000000186",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "created_at": "2026-09-30T17:54:32.055379+00:00",
+      "id": "00000000-0000-4000-8000-000000000268",
+      "is_correct": null,
+      "passage_id": 1188,
+      "question_id": 7661,
+      "selected": null,
+      "session_id": "00000000-0000-4000-8000-000000000200",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "created_at": "2026-10-17T01:40:23.197877+00:00",
+      "id": "00000000-0000-4000-8000-000000000269",
+      "is_correct": null,
+      "passage_id": 1168,
+      "question_id": 7559,
+      "selected": null,
+      "session_id": "00000000-0000-4000-8000-000000000270",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "created_at": "2026-10-18T01:23:55.840424+00:00",
+      "id": "00000000-0000-4000-8000-000000000271",
+      "is_correct": null,
+      "passage_id": 1188,
+      "question_id": 7660,
+      "selected": null,
+      "session_id": "00000000-0000-4000-8000-000000000184",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "created_at": "2026-10-18T08:45:48.47591+00:00",
+      "id": "00000000-0000-4000-8000-000000000272",
+      "is_correct": false,
+      "passage_id": 1188,
+      "question_id": 7663,
+      "selected": null,
+      "session_id": "00000000-0000-4000-8000-000000000184",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "created_at": "2026-08-27T11:55:21.017562+00:00",
+      "id": "00000000-0000-4000-8000-000000000273",
+      "is_correct": false,
+      "passage_id": 218,
+      "question_id": 2372,
+      "selected": "D",
+      "session_id": "00000000-0000-4000-8000-000000000189",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "created_at": "2026-08-27T10:11:27.389376+00:00",
+      "id": "00000000-0000-4000-8000-000000000274",
+      "is_correct": true,
+      "passage_id": 218,
+      "question_id": 2374,
+      "selected": "A",
+      "session_id": "00000000-0000-4000-8000-000000000189",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "created_at": "2026-09-28T16:34:39.509376+00:00",
+      "id": "00000000-0000-4000-8000-000000000275",
+      "is_correct": null,
+      "passage_id": 1758,
+      "question_id": 10750,
+      "selected": null,
+      "session_id": "00000000-0000-4000-8000-000000000186",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "created_at": "2026-08-28T16:58:54.885714+00:00",
+      "id": "00000000-0000-4000-8000-000000000276",
+      "is_correct": null,
+      "passage_id": 1188,
+      "question_id": 7663,
+      "selected": null,
+      "session_id": "00000000-0000-4000-8000-000000000193",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "created_at": "2026-09-28T16:34:12.412947+00:00",
+      "id": "00000000-0000-4000-8000-000000000277",
+      "is_correct": false,
+      "passage_id": 1756,
+      "question_id": 10732,
+      "selected": "A",
+      "session_id": "00000000-0000-4000-8000-000000000186",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "created_at": "2026-09-28T16:34:35.975924+00:00",
+      "id": "00000000-0000-4000-8000-000000000278",
+      "is_correct": null,
+      "passage_id": 1758,
+      "question_id": 10746,
+      "selected": null,
+      "session_id": "00000000-0000-4000-8000-000000000186",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "created_at": "2026-08-28T16:59:05.278795+00:00",
+      "id": "00000000-0000-4000-8000-000000000279",
+      "is_correct": null,
+      "passage_id": 1195,
+      "question_id": 7685,
+      "selected": null,
+      "session_id": "00000000-0000-4000-8000-000000000193",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "created_at": "2026-09-28T17:00:57.781291+00:00",
+      "id": "00000000-0000-4000-8000-000000000280",
+      "is_correct": true,
+      "passage_id": 1680,
+      "question_id": 10087,
+      "selected": "A",
+      "session_id": "00000000-0000-4000-8000-000000000281",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "created_at": "2026-09-28T16:34:33.238561+00:00",
+      "id": "00000000-0000-4000-8000-000000000282",
+      "is_correct": null,
+      "passage_id": 1757,
+      "question_id": 10743,
+      "selected": null,
+      "session_id": "00000000-0000-4000-8000-000000000186",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "created_at": "2026-09-28T16:34:29.584334+00:00",
+      "id": "00000000-0000-4000-8000-000000000283",
+      "is_correct": null,
+      "passage_id": 1757,
+      "question_id": 10739,
+      "selected": null,
+      "session_id": "00000000-0000-4000-8000-000000000186",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "created_at": "2026-10-18T08:45:48.47591+00:00",
+      "id": "00000000-0000-4000-8000-000000000284",
+      "is_correct": false,
+      "passage_id": 1195,
+      "question_id": 7686,
+      "selected": null,
+      "session_id": "00000000-0000-4000-8000-000000000184",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "created_at": "2026-10-18T08:45:48.47591+00:00",
+      "id": "00000000-0000-4000-8000-000000000285",
+      "is_correct": false,
+      "passage_id": 1190,
+      "question_id": 7667,
+      "selected": null,
+      "session_id": "00000000-0000-4000-8000-000000000184",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "created_at": "2026-10-18T00:56:10.148964+00:00",
+      "id": "00000000-0000-4000-8000-000000000286",
+      "is_correct": null,
+      "passage_id": 218,
+      "question_id": 2375,
+      "selected": null,
+      "session_id": "00000000-0000-4000-8000-000000000196",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "created_at": "2026-09-28T16:34:41.144069+00:00",
+      "id": "00000000-0000-4000-8000-000000000287",
+      "is_correct": null,
+      "passage_id": 1758,
+      "question_id": 10752,
+      "selected": null,
+      "session_id": "00000000-0000-4000-8000-000000000186",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "created_at": "2026-08-27T10:11:28.166686+00:00",
+      "id": "00000000-0000-4000-8000-000000000288",
+      "is_correct": false,
+      "passage_id": 218,
+      "question_id": 2376,
+      "selected": "A",
+      "session_id": "00000000-0000-4000-8000-000000000189",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "created_at": "2026-09-28T16:34:26.861671+00:00",
+      "id": "00000000-0000-4000-8000-000000000289",
+      "is_correct": null,
+      "passage_id": 1756,
+      "question_id": 10736,
+      "selected": null,
+      "session_id": "00000000-0000-4000-8000-000000000186",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "created_at": "2026-10-18T08:45:48.47591+00:00",
+      "id": "00000000-0000-4000-8000-000000000290",
+      "is_correct": false,
+      "passage_id": 1190,
+      "question_id": 7668,
+      "selected": null,
+      "session_id": "00000000-0000-4000-8000-000000000184",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "created_at": "2026-08-28T16:58:53.52588+00:00",
+      "id": "00000000-0000-4000-8000-000000000291",
+      "is_correct": false,
+      "passage_id": 1188,
+      "question_id": 7660,
+      "selected": "A",
+      "session_id": "00000000-0000-4000-8000-000000000193",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "created_at": "2026-10-18T08:45:48.47591+00:00",
+      "id": "00000000-0000-4000-8000-000000000292",
+      "is_correct": false,
+      "passage_id": 1195,
+      "question_id": 7682,
+      "selected": null,
+      "session_id": "00000000-0000-4000-8000-000000000184",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "created_at": "2026-08-28T16:59:03.86663+00:00",
+      "id": "00000000-0000-4000-8000-000000000293",
+      "is_correct": null,
+      "passage_id": 1195,
+      "question_id": 7682,
+      "selected": null,
+      "session_id": "00000000-0000-4000-8000-000000000193",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "created_at": "2026-08-28T16:58:59.109233+00:00",
+      "id": "00000000-0000-4000-8000-000000000294",
+      "is_correct": null,
+      "passage_id": 1190,
+      "question_id": 7671,
+      "selected": null,
+      "session_id": "00000000-0000-4000-8000-000000000193",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "created_at": "2026-09-28T16:34:34.267563+00:00",
+      "id": "00000000-0000-4000-8000-000000000295",
+      "is_correct": null,
+      "passage_id": 1757,
+      "question_id": 10744,
+      "selected": null,
+      "session_id": "00000000-0000-4000-8000-000000000186",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "created_at": "2026-09-28T16:34:43.679963+00:00",
+      "id": "00000000-0000-4000-8000-000000000296",
+      "is_correct": null,
+      "passage_id": 1759,
+      "question_id": 10755,
+      "selected": null,
+      "session_id": "00000000-0000-4000-8000-000000000186",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "created_at": "2026-08-06T13:06:06.170607+00:00",
+      "id": "00000000-0000-4000-8000-000000000297",
+      "is_correct": true,
+      "passage_id": 74,
+      "question_id": 513,
+      "selected": "B",
+      "session_id": "00000000-0000-4000-8000-000000000205",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "created_at": "2026-10-18T00:56:05.922538+00:00",
+      "id": "00000000-0000-4000-8000-000000000298",
+      "is_correct": null,
+      "passage_id": 218,
+      "question_id": 2372,
+      "selected": null,
+      "session_id": "00000000-0000-4000-8000-000000000196",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "created_at": "2026-08-27T10:11:28.596609+00:00",
+      "id": "00000000-0000-4000-8000-000000000299",
+      "is_correct": false,
+      "passage_id": 218,
+      "question_id": 2377,
+      "selected": "A",
+      "session_id": "00000000-0000-4000-8000-000000000189",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "created_at": "2026-10-18T08:45:48.47591+00:00",
+      "id": "00000000-0000-4000-8000-000000000300",
+      "is_correct": false,
+      "passage_id": 1190,
+      "question_id": 7670,
+      "selected": null,
+      "session_id": "00000000-0000-4000-8000-000000000184",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "created_at": "2026-08-28T16:58:54.482543+00:00",
+      "id": "00000000-0000-4000-8000-000000000301",
+      "is_correct": null,
+      "passage_id": 1188,
+      "question_id": 7662,
+      "selected": null,
+      "session_id": "00000000-0000-4000-8000-000000000193",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    }
+  ],
+  "rcSessions": [
+    {
+      "completed_at": null,
+      "config": {
+        "mode": "section",
+        "practiceTestLegIndex": 0,
+        "practiceTestRunId": "qa-timed-rc-ui-00000000-0000-4000-8000-000000000181"
+      },
+      "excluded_from_analytics": false,
+      "id": "00000000-0000-4000-8000-000000000200",
+      "practice_test_leg": 0,
+      "practice_test_run_id": "qa-timed-rc-ui-00000000-0000-4000-8000-000000000181",
+      "status": "in_progress",
+      "timed_section_sitting_id": null,
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "completed_at": "2026-08-06T13:06:46.182+00:00",
+      "config": {
+        "reveal": "per_passage",
+        "source": "adaptive",
+        "timing": {
+          "mode": "unlimited"
+        }
+      },
+      "excluded_from_analytics": false,
+      "id": "00000000-0000-4000-8000-000000000205",
+      "practice_test_leg": null,
+      "practice_test_run_id": null,
+      "status": "completed",
+      "timed_section_sitting_id": null,
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "completed_at": null,
+      "config": {
+        "reveal": "end_of_set",
+        "source": "manual",
+        "timing": {
+          "mode": "per_passage_budget",
+          "secondsPerPassage": 525
+        }
+      },
+      "excluded_from_analytics": false,
+      "id": "00000000-0000-4000-8000-000000000302",
+      "practice_test_leg": null,
+      "practice_test_run_id": null,
+      "status": "in_progress",
+      "timed_section_sitting_id": null,
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "completed_at": "2026-08-27T10:11:35.337+00:00",
+      "config": {
+        "reveal": "per_passage",
+        "source": "adaptive",
+        "timing": {
+          "mode": "unlimited"
+        }
+      },
+      "excluded_from_analytics": false,
+      "id": "00000000-0000-4000-8000-000000000189",
+      "practice_test_leg": null,
+      "practice_test_run_id": null,
+      "status": "completed",
+      "timed_section_sitting_id": null,
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "completed_at": null,
+      "config": {
+        "reveal": "per_passage",
+        "source": "adaptive",
+        "timing": {
+          "mode": "per_passage_budget",
+          "secondsPerPassage": 525
+        }
+      },
+      "excluded_from_analytics": false,
+      "id": "00000000-0000-4000-8000-000000000232",
+      "practice_test_leg": null,
+      "practice_test_run_id": null,
+      "status": "in_progress",
+      "timed_section_sitting_id": null,
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "completed_at": null,
+      "config": {
+        "reveal": "per_passage",
+        "source": "manual",
+        "timing": {
+          "mode": "unlimited"
+        }
+      },
+      "excluded_from_analytics": false,
+      "id": "00000000-0000-4000-8000-000000000303",
+      "practice_test_leg": null,
+      "practice_test_run_id": null,
+      "status": "in_progress",
+      "timed_section_sitting_id": null,
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "completed_at": null,
+      "config": {
+        "mode": "section",
+        "reveal": "end_of_set",
+        "source": "manual",
+        "timedSectionSittingId": "00000000-0000-4000-8000-000000000304"
+      },
+      "excluded_from_analytics": false,
+      "id": "00000000-0000-4000-8000-000000000270",
+      "practice_test_leg": null,
+      "practice_test_run_id": null,
+      "status": "in_progress",
+      "timed_section_sitting_id": "00000000-0000-4000-8000-000000000304",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "completed_at": "2026-09-28T16:34:37.669+00:00",
+      "config": {
+        "practiceTestLegIndex": 1,
+        "practiceTestRunId": "00000000-0000-4000-8000-000000000171",
+        "reveal": "end_of_set",
+        "source": "manual",
+        "timing": {
+          "mode": "per_passage_budget",
+          "secondsPerPassage": 525
+        }
+      },
+      "excluded_from_analytics": false,
+      "id": "00000000-0000-4000-8000-000000000186",
+      "practice_test_leg": 1,
+      "practice_test_run_id": "00000000-0000-4000-8000-000000000171",
+      "status": "completed",
+      "timed_section_sitting_id": null,
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "completed_at": "2026-10-18T00:56:13.207+00:00",
+      "config": {
+        "resultsRevealedAt": "2026-10-18T01:18:54.374Z",
+        "reveal": "end_of_set",
+        "source": "manual",
+        "timing": {
+          "mode": "unlimited"
+        }
+      },
+      "excluded_from_analytics": true,
+      "id": "00000000-0000-4000-8000-000000000196",
+      "practice_test_leg": null,
+      "practice_test_run_id": null,
+      "status": "completed",
+      "timed_section_sitting_id": null,
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "completed_at": "2026-08-28T16:59:05.697+00:00",
+      "config": {
+        "reveal": "end_of_set",
+        "source": "manual",
+        "timing": {
+          "mode": "per_passage_budget",
+          "secondsPerPassage": 525
+        }
+      },
+      "excluded_from_analytics": false,
+      "id": "00000000-0000-4000-8000-000000000193",
+      "practice_test_leg": null,
+      "practice_test_run_id": null,
+      "status": "completed",
+      "timed_section_sitting_id": null,
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "completed_at": null,
+      "config": {
+        "practiceTestLegIndex": 0,
+        "practiceTestRunId": "00000000-0000-4000-8000-000000000180",
+        "reveal": "end_of_set",
+        "source": "manual",
+        "timing": {
+          "mode": "per_passage_budget",
+          "secondsPerPassage": 525
+        }
+      },
+      "excluded_from_analytics": false,
+      "id": "00000000-0000-4000-8000-000000000281",
+      "practice_test_leg": 0,
+      "practice_test_run_id": "00000000-0000-4000-8000-000000000180",
+      "status": "in_progress",
+      "timed_section_sitting_id": null,
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "completed_at": null,
+      "config": {
+        "reveal": "end_of_set",
+        "source": "manual",
+        "timing": {
+          "mode": "unlimited"
+        }
+      },
+      "excluded_from_analytics": false,
+      "id": "00000000-0000-4000-8000-000000000305",
+      "practice_test_leg": null,
+      "practice_test_run_id": null,
+      "status": "abandoned",
+      "timed_section_sitting_id": null,
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "completed_at": null,
+      "config": {
+        "reveal": "per_passage",
+        "source": "manual",
+        "timing": {
+          "mode": "unlimited"
+        }
+      },
+      "excluded_from_analytics": false,
+      "id": "00000000-0000-4000-8000-000000000306",
+      "practice_test_leg": null,
+      "practice_test_run_id": null,
+      "status": "in_progress",
+      "timed_section_sitting_id": null,
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "completed_at": "2026-10-18T08:45:48.478715+00:00",
+      "config": {
+        "mode": "section",
+        "reveal": "end_of_set",
+        "source": "manual",
+        "timedSectionSittingId": "00000000-0000-4000-8000-000000000307"
+      },
+      "excluded_from_analytics": false,
+      "id": "00000000-0000-4000-8000-000000000184",
+      "practice_test_leg": null,
+      "practice_test_run_id": null,
+      "status": "completed",
+      "timed_section_sitting_id": "00000000-0000-4000-8000-000000000307",
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "completed_at": null,
+      "config": {
+        "reveal": "per_passage",
+        "source": "adaptive",
+        "timing": {
+          "mode": "unlimited"
+        }
+      },
+      "excluded_from_analytics": false,
+      "id": "00000000-0000-4000-8000-000000000308",
+      "practice_test_leg": null,
+      "practice_test_run_id": null,
+      "status": "in_progress",
+      "timed_section_sitting_id": null,
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "completed_at": null,
+      "config": {
+        "reveal": "per_passage",
+        "source": "manual",
+        "timing": {
+          "mode": "unlimited"
+        }
+      },
+      "excluded_from_analytics": false,
+      "id": "00000000-0000-4000-8000-000000000309",
+      "practice_test_leg": null,
+      "practice_test_run_id": null,
+      "status": "in_progress",
+      "timed_section_sitting_id": null,
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "completed_at": null,
+      "config": {
+        "reveal": "per_passage",
+        "source": "manual",
+        "timing": {
+          "mode": "unlimited"
+        }
+      },
+      "excluded_from_analytics": false,
+      "id": "00000000-0000-4000-8000-000000000310",
+      "practice_test_leg": null,
+      "practice_test_run_id": null,
+      "status": "in_progress",
+      "timed_section_sitting_id": null,
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "completed_at": null,
+      "config": {
+        "reveal": "end_of_set",
+        "source": "manual",
+        "timing": {
+          "mode": "per_passage_budget",
+          "secondsPerPassage": 525
+        }
+      },
+      "excluded_from_analytics": false,
+      "id": "00000000-0000-4000-8000-000000000311",
+      "practice_test_leg": null,
+      "practice_test_run_id": null,
+      "status": "in_progress",
+      "timed_section_sitting_id": null,
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "completed_at": null,
+      "config": {
+        "reveal": "per_passage",
+        "source": "manual",
+        "timing": {
+          "mode": "unlimited"
+        }
+      },
+      "excluded_from_analytics": false,
+      "id": "00000000-0000-4000-8000-000000000312",
+      "practice_test_leg": null,
+      "practice_test_run_id": null,
+      "status": "in_progress",
+      "timed_section_sitting_id": null,
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "completed_at": null,
+      "config": {
+        "reveal": "per_passage",
+        "source": "manual",
+        "timing": {
+          "mode": "unlimited"
+        }
+      },
+      "excluded_from_analytics": false,
+      "id": "00000000-0000-4000-8000-000000000313",
+      "practice_test_leg": null,
+      "practice_test_run_id": null,
+      "status": "in_progress",
+      "timed_section_sitting_id": null,
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "completed_at": null,
+      "config": {
+        "reveal": "per_passage",
+        "source": "manual",
+        "timing": {
+          "mode": "unlimited"
+        }
+      },
+      "excluded_from_analytics": false,
+      "id": "00000000-0000-4000-8000-000000000314",
+      "practice_test_leg": null,
+      "practice_test_run_id": null,
+      "status": "in_progress",
+      "timed_section_sitting_id": null,
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "completed_at": null,
+      "config": {
+        "reveal": "per_passage",
+        "source": "manual",
+        "timing": {
+          "mode": "unlimited"
+        }
+      },
+      "excluded_from_analytics": false,
+      "id": "00000000-0000-4000-8000-000000000315",
+      "practice_test_leg": null,
+      "practice_test_run_id": null,
+      "status": "in_progress",
+      "timed_section_sitting_id": null,
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "completed_at": null,
+      "config": {
+        "reveal": "per_passage",
+        "source": "adaptive",
+        "timing": {
+          "mode": "unlimited"
+        }
+      },
+      "excluded_from_analytics": false,
+      "id": "00000000-0000-4000-8000-000000000316",
+      "practice_test_leg": null,
+      "practice_test_run_id": null,
+      "status": "in_progress",
+      "timed_section_sitting_id": null,
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "completed_at": null,
+      "config": {
+        "reveal": "per_question",
+        "source": "manual",
+        "timing": {
+          "mode": "unlimited"
+        }
+      },
+      "excluded_from_analytics": false,
+      "id": "00000000-0000-4000-8000-000000000317",
+      "practice_test_leg": null,
+      "practice_test_run_id": null,
+      "status": "in_progress",
+      "timed_section_sitting_id": null,
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    },
+    {
+      "completed_at": null,
+      "config": {
+        "reveal": "per_passage",
+        "source": "manual",
+        "timing": {
+          "mode": "unlimited"
+        }
+      },
+      "excluded_from_analytics": false,
+      "id": "00000000-0000-4000-8000-000000000318",
+      "practice_test_leg": null,
+      "practice_test_run_id": null,
+      "status": "in_progress",
+      "timed_section_sitting_id": null,
+      "user_id": "00000000-0000-4000-8000-000000000002"
+    }
+  ]
+}

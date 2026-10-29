@@ -1,0 +1,117 @@
+/* Booking shares the platform paper and ink palette. Local dark tokens also
+   cover portaled dialogs; destructive/status colors remain independent. */
+
+.booking-holo {
+  --background: var(--lsatu-canvas-hsl);
+  --foreground: var(--lsatu-ink-hsl);
+  --card: var(--lsatu-canvas-hsl);
+  --card-foreground: var(--lsatu-ink-hsl);
+  --popover: var(--lsatu-canvas-hsl);
+  --popover-foreground: var(--lsatu-ink-hsl);
+  --primary: var(--lsatu-surface-dark-hsl);
+  --primary-foreground: var(--lsatu-text-on-dark-hsl);
+  --secondary: var(--lsatu-action-on-dark-hsl);
+  --secondary-foreground: var(--lsatu-ink-hsl);
+  --muted: var(--lsatu-action-on-dark-hsl);
+  --muted-foreground: var(--lsatu-ink-muted-hsl);
+  --accent: var(--lsatu-action-on-dark-hsl);
+  --accent-foreground: var(--lsatu-ink-hsl);
+  --destructive: 0 72% 45%;
+  --destructive-foreground: 0 0% 100%;
+  --border: 54.545 11.579% 81.373%;
+  --input: var(--lsatu-field-border-hsl);
+  --ring: var(--lsatu-ink-hsl);
+  color: hsl(var(--foreground));
+  background-color: hsl(var(--background));
+}
+
+.holo-text {
+  color: hsl(var(--primary));
+}
+
+.holo-surface {
+  /* Static platform primary surface — deliberately NOT animated. The shadcn
+     Button base applies `transition-all` and swaps background-color on hover,
+     which fights any background keyframe animation frame-by-frame and reads
+     as flicker. Buttons stay still; only the wordmark carries the sheen. */
+  background: hsl(var(--primary)) !important;
+  color: hsl(var(--primary-foreground)) !important;
+}
+
+.holo-surface:hover { filter: brightness(1.12); }
+
+.holo-ring { box-shadow: 0 0 0 1px hsl(var(--ring) / 0.35), 0 8px 30px hsl(var(--foreground) / 0.12); }
+
+/* Neutral elevation, the Calendly modal-shadow trick re-tinted. */
+.booking-shadow { box-shadow: 0 24px 72px hsl(var(--foreground) / 0.09), 0 0 20px hsl(var(--foreground) / 0.06); }
+
+@media (prefers-reduced-motion: reduce) {
+  .holo-surface { animation: none; }
+  .single-session-page *,
+  .single-session-page *::before,
+  .single-session-page *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* The booking theme is deliberately light, which is right on the public
+   booking page a prospect lands on cold. Inside the dark classroom shell it
+   rendered as a 688x647 pure-white slab in a black page — the most jarring
+   thing a student meets on their first click into dark mode.
+
+   This re-voices the shared platform palette dark, and is scoped to the
+   classroom so /book/* stays light for prospects. It cannot live in the app's
+   `.dark` class: that class is a deliberate alias that mirrors `.light`
+   (see index.css), so every shadcn token in the app stays light by design and
+   the classroom draws its own dark theme separately. */
+html.dark .classroom-root .booking-holo {
+  color-scheme: dark;
+  --background: var(--lsatu-surface-dark-hsl);
+  --foreground: var(--lsatu-text-on-dark-hsl);
+  --card: var(--lsatu-surface-dark-hsl);
+  --card-foreground: var(--lsatu-text-on-dark-hsl);
+  --popover: var(--lsatu-field-dark-hsl);
+  --popover-foreground: var(--lsatu-text-on-dark-hsl);
+  --primary: var(--lsatu-action-on-dark-hsl);
+  --primary-foreground: var(--lsatu-action-ink-hsl);
+  --secondary: var(--lsatu-field-dark-hsl);
+  --secondary-foreground: var(--lsatu-text-on-dark-hsl);
+  --muted: var(--lsatu-field-dark-hsl);
+  --muted-foreground: 77.143 4.965% 72.353%;
+  --accent: var(--lsatu-field-dark-hsl);
+  --accent-foreground: var(--lsatu-text-on-dark-hsl);
+  --destructive: 0 65% 58%;
+  --destructive-foreground: 345 30% 10%;
+  --border: var(--lsatu-field-border-hsl);
+  --input: var(--lsatu-field-border-hsl);
+  --ring: var(--lsatu-text-on-dark-hsl);
+}
+
+/* DialogContent is portaled outside `.classroom-root`, so carry the same
+   classroom-dark tokens on the booking dialog itself. Public booking remains
+   light because only the dialog opts into this selector. */
+html.dark .booking-dialog.booking-holo {
+  color-scheme: dark;
+  --background: var(--lsatu-surface-dark-hsl);
+  --foreground: var(--lsatu-text-on-dark-hsl);
+  --card: var(--lsatu-surface-dark-hsl);
+  --card-foreground: var(--lsatu-text-on-dark-hsl);
+  --popover: var(--lsatu-field-dark-hsl);
+  --popover-foreground: var(--lsatu-text-on-dark-hsl);
+  --primary: var(--lsatu-action-on-dark-hsl);
+  --primary-foreground: var(--lsatu-action-ink-hsl);
+  --secondary: var(--lsatu-field-dark-hsl);
+  --secondary-foreground: var(--lsatu-text-on-dark-hsl);
+  --muted: var(--lsatu-field-dark-hsl);
+  --muted-foreground: 77.143 4.965% 72.353%;
+  --accent: var(--lsatu-field-dark-hsl);
+  --accent-foreground: var(--lsatu-text-on-dark-hsl);
+  --destructive: 0 65% 58%;
+  --destructive-foreground: 345 30% 10%;
+  --border: var(--lsatu-field-border-hsl);
+  --input: var(--lsatu-field-border-hsl);
+  --ring: var(--lsatu-text-on-dark-hsl);
+}

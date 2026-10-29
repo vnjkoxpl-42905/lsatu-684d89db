@@ -1,0 +1,57 @@
+WEBVTT
+
+1
+00:00:00.600 --> 00:00:08.301
+To deny a conditional claim, describe a case in which its sufficient condition is true and its necessary condition is false.
+
+2
+00:00:08.601 --> 00:00:10.521
+That case is a counterexample.
+
+3
+00:00:10.821 --> 00:00:13.232
+Every licensed stall displays its permit.
+
+4
+00:00:13.532 --> 00:00:18.460
+A licensed stall that does not display its permit is exactly what the claim forbids.
+
+5
+00:00:18.760 --> 00:00:21.341
+One such stall makes the universal false.
+
+6
+00:00:21.641 --> 00:00:27.167
+An unlicensed stall with a permit does not: the original rule made no claim about that stall.
+
+7
+00:00:27.467 --> 00:00:33.824
+No permit displayed → not licensed merely restates the original through contraposition.
+
+8
+00:00:34.124 --> 00:00:38.625
+Assumption negation and flaw testing often turn on finding an exception.
+
+9
+00:00:38.925 --> 00:00:44.579
+Writing another universal rule can look rigorous while failing to contradict the original at all.
+
+10
+00:00:44.879 --> 00:00:50.041
+Keep the original population, timing and every member of a joint sufficient side.
+
+11
+00:00:50.341 --> 00:00:54.224
+A counterexample outside the stated group does not test the claim.
+
+12
+00:00:54.524 --> 00:00:57.041
+Do not ask whether your denial sounds opposite.
+
+13
+00:00:57.341 --> 00:01:02.376
+Ask whether the original rule and your proposed counterexample could both be true.
+
+14
+00:01:02.676 --> 00:01:05.279
+If they could, you have not contradicted the rule.
