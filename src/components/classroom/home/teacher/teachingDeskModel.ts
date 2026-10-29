@@ -95,6 +95,7 @@ export type DeskActions = Pick<
   | "reactivateHomeBooking"
 >;
 export interface TeachingDesk {
+  schedulingServices?: import("@/lib/teacherSchedulingApi").TeacherSchedulingServices;
   actions?: DeskActions;
   actorId?: string;
   manual: DeskRegion<DeskPage<ManualTask> & { student_counts?: TaskCount[] }>;
@@ -139,6 +140,7 @@ export interface TeachingDesk {
     studentId: string | null,
   ) => Promise<DeskPage<PostSessionTask>>;
   refreshAccess?: () => void;
+  refreshBooking?: () => void;
   classify?: (
     eventId: string,
     kind: "session" | "consultation",

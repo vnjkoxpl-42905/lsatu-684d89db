@@ -1,4 +1,5 @@
 import { createClient } from "npm:@supabase/supabase-js@2";
+import { readAllRosterPages, readAllAuthUsers, rosterRoleMap } from "../_shared/adminRoster.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -79,6 +80,16 @@ async function verifyAdmin(req: Request) {
   return { admin, callerId: user.id };
 }
 
+
+async function loadCompleteRoster(admin: Awaited<ReturnType<typeof verifyAdmin>>["admin"], fields: string) {
+  const [profiles, authUsers, roles] = await Promise.all([
+    readAllRosterPages<any>((offset,size) => admin.from("profiles").select(fields).order("class_id").range(offset,offset+size-1), row => row.class_id),
+    readAllAuthUsers<any>((page,perPage) => admin.auth.admin.listUsers({ page, perPage })),
+    readAllRosterPages<any>((offset,size) => admin.from("user_roles").select("user_id, role").order("user_id").order("role").range(offset,offset+size-1), row => row.user_id+":"+row.role),
+  ]);
+  return { profiles, authUsers, roles };
+}
+
 // Admin accounts are out of scope for archive, restore and deletion: the
 // People page manages students, and an administrator removed by one of these
 // actions could lock the whole platform out of its own role management.
@@ -123,17 +134,12 @@ Deno.serve(async (req) => {
 
       // Analytics mode
       if (mode === "analytics") {
-        const { data: profiles } = await admin
-          .from("profiles")
-          .select("class_id, last_seen_at, " + ALL_FLAGS.join(", "));
-
-        const { data: { users: authUsers } } = await admin.auth.admin.listUsers({ perPage: 1000 });
+        const { profiles, authUsers, roles } = await loadCompleteRoster(admin, "class_id, last_seen_at, " + ALL_FLAGS.join(", "));
 
         const now = new Date();
         const dayAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000);
         const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
 
-        const { data: roles } = await admin.from("user_roles").select("user_id, role");
         const adminCount = (roles || []).filter((r: any) => r.role === "admin").length;
 
         const activeToday = (profiles || []).filter((p: any) =>
@@ -172,22 +178,12 @@ Deno.serve(async (req) => {
       }
 
       // Default: list users
-      const { data: profiles, error: pErr } = await admin
-        .from("profiles")
-        .select("class_id, display_name, last_seen_at, archived_at, archived_reason, access_tier, " + ALL_FLAGS.join(", "));
-      if (pErr) throw pErr;
-
-      const { data: { users: authUsers }, error: aErr } = await admin.auth.admin.listUsers({ perPage: 1000 });
-      if (aErr) throw aErr;
+      const { profiles, authUsers, roles } = await loadCompleteRoster(admin, "class_id, display_name, last_seen_at, archived_at, archived_reason, access_tier, " + ALL_FLAGS.join(", "));
 
       const emailMap = new Map(authUsers.map((u: any) => [u.id, u.email]));
       const createdMap = new Map(authUsers.map((u: any) => [u.id, u.created_at]));
 
-      const { data: roles } = await admin.from("user_roles").select("user_id, role");
-      const roleMap = new Map<string, string>();
-      for (const r of roles || []) {
-        roleMap.set(r.user_id, r.role);
-      }
+      const roleMap = rosterRoleMap(roles);
 
       const result = (profiles || []).map((p: any) => ({
         ...p,
