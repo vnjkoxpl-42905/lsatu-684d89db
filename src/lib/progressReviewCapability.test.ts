@@ -1,9 +1,23 @@
 import { describe, expect, it } from 'vitest';
 import { resolveProgressReviewCapability, type ProgressReviewAccess } from './progressReviewCapability';
-import type { GradedQuestionAnswer } from './firstAnswerProgress';
+import { adaptRcAttempts, type GradedQuestionAnswer, type RcSessionSourceRow } from './firstAnswerProgress';
 const access: ProgressReviewAccess = { actorId: 'owner', ownerId: 'owner', resolved: true, analytics: true };
 const answer: GradedQuestionAnswer = { attemptId: 'attempt:a', questionKey: 'LR:q', area: 'LR', source: 'lr_attempts', mode: 'adaptive', correct: false, gradedAt: '2026-10-01', provenance: { kind: 'lr-attempt', ownerId: 'owner', attemptId: 'a', qid: 'q' } };
 describe('saved evidence capabilities', () => {
+  it('offers RC full-test reports only when the actual adapter proves physical report binding', () => {
+    const session: RcSessionSourceRow = { id: 'rc', user_id: 'owner', status: 'completed', completed_at: '2026-10-01', excluded_from_analytics: false, practice_test_run_id: null, config: { practiceTestRunId: 'pt', practiceTestLegIndex: 1 } };
+    const pick = { id: 'pick', user_id: 'owner', session_id: 'rc', passage_id: 2, question_id: 7, selected: 'A', is_correct: false, created_at: '2026-09-30' };
+    const [legacy] = adaptRcAttempts([pick], [session], 'owner', new Set(['pt']));
+    const allowed = { ...access, practice: true, exactPtPolicyVerified: true };
+    expect(legacy.correct).toBe(false);
+    expect(legacy.provenance).toMatchObject({ runId: 'pt', legIndex: 1 });
+    expect(resolveProgressReviewCapability(legacy, allowed)).toMatchObject({ status: 'unavailable', reason: 'This older RC session is not linked to the saved full-test report.' });
+    const [bound] = adaptRcAttempts([pick], [{ ...session, practice_test_run_id: 'pt', practice_test_leg: 1 }], 'owner', new Set(['pt']));
+    expect(bound.provenance).toMatchObject({ reportBinding: 'physical' });
+    expect(resolveProgressReviewCapability(bound, allowed)).toMatchObject({ status: 'available', href: '/testing/test/pt?leg=1&q=7' });
+    const [missingLeg] = adaptRcAttempts([pick], [{ ...session, practice_test_run_id: 'pt' }], 'owner', new Set(['pt']));
+    expect(resolveProgressReviewCapability(missingLeg, allowed).status).toBe('unavailable');
+  });
   it('keeps unresolved, foreign, missing and withheld provenance unavailable', () => {
     expect(resolveProgressReviewCapability(answer, { ...access, resolved: false }).status).toBe('pending');
     for (const row of [{ ...answer, provenance: undefined }, { ...answer, correct: null, resultVisibility: 'withheld' as const }]) expect(resolveProgressReviewCapability(row, access).status).toBe('unavailable');

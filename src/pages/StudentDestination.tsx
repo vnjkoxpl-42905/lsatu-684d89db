@@ -29,6 +29,14 @@ function useDestinationPermissions(destination: Destination) {
   };
 }
 
+/** Explicit view navigation starts at the view; exact detail returns retain selection. */
+function reviewTabTarget(target: string): string {
+  const url = new URL(target, 'https://review.invalid');
+  if (url.pathname === '/review/progress') url.searchParams.delete('mode');
+  if (url.pathname === '/review/to-review') url.searchParams.delete('selected');
+  return `${url.pathname}${url.search}${url.hash}`;
+}
+
 export function StudentDestination({ destination }: { destination: Destination }) {
   const { pathname, search, hash } = useLocation();
   const remembered = useReviewViewMemory();
@@ -40,7 +48,7 @@ export function StudentDestination({ destination }: { destination: Destination }
   const progressWindow = destination === "progress" ? parseProgressWindow(new URLSearchParams(search).get("window")) : null;
   const currentHubOrigin = destination === 'review' ? safeReviewHubReturn(`${pathname}${search}${hash}`) : null;
   const tabTarget = (path: string) => destination === 'review'
-    ? (path === pathname && currentHubOrigin ? currentHubOrigin : remembered.target(path))
+    ? reviewTabTarget(path === pathname && currentHubOrigin ? currentHubOrigin : remembered.target(path))
     : progressWindow ? `${path}?window=${progressWindow}` : path;
   useClassroomMotion(headingRef, `destination:${destination}`);
   const permissions = useDestinationPermissions(destination);

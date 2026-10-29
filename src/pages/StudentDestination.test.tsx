@@ -196,6 +196,37 @@ describe("Practice Exams primary landing", () => {
 });
 
 describe('review view URLs', () => {
+  it('opens the Progress overview when its actual tab is clicked from legacy question-type mode', () => {
+    permissions.has_analytics_access = true;
+    render(<MemoryRouter initialEntries={['/review/progress?mode=types&window=14&progressType=Flaw#evidence']}>
+      <Routes><Route path="/review/*" element={<StudentDestination destination="review" />} /></Routes><Where />
+    </MemoryRouter>);
+    fireEvent.click(screen.getByRole('link', {name:'Progress'}));
+    expect(screen.getByTestId('where')).toHaveTextContent('/review/progress?window=14&progressType=Flaw#evidence');
+    expect(screen.getByTestId('where')).not.toHaveTextContent('mode=types');
+  });
+  it('restores queue filters without selecting or focusing an old row on explicit view navigation', () => {
+    permissions.has_analytics_access = true;
+    render(<MemoryRouter initialEntries={['/review/to-review?reason=missed&area=lr&show=60&selected=lr%3Aanswer#queue']}>
+      <ReviewViewMemoryProvider><Routes><Route path="/review/*" element={<StudentDestination destination="review" />} /></Routes><Where /></ReviewViewMemoryProvider>
+    </MemoryRouter>);
+    fireEvent.click(screen.getByRole('link', {name:'Progress'}));
+    fireEvent.click(screen.getByRole('link', {name:'To review'}));
+    expect(screen.getByTestId('where')).toHaveTextContent('/review/to-review?reason=missed&area=lr&show=60#queue');
+    expect(screen.getByTestId('where')).not.toHaveTextContent('selected=');
+  });
+  it('retains the selected queue row on an exact detail return', () => {
+    const target = '/review/to-review?reason=missed&selected=lr%3Aanswer#queue';
+    render(<MemoryRouter initialEntries={[`/journal/q?returnTo=${encodeURIComponent(target)}`]}>
+      <ReviewViewMemoryProvider><Routes>
+        <Route path="/journal/:qid" element={<ReviewReturnLink />} />
+        <Route path="/review/*" element={<StudentDestination destination="review" />} />
+      </Routes><Where /></ReviewViewMemoryProvider>
+    </MemoryRouter>);
+    fireEvent.click(screen.getByRole('link', {name:/Back to Review/}));
+    expect(screen.getByTestId('where')).toHaveTextContent(target);
+    expect(screen.getByRole('link', {name:'To review'})).toHaveAttribute('href','/review/to-review?reason=missed#queue');
+  });
   it('keeps queue filters across a hub unmount for exact detail and clears prior-view memory on actor switch', () => {
     permissions.has_analytics_access = true;
     const returnTo = '/review/progress?window=all&progressType=Main+Conclusion&progressAnswer=lr%3Aanswer';

@@ -21,6 +21,8 @@ import {
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
 import { useStudentAnalytics } from "@/hooks/useStudentAnalytics";
+import { useUserPermissions } from "@/hooks/useUserPermissions";
+import { useAuth } from "@/contexts/AuthContext";
 import ImportedMetricsPanel from "@/components/analytics/ImportedMetricsPanel";
 import type { DimensionStat, PriorityRow } from "@/lib/mainhubAnalytics";
 import { DRILL_SECTION_PARAM, type DrillSection } from "@/lib/drillSection";
@@ -59,6 +61,9 @@ function NativeAnalyticsStage({
   section = "lr",
 }: AnalyticsStageProps) {
   const navigate = useNavigate();
+  const { user } = useAuth();
+  const permissions = useUserPermissions();
+  const canOpenProgress = Boolean(user?.id && !permissions.loading && permissions.resolved === true && permissions.resolvedFor === user.id && (permissions.is_admin || permissions.has_analytics_access));
   /* Every link out of here carries the section back with it. Without it a
      student who opened analytics from RC returned to LR. */
   const backTo = (stage: string) =>
@@ -137,6 +142,7 @@ function NativeAnalyticsStage({
             </p>
           )}
         </div>
+        {canOpenProgress && (
         <button
           type="button"
           onClick={() => navigate("/review/progress")}
@@ -145,6 +151,7 @@ function NativeAnalyticsStage({
           Open first-answer Progress
           <ExternalLink className="h-3.5 w-3.5" aria-hidden />
         </button>
+        )}
       </div>
 
       {/* Top priorities */}
