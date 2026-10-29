@@ -1,5 +1,7 @@
 # Review and Progress implementation
 
+Historical draft-build receipt. See RELEASE-VERIFICATION.md for the later user-authorized release checks and corrections.
+
 Date: 2026-10-28. Baseline: 29cf18a8d0fb0ef0c1106f8b976f26db13b9a3c4. Branch: codex/review-progress-unification-20261028.
 
 ## What changed
