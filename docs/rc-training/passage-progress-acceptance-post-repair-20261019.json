@@ -1,0 +1,175 @@
+{
+  "date": "2026-10-19",
+  "scope": "Dedicated tester passage-progress acceptance. No deletion, audio, ASR or judging requests.",
+  "attempts": [
+    {
+      "id": "01242e6a-6417-4b83-a970-8cfded0d681f",
+      "purpose": "single-passage-monotonic-and-frozen-completion",
+      "passageIds": [
+        15
+      ]
+    },
+    {
+      "id": "6c263127-b8b4-4ad5-898c-530b5e66565c",
+      "purpose": "completed-first-passage-inside-unfinished-four-passage-work",
+      "passageIds": [
+        14,
+        15,
+        16,
+        18
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "name": "retained_finalized_fixture_exact_retry_after_repair",
+      "passed": true,
+      "status": 200,
+      "attemptId": "1fd04a0b-6210-4976-8bbc-43cb6f554630",
+      "completedTimestampUnchanged": true,
+      "updatedTimestampUnchanged": true,
+      "activeMsUnchanged": true
+    },
+    {
+      "name": "progress_schema_readable",
+      "passed": true,
+      "status": 200
+    },
+    {
+      "name": "single_attempt_created",
+      "passed": true,
+      "status": 201,
+      "attemptId": "01242e6a-6417-4b83-a970-8cfded0d681f"
+    },
+    {
+      "name": "initial_active_time_saved",
+      "passed": true,
+      "status": 200
+    },
+    {
+      "name": "active_time_increases",
+      "passed": true,
+      "status": 200
+    },
+    {
+      "name": "stale_rpc_does_not_reduce_active_time",
+      "passed": true,
+      "status": 200
+    },
+    {
+      "name": "direct_decrease_denied",
+      "passed": true,
+      "status": 400
+    },
+    {
+      "name": "wrong_passage_id_denied",
+      "passed": true,
+      "status": 403
+    },
+    {
+      "name": "wrong_selected_position_denied",
+      "passed": true,
+      "status": 403
+    },
+    {
+      "name": "other_identity_write_denied",
+      "passed": true,
+      "status": 403
+    },
+    {
+      "name": "discarded_response_retry_returns_completion",
+      "passed": true,
+      "status": 200
+    },
+    {
+      "name": "later_completion_reuses_frozen_duration_and_timestamp",
+      "passed": true,
+      "status": 200
+    },
+    {
+      "name": "direct_completed_time_mutation_denied",
+      "passed": true,
+      "status": 400
+    },
+    {
+      "name": "progress_identity_mutation_denied",
+      "passed": true,
+      "status": 400
+    },
+    {
+      "name": "single_attempt_finalized",
+      "passed": true,
+      "status": 204
+    },
+    {
+      "name": "exact_completion_retry_after_finalization",
+      "passed": true,
+      "status": 200
+    },
+    {
+      "name": "owner_readback_unchanged",
+      "passed": true,
+      "status": 200
+    },
+    {
+      "name": "admin_metadata_read",
+      "passed": true,
+      "status": 200
+    },
+    {
+      "name": "anonymous_progress_not_readable",
+      "passed": true,
+      "status": 401
+    },
+    {
+      "name": "four_passage_attempt_created",
+      "passed": true,
+      "status": 201,
+      "attemptId": "6c263127-b8b4-4ad5-898c-530b5e66565c"
+    },
+    {
+      "name": "first_passage_completion_persists_before_section_completion",
+      "passed": true,
+      "status": 200
+    },
+    {
+      "name": "next_passage_partial_time_saved",
+      "passed": true,
+      "status": 200
+    },
+    {
+      "name": "partial_four_section_readback",
+      "passed": true,
+      "status": 200
+    }
+  ],
+  "retainedFinalizedFixture": {
+    "attemptId": "1fd04a0b-6210-4976-8bbc-43cb6f554630",
+    "activeMs": 3000,
+    "completedAt": "2026-10-19T04:04:54.555379+00:00"
+  },
+  "firstCompletion": {
+    "attempt_id": "01242e6a-6417-4b83-a970-8cfded0d681f",
+    "passage_position": 1,
+    "student_id": "d763bfe6-d710-4c4b-90ff-4b3a20929211",
+    "passage_id": 15,
+    "active_ms": 3000,
+    "completed": true,
+    "completed_at": "2026-10-19T04:15:48.077852+00:00",
+    "created_at": "2026-10-19T04:15:46.970664+00:00",
+    "updated_at": "2026-10-19T04:15:48.077852+00:00"
+  },
+  "partialSectionProgress": [
+    {
+      "passage_id": 14,
+      "active_ms": 4200,
+      "completed": true
+    },
+    {
+      "passage_id": 15,
+      "active_ms": 1700,
+      "completed": false
+    }
+  ],
+  "deletePolicyInspection": "No DELETE request was issued. Deployment receipt must separately inspect table grants/policies and verify no DELETE policy."
+}

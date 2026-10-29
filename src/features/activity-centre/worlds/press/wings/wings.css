@@ -1,0 +1,125 @@
+/*
+ * The pressroom's two wings. Same room, different bench, so they inherit the
+ * Press palette from `.press` and add only the controls the main bed lacks.
+ */
+
+.pr-wing {
+  overflow-y: auto;
+}
+
+/* ---------- Controls ---------- */
+
+.pr-button {
+  border: 1px solid hsl(var(--pr-metal));
+  background: hsl(var(--pr-block));
+  color: hsl(var(--pr-ink));
+  transition:
+    border-color 180ms ease,
+    background-color 180ms ease,
+    opacity 180ms ease;
+}
+
+.pr-button:hover:not(:disabled) {
+  border-color: hsl(var(--pr-ink) / 0.45);
+}
+
+.pr-button:disabled {
+  opacity: 0.5;
+}
+
+/* The called option, and the one that was right. Both show after a call:
+   seeing which was correct matters more than seeing whether you were. */
+.pr-button[data-picked="true"] {
+  background: hsl(var(--pr-bed));
+  opacity: 1;
+}
+
+.pr-button[data-truth="true"] {
+  border-color: hsl(var(--pr-signal));
+  box-shadow: inset 2px 0 0 hsl(var(--pr-signal));
+  opacity: 1;
+}
+
+.pr-input {
+  border: 1px solid hsl(var(--pr-metal));
+  background: hsl(var(--pr-block));
+  color: hsl(var(--pr-ink));
+  max-width: 34rem;
+}
+
+.pr-input::placeholder {
+  color: hsl(var(--pr-ink-dim) / 0.7);
+}
+
+/* ---------- The census ---------- */
+
+/* The paragraph at reading weight. No letterpress mass here: this bench is
+   about what is in the text, not about how much of it there is. */
+.pr-census-text {
+  border: 1px solid hsl(var(--pr-metal) / 0.4);
+  background: hsl(var(--pr-block) / 0.5);
+}
+
+.pr-candidate {
+  border: 1px solid hsl(var(--pr-metal) / 0.7);
+  background: hsl(var(--pr-block));
+  box-shadow: inset 0 1px 0 hsl(var(--pr-ink) / 0.08);
+}
+
+/* ---------- The judge ---------- */
+
+.pr-choice {
+  border: 1px solid hsl(var(--pr-metal) / 0.6);
+  background: hsl(var(--pr-block) / 0.85);
+  transition:
+    border-color 180ms ease,
+    opacity 180ms ease,
+    max-width 420ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.pr-choice:hover:not(:disabled) {
+  border-color: hsl(var(--pr-ink) / 0.4);
+}
+
+.pr-choice:disabled {
+  opacity: 0.75;
+}
+
+.pr-choice[data-picked="true"] {
+  opacity: 1;
+}
+
+.pr-choice[data-truth="true"] {
+  border-color: hsl(var(--pr-signal) / 0.6);
+  box-shadow: inset 0 0 0 1px hsl(var(--pr-signal) / 0.12);
+  opacity: 1;
+}
+
+/* The Main Hall's trap staging, applied only once the call is in. Too narrow
+   pulls back to a sliver of the full measure; topic-only hollows out. Both are
+   the same shapes the bed prints, so the wing teaches the bed's vocabulary. */
+.pr-choice[data-tone="narrow"] {
+  max-width: 52%;
+}
+
+.pr-choice[data-tone="topic"] .press-type {
+  color: transparent;
+  -webkit-text-stroke: 0.5px hsl(var(--pr-ink) / 0.75);
+}
+
+@media (max-width: 640px) {
+  /* A sliver at phone width is unreadable, so the thin slug keeps its measure
+     and the caption carries the point on its own. */
+  .pr-choice[data-tone="narrow"] {
+    max-width: 100%;
+  }
+}
+
+/* ---------- Reduced motion ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .pr-choice,
+  .pr-button {
+    transition-duration: 1ms !important;
+  }
+}

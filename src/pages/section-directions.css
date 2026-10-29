@@ -1,0 +1,194 @@
+/*
+ * The directions screen before an assigned section. Colours are LawHub's, not
+ * the app's tokens, on purpose: this screen is meant to look like the test.
+ */
+.section-directions {
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: #c5d5e3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 72px 24px 48px;
+  box-sizing: border-box;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #1f1f1f;
+}
+
+/* Leaving costs nothing: the clock has not started. Quiet, top-left, out of
+   the card so it never reads as part of the test. */
+.section-directions-back {
+  align-self: flex-start;
+  background: transparent;
+  border: 0;
+  color: #1f1f1f;
+  font-family: inherit;
+  font-size: 17px;
+  padding: 6px 4px;
+  margin: -44px 0 20px;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.section-directions-back:hover,
+.section-directions-back:focus-visible {
+  color: #b8650b;
+  outline: none;
+}
+
+.section-directions-card {
+  width: 100%;
+  max-width: 1310px;
+  min-height: 430px;
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 18px 84px 48px;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+.section-directions-title {
+  font-size: 34px;
+  font-weight: 700;
+  margin: 46px 0 36px;
+  line-height: 1.2;
+}
+
+.section-directions-line {
+  font-size: 20px;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.section-directions-body {
+  text-align: left;
+  font-size: 20px;
+  line-height: 1.35;
+  margin: 44px 0 0;
+}
+
+.section-directions-status {
+  font-size: 18px;
+}
+
+.section-directions-go {
+  margin-top: 32px;
+  background: #b8650b;
+  color: #ffffff;
+  border: 0;
+  border-radius: 14px;
+  padding: 18px 20px;
+  font-size: 20px;
+  font-family: inherit;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+}
+
+.section-directions-go:hover,
+.section-directions-go:focus-visible {
+  background: #a3590a;
+  outline: 3px solid #1f1f1f;
+  outline-offset: 2px;
+}
+
+@media (max-width: 720px) {
+  .section-directions {
+    padding: 32px 12px 32px;
+  }
+  .section-directions-card {
+    padding: 16px 20px 32px;
+    min-height: 0;
+  }
+  .section-directions-title {
+    font-size: 26px;
+    margin: 20px 0 20px;
+  }
+  .section-directions-line,
+  .section-directions-body,
+  .section-directions-go {
+    font-size: 17px;
+  }
+}
+
+/*
+ * The same screen mid-section, inside the player's white card. The clock is
+ * already running, so there is no back link and no full-viewport height: the
+ * field fills whatever the player gives it and scrolls on its own.
+ */
+.section-directions-view {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #1f1f1f;
+}
+
+.section-directions-bar {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 20px 16px;
+  background: #ffffff;
+  border-bottom: 1px solid #d5dce3;
+}
+
+.section-directions-questions {
+  background: #5f6368;
+  color: #ffffff;
+  border: 0;
+  border-radius: 4px;
+  padding: 8px 16px;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.section-directions-questions:hover {
+  background: #4a4e52;
+}
+
+.section-directions-questions:focus-visible {
+  outline: 3px solid #1f1f1f;
+  outline-offset: 2px;
+}
+
+.section-directions-clock {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  line-height: 1.3;
+}
+
+.section-directions-clock-label {
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #5f6368;
+}
+
+.section-directions-clock-time {
+  font-size: 19px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.section-directions-clock-time--over {
+  color: #b91c1c;
+}
+
+.section-directions--embedded {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 48px 24px 40px;
+}
+
+@media (max-width: 720px) {
+  .section-directions--embedded {
+    padding: 24px 12px 32px;
+  }
+}

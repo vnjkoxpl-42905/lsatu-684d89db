@@ -1,0 +1,333 @@
+{
+  "$comment": "Calibration drill items per G2.CALIBRATION + G3.M1.13-AP-PARTITION REVISED. Trait-target tags authored 2026-04-30 while M1 voice is fresh. Capstone.tsx page builds AFTER M1 batch review locks voice (per Joshua's Rec #1 constraint). Sources: stimulus text for AP Answer Key items 5/6/8 captured verbatim from Read-tool extraction (smoke-test artifact at scripts/__smoke__/ap-answer-key.extracted.json); stimulus text for main_conclusion_student_dup1.docx Q1-Q7 + Cluster Sentences Review variants flagged stimulus_pending_ocr=true and resolves at Gate 4 OCR pass. | Phase H.1 OCR wire-up at 2026-05-01T04:49:53.790Z: M1 Q1-Q7 from main_conclusion_student docx; M5 Q1-Q5 from Cluster Sentences Review docx (heuristic match — Joshua to verify). | Phase H.1 OCR wire-up at 2026-05-01T04:50:22.931Z: M1 Q1-Q7 from main_conclusion_student docx; M5 Q1-Q5 from Cluster Sentences Review docx (heuristic match — Joshua to verify).",
+  "$schema": "./calibration.schema.json",
+  "generated_at": "2026-05-01T04:50:22.931Z",
+  "generator": "hand-authored seed; pipeline parity-verifies",
+  "items": [
+    {
+      "id": "MC-CAL-M1-Q1",
+      "calibration_only": true,
+      "calibration_module": "M1",
+      "trait_target": "T1",
+      "trait_target_rationale": "T1 — trap statement that sounds like the conclusion but has no support. Authored to test the 'confidence ≠ conclusion' check from Lesson 1.11.",
+      "structure_family": "First-sentence",
+      "stimulus_pending_ocr": false,
+      "source_anchor": {
+        "primary": "Curriculum/Main Conclusion/Notes/main_conclusion_student_dup1.docx — Q1",
+        "answer_key": "Curriculum/Main Conclusion/Notes/main_conclusion_answer_dup1.docx — Q1",
+        "audit_tier": "A",
+        "ocr_required": false
+      },
+      "non_overlap_check": {
+        "vs_canonical_20": "OK — main_conclusion_student docx is a different file than MCFIRST + main_conclusion_questions + main_conclusion_answer_key",
+        "vs_drill_3.4": "OK",
+        "vs_drill_3.5": "OK",
+        "vs_drill_3.7": "OK"
+      },
+      "stimulus": "The government argues that reducing educational spending will help address budget deficits. But it is clear that the government’s decision to cut funding for public education is misguided. Cutting funding for education can lead to a decline in the quality of public schools and hinder future economic development.",
+      "ocr_status": "captured"
+    },
+    {
+      "id": "MC-CAL-M1-Q2",
+      "calibration_only": true,
+      "calibration_module": "M1",
+      "trait_target": "T2",
+      "trait_target_rationale": "T2 — main conclusion not explicitly stated. Tests the pronoun-replacement / Pre-Phrase Goal habit from Lesson 1.10.",
+      "structure_family": "Rebuttal",
+      "stimulus_pending_ocr": false,
+      "source_anchor": {
+        "primary": "Curriculum/Main Conclusion/Notes/main_conclusion_student_dup1.docx — Q2",
+        "answer_key": "Curriculum/Main Conclusion/Notes/main_conclusion_answer_dup1.docx — Q2",
+        "audit_tier": "A",
+        "ocr_required": false
+      },
+      "stimulus": "Some people like to have green carnations on St. Patrick’s Day. But flowers that are naturally green are extremely rare. Thus, it is very difficult for plant breeders to produce green carnations. Before St. Patrick’s Day, then, it is wise for florists to stock up on white carnations, which are fairly inexpensive and quite easy to dye green.",
+      "ocr_status": "captured"
+    },
+    {
+      "id": "MC-CAL-M1-Q3",
+      "calibration_only": true,
+      "calibration_module": "M1",
+      "trait_target": "T3",
+      "trait_target_rationale": "T3 — paraphrase / synonym disguise. Tests meaning-match-not-word-match from Lesson 1.11 (tornado syntax-equivalence).",
+      "structure_family": "First-sentence",
+      "stimulus_pending_ocr": false,
+      "source_anchor": {
+        "primary": "Curriculum/Main Conclusion/Notes/main_conclusion_student_dup1.docx — Q3",
+        "answer_key": "Curriculum/Main Conclusion/Notes/main_conclusion_answer_dup1.docx — Q3",
+        "audit_tier": "A",
+        "ocr_required": false
+      },
+      "stimulus": "Some critics of the media have contended that negative news reports on the state of the economy can actually harm the economy because such reports damage people’s confidence in it, and this lack of confidence in turn adversely affects people’s willingness to spend money. But studies show that spending trends correlate very closely with people’s confidence in their own immediate economic situations. Thus these media critics are mistaken.",
+      "ocr_status": "captured"
+    },
+    {
+      "id": "MC-CAL-M1-Q4",
+      "calibration_only": true,
+      "calibration_module": "M1",
+      "trait_target": "T4",
+      "trait_target_rationale": "T4 — subtle scope shift (quantifier / modal / domain). Tests the read-each-word check from Lesson 1.11.",
+      "structure_family": "First-sentence",
+      "stimulus_pending_ocr": false,
+      "source_anchor": {
+        "primary": "Curriculum/Main Conclusion/Notes/main_conclusion_student_dup1.docx — Q4",
+        "answer_key": "Curriculum/Main Conclusion/Notes/main_conclusion_answer_dup1.docx — Q4",
+        "audit_tier": "A",
+        "ocr_required": false
+      },
+      "stimulus": "Some skeptics argue that changes in global temperatures are part of a natural cycle. However, the theory of man‑made climate change is well‑founded. The overwhelming consensus among climate scientists supports the theory of human‑induced climate change.",
+      "ocr_status": "captured"
+    },
+    {
+      "id": "MC-CAL-M1-Q5",
+      "calibration_only": true,
+      "calibration_module": "M1",
+      "trait_target": "T5",
+      "trait_target_rationale": "T5 — author would agree but isn't the conclusion. Tests the 'stay narrow' habit from Lesson 1.12 preview (extraterrestrial-life trap structure).",
+      "structure_family": "Rebuttal",
+      "stimulus_pending_ocr": false,
+      "source_anchor": {
+        "primary": "Curriculum/Main Conclusion/Notes/main_conclusion_student_dup1.docx — Q5",
+        "answer_key": "Curriculum/Main Conclusion/Notes/main_conclusion_answer_dup1.docx — Q5",
+        "audit_tier": "A",
+        "ocr_required": false
+      },
+      "stimulus": "Implementing a new recycling program in our community is essential. Many towns across the country have successfully reduced their environmental impact, and recycling programs have been shown to decrease the amount of waste in landfills.",
+      "ocr_status": "captured"
+    },
+    {
+      "id": "MC-CAL-M1-Q6",
+      "calibration_only": true,
+      "calibration_module": "M1",
+      "trait_target": "T6",
+      "trait_target_rationale": "T6 — correct answer vaguely worded next to attractive wrong answer. Tests rank-by-faithfulness-not-strength from Lesson 1.11.",
+      "structure_family": "First-sentence",
+      "stimulus_pending_ocr": false,
+      "source_anchor": {
+        "primary": "Curriculum/Main Conclusion/Notes/main_conclusion_student_dup1.docx — Q6",
+        "answer_key": "Curriculum/Main Conclusion/Notes/main_conclusion_answer_dup1.docx — Q6",
+        "audit_tier": "A",
+        "ocr_required": false
+      },
+      "stimulus": "A new process enables ordinary table salt to be fortified with iron. This advance could help reduce the high incidence of anemia in the world’s population due to a deficiency of iron in the diet. Salt is used as a preservative for food and a flavor enhancer all over the globe, and people consume salt in quantities that would provide iron in significant amounts.",
+      "ocr_status": "captured"
+    },
+    {
+      "id": "MC-CAL-M1-Q7",
+      "calibration_only": true,
+      "calibration_module": "M1",
+      "trait_target": "T7",
+      "trait_target_rationale": "T7 — Intermediate Conclusion trap. Tests the 3-rule diagnostic + Stegosaurus Interrogation from Lesson 1.7. Pairs with the EV-cars chain mental model.",
+      "structure_family": "First-sentence",
+      "stimulus_pending_ocr": false,
+      "source_anchor": {
+        "primary": "Curriculum/Main Conclusion/Notes/main_conclusion_student_dup1.docx — Q7",
+        "answer_key": "Curriculum/Main Conclusion/Notes/main_conclusion_answer_dup1.docx — Q7",
+        "audit_tier": "A",
+        "ocr_required": false
+      },
+      "stimulus": "Researchers have studied the cost‑effectiveness of growing halophytes—salt‑tolerant plant species—for animal forage. Halophytes require more water than conventional crops, but can be irrigated with seawater, and pumping seawater into farms near sea level is much cheaper than pumping freshwater from deep wells. Thus, seawater agriculture near sea level should be cost‑effective in desert regions although its yields are smaller than traditional, freshwater agriculture.",
+      "ocr_status": "captured"
+    },
+    {
+      "id": "MC-CAL-M1-Q8",
+      "calibration_only": true,
+      "calibration_module": "M1",
+      "trait_target": "T1",
+      "trait_target_rationale": "T1 secondary coverage — first-sentence recommendation that LSAC could disguise via a 'sounds-like-conclusion-but-no-support' distractor. Plus this stimulus uses a recommendation framing the student saw in Lesson 1.9 (Recommendations type), so the calibration tests cross-lesson integration.",
+      "structure_family": "First-sentence (Recommendation type per Lesson 1.9)",
+      "stimulus": "Cities should impose stricter regulations on short-term rental services like Airbnb to prevent housing shortages and rising rents. While homeowners often defend their right to rent out their properties for additional income, city planners argue that converting long-term housing into short-term rentals exacerbates housing scarcity and price inflation. Furthermore, studies indicate that neighborhoods with a high density of short-term rentals experience disruptive changes in community dynamics and infrastructure demand. Therefore, imposing restrictions can help maintain housing availability and affordability, balancing the rights of property owners with community needs.",
+      "main_conclusion": "Cities should impose stricter regulations on short-term rental services like Airbnb to prevent housing shortages and rising rents.",
+      "structure_map": "Conclusion (sentence 1, first-sentence type) → Background+Concession+Counter (sentence 2) → Support (sentence 3) → Restated support / closure (sentence 4)",
+      "source_anchor": {
+        "primary": "Curriculum/Main Conclusion/Homework/AP Answer Key (1).pdf — item 5 (Airbnb)",
+        "questions_side": "Curriculum/Main Conclusion/Homework/Argument parts exercise (1).pdf — item 5",
+        "audit_tier": "S/A",
+        "ocr_required": false,
+        "ocr_status": "captured 2026-04-30 in scripts/__smoke__/ap-answer-key.extracted.json"
+      },
+      "partition_check": {
+        "rule": "G3.M1.13-AP-PARTITION REVISED — items {5, 6, 8} → M1.13; items {2, 3, 4} → MC-DRL-3.2; item 7 skipped (no breakdown); item 9 reserved for T7 deep-dive",
+        "this_item_partition": "M1.13 (item 5)",
+        "drill_3.2_disjoint_check": "OK — Drill 3.2 takes items {2, 3, 4}"
+      }
+    },
+    {
+      "id": "MC-CAL-M1-Q9",
+      "calibration_only": true,
+      "calibration_module": "M1",
+      "trait_target": "T-Concession",
+      "trait_target_rationale": "Concession-handling check — item 6 carries an explicit `(Concession)` inline tag in the source breakdown. Tests the Trojan Horse pattern from Lesson 1.8. Maps cleanly to a Trait-2-style implicit-conclusion if LSAC-styled distractors paraphrase the concession instead of the rebuttal.",
+      "structure_family": "First-sentence (Recommendation/Background blend per Lesson 1.9)",
+      "stimulus": "Biodiversity plays a critical role in maintaining ecosystem balance and resilience against environmental changes. Although some argue that human activities, such as deforestation and pollution, are unavoidable in the pursuit of economic development, sustainable practices need to be prioritized to protect biodiversity. However, this necessitates balancing economic growth with ecological preservation. Therefore, enhancing conservation efforts through the implementation of green technologies and policies is essential for sustaining the planet's biodiversity. If industries adopt eco-friendly innovations, they can reduce their environmental impact while still achieving growth targets. Furthermore, government incentives for green practices could foster widespread adoption of sustainability measures, leading to a healthier environment and thriving biodiversity.",
+      "main_conclusion": "Therefore, enhancing conservation efforts through the implementation of green technologies and policies is essential for sustaining the planet's biodiversity.",
+      "structure_map": "Background (sentence 1) → Concession (sentence 2: 'Although some argue...') → Pivot+Author claim (sentence 3) → Main conclusion (sentence 4 — bolded in source) → Support (sentences 5-6)",
+      "source_anchor": {
+        "primary": "Curriculum/Main Conclusion/Homework/AP Answer Key (1).pdf — item 6 (Biodiversity)",
+        "questions_side": "Curriculum/Main Conclusion/Homework/Argument parts exercise (1).pdf — item 6",
+        "audit_tier": "S/A",
+        "ocr_required": false,
+        "ocr_status": "captured 2026-04-30 in scripts/__smoke__/ap-answer-key.extracted.json",
+        "inline_role_tags_in_source": [
+          "(Concession)"
+        ]
+      },
+      "partition_check": {
+        "this_item_partition": "M1.13 (item 6)",
+        "drill_3.2_disjoint_check": "OK"
+      }
+    },
+    {
+      "id": "MC-CAL-M1-Q10",
+      "calibration_only": true,
+      "calibration_module": "M1",
+      "trait_target": "T2",
+      "trait_target_rationale": "T2 — implicit-conclusion / opposing-viewpoint-leading rebuttal pattern. Item 8's source breakdown explicitly labels sentence 1 as `(Opposing viewpoint)` and sentence 5 as `(Main conclusion)`. Tests the Pivot detection from Lesson 1.6 + Pre-Phrase Goal from Lesson 1.10.",
+      "structure_family": "Rebuttal",
+      "stimulus": "Implementing universal healthcare can seem like an overwhelming financial burden for countries. However, public health experts argue that such a system not only improves health outcomes across demographics but also reduces long-term healthcare costs by preventing diseases and minimizing hospitalizations. Given that early intervention is cheaper than treating advanced conditions, universal healthcare could lead to significant economic savings. With robust preventive care measures, populations tend to have better management of chronic illnesses. As such, the initial investment in universal healthcare could ultimately decrease national healthcare expenditures.",
+      "main_conclusion": "As such, the initial investment in universal healthcare could ultimately decrease national healthcare expenditures.",
+      "structure_map": "Opposing viewpoint (sentence 1) → Pivot 'However' + Supporting premise (sentence 2) → Premise 1 (sentence 3) → Premise 2 (sentence 4) → Main conclusion (sentence 5 — bolded in source)",
+      "source_anchor": {
+        "primary": "Curriculum/Main Conclusion/Homework/AP Answer Key (1).pdf — item 8 (Universal healthcare)",
+        "questions_side": "Curriculum/Main Conclusion/Homework/Argument parts exercise (1).pdf — item 8",
+        "audit_tier": "S/A",
+        "ocr_required": false,
+        "ocr_status": "captured 2026-04-30 in scripts/__smoke__/ap-answer-key.extracted.json",
+        "inline_role_tags_in_source": [
+          "(Opposing viewpoint)",
+          "(Supporting premise)",
+          "(Premise 1)",
+          "(Premise 2)",
+          "(Main conclusion)"
+        ]
+      },
+      "partition_check": {
+        "this_item_partition": "M1.13 (item 8)",
+        "drill_3.2_disjoint_check": "OK",
+        "item_7_skipped_reason": "no claim breakdown in source (smoke-test confirmed)",
+        "item_9_reserved_for": "T7 trait deep-dive sample (Jordan/LeBron Intermediate Conclusion structure with elaborate role tags)"
+      }
+    },
+    {
+      "id": "MC-CAL-M5-Q1",
+      "calibration_only": true,
+      "calibration_module": "M5",
+      "trait_target": "cluster-decomposition",
+      "trait_target_rationale": "Single-comma cluster sentence (Level 1 of Module 5 practice progression). Tests the optional-element vs core-element rule from Lesson 5.5.",
+      "stimulus_pending_ocr": false,
+      "source_anchor": {
+        "primary": "Curriculum/Main Conclusion/Notes/Cluster Sentences Review.docx — Level 1 variant (single comma; non-overlapping with M5.6 practice + M5.7 Decomposer demos)",
+        "secondary": "Curriculum/Main Conclusion/Notes/Cluster Sentences Review.docx.pdf",
+        "audit_tier": "S",
+        "ocr_required": false,
+        "calibration_selection_rule": "selected from Cluster Sentences Review variants NOT used in M5.6 practice or M5.7 Decomposer demos (per G2.CALIBRATION)"
+      },
+      "stimulus": "The box, which was red since it came up on our red‑sensor that was developed by Alex and Jordan, who happened to enjoy color spectroscopy, was empty.",
+      "ocr_status": "captured"
+    },
+    {
+      "id": "MC-CAL-M5-Q2",
+      "calibration_only": true,
+      "calibration_module": "M5",
+      "trait_target": "cluster-decomposition",
+      "trait_target_rationale": "Two-comma middle-out cluster sentence (Level 2). Tests the 2-comma rule from Lesson 5.5.",
+      "stimulus_pending_ocr": false,
+      "source_anchor": {
+        "primary": "Curriculum/Main Conclusion/Notes/Cluster Sentences Review.docx — Level 2 variant (two commas, middle-out)",
+        "audit_tier": "S",
+        "ocr_required": false
+      },
+      "stimulus": "First, I see “the box” and then a comma, which cuts into the middle of the complete thought about the box. So I salvage my knowledge of those first two words by jotting down the only complete thought I can get out of the words “the box”:",
+      "ocr_status": "captured"
+    },
+    {
+      "id": "MC-CAL-M5-Q3",
+      "calibration_only": true,
+      "calibration_module": "M5",
+      "trait_target": "cluster-decomposition",
+      "trait_target_rationale": "Three-specifier chain (Level 3). Tests the full Alex/Jordan-walkthrough decomposition method from Lesson 5.4.",
+      "stimulus_pending_ocr": false,
+      "source_anchor": {
+        "primary": "Curriculum/Main Conclusion/Notes/Cluster Sentences Review.docx — Level 3 variant (3+ specifiers; not the Alex/Jordan red-sensor example which lives in M5.4)",
+        "audit_tier": "S",
+        "ocr_required": false
+      },
+      "stimulus": "Next, I read “since it came up on our red‑sensor” and stop when I hit the “that” since I have enough for a complete thought. I have to translate a little, just to remember what the “it” is. Looking back at the sentence, I see that the “it” is the box, so I’ve got my complete thought:",
+      "ocr_status": "captured"
+    },
+    {
+      "id": "MC-CAL-M5-Q4",
+      "calibration_only": true,
+      "calibration_module": "M5",
+      "trait_target": "cluster-decomposition",
+      "trait_target_rationale": "Four-specifier escalation (Level 3 advanced). Stress-tests the protocol from Lesson 5.4.",
+      "stimulus_pending_ocr": false,
+      "source_anchor": {
+        "primary": "Curriculum/Main Conclusion/Notes/Cluster Sentences Review.docx — Level 3 advanced variant",
+        "secondary_candidate": "Curriculum/Main Conclusion/Notes/complicated sentence notes .docx — middle-out / optional-element examples",
+        "audit_tier": "S/A",
+        "ocr_required": false
+      },
+      "stimulus": "Proceeding past the comma, I read “who happened to enjoy color spectroscopy” and stop at the comma. I look for a person right before the “who” and see Alex and Jordan. So, I have my complete thought:",
+      "ocr_status": "captured"
+    },
+    {
+      "id": "MC-CAL-M5-Q5",
+      "calibration_only": true,
+      "calibration_module": "M5",
+      "trait_target": "cluster-decomposition",
+      "trait_target_rationale": "Five-or-six-specifier monster (Level 3 capstone). The hardest cluster sentence in the calibration set; requires the full decomposer + pronoun-resolution discipline.",
+      "stimulus_pending_ocr": false,
+      "source_anchor": {
+        "primary": "Curriculum/Main Conclusion/Notes/Cluster Sentences Review.docx — most-clustered Level 3 example, distinct from M5.4 Alex/Jordan walkthrough",
+        "audit_tier": "S",
+        "ocr_required": false
+      },
+      "stimulus": "Check out that gap between “nickel” (the noun) and “came” (the verb)! The larger the gap, the easier it is to lose track of the sentence. This leads us to our greatest cluster sentence ally, the comma. The easiest way to overcome the difficulty of separated nouns and verbs is with awesome comma tricks.",
+      "ocr_status": "captured"
+    }
+  ],
+  "trait_coverage_M1": {
+    "T1": [
+      "MC-CAL-M1-Q1",
+      "MC-CAL-M1-Q8"
+    ],
+    "T2": [
+      "MC-CAL-M1-Q2",
+      "MC-CAL-M1-Q10"
+    ],
+    "T3": [
+      "MC-CAL-M1-Q3"
+    ],
+    "T4": [
+      "MC-CAL-M1-Q4"
+    ],
+    "T5": [
+      "MC-CAL-M1-Q5"
+    ],
+    "T6": [
+      "MC-CAL-M1-Q6"
+    ],
+    "T7": [
+      "MC-CAL-M1-Q7"
+    ],
+    "T-Concession": [
+      "MC-CAL-M1-Q9"
+    ],
+    "rule": "G2.CALIBRATION selection rule #4: ≥1 question per Trap Master trait T1-T7. PASS — all 7 traits covered, with overlap on T1 and T2 from the AP Answer Key items.",
+    "concession_supplemental": "MC-CAL-M1-Q9 isn't a trap-trait but an explicit concession-handling check; calibrates the Trojan Horse Concession habit from Lesson 1.8 separate from the 7-trait taxonomy."
+  },
+  "selection_rules_audit": {
+    "rule_1_calibration_only_flag": "PASS — every item carries calibration_only: true",
+    "rule_2_disjoint_from_canonical_20": "PASS — main_conclusion_student_dup1.docx is distinct from MCFIRST + main_conclusion_questions + main_conclusion_answer_key. AP Answer Key items {5,6,8} not in canonical 20.",
+    "rule_3_disjoint_from_drills": "PASS — none of the source files appear in MC-DRL-3.4 / 3.5 / 3.7 source lists",
+    "rule_4_trait_coverage_t1_t7": "PASS — T1 through T7 all covered",
+    "rule_5_build_error_on_violation": "Enforced by scripts/import-content.ts parity check",
+    "rule_6_item_level_partition": "PASS — AP Answer Key items partitioned per G3.M1.13-AP-PARTITION REVISED: {2,3,4} → Drill 3.2; {5,6,8} → M1.13 Q8/Q9/Q10; item 7 skipped; item 9 reserved for T7 deep-dive"
+  },
+  "open_items_for_capstone_build": [
+    "Stimulus text for MC-CAL-M1-Q1 through MC-CAL-M1-Q7 (main_conclusion_student_dup1.docx Q1-Q7) — pending DOCX extraction at Capstone.tsx build time. Trait-target tags + structure_family already locked.",
+    "Stimulus text for MC-CAL-M5-Q1 through MC-CAL-M5-Q5 (Cluster Sentences Review variants) — pending DOCX extraction at M5 build time.",
+    "Five-choice answer-choice sets for all 15 calibration items — authored at Capstone.tsx build time using the Joshua-reviews-batch pattern (G2.SIM-4.2-AC) at smaller scale (15 items × 4 distractors = 60 distractor drafts, Joshua reviews in one pass)."
+  ]
+}

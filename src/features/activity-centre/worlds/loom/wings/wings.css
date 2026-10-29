@@ -1,0 +1,22 @@
+/*
+ * The loom's two wings. Same archive, so they inherit the palette from `.loom`
+ * and add only what the main room does not have.
+ */
+
+.lo-wing {
+  overflow-y: auto;
+}
+
+/* The phrase on the decode bench, with no passage behind it. Set on the room
+   rather than on paper: it has been lifted off the sheet to be worked on. */
+.lo-phrase-alone {
+  font-family: var(--ac-serif, Georgia, "Times New Roman", ui-serif, serif);
+  color: hsl(var(--lo-paper));
+  text-shadow: 0 0 24px hsl(var(--lo-thread) / 0.28);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lo-button {
+    transition-duration: 1ms !important;
+  }
+}
