@@ -878,7 +878,8 @@ describe('RcHubSurface autostart', () => {
     await screen.findByRole('button', { name: 'Review passages' });
     const workspace = document.querySelector<HTMLElement>('.rc-setup-workspace')!;
     expect(workspace.firstElementChild).toHaveClass('rc-config-groups');
-    expect(screen.getByRole('combobox', { name: 'Lookup PrepTest' })).toBeInTheDocument();
+    expect(screen.getByRole('combobox', { name: 'Find a passage' })).toBeInTheDocument();
+    expect(workspace).not.toContainElement(screen.getByRole('combobox', { name: 'Find a passage' }));
     expect(screen.queryByRole('button', { name: /Change passage selection/ })).not.toBeInTheDocument();
     expect(within(workspace).getByRole('button', { name: /^Customize drill$/ })).toHaveAccessibleName('Customize drill');
     expect(screen.queryByText('Accommodations')).not.toBeInTheDocument();
@@ -2048,17 +2049,26 @@ describe('RC direct passage lookup', () => {
     sessionStorage.clear(); auth.id = 'owner'; navigate.mockClear(); createSession.mockClear(); loadPassages.mockClear();
     getSession.mockReset().mockResolvedValue(null); adoption.enabled = false; adoption.sessions = [];
   });
+  const finder = () => screen.getByRole('combobox', { name: 'Find a passage' });
+  const lookupRegion = () => screen.getByRole('region', { name: 'Have a passage in mind?' });
+  /** Types into the finder and presses Enter, the keyboard path a student uses. */
+  const enterLookup = (text: string) => {
+    fireEvent.change(finder(), { target: { value: text } });
+    fireEvent.keyDown(finder(), { key: 'Enter' });
+  };
+  /** Steps PrepTest, then section, then passage, the way the three selects did. */
   const chooseAddress = (pt: string) => {
-    fireEvent.change(screen.getByRole('combobox', { name: 'Lookup PrepTest' }), { target: { value: pt } });
-    fireEvent.change(screen.getByRole('combobox', { name: 'Lookup section' }), { target: { value: '1' } });
-    fireEvent.change(screen.getByRole('combobox', { name: 'Lookup passage' }), { target: { value: '1' } });
+    enterLookup(pt);
+    enterLookup('1');
+    enterLookup('1');
   };
   it('requires a complete authoritative address and reviews exact IDs without starting or revealing', async () => {
     mount('/classroom/drill?count=3');
     await waitFor(() => expect(screen.getByRole('button', { name: 'Review passages' })).toBeEnabled());
-    fireEvent.change(screen.getByRole('combobox', { name: 'Lookup PrepTest' }), { target: { value: '141' } });
+    enterLookup('141');
     expect(screen.getByRole('button', { name: 'Review passages' })).toBeDisabled();
     chooseAddress('141');
+    expect(within(lookupRegion()).getByRole('status')).toHaveTextContent('PT 141 · Section 1 · Passage 1');
     previewDrill();
     await screen.findByRole('region', { name: 'Selected reading set' });
     expect(loadPassages.mock.calls.at(-1)![0]).toEqual([1201]);
@@ -2107,7 +2117,7 @@ describe('RC direct passage lookup', () => {
     fireEvent.click(screen.getByRole('checkbox', { name: /Anticipation/ }));
     commitDrawerIfOpen();
     await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument());
-    expect(screen.getByRole('combobox', { name: 'Lookup PrepTest' })).toHaveValue('142');
+    expect(within(lookupRegion()).getByRole('status')).toHaveTextContent('PT 142 · Section 1 · Passage 1');
     previewDrill(); await screen.findByRole('button', { name: 'Start drill' });
     expect(loadPassages.mock.calls.at(-1)![0]).toEqual([1202]);
     editSetup();
@@ -2120,6 +2130,67 @@ describe('RC direct passage lookup', () => {
     await waitFor(() => expect(createSession).toHaveBeenCalledTimes(1));
     expect(createSession.mock.calls[0][1]).toEqual(original);
     expect(createSession.mock.calls[0][0].source).toBe(mode === 'manual' ? 'manual' : 'adaptive');
+  });
+
+  it('restores the exact reviewed IDs when Backspace steps an incomplete lookup back to empty', async () => {
+    mount('/classroom/drill?count=2');
+    await waitFor(() => expect(screen.getByRole('button', { name: 'Review passages' })).toBeEnabled());
+    previewDrill(); await screen.findByRole('region', { name: 'Selected reading set' });
+    const original = [...loadPassages.mock.calls.at(-1)![0]];
+    const calls = loadPassages.mock.calls.length;
+    editSetup();
+    enterLookup('142');
+    expect(within(lookupRegion()).getByRole('status')).toHaveTextContent('PT 142. Choose a section and passage to continue.');
+    expect(screen.getByRole('button', { name: 'Review passages' })).toBeDisabled();
+    fireEvent.keyDown(finder(), { key: 'Backspace' });
+    expect(within(lookupRegion()).queryByRole('status')).not.toBeInTheDocument();
+    expect(screen.getByRole('group', { name: 'Passages' })).toHaveTextContent('2');
+    previewDrill(); await screen.findByRole('region', { name: 'Selected reading set' });
+    expect(loadPassages).toHaveBeenCalledTimes(calls);
+    fireEvent.click(screen.getByRole('button', { name: 'Start drill' }));
+    await waitFor(() => expect(createSession).toHaveBeenCalledTimes(1));
+    expect(createSession.mock.calls[0][1]).toEqual(original);
+    expect(createSession.mock.calls[0][0].source).toBe('adaptive');
+  });
+  it('never commits an address the index does not hold and keeps a partial address blocked', async () => {
+    mount('/classroom/drill?count=3');
+    await waitFor(() => expect(screen.getByRole('button', { name: 'Review passages' })).toBeEnabled());
+    enterLookup('141 2 1');
+    expect(screen.getByRole('listbox')).toBeInTheDocument();
+    expect(screen.getByText(/PT 141 has no Reading Comprehension section 2/)).toBeInTheDocument();
+    expect(within(lookupRegion()).queryByRole('status')).not.toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Review passages' })).toBeEnabled();
+    enterLookup('141 1');
+    expect(within(lookupRegion()).getByRole('status')).toHaveTextContent('PT 141 · Section 1. Choose a passage to continue.');
+    expect(screen.getByRole('button', { name: 'Review passages' })).toBeDisabled();
+    enterLookup('141 1 9');
+    expect(screen.getByText(/has no passage 9/)).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Review passages' })).toBeDisabled();
+    expect(loadPassages).not.toHaveBeenCalled();
+  });
+  it('browses and searches metadata only, without loading text, recording exposure or starting', async () => {
+    const exposure = await import('../api/rcExposure');
+    vi.mocked(exposure.recordRcPassageExposure).mockClear();
+    mount('/classroom/drill?count=1');
+    await waitFor(() => expect(screen.getByRole('button', { name: 'Review passages' })).toBeEnabled());
+    fireEvent.change(finder(), { target: { value: 'opening words' } });
+    // Scoped to the finder: the right panel's native selects own options too.
+    expect(within(screen.getByRole('listbox')).queryAllByRole('option')).toHaveLength(0);
+    expect(screen.getByText(/No passage titles or topics match/)).toBeInTheDocument();
+    fireEvent.change(finder(), { target: { value: 'science' } });
+    expect(within(screen.getByRole('listbox')).getAllByRole('option')).toHaveLength(3);
+    fireEvent.keyDown(finder(), { key: 'ArrowDown' });
+    fireEvent.keyDown(finder(), { key: 'ArrowUp' });
+    const active = document.getElementById(finder().getAttribute('aria-activedescendant')!);
+    expect(active).toHaveAttribute('role', 'option');
+    expect(active).toHaveAttribute('aria-selected', 'false');
+    fireEvent.keyDown(finder(), { key: 'Escape' });
+    expect(finder()).toHaveAttribute('aria-expanded', 'false');
+    expect(loadPassages).not.toHaveBeenCalled();
+    expect(createSession).not.toHaveBeenCalled();
+    expect(exposure.recordRcPassageExposure).not.toHaveBeenCalled();
+    expect(navigate).not.toHaveBeenCalled();
+    expect(screen.getByRole('button', { name: 'Review passages' })).toBeEnabled();
   });
 
   it('keeps strict launch closed and explains a failed saved-answer history read', async () => {
