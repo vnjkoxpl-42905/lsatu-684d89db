@@ -8,7 +8,7 @@ const question: RcQuestionIndexEntry = {
   questionType: "Main point", questionTypeFamily: "Global", difficulty: 3, features: [], prompt: null,
 };
 const session: RcDrillSessionRow = {
-  id: "session-1", user_id: "student-1", config: {}, passage_ids: [20], status: "completed",
+  id: "session-1", user_id: "student-1", config: { resultsRevealedAt: '2026-09-02T00:00:00Z' }, passage_ids: [20], status: "completed",
   excluded_from_analytics: false, started_at: "2026-09-01T00:00:00Z", completed_at: "2026-09-02T00:00:00Z",
 };
 function attempt(overrides: Partial<RcAttemptRow> = {}): RcAttemptRow {
@@ -20,6 +20,28 @@ function attempt(overrides: Partial<RcAttemptRow> = {}): RcAttemptRow {
 }
 
 describe("RC Review adapter", () => {
+  it('does not leak a completed unrevealed miss, while retaining an independent flag without answer fields', () => {
+    const hidden = { ...session, config: {} };
+    expect(buildRcReviewQueue([attempt()], [hidden], [question])).toEqual([]);
+    expect(buildRcReviewQueue([attempt({ flagged: true })], [hidden], [question])).toMatchObject([{ reasons: ['flagged'], firstAnswer: null, latestAnswer: null, firstMissAt: null }]);
+  });
+  it.each(['column', 'config'])('excludes active protected timed work but retains completed released %s sittings', (kind) => {
+    const timedSession = { ...session, config: kind === 'config' ? { timedSectionSittingId: 'timed' } : {},
+      ...(kind === 'column' ? { timed_section_sitting_id: 'timed' } : {}) } as RcDrillSessionRow;
+    expect(buildRcReviewQueue([attempt({ flagged: true })], [{ ...timedSession, status: 'in_progress' }], [question])).toEqual([]);
+    expect(buildRcReviewQueue([attempt()], [timedSession], [question])).toMatchObject([{
+      reasons: ['missed'], firstAnswer: 'C', latestAnswer: 'C',
+      href: '/rc/drill?sessionId=session-1&review=1&q=101',
+    }]);
+    expect(buildRcReviewQueue([attempt({ flagged: true })], [{ ...timedSession, completed_at: null }], [question])).toEqual([]);
+    expect(buildRcReviewQueue([attempt({ flagged: true })], [{ ...timedSession, practice_test_run_id: 'parent' }], [question])).toEqual([]);
+    expect(buildRcReviewQueue([attempt({ flagged: true })], [{ ...timedSession, config: { ...timedSession.config as object, practiceTestRunId: 'parent' } }], [question])).toEqual([]);
+  });
+  it('fails closed for malformed timed provenance even when a flag exists', () => {
+    expect(buildRcReviewQueue([attempt({ flagged: true })], [{ ...session, config: { timedSectionSittingId: 42 } }], [question])).toEqual([]);
+    const legacy = { ...session, status: 'in_progress', timed_section_sitting_id: '', config: { timedSectionSittingId: 'timed' } } as RcDrillSessionRow;
+    expect(buildRcReviewQueue([attempt({ flagged: true })], [legacy], [question])).toEqual([]);
+  });
   it("preserves first and later answers with missed and flagged reasons", () => {
     const items = buildRcReviewQueue([
       attempt(),

@@ -113,8 +113,8 @@ describe("classroom rail access", () => {
     await renderShell('/classroom');
     const group = railButton(/^My Work/).parentElement!;
     const labels = Array.from(group.querySelectorAll('button')).map((button) => button.textContent);
-    expect(labels[0]).toMatch(/^Progress/);
-    expect(railButton(/^Review/)).toBeUndefined();
+    expect(labels[0]).toMatch(/^Review/);
+    expect(railButton(/^Progress/)).toBeUndefined();
     expect(railButton(/^My Work/).nextElementSibling).toHaveTextContent('Reading Center');
     expect(railPrefs.hidden).toEqual(['my-work', 'review']);
   });
@@ -140,12 +140,12 @@ describe("classroom rail access", () => {
   });
   it("keeps a fully locked destination reachable so its page can explain the lock", async () => {
     await renderShell("/classroom");
-    const progress = railButton(/^Progress/);
-    expect(progress).not.toBeDisabled();
-    expect(progress).toHaveTextContent("(locked)");
-    expect(progress).toHaveAttribute("title", "Progress is locked for your account");
-    fireEvent.click(progress);
-    expect(screen.getByTestId("where")).toHaveTextContent("/progress/overview");
+    const library = railButton(/^Library/);
+    expect(library).not.toBeDisabled();
+    expect(library).toHaveTextContent("(locked)");
+    expect(library).toHaveAttribute("title", "Library is locked for your account");
+    fireEvent.click(library);
+    expect(screen.getByTestId("where")).toHaveTextContent("/library/lessons");
   });
 
   it("opens a partly locked destination on a tab the account can use", async () => {
@@ -166,8 +166,8 @@ describe("classroom rail access", () => {
   it("marks the current destination for assistive tech", async () => {
     permissions.has_analytics_access = true;
     await renderShell("/progress/history");
-    expect(railButton(/^Progress/)).toHaveAttribute("aria-current", "page");
-    expect(railButton(/^Review/)).not.toHaveAttribute("aria-current");
+    expect(railButton(/^Review/)).toHaveAttribute("aria-current", "page");
+    expect(railButton(/^Progress/)).toBeUndefined();
   });
 
   it("keeps the student Schedule destination out of the teacher rail", async () => {

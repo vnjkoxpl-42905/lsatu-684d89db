@@ -32,7 +32,7 @@ function AreaCard({ label, result, unavailable, partial }: { label: string; resu
 
 /** Shared student/teacher view of the same student-scoped, first-answer ledger. */
 export default function FirstAnswerProgressPanel({ studentId, hideWindowControl = false }: { studentId?: string; hideWindowControl?: boolean }) {
-  const [window, setWindow] = useProgressWindow(!studentId);
+  const [window, setWindow] = useProgressWindow();
   const { resolution, progress, loading, error, refresh } = useFirstAnswerProgress(window, studentId);
 
   return (

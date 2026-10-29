@@ -1,3 +1,4 @@
+import { reviewRailLanding } from '@/lib/railCatalog';
 import { notesArchiveOrigin, notesDetailRoute, validateNotesReturnTo } from "@/lib/myWorkNotesNavigation";
 import * as React from "react";
 import { useMotionValue } from "framer-motion";
@@ -265,8 +266,8 @@ function ClassroomSidebar({
         };
       case "review":
         return {
-          active: location.pathname.startsWith("/review") || activeSection === "journal" || activeSection === "flagged",
-          onClick: () => go(permissions.loading ? "/review" : destinationLandingPath("review", permissions)),
+          active: location.pathname.startsWith("/review") || location.pathname.startsWith("/progress") || location.pathname === "/analytics" || location.pathname === "/history" || activeSection === "journal" || activeSection === "flagged",
+          onClick: () => go(permissions.loading ? "/review" : reviewRailLanding(railPrefs, permissions.is_admin || permissions.has_analytics_access)),
         };
       case "progress":
         return {
@@ -570,7 +571,8 @@ function StandardSectionList({
   const itemsQuery = useClassroomItems();
   const homeworkQuery = useStudentAssignments();
   const taQuery = useStudentTAAssignments();
-  const flaggedQuery = useFlagged();
+  const flaggedPermissions = useUserPermissions();
+  const flaggedQuery = useFlagged({ enabled: !flaggedPermissions.loading && (flaggedPermissions.is_admin || flaggedPermissions.has_flagged_access) });
   const [flagFilter, setFlagFilter] = React.useState("");
 
   const retainedItems = useRetainedValue(
@@ -995,7 +997,7 @@ export default function ClassroomLayout() {
   const destinationName = location.pathname.startsWith("/my-work") ? "My Work"
     : location.pathname.startsWith("/practice") ? "Practice"
     : location.pathname.startsWith("/review") ? "Review"
-    : location.pathname.startsWith("/progress") ? "Progress"
+    : location.pathname.startsWith("/progress") ? "Review"
     : location.pathname.startsWith("/library") ? "Library"
     : null;
   // Messages owns the whole stage beside the rail: no section list, and none of

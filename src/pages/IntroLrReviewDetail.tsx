@@ -1,3 +1,4 @@
+import { safeReviewHubReturn } from '@/lib/reviewHubReturn';
 import * as React from "react";
 import { ArrowLeft } from "lucide-react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
@@ -36,8 +37,7 @@ export default function IntroLrReviewDetail() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const requestedReturn = searchParams.get("returnTo");
-  const returnTo = requestedReturn?.split("?")[0] === "/review/to-review"
-    ? requestedReturn : "/review/to-review?reason=missed";
+  const returnTo = safeReviewHubReturn(requestedReturn) ?? "/review/to-review?reason=missed";
   const [attempt, setAttempt] = React.useState<IntroLrAttempt | null>(null);
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState<string | null>(null);

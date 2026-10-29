@@ -1,3 +1,4 @@
+import { validateHubOriginOrOrdinary } from '@/lib/reviewHubReturn';
 import * as React from "react";
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
@@ -232,8 +233,8 @@ function DrillContent() {
 
   // Context params for header/breadcrumbs (survive refresh)
   const origin = searchParams.get('origin');
-  const returnTo = searchParams.get('returnTo');
-  const drillReturnTo = state.returnTo ?? (returnTo && returnTo.startsWith('/') && !returnTo.startsWith('//') ? returnTo : undefined);
+  const returnTo = validateHubOriginOrOrdinary(searchParams.get('returnTo'));
+  const drillReturnTo = validateHubOriginOrOrdinary(state.returnTo) ?? validateHubOriginOrOrdinary(returnTo);
   // Which run and leg this section belongs to, when it belongs to one. Comes
   // from the launch rather than from returnTo: that string is a routing hint
   // and nothing load-bearing may depend on it. A refreshed leg used to lose
@@ -334,8 +335,8 @@ function DrillContent() {
   const genericFinalizedRef = React.useRef(false);
 
   const bootcampPracticeReturnTo =
-    returnTo && returnTo.startsWith('/') && !returnTo.startsWith('//')
-      ? returnTo
+    validateHubOriginOrOrdinary(returnTo)
+      ? validateHubOriginOrOrdinary(returnTo)
       : '/bootcamp/intro-to-lr/practice-drills';
 
   React.useEffect(() => {

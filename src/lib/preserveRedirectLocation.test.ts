@@ -15,10 +15,10 @@ describe("legacy redirect context", () => {
   });
   it("opens an old RC History link with the RC filter selected", () => {
     expect(redirectLegacyHistoryLocation("?area=rc&historyResult=missed", "#row"))
-      .toBe("/progress/history?historyResult=missed&historyArea=RC#row");
+      .toBe("/review/history?historyResult=missed&historyArea=RC#row");
   });
   it("keeps an explicit new History area when both formats occur", () => {
     expect(redirectLegacyHistoryLocation("?area=rc&historyArea=LR", ""))
-      .toBe("/progress/history?historyArea=LR");
+      .toBe("/review/history?historyArea=LR");
   });
 });

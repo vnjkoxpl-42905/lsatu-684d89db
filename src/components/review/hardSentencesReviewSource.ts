@@ -47,39 +47,46 @@ export function hardSentencesQueueItem(attempt: HardSentencesAttempt): ReviewQue
   };
 }
 
-async function loadCluster(userId: string): Promise<ReviewQueueItem[]> {
+async function loadCluster(userId: string): Promise<HardSentencesReviewResult> {
   const items: ReviewQueueItem[] = [];
+  let unavailableCount = 0;
   for (let offset = 0; ; offset += 500) {
     const { data, error } = await supabase.from('intro_lr_attempts').select('*').eq('user_id', userId)
       .eq('drill_id', HS_DRILL_ID).eq('correct', false).order('id').range(offset, offset + 499);
     if (error) throw error;
     if (!Array.isArray(data)) throw new Error('Hard Sentences cluster source returned an invalid response.');
-    for (const raw of data) { const attempt = parseHardSentencesCluster(raw, userId); if (attempt) items.push(hardSentencesQueueItem(attempt)); }
-    if (data.length < 500) return items;
+    for (const raw of data) {
+      try { const attempt = parseHardSentencesCluster(raw, userId); if (attempt) items.push(hardSentencesQueueItem(attempt)); }
+      catch { unavailableCount++; }
+    }
+    if (data.length < 500) return { items, unavailable: unavailableCount ? [`${unavailableCount} Hard Sentences cluster submissions unavailable`] : [] };
   }
 }
 
-async function loadCapstone(userId: string): Promise<ReviewQueueItem[]> {
+async function loadCapstone(userId: string): Promise<HardSentencesReviewResult> {
   const items: ReviewQueueItem[] = [];
+  let unavailableCount = 0;
   for (let offset = 0; ; offset += 500) {
     const { data, error } = await supabase.from('bootcamp_kv').select('record_id,data').eq('user_id', userId)
       .eq('table_name', 'calibration_attempts').order('record_id').range(offset, offset + 499);
     if (error) throw error;
     if (!Array.isArray(data)) throw new Error('Hard Sentences capstone source returned an invalid response.');
     for (const row of data) {
-      if (!row || typeof row.record_id !== 'string') throw new Error('Invalid saved capstone envelope.');
-      const attempt = parseHardSentencesCapstone(row.data, row.record_id, userId);
-      if (attempt) items.push(hardSentencesQueueItem(attempt));
+      try {
+        if (!row || typeof row.record_id !== 'string') throw new Error('Invalid saved capstone envelope.');
+        const attempt = parseHardSentencesCapstone(row.data, row.record_id, userId);
+        if (attempt) items.push(hardSentencesQueueItem(attempt));
+      } catch { unavailableCount++; }
     }
-    if (data.length < 500) return items;
+    if (data.length < 500) return { items, unavailable: unavailableCount ? [`${unavailableCount} Hard Sentences capstone submissions unavailable`] : [] };
   }
 }
 
 export async function loadHardSentencesReview(userId: string): Promise<HardSentencesReviewResult> {
   const results = await Promise.allSettled([loadCluster(userId), loadCapstone(userId)]);
   return {
-    items: results.flatMap(result => result.status === 'fulfilled' ? result.value : []).sort((a, b) => b.lastActivityAt.localeCompare(a.lastActivityAt)),
-    unavailable: results.flatMap((result, index) => result.status === 'rejected' ? [index === 0 ? 'Hard Sentences cluster attempts' : 'Hard Sentences capstone attempts'] : []),
+    items: results.flatMap(result => result.status === 'fulfilled' ? result.value.items : []).sort((a, b) => b.lastActivityAt.localeCompare(a.lastActivityAt)),
+    unavailable: results.flatMap((result, index) => result.status === 'rejected' ? [index === 0 ? 'Hard Sentences cluster attempts' : 'Hard Sentences capstone attempts'] : result.value.unavailable),
   };
 }
 

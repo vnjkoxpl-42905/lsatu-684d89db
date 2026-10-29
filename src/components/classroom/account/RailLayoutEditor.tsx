@@ -24,7 +24,7 @@ import { railItemLocked } from "@/lib/destinationAccess";
 // low-stakes preference, so there is no draft/Save/Discard state to lose.
 
 export default function RailLayoutEditor() {
-  const { prefs, save, saving, loading, error, retry, canSave, ownerId } = useRailPrefs();
+  const { projectedPrefs: prefs, save, saving, loading, error, retry, canSave, ownerId } = useRailPrefs();
   const permissions = useUserPermissions();
   const [justSaved, setJustSaved] = React.useState(false);
   const savedTimer = React.useRef<number | null>(null);

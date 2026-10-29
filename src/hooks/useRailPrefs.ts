@@ -3,13 +3,17 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import type { Json } from "@/integrations/supabase/types";
 import { useAuth } from "@/contexts/AuthContext";
-import { defaultRailPrefs, migrateLegacyRailPrefs, normalizeRailPrefs, type RailPrefs } from "@/lib/railCatalog";
+import { defaultRailPrefs, migrateLegacyRailPrefs, normalizeRailPrefs, projectReviewRailPrefs, type RailPrefs } from "@/lib/railCatalog";
 
 const RAIL_PREFS_KEY = "classroom_rail_v2";
 type ProfileLayout = { class_id: string; layout_prefs: Json | null };
 
 function layoutObject(raw: Json | null): Record<string, Json> {
   return raw && typeof raw === "object" && !Array.isArray(raw) ? raw : {};
+}
+
+function storedRailPrefs(layout: Record<string, Json>): RailPrefs {
+  return layout[RAIL_PREFS_KEY] ? normalizeRailPrefs(layout[RAIL_PREFS_KEY]) : migrateLegacyRailPrefs(layout.classroom_rail);
 }
 
 async function requireLayoutOwner(ownerId: string): Promise<void> {
@@ -60,17 +64,7 @@ export function useRailPrefs() {
     queryFn: async (): Promise<RailPrefs> => {
       const row = await readLayout(userId!);
       const raw = layoutObject(row.layout_prefs);
-      if (raw[RAIL_PREFS_KEY]) return normalizeRailPrefs(raw[RAIL_PREFS_KEY]);
-      try {
-        return await writeLayout(userId!, row, migrateLegacyRailPrefs(raw.classroom_rail));
-      } catch (error) {
-        // A second tab or device can migrate (or save) between this read and
-        // the guarded write, which then matches no row. Its layout is the newer
-        // one: adopt it instead of failing or migrating a second time.
-        const latest = layoutObject((await readLayout(userId!)).layout_prefs)[RAIL_PREFS_KEY];
-        if (latest) return normalizeRailPrefs(latest);
-        throw error;
-      }
+      return storedRailPrefs(raw);
     },
   });
   const save = useMutation({
@@ -79,11 +73,11 @@ export function useRailPrefs() {
       // `next` was built from the layout on screen. If another device saved
       // since, writing it would silently undo that newer choice; refuse, and
       // onError reloads what is actually stored.
-      const stored = layoutObject(row.layout_prefs)[RAIL_PREFS_KEY];
-      if (stored && JSON.stringify(normalizeRailPrefs(stored)) !== JSON.stringify(normalizeRailPrefs(base))) {
+      const stored = storedRailPrefs(layoutObject(row.layout_prefs));
+      if (JSON.stringify(stored) !== JSON.stringify(normalizeRailPrefs(base))) {
         throw new Error("Your sidebar layout changed on another device. Review it and try again.");
       }
-      return writeLayout(ownerId, row, next);
+      return writeLayout(ownerId, row, projectReviewRailPrefs(next));
     },
     onSuccess: (acknowledged, { ownerId }) => qc.setQueryData(["rail-prefs", ownerId], acknowledged),
     onError: (_error, { ownerId }) => {
@@ -94,6 +88,7 @@ export function useRailPrefs() {
   const canSave = !!userId && query.isSuccess && !query.isFetching && !save.isPending;
   return {
     prefs,
+    projectedPrefs: useMemo(() => projectReviewRailPrefs(prefs), [prefs]),
     ownerId: userId,
     loading: !!userId && query.isPending,
     error: query.error,

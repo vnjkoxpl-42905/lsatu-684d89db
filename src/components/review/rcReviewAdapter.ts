@@ -1,6 +1,17 @@
 import type { RcAttemptRow, RcDrillSessionRow } from "@/features/rc/api/rcSupabase.types";
 import type { RcQuestionIndexEntry } from "@/features/rc/lib/rcTypes";
 import type { ReviewQueueItem } from "./reviewQueueModel";
+import { rcResultReleased, resolveRcPracticeTestParent, type RcSessionSourceRow } from '@/lib/firstAnswerProgress';
+
+function standaloneSession(session: RcDrillSessionRow): boolean {
+  const source = { ...session, practice_test_run_id: session.practice_test_run_id ?? null } as RcSessionSourceRow;
+  if (resolveRcPracticeTestParent(source).kind !== 'none') return false;
+  const config = session.config && typeof session.config === 'object' && !Array.isArray(session.config) ? session.config as Record<string, unknown> : {};
+  const timed = (session as RcDrillSessionRow & { timed_section_sitting_id?: unknown }).timed_section_sitting_id || config.timedSectionSittingId;
+  // Active protected work cannot resume through a standalone drill link. A completed
+  // timed sitting follows the existing player release rule, including legacy config.
+  return !timed || rcResultReleased(source, new Set());
+}
 
 /** Completed and active standalone drills. Active flags resume practice without opening answer review. */
 export function buildRcReviewQueue(
@@ -9,8 +20,7 @@ export function buildRcReviewQueue(
   questionIndex: RcQuestionIndexEntry[],
 ): ReviewQueueItem[] {
   const validSessions = new Map(sessions
-    .filter((session) => (session.status === "completed" || session.status === "in_progress") && !session.practice_test_run_id &&
-      !(session.config && typeof session.config === "object" && "practiceTestRunId" in session.config && session.config.practiceTestRunId))
+    .filter((session) => (session.status === "completed" || session.status === "in_progress") && standaloneSession(session))
     .map((session) => [session.id, session]));
   const questions = new Map(questionIndex.map((question) => [question.questionId, question]));
   const groups = new Map<string, RcAttemptRow[]>();
@@ -30,8 +40,10 @@ export function buildRcReviewQueue(
     group.sort((a, b) => a.created_at.localeCompare(b.created_at) || a.id.localeCompare(b.id));
     const first = group.find((attempt) => attempt.is_first_attempt) ?? group[0];
     const last = group.at(-1)!;
-    const completed = validSessions.get(first.session_id)?.status === "completed";
-    const firstMiss = group.find((attempt) => attempt.selected && attempt.is_correct === false);
+    const session = validSessions.get(first.session_id)!;
+    const completed = session.status === "completed";
+    const released = rcResultReleased({ ...session, practice_test_run_id: session.practice_test_run_id ?? null }, new Set());
+    const firstMiss = released ? group.find((attempt) => attempt.selected && attempt.is_correct === false) : undefined;
     const flagged = last.flagged === true;
     if (!(completed && firstMiss) && !flagged) continue;
     const question = questions.get(first.question_id)!;
@@ -46,8 +58,8 @@ export function buildRcReviewQueue(
       qtype: question.questionType || null,
       reasons,
       sources: ["rc_attempts"],
-      firstAnswer: first.selected,
-      latestAnswer: [...group].reverse().find((attempt) => attempt.selected)?.selected ?? null,
+      firstAnswer: released ? first.selected : null,
+      latestAnswer: released ? [...group].reverse().find((attempt) => attempt.selected)?.selected ?? null : null,
       correctAnswer: null,
       firstMissAt: completed ? firstMiss?.created_at ?? null : null,
       lastActivityAt: last.created_at,

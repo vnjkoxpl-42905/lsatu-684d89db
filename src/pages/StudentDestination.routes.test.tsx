@@ -1,6 +1,6 @@
 import React from "react";
 import { cleanup, render, screen } from "@testing-library/react";
-import { MemoryRouter, Route, Routes, useLocation } from "react-router-dom";
+import { MemoryRouter, Navigate, Route, Routes, useLocation } from "react-router-dom";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
@@ -27,6 +27,8 @@ vi.mock("@/integrations/supabase/client", () => ({
 }));
 import { TestingCentreGate } from "@/components/AssignmentGate";
 import ProtectedRoute from "@/components/ProtectedRoute";
+import { REVIEW_HUB_ROUTES as HUB, REVIEW_HUB_ALIASES, REVIEW_HISTORY_ALIAS } from '@/lib/reviewHubRoutes';
+import { preserveRedirectLocation, redirectLegacyHistoryLocation } from '@/lib/preserveRedirectLocation';
 import { DestinationIndex, StudentDestination } from "./StudentDestination";
 
 const NONE = {
@@ -42,16 +44,24 @@ function Where() {
   return <output data-testid="where">{`${pathname}${search}`}</output>;
 }
 
-/** The /progress and /library branches exactly as App.tsx composes them. */
+/** The /review/progress and /library branches exactly as App.tsx composes them. */
+function LegacyReviewRedirect({to, history = false}: {to: string; history?: boolean}) {
+  const {search,hash} = useLocation();
+  return <Navigate replace to={history ? redirectLegacyHistoryLocation(search,hash) : preserveRedirectLocation(to,search,hash)} />;
+}
 function renderAt(path: string) {
   return render(
     <QueryClientProvider client={new QueryClient({ defaultOptions: { queries: { retry: false } } })}>
     <MemoryRouter initialEntries={[path]}>
       <Routes>
-        <Route path="/progress" element={<ProtectedRoute allowSignedIn><StudentDestination destination="progress" /></ProtectedRoute>}>
-          <Route index element={<DestinationIndex destination="progress" />} />
-          <Route path="overview" element={<ProtectedRoute flag="has_analytics_access"><div>progress overview content</div></ProtectedRoute>} />
-          <Route path="history" element={<ProtectedRoute flag="has_analytics_access"><div>history content</div></ProtectedRoute>} />
+        <Route path={HUB.root.path} element={<ProtectedRoute allowSignedIn={HUB.root.allowSignedIn}><StudentDestination destination="review" /></ProtectedRoute>}>
+          <Route index element={<DestinationIndex destination="review" />} />
+          <Route path={HUB.queue.path} element={<ProtectedRoute allowSignedIn={HUB.queue.allowSignedIn}><div>review queue content</div></ProtectedRoute>} />
+          <Route path={HUB.journal.path} element={<ProtectedRoute flag={HUB.journal.flag}><div>journal content</div></ProtectedRoute>} />
+          <Route path={HUB.flagged.path} element={<ProtectedRoute flag={HUB.flagged.flag}><div>flagged content</div></ProtectedRoute>} />
+          <Route path={HUB.imported.path} element={<ProtectedRoute flag={[...HUB.imported.flags]}><div>imported content</div></ProtectedRoute>} />
+          <Route path={HUB.progress.path} element={<ProtectedRoute flag={HUB.analyticsFlag}><div>progress overview content</div></ProtectedRoute>} />
+          <Route path={HUB.history.path} element={<ProtectedRoute flag={HUB.analyticsFlag}><div>history content</div></ProtectedRoute>} />
         </Route>
         <Route path="/library" element={<ProtectedRoute allowSignedIn><StudentDestination destination="library" /></ProtectedRoute>}>
           <Route index element={<DestinationIndex destination="library" />} />
@@ -65,6 +75,8 @@ function renderAt(path: string) {
           <Route path="exams/attempts" element={<ProtectedRoute allowSignedIn><div>own exam attempts</div></ProtectedRoute>} />
           <Route path="exams/:examId" element={<TestingCentreGate><div>assigned exam detail</div></TestingCentreGate>} />
         </Route>
+        {REVIEW_HUB_ALIASES.map(({path,to}) => <Route key={path} path={path} element={<LegacyReviewRedirect to={to} />} />)}
+        <Route path={REVIEW_HISTORY_ALIAS} element={<LegacyReviewRedirect to="/review/history" history />} />
         <Route path="/auth" element={<Where />} />
       </Routes>
     </MemoryRouter>
@@ -85,16 +97,16 @@ describe("destination routes across auth and permission states", () => {
   it("renders nothing protected while auth is still resolving", () => {
     auth.user = null;
     auth.authReady = false;
-    renderAt("/progress/history?range=30d");
+    renderAt("/review/history?range=30d");
     expect(screen.queryByText("history content")).toBeNull();
-    expect(screen.queryByRole("heading", { name: "Progress" })).toBeNull();
+    expect(screen.queryByRole("heading", { name: "Review" })).toBeNull();
     expect(screen.queryByTestId("where")).toBeNull();
   });
 
   it("sends a signed-out deep link to sign-in with its full return path", () => {
     auth.user = null;
-    renderAt("/progress/history?range=30d");
-    expect(screen.getByTestId("where")).toHaveTextContent("/auth?returnTo=%2Fprogress%2Fhistory%3Frange%3D30d");
+    renderAt("/review/history?range=30d");
+    expect(screen.getByTestId("where")).toHaveTextContent("/auth?returnTo=%2Freview%2Fhistory%3Frange%3D30d");
   });
 
   it("renders no destination or content while permissions are unresolved", () => {
@@ -106,16 +118,16 @@ describe("destination routes across auth and permission states", () => {
 
   it("denies a locked direct URL and explains why, inside the destination", () => {
     permissions.has_classroom_access = true;
-    renderAt("/progress/history");
+    renderAt("/review/history");
     expect(screen.queryByText("history content")).toBeNull();
-    expect(screen.getByRole("heading", { name: "Progress" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Review" })).toBeInTheDocument();
     expect(screen.getByText("Not open yet")).toBeInTheDocument();
     expect(screen.getByText(/Sections with a lock aren't available/)).toBeInTheDocument();
   });
 
   it("opens an entitled direct URL on reload", () => {
     permissions.has_analytics_access = true;
-    renderAt("/progress/history");
+    renderAt("/review/history");
     expect(screen.getByText("history content")).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "History" })).toHaveAttribute("aria-current", "page");
   });
@@ -146,14 +158,14 @@ describe("destination routes across auth and permission states", () => {
   });
 
   it("explains unavailable access without guessing it was paused", () => {
-    renderAt("/progress");
+    renderAt("/review/progress");
     expect(screen.queryByText("Your access is paused")).toBeNull();
     expect(screen.getByText(/isn.t available to your account/)).toBeInTheDocument();
   });
   it("does not tell a practice-only Tier 3 student Joshua paused their Classroom access", () => {
     permissions.has_practice_access = true;
     permissions.has_drill_access = true;
-    renderAt("/progress");
+    renderAt("/review/progress");
     expect(screen.queryByText("Your access is paused")).toBeNull();
     expect(screen.getByText(/isn.t available to your account/)).toBeInTheDocument();
     expect(screen.queryByText("history content")).toBeNull();
@@ -182,7 +194,7 @@ describe("destination routes across auth and permission states", () => {
   });
   it("preserves opt-in local development access through the real nested gate", () => {
     vi.stubEnv("VITE_DEV_BYPASS_GATES", "1");
-    renderAt("/progress/history");
+    renderAt("/review/history");
     expect(screen.getByText("history content")).toBeInTheDocument();
   });
 
@@ -196,4 +208,29 @@ describe("destination routes across auth and permission states", () => {
     expect(assignment.requestedOwner).toBe("");
   });
 
+});
+
+describe('actual hub metadata route grants and aliases', () => {
+  it.each([0,1,2,3,4,5,6,7])('retains queue entry for every entitlement combination %s', (mask) => {
+    permissions.has_analytics_access = !!(mask&4); permissions.has_journal_access = !!(mask&2); permissions.has_flagged_access = !!(mask&1);
+    renderAt('/review/to-review');
+    expect(screen.getByText('review queue content')).toBeInTheDocument();
+    expect(!!screen.queryByRole('link',{name:'Progress'})).toBe(!!(mask&4));
+    expect(!!screen.queryByRole('link',{name:'Wrong-answer journal'})).toBe(!!(mask&2));
+    expect(!!screen.queryByRole('link',{name:'Flagged'})).toBe(!!(mask&1));
+  });
+  it.each(REVIEW_HUB_ALIASES.map(alias => [alias.path,alias.to]))('preserves period and anchor through canonical alias %s', (path,to) => {
+    permissions.has_analytics_access = true;
+    renderAt(`${path}?window=14#saved-answer-history-title`);
+    const target = to.startsWith('/review/history') ? 'history content' : 'progress overview content';
+    expect(screen.getByText(target)).toBeInTheDocument();
+    expect(screen.getByRole('link',{name:to.startsWith('/review/history')?'History':'Progress'})).toHaveAttribute('aria-current','page');
+  });
+  it('keeps the old History area filter through its metadata-backed alias', () => {
+    permissions.has_analytics_access = true; renderAt(`${REVIEW_HISTORY_ALIAS}?area=rc&window=7`);
+    expect(screen.getByText('history content')).toBeInTheDocument();
+  });
+  it.each([[HUB.progress.path,'progress overview content'],[HUB.history.path,'history content'],[HUB.journal.path,'journal content'],[HUB.flagged.path,'flagged content'],[HUB.imported.path,'imported content']])('denies protected child %s without its grant', (path,label) => {
+    renderAt(`${HUB.root.path}/${path}`); expect(screen.queryByText(label)).toBeNull(); expect(screen.getByText('Not open yet')).toBeInTheDocument();
+  });
 });

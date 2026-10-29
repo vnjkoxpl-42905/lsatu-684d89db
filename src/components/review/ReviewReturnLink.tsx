@@ -1,13 +1,12 @@
 import { Link, useLocation } from "react-router-dom";
+import { reviewHubReturnTo } from '@/lib/reviewHubReturn';
 
 export function reviewReturnTo(search: string): string | null {
-  const target = new URLSearchParams(search).get("returnTo");
-  if (!target || !/^\/review\/to-review(?:\?|$)/.test(target) || target.startsWith("//")) return null;
-  return target;
+  return reviewHubReturnTo(search);
 }
 
 export function ReviewReturnLink() {
   const { search } = useLocation();
   const target = reviewReturnTo(search);
-  return target ? <Link className="review-queue-return" to={target}>← Back to review queue</Link> : null;
+  return target ? <Link className="review-queue-return" to={target}>← Back to Review</Link> : null;
 }
