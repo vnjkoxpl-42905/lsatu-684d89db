@@ -1,0 +1,644 @@
+[
+  {
+    "practiceTest": "PT135",
+    "sectionNumber": 2,
+    "questionNumber": 1,
+    "questionType": "Principle-Conform",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Any museum that owns the rare stamp that features an airplane printed upside down should not display it. Ultraviolet light causes red ink to fade, and a substantial portion of the stamp is red. If the stamp is displayed, it will be damaged. It should be kept safely locked away, even though this will deny the public the chance to see it.",
+    "questionStem": "The reasoning above most closely conforms to which one of the following principles?",
+    "answerChoices": {
+      "A": "The public should judge the quality of a museum by the rarity of the objects in its collection.",
+      "B": "Museum display cases should protect their contents from damage caused by ultraviolet light.",
+      "C": "Red ink should not be used on items that will not be exposed to ultraviolet light.",
+      "D": "A museum piece that would be damaged by display should not be displayed.",
+      "E": "The primary purpose of a museum is to educate the public."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "Intermediate Conclusions",
+      "Plans / Recommendations",
+      "Principles in Answers",
+      "Weighing Tradeoffs"
+    ]
+  },
+  {
+    "practiceTest": "PT135",
+    "sectionNumber": 2,
+    "questionNumber": 2,
+    "questionType": "Main Conclusion",
+    "reasoningType": [],
+    "questionDifficulty": 3,
+    "stimulus": "Dietitian: Many diet-conscious consumers are excited about new “fake fat” products designed to give food the flavor and consistency of fatty foods, yet without fat’s harmful effects. Consumers who expect the new fat substitute to help them lose weight are likely to be disappointed, however. Research has shown that when people knowingly or unknowingly eat foods containing “fake fat,” they tend to take in at least as many additional calories as are saved by eating “fake fat.”",
+    "questionStem": "Which one of the following most accurately expresses the conclusion of the dietitian’s argument?",
+    "answerChoices": {
+      "A": "People tend to take in a certain number of daily calories, no matter what types of food they eat.",
+      "B": "Most consumers who think that foods with “fake fat” are more nutritious than fatty foods are destined to be disappointed.",
+      "C": "“Fake fat” products are likely to contribute to obesity more than do other foods.",
+      "D": "“Fake fat” in foods is probably not going to help consumers meet weight loss goals.",
+      "E": "“Fake fat” in foods is indistinguishable from genuine fat by most consumers on the basis of taste alone."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Important Pivot",
+      "Anti-Causal",
+      "Plans / Recommendations",
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT135",
+    "sectionNumber": 2,
+    "questionNumber": 3,
+    "questionType": "Strengthen",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Banking analyst: Banks often offer various services to new customers at no charge. But this is not an ideal business practice, since regular, long-term customers, who make up the bulk of the business for most banks, are excluded from these special offers.",
+    "questionStem": "Which one of the following, if true, most strengthens the banking analyst’s argument?",
+    "answerChoices": {
+      "A": "Most banks have similar charges for most services and pay similar interest rates on deposits.",
+      "B": "Banks do best when offering special privileges only to their most loyal customers.",
+      "C": "Offering services at no charge to all of its current customers would be prohibitively expensive for a bank.",
+      "D": "Once they have chosen a bank, people tend to remain loyal to that bank.",
+      "E": "Some banks that offer services at no charge to new customers are very successful."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion",
+      "Plans / Recommendations",
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT135",
+    "sectionNumber": 2,
+    "questionNumber": 4,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Panelist: Medical research articles cited in popular newspapers or magazines are more likely than other medical research articles to be cited in subsequent medical research. Thus, it appears that medical researchers’ judgments of the importance of prior research are strongly influenced by the publicity received by that research and do not strongly correspond to the research’s true importance.",
+    "questionStem": "The panelist’s argument is most vulnerable to criticism on the grounds that it",
+    "answerChoices": {
+      "A": "presents counterarguments to a view that is not actually held by any medical researcher",
+      "B": "fails to consider the possibility that popular newspapers and magazines do a good job of identifying the most important medical research articles",
+      "C": "takes for granted that coverage of medical research in the popular press is more concerned with the eminence of the scientists involved than with the content of their research",
+      "D": "fails to consider the possibility that popular newspapers and magazines are able to review only a minuscule percentage of medical research articles",
+      "E": "draws a conclusion that is logically equivalent to its premise"
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Famous Flaws",
+      "Explain Curious Fact",
+      "Alternatives",
+      "Medical"
+    ]
+  },
+  {
+    "practiceTest": "PT135",
+    "sectionNumber": 2,
+    "questionNumber": 5,
+    "questionType": "Method of Reasoning",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Lahar: We must now settle on a procedure for deciding on meeting agendas. Our club’s constitution allows three options: unanimous consent, majority vote, or assigning the task to a committee. Unanimous consent is unlikely. Forming a committee has usually led to factionalism and secret deals. Clearly, we should subject meeting agendas to majority vote.",
+    "questionStem": "Lahar’s argument does which one of the following?",
+    "answerChoices": {
+      "A": "rejects suggested procedures on constitutional grounds",
+      "B": "claims that one procedure is the appropriate method for reaching every decision in the club",
+      "C": "suggests a change to a constitution on the basis of practical considerations",
+      "D": "recommends a choice based on the elimination of alternative options",
+      "E": "supports one preference by arguing against those who have advocated alternatives"
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Abstract Answers",
+      "Ruling Out Options"
+    ]
+  },
+  {
+    "practiceTest": "PT135",
+    "sectionNumber": 2,
+    "questionNumber": 6,
+    "questionType": "Weaken",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Mayor: Local antitobacco activists are calling for expanded antismoking education programs paid for by revenue from heavily increased taxes on cigarettes sold in the city. Although the effectiveness of such education programs is debatable, there is strong evidence that the taxes themselves would produce the sought-after reduction in smoking. Surveys show that cigarette sales drop substantially in cities that impose stiff tax increases on cigarettes.",
+    "questionStem": "Which one of the following, if true, most undermines the reasoning in the argument above?",
+    "answerChoices": {
+      "A": "A city-imposed tax on cigarettes will substantially reduce the amount of smoking in the city if the tax is burdensome to the average cigarette consumer.",
+      "B": "Consumers are more likely to continue buying a product if its price increases due to higher taxes than if its price increases for some other reason.",
+      "C": "Usually, cigarette sales will increase substantially in the areas surrounding a city after that city imposes stiff taxes on cigarettes.",
+      "D": "People who are well informed about the effects of long-term tobacco use are significantly less likely to smoke than are people who are not informed.",
+      "E": "Antismoking education programs that are funded by taxes on cigarettes will tend to lose their funding if they are successful."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Explain Curious Fact",
+      "Net Effect",
+      "Plans / Recommendations"
+    ]
+  },
+  {
+    "practiceTest": "PT135",
+    "sectionNumber": 2,
+    "questionNumber": 7,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Causation",
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Gotera: Infants lack the motor ability required to voluntarily produce particular sounds, but produce various babbling sounds randomly. Most children are several years old before they can voluntarily produce most of the vowel and consonant sounds of their language. We can conclude that speech acquisition is entirely a motor control process rather than a process that is abstract or mental.",
+    "questionStem": "Which one of the following is an assumption required by Gotera’s argument?",
+    "answerChoices": {
+      "A": "Speech acquisition is a function only of one’s ability to produce the sounds of spoken language.",
+      "B": "During the entire initial babbling stage, infants cannot intentionally move their tongues while they are babbling.",
+      "C": "The initial babbling stage is completed during infancy.",
+      "D": "The initial babbling stage is the first stage of the speech acquisition process.",
+      "E": "Control of tongue and mouth movements requires a sophisticated level of mental development."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Relative vs. Absolute",
+      "Missing Link / Idea",
+      "Anti-Causal",
+      "Medical",
+      "Ruling Out Options"
+    ]
+  },
+  {
+    "practiceTest": "PT135",
+    "sectionNumber": 2,
+    "questionNumber": 8,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Causation",
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Caldwell: The government recently demolished a former naval base. Among the complex’s facilities were a gymnasium, a swimming pool, office buildings, gardens, and housing for hundreds of people. Of course the government was legally permitted to use these facilities as it wished. But clearly, using them for the good of the community would have benefited everyone, and thus the government’s actions were not only inefficient but immoral.",
+    "questionStem": "Caldwell’s argument is most vulnerable to criticism on the grounds that it",
+    "answerChoices": {
+      "A": "fails to consider that an action may be morally permissible even if an alternative course of action is to everyone’s advantage",
+      "B": "presumes, without providing justification, that the actual consequences of an action are irrelevant to the action’s moral permissibility",
+      "C": "presumes, without providing justification, that the government never acts in the most efficient manner",
+      "D": "presumes, without providing justification, that any action that is efficient is also moral",
+      "E": "inappropriately treats two possible courses of action as if they were the only options"
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "New Concept in Conclusion",
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT135",
+    "sectionNumber": 2,
+    "questionNumber": 9,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Reducing stress lessens a person’s sensitivity to pain. This is the conclusion reached by researchers who played extended audiotapes to patients before they underwent surgery and afterward while they were recovering. One tape consisted of conversation; the other consisted of music. Those who listened only to the latter tape required less anesthesia during surgery and fewer painkillers afterward than those who listened only to the former tape.",
+    "questionStem": "Which one of the following is an assumption on which the researchers’ reasoning depends?",
+    "answerChoices": {
+      "A": "All of the patients in the study listened to the same tape before surgery as they listened to after surgery.",
+      "B": "Anticipating surgery is no less stressful than recovering from surgery.",
+      "C": "Listening to music reduces stress.",
+      "D": "The psychological effects of music are not changed by anesthesia or painkillers.",
+      "E": "Both anesthesia and painkillers tend to reduce stress."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "First Sentence Conclusion",
+      "Missing Link / Idea",
+      "Explain Curious Fact",
+      "New Concept in Conclusion"
+    ]
+  },
+  {
+    "practiceTest": "PT135",
+    "sectionNumber": 2,
+    "questionNumber": 10,
+    "questionType": "Agree/Disagree",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Samuel: Because communication via computer is usually conducted privately and anonymously between people who would otherwise interact in person, it contributes to the dissolution, not the creation, of lasting communal bonds. Tova: You assume that communication via computer replaces more intimate forms of communication and interaction, when more often it replaces asocial or even antisocial behavior.",
+    "questionStem": "On the basis of their statements, Samuel and Tova are committed to disagreeing about which one of the following?",
+    "answerChoices": {
+      "A": "A general trend of modern life is to dissolve the social bonds that formerly connected people.",
+      "B": "All purely private behavior contributes to the dissolution of social bonds.",
+      "C": "Face-to-face communication is more likely to contribute to the creation of social bonds than is anonymous communication.",
+      "D": "It is desirable that new social bonds be created to replace the ones that have dissolved.",
+      "E": "If people were not communicating via computer, they would most likely be engaged in activities that create stronger social bonds."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "2-Speaker",
+      "Anti-Causal",
+      "Net Effect"
+    ]
+  },
+  {
+    "practiceTest": "PT135",
+    "sectionNumber": 2,
+    "questionNumber": 11,
+    "questionType": "Principle-Conform",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Spreading iron particles over the surface of the earth’s oceans would lead to an increase in phytoplankton, decreasing the amount of carbon dioxide in the atmosphere and thereby counteracting the greenhouse effect. But while counteracting the greenhouse effect is important, the side effects of an iron-seeding strategy have yet to be studied. Since the oceans represent such an important resource, this response to the greenhouse effect should not be implemented immediately.",
+    "questionStem": "The reasoning above most closely conforms to which one of the following principles?",
+    "answerChoices": {
+      "A": "A problem-solving strategy should be implemented if the side effects of the strategy are known.",
+      "B": "Implementing a problem-solving strategy that alters an important resource is impermissible if the consequences are not adequately understood.",
+      "C": "We should not implement a problem-solving strategy if the consequences of doing so are more serious than the problem itself.",
+      "D": "We should not implement a problem-solving strategy if that strategy requires altering an important resource.",
+      "E": "As long as there is a possibility that a strategy for solving a problem may instead exacerbate that problem, such a solution should not be adopted."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "Plans / Recommendations",
+      "Principles in Answers",
+      "Rebuttals",
+      "Science",
+      "Weighing Tradeoffs"
+    ]
+  },
+  {
+    "practiceTest": "PT135",
+    "sectionNumber": 2,
+    "questionNumber": 12,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "No matter how conscientious they are, historians always have biases that affect their work. Hence, rather than trying to interpret historical events, historians should instead interpret what the people who participated in historical events thought about those events.",
+    "questionStem": "The reasoning in the argument is most vulnerable to criticism on the grounds that the argument fails to consider the possibility that",
+    "answerChoices": {
+      "A": "historians who have different biases often agree about many aspects of some historical events",
+      "B": "scholars in disciplines other than history also risk having their biases affect their work",
+      "C": "many of the ways in which historians’ biases affect their work have been identified",
+      "D": "not all historians are aware of the effect that their particular biases have on their work",
+      "E": "the proposed shift in focus is unlikely to eliminate the effect that historians’ biases have on their work"
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Assumes Difference",
+      "Plans / Recommendations"
+    ]
+  },
+  {
+    "practiceTest": "PT135",
+    "sectionNumber": 2,
+    "questionNumber": 13,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Humanitarian considerations aside, sheer economics dictates that country X should institute, as country Y has done, a nationwide system of air and ground transportation for conveying seriously injured persons to specialized trauma centers. Timely access to the kind of medical care that only specialized centers can provide could save the lives of many people. The earnings of these people would result in a substantial increase in country X’s gross national product, and the taxes paid on those earnings would substantially augment government revenues.",
+    "questionStem": "The argument depends on the assumption that",
+    "answerChoices": {
+      "A": "lifetime per-capita income is roughly the same in country X as it is in country Y",
+      "B": "there are no specialized trauma centers in country X at present",
+      "C": "the treatment of seriously injured persons in trauma centers is not more costly than treatment elsewhere",
+      "D": "there would be a net increase in employment in country X if more persons survived serious injury",
+      "E": "most people seriously injured in automobile accidents in country X do not now receive treatment in specialized trauma centers"
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "First Sentence Conclusion",
+      "Assumes Difference",
+      "Defender",
+      "Intermediate Conclusions",
+      "Net Effect",
+      "Plans / Recommendations"
+    ]
+  },
+  {
+    "practiceTest": "PT135",
+    "sectionNumber": 2,
+    "questionNumber": 14,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Early urban societies could not have been maintained without large-scale farming nearby. This is because other methods of food acquisition, such as foraging, cannot support populations as dense as urban ones. Large-scale farming requires irrigation, which remained unfeasible in areas far from rivers or lakes until more recent times.",
+    "questionStem": "Which one of the following is most strongly supported by the information above?",
+    "answerChoices": {
+      "A": "Most peoples who lived in early times lived in areas near rivers or lakes.",
+      "B": "Only if farming is possible in the absence of irrigation can societies be maintained in areas far from rivers or lakes.",
+      "C": "In early times it was not possible to maintain urban societies in areas far from rivers or lakes.",
+      "D": "Urban societies with farms near rivers or lakes do not have to rely upon irrigation to meet their farming needs.",
+      "E": "Early rural societies relied more on foraging than on agriculture for food."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Conditional Diagramming",
+      "Timeframes"
+    ]
+  },
+  {
+    "practiceTest": "PT135",
+    "sectionNumber": 2,
+    "questionNumber": 15,
+    "questionType": "Sufficient Assumption",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Economist: A country’s rapid emergence from an economic recession requires substantial new investment in that country’s economy. Since people’s confidence in the economic policies of their country is a precondition for any new investment, countries that put collective goals before individuals’ goals cannot emerge quickly from an economic recession.",
+    "questionStem": "Which one of the following, if assumed, enables the economist’s conclusion to be properly drawn?",
+    "answerChoices": {
+      "A": "No new investment occurs in any country that does not emerge quickly from an economic recession.",
+      "B": "Recessions in countries that put collective goals before individuals’ goals tend not to affect the country’s people’s support for their government’s policies.",
+      "C": "If the people in a country that puts individuals’ goals first are willing to make new investments in their country’s economy, their country will emerge quickly from an economic recession.",
+      "D": "People in countries that put collective goals before individuals’ goals lack confidence in the economic policies of their countries.",
+      "E": "A country’s economic policies are the most significant factor determining whether that country’s economy will experience a recession."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Conditional Diagramming",
+      "Missing Link / Idea",
+      "New Concept in Conclusion"
+    ]
+  },
+  {
+    "practiceTest": "PT135",
+    "sectionNumber": 2,
+    "questionNumber": 16,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "The average length of stay for patients at Edgewater Hospital is four days, compared to six days at University Hospital. Since studies show that recovery rates at the two hospitals are similar for patients with similar illnesses, University Hospital could decrease its average length of stay without affecting quality of care.",
+    "questionStem": "The reasoning in the argument is most vulnerable to criticism on the grounds that the argument",
+    "answerChoices": {
+      "A": "equates the quality of care at a hospital with patients’ average length of stay",
+      "B": "treats a condition that will ensure the preservation of quality of care as a condition that is required to preserve quality of care",
+      "C": "fails to take into account the possibility that patients at Edgewater Hospital tend to be treated for different illnesses than patients at University Hospital",
+      "D": "presumes, without providing justification, that the length of time patients stay in the hospital is never relevant to the recovery rates of these patients",
+      "E": "fails to take into account the possibility that patients at University Hospital generally prefer longer hospital stays"
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Explain Curious Fact",
+      "Anti-Causal",
+      "Argue the Anti-Conclusion",
+      "Assumes Similarity",
+      "Medical",
+      "Predictions"
+    ]
+  },
+  {
+    "practiceTest": "PT135",
+    "sectionNumber": 2,
+    "questionNumber": 17,
+    "questionType": "Role",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Philosopher: Graham argues that since a person is truly happy only when doing something, the best life is a life that is full of activity. But we should not be persuaded by Graham’s argument. People sleep, and at least sometimes when sleeping, they are truly happy, even though they are not doing anything.",
+    "questionStem": "Which one of the following most accurately describes the role played in the philosopher’s argument by the claim that at least sometimes when sleeping, people are truly happy, even though they are not doing anything?",
+    "answerChoices": {
+      "A": "It is a premise of Graham’s argument.",
+      "B": "It is an example intended to show that a premise of Graham’s argument is false.",
+      "C": "It is an analogy appealed to by Graham but that the philosopher rejects.",
+      "D": "It is an example intended to disprove the conclusion of Graham’s argument.",
+      "E": "It is the main conclusion of the philosopher’s argument."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Abstract Answers",
+      "Rebuttals",
+      "Refute a Conditional"
+    ]
+  },
+  {
+    "practiceTest": "PT135",
+    "sectionNumber": 2,
+    "questionNumber": 18,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Historian: In rebuttal of my claim that West influenced Stuart, some people point out that West’s work is mentioned only once in Stuart’s diaries. But Stuart’s diaries mention several meetings with West, and Stuart’s close friend, Abella, studied under West. Furthermore, Stuart’s work often uses West’s terminology which, though now commonplace, none of Stuart’s contemporaries used.",
+    "questionStem": "Which one of the following propositions is most supported by the historian’s statements, if those statements are true?",
+    "answerChoices": {
+      "A": "Stuart’s discussions with Abella were one of the means by which West influenced Stuart.",
+      "B": "It is more likely that Stuart influenced West than that West influenced Stuart.",
+      "C": "Stuart’s contemporaries were not influenced by West.",
+      "D": "Stuart’s work was not entirely free from West’s influence.",
+      "E": "Because of Stuart’s influence on other people, West’s terminology is now commonplace."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Important Pivot",
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT135",
+    "sectionNumber": 2,
+    "questionNumber": 19,
+    "questionType": "Weaken",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "One theory to explain the sudden extinction of all dinosaurs points to “drug overdoses” as the cause. Angiosperms, a certain class of plants, first appeared at the time that dinosaurs became extinct. These plants produce amino-acid-based alkaloids that are psychoactive agents. Most plant-eating mammals avoid these potentially lethal poisons because they taste bitter. Moreover, mammals have livers that help detoxify such drugs. However, dinosaurs could neither taste the bitterness nor detoxify the substance once it was ingested. This theory receives its strongest support from the fact that it helps explain why so many dinosaur fossils are found in unusual and contorted positions.",
+    "questionStem": "Which one of the following, if true, would most undermine the theory presented above?",
+    "answerChoices": {
+      "A": "Many fossils of large mammals are found in contorted positions.",
+      "B": "Angiosperms provide a great deal of nutrition.",
+      "C": "Carnivorous dinosaurs mostly ate other, vegetarian, dinosaurs that fed on angiosperms.",
+      "D": "Some poisonous plants do not produce amino-acid-based alkaloids.",
+      "E": "Mammals sometimes die of drug overdoses from eating angiosperms."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact",
+      "Plausibility",
+      "Timeframes"
+    ]
+  },
+  {
+    "practiceTest": "PT135",
+    "sectionNumber": 2,
+    "questionNumber": 20,
+    "questionType": "Paradox",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "There are two ways to manage an existing transportation infrastructure: continuous maintenance at adequate levels, and periodic radical reconstruction. Continuous maintenance dispenses with the need for radical reconstruction, and radical reconstruction is necessitated by failing to perform continuous maintenance. Over the long run, continuous maintenance is far less expensive; nevertheless, it almost never happens.",
+    "questionStem": "Which one of the following, if true, most contributes to an explanation of why the first alternative mentioned is almost never adopted?",
+    "answerChoices": {
+      "A": "Since different parts of the transportation infrastructure are the responsibility of different levels of government, radical reconstruction projects are very difficult to coordinate efficiently.",
+      "B": "When funds for transportation infrastructure maintenance are scarce, they are typically distributed in proportion to the amount of traffic that is borne by different elements of the infrastructure.",
+      "C": "If continuous maintenance is performed at less-than-adequate levels, the need for radical reconstruction will often arise later than if maintenance had been restricted to responding to emergencies.",
+      "D": "Radical reconstruction projects are, in general, too costly to be paid for from current revenue.",
+      "E": "For long periods, the task of regular maintenance lacks urgency, since the consequences of neglecting it are very slow to manifest themselves."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Plans / Recommendations"
+    ]
+  },
+  {
+    "practiceTest": "PT135",
+    "sectionNumber": 2,
+    "questionNumber": 21,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "A good way to get over one’s fear of an activity one finds terrifying is to do it repeatedly. For instance, over half of people who have parachuted only once report being extremely frightened by the experience, while less than 1 percent of those who have parachuted ten times or more report being frightened by it.",
+    "questionStem": "The reasoning in the argument is most vulnerable to criticism on the grounds that the argument",
+    "answerChoices": {
+      "A": "takes for granted that the greater the number of dangerous activities one engages in the less one is frightened by any one of them",
+      "B": "neglects to consider those people who have parachuted more than once but fewer than ten times",
+      "C": "takes for granted that people do not know how frightening something is unless they have tried it",
+      "D": "fails to take into account the possibility that people would be better off if they did not do things that terrify them",
+      "E": "overlooks the possibility that most people who have parachuted many times did not find it frightening initially"
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Famous Flaws",
+      "First Sentence Conclusion",
+      "Explain Curious Fact",
+      "Alternatives",
+      "Plans / Recommendations"
+    ]
+  },
+  {
+    "practiceTest": "PT135",
+    "sectionNumber": 2,
+    "questionNumber": 22,
+    "questionType": "Paradox",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Most economists believe that reducing the price of any product generally stimulates demand for it. However, most wine merchants have found that reducing the price of domestic wines to make them more competitive with imported wines with which they were previously comparably priced is frequently followed by an increase in sales of those imported wines.",
+    "questionStem": "Which one of the following, if true, most helps to reconcile the belief of most economists with the consequences observed by most wine merchants?",
+    "answerChoices": {
+      "A": "Economists’ studies of the prices of grocery items and their rates of sales rarely cover alcoholic beverages.",
+      "B": "Few merchants of any kind have detailed knowledge of economic theories about the relationship between item prices and sales rates.",
+      "C": "Consumers are generally willing to forgo purchasing other items they desire in order to purchase a superior wine.",
+      "D": "Imported wines in all price ranges are comparable in quality to domestic wines that cost less.",
+      "E": "An increase in the demand for a consumer product is compatible with an increase in demand for a competing product."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Belief / Knowledge / Intent"
+    ]
+  },
+  {
+    "practiceTest": "PT135",
+    "sectionNumber": 2,
+    "questionNumber": 23,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Certain bacteria that produce hydrogen sulfide as a waste product would die if directly exposed to oxygen. The hydrogen sulfide reacts with oxygen, removing it and so preventing it from harming the bacteria. Furthermore, the hydrogen sulfide tends to kill other organisms in the area, thereby providing the bacteria with a source of food. As a result, a dense colony of these bacteria produces for itself an environment in which it can continue to thrive indefinitely.",
+    "questionStem": "Which one of the following is most strongly supported by the information above?",
+    "answerChoices": {
+      "A": "A dense colony of the bacteria can indefinitely continue to produce enough hydrogen sulfide to kill other organisms in the area and to prevent oxygen from harming the bacteria.",
+      "B": "The hydrogen sulfide produced by the bacteria kills other organisms in the area by reacting with and removing oxygen.",
+      "C": "Most organisms, if killed by the hydrogen sulfide produced by the bacteria, can provide a source of food for the bacteria.",
+      "D": "The bacteria can continue to thrive indefinitely only in an environment in which the hydrogen sulfide they produce has removed all oxygen and killed other organisms in the area.",
+      "E": "If any colony of bacteria produces hydrogen sulfide as a waste product, it thereby ensures that it is both provided with a source of food and protected from harm by oxygen."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Causal Chains",
+      "Causal Difference-Maker",
+      "Science"
+    ]
+  },
+  {
+    "practiceTest": "PT135",
+    "sectionNumber": 2,
+    "questionNumber": 24,
+    "questionType": "Parallel Flaw",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Books that present a utopian future in which the inequities and sufferings of the present are replaced by more harmonious and rational social arrangements will always find enthusiastic buyers. Since gloomy books predicting that even more terrifying times await us are clearly not of this genre, they are unlikely to be very popular.",
+    "questionStem": "The questionable pattern of reasoning in which one of the following arguments is most similar to that in the argument above?",
+    "answerChoices": {
+      "A": "Art that portrays people as happy and contented has a tranquilizing effect on the viewer, an effect that is appealing to those who are tense or anxious. Thus, people who dislike such art are neither tense nor anxious.",
+      "B": "People who enjoy participating in activities such as fishing or hiking may nevertheless enjoy watching such spectator sports as boxing or football. Thus, one cannot infer from someone’s participating in vigorous contact sports that he or she is not also fond of less violent forms of recreation.",
+      "C": "Action movies that involve complicated and dangerous special-effects scenes are enormously expensive to produce. Hence, since traditional dramatic or comedic films contain no such scenes, it is probable that they are relatively inexpensive to produce.",
+      "D": "Adults usually feel a pleasant nostalgia when hearing the music they listened to as adolescents, but since adolescents often like music specifically because they think it annoys their parents, adults rarely appreciate the music that their children will later listen to with nostalgia.",
+      "E": "All self-employed businesspeople have salaries that fluctuate with the fortunes of the general economy, but government bureaucrats are not self-employed. Therefore, not everyone with an income that fluctuates with the fortunes of the general economy is a government bureaucrat."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw",
+      "Famous Flaws"
+    ]
+  },
+  {
+    "practiceTest": "PT135",
+    "sectionNumber": 2,
+    "questionNumber": 25,
+    "questionType": "Principle-Conform",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Some people mistakenly believe that since we do not have direct access to the distant past we cannot learn much about it. Contemporary historians and archaeologists find current geography, geology, and climate to be rich in clues about a given region’s distant history. However, the more distant the period we are studying is, the less useful the study of the present becomes.",
+    "questionStem": "Of the following, which one most closely conforms to the principle that the passage illustrates?",
+    "answerChoices": {
+      "A": "Astronomers often draw inferences about the earlier years of our solar system on the basis of recently collected data. Unfortunately, they have been able to infer comparatively little about the origin of our solar system.",
+      "B": "Much can be learned about the perpetrator of a crime by applying scientific methods of investigation to the crime scene. But the more the crime scene has been studied the less likely anything will be learned from further study.",
+      "C": "To understand a literary text one needs to understand the author’s world view. However, the farther that world view gets from one’s own the less one will be able to appreciate the text.",
+      "D": "We often extrapolate from ordinary sensory experience to things beyond such experience and form a rash judgment, such as the claim that the earth is the center of the universe because it appears that way to us.",
+      "E": "One crucial clue to the extent of the ancient Egyptians’ mathematical knowledge came from studying the pyramids. The more we studied such structures, the more impressed we were by how much the Egyptians knew."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Important Pivot",
+      "Implicit Principles",
+      "Rebuttals",
+      "Timeframes",
+      "Weighing Tradeoffs"
+    ]
+  }
+]

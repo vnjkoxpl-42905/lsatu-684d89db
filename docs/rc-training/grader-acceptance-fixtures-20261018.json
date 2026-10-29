@@ -1,0 +1,22 @@
+{
+  "date": "2026-10-18",
+  "source": { "preptest": 140, "section": 4, "passageId": 16, "paragraphIndex": 0, "recapKey": "p1-para1-recall" },
+  "voice": "Windows offline System.Speech, Microsoft David Desktop",
+  "fixtures": [
+    {
+      "id": "accurate-paraphrase",
+      "text": "In areas such as music, chess, and some sports, the very best performers do so much better even than other people with extensive experience that some people think inborn talent is needed to explain the difference. Some psychologists support that view by pointing to child prodigies and evidence that relevant traits seem to be inherited. For instance, most outstanding musicians are identified by age six. Researchers also have evidence that some abilities needed for exceptional athletic performance can be inborn, including excellent motor coordination, fast reflexes, and coordination between the hands and eyes.",
+      "expected": "Accept ordinary paraphrase and changed order. Preserve some people, some psychologists, apparent inheritance, most musicians by six, and some athletic qualities can be inborn. Do not require exact vocabulary or count TTS name pronunciation as a semantic error."
+    },
+    {
+      "id": "substantial-omission",
+      "text": "In music, chess, and sports, the very best performers do far better than other experienced people. Some people explain this difference by saying these performers have natural talent.",
+      "expected": "Identify omitted psychological evidence, prodigies, apparent heritability, most outstanding musicians being identified by age six, and the examples and limited inborn claim about athletic qualities. Do not treat a correct gist as complete recall."
+    },
+    {
+      "id": "changed-quantifiers",
+      "text": "In music, chess, and sports, the very best performers do much better than other highly experienced people. Everyone agrees this proves that inborn talent is the only possible explanation. All psychologists have proved this using child prodigies and the fact that every relevant trait is inherited. Every outstanding musician is discovered at exactly age six. All abilities needed for exceptional athletic performance are always inborn, including motor coordination, reflex speed, and hand eye coordination.",
+      "expected": "Flag everyone versus some, proved versus supported/apparent, every musician exactly six versus most by six, and all abilities always inborn versus evidence that some qualities can be inborn. Explain changed certainty and scope with transcript and canonical source evidence."
+    }
+  ]
+}

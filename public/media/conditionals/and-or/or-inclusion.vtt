@@ -1,0 +1,57 @@
+WEBVTT
+
+1
+00:00:00.600 --> 00:00:04.248
+Here's a statement: Mia will study on Saturday or on Sunday.
+
+2
+00:00:04.648 --> 00:00:11.325
+On the LSAT, OR means at least one of the two. Mia could study on Saturday, on Sunday, or on both days.
+
+3
+00:00:12.125 --> 00:00:16.541
+So what does this statement rule out? Only one case: Mia skips both days.
+
+4
+00:00:16.941 --> 00:00:20.013
+That's the whole job of OR. It won't let you drop both.
+
+5
+00:00:20.813 --> 00:00:25.507
+Now turn it into a conditional. Take one half away, and the other has to be there.
+
+6
+00:00:25.907 --> 00:00:30.152
+Negate one half and put it on the left: Mia does not study on Saturday.
+
+7
+00:00:30.552 --> 00:00:35.032
+Keep the other half exactly as it is on the right: Mia studies on Sunday.
+
+8
+00:00:35.432 --> 00:00:39.080
+If Mia does not study on Saturday, then she studies on Sunday.
+
+9
+00:00:39.880 --> 00:00:45.469
+You can start with either half. If Mia does not study on Sunday, then she studies on Saturday.
+
+10
+00:00:45.869 --> 00:00:50.008
+That's the contrapositive of the first rule, so the two say the same thing.
+
+11
+00:00:50.808 --> 00:00:54.307
+Here's the trap. Mia studied on Saturday. What about Sunday?
+
+12
+00:00:54.707 --> 00:00:59.699
+The statement doesn't say. She might study on Sunday too. OR never limits her to one.
+
+13
+00:01:00.499 --> 00:01:04.467
+So when you see OR, ask one question: what if one half is missing?
+
+14
+00:01:04.867 --> 00:01:06.637
+Then the other half has to be there.

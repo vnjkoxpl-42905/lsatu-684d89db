@@ -1,0 +1,165 @@
+{
+  "date": "2026-09-30",
+  "route": "connected Lovable Cloud database DDL tool",
+  "explicitDeploymentAuthorization": true,
+  "initialWriterSha256": "fcd04f352b715b185847985ed6f334a75bdecd145ca4710b51cf57e3bc874eeb",
+  "initialConfigurationEnabled": false,
+  "initialProtectedParents": 0,
+  "originalValuesPreservedInsideTransaction": true,
+  "preservation": [
+    {
+      "table": "attempts",
+      "rows": 1146,
+      "digest": "c6c632a86599081842e003513f1434bc"
+    },
+    {
+      "table": "bootcamp_kv",
+      "rows": 207,
+      "digest": "97a8a902dfa7fba9ba54d75e486b6eaa"
+    },
+    {
+      "table": "practice_test_assignments",
+      "rows": 0,
+      "digest": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    {
+      "table": "practice_test_runs",
+      "rows": 3,
+      "digest": "68728279446be8c4b92bcc627f369da9"
+    },
+    {
+      "table": "profiles",
+      "rows": 42,
+      "digest": "2d890c4e494a06c1ef954d9bb9fada9b"
+    },
+    {
+      "table": "rc_attempts",
+      "rows": 117,
+      "digest": "701fc1a6543d987479dc47c9a40d0c7d"
+    },
+    {
+      "table": "rc_drill_sessions",
+      "rows": 28,
+      "digest": "bd936cb06cd613019440936ee430fa99"
+    },
+    {
+      "table": "section_history",
+      "rows": 23,
+      "digest": "62ae61c6a370097a59421f4867ae21ac"
+    },
+    {
+      "table": "user_roles",
+      "rows": 2,
+      "digest": "5b5a6609a26931d8ffc1b2406c9db085"
+    },
+    {
+      "table": "wrong_answer_journal",
+      "rows": 643,
+      "digest": "378dcf3f889f429226e829bfd0302c63"
+    }
+  ],
+  "existingRowsAdoptedOrBackfilled": 0,
+  "recordsDeleted": 0,
+  "creditSpendingAgentPrompts": 0,
+  "activationPendingFinalIntegration": false,
+  "currentFullWriterSha256": "1c4e111bc11c44b8d71acea064a70416d913f5c53225ee10c60b862e51a43267",
+  "installedWriterComposition": {
+    "initialWriterSha256": "fcd04f352b715b185847985ed6f334a75bdecd145ca4710b51cf57e3bc874eeb",
+    "checkpointMetadataUpgradeSha256": "ffe0d7414d4267d7c76088623d04186ec80851d9e75067f1981cc82d5a4c04b4",
+    "upgradeApplied": true,
+    "upgradeOriginalValuesPreservedInsideTransaction": true
+  },
+  "manifestSeed": {
+    "manifestSha256": "cacaf2b0ab5cc71535d1efa543f284d601404ae7d0133dc32126ea4801878872",
+    "rows": 59,
+    "method": "INSERT-only while configuration disabled"
+  },
+  "activation": {
+    "confirmed": true,
+    "enabled": true,
+    "leaseBudgetMs": 30000,
+    "manifestSha256": "c27b478f2d50f8353a98d4a1a905d2f94f87929ba2ea2179230d4f7a3d51c25c",
+    "previouslyConfirmedEnabled": true,
+    "disabledReason": "Temporarily disabled after local real-backend LR launch exposed PostgreSQL timestamp representation mismatch; narrowed adapter validation corrected and configuration re-enabled at 14:24 UTC."
+  },
+  "frontendPublicationVerified": false,
+  "liveTimedAcceptanceComplete": false,
+  "reactivationPendingLiveVerification": false,
+  "localLiveConnectedLrEvidence": {
+    "questionRendered": true,
+    "answerAcknowledgedAndReadBack": true,
+    "blockedCommitHiddenQuestions": true,
+    "retainedCommandRetryRecovered": true,
+    "mandatoryCloseoutExercised": false,
+    "pausedReloadClockPreserved": "32:55",
+    "exitCheckpointAndPauseAcknowledged": true,
+    "responsiveViewportWidths": [
+      390,
+      820,
+      1060,
+      1280,
+      1600
+    ],
+    "historicalFrozenManifestSha256": "cacaf2b0ab5cc71535d1efa543f284d601404ae7d0133dc32126ea4801878872"
+  },
+  "localLiveConnectedRcEvidence": {
+    "runId": "qa-timed-rc-ui-cd812b72-4496-4738-bc7f-246cb4290279",
+    "creation": "ordinary-auth retained command",
+    "passageAndQuestionRendered": true,
+    "answerAcknowledgedAndReadBack": true,
+    "attemptId": "1d694066-01bd-4e0a-a75c-26d4a1895f8f",
+    "questionId": 7660,
+    "selected": "B",
+    "correct": true,
+    "nextQuestionAcknowledged": true,
+    "responsiveViewportWidths": [
+      390,
+      820,
+      1060,
+      1280,
+      1600
+    ],
+    "documentWidthEqualsViewport": true,
+    "phonePassageToggleVerified": true,
+    "outageReloadVerified": true,
+    "outage": {
+      "blockedNextHiddenQuestions": true,
+      "friendlyError": true,
+      "unblockedRetryResult": "PT410 expired lease; no automatic recovery claim",
+      "recovery": "Parent Preserve rejected change archived evidence, then claim; reopened paused at 31:22"
+    },
+    "historicalFrozenManifestSha256": "cacaf2b0ab5cc71535d1efa543f284d601404ae7d0133dc32126ea4801878872",
+    "pausedReloadClockPreserved": "31:22",
+    "leftPaused": true,
+    "mandatoryCloseoutExercised": false
+  },
+  "integratedValidation": {
+    "tests": 176,
+    "files": 15,
+    "typecheckPassed": true,
+    "finalBuildPending": false,
+    "finalBuildPassed": true,
+    "canonicalOutputFilesChecked": 755
+  },
+  "manifestRolloutHistory": [
+    {
+      "manifestSha256": "cacaf2b0ab5cc71535d1efa543f284d601404ae7d0133dc32126ea4801878872",
+      "rows": 59,
+      "seed": "INSERT-only while disabled",
+      "historicalQaParentsRetainFrozenVersion": true
+    },
+    {
+      "manifestSha256": "c27b478f2d50f8353a98d4a1a905d2f94f87929ba2ea2179230d4f7a3d51c25c",
+      "rows": 59,
+      "seed": "INSERT-only alongside prior catalog",
+      "reason": "Normalize src/lib/practiceTest.ts working-tree CRLF to exact staged Git LF bytes; no source behavior change",
+      "currentSelection": true,
+      "enabled": true,
+      "leaseBudgetMs": 30000,
+      "all59BlueprintsJsonbIdenticalToPrevious": true
+    }
+  ],
+  "testNetworkBlocksCleared": true,
+  "deviceOverrideCleared": true,
+  "ordinaryTesterBaselineCloseoutProbePassed": true
+}

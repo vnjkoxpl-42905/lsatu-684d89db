@@ -1,0 +1,72 @@
+{
+  "timerLayout": [
+    {
+      "overflow": false,
+      "spans": [
+        {
+          "height": 20,
+          "whiteSpace": "nowrap"
+        }
+      ],
+      "timer": "Passage practice time: 0:06",
+      "width": 390
+    },
+    {
+      "overflow": false,
+      "spans": [
+        {
+          "height": 20,
+          "whiteSpace": "nowrap"
+        }
+      ],
+      "timer": "Passage practice time: 0:07",
+      "width": 650
+    },
+    {
+      "overflow": false,
+      "spans": [
+        {
+          "height": 20,
+          "whiteSpace": "nowrap"
+        }
+      ],
+      "timer": "Passage practice time: 0:07",
+      "width": 768
+    },
+    {
+      "overflow": false,
+      "spans": [
+        {
+          "height": 20,
+          "whiteSpace": "nowrap"
+        }
+      ],
+      "timer": "Passage practice time: 0:07",
+      "width": 1000
+    },
+    {
+      "overflow": false,
+      "spans": [
+        {
+          "height": 20,
+          "whiteSpace": "nowrap"
+        }
+      ],
+      "timer": "Passage practice time: 0:07",
+      "width": 1440
+    }
+  ],
+  "video": {
+    "duration": 60,
+    "playedToEnd": true,
+    "source": "guided-v3",
+    "error": null
+  },
+  "pauseResume": {
+    "beforePause": "0:09",
+    "afterSetupResume": "0:09",
+    "awayTimeExcluded": true
+  },
+  "lrTrainingHeadingVerified": true,
+  "completedBadgesPersistAfterReload": true
+}

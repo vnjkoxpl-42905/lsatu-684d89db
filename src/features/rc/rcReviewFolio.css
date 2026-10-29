@@ -1,0 +1,191 @@
+/* Review is its own composition. The setup builder, finder and player keep
+   their existing rules. The important declarations below deliberately outrank
+   the legacy RC typography/control resets, only inside this review surface. */
+@font-face {
+  font-family: "RC Newsreader";
+  font-style: normal;
+  font-weight: 200 800;
+  font-display: swap;
+  src: url("./assets/newsreader-latin.woff2") format("woff2");
+}
+.rc-practice-workspace .rc-create-workspace:has(.rc-review-folio) {
+  padding: 0 !important;
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+.rc-final-builder.rc-is-review {
+  --folio-ground: #f5f2eb;
+  --folio-paper: #fffdf7;
+  --folio-ink: #252d27;
+  --folio-muted: #656c60;
+  --folio-edge: #dfdfd2;
+  --folio-well: #edeee5;
+  --folio-session: #151d19;
+  --folio-session-ink: #f4f1e6;
+  --folio-session-muted: #bcc5b8;
+  --folio-ease: cubic-bezier(.23, 1, .32, 1);
+  max-width: 1200px !important;
+  width: 100%;
+  padding: 0 !important;
+  color: var(--folio-ink) !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+.rc-final-builder.rc-is-review > .rc-final-back { margin-bottom: 26px !important; }
+.rc-create-workspace .rc-page.rc-final-builder.rc-is-review { max-width: 1200px !important; }
+.rc-final-builder .rc-review-folio {
+  container: rc-folio / inline-size;
+  padding: 0 !important;
+  color: var(--folio-ink) !important;
+  border: 0 !important;
+  background: transparent !important;
+  animation: rc-folio-enter 220ms var(--folio-ease);
+  scroll-margin-top: 20px;
+}
+.rc-review-folio *, .rc-review-folio *::before, .rc-review-folio *::after { box-sizing: border-box; }
+.rc-review-folio svg { width: 20px; height: 20px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+.rc-review-folio button, .rc-review-folio summary, .rc-review-folio a { -webkit-tap-highlight-color: transparent; }
+.rc-review-folio :is(button, summary, a, input):focus-visible { outline: 2px solid #60745c !important; outline-offset: 4px; }
+.rc-final-builder .rc-review-folio .rc-folio-heading { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; margin: 0 0 34px; padding: 0; border: 0; }
+.rc-final-builder .rc-review-folio .rc-folio-provenance { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin: 0 0 12px; color: var(--folio-muted); font-size: 13px; line-height: 1.5; }
+.rc-folio-provenance-mark { width: 7px; height: 7px; border: 1px solid currentColor; transform: rotate(45deg); }
+.rc-final-builder.rc-is-review .rc-review-folio #rc-review-heading { margin: 0 !important; color: var(--folio-ink) !important; font-family: "RC Newsreader", Georgia, serif !important; font-size: clamp(36px, 4.4vw, 56px) !important; font-weight: 450 !important; font-optical-sizing: auto; letter-spacing: -.035em !important; line-height: 1.06 !important; text-transform: none !important; text-wrap: balance; }
+.rc-folio-title:focus:not(:focus-visible) { outline: none; }
+.rc-folio-breadcrumb { margin-bottom: 22px; }
+.rc-final-builder .rc-review-folio .rc-folio-back { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 4px 0; color: var(--folio-muted); font: inherit; font-size: 14px; line-height: 1.4; border: 0; background: transparent; cursor: pointer; }
+.rc-folio-back:hover { text-decoration: underline; text-underline-offset: 4px; }
+.rc-final-builder .rc-review-folio .rc-folio-intro { margin: 14px 0 0; color: var(--folio-muted); font-size: 16px; line-height: 1.5; }
+.rc-folio-edit-actions { display: flex; align-items: center; justify-content: flex-end; flex-wrap: wrap; gap: 8px 16px; flex: none; max-width: 320px; }
+.rc-final-builder .rc-review-folio :is(.rc-folio-edit, .rc-folio-reroll, .rc-folio-conditions-link) { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 9px 14px; color: var(--folio-ink) !important; font: inherit; font-size: 14px !important; line-height: 1.4; text-decoration: none; border: 1px solid var(--folio-edge); border-radius: 10px; background: var(--folio-paper) !important; cursor: pointer; }
+.rc-final-builder .rc-review-folio .rc-folio-reroll { padding: 6px 0; color: var(--folio-muted) !important; border: 0; background: transparent !important; }
+.rc-final-builder .rc-review-folio .rc-folio-conditions-link { display: none; }
+.rc-review-folio :is(.rc-folio-edit, .rc-folio-reroll):disabled { opacity: .5; cursor: not-allowed; }
+/* At 1200px: 848px reading plane + 32px gutter + 320px launch column. */
+.rc-folio-layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(260px, 320px); align-items: start; gap: 32px; }
+.rc-folio-reading-set, .rc-folio-sidebar { min-width: 0; }
+.rc-folio-set-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; margin: 0 0 12px; padding: 0 4px; }
+.rc-final-builder .rc-review-folio .rc-folio-set-heading h3 { margin: 0; color: var(--folio-muted) !important; font-size: 14px !important; font-weight: 500; }
+.rc-folio-set-heading > span { color: var(--folio-muted); font-size: 13px; font-variant-numeric: tabular-nums; }
+.rc-folio-list { display: grid; gap: 18px; }
+.rc-final-builder .rc-review-folio .rc-folio-passage { position: relative; min-width: 0; margin: 0; padding: 28px 30px; color: var(--folio-ink); background: var(--folio-paper); border: 1px solid var(--folio-edge); border-left: 5px solid #d2d8c7; border-radius: 4px 22px 22px 4px; box-shadow: 0 2px 0 rgba(58, 66, 48, .04), 0 7px 16px -12px rgba(37, 45, 39, .22); }
+.rc-folio-passage-head { display: grid; grid-template-columns: 44px minmax(0, 1fr); gap: 18px; align-items: start; }
+.rc-final-builder .rc-review-folio .rc-folio-number { color: var(--folio-muted); font-family: "RC Newsreader", Georgia, serif; font-size: 38px; font-variant-numeric: tabular-nums; font-weight: 400; line-height: 1; letter-spacing: -.04em; }
+.rc-folio-copy { min-width: 0; }
+.rc-final-builder .rc-review-folio .rc-folio-passage-head h3 { margin: 0 0 12px !important; color: var(--folio-ink) !important; font-family: "RC Newsreader", Georgia, serif !important; font-size: clamp(25px, 2.8vw, 35px) !important; font-weight: 450 !important; font-optical-sizing: auto; line-height: 1.15 !important; letter-spacing: -.015em !important; overflow-wrap: anywhere; text-wrap: pretty; }
+.rc-final-builder .rc-review-folio .rc-folio-reference { margin: 0 0 12px; color: var(--folio-muted); font-size: 14px; line-height: 1.5; font-variant-numeric: tabular-nums; }
+.rc-final-builder .rc-review-folio .rc-folio-metadata { margin: 0; color: var(--folio-muted); font-size: 14px; line-height: 1.65; overflow-wrap: anywhere; }
+.rc-final-builder .rc-review-folio .rc-folio-preview-action { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px !important; margin: 22px 0 0; padding: 11px 16px !important; color: var(--folio-ink) !important; font-family: "RC Outfit", "Outfit", sans-serif !important; font-size: 14px !important; font-weight: 500 !important; line-height: 1.4; text-decoration: none !important; border: 1px solid var(--folio-edge) !important; border-radius: 9px !important; background: var(--folio-well) !important; box-shadow: none !important; cursor: pointer; }
+.rc-folio-preview-action:disabled { opacity: .55; cursor: wait; }
+.rc-final-builder .rc-review-folio .rc-folio-preview-help { margin: 10px 0 0; color: var(--folio-muted); font-size: 12px; line-height: 1.5; }
+.rc-folio-reading { min-width: 0; margin-top: 24px; padding-top: 26px; border-top: 1px solid var(--folio-edge); animation: rc-folio-reading-in 180ms var(--folio-ease); overflow-wrap: anywhere; }
+.rc-final-builder .rc-review-folio .rc-folio-reading :is(p, li) { color: var(--folio-ink); font-family: "RC Newsreader", Georgia, serif; font-optical-sizing: auto; font-size: 18px; line-height: 1.7; }
+.rc-folio-reading-passage { max-width: 68ch; margin-inline: auto; }
+.rc-folio-reading-passage p { margin: 0 0 1em; }
+.rc-folio-reading-passage p:has(> strong:only-child) { margin-top: 1.8em; margin-bottom: .65em; }
+.rc-folio-reading-passage p:has(> em:only-child) { margin-bottom: 1.4em; }
+.rc-final-builder .rc-review-folio .rc-folio-reading .rc-folio-reading-label { margin: 0 0 20px; color: var(--folio-muted); font-family: "RC Outfit", "Outfit", sans-serif; font-size: 14px; font-weight: 600; }
+.rc-folio-reading-questions { margin-top: 36px; }
+.rc-folio-choice { display: grid; grid-template-columns: 20px minmax(0, 1fr); gap: 10px; margin-top: 12px; }
+.rc-folio-choice > strong { padding-top: 1px; font-family: "RC Newsreader", Georgia, serif; font-size: 18px; }
+.rc-final-builder .rc-review-folio .rc-folio-exposure-error { margin: 18px 0 0; padding: 12px 14px; color: #7c3427; border: 1px solid #cbaf96; border-radius: 8px; background: #fff5e7; font-size: 14px; line-height: 1.5; }
+.rc-folio-question { margin-top: 28px; padding-top: 22px; border-top: 1px solid var(--folio-edge); }
+.rc-folio-question > strong, .rc-folio-question > h4 { color: var(--folio-muted); font-family: "RC Outfit", "Outfit", sans-serif; font-size: 14px; font-weight: 600; }
+.rc-final-builder .rc-review-folio .rc-folio-privacy { display: flex; align-items: flex-start; gap: 10px; margin: 20px 4px 0; color: var(--folio-muted); font-size: 13px; line-height: 1.6; }
+.rc-folio-privacy svg { width: 16px; height: 18px; margin-top: 1px; }
+.rc-folio-sidebar { position: sticky; top: 24px; display: grid; gap: 14px; }
+.rc-folio-sidebar:has(.rc-folio-save[open]) { position: static; }
+.rc-folio-session { padding: 27px; color: var(--folio-session-ink); border-radius: 16px 42px 16px 28px; background: var(--folio-session); box-shadow: 0 8px 20px -16px rgba(14, 23, 17, .65); }
+.rc-folio-session-heading { display: flex; align-items: center; gap: 10px; margin-bottom: 24px; }
+.rc-folio-session-symbol { display: inline-flex; color: var(--folio-session-muted); }
+.rc-folio-session-symbol svg { width: 25px; height: 25px; }
+.rc-final-builder .rc-review-folio .rc-folio-session-heading h3 { margin: 0 !important; color: var(--folio-session-ink) !important; font-size: 21px !important; line-height: 1.3; font-weight: 500; }
+.rc-folio-session-heading h3 { scroll-margin-top: 24px; }
+.rc-folio-conditions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px 18px; margin: 0; }
+.rc-final-builder .rc-review-folio .rc-folio-conditions dt { margin: 0 0 7px; color: var(--folio-session-muted) !important; font-size: 13px !important; line-height: 1.5; font-weight: 400; }
+.rc-final-builder .rc-review-folio .rc-folio-conditions dd { margin: 0; color: var(--folio-session-ink) !important; font-size: 17px !important; line-height: 1.4; font-variant-numeric: tabular-nums; }
+.rc-folio-pace, .rc-folio-answer-policy { grid-column: 1 / -1; }
+.rc-final-builder .rc-review-folio .rc-folio-pace dd > span { display: block; color: var(--folio-session-ink); font-size: clamp(40px, 5vw, 64px); font-weight: 400; line-height: 1.05; letter-spacing: -.05em; }
+.rc-folio-pace dd small { display: block; margin-top: 7px; color: var(--folio-session-muted); font-size: 14px; line-height: 1.4; }
+.rc-folio-count { padding-top: 20px; border-top: 1px solid rgba(234, 238, 223, .16); }
+.rc-final-builder .rc-review-folio .rc-folio-count dd { font-size: 29px !important; font-weight: 450; letter-spacing: -.025em; }
+.rc-folio-answer-policy { padding-top: 2px; }
+.rc-final-builder .rc-review-folio :is(.rc-folio-training, .rc-folio-requirement) { margin: 18px 0 0; padding: 12px; color: var(--folio-session-ink); background: rgba(239, 243, 227, .07); border-radius: 8px; font-size: 13px; line-height: 1.5; }
+.rc-folio-shortfall { display: flex; align-items: flex-start; gap: 10px; margin: 20px 0 0; padding: 12px; color: var(--folio-session-ink); border: 1px solid #89957e; border-radius: 8px; font-size: 14px; line-height: 1.5; cursor: pointer; }
+.rc-folio-shortfall input { flex: none; width: 18px; height: 18px; margin: 2px 0 0; accent-color: #e6ebda; }
+.rc-folio-launch { margin-top: 24px; padding-top: 20px; border-top: 1px solid rgba(234, 238, 223, .16); }
+.rc-final-builder .rc-review-folio .rc-folio-launch > p { margin: 0 0 14px; color: var(--folio-session-muted); font-size: 12px; line-height: 1.5; }
+.rc-final-builder .rc-review-folio .rc-folio-start { display: flex !important; align-items: center; justify-content: space-between; gap: 16px; width: 100% !important; min-height: 52px !important; padding: 14px 18px !important; color: #20291e !important; background: #f0efe4 !important; border: 1px solid #f0efe4 !important; border-radius: 10px !important; box-shadow: none !important; font-size: 16px !important; font-weight: 550 !important; line-height: 1.4; cursor: pointer; }
+.rc-folio-start svg { width: 22px; height: 22px; transition: transform 160ms var(--folio-ease); }
+.rc-final-builder .rc-review-folio .rc-folio-start:disabled { opacity: .5; cursor: not-allowed; }
+.rc-folio-start-note { display: block; margin-top: 12px; color: var(--folio-session-muted); font-size: 12px; line-height: 1.5; text-align: center; }
+.rc-final-builder .rc-review-folio .rc-folio-save { width: auto !important; margin: 0 !important; padding: 0 !important; color: var(--folio-ink) !important; border: 1px solid var(--folio-edge) !important; border-radius: 12px !important; background: var(--folio-paper) !important; }
+.rc-folio-save > summary, .rc-folio-selection > summary { display: flex; align-items: center; gap: 10px; min-height: 52px; padding: 14px 16px; color: var(--folio-ink); font-size: 14px; line-height: 1.4; list-style: none; cursor: pointer; }
+.rc-folio-save > summary::-webkit-details-marker, .rc-folio-selection > summary::-webkit-details-marker { display: none; }
+.rc-final-builder .rc-review-folio .rc-folio-save > summary { display: flex !important; font-size: 14px !important; }
+.rc-final-builder .rc-review-folio .rc-folio-save > summary > span { flex: 1; font-size: 14px !important; }
+.rc-folio-save > summary svg { width: 17px; height: 17px; }
+.rc-folio-save-chevron, .rc-folio-selection > summary svg { margin-left: auto; }
+.rc-folio-save[open] > summary .rc-folio-save-chevron, .rc-folio-selection[open] > summary svg { transform: rotate(180deg); }
+.rc-folio-save > :not(summary) { margin: 0 !important; padding: 16px !important; border-top: 1px solid var(--folio-edge); }
+.rc-final-builder .rc-review-folio .rc-folio-save :is(input[type=text], input:not([type])) { width: 100%; min-height: 44px; color: var(--folio-ink) !important; background: var(--folio-ground) !important; border: 1px solid var(--folio-edge) !important; border-radius: 8px; font-size: 16px !important; }
+.rc-final-builder .rc-review-folio .rc-folio-save :is(h2, h3, p, label, .rc-field-hint) { color: var(--folio-ink) !important; }
+.rc-final-builder .rc-review-folio .rc-folio-save :is(.rc-button, .rc-chip) { min-height: 44px; color: var(--folio-ink) !important; background: var(--folio-well) !important; border: 1px solid var(--folio-edge) !important; border-radius: 8px !important; }
+.rc-folio-selection > summary { padding: 5px 8px; min-height: 44px; color: var(--folio-muted); font-size: 13px; }
+.rc-folio-selection > summary svg { width: 15px; height: 15px; }
+.rc-final-builder .rc-review-folio .rc-folio-selection > p { margin: 5px 8px 14px; color: var(--folio-muted); font-size: 13px; line-height: 1.65; overflow-wrap: anywhere; }
+.rc-final-builder .rc-review-folio .rc-folio-warning { margin: 0; padding: 14px 16px; color: #7c3427; border: 1px solid #cbaf96; border-radius: 8px; background: #fff5e7; font-size: 14px; line-height: 1.5; }
+html.dark .rc-final-builder.rc-is-review { --folio-ground: #1b211d; --folio-paper: #282e27; --folio-ink: #eeeee5; --folio-muted: #bdc6b6; --folio-edge: #4b5345; --folio-well: #343d30; --folio-session: #101813; }
+html.dark .rc-review-folio .rc-folio-passage { border-left-color: #7a8b69; }
+@media (hover: hover) {
+  .rc-review-folio .rc-folio-edit:hover, .rc-review-folio .rc-folio-preview-action:hover { filter: brightness(.97); }
+  .rc-review-folio .rc-folio-reroll:hover { text-decoration: underline; text-underline-offset: 4px; }
+  .rc-final-builder .rc-review-folio .rc-folio-start:not(:disabled):hover { background: #fffdf6 !important; }
+  .rc-folio-start:not(:disabled):hover svg { transform: translateX(3px); }
+}
+@container rc-folio (max-width: 850px) {
+  .rc-folio-layout { grid-template-columns: minmax(0, 1fr) 270px; gap: 22px; }
+  .rc-final-builder .rc-review-folio .rc-folio-passage { padding: 24px 20px; }
+  .rc-folio-passage-head { grid-template-columns: 32px minmax(0, 1fr); gap: 12px; }
+  .rc-folio-session { padding: 24px; }
+  .rc-final-builder .rc-review-folio .rc-folio-heading { align-items: flex-start; }
+  .rc-folio-edit-actions { max-width: 190px; }
+}
+@container rc-folio (max-width: 640px) {
+  .rc-folio-layout { grid-template-columns: minmax(0, 1fr); gap: 28px; }
+  .rc-folio-sidebar { position: static; }
+  .rc-final-builder .rc-review-folio .rc-folio-heading { display: block; margin-bottom: 26px; }
+  .rc-folio-edit-actions { justify-content: flex-start; max-width: none; margin-top: 18px; }
+  .rc-final-builder .rc-review-folio .rc-folio-conditions-link { display: inline-flex; }
+  .rc-final-builder.rc-is-review .rc-review-folio #rc-review-heading { font-size: 38px !important; }
+  .rc-final-builder .rc-review-folio .rc-folio-passage-head h3 { font-size: 29px !important; }
+}
+@media (max-width: 560px) {
+  .rc-final-builder.rc-is-review { padding-bottom: 150px !important; }
+  .rc-final-builder .rc-review-folio .rc-folio-provenance { font-size: 12px; }
+  .rc-final-builder.rc-is-review .rc-review-folio #rc-review-heading { font-size: clamp(29px, 8.6vw, 36px) !important; }
+  .rc-final-builder .rc-review-folio .rc-folio-intro { font-size: 15px; }
+  .rc-final-builder .rc-review-folio .rc-folio-passage { padding: 23px 18px; border-radius: 4px 18px 18px 4px; }
+  .rc-folio-passage-head { display: block; }
+  .rc-final-builder .rc-review-folio .rc-folio-number { position: absolute; top: 24px; right: 18px; display: block; margin: 0; font-size: 20px; }
+  .rc-final-builder .rc-review-folio .rc-folio-reference { padding-right: 30px; font-size: 13px; }
+  .rc-folio-edit-actions { gap: 8px; }
+  .rc-final-builder .rc-review-folio :is(.rc-folio-edit, .rc-folio-conditions-link) { padding-inline: 10px; }
+  .rc-final-builder .rc-review-folio .rc-folio-passage-head h3 { font-size: 28px !important; }
+  .rc-final-builder .rc-review-folio .rc-folio-preview-action { width: 100%; }
+  .rc-folio-launch { position: fixed; z-index: 35; left: 12px; right: 12px; bottom: max(12px, env(safe-area-inset-bottom)); margin: 0; padding: 12px; color: var(--folio-session-ink); background: var(--folio-session); border: 1px solid #4e5b46; border-radius: 14px; box-shadow: 0 4px 22px rgba(17, 26, 18, .16); }
+  .rc-final-builder .rc-review-folio .rc-folio-launch > p { margin: 0 0 8px; text-align: center; }
+  .rc-final-builder .rc-review-folio .rc-folio-start { min-height: 48px !important; padding: 11px 16px !important; }
+  .rc-folio-start-note { margin-top: 7px; }
+  .rc-folio-launch[data-ready=true] .rc-folio-start-note { display: none; }
+  .rc-review-folio:has(.rc-folio-save[open]) .rc-folio-launch { position: static; margin-top: 24px; padding: 20px 0 0; border: 0; border-top: 1px solid rgba(234, 238, 223, .16); border-radius: 0; box-shadow: none; }
+  .rc-folio-reading { margin-inline: -2px; }
+  .rc-final-builder .rc-review-folio .rc-folio-reading :is(p, li) { font-size: 18px; }
+}
+@keyframes rc-folio-enter { from { opacity: .2; } to { opacity: 1; } }
+@keyframes rc-folio-reading-in { from { opacity: .2; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) {
+  .rc-review-folio, .rc-review-folio *, .rc-review-folio *::before, .rc-review-folio *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}

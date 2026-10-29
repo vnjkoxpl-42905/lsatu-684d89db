@@ -1,0 +1,89 @@
+{
+  "matrix": [
+    {
+      "deviceNotes": 1,
+      "font": "Poppins, sans-serif",
+      "oldBanner": false,
+      "outline": "rgb(22, 19, 43) none 2.4px",
+      "overflow": false,
+      "resume": {
+        "height": 48,
+        "width": 328.8000183105469
+      },
+      "width": 390
+    },
+    {
+      "deviceNotes": 1,
+      "font": "Poppins, sans-serif",
+      "oldBanner": false,
+      "outline": "rgb(22, 19, 43) none 2.4px",
+      "overflow": false,
+      "resume": {
+        "height": 48,
+        "width": 100
+      },
+      "width": 650
+    },
+    {
+      "deviceNotes": 1,
+      "font": "Poppins, sans-serif",
+      "oldBanner": false,
+      "outline": "rgb(22, 19, 43) none 2.4px",
+      "overflow": false,
+      "resume": {
+        "height": 48,
+        "width": 100
+      },
+      "width": 768
+    },
+    {
+      "deviceNotes": 1,
+      "font": "Poppins, sans-serif",
+      "oldBanner": false,
+      "outline": "rgb(22, 19, 43) none 2.4px",
+      "overflow": false,
+      "resume": {
+        "height": 48,
+        "width": 100
+      },
+      "width": 1000
+    },
+    {
+      "deviceNotes": 1,
+      "font": "Poppins, sans-serif",
+      "oldBanner": false,
+      "outline": "rgb(22, 19, 43) none 2.4px",
+      "overflow": false,
+      "resume": {
+        "height": 48,
+        "width": 100
+      },
+      "width": 1440
+    }
+  ],
+  "iabSignedIn": {
+    "sansHeading": true,
+    "headingProgrammaticFocusUnderlineRemoved": true,
+    "singleResumeCard": true,
+    "deviceNoteOnce": true,
+    "olderDisclosureExpandedSuccessfully": true,
+    "actualProgressRankedBeforeNewerEmptyAttempt": true
+  },
+  "chromeSearch": {
+    "riskCommunicationMatched": true,
+    "PT101FullSectionsMatched": 2
+  },
+  "componentReference": "https://21st.dev/@wensity/components/card",
+  "mcp": {
+    "toolsListed": true,
+    "usageChecked": true,
+    "searchAndGetComponentSucceeded": true,
+    "freeRetrievalsUsed": 1,
+    "aiGenerationEnabled": false,
+    "aiGenerationCalls": 0
+  },
+  "tests": {
+    "selector": 31,
+    "runner": 32
+  }
+}

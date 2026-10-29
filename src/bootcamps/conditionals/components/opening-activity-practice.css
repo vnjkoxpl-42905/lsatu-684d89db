@@ -1,0 +1,15 @@
+.cir-root.opening-activity-practice {
+  --cir-ink-mute: #3c574c;
+  min-height: auto;
+  border-radius: 14px;
+}
+
+.opening-activity-intro {
+  padding: 20px 20px 0;
+  line-height: 1.65;
+  color: var(--cir-ink-soft);
+}
+
+.opening-activity-practice .cir-token:disabled {
+  cursor: default;
+}
