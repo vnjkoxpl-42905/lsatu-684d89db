@@ -358,7 +358,7 @@ export default function OfficialQuestionPane({
                     key={key}
                     className={cn(
                       "group relative rounded-lg border transition-all duration-200",
-                      "grid grid-cols-[auto_1fr_auto_auto] items-start gap-3 px-3 py-1.5",
+                      "grid grid-cols-[auto_minmax(0,1fr)_auto_auto] items-start gap-3 px-3 py-1.5",
                       showCorrectColour
                         ? "border-green-500 bg-green-50"
                         : isWrongPick
@@ -426,7 +426,7 @@ export default function OfficialQuestionPane({
                       }}
                       onDoubleClick={() => deferredPick.cancel()}
                       className={cn(
-                        "text-left leading-normal transition-colors",
+                        "min-w-0 [overflow-wrap:anywhere] text-left leading-normal transition-colors",
                         !locked && "cursor-pointer",
                         showCorrectColour
                           ? "text-green-900"
@@ -493,7 +493,7 @@ export default function OfficialQuestionPane({
                     {/* Fourth column: the Choice Note expander and, when a
                         verdict choice is also crossed out, a real Restore. */}
                     {(showRestoreBeside || showNoteToggle) ? (
-                      <div className="flex items-start gap-1">
+                      <div className="flex items-start gap-3 sm:gap-1">
                         {showRestoreBeside && (
                           <button
                             type="button"
@@ -522,7 +522,7 @@ export default function OfficialQuestionPane({
                       <span aria-hidden className="w-0" />
                     )}
                     {inline && (
-                      <div className="col-start-2 col-end-5">
+                      <div className="col-span-full min-w-0 sm:col-start-2 sm:col-end-5">
                         <InlineChoiceExplanation
                           letter={key}
                           isCorrect={isCorrectFact}

@@ -1,6 +1,7 @@
 import * as React from "react";
-import { ChevronDown, ChevronUp } from "lucide-react";
+import { BookOpen, CheckCircle2, ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
+import "./InlineChoiceExplanation.css";
 
 /**
  * The Choice Note: the per-choice half of a Question Explanation, sitting
@@ -87,9 +88,9 @@ export function ChoiceNoteToggle({
       aria-expanded={open}
       aria-label={label}
       title={label}
-      className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded border border-slate-300 bg-white text-slate-600 transition-colors hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-40"
+      className="choice-note-toggle"
     >
-      {open ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+      <ChevronDown size={18} aria-hidden="true" />
     </button>
   );
 }
@@ -107,24 +108,24 @@ export default function InlineChoiceExplanation({
   if (isInlineChoiceEmpty(content, isSelected)) return null;
 
   return (
-    <div className="mt-2.5" data-choice-note={letter}>
+    <div className="choice-note" data-choice-note={letter} data-correct={isCorrect}>
       {/* Tag, percentage, and the student's own pick. Any of these may be absent. */}
-      <div className="flex flex-wrap items-center gap-2 text-[12px]">
+      <div className="choice-note__metadata">
         {tag && (
           <span
             className={cn(
-              "rounded-full px-2 py-0.5 text-[11px] font-semibold",
-              isCorrect ? "bg-green-600 text-white" : "bg-slate-200 text-slate-700",
+              "choice-note__tag",
+              isCorrect && "choice-note__tag--correct",
             )}
           >
             {tag}
           </span>
         )}
         {studentPercent != null && (
-          <span className="text-slate-500 tabular-nums">{studentPercent}% of students</span>
+          <span className="choice-note__percent">{studentPercent}% of students</span>
         )}
         {isSelected && (
-          <span className="rounded-full border border-slate-300 px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wide text-slate-500">
+          <span className="choice-note__selection">
             Your answer
           </span>
         )}
@@ -132,26 +133,14 @@ export default function InlineChoiceExplanation({
 
       {/* No note means nothing here. The absence is the honest render. */}
       {hasNote && open && (
-        <div
-          className={cn(
-            // A left rule in the choice's own colour anchors the prose to the
-            // choice it belongs to. Without it, five explanations down a page
-            // read as one undifferentiated column of text.
-            "mt-2 border-l-2 pl-3",
-            isCorrect ? "border-green-600/50" : "border-slate-300",
-          )}
-        >
-          <p
-            className={cn(
-              "text-[12px] font-semibold uppercase tracking-wide",
-              isCorrect ? "text-green-800" : "text-slate-500",
-            )}
-          >
+        <div className="choice-note__panel">
+          <p className="choice-note__heading">
+            {isCorrect ? <CheckCircle2 size={17} aria-hidden="true" /> : <BookOpen size={17} aria-hidden="true" />}
             {isCorrect ? "Why this is correct" : "Why this is wrong"}
           </p>
           {/* Reading size, not caption size: this is the sentence the student
               is meant to actually read, and it carries the teaching. */}
-          <p className="mt-1 whitespace-pre-line text-[15px] leading-7 text-slate-800">
+          <p className="choice-note__prose">
             {note}
           </p>
         </div>
