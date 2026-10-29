@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Task Row Anatomy Exploration</title>
+  <style>
+    :root {
+      --bg: #0a0b0b;
+      --panel: #111211;
+      --panel-2: #151615;
+      --line: rgba(255,255,255,0.08);
+      --line-strong: rgba(255,255,255,0.16);
+      --text: #f4f1ea;
+      --muted: #9b9890;
+      --quiet: #646159;
+      --amber: #d9b35b;
+      --blue: #9bbce8;
+      --green: #9ec7a1;
+      --rose: #d9a2a0;
+      --font: ui-sans-serif, -apple-system, BlinkMacSystemFont, "SF Pro Display", "Geist Sans", "Helvetica Neue", sans-serif;
+      --mono: "SF Mono", "Geist Mono", ui-monospace, monospace;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--text);
+      font-family: var(--font);
+      background:
+        radial-gradient(circle at 18% 0%, rgba(217,179,91,0.12), transparent 28rem),
+        radial-gradient(circle at 86% 12%, rgba(155,188,232,0.08), transparent 32rem),
+        linear-gradient(180deg, #0d0d0c 0%, #070807 100%);
+      letter-spacing: 0;
+    }
+    body:before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: .035;
+      background-image:
+        linear-gradient(rgba(255,255,255,.22) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.22) 1px, transparent 1px);
+      background-size: 52px 52px;
+      mask-image: radial-gradient(circle at center, black, transparent 72%);
+    }
+    .page {
+      width: min(1420px, calc(100vw - 56px));
+      margin: 0 auto;
+      padding: 54px 0 70px;
+    }
+    .top {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 360px;
+      gap: 42px;
+      align-items: end;
+      margin-bottom: 34px;
+    }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--amber);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      border: 1px solid rgba(217,179,91,.22);
+      background: rgba(217,179,91,.08);
+      border-radius: 6px;
+      padding: 7px 9px;
+    }
+    h1 {
+      margin: 18px 0 0;
+      max-width: 780px;
+      font-size: clamp(42px, 5vw, 78px);
+      line-height: .95;
+      letter-spacing: -.04em;
+      font-weight: 760;
+    }
+    .intro {
+      margin: 0;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.7;
+    }
+    .options {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+      align-items: stretch;
+    }
+    .choice {
+      position: relative;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.025);
+      border-radius: 18px;
+      padding: 7px;
+      cursor: pointer;
+      transition: transform 520ms cubic-bezier(.16,1,.3,1), border-color 520ms cubic-bezier(.16,1,.3,1), background 520ms cubic-bezier(.16,1,.3,1);
+    }
+    .choice:hover {
+      transform: translateY(-3px);
+      border-color: rgba(217,179,91,.28);
+      background: rgba(255,255,255,.045);
+    }
+    .choice.selected {
+      border-color: rgba(217,179,91,.62);
+      background: rgba(217,179,91,.07);
+    }
+    .inner {
+      min-height: 640px;
+      border: 1px solid rgba(255,255,255,.07);
+      background: linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.018));
+      border-radius: 13px;
+      padding: 22px;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.08);
+    }
+    .option-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding-bottom: 18px;
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 18px;
+    }
+    .letter {
+      width: 28px;
+      height: 28px;
+      display: grid;
+      place-items: center;
+      border-radius: 7px;
+      color: #0b0b0a;
+      background: var(--text);
+      font-size: 12px;
+      font-weight: 800;
+    }
+    h2 {
+      margin: 0;
+      font-size: 17px;
+      letter-spacing: -.02em;
+    }
+    .caption {
+      margin: 4px 0 0;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+    .task-shell {
+      border: 1px solid var(--line);
+      background: rgba(8,9,9,.76);
+      border-radius: 14px;
+      padding: 5px;
+      margin-bottom: 14px;
+    }
+    .task {
+      border: 1px solid rgba(255,255,255,.055);
+      background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
+      border-radius: 10px;
+      padding: 16px;
+    }
+    .row-ledger {
+      display: grid;
+      grid-template-columns: 5px minmax(0, 1fr) auto;
+      gap: 15px;
+      align-items: center;
+    }
+    .rail { width: 5px; align-self: stretch; border-radius: 12px; background: var(--amber); }
+    .rail.blue { background: var(--blue); }
+    .rail.green { background: var(--green); }
+    .meta {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      color: var(--quiet);
+      font: 10px/1 var(--mono);
+      text-transform: uppercase;
+      letter-spacing: .12em;
+      margin-bottom: 7px;
+    }
+    .title {
+      margin: 0;
+      font-size: 15px;
+      line-height: 1.3;
+      font-weight: 720;
+      letter-spacing: -.015em;
+    }
+    .why {
+      margin: 7px 0 0;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+    .btn {
+      border: 1px solid rgba(255,255,255,.12);
+      background: var(--text);
+      color: #0b0b0a;
+      border-radius: 7px;
+      padding: 10px 12px;
+      font-size: 12px;
+      font-weight: 760;
+      white-space: nowrap;
+    }
+    .ghost {
+      background: transparent;
+      color: var(--muted);
+    }
+    .brief {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 14px;
+    }
+    .brief-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      align-items: start;
+    }
+    .student-card {
+      display: grid;
+      grid-template-columns: 38px minmax(0, 1fr);
+      gap: 11px;
+      align-items: center;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 10px;
+      background: rgba(255,255,255,.026);
+    }
+    .avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      display: grid;
+      place-items: center;
+      background: rgba(217,179,91,.14);
+      color: var(--amber);
+      font-weight: 800;
+    }
+    .chips {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+    .chip {
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.025);
+      color: var(--muted);
+      border-radius: 999px;
+      padding: 6px 8px;
+      font: 10px/1 var(--mono);
+      text-transform: uppercase;
+      letter-spacing: .08em;
+    }
+    .actions {
+      display: flex;
+      gap: 9px;
+      align-items: center;
+      border-top: 1px solid var(--line);
+      padding-top: 14px;
+    }
+    .timeline {
+      display: grid;
+      grid-template-columns: 84px minmax(0, 1fr);
+      gap: 14px;
+      align-items: stretch;
+    }
+    .time {
+      color: var(--quiet);
+      font: 11px/1 var(--mono);
+      padding-top: 4px;
+      text-transform: uppercase;
+      letter-spacing: .09em;
+    }
+    .micro-list {
+      margin: 20px 0 0;
+      padding: 0;
+      list-style: none;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.65;
+    }
+    .micro-list li {
+      border-top: 1px solid var(--line);
+      padding: 9px 0;
+    }
+    .recommend {
+      margin-top: 24px;
+      border: 1px solid rgba(217,179,91,.24);
+      background: rgba(217,179,91,.07);
+      border-radius: 14px;
+      padding: 18px 20px;
+      color: #d9cfb8;
+      line-height: 1.6;
+      font-size: 14px;
+    }
+    @media (max-width: 1050px) {
+      .top, .options { grid-template-columns: 1fr; }
+      .inner { min-height: auto; }
+      .page { width: min(100vw - 28px, 760px); padding-top: 32px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="top">
+      <div>
+        <div class="eyebrow">Teacher Workspace · Row Anatomy</div>
+        <h1>What should a task row feel like?</h1>
+      </div>
+      <p class="intro">We are not building the final row yet. This is anatomy exploration: how much context belongs in a task, how action-forward it should be, and whether the row feels like a lightweight list item or a decision object.</p>
+    </section>
+
+    <section class="options">
+      <article class="choice" data-choice="compact-ledger" onclick="toggleSelect(this)">
+        <div class="inner">
+          <div class="option-head">
+            <div>
+              <h2>Compact Ledger</h2>
+              <p class="caption">Fast scanning, very restrained.</p>
+            </div>
+            <div class="letter">A</div>
+          </div>
+
+          <div class="task-shell">
+            <div class="task row-ledger">
+              <div class="rail"></div>
+              <div>
+                <div class="meta">Now · Reply · Lydia</div>
+                <p class="title">Unread message about homework confusion</p>
+                <p class="why">Last assignment stalled after causal flaw set.</p>
+              </div>
+              <button class="btn">Reply</button>
+            </div>
+          </div>
+
+          <div class="task-shell">
+            <div class="task row-ledger">
+              <div class="rail blue"></div>
+              <div>
+                <div class="meta">Review · Upload · Dakota</div>
+                <p class="title">New handwritten explanation uploaded</p>
+                <p class="why">Needs review before assigning new material.</p>
+              </div>
+              <button class="btn ghost">Open</button>
+            </div>
+          </div>
+
+          <div class="task-shell">
+            <div class="task row-ledger">
+              <div class="rail green"></div>
+              <div>
+                <div class="meta">Plan · Assign · Meghan</div>
+                <p class="title">No next work after completing review</p>
+                <p class="why">Completion crossed 90% this morning.</p>
+              </div>
+              <button class="btn ghost">Assign</button>
+            </div>
+          </div>
+
+          <ul class="micro-list">
+            <li>Best for density and speed.</li>
+            <li>Weakness: may feel like an admin inbox.</li>
+            <li>Risk: not enough teaching context for decisions.</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="choice" data-choice="decision-brief" onclick="toggleSelect(this)">
+        <div class="inner">
+          <div class="option-head">
+            <div>
+              <h2>Decision Brief</h2>
+              <p class="caption">A task row as a small teaching decision.</p>
+            </div>
+            <div class="letter">B</div>
+          </div>
+
+          <div class="task-shell">
+            <div class="task brief">
+              <div class="brief-top">
+                <div>
+                  <div class="meta">Needs action now · Reply</div>
+                  <p class="title">Lydia is stuck on the homework explanation.</p>
+                  <p class="why">She replied after the causal flaw set. The pattern looks like she is naming the conclusion but missing why the evidence fails.</p>
+                </div>
+                <div class="student-card">
+                  <div class="avatar">L</div>
+                  <div>
+                    <p class="title" style="font-size:13px;">Lydia</p>
+                    <p class="why" style="margin-top:3px;">40% complete · session 4:00</p>
+                  </div>
+                </div>
+              </div>
+              <div class="chips">
+                <span class="chip">source: message</span>
+                <span class="chip">suggestion: reply + review</span>
+                <span class="chip">confidence: medium</span>
+              </div>
+              <div class="actions">
+                <button class="btn">Draft reply</button>
+                <button class="btn ghost">Open student</button>
+                <button class="btn ghost">Dismiss</button>
+              </div>
+            </div>
+          </div>
+
+          <ul class="micro-list">
+            <li>Best for premium utility and real teaching judgment.</li>
+            <li>Shows why the task matters before Joshua clicks.</li>
+            <li>Risk: must stay disciplined so rows do not get bloated.</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="choice" data-choice="timeline-strip" onclick="toggleSelect(this)">
+        <div class="inner">
+          <div class="option-head">
+            <div>
+              <h2>Timeline Strip</h2>
+              <p class="caption">Tasks anchored to the teaching day.</p>
+            </div>
+            <div class="letter">C</div>
+          </div>
+
+          <div class="task-shell">
+            <div class="task timeline">
+              <div class="time">09:20</div>
+              <div>
+                <div class="meta">Needs action now · Reply</div>
+                <p class="title">Lydia needs a reply before her session.</p>
+                <p class="why">Unread message connected to today’s prep.</p>
+                <div class="chips">
+                  <span class="chip">reply</span>
+                  <span class="chip">session-linked</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="task-shell">
+            <div class="task timeline">
+              <div class="time">11:00</div>
+              <div>
+                <div class="meta">Review next · Upload</div>
+                <p class="title">Dakota uploaded outside work.</p>
+                <p class="why">Review before assigning new drills.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="task-shell">
+            <div class="task timeline">
+              <div class="time">Later</div>
+              <div>
+                <div class="meta">Plan · Assign</div>
+                <p class="title">Meghan needs next work.</p>
+                <p class="why">No active assignment after completion.</p>
+              </div>
+            </div>
+          </div>
+
+          <ul class="micro-list">
+            <li>Best if Today is primarily schedule-driven.</li>
+            <li>Weakness: tasks without time can feel secondary.</li>
+            <li>Risk: less useful on days with no sessions loaded.</li>
+          </ul>
+        </div>
+      </article>
+    </section>
+
+    <div class="recommend">
+      <strong>Recommendation:</strong> start from <strong>B. Decision Brief</strong>, then enforce a compact collapsed state. It feels more like a premium teacher operating system than a generic task list, while still keeping the row action-first.
+    </div>
+  </main>
+</body>
+</html>

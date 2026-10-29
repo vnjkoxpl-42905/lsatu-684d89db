@@ -1,0 +1,1933 @@
+{
+  "date": "2026-10-18",
+  "providerBudget": 5,
+  "expectedProviderCalls": 5,
+  "results": [
+    {
+      "fixture": "accurate-paraphrase",
+      "attemptId": "ea9dc0da-c7df-4bd5-a83d-378ca6bb6245",
+      "recapId": "46ec0289-8060-46e1-8c5f-247f8825e314",
+      "status": 200,
+      "response": {
+        "attemptId": "ea9dc0da-c7df-4bd5-a83d-378ca6bb6245",
+        "items": [
+          {
+            "recapId": "46ec0289-8060-46e1-8c5f-247f8825e314",
+            "label": "Passage 1 · Paragraph 1",
+            "status": "ready",
+            "retryable": false,
+            "grade": {
+              "version": 2,
+              "transcript": "In areas such as music, chess, and some sports, the very best performers do so much better even than other people with extensive experience that some people think inborn talent is needed to explain the difference. Some psychologists support that view by pointing to child prodigies and evidence that relevant traits seem to be inherited. For instance, most outstanding musicians are identified by age six. Researchers also have evidence that some abilities needed for exceptional athletic performance can be inborn, including excellent motor coordination, fast reflexes, and coordination between the hands and eyes.",
+              "sourceHash": "023476d01ea080e07f76eba650d691e40591a9bdeeae0522cff5cc5004240df6",
+              "sourceText": "In certain fields of human endeavor, such as music, chess, and some athletic activities, the performance of the best practitioners is so outstanding, so superior even to the performance of other highly experienced individuals in the field, that some people believe some notion of innate talent must be invoked to account for this highest level of performance. Certain psychologists have supported this view with data concerning the performance of prodigies and the apparent heritability of relevant traits. They have noted, for example, that most outstanding musicians are discovered by the age of six, and they have found evidence that some of the qualities necessary for exceptional athletic performance, including superior motor coordination, speed of reflexes, and hand-eye coordination, can be inborn.",
+              "audioHash": "a00b79426be9b28e89cbc5eef819f2104fcd995b779b724d55d7d715278776a4",
+              "model": "google/gemini-3.1-flash-lite",
+              "asrEngine": "deepgram/nova-3",
+              "assessment": {
+                "details": [
+                  {
+                    "status": "kept",
+                    "sourceId": "s1",
+                    "explanation": "The transcript successfully conveys the comparison between elite performers and experienced individuals, as well as the conclusion that innate talent is invoked to explain the gap.",
+                    "recallQuote": "In areas such as music, chess, and some sports, the very best performers do so much better even than other people with extensive experience that some people think inborn talent is needed to explain the difference.",
+                    "sourceQuote": "In certain fields of human endeavor, such as music, chess, and some athletic activities, the performance of the best practitioners is so outstanding, so superior even to the performance of other highly experienced individuals in the field, that some people believe some notion of innate talent must be invoked to account for this highest level of performance."
+                  },
+                  {
+                    "status": "kept",
+                    "sourceId": "s2",
+                    "explanation": "The transcript accurately identifies the psychologists' support for the innate talent view, citing prodigies and heritability.",
+                    "recallQuote": "Some psychologists support that view by pointing to child prodigies and evidence that relevant traits seem to be inherited.",
+                    "sourceQuote": "Certain psychologists have supported this view with data concerning the performance of prodigies and the apparent heritability of relevant traits."
+                  },
+                  {
+                    "status": "kept",
+                    "sourceId": "s3",
+                    "explanation": "The transcript correctly lists the specific examples of musicians identified by age six and the three specific athletic traits mentioned in the source.",
+                    "recallQuote": "For instance, most outstanding musicians are identified by age six. Researchers also have evidence that some abilities needed for exceptional athletic performance can be inborn, including excellent motor coordination, fast reflexes, and coordination between the hands and eyes.",
+                    "sourceQuote": "They have noted, for example, that most outstanding musicians are discovered by the age of six, and they have found evidence that some of the qualities necessary for exceptional athletic performance, including superior motor coordination, speed of reflexes, and hand-eye coordination, can be inborn."
+                  }
+                ],
+                "summary": "The transcript accurately captures the core argument regarding the belief in innate talent for elite performance in specific fields, the psychological support for this view, and the specific examples provided regarding musicians and athletic traits.",
+                "coverage": {
+                  "label": "Meaning points",
+                  "earned": 6,
+                  "percent": 100,
+                  "possible": 6
+                },
+                "nextStep": "You recalled the details perfectly. To maintain this level of precision, try to recall the specific distinction made in the text between 'highly experienced individuals' and the 'best practitioners' in your next practice session.",
+                "relationships": []
+              }
+            }
+          }
+        ],
+        "build": "2026-10-18-rc-grader-2"
+      },
+      "stored": {
+        "id": "e4412724-a6e7-4093-8145-08f03b2f1afe",
+        "recap_id": "46ec0289-8060-46e1-8c5f-247f8825e314",
+        "attempt_id": "ea9dc0da-c7df-4bd5-a83d-378ca6bb6245",
+        "student_id": "d763bfe6-d710-4c4b-90ff-4b3a20929211",
+        "grader_version": 2,
+        "status": "ready",
+        "claim_token": null,
+        "lease_until": null,
+        "tries": 1,
+        "reason": null,
+        "source_text": "In certain fields of human endeavor, such as music, chess, and some athletic activities, the performance of the best practitioners is so outstanding, so superior even to the performance of other highly experienced individuals in the field, that some people believe some notion of innate talent must be invoked to account for this highest level of performance. Certain psychologists have supported this view with data concerning the performance of prodigies and the apparent heritability of relevant traits. They have noted, for example, that most outstanding musicians are discovered by the age of six, and they have found evidence that some of the qualities necessary for exceptional athletic performance, including superior motor coordination, speed of reflexes, and hand-eye coordination, can be inborn.",
+        "source_hash": "023476d01ea080e07f76eba650d691e40591a9bdeeae0522cff5cc5004240df6",
+        "audio_hash": "a00b79426be9b28e89cbc5eef819f2104fcd995b779b724d55d7d715278776a4",
+        "object_path": "d763bfe6-d710-4c4b-90ff-4b3a20929211/ea9dc0da-c7df-4bd5-a83d-378ca6bb6245/p1-para1-recall-74850171-084f-4060-ae03-3fd6627cab46.mp3",
+        "passage_id": 16,
+        "paragraph_index": 0,
+        "transcript": "In areas such as music, chess, and some sports, the very best performers do so much better even than other people with extensive experience that some people think inborn talent is needed to explain the difference. Some psychologists support that view by pointing to child prodigies and evidence that relevant traits seem to be inherited. For instance, most outstanding musicians are identified by age six. Researchers also have evidence that some abilities needed for exceptional athletic performance can be inborn, including excellent motor coordination, fast reflexes, and coordination between the hands and eyes.",
+        "asr_words": [
+          {
+            "end": 0.32,
+            "word": "In",
+            "start": 0,
+            "confidence": 0.9770508
+          },
+          {
+            "end": 0.71999997,
+            "word": "areas",
+            "start": 0.32,
+            "confidence": 0.99902344
+          },
+          {
+            "end": 1.04,
+            "word": "such",
+            "start": 0.71999997,
+            "confidence": 0.9838867
+          },
+          {
+            "end": 1.1999999,
+            "word": "as",
+            "start": 1.04,
+            "confidence": 0.99902344
+          },
+          {
+            "end": 1.8399999,
+            "word": "music,",
+            "start": 1.1999999,
+            "confidence": 0.9941406
+          },
+          {
+            "end": 2.3999999,
+            "word": "chess,",
+            "start": 1.8399999,
+            "confidence": 0.8904622
+          },
+          {
+            "end": 2.56,
+            "word": "and",
+            "start": 2.3999999,
+            "confidence": 1
+          },
+          {
+            "end": 2.8,
+            "word": "some",
+            "start": 2.56,
+            "confidence": 0.99902344
+          },
+          {
+            "end": 3.5199997,
+            "word": "sports,",
+            "start": 2.8,
+            "confidence": 0.99658203
+          },
+          {
+            "end": 3.9199998,
+            "word": "the",
+            "start": 3.6799998,
+            "confidence": 0.99902344
+          },
+          {
+            "end": 4.24,
+            "word": "very",
+            "start": 3.9199998,
+            "confidence": 1
+          },
+          {
+            "end": 4.48,
+            "word": "best",
+            "start": 4.24,
+            "confidence": 1
+          },
+          {
+            "end": 5.04,
+            "word": "performers",
+            "start": 4.48,
+            "confidence": 1
+          },
+          {
+            "end": 5.3599997,
+            "word": "do",
+            "start": 5.04,
+            "confidence": 1
+          },
+          {
+            "end": 5.6,
+            "word": "so",
+            "start": 5.3599997,
+            "confidence": 0.9980469
+          },
+          {
+            "end": 5.8399997,
+            "word": "much",
+            "start": 5.6,
+            "confidence": 1
+          },
+          {
+            "end": 6.08,
+            "word": "better",
+            "start": 5.8399997,
+            "confidence": 1
+          },
+          {
+            "end": 6.3999996,
+            "word": "even",
+            "start": 6.08,
+            "confidence": 0.97265625
+          },
+          {
+            "end": 6.56,
+            "word": "than",
+            "start": 6.3999996,
+            "confidence": 0.96240234
+          },
+          {
+            "end": 6.8799996,
+            "word": "other",
+            "start": 6.56,
+            "confidence": 1
+          },
+          {
+            "end": 7.12,
+            "word": "people",
+            "start": 6.8799996,
+            "confidence": 1
+          },
+          {
+            "end": 7.3599997,
+            "word": "with",
+            "start": 7.12,
+            "confidence": 0.9838867
+          },
+          {
+            "end": 7.9199996,
+            "word": "extensive",
+            "start": 7.3599997,
+            "confidence": 1
+          },
+          {
+            "end": 8.48,
+            "word": "experience",
+            "start": 7.9199996,
+            "confidence": 1
+          },
+          {
+            "end": 8.8,
+            "word": "that",
+            "start": 8.48,
+            "confidence": 0.98291016
+          },
+          {
+            "end": 9.12,
+            "word": "some",
+            "start": 8.8,
+            "confidence": 0.99902344
+          },
+          {
+            "end": 9.36,
+            "word": "people",
+            "start": 9.12,
+            "confidence": 1
+          },
+          {
+            "end": 9.599999,
+            "word": "think",
+            "start": 9.36,
+            "confidence": 1
+          },
+          {
+            "end": 10.08,
+            "word": "inborn",
+            "start": 9.599999,
+            "confidence": 0.9616699
+          },
+          {
+            "end": 10.4,
+            "word": "talent",
+            "start": 10.08,
+            "confidence": 1
+          },
+          {
+            "end": 10.639999,
+            "word": "is",
+            "start": 10.4,
+            "confidence": 1
+          },
+          {
+            "end": 10.96,
+            "word": "needed",
+            "start": 10.639999,
+            "confidence": 1
+          },
+          {
+            "end": 11.12,
+            "word": "to",
+            "start": 10.96,
+            "confidence": 1
+          },
+          {
+            "end": 11.5199995,
+            "word": "explain",
+            "start": 11.12,
+            "confidence": 1
+          },
+          {
+            "end": 11.759999,
+            "word": "the",
+            "start": 11.5199995,
+            "confidence": 1
+          },
+          {
+            "end": 12.08,
+            "word": "difference.",
+            "start": 11.759999,
+            "confidence": 1
+          },
+          {
+            "end": 13.425,
+            "word": "Some",
+            "start": 13.1050005,
+            "confidence": 0.99902344
+          },
+          {
+            "end": 14.225,
+            "word": "psychologists",
+            "start": 13.425,
+            "confidence": 0.9909668
+          },
+          {
+            "end": 14.625,
+            "word": "support",
+            "start": 14.225,
+            "confidence": 0.99609375
+          },
+          {
+            "end": 14.865,
+            "word": "that",
+            "start": 14.625,
+            "confidence": 0.99902344
+          },
+          {
+            "end": 15.105,
+            "word": "view",
+            "start": 14.865,
+            "confidence": 0.9980469
+          },
+          {
+            "end": 15.345,
+            "word": "by",
+            "start": 15.105,
+            "confidence": 0.9980469
+          },
+          {
+            "end": 15.665,
+            "word": "pointing",
+            "start": 15.345,
+            "confidence": 1
+          },
+          {
+            "end": 15.825,
+            "word": "to",
+            "start": 15.665,
+            "confidence": 1
+          },
+          {
+            "end": 16.225,
+            "word": "child",
+            "start": 15.825,
+            "confidence": 0.9980469
+          },
+          {
+            "end": 16.785,
+            "word": "prodigies",
+            "start": 16.225,
+            "confidence": 0.9977214
+          },
+          {
+            "end": 17.025,
+            "word": "and",
+            "start": 16.785,
+            "confidence": 0.9863281
+          },
+          {
+            "end": 17.425,
+            "word": "evidence",
+            "start": 17.025,
+            "confidence": 1
+          },
+          {
+            "end": 17.665,
+            "word": "that",
+            "start": 17.425,
+            "confidence": 0.99902344
+          },
+          {
+            "end": 18.145,
+            "word": "relevant",
+            "start": 17.665,
+            "confidence": 0.99902344
+          },
+          {
+            "end": 18.465,
+            "word": "traits",
+            "start": 18.145,
+            "confidence": 0.94628906
+          },
+          {
+            "end": 18.785,
+            "word": "seem",
+            "start": 18.465,
+            "confidence": 0.9658203
+          },
+          {
+            "end": 18.865,
+            "word": "to",
+            "start": 18.785,
+            "confidence": 1
+          },
+          {
+            "end": 19.025,
+            "word": "be",
+            "start": 18.865,
+            "confidence": 1
+          },
+          {
+            "end": 19.825,
+            "word": "inherited.",
+            "start": 19.025,
+            "confidence": 0.99853516
+          },
+          {
+            "end": 20.785,
+            "word": "For",
+            "start": 20.465,
+            "confidence": 0.9980469
+          },
+          {
+            "end": 21.505001,
+            "word": "instance,",
+            "start": 20.785,
+            "confidence": 0.9980469
+          },
+          {
+            "end": 22.064999,
+            "word": "most",
+            "start": 21.665,
+            "confidence": 0.9921875
+          },
+          {
+            "end": 22.705,
+            "word": "outstanding",
+            "start": 22.064999,
+            "confidence": 1
+          },
+          {
+            "end": 23.185,
+            "word": "musicians",
+            "start": 22.705,
+            "confidence": 0.9995117
+          },
+          {
+            "end": 23.425,
+            "word": "are",
+            "start": 23.185,
+            "confidence": 1
+          },
+          {
+            "end": 24.064999,
+            "word": "identified",
+            "start": 23.425,
+            "confidence": 1
+          },
+          {
+            "end": 24.305,
+            "word": "by",
+            "start": 24.064999,
+            "confidence": 1
+          },
+          {
+            "end": 24.625,
+            "word": "age",
+            "start": 24.305,
+            "confidence": 0.9941406
+          },
+          {
+            "end": 24.945,
+            "word": "six.",
+            "start": 24.625,
+            "confidence": 0.99853516
+          },
+          {
+            "end": 26.54,
+            "word": "Researchers",
+            "start": 25.74,
+            "confidence": 0.99658203
+          },
+          {
+            "end": 26.86,
+            "word": "also",
+            "start": 26.54,
+            "confidence": 0.9970703
+          },
+          {
+            "end": 27.18,
+            "word": "have",
+            "start": 26.86,
+            "confidence": 0.99902344
+          },
+          {
+            "end": 27.5,
+            "word": "evidence",
+            "start": 27.18,
+            "confidence": 0.99316406
+          },
+          {
+            "end": 27.82,
+            "word": "that",
+            "start": 27.5,
+            "confidence": 0.99902344
+          },
+          {
+            "end": 28.06,
+            "word": "some",
+            "start": 27.82,
+            "confidence": 0.99902344
+          },
+          {
+            "end": 28.46,
+            "word": "abilities",
+            "start": 28.06,
+            "confidence": 0.9970703
+          },
+          {
+            "end": 28.86,
+            "word": "needed",
+            "start": 28.46,
+            "confidence": 0.99902344
+          },
+          {
+            "end": 29.1,
+            "word": "for",
+            "start": 28.86,
+            "confidence": 1
+          },
+          {
+            "end": 29.58,
+            "word": "exceptional",
+            "start": 29.1,
+            "confidence": 1
+          },
+          {
+            "end": 30.14,
+            "word": "athletic",
+            "start": 29.58,
+            "confidence": 0.99902344
+          },
+          {
+            "end": 30.7,
+            "word": "performance",
+            "start": 30.14,
+            "confidence": 0.99902344
+          },
+          {
+            "end": 30.94,
+            "word": "can",
+            "start": 30.7,
+            "confidence": 0.9980469
+          },
+          {
+            "end": 31.1,
+            "word": "be",
+            "start": 30.94,
+            "confidence": 1
+          },
+          {
+            "end": 31.9,
+            "word": "inborn,",
+            "start": 31.1,
+            "confidence": 0.91845703
+          },
+          {
+            "end": 32.46,
+            "word": "including",
+            "start": 31.98,
+            "confidence": 0.9980469
+          },
+          {
+            "end": 32.94,
+            "word": "excellent",
+            "start": 32.46,
+            "confidence": 0.99316406
+          },
+          {
+            "end": 33.34,
+            "word": "motor",
+            "start": 32.94,
+            "confidence": 1
+          },
+          {
+            "end": 34.38,
+            "word": "coordination,",
+            "start": 33.34,
+            "confidence": 0.9790039
+          },
+          {
+            "end": 34.7,
+            "word": "fast",
+            "start": 34.38,
+            "confidence": 0.9941406
+          },
+          {
+            "end": 35.58,
+            "word": "reflexes,",
+            "start": 34.7,
+            "confidence": 0.9057617
+          },
+          {
+            "end": 35.739998,
+            "word": "and",
+            "start": 35.58,
+            "confidence": 1
+          },
+          {
+            "end": 36.54,
+            "word": "coordination",
+            "start": 35.739998,
+            "confidence": 0.99609375
+          },
+          {
+            "end": 36.94,
+            "word": "between",
+            "start": 36.54,
+            "confidence": 1
+          },
+          {
+            "end": 37.18,
+            "word": "the",
+            "start": 36.94,
+            "confidence": 0.99609375
+          },
+          {
+            "end": 37.42,
+            "word": "hands",
+            "start": 37.18,
+            "confidence": 0.99902344
+          },
+          {
+            "end": 37.66,
+            "word": "and",
+            "start": 37.42,
+            "confidence": 0.99902344
+          },
+          {
+            "end": 37.9,
+            "word": "eyes.",
+            "start": 37.66,
+            "confidence": 0.99560547
+          }
+        ],
+        "asr_engine": "deepgram/nova-3",
+        "model": "google/gemini-3.1-flash-lite",
+        "assessment": {
+          "details": [
+            {
+              "status": "kept",
+              "sourceId": "s1",
+              "explanation": "The transcript successfully conveys the comparison between elite performers and experienced individuals, as well as the conclusion that innate talent is invoked to explain the gap.",
+              "recallQuote": "In areas such as music, chess, and some sports, the very best performers do so much better even than other people with extensive experience that some people think inborn talent is needed to explain the difference.",
+              "sourceQuote": "In certain fields of human endeavor, such as music, chess, and some athletic activities, the performance of the best practitioners is so outstanding, so superior even to the performance of other highly experienced individuals in the field, that some people believe some notion of innate talent must be invoked to account for this highest level of performance."
+            },
+            {
+              "status": "kept",
+              "sourceId": "s2",
+              "explanation": "The transcript accurately identifies the psychologists' support for the innate talent view, citing prodigies and heritability.",
+              "recallQuote": "Some psychologists support that view by pointing to child prodigies and evidence that relevant traits seem to be inherited.",
+              "sourceQuote": "Certain psychologists have supported this view with data concerning the performance of prodigies and the apparent heritability of relevant traits."
+            },
+            {
+              "status": "kept",
+              "sourceId": "s3",
+              "explanation": "The transcript correctly lists the specific examples of musicians identified by age six and the three specific athletic traits mentioned in the source.",
+              "recallQuote": "For instance, most outstanding musicians are identified by age six. Researchers also have evidence that some abilities needed for exceptional athletic performance can be inborn, including excellent motor coordination, fast reflexes, and coordination between the hands and eyes.",
+              "sourceQuote": "They have noted, for example, that most outstanding musicians are discovered by the age of six, and they have found evidence that some of the qualities necessary for exceptional athletic performance, including superior motor coordination, speed of reflexes, and hand-eye coordination, can be inborn."
+            }
+          ],
+          "summary": "The transcript accurately captures the core argument regarding the belief in innate talent for elite performance in specific fields, the psychological support for this view, and the specific examples provided regarding musicians and athletic traits.",
+          "coverage": {
+            "label": "Meaning points",
+            "earned": 6,
+            "percent": 100,
+            "possible": 6
+          },
+          "nextStep": "You recalled the details perfectly. To maintain this level of precision, try to recall the specific distinction made in the text between 'highly experienced individuals' and the 'best practitioners' in your next practice session.",
+          "relationships": []
+        },
+        "created_at": "2026-10-19T02:30:05.165979+00:00",
+        "updated_at": "2026-10-19T02:30:09.036+00:00",
+        "capture_id": null,
+        "recall_start_ms": null,
+        "recall_end_ms": null,
+        "asr_calls": 0,
+        "judge_calls": 1,
+        "audio_seconds": null,
+        "provider_usage": {
+          "promptTokens": 1007,
+          "completionTokens": 401
+        }
+      },
+      "cacheUnchanged": true
+    },
+    {
+      "fixture": "substantial-omission",
+      "attemptId": "b61bb4f1-91a8-4074-8469-0f54a6c432aa",
+      "recapId": "ef6bb616-f6e8-48e0-83e9-f0fd2aee9ba4",
+      "status": 200,
+      "response": {
+        "attemptId": "b61bb4f1-91a8-4074-8469-0f54a6c432aa",
+        "items": [
+          {
+            "recapId": "ef6bb616-f6e8-48e0-83e9-f0fd2aee9ba4",
+            "label": "Passage 1 · Paragraph 1",
+            "status": "ready",
+            "retryable": false,
+            "grade": {
+              "version": 2,
+              "transcript": "In music, chess, and sports, the very best performers do far better than other experienced people. Some people explain this difference by saying these performers have natural talent.",
+              "sourceHash": "023476d01ea080e07f76eba650d691e40591a9bdeeae0522cff5cc5004240df6",
+              "sourceText": "In certain fields of human endeavor, such as music, chess, and some athletic activities, the performance of the best practitioners is so outstanding, so superior even to the performance of other highly experienced individuals in the field, that some people believe some notion of innate talent must be invoked to account for this highest level of performance. Certain psychologists have supported this view with data concerning the performance of prodigies and the apparent heritability of relevant traits. They have noted, for example, that most outstanding musicians are discovered by the age of six, and they have found evidence that some of the qualities necessary for exceptional athletic performance, including superior motor coordination, speed of reflexes, and hand-eye coordination, can be inborn.",
+              "audioHash": "11df02f693e91b530d63f43cba20a2beb781b9ca9de240990ed5322daf2f0f64",
+              "model": "google/gemini-3.1-flash-lite",
+              "asrEngine": "deepgram/nova-3",
+              "assessment": {
+                "details": [
+                  {
+                    "status": "kept",
+                    "sourceId": "s1",
+                    "explanation": "The recall accurately conveys the comparison between elite practitioners and other experienced individuals, as well as the attribution of this gap to innate talent.",
+                    "recallQuote": "In music, chess, and sports, the very best performers do far better than other experienced people. Some people explain this difference by saying these performers have natural talent.",
+                    "sourceQuote": "In certain fields of human endeavor, such as music, chess, and some athletic activities, the performance of the best practitioners is so outstanding, so superior even to the performance of other highly experienced individuals in the field, that some people believe some notion of innate talent must be invoked to account for this highest level of performance."
+                  },
+                  {
+                    "status": "missing",
+                    "sourceId": "s2",
+                    "explanation": "The recall fails to mention the role of psychologists or the specific evidence regarding prodigies and heritability.",
+                    "recallQuote": "",
+                    "sourceQuote": "Certain psychologists have supported this view with data concerning the performance of prodigies and the apparent heritability of relevant traits."
+                  },
+                  {
+                    "status": "missing",
+                    "sourceId": "s3",
+                    "explanation": "The recall omits the specific examples of musicians discovered by age six and the list of inborn athletic traits.",
+                    "recallQuote": "",
+                    "sourceQuote": "They have noted, for example, that most outstanding musicians are discovered by the age of six, and they have found evidence that some of the qualities necessary for exceptional athletic performance, including superior motor coordination, speed of reflexes, and hand-eye coordination, can be inborn."
+                  }
+                ],
+                "summary": "The recall captures the core observation that elite performance in specific fields is often attributed to innate talent, but it omits the supporting psychological evidence and specific examples provided in the text.",
+                "coverage": {
+                  "label": "Meaning points",
+                  "earned": 2,
+                  "percent": 33,
+                  "possible": 6
+                },
+                "nextStep": "Please revisit the text to incorporate the specific evidence psychologists use to support the innate talent theory, specifically the age at which musicians are typically discovered and the three specific athletic traits mentioned, then attempt the recall again.",
+                "relationships": []
+              }
+            }
+          }
+        ],
+        "build": "2026-10-18-rc-grader-2"
+      },
+      "stored": {
+        "id": "53cb8377-834f-48ac-88b0-ef48225dca54",
+        "recap_id": "ef6bb616-f6e8-48e0-83e9-f0fd2aee9ba4",
+        "attempt_id": "b61bb4f1-91a8-4074-8469-0f54a6c432aa",
+        "student_id": "d763bfe6-d710-4c4b-90ff-4b3a20929211",
+        "grader_version": 2,
+        "status": "ready",
+        "claim_token": null,
+        "lease_until": null,
+        "tries": 1,
+        "reason": null,
+        "source_text": "In certain fields of human endeavor, such as music, chess, and some athletic activities, the performance of the best practitioners is so outstanding, so superior even to the performance of other highly experienced individuals in the field, that some people believe some notion of innate talent must be invoked to account for this highest level of performance. Certain psychologists have supported this view with data concerning the performance of prodigies and the apparent heritability of relevant traits. They have noted, for example, that most outstanding musicians are discovered by the age of six, and they have found evidence that some of the qualities necessary for exceptional athletic performance, including superior motor coordination, speed of reflexes, and hand-eye coordination, can be inborn.",
+        "source_hash": "023476d01ea080e07f76eba650d691e40591a9bdeeae0522cff5cc5004240df6",
+        "audio_hash": "11df02f693e91b530d63f43cba20a2beb781b9ca9de240990ed5322daf2f0f64",
+        "object_path": "d763bfe6-d710-4c4b-90ff-4b3a20929211/b61bb4f1-91a8-4074-8469-0f54a6c432aa/p1-para1-recall-abc49a2b-221b-47dd-b66c-d6b6ac7e3277.mp3",
+        "passage_id": 16,
+        "paragraph_index": 0,
+        "transcript": "In music, chess, and sports, the very best performers do far better than other experienced people. Some people explain this difference by saying these performers have natural talent.",
+        "asr_words": [
+          {
+            "end": 0.32,
+            "word": "In",
+            "start": 0,
+            "confidence": 0.9951172
+          },
+          {
+            "end": 0.96,
+            "word": "music,",
+            "start": 0.32,
+            "confidence": 0.9916992
+          },
+          {
+            "end": 1.5999999,
+            "word": "chess,",
+            "start": 0.96,
+            "confidence": 0.9029948
+          },
+          {
+            "end": 1.68,
+            "word": "and",
+            "start": 1.5999999,
+            "confidence": 1
+          },
+          {
+            "end": 2.4799998,
+            "word": "sports,",
+            "start": 1.68,
+            "confidence": 0.99658203
+          },
+          {
+            "end": 2.8799999,
+            "word": "the",
+            "start": 2.6399999,
+            "confidence": 0.99902344
+          },
+          {
+            "end": 3.12,
+            "word": "very",
+            "start": 2.8799999,
+            "confidence": 1
+          },
+          {
+            "end": 3.4399998,
+            "word": "best",
+            "start": 3.12,
+            "confidence": 1
+          },
+          {
+            "end": 3.9199998,
+            "word": "performers",
+            "start": 3.4399998,
+            "confidence": 1
+          },
+          {
+            "end": 4.24,
+            "word": "do",
+            "start": 3.9199998,
+            "confidence": 1
+          },
+          {
+            "end": 4.48,
+            "word": "far",
+            "start": 4.24,
+            "confidence": 0.99902344
+          },
+          {
+            "end": 4.7999997,
+            "word": "better",
+            "start": 4.48,
+            "confidence": 1
+          },
+          {
+            "end": 4.96,
+            "word": "than",
+            "start": 4.7999997,
+            "confidence": 1
+          },
+          {
+            "end": 5.2799997,
+            "word": "other",
+            "start": 4.96,
+            "confidence": 1
+          },
+          {
+            "end": 5.92,
+            "word": "experienced",
+            "start": 5.2799997,
+            "confidence": 0.9980469
+          },
+          {
+            "end": 6.56,
+            "word": "people.",
+            "start": 5.92,
+            "confidence": 1
+          },
+          {
+            "end": 7.52,
+            "word": "Some",
+            "start": 7.12,
+            "confidence": 1
+          },
+          {
+            "end": 7.7599998,
+            "word": "people",
+            "start": 7.52,
+            "confidence": 1
+          },
+          {
+            "end": 8.32,
+            "word": "explain",
+            "start": 7.7599998,
+            "confidence": 0.96972656
+          },
+          {
+            "end": 8.559999,
+            "word": "this",
+            "start": 8.32,
+            "confidence": 0.9970703
+          },
+          {
+            "end": 8.88,
+            "word": "difference",
+            "start": 8.559999,
+            "confidence": 0.99902344
+          },
+          {
+            "end": 9.2,
+            "word": "by",
+            "start": 8.88,
+            "confidence": 1
+          },
+          {
+            "end": 9.44,
+            "word": "saying",
+            "start": 9.2,
+            "confidence": 1
+          },
+          {
+            "end": 9.76,
+            "word": "these",
+            "start": 9.44,
+            "confidence": 0.98291016
+          },
+          {
+            "end": 10.24,
+            "word": "performers",
+            "start": 9.76,
+            "confidence": 0.99902344
+          },
+          {
+            "end": 10.559999,
+            "word": "have",
+            "start": 10.24,
+            "confidence": 1
+          },
+          {
+            "end": 11.04,
+            "word": "natural",
+            "start": 10.559999,
+            "confidence": 1
+          },
+          {
+            "end": 11.5199995,
+            "word": "talent.",
+            "start": 11.04,
+            "confidence": 0.9970703
+          }
+        ],
+        "asr_engine": "deepgram/nova-3",
+        "model": "google/gemini-3.1-flash-lite",
+        "assessment": {
+          "details": [
+            {
+              "status": "kept",
+              "sourceId": "s1",
+              "explanation": "The recall accurately conveys the comparison between elite practitioners and other experienced individuals, as well as the attribution of this gap to innate talent.",
+              "recallQuote": "In music, chess, and sports, the very best performers do far better than other experienced people. Some people explain this difference by saying these performers have natural talent.",
+              "sourceQuote": "In certain fields of human endeavor, such as music, chess, and some athletic activities, the performance of the best practitioners is so outstanding, so superior even to the performance of other highly experienced individuals in the field, that some people believe some notion of innate talent must be invoked to account for this highest level of performance."
+            },
+            {
+              "status": "missing",
+              "sourceId": "s2",
+              "explanation": "The recall fails to mention the role of psychologists or the specific evidence regarding prodigies and heritability.",
+              "recallQuote": "",
+              "sourceQuote": "Certain psychologists have supported this view with data concerning the performance of prodigies and the apparent heritability of relevant traits."
+            },
+            {
+              "status": "missing",
+              "sourceId": "s3",
+              "explanation": "The recall omits the specific examples of musicians discovered by age six and the list of inborn athletic traits.",
+              "recallQuote": "",
+              "sourceQuote": "They have noted, for example, that most outstanding musicians are discovered by the age of six, and they have found evidence that some of the qualities necessary for exceptional athletic performance, including superior motor coordination, speed of reflexes, and hand-eye coordination, can be inborn."
+            }
+          ],
+          "summary": "The recall captures the core observation that elite performance in specific fields is often attributed to innate talent, but it omits the supporting psychological evidence and specific examples provided in the text.",
+          "coverage": {
+            "label": "Meaning points",
+            "earned": 2,
+            "percent": 33,
+            "possible": 6
+          },
+          "nextStep": "Please revisit the text to incorporate the specific evidence psychologists use to support the innate talent theory, specifically the age at which musicians are typically discovered and the three specific athletic traits mentioned, then attempt the recall again.",
+          "relationships": []
+        },
+        "created_at": "2026-10-19T02:30:09.982352+00:00",
+        "updated_at": "2026-10-19T02:30:12.938+00:00",
+        "capture_id": null,
+        "recall_start_ms": null,
+        "recall_end_ms": null,
+        "asr_calls": 0,
+        "judge_calls": 1,
+        "audio_seconds": null,
+        "provider_usage": {
+          "promptTokens": 933,
+          "completionTokens": 319
+        }
+      },
+      "cacheUnchanged": true
+    },
+    {
+      "fixture": "changed-quantifiers",
+      "attemptId": "88ab4df1-aa70-4285-8535-0d49251bf2f3",
+      "recapId": "cad87cbb-2222-47b2-8399-9e8235351bcc",
+      "status": 200,
+      "response": {
+        "attemptId": "88ab4df1-aa70-4285-8535-0d49251bf2f3",
+        "items": [
+          {
+            "recapId": "cad87cbb-2222-47b2-8399-9e8235351bcc",
+            "label": "Passage 1 · Paragraph 1",
+            "status": "ready",
+            "retryable": false,
+            "grade": {
+              "version": 2,
+              "transcript": "In music, chess, and sports, the very best performers do much better than other highly experienced people. Everyone agrees this proves that inborn talent is the only possible explanation. All psychologists have proved this using child prodigies and the fact that every relevant trait is inherited. Every outstanding musician is discovered at exactly age six. All abilities needed for exceptional athletic performance are always inborn, including motor coordination, reflex speed, and hand eye coordination.",
+              "sourceHash": "023476d01ea080e07f76eba650d691e40591a9bdeeae0522cff5cc5004240df6",
+              "sourceText": "In certain fields of human endeavor, such as music, chess, and some athletic activities, the performance of the best practitioners is so outstanding, so superior even to the performance of other highly experienced individuals in the field, that some people believe some notion of innate talent must be invoked to account for this highest level of performance. Certain psychologists have supported this view with data concerning the performance of prodigies and the apparent heritability of relevant traits. They have noted, for example, that most outstanding musicians are discovered by the age of six, and they have found evidence that some of the qualities necessary for exceptional athletic performance, including superior motor coordination, speed of reflexes, and hand-eye coordination, can be inborn.",
+              "audioHash": "40fb017b1fcced8dd0c229c69ca8608fa37c6a0820ea5a308adfbed9867ceb5e",
+              "model": "google/gemini-3.1-flash-lite",
+              "asrEngine": "deepgram/nova-3",
+              "assessment": {
+                "details": [
+                  {
+                    "status": "changed",
+                    "sourceId": "s1",
+                    "explanation": "The recall incorrectly states that 'everyone agrees' on this explanation, whereas the source text specifies that 'some people' believe this. It also incorrectly frames this as the 'only possible explanation' rather than a notion that 'must be invoked'.",
+                    "recallQuote": "In music, chess, and sports, the very best performers do much better than other highly experienced people. Everyone agrees this proves that inborn talent is the only possible explanation.",
+                    "sourceQuote": "In certain fields of human endeavor, such as music, chess, and some athletic activities, the performance of the best practitioners is so outstanding, so superior even to the performance of other highly experienced individuals in the field, that some people believe some notion of innate talent must be invoked to account for this highest level of performance."
+                  },
+                  {
+                    "status": "changed",
+                    "sourceId": "s2",
+                    "explanation": "The recall incorrectly generalizes 'certain psychologists' to 'all psychologists' and changes 'apparent heritability' to the absolute claim that 'every relevant trait is inherited'.",
+                    "recallQuote": "All psychologists have proved this using child prodigies and the fact that every relevant trait is inherited.",
+                    "sourceQuote": "Certain psychologists have supported this view with data concerning the performance of prodigies and the apparent heritability of relevant traits."
+                  },
+                  {
+                    "status": "changed",
+                    "sourceId": "s3",
+                    "explanation": "The recall changes 'most' musicians to 'every' musician and 'by the age of six' to 'at exactly age six'. It also changes 'some of the qualities' to 'all abilities' and 'can be inborn' to 'are always inborn'.",
+                    "recallQuote": "Every outstanding musician is discovered at exactly age six. All abilities needed for exceptional athletic performance are always inborn, including motor coordination, reflex speed, and hand eye coordination.",
+                    "sourceQuote": "They have noted, for example, that most outstanding musicians are discovered by the age of six, and they have found evidence that some of the qualities necessary for exceptional athletic performance, including superior motor coordination, speed of reflexes, and hand-eye coordination, can be inborn."
+                  }
+                ],
+                "summary": "The recall incorrectly asserts that everyone agrees on the necessity of innate talent, misrepresents the psychologists' findings as universal proofs rather than supporting evidence, and introduces significant factual inaccuracies regarding the age of discovery for musicians and the nature of athletic traits.",
+                "coverage": {
+                  "label": "Meaning points",
+                  "earned": 0,
+                  "percent": 0,
+                  "possible": 6
+                },
+                "nextStep": "Please revisit the source text specifically regarding the psychologists' claims about the heritability of traits and the age of discovery for musicians, then try to recall those details again, focusing on the distinction between 'some' and 'all'.",
+                "relationships": []
+              }
+            }
+          }
+        ],
+        "build": "2026-10-18-rc-grader-2"
+      },
+      "stored": {
+        "id": "7a87de9e-8d55-4553-bfd6-c43a6b0aded9",
+        "recap_id": "cad87cbb-2222-47b2-8399-9e8235351bcc",
+        "attempt_id": "88ab4df1-aa70-4285-8535-0d49251bf2f3",
+        "student_id": "d763bfe6-d710-4c4b-90ff-4b3a20929211",
+        "grader_version": 2,
+        "status": "ready",
+        "claim_token": null,
+        "lease_until": null,
+        "tries": 1,
+        "reason": null,
+        "source_text": "In certain fields of human endeavor, such as music, chess, and some athletic activities, the performance of the best practitioners is so outstanding, so superior even to the performance of other highly experienced individuals in the field, that some people believe some notion of innate talent must be invoked to account for this highest level of performance. Certain psychologists have supported this view with data concerning the performance of prodigies and the apparent heritability of relevant traits. They have noted, for example, that most outstanding musicians are discovered by the age of six, and they have found evidence that some of the qualities necessary for exceptional athletic performance, including superior motor coordination, speed of reflexes, and hand-eye coordination, can be inborn.",
+        "source_hash": "023476d01ea080e07f76eba650d691e40591a9bdeeae0522cff5cc5004240df6",
+        "audio_hash": "40fb017b1fcced8dd0c229c69ca8608fa37c6a0820ea5a308adfbed9867ceb5e",
+        "object_path": "d763bfe6-d710-4c4b-90ff-4b3a20929211/88ab4df1-aa70-4285-8535-0d49251bf2f3/p1-para1-recall-fd988616-7df3-4f3e-909f-cff6a9824d5c.mp3",
+        "passage_id": 16,
+        "paragraph_index": 0,
+        "transcript": "In music, chess, and sports, the very best performers do much better than other highly experienced people. Everyone agrees this proves that inborn talent is the only possible explanation. All psychologists have proved this using child prodigies and the fact that every relevant trait is inherited. Every outstanding musician is discovered at exactly age six. All abilities needed for exceptional athletic performance are always inborn, including motor coordination, reflex speed, and hand eye coordination.",
+        "asr_words": [
+          {
+            "end": 0.32,
+            "word": "In",
+            "start": 0,
+            "confidence": 0.9921875
+          },
+          {
+            "end": 0.96,
+            "word": "music,",
+            "start": 0.32,
+            "confidence": 0.9897461
+          },
+          {
+            "end": 1.5999999,
+            "word": "chess,",
+            "start": 0.96,
+            "confidence": 0.86783856
+          },
+          {
+            "end": 1.68,
+            "word": "and",
+            "start": 1.5999999,
+            "confidence": 1
+          },
+          {
+            "end": 2.4799998,
+            "word": "sports,",
+            "start": 1.68,
+            "confidence": 0.99560547
+          },
+          {
+            "end": 2.8799999,
+            "word": "the",
+            "start": 2.6399999,
+            "confidence": 0.99902344
+          },
+          {
+            "end": 3.12,
+            "word": "very",
+            "start": 2.8799999,
+            "confidence": 1
+          },
+          {
+            "end": 3.4399998,
+            "word": "best",
+            "start": 3.12,
+            "confidence": 1
+          },
+          {
+            "end": 3.9199998,
+            "word": "performers",
+            "start": 3.4399998,
+            "confidence": 1
+          },
+          {
+            "end": 4.24,
+            "word": "do",
+            "start": 3.9199998,
+            "confidence": 1
+          },
+          {
+            "end": 4.48,
+            "word": "much",
+            "start": 4.24,
+            "confidence": 1
+          },
+          {
+            "end": 4.72,
+            "word": "better",
+            "start": 4.48,
+            "confidence": 1
+          },
+          {
+            "end": 4.96,
+            "word": "than",
+            "start": 4.72,
+            "confidence": 1
+          },
+          {
+            "end": 5.2,
+            "word": "other",
+            "start": 4.96,
+            "confidence": 1
+          },
+          {
+            "end": 5.6,
+            "word": "highly",
+            "start": 5.2,
+            "confidence": 0.99902344
+          },
+          {
+            "end": 6.24,
+            "word": "experienced",
+            "start": 5.6,
+            "confidence": 1
+          },
+          {
+            "end": 6.96,
+            "word": "people.",
+            "start": 6.24,
+            "confidence": 0.9995117
+          },
+          {
+            "end": 7.9199996,
+            "word": "Everyone",
+            "start": 7.52,
+            "confidence": 0.9970703
+          },
+          {
+            "end": 8.4,
+            "word": "agrees",
+            "start": 7.9199996,
+            "confidence": 1
+          },
+          {
+            "end": 8.639999,
+            "word": "this",
+            "start": 8.4,
+            "confidence": 0.9580078
+          },
+          {
+            "end": 8.96,
+            "word": "proves",
+            "start": 8.639999,
+            "confidence": 0.99902344
+          },
+          {
+            "end": 9.2,
+            "word": "that",
+            "start": 8.96,
+            "confidence": 0.99902344
+          },
+          {
+            "end": 9.599999,
+            "word": "inborn",
+            "start": 9.2,
+            "confidence": 0.9785156
+          },
+          {
+            "end": 9.92,
+            "word": "talent",
+            "start": 9.599999,
+            "confidence": 1
+          },
+          {
+            "end": 10.16,
+            "word": "is",
+            "start": 9.92,
+            "confidence": 1
+          },
+          {
+            "end": 10.32,
+            "word": "the",
+            "start": 10.16,
+            "confidence": 1
+          },
+          {
+            "end": 10.559999,
+            "word": "only",
+            "start": 10.32,
+            "confidence": 1
+          },
+          {
+            "end": 11.12,
+            "word": "possible",
+            "start": 10.559999,
+            "confidence": 1
+          },
+          {
+            "end": 11.759999,
+            "word": "explanation.",
+            "start": 11.12,
+            "confidence": 0.9995117
+          },
+          {
+            "end": 13.075,
+            "word": "All",
+            "start": 12.755,
+            "confidence": 0.99902344
+          },
+          {
+            "end": 13.795,
+            "word": "psychologists",
+            "start": 13.075,
+            "confidence": 0.9970703
+          },
+          {
+            "end": 14.115,
+            "word": "have",
+            "start": 13.795,
+            "confidence": 1
+          },
+          {
+            "end": 14.355,
+            "word": "proved",
+            "start": 14.115,
+            "confidence": 0.9970703
+          },
+          {
+            "end": 14.594999,
+            "word": "this",
+            "start": 14.355,
+            "confidence": 0.99902344
+          },
+          {
+            "end": 14.995,
+            "word": "using",
+            "start": 14.594999,
+            "confidence": 0.99902344
+          },
+          {
+            "end": 15.3949995,
+            "word": "child",
+            "start": 14.995,
+            "confidence": 0.9980469
+          },
+          {
+            "end": 15.955,
+            "word": "prodigies",
+            "start": 15.3949995,
+            "confidence": 0.9980469
+          },
+          {
+            "end": 16.195,
+            "word": "and",
+            "start": 15.955,
+            "confidence": 0.95703125
+          },
+          {
+            "end": 16.355,
+            "word": "the",
+            "start": 16.195,
+            "confidence": 1
+          },
+          {
+            "end": 16.595,
+            "word": "fact",
+            "start": 16.355,
+            "confidence": 1
+          },
+          {
+            "end": 16.755,
+            "word": "that",
+            "start": 16.595,
+            "confidence": 1
+          },
+          {
+            "end": 17.075,
+            "word": "every",
+            "start": 16.755,
+            "confidence": 0.9970703
+          },
+          {
+            "end": 17.555,
+            "word": "relevant",
+            "start": 17.075,
+            "confidence": 1
+          },
+          {
+            "end": 17.875,
+            "word": "trait",
+            "start": 17.555,
+            "confidence": 0.9902344
+          },
+          {
+            "end": 18.115,
+            "word": "is",
+            "start": 17.875,
+            "confidence": 1
+          },
+          {
+            "end": 18.914999,
+            "word": "inherited.",
+            "start": 18.115,
+            "confidence": 0.9941406
+          },
+          {
+            "end": 19.875,
+            "word": "Every",
+            "start": 19.474998,
+            "confidence": 0.99902344
+          },
+          {
+            "end": 20.515,
+            "word": "outstanding",
+            "start": 19.875,
+            "confidence": 1
+          },
+          {
+            "end": 20.994999,
+            "word": "musician",
+            "start": 20.515,
+            "confidence": 0.9995117
+          },
+          {
+            "end": 21.235,
+            "word": "is",
+            "start": 20.994999,
+            "confidence": 1
+          },
+          {
+            "end": 21.715,
+            "word": "discovered",
+            "start": 21.235,
+            "confidence": 1
+          },
+          {
+            "end": 21.955,
+            "word": "at",
+            "start": 21.715,
+            "confidence": 0.9980469
+          },
+          {
+            "end": 22.435,
+            "word": "exactly",
+            "start": 21.955,
+            "confidence": 1
+          },
+          {
+            "end": 22.755,
+            "word": "age",
+            "start": 22.435,
+            "confidence": 0.9902344
+          },
+          {
+            "end": 23.075,
+            "word": "six.",
+            "start": 22.755,
+            "confidence": 0.9975586
+          },
+          {
+            "end": 24.230686,
+            "word": "All",
+            "start": 23.910686,
+            "confidence": 0.99902344
+          },
+          {
+            "end": 24.710688,
+            "word": "abilities",
+            "start": 24.230686,
+            "confidence": 0.99902344
+          },
+          {
+            "end": 25.110687,
+            "word": "needed",
+            "start": 24.710688,
+            "confidence": 1
+          },
+          {
+            "end": 25.270687,
+            "word": "for",
+            "start": 25.110687,
+            "confidence": 1
+          },
+          {
+            "end": 25.830687,
+            "word": "exceptional",
+            "start": 25.270687,
+            "confidence": 1
+          },
+          {
+            "end": 26.390686,
+            "word": "athletic",
+            "start": 25.830687,
+            "confidence": 0.99902344
+          },
+          {
+            "end": 26.870687,
+            "word": "performance",
+            "start": 26.390686,
+            "confidence": 0.99902344
+          },
+          {
+            "end": 27.190687,
+            "word": "are",
+            "start": 26.870687,
+            "confidence": 0.99902344
+          },
+          {
+            "end": 27.590687,
+            "word": "always",
+            "start": 27.190687,
+            "confidence": 1
+          },
+          {
+            "end": 28.390686,
+            "word": "inborn,",
+            "start": 27.590687,
+            "confidence": 0.91764325
+          },
+          {
+            "end": 28.950687,
+            "word": "including",
+            "start": 28.470688,
+            "confidence": 0.99902344
+          },
+          {
+            "end": 29.350687,
+            "word": "motor",
+            "start": 28.950687,
+            "confidence": 0.99902344
+          },
+          {
+            "end": 30.390686,
+            "word": "coordination,",
+            "start": 29.350687,
+            "confidence": 0.99365234
+          },
+          {
+            "end": 30.790688,
+            "word": "reflex",
+            "start": 30.390686,
+            "confidence": 0.99609375
+          },
+          {
+            "end": 31.430687,
+            "word": "speed,",
+            "start": 30.790688,
+            "confidence": 0.91381836
+          },
+          {
+            "end": 31.510687,
+            "word": "and",
+            "start": 31.430687,
+            "confidence": 0.99902344
+          },
+          {
+            "end": 31.750687,
+            "word": "hand",
+            "start": 31.510687,
+            "confidence": 0.9980469
+          },
+          {
+            "end": 32.070686,
+            "word": "eye",
+            "start": 31.750687,
+            "confidence": 0.9970703
+          },
+          {
+            "end": 32.630688,
+            "word": "coordination.",
+            "start": 32.070686,
+            "confidence": 0.99658203
+          }
+        ],
+        "asr_engine": "deepgram/nova-3",
+        "model": "google/gemini-3.1-flash-lite",
+        "assessment": {
+          "details": [
+            {
+              "status": "changed",
+              "sourceId": "s1",
+              "explanation": "The recall incorrectly states that 'everyone agrees' on this explanation, whereas the source text specifies that 'some people' believe this. It also incorrectly frames this as the 'only possible explanation' rather than a notion that 'must be invoked'.",
+              "recallQuote": "In music, chess, and sports, the very best performers do much better than other highly experienced people. Everyone agrees this proves that inborn talent is the only possible explanation.",
+              "sourceQuote": "In certain fields of human endeavor, such as music, chess, and some athletic activities, the performance of the best practitioners is so outstanding, so superior even to the performance of other highly experienced individuals in the field, that some people believe some notion of innate talent must be invoked to account for this highest level of performance."
+            },
+            {
+              "status": "changed",
+              "sourceId": "s2",
+              "explanation": "The recall incorrectly generalizes 'certain psychologists' to 'all psychologists' and changes 'apparent heritability' to the absolute claim that 'every relevant trait is inherited'.",
+              "recallQuote": "All psychologists have proved this using child prodigies and the fact that every relevant trait is inherited.",
+              "sourceQuote": "Certain psychologists have supported this view with data concerning the performance of prodigies and the apparent heritability of relevant traits."
+            },
+            {
+              "status": "changed",
+              "sourceId": "s3",
+              "explanation": "The recall changes 'most' musicians to 'every' musician and 'by the age of six' to 'at exactly age six'. It also changes 'some of the qualities' to 'all abilities' and 'can be inborn' to 'are always inborn'.",
+              "recallQuote": "Every outstanding musician is discovered at exactly age six. All abilities needed for exceptional athletic performance are always inborn, including motor coordination, reflex speed, and hand eye coordination.",
+              "sourceQuote": "They have noted, for example, that most outstanding musicians are discovered by the age of six, and they have found evidence that some of the qualities necessary for exceptional athletic performance, including superior motor coordination, speed of reflexes, and hand-eye coordination, can be inborn."
+            }
+          ],
+          "summary": "The recall incorrectly asserts that everyone agrees on the necessity of innate talent, misrepresents the psychologists' findings as universal proofs rather than supporting evidence, and introduces significant factual inaccuracies regarding the age of discovery for musicians and the nature of athletic traits.",
+          "coverage": {
+            "label": "Meaning points",
+            "earned": 0,
+            "percent": 0,
+            "possible": 6
+          },
+          "nextStep": "Please revisit the source text specifically regarding the psychologists' claims about the heritability of traits and the age of discovery for musicians, then try to recall those details again, focusing on the distinction between 'some' and 'all'.",
+          "relationships": []
+        },
+        "created_at": "2026-10-19T02:30:13.909703+00:00",
+        "updated_at": "2026-10-19T02:30:17.588+00:00",
+        "capture_id": null,
+        "recall_start_ms": null,
+        "recall_end_ms": null,
+        "asr_calls": 0,
+        "judge_calls": 1,
+        "audio_seconds": null,
+        "provider_usage": {
+          "promptTokens": 988,
+          "completionTokens": 457
+        }
+      },
+      "cacheUnchanged": true
+    },
+    {
+      "fixture": "continuous-reading-and-checking-excluded",
+      "attemptId": "f8d49246-6eb5-4f07-ba23-2c10f6cd198c",
+      "captureId": "fa2a047a-2d1e-43f5-87aa-623ff3ddef09",
+      "recapId": "11cb146e-13dc-422d-8a30-3a0f1455ce77",
+      "objectPath": "d763bfe6-d710-4c4b-90ff-4b3a20929211/f8d49246-6eb5-4f07-ba23-2c10f6cd198c/capture-fa2a047a-2d1e-43f5-87aa-623ff3ddef09-a69b7e30-9664-495a-899f-a414d9484920.mp3",
+      "status": 200,
+      "response": {
+        "attemptId": "f8d49246-6eb5-4f07-ba23-2c10f6cd198c",
+        "items": [
+          {
+            "recapId": "11cb146e-13dc-422d-8a30-3a0f1455ce77",
+            "label": "Passage 1 · Paragraph 1",
+            "status": "ready",
+            "retryable": false,
+            "grade": {
+              "version": 2,
+              "transcript": "In music, chess, and sports, the very best performers do far better than other experienced people. Some people explain this difference by saying these performers have natural talent.",
+              "sourceHash": "023476d01ea080e07f76eba650d691e40591a9bdeeae0522cff5cc5004240df6",
+              "sourceText": "In certain fields of human endeavor, such as music, chess, and some athletic activities, the performance of the best practitioners is so outstanding, so superior even to the performance of other highly experienced individuals in the field, that some people believe some notion of innate talent must be invoked to account for this highest level of performance. Certain psychologists have supported this view with data concerning the performance of prodigies and the apparent heritability of relevant traits. They have noted, for example, that most outstanding musicians are discovered by the age of six, and they have found evidence that some of the qualities necessary for exceptional athletic performance, including superior motor coordination, speed of reflexes, and hand-eye coordination, can be inborn.",
+              "audioHash": "f9d214bb5bfa090a32bab09dc7fbfa7e10bc22da5d2e0dfd4eba284d53829d3c",
+              "model": "google/gemini-3.1-flash-lite",
+              "asrEngine": "deepgram/nova-3",
+              "assessment": {
+                "details": [
+                  {
+                    "status": "kept",
+                    "sourceId": "s1",
+                    "explanation": "The recall accurately conveys the comparison between elite practitioners and other experienced individuals, as well as the attribution of this gap to innate talent.",
+                    "recallQuote": "In music, chess, and sports, the very best performers do far better than other experienced people. Some people explain this difference by saying these performers have natural talent.",
+                    "sourceQuote": "In certain fields of human endeavor, such as music, chess, and some athletic activities, the performance of the best practitioners is so outstanding, so superior even to the performance of other highly experienced individuals in the field, that some people believe some notion of innate talent must be invoked to account for this highest level of performance."
+                  },
+                  {
+                    "status": "missing",
+                    "sourceId": "s2",
+                    "explanation": "The recall fails to mention the role of psychologists or the specific evidence regarding prodigies and heritability.",
+                    "recallQuote": "",
+                    "sourceQuote": "Certain psychologists have supported this view with data concerning the performance of prodigies and the apparent heritability of relevant traits."
+                  },
+                  {
+                    "status": "missing",
+                    "sourceId": "s3",
+                    "explanation": "The recall omits the specific examples of musicians discovered by age six and the list of inborn athletic traits.",
+                    "recallQuote": "",
+                    "sourceQuote": "They have noted, for example, that most outstanding musicians are discovered by the age of six, and they have found evidence that some of the qualities necessary for exceptional athletic performance, including superior motor coordination, speed of reflexes, and hand-eye coordination, can be inborn."
+                  }
+                ],
+                "summary": "The recall captures the core observation that elite performance in specific fields is often attributed to innate talent, but it omits the supporting psychological evidence and specific examples provided in the text.",
+                "coverage": {
+                  "label": "Meaning points",
+                  "earned": 2,
+                  "percent": 33,
+                  "possible": 6
+                },
+                "nextStep": "Please revisit the text to incorporate the specific evidence psychologists use to support the innate talent theory, specifically the age at which musicians are typically discovered and the three specific athletic traits mentioned, then attempt the recall again.",
+                "relationships": []
+              }
+            }
+          }
+        ],
+        "build": "2026-10-18-rc-grader-2"
+      },
+      "stored": {
+        "id": "ca82055b-7b8f-4635-94b3-bf49f14920fe",
+        "recap_id": "11cb146e-13dc-422d-8a30-3a0f1455ce77",
+        "attempt_id": "f8d49246-6eb5-4f07-ba23-2c10f6cd198c",
+        "student_id": "d763bfe6-d710-4c4b-90ff-4b3a20929211",
+        "grader_version": 2,
+        "status": "ready",
+        "claim_token": null,
+        "lease_until": null,
+        "tries": 1,
+        "reason": null,
+        "source_text": "In certain fields of human endeavor, such as music, chess, and some athletic activities, the performance of the best practitioners is so outstanding, so superior even to the performance of other highly experienced individuals in the field, that some people believe some notion of innate talent must be invoked to account for this highest level of performance. Certain psychologists have supported this view with data concerning the performance of prodigies and the apparent heritability of relevant traits. They have noted, for example, that most outstanding musicians are discovered by the age of six, and they have found evidence that some of the qualities necessary for exceptional athletic performance, including superior motor coordination, speed of reflexes, and hand-eye coordination, can be inborn.",
+        "source_hash": "023476d01ea080e07f76eba650d691e40591a9bdeeae0522cff5cc5004240df6",
+        "audio_hash": "f9d214bb5bfa090a32bab09dc7fbfa7e10bc22da5d2e0dfd4eba284d53829d3c",
+        "object_path": "d763bfe6-d710-4c4b-90ff-4b3a20929211/f8d49246-6eb5-4f07-ba23-2c10f6cd198c/capture-fa2a047a-2d1e-43f5-87aa-623ff3ddef09-a69b7e30-9664-495a-899f-a414d9484920.mp3",
+        "passage_id": 16,
+        "paragraph_index": 0,
+        "transcript": "In music, chess, and sports, the very best performers do far better than other experienced people. Some people explain this difference by saying these performers have natural talent.",
+        "asr_words": [
+          {
+            "end": 50.485,
+            "word": "In",
+            "start": 50.165,
+            "confidence": 0.99609375
+          },
+          {
+            "end": 51.125,
+            "word": "music,",
+            "start": 50.485,
+            "confidence": 0.9880371
+          },
+          {
+            "end": 51.685,
+            "word": "chess,",
+            "start": 51.125,
+            "confidence": 0.961263
+          },
+          {
+            "end": 51.845,
+            "word": "and",
+            "start": 51.685,
+            "confidence": 1
+          },
+          {
+            "end": 52.645,
+            "word": "sports,",
+            "start": 51.845,
+            "confidence": 0.99609375
+          },
+          {
+            "end": 52.965,
+            "word": "the",
+            "start": 52.805,
+            "confidence": 0.99902344
+          },
+          {
+            "end": 53.285,
+            "word": "very",
+            "start": 52.965,
+            "confidence": 0.99902344
+          },
+          {
+            "end": 53.605,
+            "word": "best",
+            "start": 53.285,
+            "confidence": 0.99902344
+          },
+          {
+            "end": 54.085,
+            "word": "performers",
+            "start": 53.605,
+            "confidence": 1
+          },
+          {
+            "end": 54.405,
+            "word": "do",
+            "start": 54.085,
+            "confidence": 1
+          },
+          {
+            "end": 54.645,
+            "word": "far",
+            "start": 54.405,
+            "confidence": 0.99902344
+          },
+          {
+            "end": 54.965,
+            "word": "better",
+            "start": 54.645,
+            "confidence": 1
+          },
+          {
+            "end": 55.125,
+            "word": "than",
+            "start": 54.965,
+            "confidence": 1
+          },
+          {
+            "end": 55.445,
+            "word": "other",
+            "start": 55.125,
+            "confidence": 1
+          },
+          {
+            "end": 56.085,
+            "word": "experienced",
+            "start": 55.445,
+            "confidence": 0.99902344
+          },
+          {
+            "end": 56.325,
+            "word": "people.",
+            "start": 56.085,
+            "confidence": 0.9995117
+          },
+          {
+            "end": 57.69,
+            "word": "Some",
+            "start": 57.37,
+            "confidence": 0.99902344
+          },
+          {
+            "end": 57.93,
+            "word": "people",
+            "start": 57.69,
+            "confidence": 1
+          },
+          {
+            "end": 58.41,
+            "word": "explain",
+            "start": 57.93,
+            "confidence": 0.9941406
+          },
+          {
+            "end": 58.73,
+            "word": "this",
+            "start": 58.41,
+            "confidence": 0.99902344
+          },
+          {
+            "end": 59.05,
+            "word": "difference",
+            "start": 58.73,
+            "confidence": 1
+          },
+          {
+            "end": 59.37,
+            "word": "by",
+            "start": 59.05,
+            "confidence": 1
+          },
+          {
+            "end": 59.61,
+            "word": "saying",
+            "start": 59.37,
+            "confidence": 1
+          },
+          {
+            "end": 59.93,
+            "word": "these",
+            "start": 59.61,
+            "confidence": 0.9760742
+          },
+          {
+            "end": 60.489998,
+            "word": "performers",
+            "start": 59.93,
+            "confidence": 0.99902344
+          },
+          {
+            "end": 60.73,
+            "word": "have",
+            "start": 60.489998,
+            "confidence": 1
+          },
+          {
+            "end": 61.21,
+            "word": "natural",
+            "start": 60.73,
+            "confidence": 0.99609375
+          },
+          {
+            "end": 61.93,
+            "word": "talent.",
+            "start": 61.21,
+            "confidence": 0.9941406
+          }
+        ],
+        "asr_engine": "deepgram/nova-3",
+        "model": "google/gemini-3.1-flash-lite",
+        "assessment": {
+          "details": [
+            {
+              "status": "kept",
+              "sourceId": "s1",
+              "explanation": "The recall accurately conveys the comparison between elite practitioners and other experienced individuals, as well as the attribution of this gap to innate talent.",
+              "recallQuote": "In music, chess, and sports, the very best performers do far better than other experienced people. Some people explain this difference by saying these performers have natural talent.",
+              "sourceQuote": "In certain fields of human endeavor, such as music, chess, and some athletic activities, the performance of the best practitioners is so outstanding, so superior even to the performance of other highly experienced individuals in the field, that some people believe some notion of innate talent must be invoked to account for this highest level of performance."
+            },
+            {
+              "status": "missing",
+              "sourceId": "s2",
+              "explanation": "The recall fails to mention the role of psychologists or the specific evidence regarding prodigies and heritability.",
+              "recallQuote": "",
+              "sourceQuote": "Certain psychologists have supported this view with data concerning the performance of prodigies and the apparent heritability of relevant traits."
+            },
+            {
+              "status": "missing",
+              "sourceId": "s3",
+              "explanation": "The recall omits the specific examples of musicians discovered by age six and the list of inborn athletic traits.",
+              "recallQuote": "",
+              "sourceQuote": "They have noted, for example, that most outstanding musicians are discovered by the age of six, and they have found evidence that some of the qualities necessary for exceptional athletic performance, including superior motor coordination, speed of reflexes, and hand-eye coordination, can be inborn."
+            }
+          ],
+          "summary": "The recall captures the core observation that elite performance in specific fields is often attributed to innate talent, but it omits the supporting psychological evidence and specific examples provided in the text.",
+          "coverage": {
+            "label": "Meaning points",
+            "earned": 2,
+            "percent": 33,
+            "possible": 6
+          },
+          "nextStep": "Please revisit the text to incorporate the specific evidence psychologists use to support the innate talent theory, specifically the age at which musicians are typically discovered and the three specific athletic traits mentioned, then attempt the recall again.",
+          "relationships": []
+        },
+        "created_at": "2026-10-19T02:30:21.774198+00:00",
+        "updated_at": "2026-10-19T02:30:25.279+00:00",
+        "capture_id": "fa2a047a-2d1e-43f5-87aa-623ff3ddef09",
+        "recall_start_ms": 50159,
+        "recall_end_ms": 62371,
+        "asr_calls": 1,
+        "judge_calls": 1,
+        "audio_seconds": 112.58394,
+        "provider_usage": {
+          "promptTokens": 933,
+          "completionTokens": 319
+        }
+      },
+      "cacheUnchanged": true
+    }
+  ],
+  "captureChecks": [
+    {
+      "name": "continuous_attempt_created",
+      "passed": true,
+      "status": 201
+    },
+    {
+      "name": "capture_created",
+      "passed": true,
+      "status": 201
+    },
+    {
+      "name": "immutable_recall_window_created",
+      "passed": true,
+      "status": 201
+    },
+    {
+      "name": "continuous_audio_uploaded",
+      "passed": true,
+      "status": 200
+    },
+    {
+      "name": "capture_saved",
+      "passed": true,
+      "status": 200
+    },
+    {
+      "name": "saved_state_propagated_to_recap",
+      "passed": true,
+      "status": 200
+    },
+    {
+      "name": "window_mutation_denied",
+      "passed": true,
+      "status": 400
+    },
+    {
+      "name": "saved_capture_mutation_denied",
+      "passed": true,
+      "status": 400
+    },
+    {
+      "name": "admin_capture_metadata_isolation",
+      "passed": true,
+      "status": 200
+    },
+    {
+      "name": "admin_capture_audio_sign_denied",
+      "passed": true,
+      "status": 400
+    },
+    {
+      "name": "anonymous_capture_isolation",
+      "passed": true,
+      "status": 200
+    },
+    {
+      "name": "continuous_attempt_finalized",
+      "passed": true,
+      "status": 204
+    }
+  ]
+}

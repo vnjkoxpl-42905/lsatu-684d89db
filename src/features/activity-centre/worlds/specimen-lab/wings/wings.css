@@ -1,0 +1,64 @@
+/*
+ * The lab's two wings. Same bench, different siding, so they inherit the
+ * Specimen Lab palette and add only the controls the main bench does not have.
+ */
+
+.sl-wing {
+  overflow: hidden;
+}
+
+.sl-button {
+  border: 1px solid hsl(var(--sl-edge));
+  background: hsl(var(--sl-paper));
+  color: hsl(var(--sl-ink));
+  transition:
+    border-color 180ms ease,
+    background-color 180ms ease,
+    opacity 180ms ease;
+}
+
+.sl-button:hover:not(:disabled) {
+  border-color: hsl(var(--sl-ink) / 0.45);
+}
+
+.sl-button:disabled {
+  opacity: 0.5;
+}
+
+/* The called option, and the one that was right. Both are shown after a call:
+   seeing which was correct matters more than seeing whether you were. */
+.sl-button[data-picked="true"] {
+  background: hsl(var(--sl-bench-deep));
+  opacity: 1;
+}
+
+.sl-button[data-truth="true"] {
+  border-color: hsl(var(--sl-earned));
+  box-shadow: inset 2px 0 0 hsl(var(--sl-earned));
+  opacity: 1;
+}
+
+.sl-input {
+  border: 1px solid hsl(var(--sl-edge));
+  background: hsl(var(--sl-paper));
+  color: hsl(var(--sl-ink));
+  max-width: 34rem;
+}
+
+.sl-input::placeholder {
+  color: hsl(var(--sl-ink-dim) / 0.7);
+}
+
+.sl-input:focus-visible {
+  outline: none;
+  border-color: hsl(var(--sl-earned));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sl-wing *,
+  .sl-wing *::before,
+  .sl-wing *::after {
+    transition-duration: 1ms !important;
+    animation-duration: 1ms !important;
+  }
+}

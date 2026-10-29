@@ -1,0 +1,121 @@
+{
+  "hash": "533f7d5a",
+  "configHash": "72f70293",
+  "lockfileHash": "32439672",
+  "browserHash": "3a3de3e4",
+  "optimized": {
+    "react/jsx-dev-runtime": {
+      "src": "../../../../lsatu-spot-video-release-20261025/node_modules/react/jsx-dev-runtime.js",
+      "file": "react_jsx-dev-runtime.js",
+      "fileHash": "b3ce46d8",
+      "needsInterop": true
+    },
+    "@radix-ui/react-dialog": {
+      "src": "../../../../lsatu-spot-video-release-20261025/node_modules/@radix-ui/react-dialog/dist/index.mjs",
+      "file": "@radix-ui_react-dialog.js",
+      "fileHash": "06f05190",
+      "needsInterop": false
+    },
+    "@supabase/supabase-js": {
+      "src": "../../../../lsatu-spot-video-release-20261025/node_modules/@supabase/supabase-js/dist/index.mjs",
+      "file": "@supabase_supabase-js.js",
+      "fileHash": "5044922e",
+      "needsInterop": false
+    },
+    "class-variance-authority": {
+      "src": "../../../../lsatu-spot-video-release-20261025/node_modules/class-variance-authority/dist/index.mjs",
+      "file": "class-variance-authority.js",
+      "fileHash": "d87b62fd",
+      "needsInterop": false
+    },
+    "clsx": {
+      "src": "../../../../lsatu-spot-video-release-20261025/node_modules/clsx/dist/clsx.mjs",
+      "file": "clsx.js",
+      "fileHash": "52161f7e",
+      "needsInterop": false
+    },
+    "gsap": {
+      "src": "../../../../lsatu-spot-video-release-20261025/node_modules/gsap/index.js",
+      "file": "gsap.js",
+      "fileHash": "39c01e3e",
+      "needsInterop": false
+    },
+    "lucide-react": {
+      "src": "../../../../lsatu-spot-video-release-20261025/node_modules/lucide-react/dist/esm/lucide-react.js",
+      "file": "lucide-react.js",
+      "fileHash": "d0c8a1b8",
+      "needsInterop": false
+    },
+    "react": {
+      "src": "../../../../lsatu-spot-video-release-20261025/node_modules/react/index.js",
+      "file": "react.js",
+      "fileHash": "31fc98bb",
+      "needsInterop": true
+    },
+    "react-dom/client": {
+      "src": "../../../../lsatu-spot-video-release-20261025/node_modules/react-dom/client.js",
+      "file": "react-dom_client.js",
+      "fileHash": "493fb31e",
+      "needsInterop": true
+    },
+    "react-router-dom": {
+      "src": "../../../../lsatu-spot-video-release-20261025/node_modules/react-router-dom/dist/index.js",
+      "file": "react-router-dom.js",
+      "fileHash": "35aaa694",
+      "needsInterop": false
+    },
+    "react/jsx-runtime": {
+      "src": "../../../../lsatu-spot-video-release-20261025/node_modules/react/jsx-runtime.js",
+      "file": "react_jsx-runtime.js",
+      "fileHash": "7b152b44",
+      "needsInterop": true
+    },
+    "sonner": {
+      "src": "../../../../lsatu-spot-video-release-20261025/node_modules/sonner/dist/index.mjs",
+      "file": "sonner.js",
+      "fileHash": "b28cd3af",
+      "needsInterop": false
+    },
+    "tailwind-merge": {
+      "src": "../../../../lsatu-spot-video-release-20261025/node_modules/tailwind-merge/dist/bundle-mjs.mjs",
+      "file": "tailwind-merge.js",
+      "fileHash": "5c2d7aba",
+      "needsInterop": false
+    },
+    "@radix-ui/react-slot": {
+      "src": "../../../../lsatu-spot-video-release-20261025/node_modules/@radix-ui/react-slot/dist/index.mjs",
+      "file": "@radix-ui_react-slot.js",
+      "fileHash": "3400589c",
+      "needsInterop": false
+    },
+    "framer-motion": {
+      "src": "../../../../lsatu-spot-video-release-20261025/node_modules/framer-motion/dist/es/index.mjs",
+      "file": "framer-motion.js",
+      "fileHash": "b9337d91",
+      "needsInterop": false
+    }
+  },
+  "chunks": {
+    "chunk-L2OTGOPW": {
+      "file": "chunk-L2OTGOPW.js"
+    },
+    "chunk-LZED4MTL": {
+      "file": "chunk-LZED4MTL.js"
+    },
+    "chunk-MM5UQHZY": {
+      "file": "chunk-MM5UQHZY.js"
+    },
+    "chunk-SSNNRPHA": {
+      "file": "chunk-SSNNRPHA.js"
+    },
+    "chunk-YZYIA5QP": {
+      "file": "chunk-YZYIA5QP.js"
+    },
+    "chunk-IG6N7MLQ": {
+      "file": "chunk-IG6N7MLQ.js"
+    },
+    "chunk-PR4QN5HX": {
+      "file": "chunk-PR4QN5HX.js"
+    }
+  }
+}

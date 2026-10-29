@@ -1,0 +1,93 @@
+{
+  "results": [
+    {
+      "latencyMs": 1653,
+      "correct": true,
+      "status": 200,
+      "feedback": "Your sentence conveys the same rule: when it rains, Mia rides the bus. It preserves who is affected (Mia), the condition (it rains), and the result (rides the bus) without changing meaning or adding extra conditions.",
+      "expectedCorrect": true,
+      "error": null,
+      "case": "faithful-paraphrase",
+      "request": {
+        "task": "rewrite",
+        "original": "Mia takes the bus if it is raining.",
+        "stagePrompt": "Rewrite this conditional in your own words.",
+        "studentResponse": "Whenever it rains, Mia rides the bus.",
+        "expected": "If it is raining, then Mia takes the bus."
+      },
+      "passed": true
+    },
+    {
+      "latencyMs": 1429,
+      "correct": false,
+      "status": 200,
+      "feedback": "The student wrote: 'If Mia takes the bus, it is raining.' This reverses the causal order and makes the consequent the sufficient condition, which changes the meaning. The original says rain is a condition for taking the bus; the student’s version says taking the bus implies rain. A correct rewrite keeps rain as the condition for Mia taking the bus (e.g., 'If it is raining, Mia takes the bus.').",
+      "expectedCorrect": false,
+      "error": null,
+      "case": "converse-reversal",
+      "request": {
+        "task": "rewrite",
+        "original": "Mia takes the bus if it is raining.",
+        "stagePrompt": "Rewrite this conditional in your own words.",
+        "studentResponse": "If Mia takes the bus, it is raining.",
+        "expected": "If it is raining, then Mia takes the bus."
+      },
+      "passed": true
+    },
+    {
+      "latencyMs": 1343,
+      "correct": false,
+      "status": 200,
+      "feedback": "Your rewrite says every order ships the day it is placed, which matches the meaning. However, the expected rewrite uses “before 2 p.m.” as the condition. Since you kept the idea that orders ship the same day, your sentence captures the causal consequence, but it omits the key time condition. A precise rewrite would say something like: Any order placed before 2 p.m. ships that day.",
+      "expectedCorrect": false,
+      "error": null,
+      "case": "missing-time-qualifier",
+      "request": {
+        "task": "rewrite",
+        "original": "If an order is placed before 2 p.m., it ships that day.",
+        "stagePrompt": "Rewrite this conditional in your own words.",
+        "studentResponse": "Every order ships the day it is placed.",
+        "expected": "Any order placed before 2 p.m. ships that day."
+      },
+      "passed": true
+    },
+    {
+      "latencyMs": 1285,
+      "correct": false,
+      "status": 200,
+      "feedback": "Your rewrite says the market might move into the town hall, which weakens the guarantee. The original means rain on Saturday guarantees the market moves into the town hall (a definite, not optional outcome). A natural rewrite should preserve that certainty, e.g., \"If it rains on Saturday, the market will move into the town hall\" without implying possibility.",
+      "expectedCorrect": false,
+      "error": null,
+      "case": "weakened-guarantee",
+      "request": {
+        "task": "rewrite",
+        "original": "If it rains on Saturday, the market moves into the town hall.",
+        "stagePrompt": "Rewrite this conditional in your own words.",
+        "studentResponse": "If it rains on Saturday, the market might move into the town hall.",
+        "expected": "Rain on Saturday guarantees that the market moves into the town hall."
+      },
+      "passed": true
+    },
+    {
+      "latencyMs": 1349,
+      "correct": true,
+      "status": 200,
+      "feedback": "Your sentence restates the contrapositive in natural wording: 'Mia takes the bus if it is raining' becomes 'If Mia does not ride the bus, then it is not raining.' Your version, 'Whenever Mia does not ride the bus, it is not raining,' conveys the same meaning with natural phrasing. It preserves who the rule concerns (Mia), the restriction (it is raining vs not raining), and the necessary/sufficient structure in the contrapositive.",
+      "expectedCorrect": true,
+      "error": null,
+      "case": "valid-contrapositive",
+      "request": {
+        "task": "contrapositive",
+        "original": "Mia takes the bus if it is raining.",
+        "stagePrompt": "Write the contrapositive in your own words.",
+        "studentResponse": "Whenever Mia does not ride the bus, it is not raining.",
+        "expected": "If Mia does not take the bus, then it is not raining."
+      },
+      "passed": true
+    }
+  ],
+  "endpoint": "grade-conditional-rewrite",
+  "checkedAt": "2026-10-15T03:30:48.7469670+00:00",
+  "configuredModel": "openai/gpt-5-nano",
+  "calls": 5
+}

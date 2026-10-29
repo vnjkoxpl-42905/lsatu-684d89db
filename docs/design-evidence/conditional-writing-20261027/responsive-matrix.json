@@ -1,0 +1,182 @@
+[
+  {
+    "page": "exception-language",
+    "target": 375,
+    "height": 900,
+    "overflows": [],
+    "scrollWidth": 352,
+    "title": "Group 3: Unless, until and without",
+    "width": 374
+  },
+  {
+    "page": "exception-language",
+    "target": 768,
+    "height": 900,
+    "overflows": [],
+    "scrollWidth": 746,
+    "title": "Group 3: Unless, until and without",
+    "width": 768
+  },
+  {
+    "page": "exception-language",
+    "target": 980,
+    "height": 900,
+    "overflows": [],
+    "scrollWidth": 958,
+    "title": "Group 3: Unless, until and without",
+    "width": 981
+  },
+  {
+    "page": "exception-language",
+    "target": 1280,
+    "height": 900,
+    "overflows": [],
+    "scrollWidth": 1258,
+    "title": "Group 3: Unless, until and without",
+    "width": 1281
+  },
+  {
+    "page": "exclusion-language",
+    "target": 375,
+    "height": 900,
+    "overflows": [],
+    "scrollWidth": 352,
+    "title": "Group 4: No, none and never",
+    "width": 374
+  },
+  {
+    "page": "exclusion-language",
+    "target": 768,
+    "height": 900,
+    "overflows": [],
+    "scrollWidth": 746,
+    "title": "Group 4: No, none and never",
+    "width": 768
+  },
+  {
+    "page": "exclusion-language",
+    "target": 980,
+    "height": 900,
+    "overflows": [],
+    "scrollWidth": 958,
+    "title": "Group 4: No, none and never",
+    "width": 981
+  },
+  {
+    "page": "exclusion-language",
+    "target": 1280,
+    "height": 900,
+    "overflows": [],
+    "scrollWidth": 1258,
+    "title": "Group 4: No, none and never",
+    "width": 1281
+  },
+  {
+    "page": "negative-translation",
+    "target": 375,
+    "height": 900,
+    "overflows": [],
+    "scrollWidth": 352,
+    "title": "Use Groups 3 and 4 together",
+    "width": 374
+  },
+  {
+    "page": "negative-translation",
+    "target": 768,
+    "height": 900,
+    "overflows": [],
+    "scrollWidth": 746,
+    "title": "Use Groups 3 and 4 together",
+    "width": 768
+  },
+  {
+    "page": "negative-translation",
+    "target": 980,
+    "height": 900,
+    "overflows": [],
+    "scrollWidth": 958,
+    "title": "Use Groups 3 and 4 together",
+    "width": 981
+  },
+  {
+    "page": "negative-translation",
+    "target": 1280,
+    "height": 900,
+    "overflows": [],
+    "scrollWidth": 1258,
+    "title": "Use Groups 3 and 4 together",
+    "width": 1281
+  },
+  {
+    "page": "and-or-negate-conditions",
+    "target": 375,
+    "height": 900,
+    "overflows": [],
+    "scrollWidth": 352,
+    "title": "Negate AND and OR",
+    "width": 374
+  },
+  {
+    "page": "and-or-negate-conditions",
+    "target": 768,
+    "height": 900,
+    "overflows": [],
+    "scrollWidth": 746,
+    "title": "Negate AND and OR",
+    "width": 768
+  },
+  {
+    "page": "and-or-negate-conditions",
+    "target": 980,
+    "height": 900,
+    "overflows": [],
+    "scrollWidth": 958,
+    "title": "Negate AND and OR",
+    "width": 981
+  },
+  {
+    "page": "and-or-negate-conditions",
+    "target": 1280,
+    "height": 900,
+    "overflows": [],
+    "scrollWidth": 1258,
+    "title": "Negate AND and OR",
+    "width": 1281
+  },
+  {
+    "page": "and-or-negate-group",
+    "target": 375,
+    "height": 900,
+    "overflows": [],
+    "scrollWidth": 352,
+    "title": "Contrapositives with AND and OR",
+    "width": 374
+  },
+  {
+    "page": "and-or-negate-group",
+    "target": 768,
+    "height": 900,
+    "overflows": [],
+    "scrollWidth": 746,
+    "title": "Contrapositives with AND and OR",
+    "width": 768
+  },
+  {
+    "page": "and-or-negate-group",
+    "target": 980,
+    "height": 900,
+    "overflows": [],
+    "scrollWidth": 958,
+    "title": "Contrapositives with AND and OR",
+    "width": 981
+  },
+  {
+    "page": "and-or-negate-group",
+    "target": 1280,
+    "height": 900,
+    "overflows": [],
+    "scrollWidth": 1258,
+    "title": "Contrapositives with AND and OR",
+    "width": 1281
+  }
+]
