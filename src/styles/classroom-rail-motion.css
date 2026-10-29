@@ -1,0 +1,33 @@
+/* Rail geometry and labels stay in normal flow; only this background travels. */
+.classroom-root .classroom-rail-motion {
+  position: relative;
+  isolation: isolate;
+}
+
+.classroom-root .classroom-rail-motion .classroom-nav,
+.classroom-root .classroom-rail-motion .classroom-nav-group > b {
+  position: relative;
+  z-index: 1;
+}
+
+.classroom-root .classroom-rail-marker {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  pointer-events: none;
+  visibility: hidden;
+  background: var(--classroom-rail-marker-fill, #252B26);
+  transform-origin: 0 0;
+}
+
+/* Also fixes the inherited cream-on-translucent-cream contrast failure. */
+.classroom-root .classroom-rail-motion .classroom-nav-active {
+  background: #252B26;
+  color: #EFEDE6;
+}
+
+.classroom-root .classroom-rail-motion[data-rail-marker-ready="true"] .classroom-nav-active,
+.classroom-root .classroom-rail-motion[data-rail-marker-ready="true"] .classroom-nav-active-white {
+  background: transparent;
+}

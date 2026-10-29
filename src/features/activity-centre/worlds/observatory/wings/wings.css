@@ -1,0 +1,21 @@
+/*
+ * The observatory's two wings. Same sky, so they inherit the palette from
+ * `.observatory` and add only what the field does not have.
+ */
+
+.ob-wing {
+  overflow-y: auto;
+}
+
+/* The student's own statements, filed as lines of light. */
+.ob-log-line {
+  color: hsl(var(--ob-ink-dim));
+  border-left: 2px solid hsl(var(--ob-edge));
+  padding-left: 10px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ob-button {
+    transition-duration: 1ms !important;
+  }
+}

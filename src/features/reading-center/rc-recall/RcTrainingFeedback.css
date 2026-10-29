@@ -1,0 +1,23 @@
+.rct-feedback { margin-top: 36px; border-top: 1px solid var(--rc-outline-2, #e4e7e8); padding-top: 28px; color: var(--rc-text, #172b36); text-align: left; }
+.rct-feedback-title { margin: 0; font-size: 22px; font-weight: 600; letter-spacing: -.025em; line-height: 1.35; }
+.rct-feedback > p { max-width: 68ch; line-height: 1.7; }
+.rct-feedback-status { margin: 18px 0 4px; font-size: 14px; font-weight: 500; }
+.rct-feedback-note { margin: 8px 0; font-size: 13px; color: var(--rc-text-2, #667078); }
+.rct-feedback-action { min-height: 44px; margin: 14px 10px 0 0; padding: 10px 17px; border: 1px solid var(--rc-outline-2, #d7dfe2); border-radius: 8px; background: transparent; font-size: 13px; font-weight: 600; transition: background 120ms; }
+.rct-feedback-action:hover:not(:disabled) { background: #f2f5f6; }
+.rct-feedback-action:disabled { opacity: .6; cursor: wait; }
+.rct-feedback-item { padding: 25px 0; border-top: 1px solid var(--rc-outline-2, #e4e7e8); line-height: 1.7; }
+.rct-feedback-item h4 { font-size: 14px; letter-spacing: .01em; }
+.rct-feedback-grade { margin-top: 16px; padding: 0 0 14px; }
+.rct-feedback-grade > p:first-child { font-size: 26px; letter-spacing: -.035em; font-weight: 500; }
+.rct-feedback-grade > p:nth-child(2) { color: var(--rc-text-2, #667078); }
+.rct-feedback summary { width: fit-content; border-radius: 3px; }
+.rct-feedback summary:hover { text-decoration: underline; text-underline-offset: 4px; }
+.rct-feedback summary:focus-visible, .rct-feedback-action:focus-visible { outline: 2px solid #254e60; outline-offset: 4px; }
+.rct-feedback details p { max-width: 68ch; }
+@media (max-width: 480px) { .rct-feedback { margin-top: 28px; padding-top: 22px; } .rct-feedback-title { font-size: 20px; } .rct-feedback-action { width: 100%; margin-right: 0; } }
+@media (prefers-reduced-motion: reduce) { .rct-feedback-action { transition: none; } }
+
+.rct-feedback-about { border-top: 1px solid var(--rc-outline-2, #e4e7e8); padding-top: 16px; margin-top: 8px; font-size: 13px; color: var(--rc-text-2, #667078); line-height: 1.7; }
+.rct-feedback-about summary { cursor: pointer; }
+.rct-feedback-about p { margin-top: 12px; }

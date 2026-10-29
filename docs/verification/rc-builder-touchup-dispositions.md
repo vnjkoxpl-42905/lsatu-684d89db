@@ -1,0 +1,3 @@
+# Round 1 dispositions
+
+All findings accepted. F1: preserve per-field clearing with nonempty reset sentinel mapped to empty string, normalize stale display only. F2: RC-only test helper installs pointer capture and scrollIntoView stubs. F3: query portaled options globally and migrate every select change/value/disabled assertion. F4: explicit trigger CSS ports legacy select rules, split labels/fields and retain narrow-screen grid. F5: explicit portal z-index/palette and nested Escape/docked checks. F6: dynamic closed profile-pace label regression. F7: visual acceptance remains pending if browser unavailable, irrespective of code approval. Harness settings stub confirmed. No scope expansion.

@@ -1,0 +1,592 @@
+[
+  {
+    "practiceTest": "PT143",
+    "sectionNumber": 3,
+    "questionNumber": 1,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "When industries rapidly apply new technology, people\nwho possess the skills and knowledge to master it\nprosper, while many others lose their jobs. But firms\nthat resist technological innovations will eventually be\nsuperseded by those that do not, resulting in the loss of\nall their employees’ jobs. Obviously, then, resisting the\napplication of new technology in industry _______.",
+    "questionStem": "Which one of the following most logically completes the\nargument?",
+    "answerChoices": {
+      "A": "is less likely to dislocate workers than it is to create job security for them",
+      "B": "will affect only those who possess technical skills",
+      "C": "cannot prevent job loss in the long run",
+      "D": "eventually creates more jobs than it destroys",
+      "E": "must take priority over any attempt to promote new industries"
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Logical Completion"
+    ]
+  },
+  {
+    "practiceTest": "PT143",
+    "sectionNumber": 3,
+    "questionNumber": 2,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "While sales of other highly fuel-efficient automobiles\nare in decline, sales of the Hydro are rising. The Hydro’s\nmanufacturers attribute its success to the Hydro’s price\nand very low fuel consumption. However, the Hydro is\ncomparable in price and fuel efficiency to its competitors,\nso it is more likely that its success is due to the fact that\npeople want to appear environmentally conscious to their\nneighbors.",
+    "questionStem": "Which one of the following is an assumption required by\nthe argument?",
+    "answerChoices": {
+      "A": "The Hydro is the most popular highly fuel-efficient automobile available.",
+      "B": "The Hydro is recognizable as environmentally friendly in a way that its competitors are not.",
+      "C": "The Hydro has a better safety record than its competitors.",
+      "D": "Hydro buyers are more likely to have neighbors who also drive Hydros.",
+      "E": "Hydro buyers have less interest in environmental causes than buyers of other highly fuel-efficient automobiles."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Assumes Difference",
+      "Plausibility",
+      "Explain Curious Fact",
+      "Ruling Out Options"
+    ]
+  },
+  {
+    "practiceTest": "PT143",
+    "sectionNumber": 3,
+    "questionNumber": 3,
+    "questionType": "Principle-Strengthen",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Louise McBride, a homeowner, filed a complaint against\na nearby nightclub through the Licensing Bureau, a\ngovernment agency. Although regulations clearly state\nthat Form 283 is to be used for formal complaints,\nBureau staff gave McBride Form 5, which she used with\nthe intention of filing a formal complaint. The nightclub\nargues that the complaint should be dismissed because\nthe incorrect form was used. But that would be unfair.",
+    "questionStem": "Which one of the following principles, if valid, most\nhelps to justify the judgment that dismissing the\ncomplaint would be unfair?",
+    "answerChoices": {
+      "A": "People who wish to file complaints through the Licensing Bureau should be informed of all relevant regulations.",
+      "B": "Government agencies should make their forms straightforward enough that completing them will not be unduly burdensome for the average person.",
+      "C": "It is unfair for someone’s complaint to be dismissed because of an incorrect action on the part of a government agency.",
+      "D": "A government agency should not make its procedures so complex that even the agency’s employees cannot understand the procedures.",
+      "E": "It is unfair for a business to be subject to a formal complaint unless the complaint is made in a way that provides the business with an opportunity to defend itself."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Principles in Answers"
+    ]
+  },
+  {
+    "practiceTest": "PT143",
+    "sectionNumber": 3,
+    "questionNumber": 4,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "The size of the spleen is a good indicator of how healthy\na bird is: sickly birds generally have significantly\nsmaller spleens than healthy birds. Researchers found\nthat, in general, birds that had been killed by predators\nhad substantially smaller spleens than birds killed\naccidentally.",
+    "questionStem": "Which one of the following is most strongly supported\nby the information above?",
+    "answerChoices": {
+      "A": "Predators are unable to kill healthy birds.",
+      "B": "Most birds with smaller than average spleens are killed by predators.",
+      "C": "Predators can sense whether a bird is sick.",
+      "D": "Sickly birds are more likely than healthy birds to be killed by predators.",
+      "E": "Small spleen size is one of the main causes of sickness in birds."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
+  },
+  {
+    "practiceTest": "PT143",
+    "sectionNumber": 3,
+    "questionNumber": 5,
+    "questionType": "Paradox",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Home ownership is a sign of economic prosperity. This\nmakes it somewhat surprising that across the various\nregions of Europe and North America, high levels\nof home ownership correspond with high levels of\nunemployment.",
+    "questionStem": "Which one of the following, if true, helps to resolve the\napparent conflict described above?",
+    "answerChoices": {
+      "A": "Home ownership makes it more difficult to move to a place where jobs are more plentiful.",
+      "B": "Over the last few decades jobs have been moving from centralized areas to locations that are closer to homeowners.",
+      "C": "The correspondence between high levels of home ownership and high levels of unemployment holds across countries with widely different social systems.",
+      "D": "People who own homes are more likely than those who rent to form support networks that help them to learn of local jobs.",
+      "E": "People are more likely to buy homes when they are feeling economically secure."
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT143",
+    "sectionNumber": 3,
+    "questionNumber": 6,
+    "questionType": "Strengthen",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "If newly hatched tobacco hornworms in nature first feed\non plants from the nightshade family, they will not eat\nleaves from any other plants thereafter. However, tobacco\nhornworms will feed on other sorts of plants if they feed\non plants other than nightshades just after hatching. To\nexplain this behavior, scientists hypothesize that when\na hornworm’s first meal is from a nightshade, its taste\nreceptors become habituated to the chemical indioside\nD, which is found only in nightshades, and after this\nhabituation nothing without indioside D tastes good.",
+    "questionStem": "Which one of the following, if true, adds the most\nsupport for the hypothesis?",
+    "answerChoices": {
+      "A": "Tobacco hornworms that first fed on nightshade leaves show no preference for any one variety of nightshade plant over any other.",
+      "B": "If taste receptors are removed from tobacco hornworms that first fed on nightshade leaves, those hornworms will subsequently feed on other leaves.",
+      "C": "Tobacco hornworm eggs are most commonly laid on nightshade plants.",
+      "D": "Indioside D is not the only chemical that occurs only in nightshade plants.",
+      "E": "The taste receptors of the tobacco hornworm have physiological reactions to several naturally occurring chemicals."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Explain Curious Fact",
+      "Plausibility"
+    ]
+  },
+  {
+    "practiceTest": "PT143",
+    "sectionNumber": 3,
+    "questionNumber": 7,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Employee: My boss says that my presentation to our\naccounting team should have included more\ndetail about profit projections. But people’s\nattention tends to wander when they are presented\nwith too much detail. So, clearly my boss is\nincorrect.",
+    "questionStem": "The reasoning in the employee’s argument is flawed\nbecause the argument",
+    "answerChoices": {
+      "A": "takes for granted that the boss’s assessments of employee presentations are generally not accurate",
+      "B": "fails to distinguish between more of something and too much of it",
+      "C": "fails to consider that an audience’s attention might wander for reasons other than being presented with too much detail",
+      "D": "infers a generalization based only on a single case",
+      "E": "confuses two distinct meanings of the key term “detail”"
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Relative vs. Absolute",
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT143",
+    "sectionNumber": 3,
+    "questionNumber": 8,
+    "questionType": "Main Conclusion",
+    "reasoningType": [],
+    "questionDifficulty": 2,
+    "stimulus": "The local news media have long heralded Clemens as\nan honest politician. They were proven wrong when\nClemens was caught up in a corruption scandal. This\ndemonstrates how the local media show too much\ndeference toward public figures. Even the editor of the\nlocal newspaper admitted that her reporters neglected\nto follow leads that might have exposed the scandal far\nearlier.",
+    "questionStem": "Which one of the following most accurately expresses\nthe overall conclusion drawn in the argument?",
+    "answerChoices": {
+      "A": "Clemens has long been portrayed as an honest politician by the local news media.",
+      "B": "The local news media were wrong to herald Clemens as an honest politician.",
+      "C": "The local news media show too much deference toward public figures.",
+      "D": "Reporters from the local newspaper neglected to follow leads that might have exposed the scandal much earlier.",
+      "E": "The local newspaper’s treatment of Clemens is indicative of its treatment of public figures in general."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT143",
+    "sectionNumber": 3,
+    "questionNumber": 9,
+    "questionType": "Parallel Reasoning",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "We know that if life ever existed on the Moon, there\nwould be signs of life there. But numerous excursions to\nthe Moon have failed to provide us with any sign of life. So there has never been life on the Moon.",
+    "questionStem": "The pattern of reasoning in the argument above is most\nsimilar to that in which one of the following?",
+    "answerChoices": {
+      "A": "We know that the spy is a traitor. We do not know that the general is a traitor. So the general is not a spy.",
+      "B": "If we have any mayonnaise, it would be in the refrigerator. But the refrigerator is almost empty. So it is unlikely that we have mayonnaise.",
+      "C": "Hendricks will win the election only if voters are concerned primarily with fighting crime. Hendricks is in favor of tougher criminal penalties. So voters will probably go with Hendricks.",
+      "D": "If rodents are responsible for the lost grain from last year’s harvest, we would find signs of rodents in the warehouses. And we have found signs of rodents there. So rodents are responsible for the lost grain.",
+      "E": "If their army is planning an attack, there would either be troop movements along the border or a transfer of weapons. But intelligence reports show no indication of either. So their army is not planning an attack."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Contrapositive Logic"
+    ]
+  },
+  {
+    "practiceTest": "PT143",
+    "sectionNumber": 3,
+    "questionNumber": 10,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Television host: While it’s true that the defendant\npresented a strong alibi and considerable\nexculpatory evidence and was quickly acquitted\nby the jury, I still believe that there must be\ngood reason to think that the defendant is not\ncompletely innocent in the case. Otherwise, the\nprosecutor would not have brought charges in the\nfirst place.",
+    "questionStem": "The reasoning in the television host’s argument is flawed\nin that the argument",
+    "answerChoices": {
+      "A": "takes lack of evidence for a view as grounds for concluding that the view is false",
+      "B": "presupposes as evidence the conclusion that it is trying to establish",
+      "C": "places undue reliance on the judgments of an authority figure",
+      "D": "confuses legal standards for guilt with moral standards for guilt",
+      "E": "concludes that a judgment is suspicious merely on the grounds that it was reached quickly"
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Focused on Evidence"
+    ]
+  },
+  {
+    "practiceTest": "PT143",
+    "sectionNumber": 3,
+    "questionNumber": 11,
+    "questionType": "Method of Reasoning",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Literature professor: Critics charge that the work of\nC. F. Providence’s best-known follower, S. N. Sauk, lacks aesthetic merit because it employs\nProvidence’s own uniquely potent system of\nsymbolic motifs in the service of a political\nideal that Providence—and, significantly, some\nof these critics as well—would reject. Granting\nthat Sauk is more imitator than innovator, and\nthat he maintained political views very different\nfrom those Providence maintained, it has yet to\nbe shown that these facts make his writings any\nless subtly or powerfully crafted than those of his\nmore esteemed mentor. So the critics’ argument\nshould be rejected.",
+    "questionStem": "The literature professor argues that the conclusion drawn\nby the critics has not really been established, on the\ngrounds that",
+    "answerChoices": {
+      "A": "the claims made in support of this conclusion are inaccurate",
+      "B": "Sauk’s work has aesthetic merit",
+      "C": "these critics are motivated by antipathy toward Sauk’s political ideas",
+      "D": "the claims made in support of this conclusion have not been shown to be correct",
+      "E": "the claims made in support of this conclusion have not been shown to be relevant to it"
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT143",
+    "sectionNumber": 3,
+    "questionNumber": 12,
+    "questionType": "Principle-Strengthen",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Policy: The factory’s safety inspector should not approve\na new manufacturing process unless it has been\nused safely for more than a year at another\nfactory or it will demonstrably increase safety at\nthe factory.\nApplication: The safety inspector should not approve the\nproposed new welding process, for it cannot be\nshown to increase safety at the factory.",
+    "questionStem": "Which one of the following, if true, justifies the above\napplication of the policy?",
+    "answerChoices": {
+      "A": "The factory at which the new welding process was first introduced has had several problems associated with the process.",
+      "B": "The proposed new welding process has not been used in any other factory.",
+      "C": "Some of the manufacturing processes currently in use at the factory are not demonstrably safer than the new welding process.",
+      "D": "The safety inspector will not approve any new process that has not been used extensively elsewhere.",
+      "E": "The proposed new welding process has been used in only one other factory."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Conditional Diagramming",
+      "Missing Link / Idea",
+      "Principles in Stimulus"
+    ]
+  },
+  {
+    "practiceTest": "PT143",
+    "sectionNumber": 3,
+    "questionNumber": 13,
+    "questionType": "Weaken",
+    "reasoningType": [
+      "Causation",
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "University administrator: Graduate students incorrectly\nclaim that teaching assistants should be\nconsidered university employees and thus entitled\nto the usual employee benefits. Granted, teaching\nassistants teach classes, for which they receive\nfinancial compensation. However, the sole\npurpose of having teaching assistants perform\nservices for the university is to enable them to\nfund their education. If they were not pursuing\ndegrees here or if they could otherwise fund their\neducation, they would not hold their teaching\nposts at all.",
+    "questionStem": "Which one of the following, if true, most seriously\nweakens the administrator’s argument?",
+    "answerChoices": {
+      "A": "The administrator is cognizant of the extra costs involved in granting employee benefits to teaching assistants.",
+      "B": "The university employs adjunct instructors who receive compensation similar to that of its teaching assistants.",
+      "C": "The university has proposed that in the interest of economy, 10 percent of the faculty be replaced with teaching assistants.",
+      "D": "Most teaching assistants earn stipends that exceed their cost of tuition.",
+      "E": "Teaching assistants work as much and as hard as do other university employees."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Anti-Causal"
+    ]
+  },
+  {
+    "practiceTest": "PT143",
+    "sectionNumber": 3,
+    "questionNumber": 14,
+    "questionType": "Parallel Flaw",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Branson: Most of the air pollution in this country comes\nfrom our largest cities. These cities would pollute\nless if they were less populated. So if many\npeople in these cities were to move to rural areas,\nair pollution in the country as a whole would be\nreduced.",
+    "questionStem": "Which one of the following demonstrates most\neffectively by parallel reasoning that Branson’s argument\nis flawed?",
+    "answerChoices": {
+      "A": "Similarly, we could conclude that Monique spends most of her salary on housing. After all, people are bound to spend more on housing if they live in a city where the cost of housing is high, and Monique recently moved to a city where the cost of housing is very high.",
+      "B": "Similarly, we could conclude that Karen’s family would have more living space if they moved from an apartment to a single-family home. After all, single-family homes are typically larger than apartments.",
+      "C": "Similarly, we could conclude that most of Ward’s farm is planted with corn. After all, in Ward’s county most of the fields that used to be planted with other crops are now planted with corn.",
+      "D": "Similarly, we could conclude that Javier could consume fewer calories by eating for breakfast, lunch, and dinner only a portion of what he now eats, and eating the remainder as snacks. After all, breakfast, lunch, and dinner together account for most of the calories Javier consumes.",
+      "E": "Similarly, we could conclude that most of this city’s air pollution would be eliminated if this city built a public transportation system. After all, public transportation produces much less pollution per passenger, and all automobile trips could be replaced by trips on public transportation."
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT143",
+    "sectionNumber": 3,
+    "questionNumber": 15,
+    "questionType": "Sufficient Assumption",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Ninety percent of recent car buyers say safety was\nan important factor in their purchase. Yet of these car\nbuyers, only half consulted objective sources of vehicle\nsafety information before making their purchase;\nthe others relied on advertisements and promotional\nmaterials. Thus, these other buyers were mistaken in\nsaying that safety was important to them.",
+    "questionStem": "The argument’s conclusion follows logically if which\none of the following is assumed?",
+    "answerChoices": {
+      "A": "Someone who claims that safety was an important factor in a buying decision does not necessarily mean that safety was the most important factor.",
+      "B": "Advertisements and promotional materials sometimes provide incomplete vehicle safety information.",
+      "C": "Recent car buyers do not necessarily tell the truth when asked about the factors that contributed to their vehicle purchases.",
+      "D": "Most consumers are aware that advertisements and promotional materials are not objective sources of vehicle safety information.",
+      "E": "Anyone to whom safety is an important factor in purchasing a car will consult an objective source of vehicle safety information before buying."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
+  },
+  {
+    "practiceTest": "PT143",
+    "sectionNumber": 3,
+    "questionNumber": 16,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Theorist: To be capable of planned locomotion, an\norganism must be able both to form an internal\nrepresentation of its environment and to send\nmessages to its muscles to control movements. Such an organism must therefore have a central\nnervous system. Thus, an organism incapable\nof planned locomotion does not have a central\nnervous system.",
+    "questionStem": "The theorist’s argument is flawed in that it",
+    "answerChoices": {
+      "A": "confuses a necessary condition for an organism’s possessing a capacity with a sufficient one",
+      "B": "takes for granted that organisms capable of sending messages from their central nervous systems to their muscles are also capable of locomotion",
+      "C": "presumes, without providing justification, that planned locomotion is the only biologically useful purpose for an organism’s forming an internal representation of its environment",
+      "D": "takes for granted that adaptations that serve a biologically useful purpose originally came about for that purpose",
+      "E": "presumes, without providing justification, that an internal representation of its environment can be formed by an organism with even a rudimentary nervous system"
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
+  },
+  {
+    "practiceTest": "PT143",
+    "sectionNumber": 3,
+    "questionNumber": 17,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Rocket engines are most effective when exhaust gases\nescape from their nozzles at the same pressure as\nthe surrounding atmosphere. At low altitudes, where\natmospheric pressure is high, this effect is best produced\nby a short nozzle, but when the rocket passes through\nthe thin upper atmosphere, a long nozzle becomes more\neffective. Thus, to work most effectively throughout their\nascents, all rockets must have both short nozzles and long\nnozzles on their engines.",
+    "questionStem": "Which one of the following is an assumption the\nargument requires?",
+    "answerChoices": {
+      "A": "Equipping a rocket’s engines with both short and long nozzles is not significantly more difficult than equipping them with nozzles of equal lengths.",
+      "B": "At some point during their ascents, all rockets will pass through the thin upper atmosphere.",
+      "C": "A rocket with only short nozzles on its engines cannot reach high altitudes.",
+      "D": "For a rocket to work effectively, its engines’ exhaust gases must leave the nozzles at the same pressure as the surrounding atmosphere throughout the rocket’s ascent.",
+      "E": "For a rocket to work most effectively at both low and high atmospheric pressures, it must have at least one engine that has both a short nozzle and a long nozzle."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "Assumes Similarity",
+      "New Concept in Conclusion"
+    ]
+  },
+  {
+    "practiceTest": "PT143",
+    "sectionNumber": 3,
+    "questionNumber": 18,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Consumer advocate: Manufacturers of children’s toys\noften place warnings on their products that\noverstate the dangers their products pose.\nProduct-warning labels should overstate dangers\nonly if doing so reduces injuries. In fact,\nhowever, manufacturers overstate their products’\ndangers merely for the purpose of protecting\nthemselves from lawsuits brought by parents of\ninjured children. Therefore, manufacturers of\nchildren’s toys should not overstate the dangers\ntheir products pose.",
+    "questionStem": "Which one of the following most accurately describes a\nreasoning flaw in the consumer advocate’s argument?",
+    "answerChoices": {
+      "A": "The argument confuses a necessary condition for reducing the number of injuries caused by a product with a sufficient condition.",
+      "B": "The argument overlooks the possibility that warnings that do not overstate the dangers that their products pose do not always reduce injuries.",
+      "C": "The argument relies on a sample that is unlikely to be representative.",
+      "D": "The argument presumes, without providing justification, that if a warning overstates a danger, then the warning will fail to prevent injuries.",
+      "E": "The argument relies on the unjustified assumption that an action has an effect only if it was performed in order to bring about that effect."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Contrapositive Logic",
+      "Plans / Recommendations",
+      "Untriggered Conditional"
+    ]
+  },
+  {
+    "practiceTest": "PT143",
+    "sectionNumber": 3,
+    "questionNumber": 19,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "A recent study showed that the immune system blood\ncells of the study’s participants who drank tea but no\ncoffee took half as long to respond to germs as did the\nblood cells of participants who drank coffee but no tea.\nThus, drinking tea boosted the participants’ immune\nsystem defenses.",
+    "questionStem": "Which one of the following is an assumption on which\nthe argument depends?",
+    "answerChoices": {
+      "A": "All of the participants in the study drank either tea or coffee, and none drank both.",
+      "B": "Coffee has no health benefits that are as valuable as the boost that tea purportedly gives to the body’s immune system.",
+      "C": "In the study, drinking coffee did not cause the blood cell response time to double.",
+      "D": "Coffee drinkers in general are no more likely to exercise and eat healthily than are tea drinkers.",
+      "E": "Coffee and tea do not have in common any chemicals that fight disease in the human body."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Explain Curious Fact",
+      "Alternatives",
+      "Defender",
+      "Math-y Stuff"
+    ]
+  },
+  {
+    "practiceTest": "PT143",
+    "sectionNumber": 3,
+    "questionNumber": 20,
+    "questionType": "Role",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Engineer: Semiplaning monohulls are a new kind of ship\nthat can attain twice the speed of conventional\nships. Due to increased fuel needs, transportation\nwill be much more expensive on semiplaning\nmonohulls than on conventional ships. Similarly,\ntravel on jet airplanes was more expensive\nthan travel on other planes at first, but jet\nairplanes still attracted enough passengers to be\nprofitable, because they offered greater speed and\nreliability. Semiplaning monohulls offer the same\nadvantages over traditional ships. Thus they will\nprobably be profitable as well.",
+    "questionStem": "Which one of the following most accurately describes\nthe role played in the engineer’s argument by the\nstatement that transportation will be much more\nexpensive on semiplaning monohulls than on\ntraditional ships?",
+    "answerChoices": {
+      "A": "It serves as one of two analogies drawn between semiplaning monohulls and jet airplanes, which function together to support the argument’s main conclusion.",
+      "B": "It draws an analogy between semiplaning monohulls and conventional ships that constitutes an objection to the argument’s main conclusion, one that is subsequently rejected by appeal to another analogy.",
+      "C": "It draws a distinction between characteristics of semiplaning monohulls and characteristics of conventional ships that independently provides support for the argument’s main conclusion.",
+      "D": "It constitutes a potential objection to the argument’s main conclusion, but is subsequently countered by an analogy drawn between ships and airplanes.",
+      "E": "It draws a distinction between characteristics of semiplaning monohulls and characteristics of conventional ships that the argument’s main conclusion compares to a distinction between types of airplanes."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Analogies"
+    ]
+  },
+  {
+    "practiceTest": "PT143",
+    "sectionNumber": 3,
+    "questionNumber": 21,
+    "questionType": "Strengthen",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Maté is a beverage found in much of South America.\nWhile it is uncertain where maté was first made, there\nare more varieties of it found in Paraguay than anywhere\nelse. Also, maté is used more widely there than anywhere\nelse. Therefore, Paraguay is likely the place where maté\noriginated.",
+    "questionStem": "Which one of the following, if true, would most\nstrengthen the argument?",
+    "answerChoices": {
+      "A": "It is rare for there to be a great variety of types of a beverage in a place where the beverage has not been in use for a very long time.",
+      "B": "Many Paraguayans believe that maté became popular at a time when people from other areas of South America were first migrating to Paraguay.",
+      "C": "Many Paraguayans believe that the best maté is found in Paraguay.",
+      "D": "There are few places outside of South America where maté is regularly consumed.",
+      "E": "Typically, the longer a beverage has been in use in a particular place, the more widely that beverage is used there."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "Volume Dial"
+    ]
+  },
+  {
+    "practiceTest": "PT143",
+    "sectionNumber": 3,
+    "questionNumber": 22,
+    "questionType": "Weaken",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "From 1996 to 2004, the average family income in\na certain country decreased by 10 percent, after\nadjustments for inflation. Opponents of the political party\nthat ruled during this time claim that this was due to\nmismanagement of the economy by that party.",
+    "questionStem": "Each of the following rejoinders, if true, directly\ncounters the opponents’ explanation of the decrease in\naverage family income except:",
+    "answerChoices": {
+      "A": "There had been a rise in family income in 1996, after adjustments for inflation.",
+      "B": "For noneconomic reasons, fewer families had multiple incomes at the end of the period than at the beginning.",
+      "C": "During the period, international events beyond the control of the country’s government had a negative effect on family incomes in the country.",
+      "D": "Younger wage earners usually earn less than older ones, and the average age of household wage earners fell during most years in the past several decades.",
+      "E": "The biggest decreases in family income resulted from policies enacted before the ruling party came to power in 1996."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "EXCEPT"
+    ]
+  },
+  {
+    "practiceTest": "PT143",
+    "sectionNumber": 3,
+    "questionNumber": 23,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Amateur gardeners who plant based on the phases of the\nmoon tend to get better results than those who do not. This seems surprising since the phases of the moon do\nnot affect how plants grow. An alternative practice often\nfound among amateur gardeners is to plant during the\nfirst warm spell of spring, which leads to problems when\na frost follows. So, amateur gardeners who use the phases\nof the moon are less likely to lose plants to a frost.",
+    "questionStem": "The argument requires assuming which one of the\nfollowing?",
+    "answerChoices": {
+      "A": "Using the phases of the moon usually leads amateur gardeners to plant later in the spring than those planting at the first warm spell.",
+      "B": "The phases of the moon affect whether a frost follows the first warm spell of spring.",
+      "C": "Amateur gardeners who use the phases of the moon tend to plant different types of plants than do other amateur gardeners.",
+      "D": "Amateur gardeners cannot improve their results unless they understand why their methods work as they do.",
+      "E": "Professional gardeners only rarely plant at the first warm spell of spring."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Assumes Difference",
+      "Timeframes"
+    ]
+  },
+  {
+    "practiceTest": "PT143",
+    "sectionNumber": 3,
+    "questionNumber": 24,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Columnist: On average, about 70 percent of the profit\nfrom tourism in developing countries goes to\nforeign owners of tourist businesses. In general,\nas a country becomes a more established\ntourist destination, the proportion of revenues\nexported in this way increases. However,\ntourists can counteract this effect by obtaining\naccommodations and other services directly from\nlocal people.",
+    "questionStem": "Which one of the following is most strongly supported\nby the statements made by the columnist?",
+    "answerChoices": {
+      "A": "Tourists in a developing nation should obtain accommodations and other services directly from local people if most of the profits from tourism in that nation go to foreign owners of tourist businesses.",
+      "B": "In at least some of the developing countries that are most established as tourist destinations, most of the profits from tourism go to foreign owners of tourist businesses.",
+      "C": "In at least some developing countries, tourists obtain most of their accommodations and other services directly from local people.",
+      "D": "In general, as a developing country becomes a more established tourist destination, local people become progressively poorer.",
+      "E": "Tourists who obtain accommodations and other services directly from local people do not contribute in any way to the profits of foreign owners of tourist businesses."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Math-y Stuff"
+    ]
+  },
+  {
+    "practiceTest": "PT143",
+    "sectionNumber": 3,
+    "questionNumber": 25,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "The populations of certain species of amphibians have\ndeclined dramatically in recent years, an effect many\nscientists attribute to industrial pollution. However, most\namphibian species’ populations vary greatly from year\nto year because of natural variations in the weather. It\nis therefore impossible to be sure that the recent decline\nin those amphibian populations is due to industrial\npollution.",
+    "questionStem": "The argument depends on assuming which one of the\nfollowing?",
+    "answerChoices": {
+      "A": "The amphibian species whose population declines have been attributed by many scientists to industrial pollution are not known to be among those species whose populations do not vary greatly as a result of natural variations in the weather.",
+      "B": "The variations in amphibian species’ populations that result from natural variations in the weather are not always as large as the amphibian population declines that scientists have attributed to industrial pollution.",
+      "C": "Either industrial pollution or natural variations in the weather, but not both, caused the amphibian population declines that scientists have attributed to industrial pollution.",
+      "D": "If industrial pollution were reduced, the decline in certain amphibian populations would be reversed, and if industrial pollution increases, the decline in certain amphibian populations will be exacerbated.",
+      "E": "If industrial pollution is severe, it can create more variations in the weather than would occur naturally."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Anti-Causal",
+      "Defender",
+      "Rebuttals"
+    ]
+  }
+]

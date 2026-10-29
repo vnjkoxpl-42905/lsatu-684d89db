@@ -1,0 +1,600 @@
+[
+  {
+    "practiceTest": "PT141",
+    "sectionNumber": 2,
+    "questionNumber": 1,
+    "questionType": "Necessary assumption",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Editorial: The city has chosen a contractor to upgrade the heating systems in public buildings. Only 40 percent of the technicians employed by this contractor are certified by the Heating Technicians Association. So the city selected a contractor 60 percent of whose technicians are unqualified, which is an outrage.",
+    "questionStem": "Which one of the following is an assumption required by the argument in the editorial?",
+    "answerChoices": {
+      "A": "Certified technicians receive higher pay than uncertified technicians.",
+      "B": "There are no contractors with fewer than 40 percent of their technicians certified.",
+      "C": "Technicians who lack certification are not qualified technicians.",
+      "D": "Qualified technicians installed the heating systems to be upgraded.",
+      "E": "The contractor hired by the city has personal ties to city officials."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "Math-y Stuff",
+      "New Concept in Conclusion"
+    ]
+  },
+  {
+    "practiceTest": "PT141",
+    "sectionNumber": 2,
+    "questionNumber": 2,
+    "questionType": "Resolve, reconcile, or explain",
+    "reasoningType": [],
+    "questionDifficulty": 2,
+    "stimulus": "Jeneta: Increasingly, I’ve noticed that when a salesperson thanks a customer for making a purchase, the customer also says “Thank you” instead of saying “You’re welcome.” I’ve even started doing that myself. But when a friend thanks a friend for a favor, the response is always “You’re welcome.”",
+    "questionStem": "Which one of the following, if true, most helps to explain the discrepancy that Jeneta observes in people’s responses?",
+    "answerChoices": {
+      "A": "Customers regard themselves as doing salespeople a favor by buying from them as opposed to someone else.",
+      "B": "Salespeople are often instructed by their employers to thank customers, whereas customers are free to say what they want.",
+      "C": "Salespeople do not regard customers who buy from them as doing them a favor.",
+      "D": "The way that people respond to being thanked is generally determined by habit rather than by conscious decision.",
+      "E": "In a commercial transaction, as opposed to a favor, the customer feels that the benefits are mutual."
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT141",
+    "sectionNumber": 2,
+    "questionNumber": 3,
+    "questionType": "Flaw",
+    "reasoningType": [],
+    "questionDifficulty": 2,
+    "stimulus": "Some video game makers have sold the movie rights for popular games. However, this move is rarely good from a business perspective. After all, StarQuanta sold the movie rights to its popular game Nostroma, but the poorly made film adaptation of the game was hated by critics and the public alike. Subsequent versions of the Nostroma video game, although better than the original, sold poorly.",
+    "questionStem": "The reasoning in the argument is most vulnerable to criticism in that the argument",
+    "answerChoices": {
+      "A": "draws a general conclusion on the basis of just one individual case",
+      "B": "infers that a product will be disliked by the public merely from the claim that the product was disliked by critics",
+      "C": "restates as a conclusion a claim earlier presented as evidence for that conclusion",
+      "D": "takes for granted that products with similar content that are in different media will be of roughly equal popularity",
+      "E": "treats a requirement for a product to be popular as something that ensures that a product will be popular"
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Famous Flaws",
+      "Sampling"
+    ]
+  },
+  {
+    "practiceTest": "PT141",
+    "sectionNumber": 2,
+    "questionNumber": 4,
+    "questionType": "Principle-Conform",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Principle: The executive in a given company whose compensation package is determined by advice of an external consultant is likely to be overcompensated if the consultant also has business interests with the company the executive manages.",
+    "questionStem": "Which one of the following judgments conforms most closely to the principle stated above?",
+    "answerChoices": {
+      "A": "The president of the Troskco Corporation is definitely overpaid, since he receives in salary and benefits almost 40 times more than the average employee of Troskco receives.",
+      "B": "The president of the Troskco Corporation is probably overpaid, since his total annual compensation package was determined five years ago, when the company’s profits were at an all-time high.",
+      "C": "The president of the Troskco Corporation is probably not overpaid, since his total compensation package was determined by the Troskco board of directors without retaining the services of an external compensation consultant.",
+      "D": "The president of Troskco Corporation is probably overpaid, since the Troskco board of directors determined his compensation by following the advice of an external consultant who has many other contracts with Troskco.",
+      "E": "The president of Troskco Corporation is definitely not overpaid, since the external consultant the board of directors retained to advise on executive salaries has no other contracts with Troskco."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Complex Conditionals",
+      "Principles in Stimulus",
+      "Repetitive Answers"
+    ]
+  },
+  {
+    "practiceTest": "PT141",
+    "sectionNumber": 2,
+    "questionNumber": 5,
+    "questionType": "Flaw (Flaw)",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Science writer: Lemaître argued that the universe began with the explosion of a “primeval atom,” a singular point of infinite gravity in space and time. If this is correct, our current observations should reveal galaxies accelerating away from one another. This is precisely what we observe. Yet because there is another theory—the oscillating universe theory—that makes exactly this same prediction, Lemaître’s theory must be considered inadequate.",
+    "questionStem": "Which one of the following most accurately describes a flaw in the science writer’s reasoning?",
+    "answerChoices": {
+      "A": "The conclusion is derived partly from assertions attributed to a purported expert whose credibility is not established.",
+      "B": "The conclusion is based on a shift in meaning of a key term from one part of the argument to another part.",
+      "C": "The science writer takes for granted the existence of a causal connection between observed phenomena.",
+      "D": "The science writer fails to see that one theory’s correctly predicting observed data cannot itself constitute evidence against an alternative theory that also does this.",
+      "E": "The science writer presumes, without providing justification, that there are only two possible explanations for the phenomena in question."
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT141",
+    "sectionNumber": 2,
+    "questionNumber": 6,
+    "questionType": "PSA - Find the rule (Principle)",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Critic: The criticism of the popular film comedy Quirks for not being realistic is misguided. It is certainly true that the characters are too stylized to be real people. That could be problematic, but in this case the resulting film is funny. And that is the important thing for a comedy.",
+    "questionStem": "Which one of the following principles, if valid, most helps to justify the reasoning in the critic’s argument?",
+    "answerChoices": {
+      "A": "Films should be judged on how well they accurately capture the world.",
+      "B": "Films are successful as long as they are popular.",
+      "C": "Film comedies should find their humor in their stylistic portrayals.",
+      "D": "Films are successful if they succeed within their genre.",
+      "E": "Films should try to stay entirely within a single genre."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "First Sentence Conclusion",
+      "Principles in Answers"
+    ]
+  },
+  {
+    "practiceTest": "PT141",
+    "sectionNumber": 2,
+    "questionNumber": 7,
+    "questionType": "Parallel flawed method of reasoning (Parallel, Flaw)",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Party X has recently been accused by its opposition, Party Y, of accepting international campaign contributions, which is illegal. Such accusations are, however, ill founded. Three years ago, Party Y itself was involved in a scandal in which it was discovered that its national committee seriously violated campaign laws.",
+    "questionStem": "Which one of the following contains flawed reasoning most similar to the flawed reasoning in the argument above?",
+    "answerChoices": {
+      "A": "The plaintiff accuses the defendant of violating campaign laws, but the accusations are ill founded. While the defendant’s actions may violate certain laws, they are not immoral, because the laws in question are unjust.",
+      "B": "The plaintiff accuses the defendant of violating campaign laws, but these accusations show the plaintiff to be hypocritical, because the plaintiff has engaged in similar conduct.",
+      "C": "The plaintiff accuses the defendant of violating campaign laws, and, in the past, courts have declared such violations illegal. Nevertheless, because the plaintiff recently engaged in actions that were similar to those of the defendant, the plaintiff’s accusations are ill founded.",
+      "D": "The plaintiff accuses the defendant of violating campaign laws, but these accusations are ill founded. They are clearly an attempt to stir up controversy, because they were made just two weeks before the election.",
+      "E": "The plaintiff accuses the defendant of voting only for campaign laws that would favor the defendant’s party. This accusation is ill founded, however, because it attacks the defendant’s motivations instead of addressing the arguments the defendant has put forth justifying these votes."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Famous Flaws",
+      "Rebuttals",
+      "Repetitive Answers"
+    ]
+  },
+  {
+    "practiceTest": "PT141",
+    "sectionNumber": 2,
+    "questionNumber": 8,
+    "questionType": "Necessary assumption",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Biologist: Marine animals known as box jellyfish have eyes with well-formed lenses capable of producing sharp images that reveal fine detail. But the box jellyfish’s retinas are too far forward to receive a clear image, so these jellyfish can receive only a blurry image that reveals prominent features of objects but not fine detail. This example shows that eyes are adapted only to an animal’s needs rather than to some abstract sense of how a good eye would be designed.",
+    "questionStem": "The argument requires assuming which one of the following?",
+    "answerChoices": {
+      "A": "Box jellyfish are the only kind of jellyfish with retinas that do not focus clearly.",
+      "B": "Box jellyfish have a need to detect prominent features of objects but not fine details.",
+      "C": "Box jellyfish would benefit from having retinas that allowed their eyes to focus more sharply.",
+      "D": "Box jellyfish developed from jellyfish whose retinas received clear images.",
+      "E": "Box jellyfish use vision as their main means of detecting prey."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "New Concept in Conclusion"
+    ]
+  },
+  {
+    "practiceTest": "PT141",
+    "sectionNumber": 2,
+    "questionNumber": 9,
+    "questionType": "Weaken",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Columnist: Research shows significant reductions in the number of people smoking, and especially in the number of first-time smokers in those countries that have imposed stringent restrictions on tobacco advertising. This provides substantial grounds for disputing tobacco companies’ claims that advertising has no significant causal impact on the tendency to smoke.",
+    "questionStem": "Which one of the following, if true, most undermines the columnist’s reasoning?",
+    "answerChoices": {
+      "A": "People who smoke are unlikely to quit merely because they are no longer exposed to tobacco advertising.",
+      "B": "Broadcast media tend to have stricter restrictions on tobacco advertising than do print media.",
+      "C": "Restrictions on tobacco advertising are imposed only in countries where a negative attitude toward tobacco use is already widespread and increasing.",
+      "D": "Most people who begin smoking during adolescence continue to smoke throughout their lives.",
+      "E": "People who are largely unaffected by tobacco advertising tend to be unaffected by other kinds of advertising as well."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Explain Curious Fact",
+      "Alternatives"
+    ]
+  },
+  {
+    "practiceTest": "PT141",
+    "sectionNumber": 2,
+    "questionNumber": 10,
+    "questionType": "Sufficient assumption",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Actor: Bertolt Brecht’s plays are not genuinely successful dramas. The roles in Brecht’s plays express such incongruous motives and beliefs that audiences, as well as the actors playing the roles, invariably find it difficult, at best, to discern any of the characters’ personalities. But, for a play to succeed as a drama, audiences must care what happens to at least some of its characters.",
+    "questionStem": "The conclusion of the actor’s argument can be properly drawn if which one of the following is assumed?",
+    "answerChoices": {
+      "A": "An audience that cannot readily discern a character’s personality will not take any interest in that character.",
+      "B": "A character’s personality is determined primarily by the motives and beliefs of that character.",
+      "C": "The extent to which a play succeeds as a drama is directly proportional to the extent to which the play’s audiences care about its characters.",
+      "D": "If the personalities of a play’s characters are not readily discernible by the actors playing the roles, then those personalities are not readily discernible by the play’s audience.",
+      "E": "All plays that, unlike Brecht’s plays, have characters with whom audiences empathize succeed as dramas."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "First Sentence Conclusion",
+      "Missing Link / Idea",
+      "Conditional Diagramming",
+      "Links Between Premises"
+    ]
+  },
+  {
+    "practiceTest": "PT141",
+    "sectionNumber": 2,
+    "questionNumber": 11,
+    "questionType": "Main conclusion or main point",
+    "reasoningType": [],
+    "questionDifficulty": 5,
+    "stimulus": "Municipal legislator: The mayor proposes that the city accept a lighting company’s gift of several high-tech streetlights. Surely there would be no problem in accepting these despite some people’s fear that the company wants to influence the city’s decision regarding park lighting contracts. The only ulterior motive I can find is the company’s desire to have its products seen by mayors who will visit the city for an upcoming convention. In any case, favoritism in city contracts is prevented by our competitive-bidding procedure.",
+    "questionStem": "Which one of the following most accurately expresses the main conclusion of the municipal legislator’s argument?",
+    "answerChoices": {
+      "A": "Some people’s fear that the company wants to influence the city’s decision regarding park lighting contracts is unfounded.",
+      "B": "The mayor’s proposal to accept the gift of streetlights should not be considered problematic.",
+      "C": "It is not appropriate that any company should have the unique opportunity to display its products to mayors attending the upcoming convention.",
+      "D": "The city’s competitive-bidding procedure prevents favoritism in the dispensing of city contracts.",
+      "E": "The lighting company’s desire to display its products to visiting mayors is the real motivation behind the suggested gift of streetlights."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Plans / Recommendations",
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT141",
+    "sectionNumber": 2,
+    "questionNumber": 12,
+    "questionType": "Sufficient assumption",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "The chairperson should not have released the Election Commission’s report to the public, for the chairperson did not consult any other members of the commission about releasing the report before having it released.",
+    "questionStem": "The argument’s conclusion can be properly inferred if which one of the following is assumed?",
+    "answerChoices": {
+      "A": "It would have been permissible for the chairperson to release the commission’s report to the public only if most other members of the commission had first given their consent.",
+      "B": "All of the members of the commission had signed the report prior to its release.",
+      "C": "The chairperson would not have been justified in releasing the commission’s report if any members of the commission had serious reservations about the report’s content.",
+      "D": "The chairperson would have been justified in releasing the report only if each of the commission’s members would have agreed to its being released had they been consulted.",
+      "E": "Some members of the commission would have preferred that the report not be released to the public."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Worst of the Worst"
+    ]
+  },
+  {
+    "practiceTest": "PT141",
+    "sectionNumber": 2,
+    "questionNumber": 13,
+    "questionType": "Flaw (Flaw)",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Reformer: A survey of police departments keeps track of the national crime rate, which is the annual number of crimes per 100,000 people. The survey shows no significant reduction in the crime rate in the past 20 years, but the percentage of the population in prison has increased substantially, and public expenditure on prisons has grown at an alarming rate. This demonstrates that putting more people in prison cannot help to reduce crime.",
+    "questionStem": "A flaw in the reformer’s argument is that it",
+    "answerChoices": {
+      "A": "infers without justification that because the national crime rate has increased, the number of crimes reported by each police department has increased",
+      "B": "ignores the possibility that the crime rate would have significantly increased if it had not been for the greater rate of imprisonment",
+      "C": "overlooks the possibility that the population has increased significantly over the past 20 years",
+      "D": "presumes, without providing warrant, that alternative measures for reducing crime would be more effective than imprisonment",
+      "E": "takes for granted that the number of prisoners must be proportional to the number of crimes committed"
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Anti-Causal"
+    ]
+  },
+  {
+    "practiceTest": "PT141",
+    "sectionNumber": 2,
+    "questionNumber": 14,
+    "questionType": "Method of reasoning or descriptive",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Inez: Space-exploration programs pay for themselves many times over, since such programs result in technological advances with everyday, practical applications. Space exploration is more than the search for knowledge for its own sake; investment in space exploration is such a productive investment in developing widely useful technology that we can’t afford not to invest in space exploration. Winona: It is absurd to try to justify funding for space exploration merely by pointing out that such programs will lead to technological advances. If technology with practical applications is all that is desired, then it should be funded directly.",
+    "questionStem": "Winona responds to Inez by",
+    "answerChoices": {
+      "A": "showing that there is no evidence that the outcome Inez anticipates will in fact be realized",
+      "B": "suggesting that Inez has overlooked evidence that directly argues against the programs Inez supports",
+      "C": "demonstrating that the pieces of evidence that Inez cites contradict each other",
+      "D": "providing evidence that the beneficial effects that Inez desires can be achieved only at great expense",
+      "E": "claiming that a goal that Inez mentions could be pursued without the programs Inez endorses"
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Rebuttals",
+      "Alternatives",
+      "2-Speaker",
+      "Plans / Recommendations"
+    ]
+  },
+  {
+    "practiceTest": "PT141",
+    "sectionNumber": 2,
+    "questionNumber": 15,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Marketing consultant: Last year I predicted that LRG’s latest advertising campaign would be unpopular with customers and ineffective in promoting new products. But LRG ignored my predictions and took the advice of a competing consultant. This season’s sales figures show that sales are down and LRG’s new products are selling especially poorly. Thus, the advertising campaign was ill conceived.",
+    "questionStem": "The marketing consultant’s reasoning is most vulnerable to criticism on the grounds that",
+    "answerChoices": {
+      "A": "it takes for granted that LRG’s sales would not have been lower still in the absence of the competitor’s advertising campaign",
+      "B": "it fails to consider that economic factors unrelated to the advertising campaign may have caused LRG’s low sales figures",
+      "C": "it takes for granted that in LRG’s industry, new products should outsell established products",
+      "D": "it takes for granted that the higher sales of established products are due to effective advertising",
+      "E": "it confuses a condition necessary for increasing product sales with a condition that will ensure increased sales"
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Explain Curious Fact",
+      "Alternatives"
+    ]
+  },
+  {
+    "practiceTest": "PT141",
+    "sectionNumber": 2,
+    "questionNumber": 16,
+    "questionType": "Method of reasoning or descriptive",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "The top prize in architecture, the Pritzker Prize, is awarded for individual achievement, like Nobel Prizes for science. But architects are judged by their buildings, and buildings are the result of teamwork. As achievements, buildings are not like scientific discoveries, but like movies, which compete for awards for best picture. Thus, it would be better if the top prize in architecture were awarded to the best building rather than the best architect.",
+    "questionStem": "The argument proceeds by",
+    "answerChoices": {
+      "A": "reaching a conclusion about the way something should be done in one field on the basis of comparisons with corresponding practices in other fields",
+      "B": "making a distinction between two different types of objects in order to conclude that one has more inherent value than the other",
+      "C": "pointing to similarities between two practices as a basis for concluding that criticisms of one practice can rightly be applied to the other",
+      "D": "arguing that because two different fields are disanalogous, the characteristics of one field are not relevant to justifying a conclusion about the other",
+      "E": "contending that an action is inappropriate by presenting an argument that a corresponding action in an analogous case is inappropriate"
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Analogies"
+    ]
+  },
+  {
+    "practiceTest": "PT141",
+    "sectionNumber": 2,
+    "questionNumber": 17,
+    "questionType": "Parallel method of reasoning (Parallel)",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "If Suarez is not the most qualified of the candidates for sheriff, then Anderson is. Thus, if the most qualified candidate is elected and Suarez is not elected, then Anderson will be.",
+    "questionStem": "The reasoning in which one of the following is most similar to the reasoning in the argument above?",
+    "answerChoices": {
+      "A": "If the excavation contract does not go to the lowest bidder, then it will go to Caldwell. So if Qiu gets the contract and Caldwell does not, then the contract will have been awarded to the lowest bidder.",
+      "B": "If the lowest bidder on the sanitation contract is not Dillon, then it is Ramsey. So if the contract goes to the lowest bidder and it does not go to Dillon, then it will go to Ramsey.",
+      "C": "If Kapshaw is not awarded the landscaping contract, then Johnson will be. So if the contract goes to the lowest bidder and it does not go to Johnson, then it will go to Kapshaw.",
+      "D": "If Holihan did not submit the lowest bid on the maintenance contract, then neither did Easton. So if the contract goes to the lowest bidder and it does not go to Easton, then it will not go to Holihan either.",
+      "E": "If Perez is not the lowest bidder on the catering contract, then Sullivan is. So if Sullivan does not get the contract and Perez does not get it either, then it will not be awarded to the lowest bidder."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
+  },
+  {
+    "practiceTest": "PT141",
+    "sectionNumber": 2,
+    "questionNumber": 18,
+    "questionType": "Flaw (Flaw)",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Critic: An art historian argues that because fifteenth-century European paintings were generally more planimetric (that is, two-dimensional with no attempt at suggesting depth) than were sixteenth-century paintings, fifteenth-century painters had a greater mastery of painting than did sixteenth-century painters. However, this conclusion is wrong. Fifteenth-century European painters did not have a greater mastery of painting, for the degree to which a painting is planimetric is irrelevant to the painter’s mastery.",
+    "questionStem": "The argument is flawed in that it",
+    "answerChoices": {
+      "A": "rejects a position merely because the proponent of the position has other objectionable views",
+      "B": "illicitly relies on two different meanings of the term “mastery”",
+      "C": "takes a necessary condition for an argument’s being inadequate to be a sufficient condition for an argument’s being inadequate",
+      "D": "bases its conclusion on two claims that contradict each other",
+      "E": "rejects a position on the grounds that an inadequate argument has been made for it"
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Famous Flaws",
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT141",
+    "sectionNumber": 2,
+    "questionNumber": 19,
+    "questionType": "Weaken",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "A carved flint object depicting a stylized human head with an open mouth was found in a Stone Age tomb in Ireland. Some archaeologists believe that the object was a weapon—the head of a warrior’s mace—but it is too small for that purpose. Because of its size and the fact that an open mouth symbolizes speaking, the object was probably the head of a speaking staff, a communal object passed around a small assembly to indicate who has the right to speak.",
+    "questionStem": "Which one of the following, if true, would most weaken the argument?",
+    "answerChoices": {
+      "A": "The tomb in which the object was found did not contain any other objects that might have been weapons.",
+      "B": "Communal objects were normally passed from one generation to the next in Stone Age Ireland.",
+      "C": "The object was carved with an artistry that was rare in Stone Age Ireland.",
+      "D": "The tomb in which the object was found was that of a politically prominent person.",
+      "E": "A speaking staff with a stone head is thought to symbolize a warrior’s mace."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Explain Curious Fact",
+      "Breadcrumbs",
+      "Plausibility",
+      "Worst of the Worst"
+    ]
+  },
+  {
+    "practiceTest": "PT141",
+    "sectionNumber": 2,
+    "questionNumber": 20,
+    "questionType": "Necessary assumption",
+    "reasoningType": [
+      "Causation",
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "The advent of chemical fertilizers led the farmers in a certain region to abandon the practice of periodically growing a “green-manure” crop, such as alfalfa, in a field to rejuvenate its soil. As a result, the soil structure in a typical farm field in the region is poor. So to significantly improve the soil structure, farmers will need to abandon the use of chemical fertilizers.",
+    "questionStem": "The argument relies on the assumption that",
+    "answerChoices": {
+      "A": "most, if not all, farmers in the region who abandon the use of chemical fertilizers will periodically grow alfalfa",
+      "B": "applying chemical fertilizers to green-manure crops, such as alfalfa, has no positive effect on their growth",
+      "C": "the most important factor influencing the soil quality of a farm field is soil structure",
+      "D": "chemical fertilizers themselves have a destructive effect on the soil structure of farm fields",
+      "E": "many, if not all, farmers in the region will not grow green-manure crops unless they abandon the use of chemical fertilizers"
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "Conditional Conclusion",
+      "Plans / Recommendations",
+      "Ruling Out Options"
+    ]
+  },
+  {
+    "practiceTest": "PT141",
+    "sectionNumber": 2,
+    "questionNumber": 21,
+    "questionType": "Must be true",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Most of the students who took Spanish 101 at the university last semester attended every class session. However, each student who received a grade lower than B minus missed at least one class session.",
+    "questionStem": "Which one of the following statements about the students who took Spanish 101 at the university last semester can be properly inferred from the information above?",
+    "answerChoices": {
+      "A": "At least some of the students who received a grade of A minus or higher attended every class session.",
+      "B": "Most, if not all, of the students who missed at least one class session received a grade lower than B minus.",
+      "C": "Most of the students received a grade higher than B minus.",
+      "D": "At least one student who received a grade of B minus or higher missed one or more class sessions.",
+      "E": "More than half of the students received a grade of B minus or higher."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Contrapositive Logic",
+      "Quantifiers",
+      "Important Pivot",
+      "Worst of the Worst"
+    ]
+  },
+  {
+    "practiceTest": "PT141",
+    "sectionNumber": 2,
+    "questionNumber": 22,
+    "questionType": "Strengthen",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Because the native salmon in Lake Clearwater had nearly disappeared, sockeye salmon were introduced in 1940. After being introduced, this genetically uniform group of sockeyes split into two distinct populations that do not interbreed, one inhabiting deep areas of the lake and the other inhabiting shallow areas. Since the two populations now differ genetically, some researchers hypothesize that each has adapted genetically to its distinct habitat.",
+    "questionStem": "Which of the following, if true, most strongly supports the researchers’ hypothesis?",
+    "answerChoices": {
+      "A": "Neither of the two populations of sockeyes has interbred with the native salmon.",
+      "B": "When the native salmon in Lake Clearwater were numerous, they comprised two distinct populations that did not interbreed.",
+      "C": "Most types of salmon that inhabit lakes spend part of the time in shallow water and part in deeper water.",
+      "D": "One of the populations of sockeyes is virtually identical genetically to the sockeyes originally introduced in 1940.",
+      "E": "The total number of sockeye salmon in the lake is not as large as the number of native salmon had been many years ago."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact",
+      "Alternatives",
+      "Worst of the Worst"
+    ]
+  },
+  {
+    "practiceTest": "PT141",
+    "sectionNumber": 2,
+    "questionNumber": 23,
+    "questionType": "Most strongly supported",
+    "reasoningType": [
+      "Causation",
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "A developing country can substantially increase its economic growth if its businesspeople are willing to invest in modern industries that have not yet been pursued there. But being the first to invest in an industry is very risky. Moreover, businesspeople have little incentive to take this risk since if the business succeeds, many other people will invest in the same industry, and the competition will cut into their profits.",
+    "questionStem": "The statements above, if true, most strongly support which one of the following claims?",
+    "answerChoices": {
+      "A": "Once a developing country has at least one business in a modern industry, further investment in that industry will not contribute to the country’s economic growth.",
+      "B": "In developing countries, there is greater competition within modern industries than within traditional industries.",
+      "C": "A developing country can increase its prospects for economic growth by providing added incentive for investment in modern industries that have not yet been pursued there.",
+      "D": "A developing country will not experience economic growth unless its businesspeople invest in modern industries.",
+      "E": "Investments in a modern industry in a developing country carry little risk as long as the country has at least one other business in that industry."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Important Pivot",
+      "Causal Difference-Maker"
+    ]
+  },
+  {
+    "practiceTest": "PT141",
+    "sectionNumber": 2,
+    "questionNumber": 24,
+    "questionType": "Resolve, reconcile, or explain",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "A survey of a city’s concertgoers found that almost all of them were dissatisfied with the local concert hall. A large majority of them expressed a strong preference for wider seats and better acoustics. And, even though the survey respondents were told that the existing concert hall cannot feasibly be modified to provide these features, most of them opposed the idea of tearing down the existing structure and replacing it with a concert hall with wider seats and better acoustics.",
+    "questionStem": "Which one of the following, if true, most helps to explain the apparent conflict in the concertgoers’ views, as revealed by the survey?",
+    "answerChoices": {
+      "A": "Before any of the survey questions were asked, the respondents were informed that the survey was sponsored by a group that advocates replacing the existing concert hall.",
+      "B": "Most of the people who live in the vicinity of the existing concert hall do not want it to be torn down.",
+      "C": "The city’s construction industry will receive more economic benefit from the construction of a new concert hall than from renovations to the existing concert hall.",
+      "D": "A well-publicized plan is being considered by the city government that would convert the existing concert hall into a public auditorium and build a new concert hall nearby.",
+      "E": "Many popular singers and musicians who currently do not hold concerts in the city would begin to hold concerts there if a new concert hall were built."
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT141",
+    "sectionNumber": 2,
+    "questionNumber": 25,
+    "questionType": "Fill in the blank (Fill-in-the-blank)",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Student: Before completing my research paper, I want to find the book from which I copied a passage to quote in the paper. Without the book, I will be unable to write an accurate citation, and without an accurate citation, I will be unable to include the quotation. Hence, since the completed paper will be much better with the quotation than without, _______.",
+    "questionStem": "Which one of the following most logically completes the student’s argument?",
+    "answerChoices": {
+      "A": "I will have to include an inaccurate citation",
+      "B": "I will be unable to complete my research paper",
+      "C": "if I do not find the book, my research paper will suffer",
+      "D": "if I do not find the book, I will include the quotation without an accurate citation",
+      "E": "if I do not find the book, I will be unable to complete my research paper"
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Conditional Diagramming",
+      "Logical Completion"
+    ]
+  }
+]

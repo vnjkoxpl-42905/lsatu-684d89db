@@ -1,0 +1,1 @@
+ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS has_ta_access BOOLEAN NOT NULL DEFAULT true;

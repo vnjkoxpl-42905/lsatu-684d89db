@@ -1,0 +1,143 @@
+/**
+ * Scoped CSS custom properties for the Fallacy Flaw bootcamp.
+ * These tokens are consumed by Tailwind utility classes within the
+ * bootcamp's component tree via the .ff-bootcamp wrapper.
+ */
+.ff-bootcamp {
+  /* Paper palette */
+  --paper: #F4EFE2;
+  --paper-bright: #FAF6EA;
+  --paper-deep: #ECE5D2;
+
+  /* Ink palette — override the MC bootcamp's RGB triplet vars so
+     tailwind's rgb(var(--ink) / <alpha-value>) resolves correctly */
+  --ink: 20 17 12;
+  --ink-soft: 45 40 32;
+  --ink-faint: 107 100 87;
+  --ink-mute: #6B6457;
+
+  /* Rule lines */
+  --rule: #C8BFA8;
+  --rule-soft: #DDD3BB;
+
+  /* Verdigris accent */
+  --verdigris: #1F5C4A;
+  --verdigris-deep: #133A2E;
+  --verdigris-tint: #DDE9E2;
+
+  /* Cake accent */
+  --cake: #E15F7B;
+  --cake-deep: #B73D5A;
+  --cake-tint: #F9E1E6;
+
+  /* Group palette */
+  --g1: #1F5C4A;
+  --g1-tint: #E2EBE5;
+  --g2: #8A6A14;
+  --g2-tint: #F2EAD0;
+  --g3: #5B3FA8;
+  --g3-tint: #EBE6F4;
+
+  /* Strike (wrong answer) */
+  --strike: #A02828;
+  --strike-tint: #F4DDDB;
+
+  /* Typography */
+  --font-display: Georgia, 'Times New Roman', serif;
+  --font-serif: Georgia, 'Times New Roman', serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  font-family: var(--font-serif);
+  color: rgb(var(--ink));
+  background-color: var(--paper);
+}
+
+/* Utility classes used by the bootcamp components */
+.ff-bootcamp .protocol {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.ff-bootcamp .display-title {
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+
+.ff-bootcamp .drop-cap::first-letter {
+  float: left;
+  font-family: var(--font-display);
+  font-size: 3.5rem;
+  line-height: 0.85;
+  padding-right: 0.15em;
+  padding-top: 0.05em;
+  color: rgb(var(--ink));
+  font-style: italic;
+}
+
+/* Pull-quote — full hairline with a curly leading mark instead of a colored
+   side-stripe. Side-stripes are banned; the italic display face plus the
+   leading glyph already signal "quote" without a chrome accent. Vertical
+   margins are dropped because the parent BriefLayout uses space-y-* for
+   rhythm; the pull-quote receives a slightly larger top margin via a child
+   selector below to mark the section break without doubling spacing. */
+.ff-bootcamp .pull-quote {
+  position: relative;
+  margin: 0;
+  padding: 1rem 1.25rem 1rem 2.25rem;
+  border: 1px solid var(--rule-soft);
+  background-color: var(--paper-bright);
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.15rem;
+  line-height: 1.5;
+  color: rgb(var(--ink));
+}
+
+.ff-bootcamp .pull-quote::before {
+  content: "\201C"; /* curly left-double-quote */
+  position: absolute;
+  top: 0.45rem;
+  left: 0.85rem;
+  font-family: var(--font-display);
+  font-size: 2.2rem;
+  line-height: 1;
+  color: var(--verdigris);
+  opacity: 0.55;
+}
+
+/* Asymmetric breath — pull-quote gets a touch more top space than the
+   parent paragraph rhythm provides, so it reads as a section break rather
+   than another paragraph. */
+.ff-bootcamp .pull-quote + * { margin-top: 1.25rem; }
+.ff-bootcamp * + .pull-quote { margin-top: 1.25rem; }
+
+.ff-bootcamp .rule-line {
+  border: none;
+  border-top: 1px solid var(--rule);
+  margin: 2rem 0;
+}
+
+/* Cake-on-blocks animation */
+.ff-bootcamp .cake-anim .block-left {
+  animation: slideLeft 0.6s ease-out forwards;
+}
+.ff-bootcamp .cake-anim .block-right {
+  animation: slideRight 0.6s ease-out forwards;
+}
+.ff-bootcamp .cake-anim .cake-piece {
+  animation: cakeFall 0.8s ease-in forwards 0.3s;
+}
+
+@keyframes slideLeft {
+  to { transform: translateX(-40px); }
+}
+@keyframes slideRight {
+  to { transform: translateX(40px); }
+}
+@keyframes cakeFall {
+  to { transform: translateY(70px); opacity: 0.6; }
+}

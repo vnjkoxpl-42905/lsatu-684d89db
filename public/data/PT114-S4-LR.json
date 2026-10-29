@@ -1,0 +1,581 @@
+[
+  {
+    "practiceTest": "PT114",
+    "sectionNumber": 4,
+    "questionNumber": 1,
+    "questionType": "Inference",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "The following passage is used for Section 4, questions 1 through 2. Ms. Smith: I am upset that my son’s entire class lost two days of recess because some of the children were throwing raisins in the cafeteria. He was not throwing raisins, and it was clear to everyone just who the culprits were. Principal: I’m sorry you’re upset, Ms. Smith, but your son’s situation is like being caught in a traffic jam caused by an accident. People who aren’t involved in the accident nevertheless have to suffer by sitting there in the middle of it.",
+    "questionStem": "1. If the principal is speaking sincerely, then it can be inferred from what the principal says that the principal believes that",
+    "answerChoices": {
+      "A": "many children were throwing raisins in the cafeteria",
+      "B": "Ms. Smith’s son might not have thrown raisins in the cafeteria",
+      "C": "after an accident the resulting traffic jams are generally caused by police activity",
+      "D": "Ms. Smith’s son knows who it was that threw raisins in the cafeteria",
+      "E": "losing two days of recess will deter future disruptions"
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT114",
+    "sectionNumber": 4,
+    "questionNumber": 2,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "The following passage is used for Section 4, questions 1 through 2. Ms. Smith: I am upset that my son’s entire class lost two days of recess because some of the children were throwing raisins in the cafeteria. He was not throwing raisins, and it was clear to everyone just who the culprits were. Principal: I’m sorry you’re upset, Ms. Smith, but your son’s situation is like being caught in a traffic jam caused by an accident. People who aren’t involved in the accident nevertheless have to suffer by sitting there in the middle of it.",
+    "questionStem": "2. The principal’s response to Ms. Smith’s complaint is most vulnerable to criticism on which one of the following grounds?",
+    "answerChoices": {
+      "A": "It makes a generalization about all the children in the class which is not justified by the facts.",
+      "B": "It suggests that throwing raisins in the cafeteria produces as much inconvenience as does being caught in a traffic jam.",
+      "C": "It does not acknowledge the fact that a traffic jam following an accident is unavoidable while the mass punishment was avoidable.",
+      "D": "It assumes that Ms. Smith’s son is guilty when there is evidence to the contrary which the principal has disregarded.",
+      "E": "It attempts to confuse the point at issue by introducing irrelevant facts about the incident."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "2-Speaker",
+      "Analogies",
+      "Argue the Anti-Conclusion"
+    ]
+  },
+  {
+    "practiceTest": "PT114",
+    "sectionNumber": 4,
+    "questionNumber": 3,
+    "questionType": "Main Conclusion",
+    "reasoningType": [],
+    "questionDifficulty": 2,
+    "stimulus": "Journalist: Obviously, though some animals are purely carnivorous, none would survive without plants. But the dependence is mutual. Many plant species would never have come to be had there been no animals to pollinate, fertilize, and broadcast their seeds. Also, plants’ photosynthetic activity would deplete the carbon dioxide in Earth’s atmosphere were it not constantly being replenished by the exhalation of animals, engine fumes, and smoke from fires, many set by human beings.",
+    "questionStem": "Which one of the following most accurately expresses the main conclusion of the journalist’s argument?",
+    "answerChoices": {
+      "A": "The photosynthetic activity of plants is necessary for animal life, but animal life is also necessary for the occurrence of photosynthesis in plants.",
+      "B": "Some purely carnivorous animals would not survive without plants.",
+      "C": "The chemical composition of Earth and its atmosphere depends, at least to some extent, on the existence and activities of the animals that populate Earth.",
+      "D": "Human activity is part of what prevents plants from depleting the oxygen in Earth’s atmosphere on which plants and animals alike depend.",
+      "E": "Just as animals are dependent on plants for their survival, plants are dependent on animals for theirs."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Important Pivot",
+      "Science"
+    ]
+  },
+  {
+    "practiceTest": "PT114",
+    "sectionNumber": 4,
+    "questionNumber": 4,
+    "questionType": "Principle-Strengthen",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "The government-owned gas company has begun selling stoves and other gas appliances to create a larger market for its gas. Merchants who sell such products complain that the competition will hurt their businesses. That may well be; however, the government-owned gas company is within its rights. After all, the owner of a private gas company might well decide to sell such appliances and surely there would be nothing wrong with that.",
+    "questionStem": "Which one of the following principles, if valid, most helps to justify the reasoning above?",
+    "answerChoices": {
+      "A": "Government-owned companies have the right to do whatever private businesses have the right to do.",
+      "B": "A government should always take seriously the complaints of merchants.",
+      "C": "Private businesses have no right to compete with government monopolies.",
+      "D": "There is nothing wrong with a government-owned company selling products so long as owners of private companies do not complain.",
+      "E": "There is nothing wrong with private companies competing against each other."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Principles in Answers",
+      "Analogies"
+    ]
+  },
+  {
+    "practiceTest": "PT114",
+    "sectionNumber": 4,
+    "questionNumber": 5,
+    "questionType": "Strengthen EXCEPT",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Toxicologist: A survey of oil-refinery workers who work with MBTE, an ingredient currently used in some smog-reducing gasolines, found an alarming incidence of complaints about headaches, fatigue, and shortness of breath. Since gasoline containing MBTE will soon be widely used, we can expect an increased incidence of headaches, fatigue, and shortness of breath.",
+    "questionStem": "Each of the following, if true, strengthens the toxicologist’s argument except:",
+    "answerChoices": {
+      "A": "Most oil-refinery workers who do not work with MBTE do not have serious health problems involving headaches, fatigue, and shortness of breath.",
+      "B": "Headaches, fatigue, and shortness of breath are among the symptoms of several medical conditions that are potentially serious threats to public health.",
+      "C": "Since the time when gasoline containing MBTE was first introduced in a few metropolitan areas, those areas reported an increase in the number of complaints about headaches, fatigue, and shortness of breath.",
+      "D": "Regions in which only gasoline containing MBTE is used have a much greater incidence of headaches, fatigue, and shortness of breath than do similar regions in which only MBTE-free gasoline is used.",
+      "E": "The oil-refinery workers surveyed were carefully selected to be representative of the broader population in their medical histories prior to exposure to MBTE, as well as in other relevant respects."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Explain Curious Fact",
+      "Sampling",
+      "EXCEPT",
+      "Plausibility",
+      "Predictions"
+    ]
+  },
+  {
+    "practiceTest": "PT114",
+    "sectionNumber": 4,
+    "questionNumber": 6,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "In any field, experience is required for a proficient person to become an expert. Through experience, a proficient person gradually develops a repertory of model situations that allows an immediate, intuitive response to each new situation. This is the hallmark of expertise, and for this reason computerized “expert systems” cannot be as good as human experts. Although computers have the ability to store millions of bits of information, the knowledge of human experts, who benefit from the experience of thousands of situations, is not stored within their brains in the form of rules and facts.",
+    "questionStem": "The argument requires the assumption of which one of the following?",
+    "answerChoices": {
+      "A": "Computers can show no more originality in responding to a situation than that built into them by their designers.",
+      "B": "The knowledge of human experts cannot be adequately rendered into the type of information that a computer can store.",
+      "C": "Human experts rely on information that can be expressed by rules and facts when they respond to new situations.",
+      "D": "Future advances in computer technology will not render computers capable of sorting through greater amounts of information.",
+      "E": "Human experts rely heavily on intuition while they are developing a repertory of model situations."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Assumes Difference",
+      "Causal Difference-Maker",
+      "Defender"
+    ]
+  },
+  {
+    "practiceTest": "PT114",
+    "sectionNumber": 4,
+    "questionNumber": 7,
+    "questionType": "Principle-Conform",
+    "reasoningType": [],
+    "questionDifficulty": 2,
+    "stimulus": "When drivers are deprived of sleep there are definite behavioral changes, such as slower responses to stimuli and a reduced ability to concentrate, but people’s self-awareness of these changes is poor. Most drivers think they can tell when they are about to fall asleep, but they cannot.",
+    "questionStem": "Each of the following illustrates the principle that the passage illustrates except:",
+    "answerChoices": {
+      "A": "People who have been drinking alcohol are not good judges of whether they are too drunk to drive.",
+      "B": "Elementary school students who dislike arithmetic are not good judges of whether multiplication tables should be included in the school’s curriculum.",
+      "C": "Industrial workers who have just been exposed to noxious fumes are not good judges of whether they should keep working.",
+      "D": "People who have just donated blood and have become faint are not good judges of whether they are ready to walk out of the facility.",
+      "E": "People who are being treated for schizophrenia are not good judges of whether they should continue their medical treatments."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "EXCEPT",
+      "Implicit Principles"
+    ]
+  },
+  {
+    "practiceTest": "PT114",
+    "sectionNumber": 4,
+    "questionNumber": 8,
+    "questionType": "Flaw",
+    "reasoningType": [],
+    "questionDifficulty": 1,
+    "stimulus": "Politician: My opponent says our zoning laws too strongly promote suburban single-family dwellings and should be changed to encourage other forms of housing like apartment buildings. Yet he lives in a house in the country. His lifestyle contradicts his own argument, which should therefore not be taken seriously.",
+    "questionStem": "The politician’s reasoning is most vulnerable to criticism on the grounds that",
+    "answerChoices": {
+      "A": "its characterization of the opponent’s lifestyle reveals the politician’s own prejudice against constructing apartment buildings",
+      "B": "it neglects the fact that apartment buildings can be built in the suburbs just as easily as in the center of the city",
+      "C": "it fails to mention the politician’s own living situation",
+      "D": "its discussion of the opponent’s lifestyle is irrelevant to the merits of the opponent’s argument",
+      "E": "it ignores the possibility that the opponent may have previously lived in an apartment building"
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Famous Flaws",
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT114",
+    "sectionNumber": 4,
+    "questionNumber": 9,
+    "questionType": "Paradox EXCEPT",
+    "reasoningType": [],
+    "questionDifficulty": 3,
+    "stimulus": "Consumers are deeply concerned about the quantity of plastic packaging on the market and have spurred manufacturers to find ways to recycle plastic materials. Despite their efforts, however, only 6.5 percent of plastic is now being recycled, as compared to 33 percent of container glass.",
+    "questionStem": "Each of the following, if true, helps to explain the relatively low rate of plastic recycling except:",
+    "answerChoices": {
+      "A": "Many factories are set up to accept and make economical use of recycled glass, whereas there are few factories that make products out of recycled plastic.",
+      "B": "Many plastic products are incompatible and cannot be recycled together, whereas most containers made of glass are compatible.",
+      "C": "The manufacture of new plastic depletes oil reserves, whereas the manufacture of new glass uses renewable resources.",
+      "D": "Unlike glass, which can be heated to thousands of degrees during the recycling process to burn off contaminants, recycled plastic cannot be heated enough to sterilize it.",
+      "E": "Plastic polymers tend to break down during the recycling process and weaken the resulting product, whereas glass does not break down."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "EXCEPT"
+    ]
+  },
+  {
+    "practiceTest": "PT114",
+    "sectionNumber": 4,
+    "questionNumber": 10,
+    "questionType": "Fill in the Blank",
+    "reasoningType": [],
+    "questionDifficulty": 2,
+    "stimulus": "Technological progress makes economic growth and widespread prosperity possible; it also makes a worker’s particular skills less crucial to production. Yet workers’ satisfaction in their work depends on their believing that their work is difficult and requires uncommon skills. Clearly, then, technological progress _______.",
+    "questionStem": "Which one of the following most logically completes the argument?",
+    "answerChoices": {
+      "A": "decreases the quality of most products",
+      "B": "provides benefits only to those whose work is not directly affected by it",
+      "C": "is generally opposed by the workers whose work will be directly affected by it",
+      "D": "causes workers to feel less satisfaction in their work",
+      "E": "eliminates many workers’ jobs"
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Logical Completion"
+    ]
+  },
+  {
+    "practiceTest": "PT114",
+    "sectionNumber": 4,
+    "questionNumber": 11,
+    "questionType": "Main Conclusion",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Environmentalist: The complex ecosystem of the North American prairie has largely been destroyed to produce cattle feed. But the prairie ecosystem once supported 30 to 70 million bison, whereas North American agriculture now supports about 50 million cattle. Since bison yield as much meat as cattle, and the natural prairie required neither pesticides, machinery, nor government subsidies, returning as much land as possible to an uncultivated state could restore biodiversity without a major decrease in meat production.",
+    "questionStem": "Which one of the following most accurately expresses the environmentalist’s main conclusion?",
+    "answerChoices": {
+      "A": "If earlier North American agricultural techniques were reintroduced, meat production would decrease only slightly.",
+      "B": "Protecting the habitat of wild animals so that we can utilize these animals as a food source is more cost effective than raising domesticated animals.",
+      "C": "The biodiversity of the North American prairie ecosystem should not be restored if doing so will have intolerable economic consequences.",
+      "D": "Preservation of the remaining North American bison would be a sensible policy.",
+      "E": "The devastation of the North American prairie ecosystem could be largely reversed without significantly decreasing meat production."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Plans / Recommendations",
+      "Timeframes"
+    ]
+  },
+  {
+    "practiceTest": "PT114",
+    "sectionNumber": 4,
+    "questionNumber": 12,
+    "questionType": "Sufficient Assumption",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Morris: Computers, despite some people's expectations, will have an inappreciable impact on education. To be sure, computers are useful for drills promoting memorization, though only a small part of education can be accomplished through drills. But machines cannot help students with any of the higher intellectual functions we call understanding; for that, human teachers are indispensable.",
+    "questionStem": "The conclusion of Morris's argument follows logically if which one of the following is assumed?",
+    "answerChoices": {
+      "A": "Whatever memorization is necessary can be accomplished as easily without computers as with them.",
+      "B": "Requiring memorization in appreciable amounts tends to thwart development of higher intellectual functions in students.",
+      "C": "Successful memorization of relevant facts is a necessary precondition for the development of higher intellectual functions in students.",
+      "D": "Many students become familiar with computers before encountering them at school.",
+      "E": "Having an appreciable impact on education involves affecting the higher intellectual functions of students."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "First Sentence Conclusion",
+      "New Concept in Conclusion",
+      "Missing Link / Idea"
+    ]
+  },
+  {
+    "practiceTest": "PT114",
+    "sectionNumber": 4,
+    "questionNumber": 13,
+    "questionType": "Weaken",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "A recent study reveals that television advertising does not significantly affect children’s preferences for breakfast cereals. The study compared two groups of children. One group had watched no television, and the other group had watched average amounts of television and its advertising. Both groups strongly preferred the sugary cereals heavily advertised on television.",
+    "questionStem": "Which one of the following statements, if true, most weakens the argument?",
+    "answerChoices": {
+      "A": "The preferences of children who do not watch television advertising are influenced by the preferences of children who watch the advertising.",
+      "B": "The preference for sweets is not a universal trait in humans, and can be influenced by environmental factors such as television advertising.",
+      "C": "Most of the children in the group that had watched television were already familiar with the advertisements for these cereals.",
+      "D": "Both groups rejected cereals low in sugar even when these cereals were heavily advertised on television.",
+      "E": "Cereal preferences of adults who watch television are known to be significantly different from the cereal preferences of adults who do not watch television."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Anti-Causal"
+    ]
+  },
+  {
+    "practiceTest": "PT114",
+    "sectionNumber": 4,
+    "questionNumber": 14,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Reducing speed limits neither saves lives nor protects the environment. This is because the more slowly a car is driven, the more time it spends on the road spewing exhaust into the air and running the risk of colliding with other vehicles.",
+    "questionStem": "The argument’s reasoning is flawed because the argument",
+    "answerChoices": {
+      "A": "neglects the fact that some motorists completely ignore speed limits",
+      "B": "ignores the possibility of benefits from lowering speed limits other than environmental and safety benefits",
+      "C": "fails to consider that if speed limits are reduced, increased driving times will increase the number of cars on the road at any given time",
+      "D": "presumes, without providing justification, that total emissions for a given automobile trip are determined primarily by the amount of time the trip takes",
+      "E": "presumes, without providing justification, that drivers run a significant risk of collision only if they spend a lot of time on the road"
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Anti-Causal",
+      "Net Effect"
+    ]
+  },
+  {
+    "practiceTest": "PT114",
+    "sectionNumber": 4,
+    "questionNumber": 15,
+    "questionType": "Weaken",
+    "reasoningType": [],
+    "questionDifficulty": 4,
+    "stimulus": "Loggerhead turtles live and breed in distinct groups, of which some are in the Pacific Ocean and some are in the Atlantic. New evidence suggests that juvenile Pacific loggerheads that feed near the Baja peninsula hatch in Japanese waters 10,000 kilometers away. Ninety-five percent of the DNA samples taken from the Baja turtles match those taken from turtles at the Japanese nesting sites.",
+    "questionStem": "Which one of the following, if true, most seriously weakens the reasoning above?",
+    "answerChoices": {
+      "A": "Nesting sites of loggerhead turtles have been found off the Pacific coast of North America several thousand kilometers north of the Baja peninsula.",
+      "B": "The distance between nesting sites and feeding sites of Atlantic loggerhead turtles is less than 5,000 kilometers.",
+      "C": "Loggerhead hatchlings in Japanese waters have been declining in number for the last decade while the number of nesting sites near the Baja peninsula has remained constant.",
+      "D": "Ninety-five percent of the DNA samples taken from the Baja turtles match those taken from Atlantic loggerhead turtles.",
+      "E": "Commercial aquariums have been successfully breeding Atlantic loggerheads with Pacific loggerheads for the last five years."
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT114",
+    "sectionNumber": 4,
+    "questionNumber": 16,
+    "questionType": "Sufficient Assumption",
+    "reasoningType": [],
+    "questionDifficulty": 4,
+    "stimulus": "People who do not believe that others distrust them are confident in their own abilities, so people who tend to trust others think of a difficult task as a challenge rather than a threat, since this is precisely how people who are confident in their own abilities regard such tasks.",
+    "questionStem": "The conclusion above follows logically if which one of the following is assumed?",
+    "answerChoices": {
+      "A": "People who believe that others distrust them tend to trust others.",
+      "B": "Confidence in one’s own abilities gives one confidence in the trustworthiness of others.",
+      "C": "People who tend to trust others do not believe that others distrust them.",
+      "D": "People who are not threatened by difficult tasks tend to find such tasks challenging.",
+      "E": "People tend to distrust those who they believe lack self-confidence."
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT114",
+    "sectionNumber": 4,
+    "questionNumber": 17,
+    "questionType": "Parallel Flaw",
+    "reasoningType": [],
+    "questionDifficulty": 3,
+    "stimulus": "Mullen has proposed to raise taxes on the rich, who made so much money during the past decade. Yet Mullen’s tax records show heavy investment in business during that time and large profits; so Mullen’s proposal does not deserve our consideration.",
+    "questionStem": "The flawed reasoning in the argument above is most similar to the flawed reasoning in which one of the following?",
+    "answerChoices": {
+      "A": "Do not vote for Smith’s proposed legislation to subsidize child care for working parents; Smith is a working parent.",
+      "B": "Do not put any credence in Dr. Han’s recent proposal to ban smoking in all public places; Dr. Han is a heavy smoker.",
+      "C": "The previous witness’s testimony ought to be ignored; he has been convicted of both forgery and mail fraud.",
+      "D": "Board member Timm’s proposal to raise the salaries of the company’s middle managers does not deserve to be considered; Timm’s daughter is a middle manager at the company’s headquarters.",
+      "E": "Dr. Wasow’s analysis of the design of this bridge should not be taken seriously; after all, Dr. Wasow has previously only designed factory buildings."
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT114",
+    "sectionNumber": 4,
+    "questionNumber": 18,
+    "questionType": "Argument Part",
+    "reasoningType": [],
+    "questionDifficulty": 3,
+    "stimulus": "The following passage is used for Section 4, questions 18 through 19. Anders: The physical structure of the brain plays an important role in thinking. So researchers developing “thinking machines”—computers that can make decisions based on both common sense and factual knowledge—should closely model those machines on the structure of the brain. Yang: Important does not mean essential. After all, no flying machine closely modeled on birds has worked; workable aircraft are structurally very different from birds. So thinking machines closely modeled on the brain are also likely to fail. In developing a workable thinking machine, researchers would therefore increase their chances of success if they focus on the brain’s function and simply ignore its physical structure. 18.",
+    "questionStem": "The statement “thinking machines closely modeled on the brain are also likely to fail” serves which one of the following roles in Yang’s argument?",
+    "answerChoices": {
+      "A": "the main conclusion of the argument",
+      "B": "a subsidiary conclusion used in support of the main conclusion",
+      "C": "a principle of research invoked in support of the conclusion",
+      "D": "a particular example illustrating a general claim",
+      "E": "background information providing a context for the argument"
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Abstract Answers",
+      "2-Speaker"
+    ]
+  },
+  {
+    "practiceTest": "PT114",
+    "sectionNumber": 4,
+    "questionNumber": 19,
+    "questionType": "Evaluate",
+    "reasoningType": [],
+    "questionDifficulty": 2,
+    "stimulus": "The following passage is used for Section 4, questions 18 through 19. Anders: The physical structure of the brain plays an important role in thinking. So researchers developing “thinking machines”—computers that can make decisions based on both common sense and factual knowledge—should closely model those machines on the structure of the brain. Yang: Important does not mean essential. After all, no flying machine closely modeled on birds has worked; workable aircraft are structurally very different from birds. So thinking machines closely modeled on the brain are also likely to fail. In developing a workable thinking machine, researchers would therefore increase their chances of success if they focus on the brain’s function and simply ignore its physical structure.",
+    "questionStem": "19.\t In evaluating Yang’s argument it would be most helpful to know whether",
+    "answerChoices": {
+      "A": "studies of the physical structure of birds provided information crucial to the development of workable aircraft",
+      "B": "researchers currently working on thinking machines take all thinking to involve both common sense and factual knowledge",
+      "C": "as much time has been spent trying to develop a workable thinking machine as had been spent in developing the first workable aircraft",
+      "D": "researchers who specialize in the structure of the brain are among those who are trying to develop thinking machines",
+      "E": "some flying machines that were not closely modeled on birds failed to work"
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT114",
+    "sectionNumber": 4,
+    "questionNumber": 20,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Shy adolescents often devote themselves totally to a hobby to help distract them from the loneliness brought on by their shyness. Sometimes they are able to become friends with others who share their hobby. But if they lose interest in that hobby, their loneliness may be exacerbated. So developing an all-consuming hobby is not a successful strategy for overcoming adolescent loneliness.",
+    "questionStem": "Which one of the following assumptions does the argument depend on?",
+    "answerChoices": {
+      "A": "Eventually, shy adolescents are going to want a wider circle of friends than is provided by their hobby.",
+      "B": "No successful strategy for overcoming adolescent loneliness ever intensifies that loneliness.",
+      "C": "Shy adolescents will lose interest in their hobbies if they do not make friends through their engagement in those hobbies.",
+      "D": "Some other strategy for overcoming adolescent loneliness is generally more successful than is developing an all-consuming hobby.",
+      "E": "Shy adolescents devote themselves to hobbies mainly because they want to make friends."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "New Concept in Conclusion",
+      "Plans / Recommendations",
+      "Weighing Tradeoffs"
+    ]
+  },
+  {
+    "practiceTest": "PT114",
+    "sectionNumber": 4,
+    "questionNumber": 21,
+    "questionType": "Flaw",
+    "reasoningType": [],
+    "questionDifficulty": 4,
+    "stimulus": "Political scientist: As a political system, democracy does not promote political freedom. There are historical examples of democracies that ultimately resulted in some of the most oppressive societies. Likewise, there have been enlightened despotisms and oligarchies that have provided a remarkable level of political freedom to their subjects.",
+    "questionStem": "The reasoning in the political scientist’s argument is flawed because it",
+    "answerChoices": {
+      "A": "confuses the conditions necessary for political freedom with the conditions sufficient to bring it about",
+      "B": "fails to consider that a substantial increase in the level of political freedom might cause a society to become more democratic",
+      "C": "appeals to historical examples that are irrelevant to the causal claim being made",
+      "D": "overlooks the possibility that democracy promotes political freedom without being necessary or sufficient by itself to produce it",
+      "E": "bases its historical case on a personal point of view"
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Anti-Causal"
+    ]
+  },
+  {
+    "practiceTest": "PT114",
+    "sectionNumber": 4,
+    "questionNumber": 22,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "In humans, ingested protein is broken down into amino acids, all of which must compete to enter the brain. Subsequent ingestion of sugars leads to the production of insulin, a hormone that breaks down the sugars and also rids the bloodstream of residual amino acids, except for tryptophan. Tryptophan then slips into the brain uncontested and is transformed into the chemical serotonin, increasing the brain’s serotonin level. Thus, sugars can play a major role in mood elevation, helping one to feel relaxed and anxiety-free.",
+    "questionStem": "Which one of the following is an assumption on which the argument depends?",
+    "answerChoices": {
+      "A": "Elevation of mood and freedom from anxiety require increasing the level of serotonin in the brain.",
+      "B": "Failure to consume foods rich in sugars results in anxiety and a lowering of mood.",
+      "C": "Serotonin can be produced naturally only if tryptophan is present in the bloodstream.",
+      "D": "Increasing the level of serotonin in the brain promotes relaxation and freedom from anxiety.",
+      "E": "The consumption of protein-rich foods results in anxiety and a lowering of mood."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "Causal Chains",
+      "New Concept in Conclusion",
+      "Science"
+    ]
+  },
+  {
+    "practiceTest": "PT114",
+    "sectionNumber": 4,
+    "questionNumber": 23,
+    "questionType": "Principle-Conform",
+    "reasoningType": [],
+    "questionDifficulty": 4,
+    "stimulus": "If an act of civil disobedience—willfully breaking a specific law in order to bring about legal reform—is done out of self-interest alone and not out of a concern for others, it cannot be justified. But one is justified in performing an act of civil disobedience if one’s conscience requires one to do so.",
+    "questionStem": "Which one of the following judgments most closely conforms to the principles stated above?",
+    "answerChoices": {
+      "A": "Keisha’s protest against what she perceived to be a brutal and repressive dictatorship in another country was an act of justified civil disobedience, because in organizing an illegal but peaceful demonstration calling for a return to democratic leadership in that country, she acted purely out of concern for the people of that country.",
+      "B": "Janice’s protest against a law that forbade labor strikes was motivated solely by a desire to help local mine workers obtain fair wages. But her conscience did not require her to protest this law, so Janice did not perform an act of justified civil disobedience.",
+      "C": "In organizing an illegal protest against the practice in her country of having prison inmates work eighteen hours per day, Georgette performed an act of justified civil disobedience: she acted out of concern for her fellow inmates rather than out of concern for herself.",
+      "D": "Maria’s deliberate violation of a law requiring prepublication government approval of all printed materials was an act of justified civil disobedience: though her interest as an owner of a publishing company would be served by repeal of the law, she violated the law because her conscience required doing so on behalf of all publishers.",
+      "E": "In organizing a parade of motorcyclists riding without helmets through the capital city, Louise’s act was not one of justified civil disobedience: she was willfully challenging a specific law requiring motorcyclists to wear helmets, but her conscience did not require her to organize the parade."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Principles in Stimulus"
+    ]
+  },
+  {
+    "practiceTest": "PT114",
+    "sectionNumber": 4,
+    "questionNumber": 24,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [],
+    "questionDifficulty": 2,
+    "stimulus": "Most land-dwelling vertebrates have rotating limbs terminating in digits, a characteristic useful for land movement. Biologists who assume that this characteristic evolved only after animals abandoned aquatic environments must consider the Acanthostega, a newly discovered ancestor of all land vertebrates. It possessed rotating limbs terminating in digits, but its skeleton was too feeble for land movement. It also breathed using only internal gills, indicating that it and its predecessors were exclusively aquatic.",
+    "questionStem": "The statements above, if true, most strongly support which one of the following?",
+    "answerChoices": {
+      "A": "Many anatomical characteristics common to most land animals represent a disadvantage for survival underwater.",
+      "B": "None of the anatomical characteristics common to most aquatic animals represent an advantage for survival on land.",
+      "C": "Acanthostega originated as a land-dwelling species, but evolved gills only after moving to an underwater environment.",
+      "D": "All anatomical characteristics not useful for land movement but common to most land animals represent an advantage for survival underwater.",
+      "E": "Certain anatomical characteristics common to some aquatic animals represent an advantage for survival on land."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Rebuttals",
+      "Science"
+    ]
+  },
+  {
+    "practiceTest": "PT114",
+    "sectionNumber": 4,
+    "questionNumber": 25,
+    "questionType": "Must Be False EXCEPT",
+    "reasoningType": [],
+    "questionDifficulty": 4,
+    "stimulus": "One reason why European music has had such a strong influence throughout the world, and why it is a sophisticated achievement, is that over time the original function of the music—whether ritual, dance, or worship—gradually became an aspect of its style, not its defining force. Dance music could stand independent of dance, for example, and sacred music independent of religious worship, because each composition has so much internal coherence that the music ultimately depends on nothing but itself.",
+    "questionStem": "The claims made above are compatible with each of the following except:",
+    "answerChoices": {
+      "A": "African music has had a more powerful impact on the world than European music has had.",
+      "B": "European military and economic expansionism partially explains the global influence of European music.",
+      "C": "The original functions of many types of Chinese music are no longer their defining forces.",
+      "D": "Music that is unintelligible when it is presented independently of its original function tends to be the most sophisticated music.",
+      "E": "Some works of art lose their appeal when they are presented to serve a function other than their original one."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "EXCEPT"
+    ]
+  },
+  {
+    "practiceTest": "PT114",
+    "sectionNumber": 4,
+    "questionNumber": 26,
+    "questionType": "Point at Issue (Disagree)",
+    "reasoningType": [],
+    "questionDifficulty": 4,
+    "stimulus": "Tony: A short story is little more than a novelist’s sketch pad. Only novels have narrative structures that allow writers to depict human lives accurately by portraying characters whose personalities gradually develop through life experience. Raoul: Life consists not of a linear process of personality development, but rather of a series of completely disjointed vignettes, from many of which the discerning observer may catch glimpses of character. Thus, the short story depicts human lives more faithfully than does the novel.",
+    "questionStem": "The dialogue most supports the claim that Tony and Raoul disagree about whether",
+    "answerChoices": {
+      "A": "human lives are best understood as series of completely disjointed vignettes",
+      "B": "novels and short stories employ the same strategies to depict human lives",
+      "C": "novels usually depict gradual changes in characters’ personalities",
+      "D": "only short stories are used as novelists’ sketch pads",
+      "E": "short stories provide glimpses of facets of character that are usually kept hidden"
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
+  }
+]
