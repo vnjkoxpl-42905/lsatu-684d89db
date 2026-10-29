@@ -25,12 +25,36 @@ import {
   reactivateHomeBooking,
   type HomeBookingPass,
 } from "@/lib/teacherHomeActions";
+
+export function eligibleAccounts(students: ManagedUser[]) {
+  return [...new Map(students.filter(s => s.role !== "admin" && !s.archived_at).map(s => [s.class_id, s])).values()].sort((a,b) => (a.display_name || a.email).toLocaleLowerCase().localeCompare((b.display_name || b.email).toLocaleLowerCase()) || a.email.localeCompare(b.email) || a.class_id.localeCompare(b.class_id));
+}
+export function AccountPicker({ students, value, onChange, disabled, state = "ready", onRetry }: {
+  students: ManagedUser[]; value: string; onChange: (value: string) => void;
+  disabled?: boolean; state?: string; onRetry?: () => void;
+}) {
+  const accounts = eligibleAccounts(students);
+  const matches = accounts;
+  return <div className="home-desk-account-picker">
+    <label className="home-desk-label">Student<select value={value} disabled={disabled || state !== "ready"} onChange={e => onChange(e.target.value)}>
+      <option value="">Choose a student</option>
+      {matches.map(s => <option key={s.class_id} value={s.class_id}>{s.display_name || s.email} · {s.email}</option>)}
+    </select></label>
+    {state === "loading" ? <p role="status">Loading accounts…</p> : state !== "ready" ? <p role="alert">{state === "setup" ? "Account controls are not set up yet." : "Accounts could not be loaded."} {onRetry ? <button onClick={onRetry}>Retry accounts</button> : "Reload Home to check again."}</p> : !matches.length ? <p>No matching eligible accounts.</p> : null}
+  </div>;
+}
 export function AccessSheet({
   person,
   onClose,
   onSaved,
   save = saveHomeAccess,
+  open, students = [], onSelect, rosterState, onRetryRoster,
 }: {
+  open?: boolean;
+  students?: ManagedUser[];
+  onSelect?: (person: ManagedUser | null) => void;
+  rosterState?: string;
+  onRetryRoster?: () => void;
   save?: typeof saveHomeAccess;
   person: ManagedUser | null;
   onClose: () => void;
@@ -41,8 +65,10 @@ export function AccessSheet({
   const [busy, setBusy] = React.useState(false);
   const [error, setError] = React.useState("");
   const [saved, setSaved] = React.useState(false);
+  const [baseline, setBaseline] = React.useState<ManagedUser | null>(person);
   React.useEffect(() => {
     if (person) {
+      setBaseline(person);
       setTier("tier_2");
       setDraft(
         Object.fromEntries(CONFIGURABLE_FLAG_KEYS.map((k) => [k, !!person[k]])),
@@ -53,7 +79,7 @@ export function AccessSheet({
   }, [person?.class_id]);
   return (
     <Sheet
-      open={!!person}
+      open={open ?? !!person}
       onOpenChange={(v) => {
         if (!v && !busy) onClose();
       }}
@@ -66,6 +92,7 @@ export function AccessSheet({
         <SheetDescription>
           Review the named account and features before saving.
         </SheetDescription>
+        {onSelect ? <AccountPicker students={students} value={person?.class_id ?? ""} disabled={busy} state={rosterState} onRetry={onRetryRoster} onChange={id => onSelect(eligibleAccounts(students).find(s => s.class_id === id) ?? null)} /> : null}
         {person ? (
           <>
             <h3>{person.display_name || person.email}</h3>
@@ -127,11 +154,12 @@ export function AccessSheet({
                 setBusy(true);
                 setError("");
                 try {
-                  await save(
-                    person,
+                  const verified = await save(
+                    baseline ?? person,
                     tier,
                     tier === "tier_2" ? draft : undefined,
                   );
+                  setBaseline(verified);
                   setSaved(true);
                   onSaved();
                 } catch {
@@ -168,7 +196,11 @@ export function BookingSheet({
   actorId,
   students,
   actions,
+  mode = "credits", rosterState = "ready", onRetryRoster,
 }: {
+  mode?: "credits" | "link";
+  rosterState?: string;
+  onRetryRoster?: () => void;
   actions?: DeskActions;
   open: boolean;
   onClose: () => void;
@@ -190,7 +222,10 @@ export function BookingSheet({
   const [sessionMinutes, setSessionMinutes] = React.useState(70);
   const [expiresAt, setExpiresAt] = React.useState("");
   const [pass, setPass] = React.useState<HomeBookingPass | null>(null);
-  const [amount, setAmount] = React.useState(5);
+  const [amount, setAmount] = React.useState(1);
+  const [customAmount, setCustomAmount] = React.useState(false);
+  const [create, setCreate] = React.useState(false);
+  const [additionVerified, setAdditionVerified] = React.useState(false);
   const [busy, setBusy] = React.useState(false);
   const [loaded, setLoaded] = React.useState(false);
   const [error, setError] = React.useState("");
@@ -204,17 +239,36 @@ export function BookingSheet({
       (!!pass.expires_at &&
         Number.isFinite(Date.parse(pass.expires_at)) &&
         Date.parse(pass.expires_at) <= Date.now()));
-  const target = students.find((s) => s.class_id === studentId);
+  const target = eligibleAccounts(students).find((s) => s.class_id === studentId);
+  const recoveryTarget = students.find((s) => s.class_id === studentId);
   const name = target?.display_name || target?.email || "student";
+  // A reopened sheet is a new intent. Pending recovery restores its exact
+  // target and quantity below; changing students must not reset the form.
+  React.useEffect(() => {
+    if (!open) return;
+    setStudentId("");
+    setAmount(1);
+    setCustomAmount(false);
+    setSessionMinutes(70);
+    setExpiresAt("");
+    setConfirmRecovery(false);
+    setBusy(false);
+  }, [open, actorId]);
   React.useEffect(() => {
     if (!open) return;
     setError("");
     setNotice("");
     setRevoke(false);
+    setCreate(false);
+    setAdditionVerified(false);
+    setConfirmRecovery(false);
     setPass(null);
     setLoaded(false);
     const version = ++generation.current;
-    if (!studentId) return;
+    if (!studentId) {
+      setBusy(false);
+      return;
+    }
     setBusy(true);
     api
       .loadHomeBooking(studentId)
@@ -247,6 +301,7 @@ export function BookingSheet({
     if (open && pending) {
       setStudentId(pending.studentId);
       setAmount(pending.amount);
+      setCustomAmount(![1, 5, 10].includes(pending.amount));
     }
   }, [open, pending?.operationKey]);
   const act = async (fn: () => Promise<void>) => {
@@ -263,6 +318,16 @@ export function BookingSheet({
       setBusy(false);
     }
   };
+  const creationError = () => {
+    if (!Number.isInteger(sessionMinutes) || sessionMinutes < 15 || sessionMinutes > 480)
+      return "Choose a whole session length between 15 and 480 minutes.";
+    if (expiresAt) {
+      const expiry = Date.parse(`${expiresAt}T23:59:59`);
+      if (!Number.isFinite(expiry) || expiry <= Date.now())
+        return "Choose a future expiry date, or leave expiry blank.";
+    }
+    return "";
+  };
   return (
     <Sheet
       open={open}
@@ -274,47 +339,35 @@ export function BookingSheet({
         className="home-desk-sheet"
         overlayClassName="home-desk-overlay"
       >
-        <SheetTitle>Session link</SheetTitle>
+        <SheetTitle>{mode === "credits" ? "Session credits" : "Individual booking links"}</SheetTitle>
         <SheetDescription>
-          Private booking access, with no payment step. Anyone with the link can
-          book.
+          {mode === "credits" ? "Correct missed booking sessions for a named account. Credits do not record a payment or change platform access." : "Reuse a student’s private booking link, or explicitly create one with initial sessions. Anyone with the link can book."}
         </SheetDescription>
-        <label className="home-desk-label">
-          Student
-          <select
-            disabled={busy || !!pending}
-            value={studentId}
-            onChange={(e) => setStudentId(e.target.value)}
-          >
-            <option value="">Choose a student</option>
-            {students.map((s) => (
-              <option key={s.class_id} value={s.class_id}>
-                {s.display_name || s.email}
-              </option>
-            ))}
-          </select>
-        </label>
+        <AccountPicker students={students} value={studentId} disabled={busy || !!pending} state={rosterState} onRetry={onRetryRoster} onChange={setStudentId} />
         {error || pendingError ? (
           <p role="alert">{error || pendingError}</p>
         ) : null}
         {notice ? <p role="status">{notice}</p> : null}
-        {pendingError && target ? (
+        {pendingError ? (
           <div className="home-desk-confirm">
             <p>
-              Review {name}’s current balance and any successful addition before
+              {studentId ? `Account: ${recoveryTarget?.display_name || recoveryTarget?.email || studentId}. ` : "Choose an eligible account once the roster is available. "}
+              Review its current balance and any successful addition before
               starting a new request. This cannot retry the unreadable request.
             </p>
+            {!target || !loaded ? <p>Recovery requires a selected eligible account and its loaded session balance. {rosterState !== "ready" ? "Retry loading accounts before continuing." : "Choose the account and wait for its balance before confirming."}</p> : null}
             <label>
               <input
                 type="checkbox"
                 checked={confirmRecovery}
+                disabled={!target || !loaded || busy}
                 onChange={(e) => setConfirmRecovery(e.target.checked)}
               />
               I have reviewed the named student and want to recover this
               session’s booking controls.
             </label>
             <button
-              disabled={busy || !confirmRecovery}
+              disabled={busy || !confirmRecovery || !target || !loaded || !actorId}
               onClick={() =>
                 void act(async () => {
                   const current = await api.discardUnreadableHomeTopUp(
@@ -331,12 +384,13 @@ export function BookingSheet({
                 })
               }
             >
-              Confirm recovery for {name}
+              Confirm recovery for {recoveryTarget?.display_name || recoveryTarget?.email || studentId || "selected account"}
             </button>
           </div>
         ) : null}
         {pending ? (
           <div className="home-desk-confirm">
+            <p>Pending account: {students.find(s => s.class_id === pending.studentId)?.email || pending.studentId} · {pending.amount} {pending.amount === 1 ? "session" : "sessions"}</p>
             <p>
               An earlier session addition needs confirmation. Check it before
               starting another.
@@ -348,6 +402,7 @@ export function BookingSheet({
                   const result = await api.resolvePendingHomeTopUp(pending);
                   setPass(result.pass);
                   setLoaded(true);
+                  setAdditionVerified(!!result.receipt);
                   setNotice(
                     result.receipt
                       ? "The earlier addition was applied and verified."
@@ -358,15 +413,27 @@ export function BookingSheet({
             >
               Check pending add
             </button>
+            <button
+              className="home-desk-primary"
+              disabled={busy || !actorId || pending.actorId !== actorId}
+              onClick={() => void act(async () => {
+                const result = await api.addHomeBookingCredits(pending);
+                setPass(result.pass);
+                setLoaded(true);
+                setAdditionVerified(true);
+                setNotice("Session addition verified.");
+              })}
+            >Retry pending addition</button>
           </div>
         ) : null}
         {loaded && target ? (
           <>
             <h3>{name}</h3>
+            <p className="home-desk-account-email">{target.email}</p>
             {pass ? (
               <>
                 <p>
-                  {pass.credits_remaining} sessions remaining · {pass.status}
+                  {pass.credits_remaining} {pass.credits_remaining === 1 ? "session" : "sessions"} remaining · {pass.status}
                 </p>
                 <p className="home-desk-empty">
                   {pass.session_length_minutes} minutes per session
@@ -374,7 +441,7 @@ export function BookingSheet({
                     ? ` · Expires ${new Date(pass.expires_at).toLocaleDateString()}`
                     : " · No expiry"}
                 </p>
-                {pass.booking_url ? (
+                {mode === "link" && pass.booking_url && pass.status !== "revoked" ? (
                   <>
                     <a
                       className="home-desk-external"
@@ -438,11 +505,15 @@ export function BookingSheet({
                 </button>
               </details>
             ) : null}
+            {pass?.status === "revoked" ? <p role="status" className="home-desk-confirm">This private link is revoked. Sessions cannot be added here. Review the account in Students before issuing a replacement.</p> : null}
+            {!pass && mode === "link" ? <button className="home-desk-text-button" disabled={busy || !!pending || !!pendingError} onClick={() => setCreate(true)}>Create link with initial sessions</button> : null}
+            {mode === "credits" && additionVerified && !pending ? <button className="home-desk-text-button" disabled={busy} onClick={() => { setAdditionVerified(false); setAmount(1); setCustomAmount(false); }}>Add more sessions</button> : null}
+            {((mode === "credits") || (!pass && create)) && !pending && !additionVerified ? <>
             <label className="home-desk-label">
               {pass ? "Sessions to add" : "Initial sessions"}
               <select
-                value={amount}
-                onChange={(e) => setAmount(Number(e.target.value))}
+                value={customAmount ? 0 : amount}
+                onChange={(e) => { setCustomAmount(e.target.value === "0"); setAmount(Number(e.target.value)); }}
                 disabled={busy || !!pending}
               >
                 <option value="1">1 session</option>
@@ -451,13 +522,15 @@ export function BookingSheet({
                 <option value="0">Custom</option>
               </select>
             </label>
-            {![1, 5, 10].includes(amount) ? (
+            {customAmount ? (
               <label className="home-desk-label">
                 Custom number
                 <input
                   type="number"
                   min="1"
                   max="50"
+                  step="1"
+                  disabled={busy || !!pending}
                   value={amount || ""}
                   onChange={(e) => setAmount(Number(e.target.value))}
                 />
@@ -487,22 +560,28 @@ export function BookingSheet({
             ) : null}
             <p className="home-desk-confirm">
               {pass
-                ? `Add ${amount} sessions for ${name}, preserving ${pass.credits_remaining} remaining.`
-                : `Create ${amount} sessions for ${name}.`}
+                ? `Add ${amount} ${amount === 1 ? "session" : "sessions"} for ${name}. Balance: ${pass.credits_remaining} → ${pass.credits_remaining + amount} sessions remaining.`
+                : `Create ${amount} ${amount === 1 ? "session" : "sessions"} for ${name}.`}
             </p>
+            {!pass && creationError() ? <p role="alert">{creationError()}</p> : null}
             <button
               className="home-desk-primary"
               disabled={
                 busy ||
                 !!pendingError ||
                 !actorId ||
-                (!pass && (sessionMinutes < 15 || sessionMinutes > 480)) ||
+                !target ||
+                (!pass && (!Number.isInteger(sessionMinutes) || sessionMinutes < 15 || sessionMinutes > 480)) ||
+                (!pass && !!creationError()) ||
+                !Number.isInteger(amount) ||
                 amount < 1 ||
                 amount > 50 ||
                 expired ||
                 pass?.status === "revoked"
               }
-              onClick={() =>
+              onClick={() => {
+                const invalid = !pass ? creationError() : "";
+                if (invalid) { setError(invalid); return; }
                 void act(async () => {
                   if (pass) {
                     const request =
@@ -515,6 +594,7 @@ export function BookingSheet({
                       );
                     const result = await api.addHomeBookingCredits(request);
                     setPass(result.pass);
+                    setAdditionVerified(true);
                     setNotice("Session addition verified.");
                   } else {
                     try {
@@ -526,31 +606,30 @@ export function BookingSheet({
                             : null,
                         }),
                       );
+                      setAdditionVerified(true);
                       setNotice("New booking link and sessions verified.");
                     } catch (error) {
-                      if (
-                        error instanceof Error &&
-                        error.message.startsWith("pass_exists:")
-                      ) {
-                        setPass(await api.loadHomeBooking(studentId));
-                        setNotice(
-                          "An existing booking link was found. No sessions were added. Review its balance, then confirm Add sessions.",
-                        );
-                      } else throw error;
+                      setAdditionVerified(true);
+                      try { setPass(await api.loadHomeBooking(studentId)); }
+                      catch { setError("Creation outcome is unknown and the balance could not be loaded. Check the account before a new addition."); }
+                      setNotice(error instanceof Error && error.message.startsWith("pass_exists:")
+                        ? "A booking pass already exists; review the balance before adding more."
+                        : "Creation outcome is unknown. Review the current balance before adding more.");
                     }
                   }
-                })
-              }
+                });
+              }}
             >
               {busy
                 ? "Checking…"
                 : pending
                   ? "Retry pending addition"
                   : pass
-                    ? "Confirm add sessions"
-                    : "Confirm create link"}
+                    ? `Add ${amount} ${amount === 1 ? "session" : "sessions"}`
+                    : mode === "credits" ? `Add ${amount} ${amount === 1 ? "session" : "sessions"}` : "Confirm create link with initial sessions"}
             </button>
-            {pass && pass.status !== "revoked" ? (
+            </> : null}
+            {mode === "link" && pass && pass.status !== "revoked" ? (
               <details
                 open={revoke}
                 onToggle={(e) => setRevoke(e.currentTarget.open)}

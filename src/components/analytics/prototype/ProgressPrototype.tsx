@@ -1600,7 +1600,7 @@ export default function ProgressPrototype(props: PrototypeProps) {
   );
   const [localView, setLocalView] = useState<ProgressView>("overview");
   const view = production
-    ? params.get("mode") === "types"
+    ? props.view === "overview" && params.get("mode") === "types"
       ? "types"
       : (props.view ?? "overview")
     : localView;
@@ -1649,12 +1649,6 @@ export default function ProgressPrototype(props: PrototypeProps) {
     production
       ? updateProgress({ [selectedKey]: answer?.attemptId ?? null })
       : setLocalQuestion(answer);
-  const previousSnapshot = useRef(props.asOf);
-  useEffect(() => {
-    if (previousSnapshot.current !== props.asOf && production)
-      updateProgress({ progressAnswer: null, historySelected: null });
-    previousSnapshot.current = props.asOf;
-  }, [props.asOf, production]);
   useEffect(() => {
     setLocalView("overview");
   }, [variant]);
@@ -1712,7 +1706,7 @@ export default function ProgressPrototype(props: PrototypeProps) {
       ? JSON.stringify(HISTORY_KEYS.map((key) => params.get(key)))
       : "";
   useEffect(() => {
-    if (inspectorRef.current?.contains(document.activeElement))
+    if (!production && inspectorRef.current?.contains(document.activeElement))
       rootRef.current
         ?.querySelector<HTMLSelectElement>('[aria-label="Progress period"]')
         ?.focus();

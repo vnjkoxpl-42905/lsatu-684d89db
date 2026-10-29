@@ -67,6 +67,20 @@ beforeEach(() => {
   }));
 });
 describe("Teacher desk data boundaries", () => {
+  it("refreshes booking and account snapshots only for the current authorized actor", async () => {
+    const {client,wrapper}=fixture();
+    const {result,rerender}=renderHook(({actor})=>useTeachingDesk(actor,true),{wrapper,initialProps:{actor:'first'}});
+    await waitFor(()=>expect(result.current.access.state).toBe('ready'));
+    const invalidate=vi.spyOn(client,'invalidateQueries');
+    const staleRefresh=result.current.refreshBooking!;
+    act(()=>result.current.refreshBooking!());
+    expect(invalidate).toHaveBeenCalledWith({queryKey:deskKey('first','agenda')});
+    expect(invalidate).toHaveBeenCalledWith({queryKey:deskKey('first','access')});
+    expect(invalidate).toHaveBeenCalledWith({queryKey:['student-booking','info']});
+    rerender({actor:'second'}); invalidate.mockClear(); act(()=>staleRefresh());
+    expect(invalidate).not.toHaveBeenCalled();
+  });
+
   it("does not read private data before admin authorization resolves", () => {
     const { wrapper } = fixture();
     const { result } = renderHook(() => useTeachingDesk("actor", false), {

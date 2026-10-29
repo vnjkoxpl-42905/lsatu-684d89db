@@ -259,7 +259,7 @@ describe('production presenter', () => {
     expect(document.querySelector('.pp-summary-line')).toHaveTextContent(`${model.progress.LR.correct} correctof ${model.progress.LR.denominator} first answers`);
   });
 
-  it('clears saved-answer detail when a successful snapshot advances with identical answers', () => {
+  it('preserves a valid selected answer when a successful snapshot advances', () => {
     const tree = (asOf: string) => <MemoryRouter initialEntries={['/progress/overview']}>
       <ProgressPrototype production view="overview" window={30} onWindowChange={vi.fn()} answers={demoAnswers} coverage={demoCoverage} asOf={asOf} />
     </MemoryRouter>;
@@ -267,8 +267,8 @@ describe('production presenter', () => {
     openRecentAnswer();
     const detail = screen.getByRole('region', { name: 'Saved answer detail' });
     rendered.rerender(tree('2026-10-28T04:00:00Z'));
-    expect(detail).not.toBeInTheDocument();
-    expect(document.activeElement).not.toBe(detail);
+    expect(detail).toBeInTheDocument();
+    expect(document.activeElement).toBe(detail);
     expect(document.activeElement?.isConnected).toBe(true);
   });
 
@@ -489,5 +489,14 @@ describe('Unified Review evidence actions', () => {
     const history=screen.getByRole('region',{name:'Practice history'});
     expect(within(history).getByText('Results not revealed')).toBeInTheDocument();
     expect(history.querySelector('.pp-outcome.is-missed')).toBeNull();
+  });
+});
+
+describe('Review route owns its selected view', () => {
+  it('keeps History active when an unrelated legacy types-mode parameter is present', () => {
+    render(<MemoryRouter initialEntries={['/review/history?mode=types&window=all']}><ProgressPrototype production view="history" answers={demoAnswers.slice(0,3)} coverage={demoCoverage} asOf={DEMO_AS_OF} /></MemoryRouter>);
+    expect(screen.getByRole('region',{name:'Practice history'})).toBeInTheDocument();
+    expect(screen.getByRole('heading',{name:'Answer history'})).toBeInTheDocument();
+    expect(screen.queryByRole('region',{name:'Question-type evidence'})).not.toBeInTheDocument();
   });
 });

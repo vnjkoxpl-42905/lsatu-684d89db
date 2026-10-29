@@ -9,6 +9,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useUserPermissions } from '@/hooks/useUserPermissions';
 import { useJournalEntries } from '@/hooks/useJournalEntries';
 import type { ProgressReviewAccess } from '@/lib/progressReviewCapability';
+import { PROGRESS_POLICY_EVIDENCE } from '@/lib/progressPolicyEvidence';
 
 // Stable fallbacks so an unloaded read never changes the presenter's inputs.
 const NO_ANSWERS: GradedQuestionAnswer[] = [];
@@ -50,8 +51,8 @@ export default function ProgressPage({ view }: { view: ProgressView }) {
       : journal.isError ? 'error'
         : journal.isLoading || journal.classId !== ownerId ? 'pending' : 'ready',
     // Current live policies and the tested downstream guards are recorded in POLICY-EVIDENCE.md.
-    exactRcPolicyVerified: true,
-    exactPtPolicyVerified: true,
+    exactRcPolicyVerified: PROGRESS_POLICY_EVIDENCE.rc,
+    exactPtPolicyVerified: PROGRESS_POLICY_EVIDENCE.practiceTest,
   }), [actorId, ownerId, accessReady, canReadJournal, permissions.is_admin,
     permissions.has_analytics_access, permissions.has_classroom_access,
     permissions.has_drill_access, permissions.has_practice_access,

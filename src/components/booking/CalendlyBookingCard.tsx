@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useId, useMemo, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import BookingConfirmDialog from "@/components/booking/BookingConfirmDialog";
 import { toast } from "sonner";
@@ -79,8 +79,16 @@ export default function CalendlyBookingCard({
   sessionHeadingLevel = "h2",
   noPassDescription = "Message Joshua to have 1:1 session booking turned on.",
   theme = "booking",
+  dayPicker = "calendar",
+  bookingFor,
+  onConfirmationChange,
+  onBookingCommitted,
 }: {
   api: BookingApi;
+  dayPicker?: "calendar" | "dropdown";
+  bookingFor?: { name: string; email: string };
+  onConfirmationChange?: (open: boolean) => void;
+  onBookingCommitted?: () => void | Promise<void>;
   sessionHeadingLevel?: "h2" | "h3";
   noPassDescription?: string;
   /**
@@ -91,6 +99,7 @@ export default function CalendlyBookingCard({
    */
   theme?: "booking" | "app";
 }) {
+  const dayPickerId = useId();
   const SessionHeading = sessionHeadingLevel;
   const holo = theme === "booking" ? "booking-holo " : "";
   const [info, setInfo] = useState<{ pass: BookingPassView; bookings?: UpcomingBooking[] } | null>(null);
@@ -104,6 +113,11 @@ export default function CalendlyBookingCard({
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [infoError, setInfoError] = useState<string | null>(null);
   const [slotsError, setSlotsError] = useState<string | null>(null);
+
+  useEffect(() => {
+    onConfirmationChange?.(confirmOpen);
+    return () => onConfirmationChange?.(false);
+  }, [confirmOpen, onConfirmationChange]);
 
   const pass = info?.pass ?? null;
 
@@ -146,15 +160,17 @@ export default function CalendlyBookingCard({
 
   const slotsByDay = useMemo(() => {
     return groupSlotsByDay(slots);
-  }, [slots]);
+  }, [slots, dayPicker]);
 
   useEffect(() => {
     if (initialDaySelected.current || slots.length === 0) return;
-    const first = new Date(slots[0].start_at);
+    const first = new Date(dayPicker === "dropdown"
+      ? Math.min(...slots.map((slot) => Date.parse(slot.start_at)))
+      : slots[0].start_at);
     setMonthAnchor(startOfDay(new Date(first.getFullYear(), first.getMonth(), 1)));
     setPickedDay(startOfDay(first));
     initialDaySelected.current = true;
-  }, [slots]);
+  }, [slots, dayPicker]);
 
   const monthDays = useMemo(() => {
     return buildMonthCells(monthAnchor);
@@ -208,6 +224,7 @@ export default function CalendlyBookingCard({
         <div className="min-w-0 border-b border-border p-5 @[54rem]:border-b-0 @[54rem]:border-r @[54rem]:p-6">
           <div className="text-sm font-medium text-muted-foreground">Joshua</div>
           <SessionHeading className="mt-1 text-xl font-semibold tracking-tight">1:1 LSAT Session</SessionHeading>
+          {bookingFor && <p className="mt-3 break-words text-sm">Booking for <strong>{bookingFor.name}</strong><br />{bookingFor.email}</p>}
           {/* The balance decides which path is even relevant to this student,
               so it leads the card rather than trailing the metadata. */}
           <div className="mt-4 rounded-xl border border-primary/20 bg-primary/5 px-4 py-3">
@@ -257,6 +274,18 @@ export default function CalendlyBookingCard({
           <div className="grid min-w-0 grid-cols-1 @2xl:grid-cols-[minmax(0,1fr)_240px]">
             <div className="min-w-0 border-b border-border p-4 @sm:p-5 @2xl:border-b-0 @2xl:border-r">
               <div className="mb-1 text-sm font-semibold">Select a Date &amp; Time</div>
+              {dayPicker === "dropdown" ? (
+                <label htmlFor={dayPickerId} className="my-4 block text-sm font-medium">
+                  Available day
+                  <select id={dayPickerId} aria-label="Available day" className="mt-2 min-h-11 w-full rounded-md border border-border bg-background px-3 text-foreground" value={pickedDay ? dayKey(pickedDay) : ""} onChange={(event) => {
+                    const offered = [...slotsByDay.values()].map((entries) => startOfDay(new Date(entries[0].start_at))).find((day) => dayKey(day) === event.target.value);
+                    setPickedDay(offered ?? null); setSelected(null);
+                  }}>
+                    <option value="">Select a day</option>
+                    {[...slotsByDay.entries()].sort(([, a], [, b]) => startOfDay(new Date(a[0].start_at)).getTime() - startOfDay(new Date(b[0].start_at)).getTime()).map(([key, entries]) => <option key={key} value={key}>{new Date(entries[0].start_at).toLocaleDateString(undefined, { weekday: "long", month: "long", day: "numeric", year: "numeric" })}</option>)}
+                  </select>
+                </label>
+              ) : (<>
               <div className="mb-4 mt-3 flex items-center justify-between">
                 <button
                   onClick={() => { setMonthAnchor((m) => new Date(m.getFullYear(), m.getMonth() - 1, 1)); setPickedDay(null); setSelected(null); }}
@@ -297,6 +326,7 @@ export default function CalendlyBookingCard({
                   );
                 })}
               </div>
+              </>)}
               {slotsLoading && slots.length === 0 && (
                 <div className="mt-4 flex items-center justify-center text-sm text-muted-foreground">
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Loading times…
@@ -316,7 +346,7 @@ export default function CalendlyBookingCard({
             <div className="flex min-w-0 flex-col p-4 @sm:p-5">
               <div className="mb-3 text-sm font-semibold">
                 {pickedDay
-                  ? pickedDay.toLocaleDateString(undefined, { weekday: "long", month: "long", day: "numeric" })
+                  ? pickedDay.toLocaleDateString(undefined, { weekday: "long", month: "long", day: "numeric", ...(bookingFor ? { year: "numeric" as const } : {}) })
                   : "Select a day"}
               </div>
               <div className="max-h-[320px] space-y-2 overflow-y-auto pr-1">
@@ -354,10 +384,13 @@ export default function CalendlyBookingCard({
         durationMinutes={pass.session_length_minutes}
         book={(slotIso, key, studentNote) => api.book(slotIso, key, studentNote)}
         theme={theme}
+        bookingFor={bookingFor}
         upload={api.uploadFiles ? { uploadFiles: api.uploadFiles, discardUpload: api.discardUpload } : undefined}
         onBooked={async (slotIso) => {
           setSelected(null);
+          const parentRefresh = Promise.resolve().then(() => onBookingCommitted?.()).catch(() => { toast.info("Session booked. Refresh the student account to see its updated balance."); });
           const fresh = await api.loadInfo();
+          await parentRefresh;
           setInfo(fresh);
           await loadSlots();
           const match = fresh.bookings?.find((r) => r.start_at === slotIso && r.status === "booked");

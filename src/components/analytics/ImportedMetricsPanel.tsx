@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import { format } from "date-fns";
 import {
   useStudentExternalMetrics,
@@ -29,20 +30,28 @@ function metadata(row: ExternalMetric): string {
 /** Imported reports have their own query and never enter native first-answer statistics. */
 export default function ImportedMetricsPanel({
   studentId,
+  variant = "default",
   className,
   showStates = false,
 }: ImportedMetricsPanelProps) {
   const { grouped, isLoading, isError, refetch } =
     useStudentExternalMetrics(studentId);
+  // The legacy Practice analytics plane deliberately stays light, even inside a
+  // dark host. Scope its existing token vocabulary to this report only.
+  const appearance: CSSProperties | undefined = variant === 'light' ? {
+    '--background': '0 0% 100%', '--foreground': '222.2 84% 4.9%',
+    '--card': '0 0% 100%', '--card-foreground': '222.2 84% 4.9%',
+    '--muted-foreground': '215.4 16.3% 38%', '--border': '214.3 31.8% 86%',
+  } as CSSProperties : undefined;
   if (isLoading)
     return showStates ? (
-      <p role="status" className="text-sm text-muted-foreground">
+      <p style={appearance} role="status" className="text-sm text-muted-foreground">
         Loading imported reports…
       </p>
     ) : null;
   if (isError)
     return (
-      <div role="alert" className="rounded-xl border border-border p-4 text-sm">
+      <div style={appearance} role="alert" className="rounded-xl border border-border p-4 text-sm text-foreground">
         <p>Imported reports could not be loaded.</p>
         <button
           type="button"
@@ -55,7 +64,7 @@ export default function ImportedMetricsPanel({
     );
   if (!grouped.hasAny)
     return showStates ? (
-      <div className="rounded-xl border border-border p-5">
+      <div style={appearance} className="rounded-xl border border-border p-5 text-foreground">
         <h2 className="font-serif text-xl">No imported reports yet</h2>
         <p className="mt-2 text-sm text-muted-foreground">
           Reports already added to your account will appear here. Your LSAT U
@@ -109,7 +118,9 @@ export default function ImportedMetricsPanel({
   ];
   return (
     <section
-      className={cn("space-y-5", className)}
+      style={appearance}
+      data-imported-appearance={variant}
+      className={cn("space-y-5 text-foreground", className)}
       aria-label="Imported reports"
     >
       <p className="text-sm text-muted-foreground">

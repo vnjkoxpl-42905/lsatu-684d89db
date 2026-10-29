@@ -1,3 +1,4 @@
+import { REVIEW_HUB_ROUTES, REVIEW_HUB_ALIASES } from './reviewHubRoutes';
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { describe, expect, it } from "vitest";
@@ -15,7 +16,7 @@ describe("seven destination rail", () => {
     expect(RAIL_CATALOG.map((item) => item.id)).toEqual([
       "home", "my-work", "practice", "review", "library", "schedule",
     ]);
-    for (const path of ["/classroom", "/my-work", "/practice", "/review", "/progress", "/library", "/schedule"]) {
+    for (const path of ["/classroom", "/my-work", "/practice", "/library", "/schedule"]) {
       expect(app).toContain(`path="${path}"`);
     }
   });
@@ -33,8 +34,10 @@ describe("seven destination rail", () => {
 
   it("keeps each parent available while locking individual tabs and Admissions", () => {
     expect(app).toContain('path="admissions" element={<ProtectedRoute requireAdmin><AdmissionsPage />');
-    expect(app).toContain('path="flagged" element={<ProtectedRoute flag="has_flagged_access">');
-    expect(app).toContain('path="wrong" element={<ProtectedRoute flag="has_journal_access">');
+    expect(REVIEW_HUB_ROUTES.flagged.flag).toBe('has_flagged_access');
+    expect(app).toContain('flag={REVIEW_HUB_ROUTES.flagged.flag}');
+    expect(REVIEW_HUB_ROUTES.journal.flag).toBe('has_journal_access');
+    expect(app).toContain('flag={REVIEW_HUB_ROUTES.journal.flag}');
     // Activities and Bootcamps are assignment-only under Classroom access
     // (student tier defaults, 5b5d5b0); the retired category flag no longer gates them.
     expect(app).toContain('path="activities" element={<ProtectedRoute flag="has_classroom_access">');

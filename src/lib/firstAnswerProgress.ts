@@ -10,7 +10,7 @@ export type ProgressWindow = 7 | 14 | 21 | 30 | 'all';
 export type ProgressProvenance =
   | { kind: 'lr-attempt'; ownerId: string; attemptId: string; qid: string }
   | { kind: 'lr-section'; ownerId: string; historyId: string; qid: string; runId?: string; legIndex?: number }
-  | { kind: 'rc-session'; ownerId: string; sessionId: string; questionId: number; passageId: number; runId?: string; legIndex?: number; timedSittingId?: string };
+  | { kind: 'rc-session'; ownerId: string; sessionId: string; questionId: number; passageId: number; runId?: string; legIndex?: number; timedSittingId?: string; reportBinding?: 'physical' };
 
 export interface GradedQuestionAnswer {
   attemptId: string;
@@ -267,6 +267,7 @@ export function adaptRcAttempts(
         questionId: attempt.question_id, passageId: attempt.passage_id,
         ...(parent.kind === 'run' ? { runId: parent.id } : {}),
         ...(legIndex !== undefined ? { legIndex } : {}),
+        ...(parent.kind === 'run' && session.practice_test_run_id === parent.id && session.practice_test_leg === legIndex && legIndex !== undefined ? { reportBinding: 'physical' as const } : {}),
         ...(timed.kind === 'id' ? { timedSittingId: timed.id } : {}) },
     }];
   });

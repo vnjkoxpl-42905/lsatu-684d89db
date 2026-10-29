@@ -7,8 +7,10 @@ function standaloneSession(session: RcDrillSessionRow): boolean {
   const source = { ...session, practice_test_run_id: session.practice_test_run_id ?? null } as RcSessionSourceRow;
   if (resolveRcPracticeTestParent(source).kind !== 'none') return false;
   const config = session.config && typeof session.config === 'object' && !Array.isArray(session.config) ? session.config as Record<string, unknown> : {};
-  // A timed sitting is served only through its own protected report, including legacy config-only provenance.
-  return !(session as RcDrillSessionRow & { timed_section_sitting_id?: unknown }).timed_section_sitting_id && !config.timedSectionSittingId;
+  const timed = (session as RcDrillSessionRow & { timed_section_sitting_id?: unknown }).timed_section_sitting_id || config.timedSectionSittingId;
+  // Active protected work cannot resume through a standalone drill link. A completed
+  // timed sitting follows the existing player release rule, including legacy config.
+  return !timed || rcResultReleased(source, new Set());
 }
 
 /** Completed and active standalone drills. Active flags resume practice without opening answer review. */

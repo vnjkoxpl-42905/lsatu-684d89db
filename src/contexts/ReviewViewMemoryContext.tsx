@@ -1,4 +1,4 @@
-import { createContext, useContext, useRef, type ReactNode } from 'react';
+import { createContext, useContext, useMemo, useRef, type ReactNode } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { safeReviewHubReturn } from '@/lib/reviewHubReturn';
 
@@ -24,7 +24,7 @@ export function useReviewViewMemory() {
   // Isolated renders retain a bounded local fallback; production always has the provider.
   const local = useActorMemory();
   const memory = shared?.actorId === local.actorId ? shared : local;
-  return {
+  return useMemo(() => ({
     remember(origin: string) {
       const safe = safeReviewHubReturn(origin);
       if (!safe || !memory.actorId) return;
@@ -35,5 +35,5 @@ export function useReviewViewMemory() {
       const safePath = safeReviewHubReturn(pathname);
       return safePath ? memory.paths[safePath] ?? safePath : pathname;
     },
-  };
+  }), [memory]);
 }

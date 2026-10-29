@@ -2498,3 +2498,31 @@
   color: #f4cf92;
   background: #4b3c24;
 }
+
+/* Dark mode must change every material's surface and ink together. */
+:is(.dark,.classroom-root[data-theme="dark"]) .progress-lab :is(.pp-summary-line>p,.pp-summary-note,.pp-chart-key,.pp-volume-bar>strong,.pp-topic-row>svg,.pp-evidence-row>svg){color:var(--pp-muted)}
+:is(.dark,.classroom-root[data-theme="dark"]) .progress-lab :is(.pp-evidence-panel,.pp-practice-chart,.pp-bucket-detail,.pp-type-index,.pp-period-sheet){background:var(--pp-paper);border-color:var(--pp-line);box-shadow:var(--pp-shadow),inset 0 1px 0 #ffffff12}
+:is(.dark,.classroom-root[data-theme="dark"]) .progress-lab :is(.pp-topic-row:hover,.pp-topic-row:focus-visible,.pp-volume-bar:hover,.pp-volume-bar:focus-visible,.pp-close){background:var(--pp-raised);border-color:var(--pp-line);box-shadow:var(--pp-contact)}
+:is(.dark,.classroom-root[data-theme="dark"]) .progress-lab :is(.pp-topic-row.is-selected,.pp-type-index .pp-topic-row.is-selected,.pp-volume-bar[aria-pressed="true"],.pp-question-inspector,.pp-selected-mark){background:var(--pp-accent-soft);color:var(--pp-ink);border-color:var(--pp-accent);box-shadow:var(--pp-contact)}
+:is(.dark,.classroom-root[data-theme="dark"]) .progress-lab :is(.pp-attempt-path>li,.pp-day-group){background:var(--pp-paper);border-color:var(--pp-line);box-shadow:inset 0 1px 0 #ffffff12}
+:is(.dark,.classroom-root[data-theme="dark"]) .progress-lab .pp-attempt-path>li.is-selected{background:var(--pp-raised);border-color:var(--pp-accent);box-shadow:var(--pp-contact)}
+:is(.dark,.classroom-root[data-theme="dark"]) .progress-lab :is(.pp-evidence-summary,.pp-mosaic-block,.pp-period-rc){border-color:var(--pp-line)}
+:is(.dark,.classroom-root[data-theme="dark"]) .progress-lab :is(.pp-flag,.pp-notice){color:var(--pp-amber)}
+:is(.dark,.classroom-root[data-theme="dark"]) .progress-lab .pp-subject-summary.is-rc :is(.pp-kicker,.pp-big-number){color:var(--pp-accent-dark)}
+:is(.dark,.classroom-root[data-theme="dark"]) .progress-lab :is(.pp-evidence-tokens>button.is-correct,.pp-outcome.is-correct>span){color:#c3cdff;background:#353f63;border-color:#6272a4;box-shadow:inset 0 1px 0 #ffffff18,0 2px 0 #1d2339}
+:is(.dark,.classroom-root[data-theme="dark"]) .progress-lab :is(.pp-evidence-tokens>button.is-missed,.pp-outcome.is-missed>span){color:#f4cf92;background:var(--pp-missed-hatch),#4b3c24;border-color:#8b7244;box-shadow:inset 0 1px 0 #ffffff18,0 2px 0 #292217}
+:is(.dark,.classroom-root[data-theme="dark"]) .progress-lab .pp-mosaic button.is-correct{color:#202848;background:var(--pp-accent);border-color:#7186df;box-shadow:inset 0 1px 0 #ffffff30,0 2px 0 #202848}
+:is(.dark,.classroom-root[data-theme="dark"]) .progress-lab .pp-mosaic button.is-missed{color:#f4cf92;background:var(--pp-missed-hatch),#4b3c24;border-color:#8b7244;box-shadow:inset 0 1px 0 #ffffff18,0 2px 0 #292217}
+:is(.dark,.classroom-root[data-theme="dark"]) .progress-lab .pp-button:not(.pp-button-light){color:#202848;background:var(--pp-accent);box-shadow:inset 0 1px 0 #ffffff30,0 2px 0 #202848}
+:is(.dark,.classroom-root[data-theme="dark"]) .progress-lab .pp-volume-correct{background:var(--pp-accent)}
+:is(.dark,.classroom-root[data-theme="dark"]) .progress-lab .pp-volume-missed{background:var(--pp-missed-hatch),var(--pp-amber)}
+:is(.dark,.classroom-root[data-theme="dark"]) .progress-lab .pp-volume-stack{background:var(--pp-well)}
+@media(max-width:560px){
+ .progress-lab .pp-segments[aria-label="Subject"]{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));width:100%;min-width:0}
+ .progress-lab .pp-segments[aria-label="Subject"]>button{min-width:0;white-space:normal;overflow-wrap:normal;font-size:12px;line-height:1.35;padding:8px 4px;min-height:48px}
+ .progress-lab .pp-segments[aria-label="Subject"]>button>span:last-child{min-width:0;display:block}
+}
+
+:is(.dark,.classroom-root[data-theme="dark"]) .progress-lab .pp-type-index .pp-topic-row{background:var(--pp-paper);box-shadow:inset 0 -1px 0 var(--pp-line)}
+:is(.dark,.classroom-root[data-theme="dark"]) .progress-lab .pp-day-group[open]>summary{background:var(--pp-raised)}
+:is(.dark,.classroom-root[data-theme="dark"]) .progress-lab .pp-day-mark{background:var(--pp-accent);box-shadow:0 0 0 4px var(--pp-well)}

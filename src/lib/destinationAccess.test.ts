@@ -1,3 +1,4 @@
+import { REVIEW_HUB_ROUTES, REVIEW_HUB_ALIASES, REVIEW_HISTORY_ALIAS } from './reviewHubRoutes';
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { describe, expect, it } from "vitest";
@@ -41,7 +42,7 @@ function routeGate(destination: Destination, child: string): string {
 }
 
 describe("destination route matrix", () => {
-  it.each(Object.entries(DESTINATIONS).filter(([id]) => id !== "progress"))("registers %s and every tab with the gate its padlock describes", (destination, config) => {
+  it.each(Object.entries(DESTINATIONS).filter(([id]) => id !== "progress" && id !== "review"))("registers %s and every tab with the gate its padlock describes", (destination, config) => {
     expect(app).toContain(`<Route path="${config.path}" element={<ProtectedRoute allowSignedIn><StudentDestination destination="${destination}" />`);
     expect(app).toContain(`<DestinationIndex destination="${destination}" />`);
     for (const tab of config.tabs) {
@@ -174,7 +175,7 @@ describe("active tab", () => {
 describe("legacy links", () => {
   /** Every `path="X" element={<RedirectWithSearch to="Y" />}` in App.tsx. */
   const redirects = new Map(
-    [...app.matchAll(/<Route path="([^"]+)" element=\{<RedirectWithSearch to="([^"]+)" \/>\}/g)].map((m) => [m[1], m[2]]),
+    [...REVIEW_HUB_ALIASES.map(({path,to}) => [path,to] as [string,string]), ...[...app.matchAll(/<Route path="([^"]+)" element=\{<RedirectWithSearch to="([^"]+)" \/>\}/g)].map((m) => [m[1], m[2]] as [string,string])],
   );
 
   it.each([
@@ -199,7 +200,8 @@ describe("legacy links", () => {
   });
 
   it("forwards old History links through the filter-aware redirect", () => {
-    expect(app).toContain('<Route path="/history" element={<RedirectLegacyHistory />} />');
+    expect(REVIEW_HISTORY_ALIAS).toBe('/history');
+    expect(app).toContain('<Route path={REVIEW_HISTORY_ALIAS} element={<RedirectLegacyHistory />} />');
     expect(redirectLegacyHistoryLocation("?area=rc", "#row"))
       .toBe("/review/history?historyArea=RC#row");
   });
@@ -222,4 +224,12 @@ describe("legacy links", () => {
       expect(app).not.toContain(`<Route path="${path}" element={<Navigate`);
     }
   });
+});
+
+it('binds canonical Review navigation to the metadata App uses for its actual gates', () => {
+  expect(DESTINATIONS.review.path).toBe(REVIEW_HUB_ROUTES.root.path);
+  expect(DESTINATIONS.review.tabs.map(tab => tab.path)).toEqual([REVIEW_HUB_ROUTES.queue,REVIEW_HUB_ROUTES.progress,REVIEW_HUB_ROUTES.history].map(route => `${REVIEW_HUB_ROUTES.root.path}/${route.path}`));
+  expect(app).toContain('path={REVIEW_HUB_ROUTES.root.path}');
+  expect(app).toContain('flag={REVIEW_HUB_ROUTES.analyticsFlag}');
+  expect(app).toContain('REVIEW_HUB_ALIASES.map');
 });

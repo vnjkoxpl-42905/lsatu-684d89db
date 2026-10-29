@@ -42,6 +42,7 @@ export function resolveProgressReviewCapability(answer: GradedQuestionAnswer, ac
   }
   if (source.runId) {
     if (!access.exactPtPolicyVerified) return unavailable('Exact full-test review is not available from this view yet.');
+    if (source.kind === 'rc-session' && source.reportBinding !== 'physical') return unavailable('This older RC session is not linked to the saved full-test report.');
     if (!(access.isAdmin || access.practice || access.classroom)) return unavailable('Practice-test review access is required.');
     if (!Number.isSafeInteger(source.legIndex) || source.legIndex! < 0 || source.legIndex! > 3) return unavailable('The saved full-test leg is unavailable.');
     const q = source.kind === 'lr-section' ? source.qid : String(source.questionId);
