@@ -9,11 +9,11 @@ export function journalEntriesQueryKey(classId: string) {
   return ["journal", "entries", classId] as const;
 }
 
-export function useJournalEntries(enabled = true) {
+export function useJournalEntries(enabled = true, expectedOwner?: string) {
   const { classId, loading: classLoading } = useClassId();
   const query = useQuery<WrongAnswerSmartRow[]>({
     queryKey: journalEntriesQueryKey(classId),
-    enabled: enabled && !!classId,
+    enabled: enabled && !classLoading && !!classId && (!expectedOwner || classId === expectedOwner),
     staleTime: 60_000,
     refetchOnWindowFocus: false,
     queryFn: () => getWrongAnswerSmartRows(classId),

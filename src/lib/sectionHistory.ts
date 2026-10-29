@@ -105,10 +105,17 @@ export async function fetchOwnedSectionHistoryItem(
     .select('*')
     .eq('id', historyId)
     .eq('user_id', userId)
+    .eq('mode', 'full-section')
     .is('practice_test_run_id', null)
+    .not('completed_at', 'is', null)
     .maybeSingle();
   if (error) throw error;
-  return data ? toHistoryRow(data as Record<string, any>) : null;
+  // Detail release requires the persisted completion, never the list reader's
+  // created_at/current-time fallback for historical summary rows.
+  if (!data || data.id !== historyId || data.user_id !== userId || data.mode !== 'full-section'
+    || data.practice_test_run_id != null || typeof data.completed_at !== 'string'
+    || !Number.isFinite(Date.parse(data.completed_at))) return null;
+  return toHistoryRow(data as Record<string, any>);
 }
 
 function toHistoryRow(r: Record<string, any>): SectionHistoryRow {

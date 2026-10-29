@@ -29,6 +29,13 @@ beforeEach(() => {
 });
 
 describe('first-answer read boundary', () => {
+  it('does not read or publish a ledger when its access capability is disabled', async () => {
+    const { result } = setup({ enabled: false });
+    await sleep(15);
+    expect(mocks.load).not.toHaveBeenCalled();
+    expect(result.current.ledger).toBeNull();
+    expect(result.current.progress).toBeNull();
+  });
   it('holds one boundary per successful read and advances it only on a new read', async () => {
     mocks.load.mockResolvedValue(ledger('student-a', answer('one', '2026-10-01T12:00:00Z')));
     const { result, rerender } = setup({ revalidateOnMount: true });

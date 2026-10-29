@@ -25,7 +25,6 @@ export const RAIL_CATALOG: RailItem[] = [
   { id: "my-work", label: "My Work", group: "classroom", flags: ["has_classroom_access"] },
   { id: "practice", label: "Practice", group: "classroom", flags: ["has_drill_access", "has_practice_access"], allowSignedIn: true },
   { id: "review", label: "Review", group: "classroom", flags: ["has_journal_access", "has_flagged_access"], allowSignedIn: true },
-  { id: "progress", label: "Progress", group: "classroom", flags: ["has_analytics_access"] },
   { id: "library", label: "Library", group: "classroom", flags: ["has_activity_access", "has_bootcamp_access"], allowSignedIn: true },
   { id: "schedule", label: "Schedule", group: "classroom", flags: ["has_schedule_access"], allowSignedIn: true },
 ];
@@ -33,6 +32,7 @@ export const RAIL_CATALOG: RailItem[] = [
 export interface RailPrefs {
   order: Partial<Record<RailGroupId, string[]>>;
   hidden: string[];
+  reviewHub?: true;
 }
 
 export function defaultRailPrefs(): RailPrefs {
@@ -63,14 +63,14 @@ const LEGACY_DESTINATION: Record<string, RailItemId> = {
 export function normalizeRailPrefs(raw: unknown): RailPrefs {
   if (!raw || typeof raw !== "object") return defaultRailPrefs();
   const source = raw as Partial<RailPrefs>;
-  const valid = new Set(RAIL_CATALOG.map((item) => item.id));
+  const valid = new Set([...RAIL_CATALOG.map((item) => item.id), 'progress']);
   const order = Array.isArray(source.order?.classroom)
     ? [...new Set(source.order.classroom)].filter((id): id is RailItemId => typeof id === "string" && valid.has(id as RailItemId))
     : [];
   const hidden = Array.isArray(source.hidden)
     ? [...new Set(source.hidden)].filter((id): id is RailItemId => typeof id === "string" && valid.has(id as RailItemId) && id !== "home")
     : [];
-  return { order: order.length ? { classroom: order } : {}, hidden };
+  return { order: order.length ? { classroom: order } : {}, hidden, ...(source.reviewHub === true ? { reviewHub: true as const } : {}) };
 }
 
 const LEGACY_ORDER: Record<string, string[]> = {
@@ -103,7 +103,7 @@ export function migrateLegacyRailPrefs(raw: unknown): RailPrefs {
       if (id && !seen.has(id)) { seen.add(id); order.push(id); }
     }
   }
-  const hidden = RAIL_CATALOG.filter((item) => {
+  const hidden = [...RAIL_CATALOG, { id: "progress" as RailItemId, required: false }].filter((item) => {
     const members = item.id === "review" && (oldHidden.has("journal") || oldHidden.has("flagged")) && !oldHidden.has("review")
       ? ["journal", "flagged"]
       : OLD_MEMBERS[item.id] ?? [];
@@ -113,6 +113,7 @@ export function migrateLegacyRailPrefs(raw: unknown): RailPrefs {
 }
 
 export function resolveRailGroups(prefs: RailPrefs, _opts?: { includeHidden?: boolean }) {
+  prefs = projectReviewRailPrefs(prefs);
   const ordered: RailItem[] = [];
   for (const id of prefs.order.classroom ?? []) {
     const item = RAIL_CATALOG.find((candidate) => candidate.id === id);
@@ -123,4 +124,18 @@ export function resolveRailGroups(prefs: RailPrefs, _opts?: { includeHidden?: bo
   }
   const hidden = new Set(_opts?.includeHidden ? [] : prefs.hidden);
   return [{ ...RAIL_GROUPS[0], items: ordered.filter((item) => item.required || !hidden.has(item.id)) }];
+}
+
+/** Read-only projection. Keep legacy raw prefs for guarded writes and initial landing. */
+export function projectReviewRailPrefs(raw: RailPrefs): RailPrefs {
+  const prefs = normalizeRailPrefs(raw);
+  const hidden = prefs.hidden.filter((id) => id !== 'review' && id !== 'progress');
+  if (prefs.hidden.includes('review') && (prefs.reviewHub || prefs.hidden.includes('progress'))) hidden.push('review');
+  const order = [...new Set((prefs.order.classroom ?? []).map((id) => id === 'progress' ? 'review' : id))];
+  return { order: order.length ? { classroom: order } : {}, hidden, reviewHub: true };
+}
+
+export function reviewRailLanding(prefs: RailPrefs, analyticsAllowed: boolean): string {
+  return !prefs.reviewHub && prefs.hidden.includes('review') && !prefs.hidden.includes('progress') && analyticsAllowed
+    ? '/review/progress' : '/review/to-review';
 }

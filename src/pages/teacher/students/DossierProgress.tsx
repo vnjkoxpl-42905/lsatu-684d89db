@@ -8,7 +8,7 @@ import ProgressWindowControl from '@/components/analytics/ProgressWindowControl'
 
 export default function DossierProgress() {
   const { studentId, studentName } = useDossier();
-  const [window, setWindow] = useProgressWindow(false);
+  const [window, setWindow] = useProgressWindow();
 
   return (
     <div className="space-y-4 p-5">

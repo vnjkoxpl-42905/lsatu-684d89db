@@ -1,4 +1,4 @@
-import { orderedDistinctAnswers, type GradedQuestionAnswer, type ProgressWindow } from './firstAnswerProgress';
+import { isReleasedAnswer, orderedDistinctAnswers, type GradedQuestionAnswer, type ProgressWindow } from './firstAnswerProgress';
 
 export type HistoryAnswer = GradedQuestionAnswer & { isFirst: boolean };
 export interface TopicAccuracy {
@@ -34,7 +34,7 @@ export function firstAnswerDetails(answers: GradedQuestionAnswer[], window: Prog
   const byTopic = new Map<string, TopicAccuracy>();
   let untypedFirstAnswers = 0;
   for (const answer of history) {
-    if (!answer.isFirst || answer.area !== 'LR') continue;
+    if (!answer.isFirst || answer.area !== 'LR' || !isReleasedAnswer(answer)) continue;
     if (!answer.topic) {
       untypedFirstAnswers++;
       continue;

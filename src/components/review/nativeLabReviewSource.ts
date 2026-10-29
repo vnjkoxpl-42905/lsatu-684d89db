@@ -42,16 +42,23 @@ export function nativeLabQueueItem(attempt: NativeLabReviewAttempt): ReviewQueue
     latestAnswer: answer, correctAnswer: null, firstMissAt: attempt.row.created_at, lastActivityAt: attempt.row.created_at,
     reflection: null, flaggedNote: null, href: `/review/native-lab/${encodeURIComponent(attempt.row.id)}` };
 }
-export async function loadNativeLabReview(owner: string): Promise<ReviewQueueItem[]> {
+export async function loadNativeLabReviewResult(owner: string): Promise<{ items: ReviewQueueItem[]; unavailable: string[] }> {
   const items: ReviewQueueItem[] = [];
+  let unavailableCount = 0;
   for (let offset = 0; ; offset += 500) {
     const { data, error } = await supabase.from('intro_lr_attempts').select('*').eq('user_id', owner).eq('correct', false)
       .eq('mode', 'native_lab_v1').like('drill_id', 'native-lab:%').order('id').range(offset, offset + 499);
     if (error) throw error;
     if (!Array.isArray(data)) throw new Error('Native lab saved attempts returned an invalid response.');
-    items.push(...data.map(row => nativeLabQueueItem(parseNativeLabAttempt(row, owner))));
-    if (data.length < 500) return items;
+    for (const row of data) {
+      try { items.push(nativeLabQueueItem(parseNativeLabAttempt(row, owner))); }
+      catch { unavailableCount++; }
+    }
+    if (data.length < 500) return { items, unavailable: unavailableCount ? [`${unavailableCount} native lab saved submissions unavailable`] : [] };
   }
+}
+export async function loadNativeLabReview(owner: string): Promise<ReviewQueueItem[]> {
+  return (await loadNativeLabReviewResult(owner)).items;
 }
 export async function fetchOwnedNativeLabAttempt(owner: string, id: string): Promise<NativeLabReviewAttempt | null> {
   const { data, error } = await supabase.from('intro_lr_attempts').select('*').eq('user_id', owner).eq('id', id).eq('correct', false).eq('mode', 'native_lab_v1').maybeSingle();

@@ -1,7 +1,7 @@
 import { createReviewEpisodeService, reviewEpisodeState, type ReviewEpisode, type ReviewEpisodeEvent } from '@/lib/reviewEpisodes';
 import { assertActiveStudentScope } from '@/lib/studentScopedWork';
 import type { StudentSubjectScope } from '@/lib/studentSubjectScope';
-import { loadNativeLabReview } from '@/components/review/nativeLabReviewSource';
+import { loadNativeLabReviewResult } from '@/components/review/nativeLabReviewSource';
 import { loadHardSentencesReview } from '@/components/review/hardSentencesReviewSource';
 import type { ReviewQueueItem } from '@/components/review/reviewQueueModel';
 import { resolveStudentAccountId } from '@/lib/studentAccountScope';
@@ -37,7 +37,7 @@ export function projectReviewEpisodes(items: ReviewQueueItem[], studentId: strin
 }
 const service = createReviewEpisodeService();
 export const scopedReviewDependencies = {
-  assertScope: assertActiveStudentScope, native: loadNativeLabReview, hardSentences: loadHardSentencesReview,
+  assertScope: assertActiveStudentScope, native: loadNativeLabReviewResult, hardSentences: loadHardSentencesReview,
   list: service.list, open: service.open, resolveOwnerId: resolveStudentAccountId,
 };
 export async function loadScopedReviewSelections(scope: StudentSubjectScope, deps = scopedReviewDependencies) {
@@ -47,8 +47,8 @@ export async function loadScopedReviewSelections(scope: StudentSubjectScope, dep
   await deps.assertScope(scope);
   const [native, hs, records] = result;
   const unavailable = [native.status === 'rejected' && 'Native lab misses', hs.status === 'rejected' && 'Hard Sentences misses', records.status === 'rejected' && 'Saved review episodes',
-    ...(hs.status === 'fulfilled' ? hs.value.unavailable : [])].filter((value): value is string => typeof value === 'string');
-  return { items: [...(native.status === 'fulfilled' ? native.value : []), ...(hs.status === 'fulfilled' ? hs.value.items : [])],
+    ...(native.status === 'fulfilled' ? native.value.unavailable : []), ...(hs.status === 'fulfilled' ? hs.value.unavailable : [])].filter((value): value is string => typeof value === 'string');
+  return { items: [...(native.status === 'fulfilled' ? native.value.items : []), ...(hs.status === 'fulfilled' ? hs.value.items : [])],
     episodes: records.status === 'fulfilled' ? records.value.episodes : [], events: records.status === 'fulfilled' ? records.value.events : [],
     ownerId, canSelect: records.status === 'fulfilled', unavailable };
 }

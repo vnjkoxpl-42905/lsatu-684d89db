@@ -1,3 +1,4 @@
+import { safeReviewHubReturn } from '@/lib/reviewHubReturn';
 import { useEffect, useState } from 'react';
 import { Link, useParams, useSearchParams } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
@@ -9,7 +10,7 @@ export default function HardSentencesReviewDetail() {
   const { user } = useAuth();
   const [params] = useSearchParams();
   const requested = params.get('returnTo');
-  const returnTo = requested?.split('?')[0] === '/review/to-review' ? requested : '/review/to-review?reason=missed';
+  const returnTo = safeReviewHubReturn(requested) ?? '/review/to-review?reason=missed';
   const [saved, setSaved] = useState<{ scope: string; attempt: HardSentencesAttempt | null } | null>(null);
   const scope = `${user?.id ?? ''}:${sourceKind ?? ''}:${attemptKey ?? ''}`;
   const attempt = saved?.scope === scope ? saved.attempt : null;

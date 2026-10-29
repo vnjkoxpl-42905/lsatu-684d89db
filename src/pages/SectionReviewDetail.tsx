@@ -1,3 +1,4 @@
+import { safeReviewHubReturn } from '@/lib/reviewHubReturn';
 import * as React from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
@@ -16,9 +17,10 @@ export default function SectionReviewDetail() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const requestedReturn = searchParams.get("returnTo");
-  const returnTo = requestedReturn?.split("?")[0] === "/review/to-review"
-    ? requestedReturn : "/review/to-review?reason=skipped";
+  const returnTo = safeReviewHubReturn(requestedReturn) ?? "/review/to-review?reason=skipped";
   const [history, setHistory] = React.useState<SectionHistoryRow | null>(null);
+  const requestKey = `${user?.id ?? ''}:${historyId ?? ''}:${qid ?? ''}`;
+  const [loadedFor, setLoadedFor] = React.useState<string | null>(null);
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState<string | null>(null);
 
@@ -30,30 +32,35 @@ export default function SectionReviewDetail() {
     }
     let active = true;
     setLoading(true);
+    setHistory(null);
     setError(null);
     void fetchOwnedSectionHistoryItem(user.id, historyId).then((row) => {
-      if (active) setHistory(row);
+      if (active) { setHistory(row); setLoadedFor(requestKey); }
     }).catch((failure: unknown) => {
       if (active) setError(failure instanceof Error ? failure.message : "This section review could not be loaded.");
-    }).finally(() => { if (active) setLoading(false); });
+    }).finally(() => { if (active) { setLoadedFor(requestKey); setLoading(false); } });
     return () => { active = false; };
   }, [user?.id, historyId, qid]);
 
-  const stat = history?.questions.find((item) => item.qid === qid);
-  const available = history?.mode === "full-section" && !history.practiceTestRunId
-    && stat?.initialAnswer === UNANSWERED && stat.everVisited === true;
+  const stat = history?.questions.find((item) => item?.qid === qid);
+  const blankAnswer = stat?.initialAnswer === UNANSWERED;
+  const leftBlank = blankAnswer && stat.everVisited === true;
+  const recordedOutcome = typeof stat?.initialAnswer === 'string' && stat.initialAnswer.length > 0
+    && !blankAnswer && typeof stat.initialCorrect === 'boolean';
+  const available = loadedFor === requestKey && history?.mode === "full-section" && !history.practiceTestRunId
+    && Number.isFinite(Date.parse(history.completedAt)) && (leftBlank || recordedOutcome);
   const question = available && !bankLoading && !bankError ? questionBank.getQuestion(qid!) : null;
 
   return <div className="mx-auto w-full max-w-3xl px-4 py-7 sm:px-6">
     <Button variant="ghost" type="button" onClick={() => navigate(returnTo)} className="mb-5 min-h-11">
       <ArrowLeft className="mr-2 h-4 w-4" aria-hidden /> Back to Review
     </Button>
-    {loading ? <p role="status">Loading section review…</p>
+    {loading || (!error && loadedFor !== requestKey) ? <p role="status">Loading section review…</p>
       : error ? <p role="alert" className="text-destructive">{error}</p>
       : !available || !history || !stat ? <p role="status">This completed section item is not available for review in your account.</p>
       : <article className="space-y-6">
         <header>
-          <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Completed LR section · Opened and left blank</p>
+          <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Completed LR section · {leftBlank ? 'Opened and left blank' : 'Saved first answer'}</p>
           <h1 className="mt-2 text-2xl font-semibold">{sectionLabel(history)} · Question {stat.qnum}</h1>
           <p className="mt-2 text-sm text-muted-foreground">{stat.qtype} · Completed {new Date(history.completedAt).toLocaleDateString()}</p>
         </header>
@@ -71,9 +78,10 @@ export default function SectionReviewDetail() {
           : <p className="rounded-xl border border-border bg-card p-5">This question is no longer available in the question bank.</p>}
         <section className="rounded-xl border border-border bg-card p-5" aria-label="Saved section outcome">
           <h2 className="text-lg font-semibold">Saved section outcome</h2>
-          <p className="mt-2">First answer: none recorded. You opened this question but left it blank.</p>
-          <p className="mt-1">Credited answer at completion: <strong>{stat.correctAnswer}</strong></p>
-          {stat.brAnswer && <p className="mt-1">Blind Review answer: <strong>{stat.brAnswer}</strong></p>}
+          {blankAnswer ? <p className="mt-2">First answer: none recorded.{leftBlank ? ' You opened this question but left it blank.' : ''}</p>
+            : <p className="mt-2">First answer: <strong>{stat.initialAnswer}</strong> · <strong>{stat.initialCorrect ? 'Correct' : 'Missed'}</strong></p>}
+          <p className="mt-1">Credited answer at completion: <strong>{stat.correctAnswer || 'Not recorded'}</strong></p>
+          {stat.brAnswer && stat.brAnswer !== UNANSWERED && <p className="mt-1">Blind Review answer: <strong>{stat.brAnswer}</strong></p>}
         </section>
         {question && <p className="text-xs text-muted-foreground">Question wording is loaded from the current bank. The saved answer and visit state come from this completed sitting.</p>}
       </article>}

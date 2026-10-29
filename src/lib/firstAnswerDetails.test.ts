@@ -15,7 +15,7 @@ describe('first-answer History and Topics', () => {
       { id: 'first', user_id: 'student', session_id: 'completed', passage_id: 11, question_id: 1, selected: 'B', is_correct: false, created_at: '2026-09-26T00:00:00Z' },
       { id: 'future-review', user_id: 'student', session_id: 'completed', passage_id: 11, question_id: 1, selected: 'C', is_correct: true, created_at: '2026-10-02T00:00:00Z' },
       { id: 'future-first', user_id: 'student', session_id: 'completed', passage_id: 11, question_id: 2, selected: 'C', is_correct: true, created_at: '2026-10-02T00:00:00Z' },
-    ], [{ id: 'completed', user_id: 'student', status: 'completed', completed_at: '2026-09-27T00:00:00Z', excluded_from_analytics: false, practice_test_run_id: null }], 'student', new Set());
+    ], [{ id: 'completed', user_id: 'student', status: 'completed', completed_at: '2026-09-27T00:00:00Z', excluded_from_analytics: false, practice_test_run_id: null, config: { resultsRevealedAt: '2026-09-27T00:00:00Z' } }], 'student', new Set());
 
     // The adapter preserves saved dates; snapshot projections, not backdating, hide future rows.
     expect(answers.find(row => row.attemptId === 'rc_attempts:future-review')?.gradedAt).toBe('2026-10-02T00:00:00Z');
