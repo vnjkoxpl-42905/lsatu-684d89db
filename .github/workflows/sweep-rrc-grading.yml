@@ -1,0 +1,81 @@
+# The scheduler behind `sweep-rrc-grading`.
+#
+# A student finishes a Read, Recall, Colour section and her browser asks the
+# server to grade it, without waiting for the answer. That ask is easy to lose:
+# the tab closed before it left, the wifi dropped, the function was cold. This
+# is what catches those. It re-drives any finished section that has no grade
+# after ten minutes, so a closed laptop never costs a Report Card.
+#
+# It lives here rather than in pg_cron because the worker secret must not go
+# into a SQL migration or cron metadata -- see
+# `docs/ops/native-single-session-workers.md`. GitHub holds it encrypted and
+# hands it to the job at run time.
+#
+# The sweep is idempotent: a section that already has a complete grade is
+# returned untouched, so a redundant run costs one request and nothing else.
+
+name: Sweep RRC grading
+
+on:
+  schedule:
+    # Hourly, not every ten minutes, and the reason is billing rather than
+    # design. This repository is private, so Actions minutes are metered and
+    # GitHub rounds every job up to a full minute however briefly it runs. A
+    # ten-minute schedule is 4,320 billed minutes a month against a 2,000
+    # minute allowance; hourly is 720 and leaves room for real CI.
+    #
+    # An hour is enough because this is the third line of defence, not the
+    # first. The student's browser asks for grading the moment she finishes,
+    # and asks again every time she reopens the Report Card. This catches only
+    # the run she never comes back to.
+    - cron: "17 * * * *"
+  # So it can be run by hand from the Actions tab without waiting for the clock.
+  workflow_dispatch:
+
+# A slow sweep must not stack up behind itself.
+concurrency:
+  group: sweep-rrc-grading
+  cancel-in-progress: false
+
+jobs:
+  sweep:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Ask the sweeper to run
+        env:
+          WORKER_SECRET: ${{ secrets.BOOKING_WORKER_SECRET }}
+        run: |
+          set -euo pipefail
+
+          if [ -z "${WORKER_SECRET}" ]; then
+            echo "::error::BOOKING_WORKER_SECRET is not set on this repository."
+            echo "Add it under Settings -> Secrets and variables -> Actions."
+            exit 1
+          fi
+
+          # Body and status captured separately so a failure prints the reason
+          # rather than just a number.
+          status=$(curl -sS -o response.json -w '%{http_code}' \
+            --max-time 240 \
+            -X POST "https://atrcqxpmqrynmtvvyjju.supabase.co/functions/v1/sweep-rrc-grading" \
+            -H 'Content-Type: application/json' \
+            -H "x-worker-secret: ${WORKER_SECRET}" \
+            -d '{}')
+
+          echo "HTTP ${status}"
+          cat response.json
+          echo
+
+          if [ "${status}" != "200" ]; then
+            echo "::error::Sweeper returned HTTP ${status}. 401 means the secret here and the one in Lovable have drifted apart; 500 means it is missing on the function."
+            exit 1
+          fi
+
+          # `deferred` is what is left for the next run. One or two is normal on
+          # a busy evening; a number that climbs run after run means sections are
+          # arriving faster than the sweeper drains them.
+          deferred=$(python3 -c "import json;print(json.load(open('response.json')).get('deferred',0))")
+          if [ "${deferred}" -gt 0 ]; then
+            echo "::warning::${deferred} section(s) still waiting to be graded after this sweep."
+          fi

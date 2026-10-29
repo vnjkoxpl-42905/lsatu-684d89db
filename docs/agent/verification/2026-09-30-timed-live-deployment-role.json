@@ -1,0 +1,16 @@
+{
+  "checkedAt": "2026-09-30",
+  "readOnly": true,
+  "containsUserRecords": false,
+  "rows": [
+    {
+      "current_role": "postgres",
+      "public_create": true,
+      "rolbypassrls": true,
+      "rolcreatedb": true,
+      "rolcreaterole": true,
+      "rolsuper": false,
+      "session_role": "postgres"
+    }
+  ]
+}

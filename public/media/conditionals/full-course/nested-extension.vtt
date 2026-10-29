@@ -1,0 +1,57 @@
+WEBVTT
+
+1
+00:00:00.600 --> 00:00:05.037
+Sometimes an outer condition makes an inner conditional relationship hold.
+
+2
+00:00:05.337 --> 00:00:09.028
+The inner if-clause is part of the result of that outer condition.
+
+3
+00:00:09.328 --> 00:00:14.299
+If the trial is funded, then if its protocol is approved, the trial is registered.
+
+4
+00:00:14.599 --> 00:00:19.228
+Funding supplies a relationship: approval would be enough for registration.
+
+5
+00:00:19.528 --> 00:00:23.325
+Funding alone does not establish approval or registration.
+
+6
+00:00:23.625 --> 00:00:27.465
+If both funding and approval are given, registration follows.
+
+7
+00:00:27.765 --> 00:00:37.856
+The same statement can be written with a combined sufficient side, funded AND approved → registered, but the grouping helps us see where that combination came from.
+
+8
+00:00:38.156 --> 00:00:42.828
+An extra if can make it tempting to treat the inner sufficient condition as a fact.
+
+9
+00:00:43.128 --> 00:00:46.243
+Separating outer and inner scope prevents that mistake.
+
+10
+00:00:46.543 --> 00:00:50.361
+Keep the entire inner conditional together as the outer result.
+
+11
+00:00:50.661 --> 00:00:53.797
+It is a rule at this point, not an asserted inner event.
+
+12
+00:00:54.097 --> 00:00:56.807
+Use brackets when they make the scope easier to read.
+
+13
+00:00:57.107 --> 00:01:03.763
+Do not flatten a conditional result into a fact or treat the final result as proof of the outer condition.
+
+14
+00:01:04.063 --> 00:01:08.265
+This extension is optional after the core compound and chaining work.

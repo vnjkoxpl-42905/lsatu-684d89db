@@ -1,0 +1,1154 @@
+[
+  {
+    "id": "ML1",
+    "mode": "missing-link",
+    "level": "variables",
+    "premises": [
+      "A → B.",
+      "C → D."
+    ],
+    "prompt": "What's the missing link?",
+    "choices": [
+      {
+        "id": "A",
+        "text": "C → B"
+      },
+      {
+        "id": "B",
+        "text": "D → C"
+      },
+      {
+        "id": "C",
+        "text": "B → C"
+      },
+      {
+        "id": "D",
+        "text": "B → A"
+      },
+      {
+        "id": "E",
+        "text": "D → A"
+      }
+    ],
+    "correctChoiceId": "C",
+    "explanation": "Starting with A gets you to B. The second premise starts at C and gets you to D. Add B → C and the chain becomes A → B → C → D.\n\nWhy the others fail: A joins C to B in the wrong direction. B reverses the second premise. D takes you back to A. E reverses the target rather than establishing it.",
+    "conclusion": "A → D"
+  },
+  {
+    "id": "ML2",
+    "mode": "missing-link",
+    "level": "variables",
+    "premises": [
+      "A → B.",
+      "C̸ → B̸."
+    ],
+    "prompt": "What's the missing link?",
+    "choices": [
+      {
+        "id": "A",
+        "text": "D → C"
+      },
+      {
+        "id": "B",
+        "text": "C → A"
+      },
+      {
+        "id": "C",
+        "text": "C̸ → D"
+      },
+      {
+        "id": "D",
+        "text": "C → D"
+      },
+      {
+        "id": "E",
+        "text": "D → A"
+      }
+    ],
+    "correctChoiceId": "D",
+    "explanation": "Contrapose C̸ → B̸ to obtain B → C. Now A leads to B and then C. C → D finishes the chain.\n\nWhy the others fail: A runs from the destination back toward C. B loops back to A. C requires C̸, but the premises give C when A occurs. E begins at D, which is what you still need to reach.",
+    "conclusion": "A → D"
+  },
+  {
+    "id": "ML3",
+    "mode": "missing-link",
+    "level": "variables",
+    "premises": [
+      "A → B̸.",
+      "C → D."
+    ],
+    "prompt": "What's the missing link?",
+    "choices": [
+      {
+        "id": "A",
+        "text": "B → C"
+      },
+      {
+        "id": "B",
+        "text": "C → B̸"
+      },
+      {
+        "id": "C",
+        "text": "C̸ → B̸"
+      },
+      {
+        "id": "D",
+        "text": "D → C"
+      },
+      {
+        "id": "E",
+        "text": "B̸ → C"
+      }
+    ],
+    "correctChoiceId": "E",
+    "explanation": "A gives B̸, not B. The bridge must let you move from B̸ to C. Then C gives D.\n\nWhy the others fail: A requires B. B and C merely make B̸ a result; neither lets you start from B̸ and reach C. D reverses the second premise.",
+    "conclusion": "A → D"
+  },
+  {
+    "id": "ML4",
+    "mode": "missing-link",
+    "level": "variables",
+    "premises": [
+      "D → A.",
+      "B → L."
+    ],
+    "prompt": "What's the missing link?",
+    "choices": [
+      {
+        "id": "A",
+        "text": "A → B"
+      },
+      {
+        "id": "B",
+        "text": "B → A"
+      },
+      {
+        "id": "C",
+        "text": "A̸ → B"
+      },
+      {
+        "id": "D",
+        "text": "L → D"
+      },
+      {
+        "id": "E",
+        "text": "A → B̸"
+      }
+    ],
+    "correctChoiceId": "A",
+    "explanation": "Adding A → B creates D → A → B → L. Contrapose the chain: L̸ → B̸ → A̸ → D̸. That is the conclusion.\n\nWhy the others fail: B points across the gap backward. C starts from A̸, although D supplies A. D reverses D → L. E sends A to B̸, which does not establish L or exclude D when L is absent.",
+    "conclusion": "L̸ → D̸"
+  },
+  {
+    "id": "ML5",
+    "mode": "missing-link",
+    "level": "variables",
+    "premises": [
+      "A → B.",
+      "B and C → D."
+    ],
+    "prompt": "What's the missing link?",
+    "choices": [
+      {
+        "id": "A",
+        "text": "C → A"
+      },
+      {
+        "id": "B",
+        "text": "A → C"
+      },
+      {
+        "id": "C",
+        "text": "D → C"
+      },
+      {
+        "id": "D",
+        "text": "D → B and C"
+      },
+      {
+        "id": "E",
+        "text": "A̸ → C̸"
+      }
+    ],
+    "correctChoiceId": "B",
+    "explanation": "A already gives B. The second rule needs B and C together. Adding A → C supplies C whenever A occurs, so the full trigger is satisfied and D follows.\n\nWhy the others fail: A does not give C from A. C and D begin with the result you need to prove. E says what happens without A; it says nothing that supplies C when A occurs.",
+    "conclusion": "A → D"
+  },
+  {
+    "id": "ML6",
+    "mode": "missing-link",
+    "level": "variables",
+    "premises": [
+      "A → B or C.",
+      "B → D."
+    ],
+    "prompt": "What's the missing link?",
+    "choices": [
+      {
+        "id": "A",
+        "text": "D → C"
+      },
+      {
+        "id": "B",
+        "text": "C → A"
+      },
+      {
+        "id": "C",
+        "text": "C → D"
+      },
+      {
+        "id": "D",
+        "text": "A → B̸"
+      },
+      {
+        "id": "E",
+        "text": "D → A"
+      }
+    ],
+    "correctChoiceId": "C",
+    "explanation": "A guarantees at least one of B and C. The B branch already reaches D. C → D makes the other branch reach D too. Either way, A guarantees D.\n\nWhy the others fail: A and E begin with D. B sends C back to A without ensuring D. D rules out B when A occurs, forcing C, but still gives no path from C to D.",
+    "conclusion": "A → D"
+  },
+  {
+    "id": "ML7",
+    "mode": "missing-link",
+    "level": "words",
+    "premises": [
+      "If a visitor's badge is scanned, that visitor is admitted.",
+      "A visitor is admitted only if that visitor's registration is current."
+    ],
+    "prompt": "What's the missing link?",
+    "choices": [
+      {
+        "id": "A",
+        "text": "Every visitor whose badge is scanned is an invited guest."
+      },
+      {
+        "id": "B",
+        "text": "Every visitor with current registration is an invited guest."
+      },
+      {
+        "id": "C",
+        "text": "No invited guest has their badge scanned."
+      },
+      {
+        "id": "D",
+        "text": "Every invited guest has their badge scanned."
+      },
+      {
+        "id": "E",
+        "text": "Every admitted visitor is an invited guest."
+      }
+    ],
+    "correctChoiceId": "D",
+    "explanation": "Let G = invited guest, B = badge scanned, E = admitted, R = registration current. The premises give B → E → R. Add G → B to obtain G → B → E → R.\n\nWhy the others fail: A, B and E make guest status a result, not a starting point that guarantees registration. C blocks the badge condition without ruling out guest status or establishing registration.",
+    "conclusion": "Every invited guest has current registration",
+    "groupTags": [
+      "1",
+      "2"
+    ]
+  },
+  {
+    "id": "ML8",
+    "mode": "missing-link",
+    "level": "words",
+    "premises": [
+      "No expired pass is valid.",
+      "Entering the facility requires a valid pass.",
+      "For this exercise, evaluate the person's sole pass. C = canceled; X = expired; V = valid; E = permitted to enter using that pass."
+    ],
+    "prompt": "What's the missing link?",
+    "choices": [
+      {
+        "id": "A",
+        "text": "Every canceled pass is expired."
+      },
+      {
+        "id": "B",
+        "text": "Every expired pass is canceled."
+      },
+      {
+        "id": "C",
+        "text": "Every pass that is not canceled is expired."
+      },
+      {
+        "id": "D",
+        "text": "Every canceled pass is valid."
+      },
+      {
+        "id": "E",
+        "text": "Every valid pass permits entry."
+      }
+    ],
+    "correctChoiceId": "A",
+    "explanation": "No expired pass is valid means X → V̸. Entry requires validity: E → V, so V̸ → E̸. Add C → X and canceled leads to expired, invalid, and therefore no entry using that pass.\n\nWhy the others fail: B reverses the needed connection. C addresses passes that are not canceled. D establishes validity rather than excluding entry. E gives another route into the facility, not a reason canceled passes cannot be used.",
+    "conclusion": "Anyone holding only a canceled pass cannot enter the facility",
+    "groupTags": [
+      "1",
+      "2",
+      "4"
+    ]
+  },
+  {
+    "id": "ML9",
+    "mode": "missing-link",
+    "level": "words",
+    "premises": [
+      "A shipment cannot leave unless it has been inspected.",
+      "Inspection guarantees that the shipment is sealed."
+    ],
+    "prompt": "What's the missing link?",
+    "choices": [
+      {
+        "id": "A",
+        "text": "Every unsealed shipment is flagged."
+      },
+      {
+        "id": "B",
+        "text": "Every flagged shipment is unsealed."
+      },
+      {
+        "id": "C",
+        "text": "Every flagged shipment is sealed."
+      },
+      {
+        "id": "D",
+        "text": "Every uninspected shipment is flagged."
+      },
+      {
+        "id": "E",
+        "text": "Every sealed shipment can leave."
+      }
+    ],
+    "correctChoiceId": "B",
+    "explanation": "Let L = can leave, I = inspected, S = sealed, F = flagged. The premises give L → I → S. Therefore S̸ → I̸ → L̸. Adding F → S̸ establishes F → L̸.\n\nWhy the others fail: A reverses the bridge. C supplies a necessary condition for departure without ruling departure out. D makes flagged status a result, not a trigger for being uninspected. E supplies permission to leave rather than preventing it.",
+    "conclusion": "No flagged shipment can leave",
+    "groupTags": [
+      "1",
+      "3",
+      "4"
+    ]
+  },
+  {
+    "id": "ML10",
+    "mode": "missing-link",
+    "level": "words",
+    "premises": [
+      "Every finalist submits a sample or completes an interview.",
+      "No applicant who completes an interview lacks approval.",
+      "Applicants receive approval unless a review is pending."
+    ],
+    "prompt": "What's the missing link?",
+    "choices": [
+      {
+        "id": "A",
+        "text": "Every applicant without a pending review submits a sample."
+      },
+      {
+        "id": "B",
+        "text": "Every applicant with a pending review submits a sample."
+      },
+      {
+        "id": "C",
+        "text": "Every applicant who submits a sample has a pending review."
+      },
+      {
+        "id": "D",
+        "text": "Every approved applicant submits a sample."
+      },
+      {
+        "id": "E",
+        "text": "No applicant who submits a sample has a pending review."
+      }
+    ],
+    "correctChoiceId": "E",
+    "explanation": "Let F = finalist, S = sample, J = interview, A = approval, P = pending review. The rules are F → S or J, J → A, and P̸ → A. The interview branch already reaches approval. E supplies S → P̸, so the sample branch also reaches approval. Both alternatives now support F → A.\n\nWhy the others fail: A points from no pending review to sample, not from sample to no pending review. B and C connect samples with a pending review, which does not establish approval. D reverses a possible connection from samples to approval.",
+    "conclusion": "Every finalist receives approval",
+    "groupTags": [
+      "1",
+      "3",
+      "4"
+    ]
+  },
+  {
+    "id": "MBT1",
+    "mode": "must-be-true",
+    "level": "variables",
+    "premises": [
+      "A → B.",
+      "B → C."
+    ],
+    "prompt": "Which statement must be true?",
+    "choices": [
+      {
+        "id": "A",
+        "text": "C → A"
+      },
+      {
+        "id": "B",
+        "text": "A̸ → C̸"
+      },
+      {
+        "id": "C",
+        "text": "A → C"
+      },
+      {
+        "id": "D",
+        "text": "B → A"
+      },
+      {
+        "id": "E",
+        "text": "C → B"
+      }
+    ],
+    "correctChoiceId": "C",
+    "explanation": "A gives B, and B gives C. So A → C. A, D and E reverse valid arrows. B incorrectly treats the absence of A as ruling out C."
+  },
+  {
+    "id": "MBT2",
+    "mode": "must-be-true",
+    "level": "variables",
+    "premises": [
+      "A → B.",
+      "C̸ → B̸."
+    ],
+    "prompt": "Which statement must be true?",
+    "choices": [
+      {
+        "id": "A",
+        "text": "C → A"
+      },
+      {
+        "id": "B",
+        "text": "B → A"
+      },
+      {
+        "id": "C",
+        "text": "A → C̸"
+      },
+      {
+        "id": "D",
+        "text": "A → C"
+      },
+      {
+        "id": "E",
+        "text": "A̸ → C̸"
+      }
+    ],
+    "correctChoiceId": "D",
+    "explanation": "The second premise contraposes to B → C. Join it to A → B. A and B reverse what is established. C negates the result. E infers from the absence of the starting condition."
+  },
+  {
+    "id": "MBT3",
+    "mode": "must-be-true",
+    "level": "variables",
+    "premises": [
+      "A → B.",
+      "B → C.",
+      "C is false."
+    ],
+    "prompt": "Which statement must be true?",
+    "choices": [
+      {
+        "id": "A",
+        "text": "A is true."
+      },
+      {
+        "id": "B",
+        "text": "B is true."
+      },
+      {
+        "id": "C",
+        "text": "C is true."
+      },
+      {
+        "id": "D",
+        "text": "At least one of A and B is true."
+      },
+      {
+        "id": "E",
+        "text": "A is false."
+      }
+    ],
+    "correctChoiceId": "E",
+    "explanation": "C̸ gives B̸, and B̸ gives A̸. Here a fact activates the contrapositive chain. Every other option conflicts with the resulting facts."
+  },
+  {
+    "id": "MBT4",
+    "mode": "must-be-true",
+    "level": "variables",
+    "premises": [
+      "A and B → C.",
+      "C → D.",
+      "A is true."
+    ],
+    "prompt": "Which statement must be true?",
+    "choices": [
+      {
+        "id": "A",
+        "text": "B → D"
+      },
+      {
+        "id": "B",
+        "text": "A → D"
+      },
+      {
+        "id": "C",
+        "text": "D → B"
+      },
+      {
+        "id": "D",
+        "text": "B̸ → D̸"
+      },
+      {
+        "id": "E",
+        "text": "D → C"
+      }
+    ],
+    "correctChoiceId": "A",
+    "explanation": "A is already established. If B also occurs, both parts of the trigger hold, producing C and then D. B incorrectly treats A alone as enough. C and E reverse arrows. D rules out D merely because this particular trigger is incomplete."
+  },
+  {
+    "id": "MBT5",
+    "mode": "must-be-true",
+    "level": "variables",
+    "premises": [
+      "A → B or C.",
+      "A is true.",
+      "C is false."
+    ],
+    "prompt": "Which statement must be true?",
+    "choices": [
+      {
+        "id": "A",
+        "text": "B is false."
+      },
+      {
+        "id": "B",
+        "text": "B is true."
+      },
+      {
+        "id": "C",
+        "text": "C is true."
+      },
+      {
+        "id": "D",
+        "text": "Both B and C are true."
+      },
+      {
+        "id": "E",
+        "text": "A is false."
+      }
+    ],
+    "correctChoiceId": "B",
+    "explanation": "A guarantees at least one of B and C. C is ruled out, so B must hold. A rejects the remaining alternative. C and D conflict with C̸. E contradicts the stated fact A."
+  },
+  {
+    "id": "MBT6",
+    "mode": "must-be-true",
+    "level": "variables",
+    "premises": [
+      "A → B or C.",
+      "B → D.",
+      "C → D."
+    ],
+    "prompt": "Which statement must be true?",
+    "choices": [
+      {
+        "id": "A",
+        "text": "D → A"
+      },
+      {
+        "id": "B",
+        "text": "A → B"
+      },
+      {
+        "id": "C",
+        "text": "A → D"
+      },
+      {
+        "id": "D",
+        "text": "A → C"
+      },
+      {
+        "id": "E",
+        "text": "A̸ → D̸"
+      }
+    ],
+    "correctChoiceId": "C",
+    "explanation": "Either available branch reaches D. You do not need to know which branch occurs. A reverses the resulting rule. B and D select one alternative without support. E rules out D when A is absent, even though D could occur another way."
+  },
+  {
+    "id": "MBT7",
+    "mode": "must-be-true",
+    "level": "words",
+    "premises": [
+      "Every editor reviews submissions.",
+      "Only certified staff review submissions."
+    ],
+    "prompt": "Which statement must be true?",
+    "choices": [
+      {
+        "id": "A",
+        "text": "Every certified staff member is an editor."
+      },
+      {
+        "id": "B",
+        "text": "No person who is not an editor is certified."
+      },
+      {
+        "id": "C",
+        "text": "Everyone who reviews submissions is an editor."
+      },
+      {
+        "id": "D",
+        "text": "Every editor is certified."
+      },
+      {
+        "id": "E",
+        "text": "Every certified staff member reviews submissions."
+      }
+    ],
+    "correctChoiceId": "D",
+    "explanation": "Editor → reviewer. “Only certified staff” makes certification necessary for reviewing: reviewer → certified. Therefore editor → certified. A, C and E reverse established connections. B infers not certified from not editor.",
+    "groupTags": [
+      "1",
+      "2"
+    ]
+  },
+  {
+    "id": "MBT8",
+    "mode": "must-be-true",
+    "level": "words",
+    "premises": [
+      "No damaged package is accepted.",
+      "Every insured package is accepted."
+    ],
+    "prompt": "Which statement must be true?",
+    "choices": [
+      {
+        "id": "A",
+        "text": "No insured package is damaged."
+      },
+      {
+        "id": "B",
+        "text": "Every undamaged package is insured."
+      },
+      {
+        "id": "C",
+        "text": "Every uninsured package is damaged."
+      },
+      {
+        "id": "D",
+        "text": "Every accepted package is insured."
+      },
+      {
+        "id": "E",
+        "text": "Every damaged package is insured."
+      }
+    ],
+    "correctChoiceId": "A",
+    "explanation": "Damaged → not accepted. Contrapose: accepted → not damaged. Insured → accepted → not damaged. B and D reverse valid relationships. C treats not insured as enough to establish damage. E connects damage to insurance without support.",
+    "groupTags": [
+      "1",
+      "4"
+    ]
+  },
+  {
+    "id": "MBT9",
+    "mode": "must-be-true",
+    "level": "words",
+    "premises": [
+      "The machine operates unless the safety switch is off.",
+      "The machine operates only if cooling is active."
+    ],
+    "prompt": "Which statement must be true?",
+    "choices": [
+      {
+        "id": "A",
+        "text": "If the safety switch is off, the machine does not operate."
+      },
+      {
+        "id": "B",
+        "text": "If cooling is not active, the safety switch is off."
+      },
+      {
+        "id": "C",
+        "text": "If cooling is active, the machine operates."
+      },
+      {
+        "id": "D",
+        "text": "If the machine does not operate, the safety switch is not off."
+      },
+      {
+        "id": "E",
+        "text": "If cooling is not active, the safety switch is not off."
+      }
+    ],
+    "correctChoiceId": "B",
+    "explanation": "Let S = switch off, O = operates, C = cooling active. The premises give S̸ → O → C. Contrapose the chain: C̸ → O̸ → S. A adds an unwarranted converse to the unless rule. C reverses the cooling requirement. D and E negate the switch condition incorrectly.",
+    "groupTags": [
+      "2",
+      "3"
+    ]
+  },
+  {
+    "id": "MBT10",
+    "mode": "must-be-true",
+    "level": "words",
+    "premises": [
+      "Every research grant requires approval.",
+      "Approval is withheld unless the review is complete.",
+      "No incomplete application receives a completed review.",
+      "A completed review guarantees either a standard award or an exception.",
+      "This application receives a research grant but does not receive a standard award."
+    ],
+    "prompt": "Which statement must be true?",
+    "choices": [
+      {
+        "id": "A",
+        "text": "It receives an exception, and it is incomplete."
+      },
+      {
+        "id": "B",
+        "text": "It receives no exception, and it is complete."
+      },
+      {
+        "id": "C",
+        "text": "It receives a standard award, and it is complete."
+      },
+      {
+        "id": "D",
+        "text": "Its review is not complete, and it receives an exception."
+      },
+      {
+        "id": "E",
+        "text": "It receives an exception, and it is complete."
+      }
+    ],
+    "correctChoiceId": "E",
+    "explanation": "Let G = grant, A = approval, R = completed review, K = complete application, S = standard award, E = exception. Diagram G → A → R. The no rule is K̸ → R̸, so R → K. The guarantee is R → S or E. The grant establishes R and K. Since S is false, E must hold. Both parts of choice E follow.\n\nWhy the others fail: A contradicts the application's completeness. B denies the required remaining award alternative. C contradicts the stated absence of a standard award. D contradicts the completed review established by the grant.",
+    "groupTags": [
+      "1",
+      "2",
+      "3",
+      "4"
+    ]
+  },
+  {
+    "id": "PHOTO-ML01",
+    "mode": "missing-link",
+    "level": "variables",
+    "premises": [
+      "A → B"
+    ],
+    "prompt": "What's the missing link?",
+    "choices": [
+      {
+        "id": "A",
+        "text": "C → B"
+      },
+      {
+        "id": "B",
+        "text": "B → C"
+      },
+      {
+        "id": "C",
+        "text": "B → C̸"
+      },
+      {
+        "id": "D",
+        "text": "B̸ → C"
+      },
+      {
+        "id": "E",
+        "text": "A → B"
+      }
+    ],
+    "correctChoiceId": "B",
+    "explanation": "A reaches B. Add B → C to reach the target C. The completed chain is A → B → C.\n\nEquivalent answer forms: B → C and C̸ → B̸. Only one form appears among the five choices.\n\nWhy the other choices fail:\n\n- Choice A: A is true; B is true; C is false. The premises and this option are true, but the target conclusion is false.\n- Choice C: A is true; B is true; C is false. The premises and this option are true, but the target conclusion is false.\n- Choice D: A is true; B is true; C is false. The premises and this option are true, but the target conclusion is false.\n- Choice E: A is true; B is true; C is false. The premises and this option are true, but the target conclusion is false.",
+    "conclusion": "A → C"
+  },
+  {
+    "id": "PHOTO-ML02",
+    "mode": "missing-link",
+    "level": "variables",
+    "premises": [
+      "A → B"
+    ],
+    "prompt": "What's the missing link?",
+    "choices": [
+      {
+        "id": "A",
+        "text": "A → C"
+      },
+      {
+        "id": "B",
+        "text": "C → A̸"
+      },
+      {
+        "id": "C",
+        "text": "C̸ → A"
+      },
+      {
+        "id": "D",
+        "text": "C → B̸"
+      },
+      {
+        "id": "E",
+        "text": "A̸ → C̸"
+      }
+    ],
+    "correctChoiceId": "E",
+    "explanation": "The target starts at C, but the existing rule starts at A. Add C → A. The completed chain is C → A → B.\n\nEquivalent answer forms: C → A and A̸ → C̸. The correct choice uses the contrapositive form. Only one form appears among the five choices.\n\nWhy the other choices fail:\n\n- Choice A: A is false; B is false; C is true. The premises and this option are true, but the target conclusion is false.\n- Choice B: A is false; B is false; C is true. The premises and this option are true, but the target conclusion is false.\n- Choice C: A is false; B is false; C is true. The premises and this option are true, but the target conclusion is false.\n- Choice D: A is false; B is false; C is true. The premises and this option are true, but the target conclusion is false.",
+    "conclusion": "C → B"
+  },
+  {
+    "id": "PHOTO-ML03",
+    "mode": "missing-link",
+    "level": "variables",
+    "premises": [
+      "A → B"
+    ],
+    "prompt": "What's the missing link?",
+    "choices": [
+      {
+        "id": "A",
+        "text": "C → B̸"
+      },
+      {
+        "id": "B",
+        "text": "B̸ → C"
+      },
+      {
+        "id": "C",
+        "text": "C → B"
+      },
+      {
+        "id": "D",
+        "text": "C̸ → B̸"
+      },
+      {
+        "id": "E",
+        "text": "B → A"
+      }
+    ],
+    "correctChoiceId": "A",
+    "explanation": "The target ends at A̸. Contrapose the premise to get B̸ → A̸. Add C → B̸, producing C → B̸ → A̸.\n\nEquivalent answer forms: C → B̸ and B → C̸. Only one form appears among the five choices.\n\nWhy the other choices fail:\n\n- Choice B: A is true; B is true; C is true. The premises and this option are true, but the target conclusion is false.\n- Choice C: A is true; B is true; C is true. The premises and this option are true, but the target conclusion is false.\n- Choice D: A is true; B is true; C is true. The premises and this option are true, but the target conclusion is false.\n- Choice E: A is true; B is true; C is true. The premises and this option are true, but the target conclusion is false.",
+    "conclusion": "C → A̸"
+  },
+  {
+    "id": "PHOTO-ML04",
+    "mode": "missing-link",
+    "level": "variables",
+    "premises": [
+      "A → B"
+    ],
+    "prompt": "What's the missing link?",
+    "choices": [
+      {
+        "id": "A",
+        "text": "C → A̸"
+      },
+      {
+        "id": "B",
+        "text": "A̸ → C̸"
+      },
+      {
+        "id": "C",
+        "text": "C̸ → A"
+      },
+      {
+        "id": "D",
+        "text": "A → C"
+      },
+      {
+        "id": "E",
+        "text": "A → B̸"
+      }
+    ],
+    "correctChoiceId": "C",
+    "explanation": "The target starts at B̸. Contrapose the premise: B̸ → A̸. Add A̸ → C to obtain B̸ → A̸ → C.\n\nEquivalent answer forms: A̸ → C and C̸ → A. The correct choice uses the contrapositive form. Only one form appears among the five choices.\n\nWhy the other choices fail:\n\n- Choice A: A is false; B is false; C is false. The premises and this option are true, but the target conclusion is false.\n- Choice B: A is false; B is false; C is false. The premises and this option are true, but the target conclusion is false.\n- Choice D: A is false; B is false; C is false. The premises and this option are true, but the target conclusion is false.\n- Choice E: A is false; B is false; C is false. The premises and this option are true, but the target conclusion is false.",
+    "conclusion": "B̸ → C"
+  },
+  {
+    "id": "PHOTO-ML05",
+    "mode": "missing-link",
+    "level": "variables",
+    "premises": [
+      "A → B",
+      "C → D"
+    ],
+    "prompt": "What's the missing link?",
+    "choices": [
+      {
+        "id": "A",
+        "text": "C → B"
+      },
+      {
+        "id": "B",
+        "text": "B → C̸"
+      },
+      {
+        "id": "C",
+        "text": "B̸ → C"
+      },
+      {
+        "id": "D",
+        "text": "B → C"
+      },
+      {
+        "id": "E",
+        "text": "C → A̸"
+      }
+    ],
+    "correctChoiceId": "D",
+    "explanation": "Starting at A reaches B. Reaching C would then lead to D. Add B → C to complete A → B → C → D.\n\nEquivalent answer forms: B → C and C̸ → B̸. Only one form appears among the five choices.\n\nWhy the other choices fail:\n\n- Choice A: A is true; B is true; C is false; D is false. The premises and this option are true, but the target conclusion is false.\n- Choice B: A is true; B is true; C is false; D is false. The premises and this option are true, but the target conclusion is false.\n- Choice C: A is true; B is true; C is false; D is false. The premises and this option are true, but the target conclusion is false.\n- Choice E: A is true; B is true; C is false; D is false. The premises and this option are true, but the target conclusion is false.",
+    "conclusion": "A → D"
+  },
+  {
+    "id": "PHOTO-ML06",
+    "mode": "missing-link",
+    "level": "variables",
+    "premises": [
+      "A → B",
+      "C → D"
+    ],
+    "prompt": "What's the missing link?",
+    "choices": [
+      {
+        "id": "A",
+        "text": "A̸ → D̸"
+      },
+      {
+        "id": "B",
+        "text": "A → D"
+      },
+      {
+        "id": "C",
+        "text": "D → A̸"
+      },
+      {
+        "id": "D",
+        "text": "D̸ → A"
+      },
+      {
+        "id": "E",
+        "text": "D → C"
+      }
+    ],
+    "correctChoiceId": "A",
+    "explanation": "Begin with the rule containing the target start: C → D. The other rule ends at the target B: A → B. Add D → A. The completed chain is C → D → A → B.\n\nEquivalent answer forms: D → A and A̸ → D̸. The correct choice uses the contrapositive form. Only one form appears among the five choices.\n\nWhy the other choices fail:\n\n- Choice B: A is false; B is false; C is true; D is true. The premises and this option are true, but the target conclusion is false.\n- Choice C: A is false; B is false; C is true; D is true. The premises and this option are true, but the target conclusion is false.\n- Choice D: A is false; B is false; C is true; D is true. The premises and this option are true, but the target conclusion is false.\n- Choice E: A is false; B is false; C is true; D is true. The premises and this option are true, but the target conclusion is false.",
+    "conclusion": "C → B"
+  },
+  {
+    "id": "PHOTO-ML07",
+    "mode": "missing-link",
+    "level": "variables",
+    "premises": [
+      "A → B",
+      "C → D"
+    ],
+    "prompt": "What's the missing link?",
+    "choices": [
+      {
+        "id": "A",
+        "text": "B̸ → C̸"
+      },
+      {
+        "id": "B",
+        "text": "C̸ → B"
+      },
+      {
+        "id": "C",
+        "text": "C → B̸"
+      },
+      {
+        "id": "D",
+        "text": "C̸ → B̸"
+      },
+      {
+        "id": "E",
+        "text": "B̸ → D"
+      }
+    ],
+    "correctChoiceId": "D",
+    "explanation": "Contrapose both premises: D̸ → C̸ and B̸ → A̸. Add C̸ → B̸ to complete D̸ → C̸ → B̸ → A̸. Alternatively, contrapose the target to A → D and find B → C. These are equivalent bridges.\n\nEquivalent answer forms: C̸ → B̸ and B → C. Only one form appears among the five choices.\n\nWhy the other choices fail:\n\n- Choice A: A is true; B is true; C is false; D is false. The premises and this option are true, but the target conclusion is false.\n- Choice B: A is true; B is true; C is false; D is false. The premises and this option are true, but the target conclusion is false.\n- Choice C: A is true; B is true; C is false; D is false. The premises and this option are true, but the target conclusion is false.\n- Choice E: A is true; B is true; C is false; D is false. The premises and this option are true, but the target conclusion is false.",
+    "conclusion": "D̸ → A̸"
+  },
+  {
+    "id": "PHOTO-ML08",
+    "mode": "missing-link",
+    "level": "variables",
+    "premises": [
+      "A → B",
+      "C → D"
+    ],
+    "prompt": "What's the missing link?",
+    "choices": [
+      {
+        "id": "A",
+        "text": "A → D"
+      },
+      {
+        "id": "B",
+        "text": "D → A"
+      },
+      {
+        "id": "C",
+        "text": "D → A̸"
+      },
+      {
+        "id": "D",
+        "text": "D̸ → A"
+      },
+      {
+        "id": "E",
+        "text": "A → B"
+      }
+    ],
+    "correctChoiceId": "B",
+    "explanation": "Contrapose both premises: B̸ → A̸ and D̸ → C̸. The gap is A̸ → D̸, giving B̸ → A̸ → D̸ → C̸. Its equivalent form is D → A.\n\nEquivalent answer forms: D → A and A̸ → D̸. Only one form appears among the five choices.\n\nWhy the other choices fail:\n\n- Choice A: A is false; B is false; C is true; D is true. The premises and this option are true, but the target conclusion is false.\n- Choice C: A is false; B is false; C is true; D is true. The premises and this option are true, but the target conclusion is false.\n- Choice D: A is false; B is false; C is true; D is true. The premises and this option are true, but the target conclusion is false.\n- Choice E: A is false; B is false; C is true; D is true. The premises and this option are true, but the target conclusion is false.",
+    "conclusion": "B̸ → C̸"
+  },
+  {
+    "id": "PHOTO-ML09",
+    "mode": "missing-link",
+    "level": "variables",
+    "premises": [
+      "A → B",
+      "C → D"
+    ],
+    "prompt": "What's the missing link?",
+    "choices": [
+      {
+        "id": "A",
+        "text": "B̸ → D"
+      },
+      {
+        "id": "B",
+        "text": "D → B"
+      },
+      {
+        "id": "C",
+        "text": "D̸ → B̸"
+      },
+      {
+        "id": "D",
+        "text": "C̸ → B̸"
+      },
+      {
+        "id": "E",
+        "text": "B → D̸"
+      }
+    ],
+    "correctChoiceId": "E",
+    "explanation": "Use C → D, then contrapose A → B to obtain B̸ → A̸. Add D → B̸ to complete C → D → B̸ → A̸.\n\nEquivalent answer forms: D → B̸ and B → D̸. The correct choice uses the contrapositive form. Only one form appears among the five choices.\n\nWhy the other choices fail:\n\n- Choice A: A is true; B is true; C is true; D is true. The premises and this option are true, but the target conclusion is false.\n- Choice B: A is true; B is true; C is true; D is true. The premises and this option are true, but the target conclusion is false.\n- Choice C: A is true; B is true; C is true; D is true. The premises and this option are true, but the target conclusion is false.\n- Choice D: A is true; B is true; C is true; D is true. The premises and this option are true, but the target conclusion is false.",
+    "conclusion": "C → A̸"
+  },
+  {
+    "id": "PHOTO-ML10",
+    "mode": "missing-link",
+    "level": "variables",
+    "premises": [
+      "A → B",
+      "C → D"
+    ],
+    "prompt": "What's the missing link?",
+    "choices": [
+      {
+        "id": "A",
+        "text": "D̸ → B"
+      },
+      {
+        "id": "B",
+        "text": "B → D"
+      },
+      {
+        "id": "C",
+        "text": "B → D̸"
+      },
+      {
+        "id": "D",
+        "text": "B̸ → D̸"
+      },
+      {
+        "id": "E",
+        "text": "B̸ → A̸"
+      }
+    ],
+    "correctChoiceId": "C",
+    "explanation": "Use A → B, then contrapose C → D to obtain D̸ → C̸. Add B → D̸ to complete A → B → D̸ → C̸.\n\nEquivalent answer forms: B → D̸ and D → B̸. Only one form appears among the five choices.\n\nWhy the other choices fail:\n\n- Choice A: A is true; B is true; C is true; D is true. The premises and this option are true, but the target conclusion is false.\n- Choice B: A is true; B is true; C is true; D is true. The premises and this option are true, but the target conclusion is false.\n- Choice D: A is true; B is true; C is true; D is true. The premises and this option are true, but the target conclusion is false.\n- Choice E: A is true; B is true; C is true; D is true. The premises and this option are true, but the target conclusion is false.",
+    "conclusion": "A → C̸"
+  },
+  {
+    "id": "PHOTO-ML11",
+    "mode": "missing-link",
+    "level": "variables",
+    "premises": [
+      "A → B",
+      "C → D"
+    ],
+    "prompt": "What's the missing link?",
+    "choices": [
+      {
+        "id": "A",
+        "text": "A̸ → C"
+      },
+      {
+        "id": "B",
+        "text": "A → C̸"
+      },
+      {
+        "id": "C",
+        "text": "C̸ → A̸"
+      },
+      {
+        "id": "D",
+        "text": "C → A"
+      },
+      {
+        "id": "E",
+        "text": "B̸ → A̸"
+      }
+    ],
+    "correctChoiceId": "A",
+    "explanation": "Contrapose C → D to obtain D̸ → C̸. Keep A → B as written. Add C̸ → A to complete D̸ → C̸ → A → B.\n\nEquivalent answer forms: C̸ → A and A̸ → C. The correct choice uses the contrapositive form. Only one form appears among the five choices.\n\nWhy the other choices fail:\n\n- Choice B: A is false; B is false; C is false; D is false. The premises and this option are true, but the target conclusion is false.\n- Choice C: A is false; B is false; C is false; D is false. The premises and this option are true, but the target conclusion is false.\n- Choice D: A is false; B is false; C is false; D is false. The premises and this option are true, but the target conclusion is false.\n- Choice E: A is false; B is false; C is false; D is false. The premises and this option are true, but the target conclusion is false.",
+    "conclusion": "D̸ → B"
+  },
+  {
+    "id": "PHOTO-ML12",
+    "mode": "missing-link",
+    "level": "variables",
+    "premises": [
+      "A → B",
+      "C → D"
+    ],
+    "prompt": "What's the missing link?",
+    "choices": [
+      {
+        "id": "A",
+        "text": "C → A̸"
+      },
+      {
+        "id": "B",
+        "text": "A̸ → C̸"
+      },
+      {
+        "id": "C",
+        "text": "A → C"
+      },
+      {
+        "id": "D",
+        "text": "B̸ → C̸"
+      },
+      {
+        "id": "E",
+        "text": "A̸ → C"
+      }
+    ],
+    "correctChoiceId": "E",
+    "explanation": "Contrapose A → B to obtain B̸ → A̸. Keep C → D as written. Add A̸ → C to complete B̸ → A̸ → C → D.\n\nEquivalent answer forms: A̸ → C and C̸ → A. Only one form appears among the five choices.\n\nWhy the other choices fail:\n\n- Choice A: A is false; B is false; C is false; D is false. The premises and this option are true, but the target conclusion is false.\n- Choice B: A is false; B is false; C is false; D is false. The premises and this option are true, but the target conclusion is false.\n- Choice C: A is false; B is false; C is false; D is false. The premises and this option are true, but the target conclusion is false.\n- Choice D: A is false; B is false; C is false; D is false. The premises and this option are true, but the target conclusion is false.",
+    "conclusion": "B̸ → D"
+  }
+]

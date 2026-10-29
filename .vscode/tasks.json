@@ -1,0 +1,143 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "dev",
+      "detail": "Vite dev server on port 8080",
+      "type": "npm",
+      "script": "dev",
+      "isBackground": true,
+      "problemMatcher": [],
+      "presentation": { "reveal": "always", "panel": "dedicated", "group": "cockpit" },
+      "runOptions": { "instanceLimit": 1 }
+    },
+    {
+      "label": "build",
+      "detail": "Production build (vite build) with 8GB heap to avoid Node OOM",
+      "type": "npm",
+      "script": "build",
+      "group": "build",
+      "options": { "env": { "NODE_OPTIONS": "--max-old-space-size=8192" } },
+      "problemMatcher": [],
+      "presentation": { "reveal": "always", "panel": "shared" }
+    },
+    {
+      "label": "lint",
+      "detail": "ESLint over the whole repo (will fail on pre-existing debt)",
+      "type": "npm",
+      "script": "lint",
+      "problemMatcher": ["$eslint-stylish"],
+      "presentation": { "reveal": "always", "panel": "shared" }
+    },
+    {
+      "label": "lint:changed",
+      "detail": "ESLint only on files changed vs origin/main + working tree",
+      "type": "shell",
+      "command": "bash scripts/lint-changed.sh",
+      "problemMatcher": ["$eslint-stylish"],
+      "presentation": { "reveal": "always", "panel": "shared" }
+    },
+    {
+      "label": "typecheck",
+      "detail": "tsc --noEmit (no typecheck npm script exists)",
+      "type": "shell",
+      "command": "npx tsc --noEmit -p tsconfig.app.json",
+      "problemMatcher": ["$tsc"],
+      "presentation": { "reveal": "always", "panel": "shared" }
+    },
+    {
+      "label": "test",
+      "detail": "Vitest single run (37 specs)",
+      "type": "npm",
+      "script": "test",
+      "group": "test",
+      "problemMatcher": [],
+      "presentation": { "reveal": "always", "panel": "shared" }
+    },
+    {
+      "label": "test:watch",
+      "detail": "Vitest watch mode for the cockpit verification pane",
+      "type": "npm",
+      "script": "test:watch",
+      "isBackground": true,
+      "problemMatcher": [],
+      "presentation": { "reveal": "always", "panel": "dedicated", "group": "cockpit" },
+      "runOptions": { "instanceLimit": 1 }
+    },
+    {
+      "label": "cockpit:status",
+      "detail": "Repeating branch/worktree/status pane for cockpit sessions",
+      "type": "shell",
+      "command": "bash scripts/cockpit-status.sh",
+      "isBackground": true,
+      "problemMatcher": [],
+      "presentation": { "reveal": "always", "panel": "dedicated", "group": "cockpit" },
+      "runOptions": { "instanceLimit": 1 }
+    },
+    {
+      "label": "playwright",
+      "detail": "Playwright e2e smoke specs from top-level e2e/",
+      "type": "npm",
+      "script": "playwright",
+      "group": "test",
+      "problemMatcher": [],
+      "presentation": { "reveal": "always", "panel": "shared" }
+    },
+    {
+      "label": "test:e2e",
+      "detail": "Playwright e2e smoke specs from top-level e2e/",
+      "type": "npm",
+      "script": "test:e2e",
+      "group": "test",
+      "problemMatcher": [],
+      "presentation": { "reveal": "always", "panel": "shared" }
+    },
+    {
+      "label": "verify-current-lane",
+      "detail": "lint:changed -> typecheck -> build -> test, in sequence (lint scoped to your changes, not legacy debt)",
+      "dependsOrder": "sequence",
+      "dependsOn": ["lint:changed", "typecheck", "build", "test"],
+      "group": { "kind": "test", "isDefault": true },
+      "problemMatcher": []
+    },
+    {
+      "label": "verify-full",
+      "detail": "lint:changed -> typecheck -> build -> test -> test:e2e, in sequence",
+      "dependsOrder": "sequence",
+      "dependsOn": ["lint:changed", "typecheck", "build", "test", "test:e2e"],
+      "group": "test",
+      "problemMatcher": []
+    },
+    {
+      "label": "cockpit:launch",
+      "detail": "One-command cockpit launch: Vite dev server + Vitest watch + status pane",
+      "dependsOrder": "parallel",
+      "dependsOn": ["dev", "test:watch", "cockpit:status"],
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "click-to-agent",
+      "detail": "Write active file + manual selection/range note to docs/agent/handoffs/click-to-agent.md",
+      "type": "shell",
+      "command": "bash scripts/click-to-agent-handoff.sh \"${file}\" \"${input:agentSelection}\" \"${input:agentLane}\"",
+      "problemMatcher": [],
+      "presentation": { "reveal": "always", "panel": "shared" }
+    }
+  ],
+  "inputs": [
+    {
+      "id": "agentSelection",
+      "type": "promptString",
+      "description": "Manual selection, line range, or note for the agent. VS Code tasks cannot pass live selection text.",
+      "default": "selection/range not provided"
+    },
+    {
+      "id": "agentLane",
+      "type": "pickString",
+      "description": "Agent lane for this handoff",
+      "options": ["Codex", "Claude"],
+      "default": "Codex"
+    }
+  ]
+}
