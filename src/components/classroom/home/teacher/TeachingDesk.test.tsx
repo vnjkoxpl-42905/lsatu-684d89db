@@ -79,6 +79,270 @@ const desk: TeachingDesk = {
   mutateManual: vi.fn().mockResolvedValue(undefined),
 };
 describe("Teaching desk interactions", () => {
+  it("shows a truthful reload fallback instead of a dead retry button and distinguishes setup", () => {
+    const props = { open: true, person: null, students: [], onSelect: vi.fn(), onSaved: vi.fn(), onClose: vi.fn() };
+    const { rerender } = render(<AccessSheet {...props} rosterState="error" />);
+    expect(screen.queryByRole("button", { name: "Retry accounts" })).toBeNull();
+    expect(screen.getByRole("alert")).toHaveTextContent("Reload Home to check again.");
+    rerender(<AccessSheet {...props} rosterState="setup" />);
+    expect(screen.getByRole("alert")).toHaveTextContent("Account controls are not set up yet.");
+    const retry = vi.fn();
+    rerender(<AccessSheet {...props} rosterState="error" onRetryRoster={retry} />);
+    fireEvent.click(screen.getByRole("button", { name: "Retry accounts" }));
+    expect(retry).toHaveBeenCalledOnce();
+  });
+  const bookingPass = { id: "pass", student_id: "student", credits_remaining: 2, total_credits: 2, used_credits: 0, status: "active", booking_url: "https://example.invalid/private", session_length_minutes: 70, expires_at: null };
+  function bookingActions(pass: any = bookingPass) {
+    return { getPendingHomeTopUp: () => null, loadHomeBooking: vi.fn().mockResolvedValue(pass), prepareHomeTopUp: vi.fn().mockReturnValue({ operationKey: "one", amount: 1 }), addHomeBookingCredits: vi.fn().mockResolvedValue({ pass: { ...bookingPass, credits_remaining: 3 }, receipt: {} }), createHomeBooking: vi.fn(), revokeHomeBooking: vi.fn(), saveHomeAccess: vi.fn() } as any;
+  }
+  it("explains invalid creation settings before starting any request", async () => {
+    const actions = bookingActions(null);
+    render(<BookingSheet open mode="link" students={[person]} actorId="owner" actions={actions} onClose={vi.fn()} />);
+    fireEvent.change(screen.getByLabelText("Student"), { target: { value: "student" } });
+    await screen.findByText(/No active booking link/);
+    fireEvent.click(screen.getByRole("button", { name: "Create link with initial sessions" }));
+    fireEvent.change(screen.getByLabelText("Session minutes"), { target: { value: "15.5" } });
+    expect(screen.getByRole("alert")).toHaveTextContent("Choose a whole session length between 15 and 480 minutes.");
+    expect(screen.getByRole("button", { name: "Confirm create link with initial sessions" })).toBeDisabled();
+    fireEvent.change(screen.getByLabelText("Session minutes"), { target: { value: "70" } });
+    fireEvent.change(screen.getByLabelText("Expiry (optional)"), { target: { value: "2000-01-01" } });
+    expect(screen.getByRole("alert")).toHaveTextContent("Choose a future expiry date, or leave expiry blank.");
+    expect(screen.getByRole("button", { name: "Confirm create link with initial sessions" })).toBeDisabled();
+    expect(actions.createHomeBooking).not.toHaveBeenCalled();
+    fireEvent.change(screen.getByLabelText("Expiry (optional)"), { target: { value: "" } });
+    expect(screen.queryByRole("alert")).toBeNull();
+    expect(screen.getByRole("button", { name: "Confirm create link with initial sessions" })).toBeEnabled();
+  });
+  it("reuses an individual link without presenting a credit grant or mutating the account", async () => {
+    const actions = bookingActions();
+    render(<BookingSheet open mode="link" students={[person]} actorId="owner" actions={actions} onClose={vi.fn()} />);
+    fireEvent.change(screen.getByLabelText("Student"), { target: { value: "student" } });
+    await screen.findByText("2 sessions remaining · active");
+    expect(screen.getByRole("link", { name: /Open private booking link/ })).toHaveAttribute("href", bookingPass.booking_url);
+    expect(screen.queryByLabelText("Sessions to add")).not.toBeInTheDocument();
+    expect(actions.addHomeBookingCredits).not.toHaveBeenCalled();
+    expect(actions.createHomeBooking).not.toHaveBeenCalled();
+  });
+  it("defaults a missed-credit correction to one and rejects fractional custom amounts", async () => {
+    const actions = bookingActions();
+    render(<BookingSheet open mode="credits" students={[person]} actorId="owner" actions={actions} onClose={vi.fn()} />);
+    fireEvent.change(screen.getByLabelText("Student"), { target: { value: "student" } });
+    await screen.findByText("2 sessions remaining · active");
+    expect(screen.getByLabelText("Sessions to add")).toHaveValue("1");
+    expect(screen.getByText("Add 1 session for Ada. Balance: 2 → 3 sessions remaining.")).toBeInTheDocument();
+    expect(screen.queryByText("Revoke this private link")).not.toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: /Open private booking link/ })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Copy private link" })).not.toBeInTheDocument();
+    expect(actions.addHomeBookingCredits).not.toHaveBeenCalled();
+    fireEvent.change(screen.getByLabelText("Sessions to add"), { target: { value: "0" } });
+    fireEvent.change(screen.getByLabelText("Custom number"), { target: { value: "1.5" } });
+    expect(screen.getByRole("button", { name: /^Add [\d.]+ sessions?$/ })).toBeDisabled();
+    fireEvent.change(screen.getByLabelText("Custom number"), { target: { value: "2" } });
+    fireEvent.click(screen.getByRole("button", { name: /^Add [\d.]+ sessions?$/ }));
+    await waitFor(() => expect(actions.addHomeBookingCredits).toHaveBeenCalledOnce());
+    expect(actions.prepareHomeTopUp).toHaveBeenCalledWith("owner", "student", "pass", 2);
+  });
+  it("adds initial credits with one explicit click and disarms a lost creation response", async () => {
+    const actions = bookingActions(null);
+    actions.createHomeBooking.mockRejectedValue(new Error("network"));
+    actions.loadHomeBooking.mockResolvedValueOnce(null).mockResolvedValue(bookingPass);
+    render(<BookingSheet open mode="credits" students={[person]} actorId="owner" actions={actions} onClose={vi.fn()} />);
+    fireEvent.change(screen.getByLabelText("Student"), { target: { value: "student" } });
+    await screen.findByText(/No active booking link/);
+    expect(screen.queryByRole("button", { name: "Create link with initial sessions" })).toBeNull();
+    expect(screen.getByLabelText("Initial sessions")).toHaveValue("1");
+    expect(actions.createHomeBooking).not.toHaveBeenCalled();
+    fireEvent.click(screen.getByRole("button", { name: "Add 1 session" }));
+    await screen.findByText(/Creation outcome is unknown. Review the current balance/);
+    expect(actions.createHomeBooking).toHaveBeenCalledExactlyOnceWith("student", 1, { sessionMinutes: 70, expiresAt: null });
+    expect(actions.addHomeBookingCredits).not.toHaveBeenCalled();
+    expect(screen.queryByRole("button", { name: "Add 1 session" })).toBeNull();
+    expect(screen.queryByText(/No sessions were added/)).toBeNull();
+  });
+  it("requires a separate explicit initial-link flow when an account has no pass", async () => {
+    const actions = bookingActions(null);
+    actions.createHomeBooking.mockResolvedValue({ ...bookingPass, credits_remaining: 1, total_credits: 1 });
+    render(<BookingSheet open mode="link" students={[person]} actorId="owner" actions={actions} onClose={vi.fn()} />);
+    fireEvent.change(screen.getByLabelText("Student"), { target: { value: "student" } });
+    await screen.findByText(/No active booking link/);
+    expect(screen.queryByLabelText("Initial sessions")).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Create link with initial sessions" }));
+    expect(screen.getByLabelText("Initial sessions")).toHaveValue("1");
+    expect(screen.getByRole("button", { name: "Confirm create link with initial sessions" })).toBeEnabled();
+    expect(actions.createHomeBooking).not.toHaveBeenCalled();
+    fireEvent.click(screen.getByRole("button", { name: "Confirm create link with initial sessions" }));
+    await waitFor(() => expect(actions.createHomeBooking).toHaveBeenCalledExactlyOnceWith("student", 1, { sessionMinutes: 70, expiresAt: null }));
+    expect(await screen.findByText("1 session remaining · active")).toBeInTheDocument();
+    expect(screen.queryByLabelText("Initial sessions")).not.toBeInTheDocument();
+    expect(actions.addHomeBookingCredits).not.toHaveBeenCalled();
+  });
+  it("adds exactly one default correction and resets an unrelated intent when reopened", async () => {
+    const actions = bookingActions();
+    const props = { mode: "credits" as const, students: [person], actorId: "owner", actions, onClose: vi.fn() };
+    const { rerender } = render(<BookingSheet {...props} open />);
+    fireEvent.change(screen.getByLabelText("Student"), { target: { value: "student" } });
+    await screen.findByText("2 sessions remaining · active");
+    fireEvent.click(screen.getByRole("button", { name: /^Add [\d.]+ sessions?$/ }));
+    await waitFor(() => expect(actions.prepareHomeTopUp).toHaveBeenCalledExactlyOnceWith("owner", "student", "pass", 1));
+    expect(actions.addHomeBookingCredits).toHaveBeenCalledOnce();
+    expect(await screen.findByText("3 sessions remaining · active")).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: /^Add [\d.]+ sessions?$/ })).toBeNull();
+    expect(screen.queryByLabelText("Sessions to add")).toBeNull();
+    fireEvent.click(screen.getByRole("button", { name: "Add more sessions" }));
+    expect(screen.getByLabelText("Sessions to add")).toHaveValue("1");
+    expect(actions.addHomeBookingCredits).toHaveBeenCalledOnce();
+    fireEvent.change(screen.getByLabelText("Sessions to add"), { target: { value: "10" } });
+    rerender(<BookingSheet {...props} open={false} />);
+    rerender(<BookingSheet {...props} open />);
+    expect(screen.getByLabelText("Student")).toHaveValue("");
+    expect(screen.queryByLabelText("Sessions to add")).not.toBeInTheDocument();
+    fireEvent.change(screen.getByLabelText("Student"), { target: { value: "student" } });
+    await screen.findByText("2 sessions remaining · active");
+    expect(screen.getByLabelText("Sessions to add")).toHaveValue("1");
+    expect(actions.addHomeBookingCredits).toHaveBeenCalledOnce();
+  });
+  it("keeps a verified addition disarmed until an explicit new addition is confirmed", async () => {
+    const actions = bookingActions();
+    render(<BookingSheet open mode="credits" students={[person]} actorId="owner" actions={actions} onClose={vi.fn()} />);
+    fireEvent.change(screen.getByLabelText("Student"), { target: { value: "student" } });
+    await screen.findByText("2 sessions remaining · active");
+    fireEvent.change(screen.getByLabelText("Sessions to add"), { target: { value: "0" } });
+    fireEvent.change(screen.getByLabelText("Custom number"), { target: { value: "3" } });
+    fireEvent.click(screen.getByRole("button", { name: /^Add [\d.]+ sessions?$/ }));
+    await screen.findByText("Session addition verified.");
+    expect(screen.queryByRole("button", { name: /^Add [\d.]+ sessions?$/ })).toBeNull();
+    expect(actions.addHomeBookingCredits).toHaveBeenCalledOnce();
+    fireEvent.click(screen.getByRole("button", { name: "Add more sessions" }));
+    expect(screen.getByLabelText("Sessions to add")).toHaveValue("1");
+    expect(screen.queryByLabelText("Custom number")).toBeNull();
+    expect(actions.addHomeBookingCredits).toHaveBeenCalledOnce();
+    fireEvent.click(screen.getByRole("button", { name: /^Add [\d.]+ sessions?$/ }));
+    await waitFor(() => expect(actions.addHomeBookingCredits).toHaveBeenCalledTimes(2));
+    expect(actions.prepareHomeTopUp).toHaveBeenLastCalledWith("owner", "student", "pass", 1);
+  });
+  it("resets custom initial-link settings on a new opening without creating anything", async () => {
+    const actions = bookingActions(null);
+    const props = { mode: "link" as const, students: [person], actorId: "owner", actions, onClose: vi.fn() };
+    const { rerender } = render(<BookingSheet {...props} open />);
+    fireEvent.change(screen.getByLabelText("Student"), { target: { value: "student" } });
+    await screen.findByText(/No active booking link/);
+    fireEvent.click(screen.getByRole("button", { name: "Create link with initial sessions" }));
+    fireEvent.change(screen.getByLabelText("Initial sessions"), { target: { value: "0" } });
+    fireEvent.change(screen.getByLabelText("Custom number"), { target: { value: "3" } });
+    fireEvent.change(screen.getByLabelText("Session minutes"), { target: { value: "90" } });
+    fireEvent.change(screen.getByLabelText("Expiry (optional)"), { target: { value: "2027-10-28" } });
+    rerender(<BookingSheet {...props} open={false} />);
+    rerender(<BookingSheet {...props} open />);
+    expect(screen.getByLabelText("Student")).toHaveValue("");
+    fireEvent.change(screen.getByLabelText("Student"), { target: { value: "student" } });
+    await screen.findByText(/No active booking link/);
+    expect(screen.queryByLabelText("Initial sessions")).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Create link with initial sessions" }));
+    expect(screen.getByLabelText("Initial sessions")).toHaveValue("1");
+    expect(screen.queryByLabelText("Custom number")).not.toBeInTheDocument();
+    expect(screen.getByLabelText("Session minutes")).toHaveValue(70);
+    expect(screen.getByLabelText("Expiry (optional)")).toHaveValue("");
+    expect(actions.createHomeBooking).not.toHaveBeenCalled();
+  });
+  it("uses the verified saved account as the baseline for a second access change", async () => {
+    const verified = { ...person, access_tier: "tier_3" as const, access_drills: false };
+    const save = vi.fn().mockResolvedValue(verified);
+    render(<AccessSheet person={person} save={save} onSaved={vi.fn()} onClose={vi.fn()} />);
+    fireEvent.change(screen.getByLabelText("Access choice"), { target: { value: "tier_3" } });
+    fireEvent.click(screen.getByRole("button", { name: "Confirm access change" }));
+    await screen.findByText("Saved and verified for Ada.");
+    fireEvent.change(screen.getByLabelText("Access choice"), { target: { value: "tier_1" } });
+    fireEvent.click(screen.getByRole("button", { name: "Confirm access change" }));
+    await waitFor(() => expect(save).toHaveBeenLastCalledWith(verified, "tier_1", undefined));
+  });
+  it("keeps revoked passes ineligible for credits and hides their unusable link", async () => {
+    const actions = bookingActions({ ...bookingPass, status: "revoked" });
+    render(<BookingSheet open mode="credits" students={[person]} actorId="owner" actions={actions} onClose={vi.fn()} />);
+    fireEvent.change(screen.getByLabelText("Student"), { target: { value: "student" } });
+    await screen.findByText("2 sessions remaining · revoked");
+    expect(screen.getByRole("button", { name: /^Add [\d.]+ sessions?$/ })).toBeDisabled();
+    expect(screen.queryByRole("link", { name: /Open private booking link/ })).toBeNull();
+    expect(screen.queryByRole("button", { name: "Create link with initial sessions" })).toBeNull();
+    expect(actions.addHomeBookingCredits).not.toHaveBeenCalled();
+    expect(actions.createHomeBooking).not.toHaveBeenCalled();
+  });
+  it("offers all eligible named accounts without writing access on selection", () => {
+    const select = vi.fn(), save = vi.fn();
+    render(<AccessSheet open person={null} students={[person, { ...person, class_id: "other", display_name: "Bea", email: "bea@example.invalid" }, { ...person, class_id: "admin", role: "admin" }, { ...person, class_id: "archived", archived_at: "2026-10-01" }]} onSelect={select} save={save} onSaved={vi.fn()} onClose={vi.fn()} />);
+    expect(screen.getAllByRole("option")).toHaveLength(3);
+    fireEvent.change(screen.getByLabelText("Student"), { target: { value: "other" } });
+    expect(select).toHaveBeenCalledWith(expect.objectContaining({ email: "bea@example.invalid" }));
+    expect(save).not.toHaveBeenCalled();
+    expect(screen.getByRole("option", { name: /Ada/ })).toBeInTheDocument();
+    expect(screen.getByRole("option", { name: /Bea/ })).toBeInTheDocument();
+  });
+  it("keeps exact pending recovery available when the roster cannot supply an eligible account", async () => {
+    const pending = { actorId: "owner", studentId: "missing-account", passId: "pass", amount: 3, operationKey: "exact-request" };
+    const actions = bookingActions();
+    actions.getPendingHomeTopUp = () => pending;
+    actions.resolvePendingHomeTopUp = vi.fn().mockResolvedValue({ pass: bookingPass, receipt: {} });
+    render(<BookingSheet open mode="link" students={[]} rosterState="error" actorId="owner" actions={actions} onClose={vi.fn()} />);
+    await waitFor(() => expect(screen.getByRole("button", { name: "Check pending add" })).toBeEnabled());
+    expect(screen.getByText(/Pending account: missing-account/)).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Retry pending addition" })).toBeEnabled();
+    expect(screen.queryByLabelText("Initial sessions")).toBeNull();
+    fireEvent.click(screen.getByRole("button", { name: "Check pending add" }));
+    await waitFor(() => expect(actions.resolvePendingHomeTopUp).toHaveBeenCalledWith(pending));
+    expect(actions.addHomeBookingCredits).not.toHaveBeenCalled();
+    expect(actions.createHomeBooking).not.toHaveBeenCalled();
+  });
+  it("never discards unreadable protection using a free account ID when the roster is unavailable", async () => {
+    const actions = bookingActions();
+    actions.getPendingHomeTopUp = () => { throw new Error("Unreadable"); };
+    actions.discardUnreadableHomeTopUp = vi.fn().mockResolvedValue(bookingPass);
+    render(<BookingSheet open students={[]} rosterState="error" actorId="owner" actions={actions} onClose={vi.fn()} />);
+    expect(screen.queryByLabelText("Recovery account ID")).toBeNull();
+    expect(screen.getByText(/Recovery requires a selected eligible account/)).toHaveTextContent("Retry loading accounts before continuing.");
+    expect(screen.getByRole("checkbox", { name: /I have reviewed/ })).toBeDisabled();
+    expect(screen.getByRole("button", { name: "Confirm recovery for selected account" })).toBeDisabled();
+    expect(actions.discardUnreadableHomeTopUp).not.toHaveBeenCalled();
+    expect(actions.addHomeBookingCredits).not.toHaveBeenCalled();
+    expect(actions.createHomeBooking).not.toHaveBeenCalled();
+  });
+  it("recovers unreadable protection only after loading and confirming an eligible named balance", async () => {
+    const actions = bookingActions();
+    actions.getPendingHomeTopUp = () => { throw new Error("Unreadable"); };
+    actions.discardUnreadableHomeTopUp = vi.fn().mockResolvedValue(bookingPass);
+    render(<BookingSheet open students={[person]} actorId="owner" actions={actions} onClose={vi.fn()} />);
+    fireEvent.change(screen.getByLabelText("Student"), { target: { value: "student" } });
+    await screen.findByText("2 sessions remaining · active");
+    expect(screen.getByRole("button", { name: "Confirm recovery for Ada" })).toBeDisabled();
+    fireEvent.click(screen.getByRole("checkbox", { name: /I have reviewed/ }));
+    fireEvent.click(screen.getByRole("button", { name: "Confirm recovery for Ada" }));
+    await waitFor(() => expect(actions.discardUnreadableHomeTopUp).toHaveBeenCalledExactlyOnceWith("owner", "student", true));
+    expect(actions.addHomeBookingCredits).not.toHaveBeenCalled();
+    expect(actions.createHomeBooking).not.toHaveBeenCalled();
+  });
+  it("loads an existing link after a creation race and gives mode-specific guidance without granting credits", async () => {
+    const actions = bookingActions();
+    actions.loadHomeBooking.mockResolvedValueOnce(null).mockResolvedValue(bookingPass);
+    actions.createHomeBooking.mockRejectedValue(new Error("pass_exists: Existing"));
+    render(<BookingSheet open mode="link" students={[person]} actorId="owner" actions={actions} onClose={vi.fn()} />);
+    fireEvent.change(screen.getByLabelText("Student"), { target: { value: "student" } });
+    await screen.findByText(/No active booking link/);
+    fireEvent.click(screen.getByRole("button", { name: "Create link with initial sessions" }));
+    fireEvent.click(screen.getByRole("button", { name: "Confirm create link with initial sessions" }));
+    expect(await screen.findByText(/A booking pass already exists; review the balance/)).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: /^Add [\d.]+ sessions?$/ })).toBeNull();
+    expect(actions.addHomeBookingCredits).not.toHaveBeenCalled();
+  });
+  it("drops the former actor’s pending intent when the actor changes", async () => {
+    const pending = { actorId: "owner", studentId: "student", passId: "pass", amount: 5, operationKey: "old-owner-request" };
+    const actions = bookingActions();
+    actions.getPendingHomeTopUp = (actor: string) => actor === "owner" ? pending : null;
+    const { rerender } = render(<BookingSheet open students={[person]} actorId="owner" actions={actions} onClose={vi.fn()} />);
+    await screen.findByText(/Pending account: ada@example.invalid/);
+    rerender(<BookingSheet open students={[person]} actorId="new-owner" actions={actions} onClose={vi.fn()} />);
+    await waitFor(() => expect(screen.getByLabelText("Student")).toBeEnabled());
+    expect(screen.getByLabelText("Student")).toHaveValue("");
+    expect(screen.queryByRole("button", { name: "Retry pending addition" })).toBeNull();
+    expect(actions.addHomeBookingCredits).not.toHaveBeenCalled();
+  });
   it("caps Home at two sessions using the true total and preserves unsaved input across disclosure", () => {
     render(
       <PostSessionWork
@@ -255,7 +519,7 @@ describe("Teaching desk interactions", () => {
       "Saved and verified for Ada",
     );
   });
-  it("recovers the same pending top-up and keeps target and quantity locked", async () => {
+  it("recovers the same pending top-up in link mode and keeps target and quantity locked", async () => {
     const pending = {
       actorId: "owner",
       studentId: "student",
@@ -289,6 +553,7 @@ describe("Teaching desk interactions", () => {
     render(
       <BookingSheet
         open
+        mode="link"
         onClose={vi.fn()}
         actorId="owner"
         students={[person]}
@@ -297,7 +562,9 @@ describe("Teaching desk interactions", () => {
     );
     await screen.findByText("2 sessions remaining · active");
     expect(screen.getByLabelText("Student")).toBeDisabled();
-    expect(screen.getByLabelText("Sessions to add")).toBeDisabled();
+    expect(screen.queryByLabelText("Sessions to add")).not.toBeInTheDocument();
+    expect(actions.addHomeBookingCredits).not.toHaveBeenCalled();
+    expect(actions.createHomeBooking).not.toHaveBeenCalled();
     fireEvent.click(
       screen.getByRole("button", { name: "Retry pending addition" }),
     );
@@ -431,7 +698,7 @@ describe("Teaching desk interactions", () => {
     });
     await screen.findByText("2 sessions remaining · expired");
     expect(
-      screen.getByRole("button", { name: "Confirm add sessions" }),
+      screen.getByRole("button", { name: /^Add [\d.]+ sessions?$/ }),
     ).toBeDisabled();
     expect(actions.reactivateHomeBooking).not.toHaveBeenCalled();
     fireEvent.click(screen.getByText("Extend this expired booking link"));
@@ -447,7 +714,7 @@ describe("Teaching desk interactions", () => {
     );
     await screen.findByText("2 sessions remaining · active");
     expect(
-      screen.getByRole("button", { name: "Confirm add sessions" }),
+      screen.getByRole("button", { name: /^Add [\d.]+ sessions?$/ }),
     ).toBeEnabled();
     expect(actions.addHomeBookingCredits).not.toHaveBeenCalled();
   });

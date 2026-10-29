@@ -1,3 +1,4 @@
+import { readTeacherBookingHistory } from "../_shared/teacherBookingHistory.ts";
 // Admin-only booking pass management: create / list / revoke / rotate.
 // Every issued link uses the strong /book/:slug public route.
 import { createClient } from "npm:@supabase/supabase-js@2";
@@ -145,6 +146,9 @@ Deno.serve(async (req) => {
     }
 
     if (action === "history") {
+      if (body.student_id !== undefined || body.operation_key !== undefined) {
+        return json(await readTeacherBookingHistory(supabase, String(body.student_id || ""), String(body.pass_id || ""), String(body.operation_key || "")));
+      }
       const passId = String(body.pass_id || "");
       if (!passId) return json({ error: "pass_id_required" }, 400);
       const { data, error } = await supabase

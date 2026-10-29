@@ -1566,3 +1566,69 @@ html.dark .home-desk-week-days button[aria-pressed=true] {outline-color:#efede6;
 .home-desk-sheet :is(input,select,textarea),.home-desk-sheet .home-desk-check {border-color:#747773;}
 html.dark .classroom-root .home-desk {--lsatu-field-border:#929b91;}
 html.dark .classroom-root .home-desk :is(input,select,textarea),html.dark .classroom-root .home-desk .home-desk-check,html.dark .home-desk-sheet :is(input,select,textarea),html.dark .home-desk-sheet .home-desk-check {border-color:#929b91;}
+/* Account operations share one clearly labelled home, distinct from activity. */
+.home-desk .home-desk-account-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding: 18px 0 22px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--home-border, #d7d6ce);
+}
+.home-desk .home-desk-account-actions > div { flex: 1 1 230px; }
+.home-desk .home-desk-account-actions h3 { margin: 0 0 5px; font-size: 15px; font-weight: 600; }
+.home-desk .home-desk-account-actions p { margin: 0; font-size: 13px; color: #62655f; }
+.home-desk .home-desk-account-actions > button {
+  min-height: 42px;
+  padding: 10px 14px;
+  border: 1px solid #aeb1a8;
+  border-radius: 7px;
+  background: #fffefa;
+  box-shadow: 0 1px 2px #20251f0a;
+  font-weight: 500;
+}
+.home-desk .home-desk-account-actions > button:hover { background: #e9ebe4; border-color: #62685e; }
+.home-desk .home-desk-account-actions > button:focus-visible { outline: 2px solid #252c26; outline-offset: 3px; }
+.home-desk-account-picker { display: grid; gap: 12px; padding-block: 20px; border-block: 1px solid #d7d6ce; margin-block: 20px; }
+.home-desk-account-email { overflow-wrap: anywhere; color: #62655f; font-size: 13px; }
+html.dark .home-desk .home-desk-account-actions { border-color: #596156; }
+html.dark .home-desk .home-desk-account-actions p,
+html.dark .home-desk-sheet .home-desk-account-email { color: #bcc3b8; }
+html.dark .home-desk .home-desk-account-actions > button {
+  color: #efede6;
+  background: #29312a;
+  border-color: #929b91;
+  box-shadow: 0 1px 3px #0003;
+}
+html.dark .home-desk .home-desk-account-actions > button:hover { background: #3b463c; border-color: #d3d9cd; }
+html.dark .home-desk .home-desk-account-actions > button:focus-visible { outline-color: #efede6; }
+html.dark .home-desk-sheet .home-desk-account-picker { border-color: #596156; }
+@media (max-width: 560px) {
+  .home-desk .home-desk-account-actions > div { flex-basis: 100%; }
+  .home-desk .home-desk-account-actions > button { flex: 1 1 100%; text-align: left; }
+}
+/* Teacher scheduling is a portal, so Classroom colour tokens must travel with it. */
+.home-desk-schedule-sheet,.booking-dialog-teacher {
+ --background: 51 30% 95%; --foreground: 135 8% 16%; --card: 51 30% 95%; --card-foreground: 135 8% 16%;
+ --popover: 51 30% 95%; --popover-foreground: 135 8% 16%; --primary: 135 8% 16%; --primary-foreground: 51 30% 95%;
+ --secondary: 60 10% 89%; --secondary-foreground: 135 8% 16%; --muted: 60 10% 89%; --muted-foreground: 75 5% 37%;
+ --accent: 60 10% 89%; --accent-foreground: 135 8% 16%; --border: 75 5% 47%; --input: 75 5% 47%; --ring: 135 8% 16%;
+}
+html.dark .home-desk-schedule-sheet,html.dark .booking-dialog-teacher {
+ --background: 140 8% 15%; --foreground: 47 23% 92%; --card: 140 8% 15%; --card-foreground: 47 23% 92%;
+ --popover: 140 8% 15%; --popover-foreground: 47 23% 92%; --primary: 80 16% 89%; --primary-foreground: 135 8% 16%;
+ --secondary: 140 8% 20%; --secondary-foreground: 47 23% 92%; --muted: 140 8% 20%; --muted-foreground: 80 10% 72%;
+ --accent: 140 8% 24%; --accent-foreground: 47 23% 92%; --border: 140 5% 59%; --input: 140 5% 59%; --ring: 47 23% 92%;
+}
+.home-desk-schedule-sheet .home-desk-confirm { margin-block:12px; overflow-wrap:anywhere; }
+.booking-dialog-teacher { color:hsl(var(--foreground)); }
+.home-desk-schedule-sheet .home-desk-account-picker { margin-block:14px; padding-block:14px; }
+.home-desk-schedule-sheet .booking-shadow > .grid > div:first-child { padding:14px 16px; }
+.home-desk-schedule-sheet .booking-shadow > .grid > div:first-child > h2 { font-size:19px; line-height:1.25; }
+.home-desk-schedule-sheet .booking-shadow > .grid > div:first-child > p { margin-top:6px; line-height:1.4; }
+.home-desk-schedule-sheet .booking-shadow > .grid > div:first-child > div:nth-last-child(2) { display:flex; align-items:baseline; gap:8px; margin-top:10px; padding:8px 12px; }
+.home-desk-schedule-sheet .booking-shadow > .grid > div:first-child > div:nth-last-child(2) > div:first-child { font-size:22px; }
+.home-desk-schedule-sheet .booking-shadow > .grid > div:first-child > div:nth-last-child(2) > div:last-child { margin-top:0; }
+.home-desk-schedule-sheet .booking-shadow > .grid > div:first-child > div:last-child { display:flex; flex-wrap:wrap; gap:8px 16px; margin-top:10px; font-size:12px; line-height:1.4; }
+.home-desk-schedule-sheet .booking-shadow > .grid > div:first-child > div:last-child > div { margin-top:0; }

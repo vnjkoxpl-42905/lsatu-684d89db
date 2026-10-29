@@ -1,7 +1,7 @@
 import {
   clsx
 } from "./chunk-YZYIA5QP.js";
-import "./chunk-ILHRZGIS.js";
+import "./chunk-M2PPBBZ4.js";
 
 // ../lsatu-spot-video-release-20261025/node_modules/class-variance-authority/dist/index.mjs
 var falsyToString = (value) => typeof value === "boolean" ? `${value}` : value === 0 ? "0" : value;

@@ -1,10 +1,10 @@
 import {
   require_react
-} from "./chunk-BJG56G2C.js";
+} from "./chunk-WUYIG2E6.js";
 import {
   __export,
   __toESM
-} from "./chunk-ILHRZGIS.js";
+} from "./chunk-M2PPBBZ4.js";
 
 // ../lsatu-spot-video-release-20261025/node_modules/lucide-react/dist/esm/icons/index.js
 var icons_exports = {};

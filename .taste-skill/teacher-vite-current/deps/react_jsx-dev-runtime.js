@@ -1,9 +1,9 @@
 import {
   require_react
-} from "./chunk-BJG56G2C.js";
+} from "./chunk-WUYIG2E6.js";
 import {
   __commonJS
-} from "./chunk-ILHRZGIS.js";
+} from "./chunk-M2PPBBZ4.js";
 
 // ../lsatu-spot-video-release-20261025/node_modules/react/cjs/react-jsx-dev-runtime.development.js
 var require_react_jsx_dev_runtime_development = __commonJS({

@@ -319,6 +319,12 @@ export function useTeachingDesk(
         _student_id: studentId,
       });
     },
+    refreshBooking: () => {
+      if (!enabled || actor.current !== actorId) return;
+      void client.invalidateQueries({ queryKey: deskKey(actorId, "agenda") });
+      void client.invalidateQueries({ queryKey: deskKey(actorId, "access") });
+      void client.invalidateQueries({ queryKey: ["student-booking", "info"] });
+    },
     refreshAccess: () => {
       void client.invalidateQueries({ queryKey: deskKey(actorId, "access") });
     },

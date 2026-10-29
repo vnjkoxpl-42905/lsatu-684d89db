@@ -130,10 +130,37 @@ function expectNoStudentContent() {
   expect(screen.queryByText(/assigned to you/i)).toBeNull();
   expect(screen.queryByText(/assignments? (is|are) waiting/i)).toBeNull();
   expect(screen.queryByRole("button", { name: /smart drill/i })).toBeNull();
-  expect(screen.queryByRole("button", { name: /book/i })).toBeNull();
+  expect(screen.queryByRole("button", { name: /^Book (a |your )?session/i })).toBeNull();
 }
 
 describe("TeacherHomeView", () => {
+  it("keeps direct access editing open after a blank selection and returns focus to its own row", async () => {
+    const account = { class_id: "s1", display_name: "Lydia Park", email: "lydia@example.invalid", role: "student", access_tier: "tier_2", archived_at: null } as any;
+    const save = vi.fn().mockResolvedValue({ ...account, access_tier: "tier_3" });
+    render(<TeacherHomeView model={{ ...READY, desk: { ...EMPTY_DESK, access: { state: "ready", data: [account] }, actions: { saveHomeAccess: save } as any } }} onOpen={vi.fn()} />);
+    fireEvent.change(screen.getByLabelText("Find a student"), { target: { value: "Lydia" } });
+    const trigger = screen.getByRole("button", { name: "Edit access" });
+    fireEvent.click(trigger);
+    const dialog = await screen.findByRole("dialog", { name: "Student access" });
+    fireEvent.change(within(dialog).getByLabelText("Student"), { target: { value: "" } });
+    expect(screen.getByRole("dialog", { name: "Student access" })).toBeInTheDocument();
+    expect(save).not.toHaveBeenCalled();
+    fireEvent.change(within(dialog).getByLabelText("Student"), { target: { value: "s1" } });
+    fireEvent.change(within(dialog).getByLabelText("Access choice"), { target: { value: "tier_3" } });
+    fireEvent.click(within(dialog).getByRole("button", { name: "Confirm access change" }));
+    await waitFor(() => expect(save).toHaveBeenCalledWith(account, "tier_3", undefined));
+    fireEvent.click(within(dialog).getAllByRole("button", { name: "Close" })[0]);
+    await waitFor(() => expect(trigger).toHaveFocus());
+  });
+  it("makes account operations discoverable and opens access selection without an account write", async () => {
+    render(<TeacherHomeView model={READY} onOpen={vi.fn()} />);
+    const accounts = screen.getByRole("group", { name: "Student accounts" });
+    expect(within(accounts).getByRole("button", { name: "Add session credits" })).toBeInTheDocument();
+    expect(within(accounts).getByRole("button", { name: "Individual booking links" })).toBeInTheDocument();
+    fireEvent.click(within(accounts).getByRole("button", { name: "Account access" }));
+    expect(await screen.findByRole("dialog", { name: "Student access" })).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Confirm access change" })).toBeNull();
+  });
   it("uses an accessible More menu that closes on Escape and returns focus", async () => {
     render(<TeacherHomeView model={READY} onOpen={vi.fn()} />);
     const trigger = screen.getByRole("button", { name: "More" });
@@ -150,7 +177,7 @@ describe("TeacherHomeView", () => {
     const trigger = screen.getByRole("button", { name: "More" });
     fireEvent.keyDown(trigger, { key: "ArrowDown" });
     fireEvent.click(await screen.findByRole("menuitem", { name: "Create session link" }));
-    const sheet = await screen.findByRole("dialog", { name: "Session link" });
+    const sheet = await screen.findByRole("dialog", { name: "Individual booking links" });
     expect(screen.queryByRole("menu")).toBeNull();
     await waitFor(() => expect(sheet.contains(document.activeElement)).toBe(true));
     expect(within(sheet).getByLabelText("Student")).toBeInTheDocument();

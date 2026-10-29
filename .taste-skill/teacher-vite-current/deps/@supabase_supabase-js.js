@@ -2,7 +2,7 @@ import {
   __awaiter,
   __rest
 } from "./chunk-SSNNRPHA.js";
-import "./chunk-ILHRZGIS.js";
+import "./chunk-M2PPBBZ4.js";
 
 // ../lsatu-spot-video-release-20261025/node_modules/@supabase/supabase-js/dist/tracingRegistry.mjs
 var EXTRACTOR_KEY = Symbol.for("@supabase/supabase-js.traceContextExtractor");

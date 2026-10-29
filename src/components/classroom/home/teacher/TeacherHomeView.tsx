@@ -10,6 +10,7 @@ import { filterStudents } from "./teacherHomeModel";
 import { calendarCheckIsStale } from "./postSessionModel";
 import { PostSessionWork } from "./PostSessionWork";
 import { MyList, AllTasksSheet, DeskStatus } from "./TeacherTasks";
+import { TeacherScheduleSheet } from "./TeacherScheduleSheet";
 import { AccessSheet, BookingSheet } from "./TeacherAccessBooking";
 import {
   EMPTY_DESK,
@@ -142,7 +143,17 @@ function TeacherDeskContent({
   const desk = model.desk ?? EMPTY_DESK;
   const students = model.roster.all ?? model.roster.recent;
   const [allTasks, setAllTasks] = React.useState(false);
+  const [scheduleOpen, setScheduleOpen] = React.useState(false);
+  const scheduleTrigger = React.useRef<HTMLButtonElement>(null);
   const [booking, setBooking] = React.useState(false);
+  const [bookingMode, setBookingMode] = React.useState<"credits" | "link">("link");
+  const [accessOpen, setAccessOpen] = React.useState(false);
+  const accountTrigger = React.useRef<HTMLButtonElement | null>(null);
+  const openBooking = (mode: "credits" | "link", trigger?: HTMLButtonElement) => {
+    accountTrigger.current = trigger ?? moreTrigger.current;
+    setBookingMode(mode);
+    setBooking(true);
+  };
   const moreTrigger = React.useRef<HTMLButtonElement>(null);
   const [access, setAccess] = React.useState<ManagedUser | null>(null);
   const [search, setSearch] = React.useState("");
@@ -210,7 +221,7 @@ function TeacherDeskContent({
               <button ref={moreTrigger} className="home-desk-more-trigger">More <span aria-hidden="true">⌄</span></button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" sideOffset={8} className="home-desk-menu" onCloseAutoFocus={(event) => { if (booking) event.preventDefault(); }}>
-              <DropdownMenuItem onSelect={() => setBooking(true)}>
+              <DropdownMenuItem onSelect={() => openBooking("link")}>
                 Create session link
               </DropdownMenuItem>
             </DropdownMenuContent>
@@ -394,7 +405,7 @@ function TeacherDeskContent({
                 <ul>
                   {pendingAccess.slice(0, 2).map((person) => (
                     <li key={person.class_id}>
-                      <button onClick={() => setAccess(person)}>
+                      <button onClick={e => { accountTrigger.current = e.currentTarget; setAccessOpen(true); setAccess(person); }}>
                         <span>
                           <b>{person.display_name || person.email}</b>
                           <small>Choose student access</small>
@@ -567,6 +578,13 @@ function TeacherDeskContent({
             All students ↗
           </button>
         </header>
+        <div className="home-desk-account-actions" role="group" aria-label="Student accounts">
+          <div><h3>Student accounts</h3><p>Manage sessions, access and private booking links.</p></div>
+          <button ref={scheduleTrigger} onClick={() => setScheduleOpen(true)}>Schedule a session</button>
+          <button onClick={e => openBooking("credits", e.currentTarget)}>Add session credits</button>
+          <button onClick={e => { accountTrigger.current = e.currentTarget; setAccess(null); setAccessOpen(true); }}>Account access</button>
+          <button onClick={e => openBooking("link", e.currentTarget)}>Individual booking links</button>
+        </div>
         <div className="home-desk-student-columns">
           <div>
             <h3>Recent activity</h3>
@@ -650,13 +668,15 @@ function TeacherDeskContent({
                       </button>
                       {desk.access.data?.find((p) => p.class_id === s.id) ? (
                         <button
-                          onClick={() =>
+                          onClick={(e) => {
+                            accountTrigger.current = e.currentTarget;
+                            setAccessOpen(true);
                             setAccess(
                               desk.access.data!.find(
                                 (p) => p.class_id === s.id,
                               )!,
-                            )
-                          }
+                            );
+                          }}
                         >
                           Edit access
                         </button>
@@ -684,17 +704,27 @@ function TeacherDeskContent({
         onOpen={onOpen}
       />
       <AccessSheet
+        open={accessOpen || !!access}
+        students={desk.access.data ?? []}
+        rosterState={desk.access.state}
+        onRetryRoster={desk.access.retry}
+        onSelect={setAccess}
         save={desk.actions?.saveHomeAccess}
         person={access}
-        onClose={() => setAccess(null)}
+        onClose={() => { setAccess(null); setAccessOpen(false); requestAnimationFrame(() => accountTrigger.current?.focus()); }}
         onSaved={() => desk.refreshAccess?.()}
       />
+      <TeacherScheduleSheet open={scheduleOpen} actorId={desk.actorId} students={desk.access.data ?? []} rosterState={desk.access.state} onRetryRoster={desk.access.retry} load={desk.actions?.loadHomeBooking} services={desk.schedulingServices} onCommitted={() => { if (desk.refreshBooking) desk.refreshBooking(); else { desk.agenda.retry?.(); desk.refreshAccess?.(); desk.access.retry?.(); } }} onClose={() => { setScheduleOpen(false); requestAnimationFrame(() => scheduleTrigger.current?.focus()); }} />
       <BookingSheet
+        key={bookingMode}
+        mode={bookingMode}
+        rosterState={desk.access.state}
+        onRetryRoster={desk.access.retry}
         actions={desk.actions}
         open={booking}
         onClose={() => {
           setBooking(false);
-          requestAnimationFrame(() => moreTrigger.current?.focus());
+          requestAnimationFrame(() => accountTrigger.current?.focus());
         }}
         actorId={desk.actorId}
         students={desk.access.data ?? []}

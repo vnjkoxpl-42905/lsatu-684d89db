@@ -1,9 +1,9 @@
 import {
   require_react
-} from "./chunk-BJG56G2C.js";
+} from "./chunk-WUYIG2E6.js";
 import {
   __commonJS
-} from "./chunk-ILHRZGIS.js";
+} from "./chunk-M2PPBBZ4.js";
 
 // ../lsatu-spot-video-release-20261025/node_modules/scheduler/cjs/scheduler.development.js
 var require_scheduler_development = __commonJS({
@@ -21626,4 +21626,4 @@ react-dom/cjs/react-dom.development.js:
    * @license Modernizr 3.0.0pre (Custom Build) | MIT
    *)
 */
-//# sourceMappingURL=chunk-6MDF5L2Y.js.map
+//# sourceMappingURL=chunk-5KGLRM7U.js.map

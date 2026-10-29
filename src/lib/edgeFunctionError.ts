@@ -32,6 +32,7 @@ export async function extractEdgeFunctionError(error: unknown): Promise<string |
 // should actually read. Codes absent from this map are internal faults, and the
 // student gets the generic fallback rather than the code itself.
 const BOOKING_MESSAGES: { match: string; message: string }[] = [
+  { match: "booking_outcome_unknown", message: "The booking may already exist. Close this confirmation and use Check booking before retrying." },
   { match: "slot_conflict", message: "That time was just taken. Pick another." },
   { match: "slot_unavailable", message: "That time isn't available. Pick another." },
   { match: "pass_exhausted", message: "You're out of sessions for now. Message Joshua for more." },
