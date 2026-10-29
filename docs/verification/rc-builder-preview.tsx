@@ -2,10 +2,12 @@ import React from 'react';
 import { ClassroomMotionContent } from '../../src/components/classroom/shell/ClassroomMotionContent';
 import '../../src/styles/classroom-motion.css';
 import { createRoot } from 'react-dom/client';
-import { MemoryRouter, Routes, Route, useLocation, useNavigate } from 'react-router-dom';
+import { MemoryRouter, Routes, Route, Navigate, useLocation, useNavigate } from 'react-router-dom';
+import RcPlayer from '../../src/features/rc/pages/RcPlayer';
 import { RcHubSurface } from '../../src/features/rc/components/RcHubSurface';
 import { buildStandaloneDrillHistory } from '../../src/lib/standaloneDrillHistory';
-import type { RcDrillSession, RcAttempt } from '../../src/features/rc/lib/rcTypes';
+import { getSessionAttempts, listSessions } from '../../src/features/rc/api/rcProgress';
+import { loadPassages } from '../../src/features/rc/lib/rcBank';
 import { RcSavedSetsPanel } from '../../src/features/rc/components/RcSavedSetsPanel';
 import AssignedWorkPanel from '../../src/components/mainhub/AssignedWorkPanel';
 import { RcPracticeLanding, RcPracticeResume } from '../../src/features/rc/components/RcPracticeLanding';
@@ -14,18 +16,25 @@ import '../../src/components/classroom/classroom.css';
 import { Button } from '../../src/components/ui/button';
 import { SectionToggle } from '../../src/components/drill/SectionToggle';
 
-document.documentElement.classList.remove('dark');
-document.documentElement.classList.add('light');
 const params = new URLSearchParams(location.search);
-function LaunchReadback() {
-  const saved = (window as any).__rcBuilderLaunch;
-  return <section className="rc-page rc-embedded"><h1>Verified launch</h1><pre>{JSON.stringify(saved, null, 2)}</pre></section>;
-}
+document.documentElement.classList.toggle('dark', params.has('dark'));
+document.documentElement.classList.toggle('light', !params.has('dark'));
+if (params.has('docked')) document.getElementById('root')!.style.maxWidth = '720px';
+function CompletedFixture() { const navigate=useNavigate(); return <section className="rc-page"><h1>Synthetic drill completed</h1><p>The real player saved this synthetic attempt. Results-page presentation is outside this fixture.</p><button type="button" onClick={()=>navigate('/practice/drills?section=rc&view=create')}>Return to RC practice</button></section>; }
 function PracticeFixture() {
   const navigate=useNavigate();
-  const session: RcDrillSession={id:'synthetic-resume',userId:'synthetic-rc-builder-owner',passageIds:[1188],status:'in_progress',startedAt:'2026-10-20T08:00:00Z',completedAt:null,excludedFromAnalytics:false,config:{source:'manual',reveal:'end_of_set',timing:{mode:'unlimited'}}};
-  const attempts: RcAttempt[]=[{id:'synthetic-answer',userId:session.userId,sessionId:session.id,passageId:1188,questionId:9000,isFirstAttempt:true,isCorrect:true,selected:'A',timeMs:30000,flagged:false,eliminations:[],createdAt:'2026-10-20T08:01:00Z'}];
-  const item=buildStandaloneDrillHistory([], [session],new Map([[session.id,attempts]]),null,new Map([[1188,{preptest:140,section:3,setNumber:1,title:'Marine ecosystems'}]]))[0];
+  const [item,setItem]=React.useState<ReturnType<typeof buildStandaloneDrillHistory>[number] | null>(null);
+  const [status,setStatus]=React.useState('Loading synthetic session history…');
+  React.useEffect(()=>{let current=true;void(async()=>{try{
+    const sessions=(await listSessions()).filter(session=>session.status==='in_progress').sort((a,b)=>b.startedAt.localeCompare(a.startedAt));
+    const session=sessions[0];
+    if(!session){if(current)setStatus('No synthetic drill in progress. Start a drill to verify save and resume.');return;}
+    const [attempts,passages]=await Promise.all([getSessionAttempts(session.id),loadPassages(session.passageIds)]);
+    const metadata=new Map(passages.map(passage=>[passage.passageId,{preptest:passage.preptest,section:passage.section,setNumber:passage.setNumber,title:passage.title}]));
+    const row=buildStandaloneDrillHistory([], [session],new Map([[session.id,attempts]]),null,metadata)[0];
+    if(current){setItem(row??null);setStatus(row?'':'This synthetic session could not be summarized.');}
+  }catch{if(current)setStatus('Synthetic resume details could not be loaded. No progress is assumed.');}})();return()=>{current=false;};},[]);
+  if(!item)return <p role="status" className="rc-field-hint">{status}</p>;
   return <RcPracticeResume title={item.title} detail={item.detail} onResume={()=>navigate(item.continueTo)}/>;
 }
 function Workspace() {
@@ -39,4 +48,4 @@ function Workspace() {
 const initial=new URLSearchParams({section:'rc',view:params.has('savedView')?'saved':'create'});
 if(params.has('saved')) initial.set('saved',params.get('saved')!);
 if(params.has('builder')||params.has('fail')||params.has('hidden')) initial.set('builder',params.get('builder')||'automatic');
-createRoot(document.getElementById('root')!).render(<><aside style={{padding:8,fontSize:13}}>Local synthetic verification. No production backend. Scenario: {params.get('fail')||'ready'}{params.has('hidden')?' / hidden results':''}</aside><MemoryRouter initialEntries={initial.has('builder')||initial.has('saved') ? ['/practice/drills?section=rc&view=create','/practice/drills?'+initial] : ['/practice/drills?'+initial]} initialIndex={initial.has('builder')||initial.has('saved') ? 1 : 0}><Routes><Route path="/practice/drills" element={<Workspace/>}/><Route path="/rc/drill" element={<LaunchReadback/>}/></Routes></MemoryRouter></>);
+createRoot(document.getElementById('root')!).render(<><aside style={{padding:8,fontSize:13}}>Local synthetic verification. No production backend. Scenario: {params.get('fail')||'ready'}{params.has('hidden')?' / hidden results':''}</aside><MemoryRouter initialEntries={initial.has('builder')||initial.has('saved') ? ['/practice/drills?section=rc&view=create','/practice/drills?'+initial] : ['/practice/drills?'+initial]} initialIndex={initial.has('builder')||initial.has('saved') ? 1 : 0}><Routes><Route path="/practice/drills" element={<Workspace/>}/><Route path="/rc/drill" element={<RcPlayer/>}/><Route path="/rc" element={<Navigate to="/practice/drills?section=rc&view=create" replace/>}/><Route path="/rc/results/:sessionId" element={<CompletedFixture/>}/></Routes></MemoryRouter></>);

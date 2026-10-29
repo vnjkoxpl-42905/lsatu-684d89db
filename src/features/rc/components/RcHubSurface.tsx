@@ -10,6 +10,7 @@ import { profilePassageSeconds } from '@/lib/studySettings';
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { loadAllIndexPassages, loadPassages } from '../lib/rcBank';
 import { RcExposurePreview } from './RcExposurePreview';
+import { RcPassageFinder } from './RcPassageFinder';
 import { RcAdaptiveSummary } from './RcAdaptiveSummary';
 import { buildRcAdaptiveSummary } from '../lib/rcAdaptiveSummary';
 import { getRcExposureHistory } from '../api/rcExposure';
@@ -55,6 +56,7 @@ import { normalizeRcSearchText, parseRcSearchAddress } from '../lib/rcSearch';
 import '../rc.css';
 import '../rcTypography.css';
 import '../rcBuilderRefinement.css';
+import '../rcReviewFolio.css';
 import { canonicalRcSection, manualSectionsEnabled, newManualSectionHref, timedSectionResumeHref } from '@/lib/timedSectionAdoption';
 import { canRevealRcResults } from '../lib/rcResultsReveal';
 
@@ -957,9 +959,14 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, ope
   const filterSummary = [filters.topics.length ? filters.topics.join(', ') : 'All topics', filters.difficulties.length ? `Difficulty ${filters.difficulties.join(', ')}` : exactMode ? 'Any difficulty' : 'Adaptive difficulty', STATUS_OPTIONS.find(option => option.id === filters.status)?.label, ...filters.formats, ...filters.frameworks, ...filters.families, `PT ${filters.preptestMin}–${filters.preptestMax}`].filter(Boolean).join(' · ');
   const requestedCount = exactMode ? exactIds.length : count;
   const reviewStage = reviewing && activeSet !== null;
+  const startUnavailable = starting || inspecting || recoveryPending !== null || uncertainStart.current !== null || !builderReady || needsShortfallAck;
   const wasReviewStage = React.useRef(false);
   React.useEffect(() => {
-    if (reviewStage) document.getElementById('rc-review-heading')?.focus();
+    if (reviewStage) {
+      const heading = document.getElementById('rc-review-heading');
+      heading?.focus({ preventScroll: true });
+      heading?.closest('.rc-review-folio')?.scrollIntoView?.({ block: 'start', behavior: 'instant' });
+    }
     else if (wasReviewStage.current) document.getElementById('rc-final-heading')?.focus();
     wasReviewStage.current = reviewStage;
   }, [reviewStage]);
@@ -1011,8 +1018,8 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, ope
        surface and hairline value out from under the builder. `rc-embedded`
        removes only the page-level frame — full-height, background, padding,
        centred column — which the drill hub's launcher already provides. */
-    <div className={`${embedded ? 'rc-page rc-embedded' : 'rc-page'}${handPickOpen ? ' rc-builder-manual' : ''} rc-final-builder`}>
-      {onCancel && <div className="rc-final-back"><button type="button" className="rc-chip" onClick={onCancel}>Back to RC practice</button></div>}
+    <div className={`${embedded ? 'rc-page rc-embedded' : 'rc-page'}${handPickOpen ? ' rc-builder-manual' : ''} rc-final-builder${reviewStage ? ' rc-is-review' : ''}`}>
+      {onCancel && !reviewStage && <div className="rc-final-back"><button type="button" className="rc-chip" onClick={onCancel}>Back to RC practice</button></div>}
 
       {loadError && (
         <div className="rc-builder-alert" role="alert">
@@ -1056,12 +1063,7 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, ope
           <section data-motion-item data-motion-id="rc-setup-lookup" className="rc-direct-lookup" aria-labelledby="rc-direct-lookup-heading">
             <h3 id="rc-direct-lookup-heading">Have a passage in mind?</h3>
             <p>{handPickOpen ? 'Optional. Leave blank to keep your selection.' : 'Optional. Leave blank for Tutor’s choice.'}</p>
-            <div className="rc-lookup-address">
-              <label>PrepTest<select aria-label="Lookup PrepTest" value={lookupAddress.pt} onChange={event => updateLookup({ pt: event.target.value, section: '', passage: '' })}><option value="">Select</option>{[...new Set(passages.filter(p => p.questionCount > 0).map(p => p.preptest))].sort((a,b) => a-b).map(pt => <option key={pt} value={pt}>{pt}</option>)}</select></label>
-              <label>Section<select aria-label="Lookup section" value={lookupAddress.section} disabled={!lookupAddress.pt} onChange={event => updateLookup({ ...lookupAddress, section: event.target.value, passage: '' })}><option value="">Select</option>{[...new Set(passages.filter(p => String(p.preptest) === lookupAddress.pt && p.questionCount > 0).map(p => p.section))].sort((a,b) => a-b).map(section => <option key={section} value={section}>{section}</option>)}</select></label>
-              <label>Passage<select aria-label="Lookup passage" value={lookupAddress.passage} disabled={!lookupAddress.section} onChange={event => updateLookup({ ...lookupAddress, passage: event.target.value })}><option value="">Select</option>{passages.filter(p => String(p.preptest) === lookupAddress.pt && String(p.section) === lookupAddress.section && p.questionCount > 0).sort((a,b) => a.setNumber-b.setNumber).map(p => <option key={p.passageId} value={p.setNumber}>{p.setNumber}</option>)}</select></label>
-            </div>
-            {lookupActive && <div className="rc-lookup-status"><span role="status">{lookupPassage ? `PT ${lookupPassage.preptest} · Section ${lookupPassage.section} · Passage ${lookupPassage.setNumber}` : 'Choose a section and passage to continue.'}</span><button type="button" onClick={() => updateLookup({ pt: '', section: '', passage: '' })}>Clear</button></div>}
+            <RcPassageFinder passages={passages} status={indexStatus} onRetry={retryLoad} address={lookupAddress} onAddressChange={updateLookup} />
           </section>
         </header>
         <div data-motion-item data-motion-id="rc-setup-conditions" className="rc-setup-workspace">
@@ -1084,16 +1086,55 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, ope
 
         </div>
       </section>}
-      {reviewStage && activeSet && <section className="rc-drill-preview rc-review-stage" aria-label="Selected reading set">
-        <header className="rc-review-heading"><div><p className="rc-review-step">{exactMode ? 'Manually selected' : 'Chosen for you'}</p><h2 id="rc-review-heading" tabIndex={-1}>Review your RC drill</h2></div><div className="rc-review-edit-actions"><button type="button" className="rc-chip" disabled={starting || inspecting} onClick={() => setReviewing(false)}>Edit setup</button>{!exactMode && <button type="button" className="rc-chip rc-final-different" disabled={starting || inspecting || !builderReady} onClick={() => void showDifferentSelection()}>Choose different passages</button>}</div></header>
-        <dl className="rc-review-conditions"><div><dt>Passages</dt><dd>{activeSet.ids.length}</dd></div><div><dt>Questions</dt><dd>{summary.inspectedQuestions}</dd></div><div><dt>Timing</dt><dd>{timing === 'untimed' ? 'Untimed' : `${mmss(secondsPerPassage)} per passage`}</dd></div><div><dt>Show answers</dt><dd>{REVEAL_OPTIONS.find(option => option.id === reveal)?.label}</dd></div></dl>
-        {presentationTrainingAllowed && (training.anticipation || training.lineByLine) && <p className="rc-review-training">Training: {[training.anticipation && 'Anticipation', training.lineByLine && 'Line-by-line'].filter(Boolean).join(' · ')}</p>}
-        {!exactMode && <p className="rc-field-hint">Selection: {filterSummary}</p>}
-        {filters.status === 'strict_no_exposure' && <p className="rc-field-hint">Launch requirement: No recorded exposure</p>}
-        <p className="rc-field-hint">Your drill will use these passages in this order. Text, answers and explanations stay hidden until you act.</p>
-        {activeSet.passages.map((passage, index) => <React.Fragment key={`${previewIdentity}:${passage.passageId}`}>{manualStrictBlocked.includes(passage.passageId) && <p className="rc-field-error">{passage.title || `Passage ${passage.passageId}`}: Does not meet No recorded exposure: recorded exposure or saved answers.</p>}<RcExposurePreview key={`${previewIdentity}:${passage.passageId}`} actorId={actorId} passage={passage} index={index} alreadyRevealed={previewReveals.has(`${previewIdentity}:${passage.passageId}`)} onExposed={id => { setExposures(previous => new Set(previous).add(id)); setPreviewReveals(previous => new Set(previous).add(`${previewIdentity}:${id}`)); }} /></React.Fragment>)}
-        {activeSet && summary.shortfall > 0 && <label className="rc-shortfall"><input type="checkbox" checked={shortfallAccepted} onChange={event => setAcceptedShortfall(event.target.checked ? activeSetKey : null)} /><span>Only {plural(summary.plannedPassages, 'passage')} of the {summary.requestedPassages} you asked for {summary.plannedPassages === 1 ? 'matches' : 'match'} these filters. Start with {plural(summary.plannedPassages, 'passage')}.</span></label>}
-        <div className="rc-review-launch" role="region" aria-label="Launch summary"><span>{plural(summary.plannedPassages, 'passage')} · {plural(summary.inspectedQuestions ?? 0, 'question')} · {timing === 'untimed' ? 'Untimed' : `${mmss(secondsPerPassage)} per passage`}</span><button type="button" className="rc-button rc-button-primary" disabled={starting || inspecting || recoveryPending !== null || uncertainStart.current !== null || !builderReady || needsShortfallAck} onClick={() => void start()}>{starting ? 'Starting…' : 'Start drill'}</button></div>
+      {reviewStage && activeSet && <section className="rc-review-folio" data-rc-review-design="folio-v1" aria-label="Selected reading set">
+        {onCancel && <div className="rc-folio-breadcrumb"><button type="button" className="rc-folio-back" onClick={onCancel}><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M16 10H4m5-5-5 5 5 5" /></svg>Back to RC practice</button></div>}
+        <header className="rc-folio-heading">
+          <div>
+            <p className="rc-folio-provenance"><span className="rc-folio-provenance-mark" aria-hidden="true" />{exactMode ? 'Manually selected' : 'Chosen for you'}<span aria-hidden="true"> / </span>Reading Comprehension</p>
+            <h2 id="rc-review-heading" className="rc-folio-title" tabIndex={-1}>Review your RC drill</h2>
+            <p className="rc-folio-intro">The passages you’ll read, in the order you’ll meet them.</p>
+          </div>
+          <div className="rc-folio-edit-actions">
+            <a className="rc-folio-conditions-link" href="#rc-folio-session-heading">Practice conditions</a>
+            <button type="button" className="rc-folio-edit" disabled={starting || inspecting} onClick={() => setReviewing(false)}><svg viewBox="0 0 20 20" aria-hidden="true"><path d="m12.8 3.2 4 4M3 17l4.5-1L17 6.5a2.8 2.8 0 0 0-4-4L3.5 12Z" /></svg>Edit setup</button>
+            {!exactMode && <button type="button" className="rc-folio-reroll" disabled={starting || inspecting || !builderReady} onClick={() => void showDifferentSelection()}>{inspecting ? 'Choosing passages…' : 'Choose different passages'}<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M16 7a6 6 0 1 0 0 6M16 3v4h-4" /></svg></button>}
+          </div>
+        </header>
+        <div className="rc-folio-layout">
+          <div className="rc-folio-reading-set">
+            <div className="rc-folio-set-heading"><h3>The reading set</h3><span>{plural(activeSet.ids.length, 'passage')}</span></div>
+            <div className="rc-folio-list" data-count={activeSet.ids.length}>
+              {activeSet.passages.map((passage, index) => <React.Fragment key={`${previewIdentity}:${passage.passageId}`}>
+                {manualStrictBlocked.includes(passage.passageId) && <p className="rc-folio-warning" role="alert">{passage.title || `Passage ${passage.passageId}`}: Does not meet No recorded exposure: recorded exposure or saved answers.</p>}
+                <RcExposurePreview presentation="folio" actorId={actorId} passage={passage} index={index} alreadyRevealed={previewReveals.has(`${previewIdentity}:${passage.passageId}`)} onExposed={id => { setExposures(previous => new Set(previous).add(id)); setPreviewReveals(previous => new Set(previous).add(`${previewIdentity}:${id}`)); }} />
+              </React.Fragment>)}
+            </div>
+            <p className="rc-folio-privacy"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 9V6a5 5 0 0 1 10 0v3M3 9h14v9H3Z" /></svg>Text, answers and explanations stay hidden until you act.</p>
+          </div>
+          <aside className="rc-folio-sidebar" aria-label="Drill conditions and start">
+            <div className="rc-folio-session">
+              <div className="rc-folio-session-heading"><span className="rc-folio-session-symbol" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 4h10l4 4v12H5ZM15 4v5h4M8 12h8M8 15h6" /></svg></span><h3 id="rc-folio-session-heading" tabIndex={-1}>Your session</h3></div>
+              <dl className="rc-folio-conditions">
+                <div className="rc-folio-pace"><dt>Timing</dt><dd><span>{timing === 'untimed' ? 'Untimed' : mmss(secondsPerPassage)}</span>{timing !== 'untimed' && <> <small>per passage</small></>}</dd></div>
+                <div className="rc-folio-count"><dt>Passages</dt><dd>{activeSet.ids.length}</dd></div><div className="rc-folio-count"><dt>Questions</dt><dd>{summary.inspectedQuestions}</dd></div>
+                <div className="rc-folio-answer-policy"><dt>Show answers</dt><dd>{REVEAL_OPTIONS.find(option => option.id === reveal)?.label}</dd></div>
+              </dl>
+              {presentationTrainingAllowed && (training.anticipation || training.lineByLine) && <p className="rc-folio-training">Training: {[training.anticipation && 'Anticipation', training.lineByLine && 'Line-by-line'].filter(Boolean).join(' · ')}</p>}
+              {filters.status === 'strict_no_exposure' && <p className="rc-folio-requirement">Launch requirement: No recorded exposure</p>}
+              {summary.shortfall > 0 && <label className="rc-folio-shortfall"><input type="checkbox" checked={shortfallAccepted} onChange={event => setAcceptedShortfall(event.target.checked ? activeSetKey : null)} /><span>Only {plural(summary.plannedPassages, 'passage')} of the {summary.requestedPassages} you asked for {summary.plannedPassages === 1 ? 'matches' : 'match'} these filters. Start with {plural(summary.plannedPassages, 'passage')}.</span></label>}
+              <div className="rc-folio-launch" data-ready={!startUnavailable ? 'true' : undefined} role="region" aria-label="Launch summary">
+                <p>{plural(summary.plannedPassages, 'passage')} · {plural(summary.inspectedQuestions ?? 0, 'question')} · {timing === 'untimed' ? 'Untimed' : `${mmss(secondsPerPassage)} per passage`}</p>
+                <button type="button" className="rc-button rc-button-primary rc-folio-start" disabled={startUnavailable} onClick={() => void start()}><span>{starting ? 'Starting…' : 'Start drill'}</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15m-6-6 6 6-6 6" /></svg></button>
+                <span className="rc-folio-start-note">{starting ? 'Preparing your drill…' : needsShortfallAck ? 'Confirm the available passage count above.' : recoveryPending || uncertainStart.current ? 'Resolve the pending launch before starting.' : !builderReady ? 'Review the launch requirements before starting.' : 'Start when you’re ready.'}</span>
+              </div>
+            </div>
+            <details className="rc-builder-saved rc-folio-save"><summary><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 2h10v16l-5-3-5 3Z" /></svg><span>Save this drill or its settings</span><svg className="rc-folio-save-chevron" viewBox="0 0 20 20" aria-hidden="true"><path d="m5 8 5 5 5-5" /></svg></summary><RcSavedSetsPanel variant="contextual"
+              recipe={builderReady && count <= 8 && !exactMode && !assignmentLinked && !ptRun ? { kind: 'rc-builder', version: 1, mode: 'recipe', config: { reveal, timing: config.timing, ...(config.training ? { training: config.training } : {}) }, filters, count, passageIds: [], questionIds: [] } : null}
+              fixed={builderReady && !assignmentLinked && !ptRun ? { kind: 'rc-builder', version: 1, mode: 'fixed', config: { reveal, timing: config.timing, ...(config.training ? { training: config.training } : {}) }, filters: fixedSelectionFilters(filters), count: activeSet.ids.length, passageIds: activeSet.ids, questionIds: activeSet.passages.flatMap(p => p.questions.map(q => q.questionId)) } : null}
+            /></details>
+            {!exactMode && <details className="rc-folio-selection"><summary>How these were selected<svg viewBox="0 0 20 20" aria-hidden="true"><path d="m5 8 5 5 5-5" /></svg></summary><p>Selection: {filterSummary}</p></details>}
+          </aside>
+        </div>
       </section>}
 
       <Sheet open={drawerState !== null} onOpenChange={open => { if (!open) setDrawer(null); }}>
@@ -1127,10 +1168,6 @@ function ActorRcHubSurface({ embedded = false, showHistory = true, onCancel, ope
         </SheetContent>
       </Sheet>
 
-      {reviewStage && <details className="rc-builder-saved"><summary>Save this drill or its settings</summary><RcSavedSetsPanel variant="contextual"
-        recipe={builderReady && count <= 8 && !exactMode && !assignmentLinked && !ptRun ? { kind: 'rc-builder', version: 1, mode: 'recipe', config: { reveal, timing: config.timing, ...(config.training ? { training: config.training } : {}) }, filters, count, passageIds: [], questionIds: [] } : null}
-        fixed={builderReady && activeSet && !assignmentLinked && !ptRun ? { kind: 'rc-builder', version: 1, mode: 'fixed', config: { reveal, timing: config.timing, ...(config.training ? { training: config.training } : {}) }, filters: fixedSelectionFilters(filters), count: activeSet.ids.length, passageIds: activeSet.ids, questionIds: activeSet.passages.flatMap(p => p.questions.map(q => q.questionId)) } : null}
-      /></details>}
       {/* ---------------------------------------------------------- history */}
       {showHistory && <h2 style={{ marginTop: 32 }}>Your drills</h2>}
       {showHistory && sessions.length === 0 && <p className="rc-empty">No drills yet.</p>}
