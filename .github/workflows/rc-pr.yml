@@ -58,7 +58,9 @@ jobs:
         with:
           node-version: 22
           cache: npm
-      - run: npm ci
+      # @lovable.dev/email-js optionally peers @react-email/render>=1 while the edge
+      # email templates pin 0.0.x. Strict peer resolution cannot satisfy both.
+      - run: npm ci --legacy-peer-deps
       - run: npm run typecheck
       - name: Verify reviewed RC corrections survive bank rebuilds
         run: node --test scripts/verification/rc-authored-corrections.test.mjs scripts/verification/rc-source-correction.test.mjs
