@@ -89,7 +89,7 @@ describe("OfficialQuestionPane — Answer and Explanation are independent", () =
     expect(screen.queryByRole("button", { name: "Show explanation for C" })).not.toBeInTheDocument();
     expect(screen.queryByText(/adds plausibility/i)).not.toBeInTheDocument();
     // The Correct tag chip is green because correctness is a fact, not a state.
-    expect(screen.getByText("Correct")).toHaveClass("bg-green-600");
+    expect(screen.getByText("Correct")).toHaveClass("choice-note__tag--correct");
   });
 
   it("both: colour and chevrons together", () => {
