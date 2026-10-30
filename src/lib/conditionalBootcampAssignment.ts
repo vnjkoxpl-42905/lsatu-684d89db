@@ -1,0 +1,148 @@
+import { normalizeConditionalActivityConfig, conditionalActivityKey, conditionalActivityDescription, CONDITIONAL_ACTIVITIES, type ConditionalActivityId, type ConditionalActivityConfig } from '@/bootcamps/conditionals/activityRegistry';
+import type { ConditionalArea, ConditionalDifficulty } from '@/bootcamps/conditionals/content/types';
+import { FULL_CONDITIONAL_EDITION, validConditionalEditionTarget, type ConditionalCourseEdition } from './conditionalCourseEdition';
+
+export interface ConditionalAssignmentTarget {
+  scope: 'course' | 'stage' | 'area' | 'skill' | 'general' | 'activity';
+  mode: 'learn' | 'practice';
+  difficulty: ConditionalDifficulty;
+  activityId?: ConditionalActivityId;
+  activitySettings?: Omit<ConditionalActivityConfig, 'activity'>;
+  unitId?: string;
+  area?: ConditionalArea;
+  /** Unmarked stage grants keep their original membership. New grants use this teaching order. */
+  curriculumVersion?: 2 | 3;
+  courseEdition?: ConditionalCourseEdition;
+}
+export const DEFAULT_CONDITIONAL_TARGET: ConditionalAssignmentTarget = {
+  scope: 'course', mode: 'learn', difficulty: 'beginner',
+};
+export const CONDITIONAL_AREAS: { id: ConditionalArea; title: string }[] = [
+  { id: 'understanding', title: 'Understanding rules' },
+  { id: 'translation', title: 'Translating language' },
+  { id: 'linking', title: 'Connecting rules' },
+  { id: 'inference', title: 'Using rules with facts' },
+  { id: 'complex', title: 'Complex conditionals' },
+  { id: 'application', title: 'Logical Reasoning applications' },
+  { id: 'quantifiers', title: 'Quantifier reasoning' },
+];
+export function conditionalTargetKey(target: ConditionalAssignmentTarget = DEFAULT_CONDITIONAL_TARGET): string {
+  if (!validConditionalEditionTarget(target)) throw new Error('This conditional course edition or assignment scope is unsupported. Reopen the assignment form.');
+  if (target.scope === 'activity') { const config = normalizeConditionalActivityConfig({ activity: target.activityId, ...target.activitySettings }); if (!config) throw new Error('Choose valid conditional activity settings.'); return `activity:v3:${target.activityId}:${conditionalActivityKey(config)}`; }
+  if (target.courseEdition === FULL_CONDITIONAL_EDITION) return target.scope === 'course' ? 'course:v3' : [target.scope, 'v3', target.scope === 'skill' ? target.unitId : target.area, 'learn', target.difficulty].join(':');
+  if (target.scope === 'course') return 'course';
+  if (target.scope === 'stage') return target.curriculumVersion === 2 ? `stage:v2:${target.unitId}` : `stage:${target.unitId}`;
+  return [target.scope, target.scope === 'skill' ? target.unitId : target.scope === 'area' ? target.area : 'conditional',
+    target.scope === 'general' ? 'practice' : target.mode, target.difficulty].join(':');
+}
+export async function resolveConditionalAssignment(target: ConditionalAssignmentTarget = DEFAULT_CONDITIONAL_TARGET) {
+  if (!['course', 'stage', 'area', 'skill', 'general', 'activity'].includes(target.scope) ||
+      !['learn', 'practice'].includes(target.mode) ||
+      !['beginner', 'medium', 'advanced'].includes(target.difficulty) ||
+      !validConditionalEditionTarget(target)) {
+    throw new Error('Choose a valid conditional scope, learning mode and difficulty.');
+  }
+  const base = '/bootcamp/conditionals';
+  const edition = target.courseEdition === FULL_CONDITIONAL_EDITION ? { courseEdition: FULL_CONDITIONAL_EDITION, curriculumVersion: 3 as const } : {};
+  if (target.scope === 'activity') {
+    const config = normalizeConditionalActivityConfig({ activity: target.activityId, ...target.activitySettings });
+    if (!config) throw new Error('Choose valid conditional activity settings.');
+    const { activity, ...settings } = config;
+    const normalized: ConditionalAssignmentTarget = { scope: 'activity', mode: 'practice', difficulty: 'beginner', curriculumVersion: 3, courseEdition: FULL_CONDITIONAL_EDITION, activityId: activity, activitySettings: settings };
+    const entry = CONDITIONAL_ACTIVITIES.find(item => item.id === activity)!;
+    return { route: conditionalProtectedGrantRoute(normalized), title: entry.title, description: conditionalActivityDescription(config), target: normalized, key: conditionalTargetKey(normalized) };
+  }
+  if (target.scope === 'course') return {
+    route: target.courseEdition ? conditionalProtectedGrantRoute(target) : base, title: 'Conditional Logic Bootcamp',
+    description: 'The teaching sequence from the beginning, with activity levels set at each stage. Quantifiers follow conditionals.',
+    target: { ...DEFAULT_CONDITIONAL_TARGET, ...edition }, key: conditionalTargetKey({ ...DEFAULT_CONDITIONAL_TARGET, ...edition }),
+  };
+  if (target.scope === 'stage') {
+    const { findConditionalUnit } = await import('@/bootcamps/conditionals/content');
+    const unit = findConditionalUnit(target.unitId);
+    if (!unit) throw new Error('Choose an existing conditional starting stage.');
+    const normalized: ConditionalAssignmentTarget = { scope: 'stage', mode: 'learn', difficulty: 'beginner', unitId: unit.id,
+      ...(target.curriculumVersion === 2 ? { curriculumVersion: 2 } : {}) };
+    return {
+      route: `${base}?${new URLSearchParams({ start: unit.id })}`,
+      title: `Conditional curriculum: start with ${unit.title}`,
+      description: 'Start at the assigned skill and continue through the curriculum. Each activity has its own level.',
+      target: normalized, key: conditionalTargetKey(normalized),
+    };
+  }
+  const params = new URLSearchParams({ level: target.difficulty });
+  let label = 'General conditional practice';
+  if (target.scope === 'skill') {
+    const { findConditionalUnit } = await import('@/bootcamps/conditionals/content');
+    const unit = findConditionalUnit(target.unitId);
+    if (!unit) throw new Error('Choose an existing conditional skill.');
+    label = unit.title;
+    params.set('unit', unit.id);
+  } else if (target.scope === 'area') {
+    const area = CONDITIONAL_AREAS.find(option => option.id === target.area);
+    if (!area) throw new Error('Choose an existing conditional area.');
+    label = area.title;
+    params.set('area', area.id);
+  } else params.set('phase', 'conditional');
+  const mode = target.scope === 'general' ? 'practice' : target.mode;
+  const route = mode === 'practice' ? `${base}/practice?${params}` : target.scope === 'skill'
+    ? `${base}/lessons/${encodeURIComponent(target.unitId!)}?${params}` : `${base}?${params}`;
+  return {
+    route: target.courseEdition ? conditionalProtectedGrantRoute(target) : route, title: `${label}: ${mode === 'learn' ? 'learning and practice' : 'practice'}`,
+    description: mode === 'learn' ? 'Teaching, guided activities and practice.' : 'Practice with explanations and optional hints.',
+    target: { scope: target.scope, mode, difficulty: target.difficulty, ...edition,
+      ...(target.scope === 'skill' ? { unitId: target.unitId } : {}), ...(target.scope === 'area' ? { area: target.area } : {}) } as ConditionalAssignmentTarget,
+    key: conditionalTargetKey({ ...target, mode }),
+  };
+}
+
+/** The database-protected source route carries the complete grant, not a browser entitlement. */
+export function conditionalProtectedGrantRoute(target: ConditionalAssignmentTarget, assignmentId?: string): string {
+  conditionalTargetKey(target);
+  if (target.courseEdition !== FULL_CONDITIONAL_EDITION) throw new Error('A protected grant route requires the full conditional edition.');
+  const params = new URLSearchParams({ curriculumVersion: '3', edition: FULL_CONDITIONAL_EDITION, scope: target.scope, mode: target.scope === 'activity' ? 'practice' : 'learn', difficulty: target.scope === 'course' ? 'beginner' : target.difficulty });
+  if (target.scope === 'skill') params.set('unitId', target.unitId!);
+  if (target.scope === 'area') params.set('area', target.area!);
+  if (target.scope === 'activity') { const config = normalizeConditionalActivityConfig({ activity: target.activityId, ...target.activitySettings }); if (!config) throw new Error('Choose valid conditional activity settings.'); params.set('activityId', config.activity); const { activity, ...settings } = config; params.set('activitySettings', JSON.stringify(settings)); }
+  if (assignmentId) params.set('assignment', assignmentId);
+  return `/bootcamp/conditionals?${params}`;
+}
+
+/** Normalize only exact former generated copy; teacher-written wording stays intact. */
+export function conditionalAssignmentDisplayCopy(
+  target: ConditionalAssignmentTarget,
+  generated: { title: string; description: string },
+  stored: { title?: string | null; description?: string | null },
+) {
+  const previousTitles = new Set<string>();
+  let previousDescription: string | undefined;
+  const formerUnitTitles: Record<string, string[]> = {
+    orientation: ['Find the Guarantee'],
+    'sufficient-necessary': ['Enough to Guarantee, Required to Follow'],
+    'group-1': ['Group 1: Identify What Guarantees What'],
+    'group-2': ['Group 2: Keep the Requirement on the Right'],
+  };
+  const formerLabels = target.unitId ? formerUnitTitles[target.unitId] ?? [] : [];
+  if (['skill', 'area', 'general'].includes(target.scope)) {
+    const mode = target.scope === 'general' ? 'practice' : target.mode;
+    const suffix = mode === 'learn' ? 'learning and practice' : 'practice';
+    const label = generated.title.slice(0, -(`: ${suffix}`.length));
+    const level = `Level ${['beginner', 'medium', 'advanced'].indexOf(target.difficulty) + 1}`;
+    previousTitles.add(`${label}: ${level} ${suffix}`);
+    if (target.scope === 'skill') {
+      for (const formerLabel of formerLabels) {
+        previousTitles.add(`${formerLabel}: ${level} ${suffix}`);
+        previousTitles.add(`${formerLabel}: ${suffix}`);
+      }
+    }
+    previousDescription = mode === 'learn'
+      ? `Teaching, guided activities and assigned ${level.toLowerCase()} practice.`
+      : `Assigned ${level.toLowerCase()} practice with explanations and optional hints.`;
+  } else if (target.scope === 'stage') {
+    for (const formerLabel of formerLabels) previousTitles.add(`Conditional curriculum: start with ${formerLabel}`);
+  }
+  return {
+    title: !stored.title || previousTitles.has(stored.title) ? generated.title : stored.title,
+    description: !stored.description || stored.description === previousDescription ? generated.description : stored.description,
+  };
+}

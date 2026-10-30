@@ -1,0 +1,14 @@
+/* Freeze the two real reading geometries before any layout effect measures them. */
+.classroom-root[data-note-transition-active] .classroom-column,
+.classroom-root[data-note-transition-active] .classroom-stage,
+/* Archive Back must settle layout before the child's anchor-restoration effect. */
+.classroom-root[data-note-transition-mode="archive"] .classroom-column,
+.classroom-root[data-note-transition-mode="archive"] .classroom-stage { transition: none !important; }
+.classroom-root[data-note-transition-mode="archive"] [data-note-transition-stage] { transform: none !important; }
+.classroom-root [data-note-transition-rail] { isolation: isolate; }
+.classroom-root[data-note-transition-mode] .classroom-sidebar { z-index: 20; }
+@media (prefers-reduced-motion: reduce) {
+  .classroom-root [data-note-reader-block],
+  .classroom-root [data-note-transition-stage],
+  .classroom-root [data-note-transition-rail] { scroll-behavior: auto; }
+}

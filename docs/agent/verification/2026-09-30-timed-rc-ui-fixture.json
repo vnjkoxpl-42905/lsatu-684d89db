@@ -1,0 +1,31 @@
+{
+  "date": "2026-09-30",
+  "label": "[Verification only] Admin RC-first UI fixture",
+  "ordinaryJwt": true,
+  "id": "qa-timed-rc-ui-cd812b72-4496-4738-bc7f-246cb4290279",
+  "pt": 101,
+  "manifestSha256": "cacaf2b0ab5cc71535d1efa543f284d601404ae7d0133dc32126ea4801878872",
+  "command": {
+    "workKind": "practice-test",
+    "workId": "qa-timed-rc-ui-cd812b72-4496-4738-bc7f-246cb4290279",
+    "commandId": "3a6686e6-2643-4a14-be66-0117f4b51b91",
+    "deviceId": "qa-admin-rc-00ead6fd-b7fd-431e-ba5f-88043bbbc619",
+    "expectedRevision": 0,
+    "writerEpoch": 0,
+    "operation": "create",
+    "payload": {
+      "pt": 101,
+      "pace": "standard",
+      "sectionSeconds": 2100
+    }
+  },
+  "state": "ready",
+  "existingRowsModified": 0,
+  "deletes": 0,
+  "notifications": 0,
+  "gradingRequests": 0,
+  "receipt": {
+    "commandId": "3a6686e6-2643-4a14-be66-0117f4b51b91",
+    "committedRevision": 0
+  }
+}

@@ -1,0 +1,338 @@
+[
+  {
+    "path": ".agents/skills/notebooklm/tests/cassettes/artifacts_delete.yaml",
+    "reason": "gitleaks credential redacted in snapshot: generic-api-key"
+  },
+  {
+    "path": ".agents/skills/notebooklm/tests/cassettes/artifacts_export_report.yaml",
+    "reason": "gitleaks credential redacted in snapshot: generic-api-key"
+  },
+  {
+    "path": ".agents/skills/notebooklm/tests/cassettes/artifacts_list.yaml",
+    "reason": "API token redacted in snapshot"
+  },
+  {
+    "path": ".agents/skills/notebooklm/tests/cassettes/artifacts_list_audio.yaml",
+    "reason": "API token redacted in snapshot"
+  },
+  {
+    "path": ".agents/skills/notebooklm/tests/cassettes/artifacts_list_data_tables.yaml",
+    "reason": "API token redacted in snapshot"
+  },
+  {
+    "path": ".agents/skills/notebooklm/tests/cassettes/artifacts_list_flashcards.yaml",
+    "reason": "API token redacted in snapshot"
+  },
+  {
+    "path": ".agents/skills/notebooklm/tests/cassettes/artifacts_list_infographics.yaml",
+    "reason": "API token redacted in snapshot"
+  },
+  {
+    "path": ".agents/skills/notebooklm/tests/cassettes/artifacts_list_quizzes.yaml",
+    "reason": "API token redacted in snapshot"
+  },
+  {
+    "path": ".agents/skills/notebooklm/tests/cassettes/artifacts_list_reports.yaml",
+    "reason": "API token redacted in snapshot"
+  },
+  {
+    "path": ".agents/skills/notebooklm/tests/cassettes/artifacts_list_slide_decks.yaml",
+    "reason": "API token redacted in snapshot"
+  },
+  {
+    "path": ".agents/skills/notebooklm/tests/cassettes/artifacts_list_video.yaml",
+    "reason": "API token redacted in snapshot"
+  },
+  {
+    "path": ".agents/skills/notebooklm/tests/cassettes/artifacts_rename.yaml",
+    "reason": "gitleaks credential redacted in snapshot: generic-api-key"
+  },
+  {
+    "path": ".agents/skills/notebooklm/tests/cassettes/notebooks_create.yaml",
+    "reason": "gitleaks credential redacted in snapshot: generic-api-key"
+  },
+  {
+    "path": ".agents/skills/notebooklm/tests/cassettes/notebooks_delete.yaml",
+    "reason": "gitleaks credential redacted in snapshot: generic-api-key"
+  },
+  {
+    "path": ".agents/skills/notebooklm/tests/cassettes/notebooks_get.yaml",
+    "reason": "gitleaks credential redacted in snapshot: generic-api-key"
+  },
+  {
+    "path": ".agents/skills/notebooklm/tests/cassettes/notebooks_remove_from_recent.yaml",
+    "reason": "gitleaks credential redacted in snapshot: generic-api-key"
+  },
+  {
+    "path": ".agents/skills/notebooklm/tests/cassettes/notes_delete.yaml",
+    "reason": "gitleaks credential redacted in snapshot: generic-api-key"
+  },
+  {
+    "path": ".agents/skills/notebooklm/tests/cassettes/real_api_list_artifacts.yaml",
+    "reason": "API token redacted in snapshot"
+  },
+  {
+    "path": ".agents/skills/notebooklm/tests/cassettes/real_api_list_audio.yaml",
+    "reason": "API token redacted in snapshot"
+  },
+  {
+    "path": ".agents/skills/notebooklm/tests/cassettes/real_api_list_quizzes.yaml",
+    "reason": "API token redacted in snapshot"
+  },
+  {
+    "path": ".agents/skills/notebooklm/tests/cassettes/real_api_list_reports.yaml",
+    "reason": "API token redacted in snapshot"
+  },
+  {
+    "path": ".agents/skills/notebooklm/tests/cassettes/research_import_sources.yaml",
+    "reason": "gitleaks credential redacted in snapshot: generic-api-key"
+  },
+  {
+    "path": ".agents/skills/notebooklm/tests/cassettes/research_poll.yaml",
+    "reason": "gitleaks credential redacted in snapshot: generic-api-key"
+  },
+  {
+    "path": ".agents/skills/notebooklm/tests/cassettes/research_start_deep.yaml",
+    "reason": "gitleaks credential redacted in snapshot: generic-api-key"
+  },
+  {
+    "path": ".agents/skills/notebooklm/tests/cassettes/research_start_fast.yaml",
+    "reason": "gitleaks credential redacted in snapshot: generic-api-key"
+  },
+  {
+    "path": ".agents/skills/notebooklm/tests/cassettes/settings_get_output_language.yaml",
+    "reason": "gitleaks credential redacted in snapshot: generic-api-key"
+  },
+  {
+    "path": ".agents/skills/notebooklm/tests/cassettes/settings_set_output_language.yaml",
+    "reason": "gitleaks credential redacted in snapshot: generic-api-key"
+  },
+  {
+    "path": ".agents/skills/notebooklm/tests/cassettes/sharing_get_status.yaml",
+    "reason": "gitleaks credential redacted in snapshot: generic-api-key"
+  },
+  {
+    "path": ".agents/skills/notebooklm/tests/cassettes/sharing_set_public.yaml",
+    "reason": "gitleaks credential redacted in snapshot: generic-api-key"
+  },
+  {
+    "path": ".agents/skills/notebooklm/tests/cassettes/sources_add_drive.yaml",
+    "reason": "gitleaks credential redacted in snapshot: generic-api-key"
+  },
+  {
+    "path": ".agents/skills/notebooklm/tests/cassettes/sources_add_file.yaml",
+    "reason": "gitleaks credential redacted in snapshot: generic-api-key"
+  },
+  {
+    "path": ".agents/skills/notebooklm/tests/cassettes/sources_check_freshness.yaml",
+    "reason": "gitleaks credential redacted in snapshot: generic-api-key"
+  },
+  {
+    "path": ".agents/skills/notebooklm/tests/cassettes/sources_delete.yaml",
+    "reason": "gitleaks credential redacted in snapshot: generic-api-key"
+  },
+  {
+    "path": ".agents/skills/notebooklm/tests/cassettes/sources_refresh.yaml",
+    "reason": "gitleaks credential redacted in snapshot: generic-api-key"
+  },
+  {
+    "path": ".agents/skills/notebooklm/tests/cassettes/sources_rename.yaml",
+    "reason": "gitleaks credential redacted in snapshot: generic-api-key"
+  },
+  {
+    "path": ".agents/skills/skill-creator/scripts/__pycache__",
+    "reason": "excluded directory"
+  },
+  {
+    "path": ".agents/skills/watch/scripts/setup.py",
+    "reason": "credential assignment redacted in snapshot"
+  },
+  {
+    "path": ".claude/skills/notebooklm/tests/cassettes/artifacts_delete.yaml",
+    "reason": "gitleaks credential redacted in snapshot: generic-api-key"
+  },
+  {
+    "path": ".claude/skills/notebooklm/tests/cassettes/artifacts_export_report.yaml",
+    "reason": "gitleaks credential redacted in snapshot: generic-api-key"
+  },
+  {
+    "path": ".claude/skills/notebooklm/tests/cassettes/artifacts_list.yaml",
+    "reason": "API token redacted in snapshot"
+  },
+  {
+    "path": ".claude/skills/notebooklm/tests/cassettes/artifacts_list_audio.yaml",
+    "reason": "API token redacted in snapshot"
+  },
+  {
+    "path": ".claude/skills/notebooklm/tests/cassettes/artifacts_list_data_tables.yaml",
+    "reason": "API token redacted in snapshot"
+  },
+  {
+    "path": ".claude/skills/notebooklm/tests/cassettes/artifacts_list_flashcards.yaml",
+    "reason": "API token redacted in snapshot"
+  },
+  {
+    "path": ".claude/skills/notebooklm/tests/cassettes/artifacts_list_infographics.yaml",
+    "reason": "API token redacted in snapshot"
+  },
+  {
+    "path": ".claude/skills/notebooklm/tests/cassettes/artifacts_list_quizzes.yaml",
+    "reason": "API token redacted in snapshot"
+  },
+  {
+    "path": ".claude/skills/notebooklm/tests/cassettes/artifacts_list_reports.yaml",
+    "reason": "API token redacted in snapshot"
+  },
+  {
+    "path": ".claude/skills/notebooklm/tests/cassettes/artifacts_list_slide_decks.yaml",
+    "reason": "API token redacted in snapshot"
+  },
+  {
+    "path": ".claude/skills/notebooklm/tests/cassettes/artifacts_list_video.yaml",
+    "reason": "API token redacted in snapshot"
+  },
+  {
+    "path": ".claude/skills/notebooklm/tests/cassettes/artifacts_rename.yaml",
+    "reason": "gitleaks credential redacted in snapshot: generic-api-key"
+  },
+  {
+    "path": ".claude/skills/notebooklm/tests/cassettes/notebooks_create.yaml",
+    "reason": "gitleaks credential redacted in snapshot: generic-api-key"
+  },
+  {
+    "path": ".claude/skills/notebooklm/tests/cassettes/notebooks_delete.yaml",
+    "reason": "gitleaks credential redacted in snapshot: generic-api-key"
+  },
+  {
+    "path": ".claude/skills/notebooklm/tests/cassettes/notebooks_get.yaml",
+    "reason": "gitleaks credential redacted in snapshot: generic-api-key"
+  },
+  {
+    "path": ".claude/skills/notebooklm/tests/cassettes/notebooks_remove_from_recent.yaml",
+    "reason": "gitleaks credential redacted in snapshot: generic-api-key"
+  },
+  {
+    "path": ".claude/skills/notebooklm/tests/cassettes/notes_delete.yaml",
+    "reason": "gitleaks credential redacted in snapshot: generic-api-key"
+  },
+  {
+    "path": ".claude/skills/notebooklm/tests/cassettes/real_api_list_artifacts.yaml",
+    "reason": "API token redacted in snapshot"
+  },
+  {
+    "path": ".claude/skills/notebooklm/tests/cassettes/real_api_list_audio.yaml",
+    "reason": "API token redacted in snapshot"
+  },
+  {
+    "path": ".claude/skills/notebooklm/tests/cassettes/real_api_list_quizzes.yaml",
+    "reason": "API token redacted in snapshot"
+  },
+  {
+    "path": ".claude/skills/notebooklm/tests/cassettes/real_api_list_reports.yaml",
+    "reason": "API token redacted in snapshot"
+  },
+  {
+    "path": ".claude/skills/notebooklm/tests/cassettes/research_import_sources.yaml",
+    "reason": "gitleaks credential redacted in snapshot: generic-api-key"
+  },
+  {
+    "path": ".claude/skills/notebooklm/tests/cassettes/research_poll.yaml",
+    "reason": "gitleaks credential redacted in snapshot: generic-api-key"
+  },
+  {
+    "path": ".claude/skills/notebooklm/tests/cassettes/research_start_deep.yaml",
+    "reason": "gitleaks credential redacted in snapshot: generic-api-key"
+  },
+  {
+    "path": ".claude/skills/notebooklm/tests/cassettes/research_start_fast.yaml",
+    "reason": "gitleaks credential redacted in snapshot: generic-api-key"
+  },
+  {
+    "path": ".claude/skills/notebooklm/tests/cassettes/settings_get_output_language.yaml",
+    "reason": "gitleaks credential redacted in snapshot: generic-api-key"
+  },
+  {
+    "path": ".claude/skills/notebooklm/tests/cassettes/settings_set_output_language.yaml",
+    "reason": "gitleaks credential redacted in snapshot: generic-api-key"
+  },
+  {
+    "path": ".claude/skills/notebooklm/tests/cassettes/sharing_get_status.yaml",
+    "reason": "gitleaks credential redacted in snapshot: generic-api-key"
+  },
+  {
+    "path": ".claude/skills/notebooklm/tests/cassettes/sharing_set_public.yaml",
+    "reason": "gitleaks credential redacted in snapshot: generic-api-key"
+  },
+  {
+    "path": ".claude/skills/notebooklm/tests/cassettes/sources_add_drive.yaml",
+    "reason": "gitleaks credential redacted in snapshot: generic-api-key"
+  },
+  {
+    "path": ".claude/skills/notebooklm/tests/cassettes/sources_add_file.yaml",
+    "reason": "gitleaks credential redacted in snapshot: generic-api-key"
+  },
+  {
+    "path": ".claude/skills/notebooklm/tests/cassettes/sources_check_freshness.yaml",
+    "reason": "gitleaks credential redacted in snapshot: generic-api-key"
+  },
+  {
+    "path": ".claude/skills/notebooklm/tests/cassettes/sources_delete.yaml",
+    "reason": "gitleaks credential redacted in snapshot: generic-api-key"
+  },
+  {
+    "path": ".claude/skills/notebooklm/tests/cassettes/sources_refresh.yaml",
+    "reason": "gitleaks credential redacted in snapshot: generic-api-key"
+  },
+  {
+    "path": ".claude/skills/notebooklm/tests/cassettes/sources_rename.yaml",
+    "reason": "gitleaks credential redacted in snapshot: generic-api-key"
+  },
+  {
+    "path": ".claude/skills/skill-creator/scripts/__pycache__",
+    "reason": "excluded directory"
+  },
+  {
+    "path": ".claude/skills/watch/scripts/setup.py",
+    "reason": "credential assignment redacted in snapshot"
+  },
+  {
+    "path": ".env",
+    "reason": "excluded file"
+  },
+  {
+    "path": ".git",
+    "reason": "excluded file"
+  },
+  {
+    "path": ".npmrc",
+    "reason": "excluded file"
+  },
+  {
+    "path": "node_modules",
+    "reason": "link"
+  },
+  {
+    "path": "scripts/verification/start-rc-builder-preview.mjs",
+    "reason": "gitleaks credential redacted in snapshot: generic-api-key"
+  },
+  {
+    "path": "scripts/verification/start-rc-builder-preview.mjs",
+    "reason": "gitleaks credential redacted in snapshot: generic-api-key"
+  },
+  {
+    "path": "src/contexts/AuthContext.tsx",
+    "reason": "credential assignment redacted in snapshot"
+  },
+  {
+    "path": "src/lib/googleDrive.ts",
+    "reason": "API token redacted in snapshot"
+  },
+  {
+    "path": "supabase/functions/handle-email-events/index.ts",
+    "reason": "credential assignment redacted in snapshot"
+  },
+  {
+    "path": "supabase/functions/teacher-post-session-sync/desk.ts",
+    "reason": "credential assignment redacted in snapshot"
+  }
+]

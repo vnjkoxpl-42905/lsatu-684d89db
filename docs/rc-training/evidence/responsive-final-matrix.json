@@ -1,0 +1,147 @@
+[
+  {
+    "buttons": [
+      {
+        "height": 44,
+        "label": "Hide instructions"
+      },
+      {
+        "height": 47.20000076293945,
+        "label": "Hide paragraph (Space)"
+      },
+      {
+        "height": 44,
+        "label": "Save my place and leave"
+      },
+      {
+        "height": 44,
+        "label": "End attempt"
+      }
+    ],
+    "overflow": false,
+    "sidebar": false,
+    "source": [
+      {
+        "font": "18px",
+        "padding": "16px"
+      }
+    ],
+    "width": 390
+  },
+  {
+    "buttons": [
+      {
+        "height": 44,
+        "label": "Hide instructions"
+      },
+      {
+        "height": 47.20000076293945,
+        "label": "Hide paragraph (Space)"
+      },
+      {
+        "height": 44,
+        "label": "Save my place and leave"
+      },
+      {
+        "height": 44,
+        "label": "End attempt"
+      }
+    ],
+    "overflow": false,
+    "sidebar": false,
+    "source": [
+      {
+        "font": "20px",
+        "padding": "40px"
+      }
+    ],
+    "width": 650
+  },
+  {
+    "buttons": [
+      {
+        "height": 44,
+        "label": "Hide instructions"
+      },
+      {
+        "height": 47.20000076293945,
+        "label": "Hide paragraph (Space)"
+      },
+      {
+        "height": 44,
+        "label": "Save my place and leave"
+      },
+      {
+        "height": 44,
+        "label": "End attempt"
+      }
+    ],
+    "overflow": false,
+    "sidebar": false,
+    "source": [
+      {
+        "font": "20px",
+        "padding": "40px"
+      }
+    ],
+    "width": 768
+  },
+  {
+    "buttons": [
+      {
+        "height": 44,
+        "label": "Hide instructions"
+      },
+      {
+        "height": 47.20000076293945,
+        "label": "Hide paragraph (Space)"
+      },
+      {
+        "height": 44,
+        "label": "Save my place and leave"
+      },
+      {
+        "height": 44,
+        "label": "End attempt"
+      }
+    ],
+    "overflow": false,
+    "sidebar": false,
+    "source": [
+      {
+        "font": "20px",
+        "padding": "40px"
+      }
+    ],
+    "width": 1000
+  },
+  {
+    "buttons": [
+      {
+        "height": 44,
+        "label": "Hide instructions"
+      },
+      {
+        "height": 47.20000076293945,
+        "label": "Hide paragraph (Space)"
+      },
+      {
+        "height": 44,
+        "label": "Save my place and leave"
+      },
+      {
+        "height": 44,
+        "label": "End attempt"
+      }
+    ],
+    "overflow": false,
+    "sidebar": false,
+    "source": [
+      {
+        "font": "20px",
+        "padding": "40px"
+      }
+    ],
+    "width": 1440
+  }
+]

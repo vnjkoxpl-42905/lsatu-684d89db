@@ -1,0 +1,2287 @@
+{
+  "checkedAt": "2026-09-30",
+  "projectId": "53b9a6f2-aba7-4ae4-8dd1-fa5b8aab4d76",
+  "readOnly": true,
+  "containsUserRecords": false,
+  "catalog": {
+    "columns": [
+      {
+        "column_default": "gen_random_uuid()",
+        "column_name": "id",
+        "data_type": "uuid",
+        "is_nullable": "NO",
+        "table_name": "activity_assignments"
+      },
+      {
+        "column_default": null,
+        "column_name": "activity_id",
+        "data_type": "uuid",
+        "is_nullable": "YES",
+        "table_name": "activity_assignments"
+      },
+      {
+        "column_default": null,
+        "column_name": "student_id",
+        "data_type": "uuid",
+        "is_nullable": "NO",
+        "table_name": "activity_assignments"
+      },
+      {
+        "column_default": null,
+        "column_name": "title",
+        "data_type": "text",
+        "is_nullable": "NO",
+        "table_name": "activity_assignments"
+      },
+      {
+        "column_default": null,
+        "column_name": "subtitle",
+        "data_type": "text",
+        "is_nullable": "YES",
+        "table_name": "activity_assignments"
+      },
+      {
+        "column_default": "'{}'::jsonb",
+        "column_name": "instructions",
+        "data_type": "jsonb",
+        "is_nullable": "NO",
+        "table_name": "activity_assignments"
+      },
+      {
+        "column_default": "'free-text'::text",
+        "column_name": "item_format",
+        "data_type": "text",
+        "is_nullable": "NO",
+        "table_name": "activity_assignments"
+      },
+      {
+        "column_default": "'[]'::jsonb",
+        "column_name": "items",
+        "data_type": "jsonb",
+        "is_nullable": "NO",
+        "table_name": "activity_assignments"
+      },
+      {
+        "column_default": "'assigned'::text",
+        "column_name": "status",
+        "data_type": "text",
+        "is_nullable": "NO",
+        "table_name": "activity_assignments"
+      },
+      {
+        "column_default": null,
+        "column_name": "score",
+        "data_type": "numeric",
+        "is_nullable": "YES",
+        "table_name": "activity_assignments"
+      },
+      {
+        "column_default": null,
+        "column_name": "started_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "YES",
+        "table_name": "activity_assignments"
+      },
+      {
+        "column_default": null,
+        "column_name": "completed_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "YES",
+        "table_name": "activity_assignments"
+      },
+      {
+        "column_default": null,
+        "column_name": "assigned_by",
+        "data_type": "uuid",
+        "is_nullable": "NO",
+        "table_name": "activity_assignments"
+      },
+      {
+        "column_default": null,
+        "column_name": "class_id",
+        "data_type": "uuid",
+        "is_nullable": "NO",
+        "table_name": "activity_assignments"
+      },
+      {
+        "column_default": "now()",
+        "column_name": "created_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "NO",
+        "table_name": "activity_assignments"
+      },
+      {
+        "column_default": null,
+        "column_name": "score_numerator",
+        "data_type": "numeric",
+        "is_nullable": "YES",
+        "table_name": "activity_assignments"
+      },
+      {
+        "column_default": null,
+        "column_name": "score_judged",
+        "data_type": "integer",
+        "is_nullable": "YES",
+        "table_name": "activity_assignments"
+      },
+      {
+        "column_default": null,
+        "column_name": "score_total",
+        "data_type": "integer",
+        "is_nullable": "YES",
+        "table_name": "activity_assignments"
+      },
+      {
+        "column_default": "2",
+        "column_name": "scoring_version",
+        "data_type": "smallint",
+        "is_nullable": "YES",
+        "table_name": "activity_assignments"
+      },
+      {
+        "column_default": null,
+        "column_name": "item_count",
+        "data_type": "integer",
+        "is_nullable": "YES",
+        "table_name": "activity_assignments"
+      },
+      {
+        "column_default": null,
+        "column_name": "mode",
+        "data_type": "text",
+        "is_nullable": "YES",
+        "table_name": "activity_assignments"
+      },
+      {
+        "column_default": null,
+        "column_name": "time_goal_minutes",
+        "data_type": "jsonb",
+        "is_nullable": "YES",
+        "table_name": "activity_assignments"
+      },
+      {
+        "column_default": null,
+        "column_name": "source_section",
+        "data_type": "text",
+        "is_nullable": "YES",
+        "table_name": "activity_assignments"
+      },
+      {
+        "column_default": "gen_random_uuid()",
+        "column_name": "id",
+        "data_type": "uuid",
+        "is_nullable": "NO",
+        "table_name": "activity_item_responses"
+      },
+      {
+        "column_default": null,
+        "column_name": "assignment_id",
+        "data_type": "uuid",
+        "is_nullable": "NO",
+        "table_name": "activity_item_responses"
+      },
+      {
+        "column_default": null,
+        "column_name": "student_id",
+        "data_type": "uuid",
+        "is_nullable": "NO",
+        "table_name": "activity_item_responses"
+      },
+      {
+        "column_default": null,
+        "column_name": "item_order",
+        "data_type": "integer",
+        "is_nullable": "NO",
+        "table_name": "activity_item_responses"
+      },
+      {
+        "column_default": "''::text",
+        "column_name": "response_text",
+        "data_type": "text",
+        "is_nullable": "NO",
+        "table_name": "activity_item_responses"
+      },
+      {
+        "column_default": null,
+        "column_name": "verdict",
+        "data_type": "text",
+        "is_nullable": "YES",
+        "table_name": "activity_item_responses"
+      },
+      {
+        "column_default": "1",
+        "column_name": "attempt_no",
+        "data_type": "integer",
+        "is_nullable": "NO",
+        "table_name": "activity_item_responses"
+      },
+      {
+        "column_default": "now()",
+        "column_name": "created_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "NO",
+        "table_name": "activity_item_responses"
+      },
+      {
+        "column_default": null,
+        "column_name": "judge_source",
+        "data_type": "text",
+        "is_nullable": "YES",
+        "table_name": "activity_item_responses"
+      },
+      {
+        "column_default": null,
+        "column_name": "shadow_fault",
+        "data_type": "text",
+        "is_nullable": "YES",
+        "table_name": "activity_item_responses"
+      },
+      {
+        "column_default": null,
+        "column_name": "parser_version",
+        "data_type": "text",
+        "is_nullable": "YES",
+        "table_name": "activity_item_responses"
+      },
+      {
+        "column_default": null,
+        "column_name": "latency_ms",
+        "data_type": "integer",
+        "is_nullable": "YES",
+        "table_name": "activity_item_responses"
+      },
+      {
+        "column_default": null,
+        "column_name": "rrc",
+        "data_type": "jsonb",
+        "is_nullable": "YES",
+        "table_name": "activity_item_responses"
+      },
+      {
+        "column_default": "gen_random_uuid()",
+        "column_name": "id",
+        "data_type": "uuid",
+        "is_nullable": "NO",
+        "table_name": "attempts"
+      },
+      {
+        "column_default": null,
+        "column_name": "class_id",
+        "data_type": "text",
+        "is_nullable": "NO",
+        "table_name": "attempts"
+      },
+      {
+        "column_default": null,
+        "column_name": "qid",
+        "data_type": "text",
+        "is_nullable": "NO",
+        "table_name": "attempts"
+      },
+      {
+        "column_default": null,
+        "column_name": "pt",
+        "data_type": "integer",
+        "is_nullable": "NO",
+        "table_name": "attempts"
+      },
+      {
+        "column_default": null,
+        "column_name": "section",
+        "data_type": "integer",
+        "is_nullable": "NO",
+        "table_name": "attempts"
+      },
+      {
+        "column_default": null,
+        "column_name": "qnum",
+        "data_type": "integer",
+        "is_nullable": "NO",
+        "table_name": "attempts"
+      },
+      {
+        "column_default": null,
+        "column_name": "qtype",
+        "data_type": "text",
+        "is_nullable": "NO",
+        "table_name": "attempts"
+      },
+      {
+        "column_default": null,
+        "column_name": "level",
+        "data_type": "integer",
+        "is_nullable": "NO",
+        "table_name": "attempts"
+      },
+      {
+        "column_default": null,
+        "column_name": "correct",
+        "data_type": "boolean",
+        "is_nullable": "NO",
+        "table_name": "attempts"
+      },
+      {
+        "column_default": null,
+        "column_name": "time_ms",
+        "data_type": "integer",
+        "is_nullable": "NO",
+        "table_name": "attempts"
+      },
+      {
+        "column_default": null,
+        "column_name": "confidence",
+        "data_type": "integer",
+        "is_nullable": "YES",
+        "table_name": "attempts"
+      },
+      {
+        "column_default": null,
+        "column_name": "mode",
+        "data_type": "text",
+        "is_nullable": "NO",
+        "table_name": "attempts"
+      },
+      {
+        "column_default": null,
+        "column_name": "set_id",
+        "data_type": "text",
+        "is_nullable": "YES",
+        "table_name": "attempts"
+      },
+      {
+        "column_default": "now()",
+        "column_name": "timestamp_iso",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "YES",
+        "table_name": "attempts"
+      },
+      {
+        "column_default": "'v1'::text",
+        "column_name": "app_version",
+        "data_type": "text",
+        "is_nullable": "YES",
+        "table_name": "attempts"
+      },
+      {
+        "column_default": null,
+        "column_name": "user_id",
+        "data_type": "uuid",
+        "is_nullable": "YES",
+        "table_name": "attempts"
+      },
+      {
+        "column_default": null,
+        "column_name": "selected_answer",
+        "data_type": "text",
+        "is_nullable": "YES",
+        "table_name": "attempts"
+      },
+      {
+        "column_default": null,
+        "column_name": "br_marked",
+        "data_type": "boolean",
+        "is_nullable": "YES",
+        "table_name": "attempts"
+      },
+      {
+        "column_default": null,
+        "column_name": "pre_answer",
+        "data_type": "text",
+        "is_nullable": "YES",
+        "table_name": "attempts"
+      },
+      {
+        "column_default": null,
+        "column_name": "br_selected",
+        "data_type": "boolean",
+        "is_nullable": "YES",
+        "table_name": "attempts"
+      },
+      {
+        "column_default": null,
+        "column_name": "br_answer",
+        "data_type": "text",
+        "is_nullable": "YES",
+        "table_name": "attempts"
+      },
+      {
+        "column_default": null,
+        "column_name": "br_rationale",
+        "data_type": "text",
+        "is_nullable": "YES",
+        "table_name": "attempts"
+      },
+      {
+        "column_default": null,
+        "column_name": "br_time_ms",
+        "data_type": "integer",
+        "is_nullable": "YES",
+        "table_name": "attempts"
+      },
+      {
+        "column_default": null,
+        "column_name": "br_changed",
+        "data_type": "boolean",
+        "is_nullable": "YES",
+        "table_name": "attempts"
+      },
+      {
+        "column_default": null,
+        "column_name": "br_outcome",
+        "data_type": "text",
+        "is_nullable": "YES",
+        "table_name": "attempts"
+      },
+      {
+        "column_default": null,
+        "column_name": "br_delta",
+        "data_type": "text",
+        "is_nullable": "YES",
+        "table_name": "attempts"
+      },
+      {
+        "column_default": null,
+        "column_name": "user_id",
+        "data_type": "uuid",
+        "is_nullable": "NO",
+        "table_name": "bootcamp_kv"
+      },
+      {
+        "column_default": null,
+        "column_name": "table_name",
+        "data_type": "text",
+        "is_nullable": "NO",
+        "table_name": "bootcamp_kv"
+      },
+      {
+        "column_default": null,
+        "column_name": "record_id",
+        "data_type": "text",
+        "is_nullable": "NO",
+        "table_name": "bootcamp_kv"
+      },
+      {
+        "column_default": null,
+        "column_name": "data",
+        "data_type": "jsonb",
+        "is_nullable": "NO",
+        "table_name": "bootcamp_kv"
+      },
+      {
+        "column_default": "now()",
+        "column_name": "updated_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "NO",
+        "table_name": "bootcamp_kv"
+      },
+      {
+        "column_default": "gen_random_uuid()",
+        "column_name": "id",
+        "data_type": "uuid",
+        "is_nullable": "NO",
+        "table_name": "classroom_items"
+      },
+      {
+        "column_default": null,
+        "column_name": "student_id",
+        "data_type": "uuid",
+        "is_nullable": "NO",
+        "table_name": "classroom_items"
+      },
+      {
+        "column_default": null,
+        "column_name": "class_id",
+        "data_type": "uuid",
+        "is_nullable": "YES",
+        "table_name": "classroom_items"
+      },
+      {
+        "column_default": null,
+        "column_name": "created_by",
+        "data_type": "uuid",
+        "is_nullable": "NO",
+        "table_name": "classroom_items"
+      },
+      {
+        "column_default": null,
+        "column_name": "type",
+        "data_type": "text",
+        "is_nullable": "NO",
+        "table_name": "classroom_items"
+      },
+      {
+        "column_default": null,
+        "column_name": "title",
+        "data_type": "text",
+        "is_nullable": "NO",
+        "table_name": "classroom_items"
+      },
+      {
+        "column_default": null,
+        "column_name": "description",
+        "data_type": "text",
+        "is_nullable": "YES",
+        "table_name": "classroom_items"
+      },
+      {
+        "column_default": null,
+        "column_name": "content_html",
+        "data_type": "text",
+        "is_nullable": "YES",
+        "table_name": "classroom_items"
+      },
+      {
+        "column_default": null,
+        "column_name": "content_markdown",
+        "data_type": "text",
+        "is_nullable": "YES",
+        "table_name": "classroom_items"
+      },
+      {
+        "column_default": null,
+        "column_name": "source_table",
+        "data_type": "text",
+        "is_nullable": "YES",
+        "table_name": "classroom_items"
+      },
+      {
+        "column_default": null,
+        "column_name": "source_id",
+        "data_type": "text",
+        "is_nullable": "YES",
+        "table_name": "classroom_items"
+      },
+      {
+        "column_default": "'draft'::text",
+        "column_name": "status",
+        "data_type": "text",
+        "is_nullable": "NO",
+        "table_name": "classroom_items"
+      },
+      {
+        "column_default": null,
+        "column_name": "unlock_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "YES",
+        "table_name": "classroom_items"
+      },
+      {
+        "column_default": null,
+        "column_name": "due_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "YES",
+        "table_name": "classroom_items"
+      },
+      {
+        "column_default": null,
+        "column_name": "completed_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "YES",
+        "table_name": "classroom_items"
+      },
+      {
+        "column_default": "0",
+        "column_name": "priority",
+        "data_type": "integer",
+        "is_nullable": "NO",
+        "table_name": "classroom_items"
+      },
+      {
+        "column_default": "false",
+        "column_name": "visible_to_student",
+        "data_type": "boolean",
+        "is_nullable": "NO",
+        "table_name": "classroom_items"
+      },
+      {
+        "column_default": "'{}'::jsonb",
+        "column_name": "metadata_json",
+        "data_type": "jsonb",
+        "is_nullable": "NO",
+        "table_name": "classroom_items"
+      },
+      {
+        "column_default": "now()",
+        "column_name": "created_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "NO",
+        "table_name": "classroom_items"
+      },
+      {
+        "column_default": "now()",
+        "column_name": "updated_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "NO",
+        "table_name": "classroom_items"
+      },
+      {
+        "column_default": null,
+        "column_name": "id",
+        "data_type": "text",
+        "is_nullable": "NO",
+        "table_name": "practice_test_runs"
+      },
+      {
+        "column_default": "auth.uid()",
+        "column_name": "user_id",
+        "data_type": "uuid",
+        "is_nullable": "NO",
+        "table_name": "practice_test_runs"
+      },
+      {
+        "column_default": null,
+        "column_name": "pt",
+        "data_type": "integer",
+        "is_nullable": "NO",
+        "table_name": "practice_test_runs"
+      },
+      {
+        "column_default": null,
+        "column_name": "pace",
+        "data_type": "text",
+        "is_nullable": "NO",
+        "table_name": "practice_test_runs"
+      },
+      {
+        "column_default": null,
+        "column_name": "legs",
+        "data_type": "jsonb",
+        "is_nullable": "NO",
+        "table_name": "practice_test_runs"
+      },
+      {
+        "column_default": "0",
+        "column_name": "current_leg",
+        "data_type": "integer",
+        "is_nullable": "NO",
+        "table_name": "practice_test_runs"
+      },
+      {
+        "column_default": null,
+        "column_name": "break_after_leg",
+        "data_type": "integer",
+        "is_nullable": "NO",
+        "table_name": "practice_test_runs"
+      },
+      {
+        "column_default": "false",
+        "column_name": "break_taken",
+        "data_type": "boolean",
+        "is_nullable": "NO",
+        "table_name": "practice_test_runs"
+      },
+      {
+        "column_default": null,
+        "column_name": "break_started_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "YES",
+        "table_name": "practice_test_runs"
+      },
+      {
+        "column_default": null,
+        "column_name": "status",
+        "data_type": "text",
+        "is_nullable": "NO",
+        "table_name": "practice_test_runs"
+      },
+      {
+        "column_default": "0",
+        "column_name": "revision",
+        "data_type": "integer",
+        "is_nullable": "NO",
+        "table_name": "practice_test_runs"
+      },
+      {
+        "column_default": null,
+        "column_name": "completed_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "YES",
+        "table_name": "practice_test_runs"
+      },
+      {
+        "column_default": null,
+        "column_name": "raw_correct",
+        "data_type": "integer",
+        "is_nullable": "YES",
+        "table_name": "practice_test_runs"
+      },
+      {
+        "column_default": null,
+        "column_name": "raw_total",
+        "data_type": "integer",
+        "is_nullable": "YES",
+        "table_name": "practice_test_runs"
+      },
+      {
+        "column_default": null,
+        "column_name": "scaled_score",
+        "data_type": "integer",
+        "is_nullable": "YES",
+        "table_name": "practice_test_runs"
+      },
+      {
+        "column_default": null,
+        "column_name": "score_source",
+        "data_type": "text",
+        "is_nullable": "YES",
+        "table_name": "practice_test_runs"
+      },
+      {
+        "column_default": "now()",
+        "column_name": "created_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "NO",
+        "table_name": "practice_test_runs"
+      },
+      {
+        "column_default": "now()",
+        "column_name": "updated_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "NO",
+        "table_name": "practice_test_runs"
+      },
+      {
+        "column_default": null,
+        "column_name": "section_seconds",
+        "data_type": "integer",
+        "is_nullable": "YES",
+        "table_name": "practice_test_runs"
+      },
+      {
+        "column_default": null,
+        "column_name": "active_device_id",
+        "data_type": "text",
+        "is_nullable": "YES",
+        "table_name": "practice_test_runs"
+      },
+      {
+        "column_default": null,
+        "column_name": "class_id",
+        "data_type": "text",
+        "is_nullable": "NO",
+        "table_name": "profiles"
+      },
+      {
+        "column_default": "0",
+        "column_name": "overall_answered",
+        "data_type": "integer",
+        "is_nullable": "YES",
+        "table_name": "profiles"
+      },
+      {
+        "column_default": "0",
+        "column_name": "overall_correct",
+        "data_type": "integer",
+        "is_nullable": "YES",
+        "table_name": "profiles"
+      },
+      {
+        "column_default": "0",
+        "column_name": "overall_avg_ms",
+        "data_type": "integer",
+        "is_nullable": "YES",
+        "table_name": "profiles"
+      },
+      {
+        "column_default": "'{}'::jsonb",
+        "column_name": "by_qtype_json",
+        "data_type": "jsonb",
+        "is_nullable": "YES",
+        "table_name": "profiles"
+      },
+      {
+        "column_default": "'{}'::jsonb",
+        "column_name": "by_level_json",
+        "data_type": "jsonb",
+        "is_nullable": "YES",
+        "table_name": "profiles"
+      },
+      {
+        "column_default": "0",
+        "column_name": "streak_current",
+        "data_type": "integer",
+        "is_nullable": "YES",
+        "table_name": "profiles"
+      },
+      {
+        "column_default": "0",
+        "column_name": "xp_total",
+        "data_type": "integer",
+        "is_nullable": "YES",
+        "table_name": "profiles"
+      },
+      {
+        "column_default": "0",
+        "column_name": "daily_goal_streak",
+        "data_type": "integer",
+        "is_nullable": "YES",
+        "table_name": "profiles"
+      },
+      {
+        "column_default": "now()",
+        "column_name": "updated_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "YES",
+        "table_name": "profiles"
+      },
+      {
+        "column_default": null,
+        "column_name": "last_practice_date",
+        "data_type": "date",
+        "is_nullable": "YES",
+        "table_name": "profiles"
+      },
+      {
+        "column_default": "0",
+        "column_name": "longest_streak",
+        "data_type": "integer",
+        "is_nullable": "YES",
+        "table_name": "profiles"
+      },
+      {
+        "column_default": "20",
+        "column_name": "daily_goal_questions",
+        "data_type": "integer",
+        "is_nullable": "YES",
+        "table_name": "profiles"
+      },
+      {
+        "column_default": "1",
+        "column_name": "level",
+        "data_type": "integer",
+        "is_nullable": "YES",
+        "table_name": "profiles"
+      },
+      {
+        "column_default": null,
+        "column_name": "display_name",
+        "data_type": "text",
+        "is_nullable": "YES",
+        "table_name": "profiles"
+      },
+      {
+        "column_default": "false",
+        "column_name": "has_bootcamp_access",
+        "data_type": "boolean",
+        "is_nullable": "NO",
+        "table_name": "profiles"
+      },
+      {
+        "column_default": "true",
+        "column_name": "has_classroom_access",
+        "data_type": "boolean",
+        "is_nullable": "NO",
+        "table_name": "profiles"
+      },
+      {
+        "column_default": "false",
+        "column_name": "has_analytics_access",
+        "data_type": "boolean",
+        "is_nullable": "NO",
+        "table_name": "profiles"
+      },
+      {
+        "column_default": "true",
+        "column_name": "has_schedule_access",
+        "data_type": "boolean",
+        "is_nullable": "NO",
+        "table_name": "profiles"
+      },
+      {
+        "column_default": "false",
+        "column_name": "has_seen_tour",
+        "data_type": "boolean",
+        "is_nullable": "NO",
+        "table_name": "profiles"
+      },
+      {
+        "column_default": "false",
+        "column_name": "has_practice_access",
+        "data_type": "boolean",
+        "is_nullable": "NO",
+        "table_name": "profiles"
+      },
+      {
+        "column_default": "false",
+        "column_name": "has_drill_access",
+        "data_type": "boolean",
+        "is_nullable": "NO",
+        "table_name": "profiles"
+      },
+      {
+        "column_default": "false",
+        "column_name": "has_waj_access",
+        "data_type": "boolean",
+        "is_nullable": "NO",
+        "table_name": "profiles"
+      },
+      {
+        "column_default": "false",
+        "column_name": "has_flagged_access",
+        "data_type": "boolean",
+        "is_nullable": "NO",
+        "table_name": "profiles"
+      },
+      {
+        "column_default": "true",
+        "column_name": "has_chat_access",
+        "data_type": "boolean",
+        "is_nullable": "NO",
+        "table_name": "profiles"
+      },
+      {
+        "column_default": "false",
+        "column_name": "has_export_access",
+        "data_type": "boolean",
+        "is_nullable": "NO",
+        "table_name": "profiles"
+      },
+      {
+        "column_default": "now()",
+        "column_name": "last_seen_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "YES",
+        "table_name": "profiles"
+      },
+      {
+        "column_default": "false",
+        "column_name": "has_ta_access",
+        "data_type": "boolean",
+        "is_nullable": "NO",
+        "table_name": "profiles"
+      },
+      {
+        "column_default": "false",
+        "column_name": "has_journal_access",
+        "data_type": "boolean",
+        "is_nullable": "NO",
+        "table_name": "profiles"
+      },
+      {
+        "column_default": "false",
+        "column_name": "has_activity_access",
+        "data_type": "boolean",
+        "is_nullable": "NO",
+        "table_name": "profiles"
+      },
+      {
+        "column_default": null,
+        "column_name": "layout_prefs",
+        "data_type": "jsonb",
+        "is_nullable": "YES",
+        "table_name": "profiles"
+      },
+      {
+        "column_default": null,
+        "column_name": "onboarding",
+        "data_type": "jsonb",
+        "is_nullable": "YES",
+        "table_name": "profiles"
+      },
+      {
+        "column_default": null,
+        "column_name": "onboarding_completed_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "YES",
+        "table_name": "profiles"
+      },
+      {
+        "column_default": null,
+        "column_name": "test_date",
+        "data_type": "date",
+        "is_nullable": "YES",
+        "table_name": "profiles"
+      },
+      {
+        "column_default": null,
+        "column_name": "proficiency_level",
+        "data_type": "text",
+        "is_nullable": "YES",
+        "table_name": "profiles"
+      },
+      {
+        "column_default": null,
+        "column_name": "onboarding_notified_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "YES",
+        "table_name": "profiles"
+      },
+      {
+        "column_default": "'standard'::text",
+        "column_name": "lsat_accommodation",
+        "data_type": "text",
+        "is_nullable": "NO",
+        "table_name": "profiles"
+      },
+      {
+        "column_default": null,
+        "column_name": "archived_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "YES",
+        "table_name": "profiles"
+      },
+      {
+        "column_default": null,
+        "column_name": "archived_reason",
+        "data_type": "text",
+        "is_nullable": "YES",
+        "table_name": "profiles"
+      },
+      {
+        "column_default": null,
+        "column_name": "access_tier",
+        "data_type": "text",
+        "is_nullable": "YES",
+        "table_name": "profiles"
+      },
+      {
+        "column_default": "gen_random_uuid()",
+        "column_name": "id",
+        "data_type": "uuid",
+        "is_nullable": "NO",
+        "table_name": "rc_attempts"
+      },
+      {
+        "column_default": null,
+        "column_name": "session_id",
+        "data_type": "uuid",
+        "is_nullable": "NO",
+        "table_name": "rc_attempts"
+      },
+      {
+        "column_default": null,
+        "column_name": "user_id",
+        "data_type": "uuid",
+        "is_nullable": "NO",
+        "table_name": "rc_attempts"
+      },
+      {
+        "column_default": null,
+        "column_name": "question_id",
+        "data_type": "integer",
+        "is_nullable": "NO",
+        "table_name": "rc_attempts"
+      },
+      {
+        "column_default": null,
+        "column_name": "passage_id",
+        "data_type": "integer",
+        "is_nullable": "NO",
+        "table_name": "rc_attempts"
+      },
+      {
+        "column_default": null,
+        "column_name": "selected",
+        "data_type": "text",
+        "is_nullable": "YES",
+        "table_name": "rc_attempts"
+      },
+      {
+        "column_default": null,
+        "column_name": "is_correct",
+        "data_type": "boolean",
+        "is_nullable": "YES",
+        "table_name": "rc_attempts"
+      },
+      {
+        "column_default": "0",
+        "column_name": "time_ms",
+        "data_type": "integer",
+        "is_nullable": "NO",
+        "table_name": "rc_attempts"
+      },
+      {
+        "column_default": "false",
+        "column_name": "flagged",
+        "data_type": "boolean",
+        "is_nullable": "NO",
+        "table_name": "rc_attempts"
+      },
+      {
+        "column_default": "'{}'::text[]",
+        "column_name": "eliminations",
+        "data_type": "ARRAY",
+        "is_nullable": "NO",
+        "table_name": "rc_attempts"
+      },
+      {
+        "column_default": "true",
+        "column_name": "is_first_attempt",
+        "data_type": "boolean",
+        "is_nullable": "NO",
+        "table_name": "rc_attempts"
+      },
+      {
+        "column_default": "now()",
+        "column_name": "created_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "NO",
+        "table_name": "rc_attempts"
+      },
+      {
+        "column_default": "gen_random_uuid()",
+        "column_name": "id",
+        "data_type": "uuid",
+        "is_nullable": "NO",
+        "table_name": "rc_drill_sessions"
+      },
+      {
+        "column_default": null,
+        "column_name": "user_id",
+        "data_type": "uuid",
+        "is_nullable": "NO",
+        "table_name": "rc_drill_sessions"
+      },
+      {
+        "column_default": null,
+        "column_name": "config",
+        "data_type": "jsonb",
+        "is_nullable": "NO",
+        "table_name": "rc_drill_sessions"
+      },
+      {
+        "column_default": null,
+        "column_name": "passage_ids",
+        "data_type": "ARRAY",
+        "is_nullable": "NO",
+        "table_name": "rc_drill_sessions"
+      },
+      {
+        "column_default": "'in_progress'::text",
+        "column_name": "status",
+        "data_type": "text",
+        "is_nullable": "NO",
+        "table_name": "rc_drill_sessions"
+      },
+      {
+        "column_default": "false",
+        "column_name": "excluded_from_analytics",
+        "data_type": "boolean",
+        "is_nullable": "NO",
+        "table_name": "rc_drill_sessions"
+      },
+      {
+        "column_default": "now()",
+        "column_name": "started_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "NO",
+        "table_name": "rc_drill_sessions"
+      },
+      {
+        "column_default": null,
+        "column_name": "completed_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "YES",
+        "table_name": "rc_drill_sessions"
+      },
+      {
+        "column_default": null,
+        "column_name": "practice_test_run_id",
+        "data_type": "text",
+        "is_nullable": "YES",
+        "table_name": "rc_drill_sessions"
+      },
+      {
+        "column_default": null,
+        "column_name": "practice_test_leg",
+        "data_type": "integer",
+        "is_nullable": "YES",
+        "table_name": "rc_drill_sessions"
+      },
+      {
+        "column_default": "gen_random_uuid()",
+        "column_name": "id",
+        "data_type": "uuid",
+        "is_nullable": "NO",
+        "table_name": "section_history"
+      },
+      {
+        "column_default": null,
+        "column_name": "class_id",
+        "data_type": "text",
+        "is_nullable": "NO",
+        "table_name": "section_history"
+      },
+      {
+        "column_default": null,
+        "column_name": "pt",
+        "data_type": "integer",
+        "is_nullable": "NO",
+        "table_name": "section_history"
+      },
+      {
+        "column_default": null,
+        "column_name": "section",
+        "data_type": "integer",
+        "is_nullable": "NO",
+        "table_name": "section_history"
+      },
+      {
+        "column_default": "0",
+        "column_name": "initial_score",
+        "data_type": "integer",
+        "is_nullable": "NO",
+        "table_name": "section_history"
+      },
+      {
+        "column_default": null,
+        "column_name": "blind_review_score",
+        "data_type": "integer",
+        "is_nullable": "YES",
+        "table_name": "section_history"
+      },
+      {
+        "column_default": "0",
+        "column_name": "total_questions",
+        "data_type": "integer",
+        "is_nullable": "NO",
+        "table_name": "section_history"
+      },
+      {
+        "column_default": "0",
+        "column_name": "time_taken_ms",
+        "data_type": "integer",
+        "is_nullable": "NO",
+        "table_name": "section_history"
+      },
+      {
+        "column_default": "now()",
+        "column_name": "completed_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "YES",
+        "table_name": "section_history"
+      },
+      {
+        "column_default": "'[]'::jsonb",
+        "column_name": "questions_json",
+        "data_type": "jsonb",
+        "is_nullable": "YES",
+        "table_name": "section_history"
+      },
+      {
+        "column_default": "'full-section'::text",
+        "column_name": "mode",
+        "data_type": "text",
+        "is_nullable": "YES",
+        "table_name": "section_history"
+      },
+      {
+        "column_default": "now()",
+        "column_name": "created_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "YES",
+        "table_name": "section_history"
+      },
+      {
+        "column_default": null,
+        "column_name": "user_id",
+        "data_type": "uuid",
+        "is_nullable": "YES",
+        "table_name": "section_history"
+      },
+      {
+        "column_default": "0",
+        "column_name": "initial_total",
+        "data_type": "integer",
+        "is_nullable": "YES",
+        "table_name": "section_history"
+      },
+      {
+        "column_default": "0",
+        "column_name": "initial_percent",
+        "data_type": "numeric",
+        "is_nullable": "YES",
+        "table_name": "section_history"
+      },
+      {
+        "column_default": null,
+        "column_name": "blind_review_percent",
+        "data_type": "numeric",
+        "is_nullable": "YES",
+        "table_name": "section_history"
+      },
+      {
+        "column_default": null,
+        "column_name": "br_score",
+        "data_type": "integer",
+        "is_nullable": "YES",
+        "table_name": "section_history"
+      },
+      {
+        "column_default": null,
+        "column_name": "br_percent",
+        "data_type": "numeric",
+        "is_nullable": "YES",
+        "table_name": "section_history"
+      },
+      {
+        "column_default": "0",
+        "column_name": "total_time_ms",
+        "data_type": "integer",
+        "is_nullable": "YES",
+        "table_name": "section_history"
+      },
+      {
+        "column_default": null,
+        "column_name": "br_total",
+        "data_type": "integer",
+        "is_nullable": "YES",
+        "table_name": "section_history"
+      },
+      {
+        "column_default": null,
+        "column_name": "br_delta",
+        "data_type": "integer",
+        "is_nullable": "YES",
+        "table_name": "section_history"
+      },
+      {
+        "column_default": null,
+        "column_name": "avg_time_ms",
+        "data_type": "integer",
+        "is_nullable": "YES",
+        "table_name": "section_history"
+      },
+      {
+        "column_default": null,
+        "column_name": "unanswered_count",
+        "data_type": "integer",
+        "is_nullable": "YES",
+        "table_name": "section_history"
+      },
+      {
+        "column_default": null,
+        "column_name": "by_qtype_json",
+        "data_type": "jsonb",
+        "is_nullable": "YES",
+        "table_name": "section_history"
+      },
+      {
+        "column_default": null,
+        "column_name": "by_difficulty_json",
+        "data_type": "jsonb",
+        "is_nullable": "YES",
+        "table_name": "section_history"
+      },
+      {
+        "column_default": null,
+        "column_name": "br_used",
+        "data_type": "boolean",
+        "is_nullable": "YES",
+        "table_name": "section_history"
+      },
+      {
+        "column_default": null,
+        "column_name": "analysis_json",
+        "data_type": "jsonb",
+        "is_nullable": "YES",
+        "table_name": "section_history"
+      },
+      {
+        "column_default": null,
+        "column_name": "report_emailed_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "YES",
+        "table_name": "section_history"
+      },
+      {
+        "column_default": null,
+        "column_name": "report_email_error",
+        "data_type": "text",
+        "is_nullable": "YES",
+        "table_name": "section_history"
+      },
+      {
+        "column_default": null,
+        "column_name": "practice_test_run_id",
+        "data_type": "text",
+        "is_nullable": "YES",
+        "table_name": "section_history"
+      },
+      {
+        "column_default": null,
+        "column_name": "practice_test_leg",
+        "data_type": "integer",
+        "is_nullable": "YES",
+        "table_name": "section_history"
+      },
+      {
+        "column_default": "gen_random_uuid()",
+        "column_name": "id",
+        "data_type": "uuid",
+        "is_nullable": "NO",
+        "table_name": "user_roles"
+      },
+      {
+        "column_default": null,
+        "column_name": "user_id",
+        "data_type": "uuid",
+        "is_nullable": "NO",
+        "table_name": "user_roles"
+      },
+      {
+        "column_default": "'user'::app_role",
+        "column_name": "role",
+        "data_type": "USER-DEFINED",
+        "is_nullable": "NO",
+        "table_name": "user_roles"
+      },
+      {
+        "column_default": "gen_random_uuid()",
+        "column_name": "id",
+        "data_type": "uuid",
+        "is_nullable": "NO",
+        "table_name": "wrong_answer_journal"
+      },
+      {
+        "column_default": null,
+        "column_name": "class_id",
+        "data_type": "text",
+        "is_nullable": "NO",
+        "table_name": "wrong_answer_journal"
+      },
+      {
+        "column_default": null,
+        "column_name": "qid",
+        "data_type": "text",
+        "is_nullable": "NO",
+        "table_name": "wrong_answer_journal"
+      },
+      {
+        "column_default": null,
+        "column_name": "pt",
+        "data_type": "integer",
+        "is_nullable": "NO",
+        "table_name": "wrong_answer_journal"
+      },
+      {
+        "column_default": null,
+        "column_name": "section",
+        "data_type": "integer",
+        "is_nullable": "NO",
+        "table_name": "wrong_answer_journal"
+      },
+      {
+        "column_default": null,
+        "column_name": "qnum",
+        "data_type": "integer",
+        "is_nullable": "NO",
+        "table_name": "wrong_answer_journal"
+      },
+      {
+        "column_default": null,
+        "column_name": "qtype",
+        "data_type": "text",
+        "is_nullable": "NO",
+        "table_name": "wrong_answer_journal"
+      },
+      {
+        "column_default": null,
+        "column_name": "level",
+        "data_type": "integer",
+        "is_nullable": "NO",
+        "table_name": "wrong_answer_journal"
+      },
+      {
+        "column_default": "now()",
+        "column_name": "first_wrong_at_iso",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "NO",
+        "table_name": "wrong_answer_journal"
+      },
+      {
+        "column_default": null,
+        "column_name": "last_status",
+        "data_type": "text",
+        "is_nullable": "NO",
+        "table_name": "wrong_answer_journal"
+      },
+      {
+        "column_default": "0",
+        "column_name": "revisit_count",
+        "data_type": "integer",
+        "is_nullable": "NO",
+        "table_name": "wrong_answer_journal"
+      },
+      {
+        "column_default": "'[]'::jsonb",
+        "column_name": "history_json",
+        "data_type": "jsonb",
+        "is_nullable": "NO",
+        "table_name": "wrong_answer_journal"
+      },
+      {
+        "column_default": "now()",
+        "column_name": "created_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "YES",
+        "table_name": "wrong_answer_journal"
+      },
+      {
+        "column_default": "now()",
+        "column_name": "updated_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "YES",
+        "table_name": "wrong_answer_journal"
+      },
+      {
+        "column_default": null,
+        "column_name": "user_id",
+        "data_type": "uuid",
+        "is_nullable": "YES",
+        "table_name": "wrong_answer_journal"
+      }
+    ],
+    "constraints": [
+      {
+        "conname": "activity_assignments_activity_id_fkey",
+        "definition": "FOREIGN KEY (activity_id) REFERENCES activities(id) ON DELETE SET NULL",
+        "table_name": "activity_assignments"
+      },
+      {
+        "conname": "activity_assignments_assigned_by_fkey",
+        "definition": "FOREIGN KEY (assigned_by) REFERENCES auth.users(id)",
+        "table_name": "activity_assignments"
+      },
+      {
+        "conname": "activity_assignments_mode_check",
+        "definition": "CHECK (((mode IS NULL) OR (mode = ANY (ARRAY['stimulus'::text, 'section'::text, 'section-library'::text]))))",
+        "table_name": "activity_assignments"
+      },
+      {
+        "conname": "activity_assignments_pkey",
+        "definition": "PRIMARY KEY (id)",
+        "table_name": "activity_assignments"
+      },
+      {
+        "conname": "activity_assignments_score_check",
+        "definition": "CHECK (((score IS NULL) OR ((score >= (0)::numeric) AND (score <= (100)::numeric))))",
+        "table_name": "activity_assignments"
+      },
+      {
+        "conname": "activity_assignments_section_is_complete",
+        "definition": "CHECK (((mode IS DISTINCT FROM 'section'::text) OR ((time_goal_minutes IS NOT NULL) AND (source_section IS NOT NULL))))",
+        "table_name": "activity_assignments"
+      },
+      {
+        "conname": "activity_assignments_status_check",
+        "definition": "CHECK ((status = ANY (ARRAY['assigned'::text, 'in_progress'::text, 'completed'::text, 'abandoned'::text])))",
+        "table_name": "activity_assignments"
+      },
+      {
+        "conname": "activity_assignments_student_id_fkey",
+        "definition": "FOREIGN KEY (student_id) REFERENCES auth.users(id) ON DELETE CASCADE",
+        "table_name": "activity_assignments"
+      },
+      {
+        "conname": "activity_item_responses_assignment_id_fkey",
+        "definition": "FOREIGN KEY (assignment_id) REFERENCES activity_assignments(id) ON DELETE CASCADE",
+        "table_name": "activity_item_responses"
+      },
+      {
+        "conname": "activity_item_responses_pkey",
+        "definition": "PRIMARY KEY (id)",
+        "table_name": "activity_item_responses"
+      },
+      {
+        "conname": "activity_item_responses_student_id_fkey",
+        "definition": "FOREIGN KEY (student_id) REFERENCES auth.users(id) ON DELETE CASCADE",
+        "table_name": "activity_item_responses"
+      },
+      {
+        "conname": "activity_item_responses_verdict_check",
+        "definition": "CHECK ((verdict = ANY (ARRAY['correct'::text, 'partial'::text, 'incorrect'::text])))",
+        "table_name": "activity_item_responses"
+      },
+      {
+        "conname": "attempts_pkey",
+        "definition": "PRIMARY KEY (id)",
+        "table_name": "attempts"
+      },
+      {
+        "conname": "attempts_user_id_fkey",
+        "definition": "FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE",
+        "table_name": "attempts"
+      },
+      {
+        "conname": "bootcamp_kv_pkey",
+        "definition": "PRIMARY KEY (user_id, table_name, record_id)",
+        "table_name": "bootcamp_kv"
+      },
+      {
+        "conname": "bootcamp_kv_user_id_fkey",
+        "definition": "FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE",
+        "table_name": "bootcamp_kv"
+      },
+      {
+        "conname": "classroom_items_pkey",
+        "definition": "PRIMARY KEY (id)",
+        "table_name": "classroom_items"
+      },
+      {
+        "conname": "classroom_items_status_check",
+        "definition": "CHECK ((status = ANY (ARRAY['draft'::text, 'assigned'::text, 'in_progress'::text, 'completed'::text, 'archived'::text])))",
+        "table_name": "classroom_items"
+      },
+      {
+        "conname": "classroom_items_student_id_fkey",
+        "definition": "FOREIGN KEY (student_id) REFERENCES auth.users(id) ON DELETE CASCADE",
+        "table_name": "classroom_items"
+      },
+      {
+        "conname": "classroom_items_type_check",
+        "definition": "CHECK ((type = ANY (ARRAY['drill'::text, 'homework'::text, 'bootcamp_module'::text, 'note'::text, 'session_recap'::text, 'announcement'::text, 'upload_summary'::text, 'weekly_plan_task'::text, 'smartboard_recap'::text, 'activity'::text, 'practice_test'::text])))",
+        "table_name": "classroom_items"
+      },
+      {
+        "conname": "practice_test_runs_id_user_id_key",
+        "definition": "UNIQUE (id, user_id)",
+        "table_name": "practice_test_runs"
+      },
+      {
+        "conname": "practice_test_runs_pkey",
+        "definition": "PRIMARY KEY (id)",
+        "table_name": "practice_test_runs"
+      },
+      {
+        "conname": "practice_test_runs_score_source_check",
+        "definition": "CHECK ((score_source = ANY (ARRAY['official-table'::text, 'estimate'::text])))",
+        "table_name": "practice_test_runs"
+      },
+      {
+        "conname": "practice_test_runs_section_seconds_check",
+        "definition": "CHECK (((section_seconds IS NULL) OR (section_seconds > 0)))",
+        "table_name": "practice_test_runs"
+      },
+      {
+        "conname": "practice_test_runs_status_check",
+        "definition": "CHECK ((status = ANY (ARRAY['in-progress'::text, 'complete'::text, 'abandoned'::text])))",
+        "table_name": "practice_test_runs"
+      },
+      {
+        "conname": "practice_test_runs_user_id_fkey",
+        "definition": "FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE",
+        "table_name": "practice_test_runs"
+      },
+      {
+        "conname": "profiles_access_tier_check",
+        "definition": "CHECK (((access_tier IS NULL) OR (access_tier = ANY (ARRAY['tier_1'::text, 'tier_2'::text, 'tier_3'::text]))))",
+        "table_name": "profiles"
+      },
+      {
+        "conname": "profiles_lsat_accommodation_check",
+        "definition": "CHECK ((lsat_accommodation = ANY (ARRAY['standard'::text, 'accommodation_53'::text, 'accommodation_70'::text])))",
+        "table_name": "profiles"
+      },
+      {
+        "conname": "profiles_pkey",
+        "definition": "PRIMARY KEY (class_id)",
+        "table_name": "profiles"
+      },
+      {
+        "conname": "profiles_proficiency_level_check",
+        "definition": "CHECK ((proficiency_level = ANY (ARRAY['beginner'::text, 'intermediate'::text, 'advanced'::text])))",
+        "table_name": "profiles"
+      },
+      {
+        "conname": "rc_attempts_pkey",
+        "definition": "PRIMARY KEY (id)",
+        "table_name": "rc_attempts"
+      },
+      {
+        "conname": "rc_attempts_session_id_fkey",
+        "definition": "FOREIGN KEY (session_id) REFERENCES rc_drill_sessions(id) ON DELETE CASCADE",
+        "table_name": "rc_attempts"
+      },
+      {
+        "conname": "rc_attempts_session_owner_fk",
+        "definition": "FOREIGN KEY (session_id, user_id) REFERENCES rc_drill_sessions(id, user_id)",
+        "table_name": "rc_attempts"
+      },
+      {
+        "conname": "rc_attempts_user_id_fkey",
+        "definition": "FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE",
+        "table_name": "rc_attempts"
+      },
+      {
+        "conname": "rc_drill_sessions_id_user_key",
+        "definition": "UNIQUE (id, user_id)",
+        "table_name": "rc_drill_sessions"
+      },
+      {
+        "conname": "rc_drill_sessions_pkey",
+        "definition": "PRIMARY KEY (id)",
+        "table_name": "rc_drill_sessions"
+      },
+      {
+        "conname": "rc_drill_sessions_user_id_fkey",
+        "definition": "FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE",
+        "table_name": "rc_drill_sessions"
+      },
+      {
+        "conname": "rc_sessions_pt_leg_chk",
+        "definition": "CHECK ((practice_test_leg >= 0))",
+        "table_name": "rc_drill_sessions"
+      },
+      {
+        "conname": "rc_sessions_pt_pair_chk",
+        "definition": "CHECK (((practice_test_run_id IS NULL) = (practice_test_leg IS NULL)))",
+        "table_name": "rc_drill_sessions"
+      },
+      {
+        "conname": "rc_sessions_pt_run_fk",
+        "definition": "FOREIGN KEY (practice_test_run_id, user_id) REFERENCES practice_test_runs(id, user_id)",
+        "table_name": "rc_drill_sessions"
+      },
+      {
+        "conname": "section_history_attr_owner_chk",
+        "definition": "CHECK (((practice_test_run_id IS NULL) OR (user_id IS NOT NULL)))",
+        "table_name": "section_history"
+      },
+      {
+        "conname": "section_history_pkey",
+        "definition": "PRIMARY KEY (id)",
+        "table_name": "section_history"
+      },
+      {
+        "conname": "section_history_pt_leg_chk",
+        "definition": "CHECK ((practice_test_leg >= 0))",
+        "table_name": "section_history"
+      },
+      {
+        "conname": "section_history_pt_pair_chk",
+        "definition": "CHECK (((practice_test_run_id IS NULL) = (practice_test_leg IS NULL)))",
+        "table_name": "section_history"
+      },
+      {
+        "conname": "section_history_pt_run_fk",
+        "definition": "FOREIGN KEY (practice_test_run_id, user_id) REFERENCES practice_test_runs(id, user_id)",
+        "table_name": "section_history"
+      },
+      {
+        "conname": "section_history_user_id_fkey",
+        "definition": "FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE",
+        "table_name": "section_history"
+      },
+      {
+        "conname": "user_roles_pkey",
+        "definition": "PRIMARY KEY (id)",
+        "table_name": "user_roles"
+      },
+      {
+        "conname": "user_roles_user_id_fkey",
+        "definition": "FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE",
+        "table_name": "user_roles"
+      },
+      {
+        "conname": "user_roles_user_id_role_key",
+        "definition": "UNIQUE (user_id, role)",
+        "table_name": "user_roles"
+      },
+      {
+        "conname": "wrong_answer_journal_class_id_qid_key",
+        "definition": "UNIQUE (class_id, qid)",
+        "table_name": "wrong_answer_journal"
+      },
+      {
+        "conname": "wrong_answer_journal_last_status_check",
+        "definition": "CHECK ((last_status = ANY (ARRAY['wrong'::text, 'right'::text])))",
+        "table_name": "wrong_answer_journal"
+      },
+      {
+        "conname": "wrong_answer_journal_pkey",
+        "definition": "PRIMARY KEY (id)",
+        "table_name": "wrong_answer_journal"
+      },
+      {
+        "conname": "wrong_answer_journal_user_id_fkey",
+        "definition": "FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE",
+        "table_name": "wrong_answer_journal"
+      }
+    ],
+    "functions": [
+      {
+        "definition": "CREATE OR REPLACE FUNCTION public.can_sit_practice_test(_user uuid, _pt integer)\n RETURNS boolean\n LANGUAGE sql\n STABLE SECURITY DEFINER\n SET search_path TO 'public'\nAS $function$\n  SELECT\n    public.has_role(_user, 'admin')\n    OR EXISTS (\n      SELECT 1 FROM public.profiles\n      WHERE class_id = _user::text AND has_practice_access\n    )\n    OR EXISTS (\n      SELECT 1 FROM public.practice_test_assignments\n      WHERE student_id = _user AND pt = _pt AND status <> 'archived'\n        AND (unlock_at IS NULL OR unlock_at <= now())\n    );\n$function$\n",
+        "proname": "can_sit_practice_test"
+      },
+      {
+        "definition": "CREATE OR REPLACE FUNCTION public.has_role(_user_id uuid, _role app_role)\n RETURNS boolean\n LANGUAGE sql\n STABLE SECURITY DEFINER\n SET search_path TO 'public'\nAS $function$\n  SELECT EXISTS (\n    SELECT 1 FROM public.user_roles\n    WHERE user_id = _user_id AND role = _role\n  )\n$function$\n",
+        "proname": "has_role"
+      }
+    ],
+    "policies": [
+      {
+        "cmd": "DELETE",
+        "policyname": "Admins delete activity assignments",
+        "qual": "has_role(auth.uid(), 'admin'::app_role)",
+        "roles": [
+          "authenticated"
+        ],
+        "tablename": "activity_assignments",
+        "with_check": null
+      },
+      {
+        "cmd": "INSERT",
+        "policyname": "Admins insert activity assignments",
+        "qual": null,
+        "roles": [
+          "authenticated"
+        ],
+        "tablename": "activity_assignments",
+        "with_check": "(has_role(auth.uid(), 'admin'::app_role) AND (assigned_by = auth.uid()))"
+      },
+      {
+        "cmd": "SELECT",
+        "policyname": "Admins read all activity assignments",
+        "qual": "has_role(auth.uid(), 'admin'::app_role)",
+        "roles": [
+          "authenticated"
+        ],
+        "tablename": "activity_assignments",
+        "with_check": null
+      },
+      {
+        "cmd": "UPDATE",
+        "policyname": "Admins update activity assignments",
+        "qual": "has_role(auth.uid(), 'admin'::app_role)",
+        "roles": [
+          "authenticated"
+        ],
+        "tablename": "activity_assignments",
+        "with_check": "has_role(auth.uid(), 'admin'::app_role)"
+      },
+      {
+        "cmd": "SELECT",
+        "policyname": "Students read own activity assignments",
+        "qual": "(student_id = auth.uid())",
+        "roles": [
+          "authenticated"
+        ],
+        "tablename": "activity_assignments",
+        "with_check": null
+      },
+      {
+        "cmd": "UPDATE",
+        "policyname": "Students update own activity assignments",
+        "qual": "(student_id = auth.uid())",
+        "roles": [
+          "authenticated"
+        ],
+        "tablename": "activity_assignments",
+        "with_check": "(student_id = auth.uid())"
+      },
+      {
+        "cmd": "INSERT",
+        "policyname": "activity_item_responses: owner can insert",
+        "qual": null,
+        "roles": [
+          "authenticated"
+        ],
+        "tablename": "activity_item_responses",
+        "with_check": "(auth.uid() = student_id)"
+      },
+      {
+        "cmd": "SELECT",
+        "policyname": "activity_item_responses: owner can select",
+        "qual": "((auth.uid() = student_id) OR has_role(auth.uid(), 'admin'::app_role))",
+        "roles": [
+          "authenticated"
+        ],
+        "tablename": "activity_item_responses",
+        "with_check": null
+      },
+      {
+        "cmd": "INSERT",
+        "policyname": "Students can insert own attempts",
+        "qual": null,
+        "roles": [
+          "authenticated"
+        ],
+        "tablename": "attempts",
+        "with_check": "(class_id = (auth.uid())::text)"
+      },
+      {
+        "cmd": "SELECT",
+        "policyname": "Students can view own attempts",
+        "qual": "(class_id = (auth.uid())::text)",
+        "roles": [
+          "authenticated"
+        ],
+        "tablename": "attempts",
+        "with_check": null
+      },
+      {
+        "cmd": "SELECT",
+        "policyname": "admins_read_attempts",
+        "qual": "has_role(auth.uid(), 'admin'::app_role)",
+        "roles": [
+          "authenticated"
+        ],
+        "tablename": "attempts",
+        "with_check": null
+      },
+      {
+        "cmd": "DELETE",
+        "policyname": "Admins delete bootcamp data",
+        "qual": "has_role(auth.uid(), 'admin'::app_role)",
+        "roles": [
+          "authenticated"
+        ],
+        "tablename": "bootcamp_kv",
+        "with_check": null
+      },
+      {
+        "cmd": "INSERT",
+        "policyname": "Users insert own bootcamp data",
+        "qual": null,
+        "roles": [
+          "authenticated"
+        ],
+        "tablename": "bootcamp_kv",
+        "with_check": "(auth.uid() = user_id)"
+      },
+      {
+        "cmd": "SELECT",
+        "policyname": "Users read own bootcamp data",
+        "qual": "(auth.uid() = user_id)",
+        "roles": [
+          "authenticated"
+        ],
+        "tablename": "bootcamp_kv",
+        "with_check": null
+      },
+      {
+        "cmd": "UPDATE",
+        "policyname": "Users update own bootcamp data",
+        "qual": "(auth.uid() = user_id)",
+        "roles": [
+          "authenticated"
+        ],
+        "tablename": "bootcamp_kv",
+        "with_check": "(auth.uid() = user_id)"
+      },
+      {
+        "cmd": "SELECT",
+        "policyname": "admins_read_bootcamp_kv",
+        "qual": "has_role(auth.uid(), 'admin'::app_role)",
+        "roles": [
+          "authenticated"
+        ],
+        "tablename": "bootcamp_kv",
+        "with_check": null
+      },
+      {
+        "cmd": "ALL",
+        "policyname": "classroom_items_admin_all",
+        "qual": "has_role(auth.uid(), 'admin'::app_role)",
+        "roles": [
+          "authenticated"
+        ],
+        "tablename": "classroom_items",
+        "with_check": "has_role(auth.uid(), 'admin'::app_role)"
+      },
+      {
+        "cmd": "SELECT",
+        "policyname": "classroom_items_student_select",
+        "qual": "((student_id = auth.uid()) AND (visible_to_student = true) AND ((type = 'bootcamp_module'::text) OR (unlock_at IS NULL) OR (unlock_at <= now())))",
+        "roles": [
+          "authenticated"
+        ],
+        "tablename": "classroom_items",
+        "with_check": null
+      },
+      {
+        "cmd": "UPDATE",
+        "policyname": "classroom_items_student_update_status",
+        "qual": "(student_id = auth.uid())",
+        "roles": [
+          "authenticated"
+        ],
+        "tablename": "classroom_items",
+        "with_check": "(student_id = auth.uid())"
+      },
+      {
+        "cmd": "SELECT",
+        "policyname": "admins_read_practice_test_runs",
+        "qual": "has_role(auth.uid(), 'admin'::app_role)",
+        "roles": [
+          "authenticated"
+        ],
+        "tablename": "practice_test_runs",
+        "with_check": null
+      },
+      {
+        "cmd": "INSERT",
+        "policyname": "pt_runs_owner_insert",
+        "qual": null,
+        "roles": [
+          "public"
+        ],
+        "tablename": "practice_test_runs",
+        "with_check": "((user_id = auth.uid()) AND can_sit_practice_test(auth.uid(), pt))"
+      },
+      {
+        "cmd": "SELECT",
+        "policyname": "pt_runs_owner_select",
+        "qual": "(user_id = auth.uid())",
+        "roles": [
+          "public"
+        ],
+        "tablename": "practice_test_runs",
+        "with_check": null
+      },
+      {
+        "cmd": "UPDATE",
+        "policyname": "pt_runs_owner_update",
+        "qual": "(user_id = auth.uid())",
+        "roles": [
+          "public"
+        ],
+        "tablename": "practice_test_runs",
+        "with_check": "(user_id = auth.uid())"
+      },
+      {
+        "cmd": "ALL",
+        "policyname": "Admins can manage profiles",
+        "qual": "has_role(auth.uid(), 'admin'::app_role)",
+        "roles": [
+          "authenticated"
+        ],
+        "tablename": "profiles",
+        "with_check": "has_role(auth.uid(), 'admin'::app_role)"
+      },
+      {
+        "cmd": "UPDATE",
+        "policyname": "Admins can update all profiles",
+        "qual": "has_role(auth.uid(), 'admin'::app_role)",
+        "roles": [
+          "authenticated"
+        ],
+        "tablename": "profiles",
+        "with_check": "has_role(auth.uid(), 'admin'::app_role)"
+      },
+      {
+        "cmd": "SELECT",
+        "policyname": "Admins can view all profiles",
+        "qual": "has_role(auth.uid(), 'admin'::app_role)",
+        "roles": [
+          "authenticated"
+        ],
+        "tablename": "profiles",
+        "with_check": null
+      },
+      {
+        "cmd": "INSERT",
+        "policyname": "Students can insert own profile",
+        "qual": null,
+        "roles": [
+          "authenticated"
+        ],
+        "tablename": "profiles",
+        "with_check": "(class_id = (auth.uid())::text)"
+      },
+      {
+        "cmd": "UPDATE",
+        "policyname": "Students can update own profile",
+        "qual": "(class_id = (auth.uid())::text)",
+        "roles": [
+          "authenticated"
+        ],
+        "tablename": "profiles",
+        "with_check": "(class_id = (auth.uid())::text)"
+      },
+      {
+        "cmd": "SELECT",
+        "policyname": "Students can view own profile",
+        "qual": "(class_id = (auth.uid())::text)",
+        "roles": [
+          "authenticated"
+        ],
+        "tablename": "profiles",
+        "with_check": null
+      },
+      {
+        "cmd": "SELECT",
+        "policyname": "admins_read_rc_attempts",
+        "qual": "has_role(auth.uid(), 'admin'::app_role)",
+        "roles": [
+          "authenticated"
+        ],
+        "tablename": "rc_attempts",
+        "with_check": null
+      },
+      {
+        "cmd": "ALL",
+        "policyname": "own attempts",
+        "qual": "(auth.uid() = user_id)",
+        "roles": [
+          "public"
+        ],
+        "tablename": "rc_attempts",
+        "with_check": "(auth.uid() = user_id)"
+      },
+      {
+        "cmd": "SELECT",
+        "policyname": "admins_read_rc_drill_sessions",
+        "qual": "has_role(auth.uid(), 'admin'::app_role)",
+        "roles": [
+          "authenticated"
+        ],
+        "tablename": "rc_drill_sessions",
+        "with_check": null
+      },
+      {
+        "cmd": "ALL",
+        "policyname": "own sessions",
+        "qual": "(auth.uid() = user_id)",
+        "roles": [
+          "public"
+        ],
+        "tablename": "rc_drill_sessions",
+        "with_check": "(auth.uid() = user_id)"
+      },
+      {
+        "cmd": "SELECT",
+        "policyname": "Students can view section history",
+        "qual": "(class_id = (auth.uid())::text)",
+        "roles": [
+          "authenticated"
+        ],
+        "tablename": "section_history",
+        "with_check": null
+      },
+      {
+        "cmd": "SELECT",
+        "policyname": "admins_read_section_history",
+        "qual": "has_role(auth.uid(), 'admin'::app_role)",
+        "roles": [
+          "authenticated"
+        ],
+        "tablename": "section_history",
+        "with_check": null
+      },
+      {
+        "cmd": "INSERT",
+        "policyname": "section_history_owner_insert",
+        "qual": null,
+        "roles": [
+          "authenticated"
+        ],
+        "tablename": "section_history",
+        "with_check": "((user_id = auth.uid()) AND (class_id = (auth.uid())::text))"
+      },
+      {
+        "cmd": "ALL",
+        "policyname": "Admins can manage all roles",
+        "qual": "has_role(auth.uid(), 'admin'::app_role)",
+        "roles": [
+          "authenticated"
+        ],
+        "tablename": "user_roles",
+        "with_check": null
+      },
+      {
+        "cmd": "SELECT",
+        "policyname": "Users can view own roles",
+        "qual": "(user_id = auth.uid())",
+        "roles": [
+          "authenticated"
+        ],
+        "tablename": "user_roles",
+        "with_check": null
+      },
+      {
+        "cmd": "SELECT",
+        "policyname": "admins_read_wrong_answer_journal",
+        "qual": "has_role(auth.uid(), 'admin'::app_role)",
+        "roles": [
+          "authenticated"
+        ],
+        "tablename": "wrong_answer_journal",
+        "with_check": null
+      },
+      {
+        "cmd": "INSERT",
+        "policyname": "waj_insert_own_class",
+        "qual": null,
+        "roles": [
+          "public"
+        ],
+        "tablename": "wrong_answer_journal",
+        "with_check": "(class_id = (auth.uid())::text)"
+      },
+      {
+        "cmd": "SELECT",
+        "policyname": "waj_select_own_class",
+        "qual": "(class_id = (auth.uid())::text)",
+        "roles": [
+          "public"
+        ],
+        "tablename": "wrong_answer_journal",
+        "with_check": null
+      },
+      {
+        "cmd": "UPDATE",
+        "policyname": "waj_update_own_class",
+        "qual": "(class_id = (auth.uid())::text)",
+        "roles": [
+          "public"
+        ],
+        "tablename": "wrong_answer_journal",
+        "with_check": "(class_id = (auth.uid())::text)"
+      }
+    ],
+    "triggers": [
+      {
+        "definition": "CREATE TRIGGER activity_assignments_guard_immutables BEFORE UPDATE ON public.activity_assignments FOR EACH ROW EXECUTE FUNCTION guard_activity_assignment_immutables()",
+        "table_name": "activity_assignments",
+        "tgname": "activity_assignments_guard_immutables"
+      },
+      {
+        "definition": "CREATE TRIGGER bootcamp_kv_touch BEFORE UPDATE ON public.bootcamp_kv FOR EACH ROW EXECUTE FUNCTION bootcamp_kv_touch_updated_at()",
+        "table_name": "bootcamp_kv",
+        "tgname": "bootcamp_kv_touch"
+      },
+      {
+        "definition": "CREATE TRIGGER classroom_items_student_update_guard BEFORE UPDATE ON public.classroom_items FOR EACH ROW EXECUTE FUNCTION guard_classroom_items_student_update()",
+        "table_name": "classroom_items",
+        "tgname": "classroom_items_student_update_guard"
+      },
+      {
+        "definition": "CREATE TRIGGER classroom_items_touch BEFORE UPDATE ON public.classroom_items FOR EACH ROW EXECUTE FUNCTION touch_classroom_items_updated_at()",
+        "table_name": "classroom_items",
+        "tgname": "classroom_items_touch"
+      },
+      {
+        "definition": "CREATE TRIGGER practice_test_runs_touch BEFORE UPDATE ON public.practice_test_runs FOR EACH ROW EXECUTE FUNCTION touch_practice_test_runs()",
+        "table_name": "practice_test_runs",
+        "tgname": "practice_test_runs_touch"
+      },
+      {
+        "definition": "CREATE TRIGGER guard_profile_accommodation BEFORE UPDATE ON public.profiles FOR EACH ROW EXECUTE FUNCTION guard_profile_accommodation()",
+        "table_name": "profiles",
+        "tgname": "guard_profile_accommodation"
+      },
+      {
+        "definition": "CREATE TRIGGER guard_profile_admin_fields_trg BEFORE UPDATE ON public.profiles FOR EACH ROW EXECUTE FUNCTION guard_profile_admin_fields()",
+        "table_name": "profiles",
+        "tgname": "guard_profile_admin_fields_trg"
+      },
+      {
+        "definition": "CREATE TRIGGER notify_admins_on_signup_trigger AFTER INSERT ON public.profiles FOR EACH ROW EXECUTE FUNCTION notify_admins_on_signup()",
+        "table_name": "profiles",
+        "tgname": "notify_admins_on_signup_trigger"
+      },
+      {
+        "definition": "CREATE TRIGGER profiles_access_tier_drift_trg BEFORE UPDATE ON public.profiles FOR EACH ROW EXECUTE FUNCTION profiles_access_tier_drift()",
+        "table_name": "profiles",
+        "tgname": "profiles_access_tier_drift_trg"
+      },
+      {
+        "definition": "CREATE TRIGGER update_waj_updated_at BEFORE UPDATE ON public.wrong_answer_journal FOR EACH ROW EXECUTE FUNCTION update_updated_at_column()",
+        "table_name": "wrong_answer_journal",
+        "tgname": "update_waj_updated_at"
+      }
+    ]
+  }
+}

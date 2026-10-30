@@ -1,0 +1,65 @@
+WEBVTT
+
+1
+00:00:00.600 --> 00:00:05.293
+Two rules do not automatically connect because they mention the same condition.
+
+2
+00:00:05.593 --> 00:00:10.777
+A continuing inference needs a result that satisfies another rule’s sufficient side.
+
+3
+00:00:11.077 --> 00:00:12.784
+Every red badge is numbered.
+
+4
+00:00:13.084 --> 00:00:14.748
+Every blue badge is numbered.
+
+5
+00:00:15.048 --> 00:00:16.541
+The arrows meet at numbered.
+
+6
+00:00:16.841 --> 00:00:18.953
+They do not continue from numbered to blue.
+
+7
+00:00:19.253 --> 00:00:23.947
+A badge could be red and numbered without being blue, and both rules would remain true.
+
+8
+00:00:24.247 --> 00:00:28.513
+That is a concrete reason the proposed red-to-blue conclusion fails.
+
+9
+00:00:28.813 --> 00:00:31.565
+The shared result has not identified the source.
+
+10
+00:00:31.865 --> 00:00:35.471
+A false connection can produce an impressive-looking long chain.
+
+11
+00:00:35.771 --> 00:00:39.995
+Test the direction at each join before accepting its final conclusion.
+
+12
+00:00:40.295 --> 00:00:44.988
+Ask what the earlier rule actually proves and whether that is enough for the next rule.
+
+13
+00:00:45.288 --> 00:00:49.619
+Two arrows arriving at one result do not give a path through it in reverse.
+
+14
+00:00:49.919 --> 00:00:53.332
+When you see an apparent connection, read that one join aloud.
+
+15
+00:00:53.632 --> 00:00:59.115
+A quick counterexample is often more informative than a label such as invalid chain.
+
+16
+00:00:59.415 --> 00:01:05.943
+Also recognize genuine result-to-sufficient matches rather than rejecting every repeated condition.

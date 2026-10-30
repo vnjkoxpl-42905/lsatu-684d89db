@@ -1,0 +1,173 @@
+{
+  "date": "2026-09-30",
+  "stage": "installation-checkpoint-before-selection",
+  "manifestSha256": "714b27008d5c301c660d830d59562cc69814d06baae9d1e767240bece48b0c95",
+  "actualDefinitionsDigest": "86e8ed3eef6936e488684e07fcd68017",
+  "actualDefinitionsMatchIsolatedPostgres": true,
+  "schemaWrapperSha256": "61a859b1ba25c8420ebe2eb39e7dda4f3bde52f84ce8333da06cc8e1233ffb14",
+  "creditSpend": false,
+  "isolatedChecks": {
+    "pglite": 587,
+    "realPostgres": 587
+  },
+  "schemaPreservation": {
+    "rows": [
+      {
+        "digest": "3912d037857b20b9682e441bc1925fcb",
+        "original_values_preserved": true,
+        "row_count": 1178,
+        "table_name": "attempts"
+      },
+      {
+        "digest": "f806a79130e532d08fe594c99e22c079",
+        "original_values_preserved": true,
+        "row_count": 215,
+        "table_name": "bootcamp_kv"
+      },
+      {
+        "digest": "9fc8bb22f7c925f8929e9725396118ea",
+        "original_values_preserved": true,
+        "row_count": 36,
+        "table_name": "intro_lr_attempts"
+      },
+      {
+        "digest": "d41d8cd98f00b204e9800998ecf8427e",
+        "original_values_preserved": true,
+        "row_count": 0,
+        "table_name": "practice_test_assignments"
+      },
+      {
+        "digest": "806df7e0bed7c4f3f45bf83f4cd6d49c",
+        "original_values_preserved": true,
+        "row_count": 7,
+        "table_name": "practice_test_runs"
+      },
+      {
+        "digest": "b9247ad628df7154bb5a6f459bec5762",
+        "original_values_preserved": true,
+        "row_count": 42,
+        "table_name": "profiles"
+      },
+      {
+        "digest": "b2d17feb55a346eaa392f416daee15ac",
+        "original_values_preserved": true,
+        "row_count": 173,
+        "table_name": "rc_attempts"
+      },
+      {
+        "digest": "0a79325135a0a6dcc35479ab7e3d6adb",
+        "original_values_preserved": true,
+        "row_count": 31,
+        "table_name": "rc_drill_sessions"
+      },
+      {
+        "digest": "bc94a72c1579ea159f720fe91710e995",
+        "original_values_preserved": true,
+        "row_count": 6,
+        "table_name": "review_episode_events_v1"
+      },
+      {
+        "digest": "893289c5193a14a1f32475d604fb8b03",
+        "original_values_preserved": true,
+        "row_count": 3,
+        "table_name": "review_episodes_v1"
+      },
+      {
+        "digest": "a33af7357469666bbad29c6fa1b5b767",
+        "original_values_preserved": true,
+        "row_count": 27,
+        "table_name": "section_history"
+      },
+      {
+        "digest": "86624338c77bb6859d9fcc23fdd552ea",
+        "original_values_preserved": true,
+        "row_count": 118,
+        "table_name": "timed_content_manifests_v1"
+      },
+      {
+        "digest": "70b026c1ad8ccad3cbc5bcde9457b362",
+        "original_values_preserved": true,
+        "row_count": 1,
+        "table_name": "timed_pt_configuration_v1"
+      },
+      {
+        "digest": "2d3aada4cddd03a3bc5eee16ebd9de13",
+        "original_values_preserved": true,
+        "row_count": 3,
+        "table_name": "timed_pt_lr_bindings_v1"
+      },
+      {
+        "digest": "3f0e7135cd31e4f7ff7c7a88c70aa27f",
+        "original_values_preserved": true,
+        "row_count": 132,
+        "table_name": "timed_pt_receipts_v1"
+      },
+      {
+        "digest": "70b026c1ad8ccad3cbc5bcde9457b362",
+        "original_values_preserved": true,
+        "row_count": 1,
+        "table_name": "timed_section_configuration_v1"
+      },
+      {
+        "digest": "893b3f601a691b31240d57a57c0f8246",
+        "original_values_preserved": true,
+        "row_count": 24,
+        "table_name": "timed_section_receipts_v1"
+      },
+      {
+        "digest": "f9c590ae73cfc1b7b5a6914dc46b7311",
+        "original_values_preserved": true,
+        "row_count": 2,
+        "table_name": "timed_section_sittings_v1"
+      },
+      {
+        "digest": "92c098b3c3f85956258172c59182d806",
+        "original_values_preserved": true,
+        "row_count": 2,
+        "table_name": "timed_section_source_bindings_v1"
+      },
+      {
+        "digest": "5b5a6609a26931d8ffc1b2406c9db085",
+        "original_values_preserved": true,
+        "row_count": 2,
+        "table_name": "user_roles"
+      },
+      {
+        "digest": "5d06389d52a6cfe3af5406d25a7696d7",
+        "original_values_preserved": true,
+        "row_count": 706,
+        "table_name": "wrong_answer_journal"
+      }
+    ]
+  },
+  "finalCatalog": {
+    "rows": [
+      {
+        "catalog_install_evidence": {
+          "allOldDefinitionsCopied": true,
+          "allSittingFrozenDefinitionsMatch": true,
+          "executorCatalogInsert": false,
+          "fullCatalogHash": "714b27008d5c301c660d830d59562cc69814d06baae9d1e767240bece48b0c95",
+          "fullCatalogKinds": {
+            "lr": 156,
+            "rc": 80
+          },
+          "fullCatalogSections": 236,
+          "ordinaryCatalogInsert": false,
+          "ordinaryCatalogSelect": false,
+          "standaloneForeignKeys": [
+            "FOREIGN KEY (manifest_sha256, pt, kind, section) REFERENCES timed_section_content_manifests_v1(manifest_sha256, pt, kind, section)",
+            "FOREIGN KEY (owner_id) REFERENCES auth.users(id)"
+          ]
+        }
+      }
+    ]
+  },
+  "notes": [
+    "Oversized full wrapper rejected; read-only probe confirmed no schema/catalog change.",
+    "27 reviewed bounded atomic seed batches submitted. Batch8 returned UNKNOWN; count72 confirmed commit before continuation.",
+    "Configuration, existing PT functions/policies, executor membership and schema ACL unchanged after seed.",
+    "All21 original tables were measured/locked/preserved in the schema transaction. Later session-wide profiles digest differs, so no claim of profile inactivity across the whole QA session."
+  ],
+  "laterSelectionEvidence": "2026-09-30-standalone-catalog-activation-live.json"
+}

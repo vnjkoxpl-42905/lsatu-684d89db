@@ -1,0 +1,12 @@
+ALTER TABLE public.profiles
+  ALTER COLUMN has_practice_access SET DEFAULT false,
+  ALTER COLUMN has_drill_access SET DEFAULT false,
+  ALTER COLUMN has_bootcamp_access SET DEFAULT false,
+  ALTER COLUMN has_classroom_access SET DEFAULT false,
+  ALTER COLUMN has_analytics_access SET DEFAULT false,
+  ALTER COLUMN has_schedule_access SET DEFAULT false,
+  ALTER COLUMN has_waj_access SET DEFAULT false,
+  ALTER COLUMN has_flagged_access SET DEFAULT false,
+  ALTER COLUMN has_chat_access SET DEFAULT false,
+  ALTER COLUMN has_export_access SET DEFAULT false,
+  ALTER COLUMN has_ta_access SET DEFAULT false;

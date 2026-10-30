@@ -1,0 +1,49 @@
+WEBVTT
+
+1
+00:00:00.600 --> 00:00:06.979
+Here's a rule: a visitor gets a library card if the visitor shows photo ID and proof of address.
+
+2
+00:00:07.379 --> 00:00:13.160
+AND conjoins those two conditions. On the left side, the card follows only when both are met.
+
+3
+00:00:13.960 --> 00:00:19.912
+Photo ID shown. Proof of address shown. Both conditions are met, so the card is guaranteed.
+
+4
+00:00:20.312 --> 00:00:26.989
+Photo ID shown, but no proof of address. Only one condition is met, so this rule guarantees nothing.
+
+5
+00:00:27.389 --> 00:00:31.699
+The visitor might still get a card some other way. The rule just doesn't say.
+
+6
+00:00:32.499 --> 00:00:36.189
+Now photo ID shown, and nothing said about proof of address.
+
+7
+00:00:36.589 --> 00:00:41.496
+Unknown is not the same as missing. We don't know yet whether both conditions are met.
+
+8
+00:00:42.296 --> 00:00:48.440
+So when is the rule broken? Only when both conditions are met and the visitor still gets no card.
+
+9
+00:00:49.240 --> 00:00:56.195
+AND works on the right side too. If a visitor gets a card, then the visitor has shown photo ID and proof of address.
+
+10
+00:00:56.595 --> 00:00:59.304
+On that side, both conditions follow together.
+
+11
+00:01:00.104 --> 00:01:03.347
+So when you see AND, check the facts for both conditions.
+
+12
+00:01:03.747 --> 00:01:05.667
+One alone does not trigger the rule.

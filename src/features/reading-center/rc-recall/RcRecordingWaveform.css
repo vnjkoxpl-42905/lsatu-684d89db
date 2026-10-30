@@ -1,0 +1,6 @@
+.rct-recording-waveform { display: grid; place-items: center; width: 100%; min-height: 112px; margin: 28px auto 16px; }
+.rct-recording-bars { display: flex; align-items: center; justify-content: center; gap: clamp(4px, 1vw, 7px); width: min(100%, 340px); height: 100px; color: var(--rc-focus-ink, #183744); }
+.rct-recording-bars i { display: block; flex: 0 1 4px; width: 4px; min-height: 3px; border-radius: 4px; background: currentColor; transition: height 80ms linear; }
+.rct-recording-meter-unavailable { margin: 0; color: var(--rc-text-2, #667078); font-size: 13px; line-height: 1.6; text-align: center; }
+@media (max-width: 480px) { .rct-recording-waveform { margin-top: 20px; } }
+@media (prefers-reduced-motion: reduce) { .rct-recording-bars i { transition: none; } }

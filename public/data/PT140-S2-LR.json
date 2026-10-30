@@ -1,0 +1,622 @@
+[
+  {
+    "practiceTest": "PT140",
+    "sectionNumber": 2,
+    "questionNumber": 1,
+    "questionType": "Principle-Strengthen",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "The quantity and type of pollution that entered the river last Thursday night suggest that the local auto repair shop is responsible. But the penalty for this type of pollution is so severe that, unless stronger evidence is discovered or the perpetrator admits responsibility, we cannot be sufficiently certain of the identity of the polluter to justify imposing the penalty.",
+    "questionStem": "Which one of the following principles, if valid, most helps to justify the reasoning in the argument?",
+    "answerChoices": {
+      "A": "The more severe the penalty for an infraction is, the more certain one must be of the guilt of a party before being justified in imposing the penalty on that party.",
+      "B": "Penalties for crimes should be severe enough to deter people from committing them, but not so severe as to undermine one’s willingness to impose them.",
+      "C": "The severity of the penalty imposed for an infraction should be proportional to the harm caused by that infraction.",
+      "D": "The more severe the penalty for an offense is, the less likely it is that someone will come forward and admit responsibility for the offense.",
+      "E": "The severity of the penalty for an offense should not be so great that one can never be sufficiently certain of guilt to justify punishment for that offense."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "Principles in Answers",
+      "Weighing Tradeoffs"
+    ]
+  },
+  {
+    "practiceTest": "PT140",
+    "sectionNumber": 2,
+    "questionNumber": 2,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Depression is a serious problem for residents of nursing homes. However, a recent study has found that residents who developed personal bonds with pets had significantly lower rates of depression than did residents who did not develop personal bonds with pets.",
+    "questionStem": "Which one of the following statements is most strongly supported by the information above?",
+    "answerChoices": {
+      "A": "Nursing-home residents are more subject to depression than any other individuals.",
+      "B": "The best method for helping a nursing-home resident to overcome depression is to provide access to a pet.",
+      "C": "High rates of depression among nursing-home residents may result at least in part from a lack of companionship.",
+      "D": "Animal companionship is essential for psychological well-being.",
+      "E": "Allowing free access to pets in nursing homes would eliminate problems relating to depression."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
+  },
+  {
+    "practiceTest": "PT140",
+    "sectionNumber": 2,
+    "questionNumber": 3,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Humorous television advertisements are the only effective ones. For if something is humorous it will not only attract people’s attention, it will hold their attention long enough for a message to be conveyed. And, obviously, for an advertisement to be effective it must convey its message.",
+    "questionStem": "Which one of the following most accurately describes a flaw in the argument?",
+    "answerChoices": {
+      "A": "It takes for granted that nothing but humor can attract a person’s attention and hold it long enough for a message to be conveyed.",
+      "B": "It confuses attracting a person’s attention with holding a person’s attention long enough for a message to be conveyed.",
+      "C": "It treats a necessary condition for an advertisement’s being effective as if it were a sufficient condition.",
+      "D": "It uses two senses of the term “effective” without differentiating them.",
+      "E": "It takes for granted that an advertisement’s only purpose is to convey its message."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
+  },
+  {
+    "practiceTest": "PT140",
+    "sectionNumber": 2,
+    "questionNumber": 4,
+    "questionType": "Strengthen",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Physician: Stories of people developing serious health problems shortly after receiving vaccinations have given rise to the question of whether vaccination is safe. But even if these stories are true, they need not be cause for concern. With millions of people being vaccinated every year, it is to be expected that some will develop health problems purely by coincidence shortly after receiving vaccinations.",
+    "questionStem": "Which one of the following, if true, would most strengthen the physician’s argument?",
+    "answerChoices": {
+      "A": "For the most part, stories of people developing serious health problems shortly after receiving vaccinations involve vaccines that were recently introduced.",
+      "B": "Some of the illnesses that vaccines are designed to prevent have become so rare that even if people are not vaccinated, they are unlikely to contract those illnesses.",
+      "C": "People are no more likely, on average, to develop serious health problems shortly after receiving vaccinations than shortly before receiving vaccinations.",
+      "D": "The health problems that some people have developed shortly after receiving vaccinations have been more serious than the health problems that the vaccines were intended to prevent.",
+      "E": "In a few cases in which people developed serious health problems shortly after taking other medications, these problems were initially attributed to coincidence but were later determined to be due to the medications."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Explain Curious Fact",
+      "Anti-Causal"
+    ]
+  },
+  {
+    "practiceTest": "PT140",
+    "sectionNumber": 2,
+    "questionNumber": 5,
+    "questionType": "Agree/Disagree",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Sharita: Anyone who owns a cat should have it spayed or neutered unless they are willing to take care of the cat’s offspring. It is because people fail to do this that there are so many stray cats around. Chad: Stray cats are not only a nuisance, they spread diseases and cause injuries to other cats and to humans. People feed these animals out of kindness, but doing so only exacerbates the problem unless the cats are then captured and adopted.",
+    "questionStem": "Sharita’s and Chad’s statements provide the most support for the claim that they agree about which one of the following?",
+    "answerChoices": {
+      "A": "It is usually wrong to feed stray cats.",
+      "B": "There are more stray cats than there should be.",
+      "C": "Stray cats are a problem because of the risk they pose to humans.",
+      "D": "Stray cats spread diseases to other cats.",
+      "E": "It is mainly out of kindness that people feed stray cats."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
+  },
+  {
+    "practiceTest": "PT140",
+    "sectionNumber": 2,
+    "questionNumber": 6,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Causation",
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Detective: People who repeatedly commit crimes like embezzlement or bribery without being caught tend to become more confident. With each success, they believe that getting caught is less likely. However, the more crimes a person commits, the greater the chance that one of those crimes will be solved. It is therefore likely that most people who commit embezzlement or bribery will eventually be caught.",
+    "questionStem": "Which one of the following is an assumption required by the detective’s argument?",
+    "answerChoices": {
+      "A": "The majority of people who commit embezzlement or bribery do so repeatedly.",
+      "B": "People who commit embezzlement or bribery tend to be people who feel confident.",
+      "C": "Embezzlement and bribery are more likely to be solved than are many other types of crimes.",
+      "D": "People who repeatedly commit embezzlement or bribery become more and more careless the longer they avoid detection.",
+      "E": "No one who commits embezzlement or bribery is ever caught the first time."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "New Concept in Conclusion",
+      "Quantifiers",
+      "Untriggered Conditional",
+      "Volume Dial"
+    ]
+  },
+  {
+    "practiceTest": "PT140",
+    "sectionNumber": 2,
+    "questionNumber": 7,
+    "questionType": "Paradox",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "If grain prices double then the average price of a loaf of bread will rise between 10 and 15 percent, whereas the price of grain-fed beef will come close to doubling.",
+    "questionStem": "Which one of the following would, if true, most contribute to an explanation of the phenomenon described above?",
+    "answerChoices": {
+      "A": "Farmers engaged in very large-scale cattle production generally try to reduce the labor costs involved in the production and sale of beef.",
+      "B": "The wholesale price per pound of beef is approximately ten times the wholesale price per pound of bread.",
+      "C": "The labor and marketing costs in producing and selling bread represent most of its cost, but the cost of feeding cattle represents most of the cost of producing beef.",
+      "D": "Only an insignificantly small proportion of the beef sold in retail markets is produced from cattle fed on grass rather than grain.",
+      "E": "The vast majority of retail grocery outlets purchase the bread they sell from small independent bakers but purchase the meat they sell from large wholesale processing operations."
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT140",
+    "sectionNumber": 2,
+    "questionNumber": 8,
+    "questionType": "Method of Reasoning",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Mark: The decongestant drug Zokaz was discontinued by its manufacturer because long-term studies revealed that it increased the risk of heart attack. Qualzan, another decongestant, works by essentially the same physiological mechanism as Zokaz. So Qualzan probably also increases the risk of heart attack. Kathy: The decongestive effects of the two drugs do stem from the same physiological mechanism. But since they are different chemically, the two drugs probably have different side effects.",
+    "questionStem": "Which one of the following is a technique of reasoning used in Kathy’s response to Mark?",
+    "answerChoices": {
+      "A": "using a product’s overall record of safety as evidence that the product is not linked to a particular health problem",
+      "B": "attempting to discredit an argument by comparing it to another obviously flawed argument that is logically parallel",
+      "C": "arguing against a conclusion by raising questions about the validity of scientific studies cited in support of that conclusion",
+      "D": "attempting to undermine an argument by showing that it is incompatible with a fundamental principle of medicine",
+      "E": "challenging an argument from analogy by focusing on a dissimilarity between the things being compared"
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Abstract Answers"
+    ]
+  },
+  {
+    "practiceTest": "PT140",
+    "sectionNumber": 2,
+    "questionNumber": 9,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "CEO: We have been falsely criticized for not being an environmentally responsible corporation. Environmentally responsible corporations are corporations that do all they can to pollute less. Our current production methods pollute significantly less than our old methods did, and there currently are no methods that do not produce any pollution.",
+    "questionStem": "The reasoning in the CEO’s argument is flawed in that it",
+    "answerChoices": {
+      "A": "takes for granted that production methods that do not produce pollution cannot be developed",
+      "B": "fails to take into account the possibility that different causes can have similar effects",
+      "C": "generalizes too hastily from the inapplicability of a specific criticism to the inapplicability of a class of criticisms",
+      "D": "takes for granted that because the company has attempted to reduce the amount of pollution produced, they must have succeeded",
+      "E": "ignores the possibility that there are currently production methods that would allow the corporation to produce less pollution than it does now"
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT140",
+    "sectionNumber": 2,
+    "questionNumber": 10,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "A recent study showed that people who address problems quickly and directly are significantly less likely to have gum disease than are people who react to problems by refusing to think about them. Since stress can have a negative effect on the immune system, the study’s results clearly indicate that some forms of gum disease are caused or aggravated by suppression of the immune system.",
+    "questionStem": "The argument requires the assumption that",
+    "answerChoices": {
+      "A": "painful conditions will interfere with a person’s ability to address problems quickly and directly",
+      "B": "refusing to think about something troubling contributes to a person’s level of stress",
+      "C": "people who have highly stressful lives tend to address problems quickly and directly",
+      "D": "people who tend to address problems quickly and directly will invariably seek dental care at the first sign of problems",
+      "E": "the reason some people refuse to think about problems is that they find addressing problems to be stressful"
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "Explain Curious Fact",
+      "Causal Chains",
+      "Dense Stimulus",
+      "Links Between Premises"
+    ]
+  },
+  {
+    "practiceTest": "PT140",
+    "sectionNumber": 2,
+    "questionNumber": 11,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "A science class stored one selection of various fruits at 30 degrees Celsius, a similar selection in similar conditions at 20 degrees, and another similar selection in similar conditions at 10 degrees. Because the fruits stored at 20 degrees stayed fresh longer than those stored at 30 degrees, and those stored at 10 degrees stayed fresh longest, the class concluded that the cooler the temperature at which these varieties of fruits are stored, the longer they will stay fresh.",
+    "questionStem": "The class’s reasoning is flawed in that the class",
+    "answerChoices": {
+      "A": "generalized too readily from the fruits it tested to fruits it did not test",
+      "B": "ignored the effects of other factors such as humidity and sunlight on the rate of spoilage",
+      "C": "too readily extrapolated from a narrow range of temperatures to the entire range of temperatures",
+      "D": "assumed without proof that its thermometer was reliable",
+      "E": "neglected to offer any explanation for the results it discovered"
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Sampling",
+      "Argue the Anti-Conclusion",
+      "Volume Dial"
+    ]
+  },
+  {
+    "practiceTest": "PT140",
+    "sectionNumber": 2,
+    "questionNumber": 12,
+    "questionType": "Weaken",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Though Earth’s human population is increasing, it currently uses only a relatively small fraction of the supply of fresh water. Thus, claims that water shortages will plague humankind in the near future unless population growth trends change are simply mistaken.",
+    "questionStem": "Which one of the following, if true, most seriously weakens the argument above?",
+    "answerChoices": {
+      "A": "Population growth trends are notoriously hard to predict with reasonable accuracy.",
+      "B": "The amount of fresh water available to meet the needs of Earth’s population varies significantly from region to region.",
+      "C": "Not all of Earth’s population will adopt water conservation methods in the near future.",
+      "D": "If Earth’s population continues to increase, it will eventually outstrip all available resources.",
+      "E": "The percentage of fresh water used for agriculture is likely to grow more quickly than is the percentage used for industry."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Part vs. Whole",
+      "Argue the Anti-Conclusion",
+      "Conditional Conclusion",
+      "Predictions",
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT140",
+    "sectionNumber": 2,
+    "questionNumber": 13,
+    "questionType": "Paradox",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Consultant: The dramatic improvements in productivity achieved during the Industrial Revolution resulted in large part from standardization of processes and procedures coupled with centralization of planning and decision making. Yet, in recent years, many already productive companies have further improved their productivity by giving individual employees greater influence in decision making and in how they do their work.",
+    "questionStem": "Which one of the following, if true, most helps to resolve the apparent paradox in the consultant’s statements?",
+    "answerChoices": {
+      "A": "Most companies still try to improve productivity mainly through greater standardization and centralization of decision making.",
+      "B": "Increased productivity is not the only benefit of giving individual employees greater control over their work; job satisfaction increases as well.",
+      "C": "Most of the increases in industrial productivity that have occurred in recent years have been due to the introduction of advanced technology like industrial robots.",
+      "D": "The innovations of the Industrial Revolution are only now being applied in those companies in which individual employees have traditionally been entirely in control of how they do their work.",
+      "E": "Increases in productivity in highly productive companies depend on management’s broad application of innovative ideas solicited from individual employees about their work."
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT140",
+    "sectionNumber": 2,
+    "questionNumber": 14,
+    "questionType": "Must Be True",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Professor: The most important function of epic poetry is to transmit the values by which a group of people is to live. This transmission is accomplished not by an explicit discussion of those values, but rather by their embodiment in heroic figures, who are presented as role models. Imitating those role models gives meaning and direction to the lives of those who hear the poems.",
+    "questionStem": "If the professor’s statements are true, which one of the following must also be true?",
+    "answerChoices": {
+      "A": "An important function of poetry is to give meaning and direction to the lives of those who hear or read it.",
+      "B": "Epic poems accomplish their most important function by presenting heroic figures as role models.",
+      "C": "When values are represented in poetry, they are rarely if ever set forth explicitly.",
+      "D": "For many groups of people, heroic figures serve as role models embodying the values by which those people are to live.",
+      "E": "Only epic poetry presents heroic figures as role models that, if imitated, give meaning and direction to the lives of those who hear it."
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT140",
+    "sectionNumber": 2,
+    "questionNumber": 15,
+    "questionType": "Principle-Strengthen",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Letter to the editor: You say that if the government were to confiscate a portion of the wages of convicted burglars when they reenter the workforce, it would be a form of stealing, hence an abuse of power. Yet under the proposal now being considered, the government would confiscate such wages in order to fund an account to compensate burglary victims. So even if confiscating a portion of burglars’ wages were a form of stealing, it would still be justified.",
+    "questionStem": "Which one of the following principles, if valid, most helps to support the argument in the letter to the editor?",
+    "answerChoices": {
+      "A": "Money stolen from a burglar should be given to that burglar’s victims.",
+      "B": "Burglars are obligated to provide compensation to the same individuals they victimized.",
+      "C": "The motive prompting an action determines whether or not that action is justified.",
+      "D": "A crime is justified only if it is a means of compensating people who deserve compensation.",
+      "E": "Stealing is never justified even if it benefits someone who has been a burglary victim."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Defender"
+    ]
+  },
+  {
+    "practiceTest": "PT140",
+    "sectionNumber": 2,
+    "questionNumber": 16,
+    "questionType": "Main Conclusion",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Some heartburn-medication advertisements imply that unrelieved heartburn is likely to cause esophageal cancer. This is simply false. The fact is that only about 5 percent of people with severe heartburn have a condition called Barrett’s esophagus, in which cells similar to those in the stomach’s lining develop in the lower esophagus. Only these people have an increased risk of developing cancer because of heartburn.",
+    "questionStem": "Which one of the following most accurately expresses the overall conclusion drawn in the argument?",
+    "answerChoices": {
+      "A": "Only those people with Barrett’s esophagus can suffer an increased risk of developing cancer from heartburn.",
+      "B": "An increase in the risk of esophageal cancer arises from cells similar to those in the stomach’s lining developing in the lower esophagus.",
+      "C": "Unrelieved heartburn is not likely to cause esophageal cancer.",
+      "D": "Some heartburn-medication advertisements imply that unrelieved heartburn is likely to cause esophageal cancer.",
+      "E": "The dangers touted by heartburn-medication advertisements will affect relatively few of the people who see those advertisements."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Anti-Causal",
+      "Rebuttals"
+    ]
+  },
+  {
+    "practiceTest": "PT140",
+    "sectionNumber": 2,
+    "questionNumber": 17,
+    "questionType": "Parallel Reasoning",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "We can be sure that at least some halogen lamps are well crafted, because halogen lamps from most major manufacturers are on display at Furniture Labyrinth. Any item on display at Furniture Labyrinth is well crafted.",
+    "questionStem": "Which one of the following arguments is most similar in its reasoning to the argument above?",
+    "answerChoices": {
+      "A": "We can be confident that the temperature will drop abruptly on at least one day this week, for there is a chance of storms most days this week; whenever there are storms, the temperature drops suddenly.",
+      "B": "We can be positive that there are at least a few disturbing sonnets, given that Melinda has written several different kinds of sonnets; everything Melinda writes is disturbing.",
+      "C": "We can be sure that Gianna will get at least some good mechanical work done to her car, because she can have her car worked on at any of several shops in the city, and every shop is capable of doing good mechanical work.",
+      "D": "We can be positive that at least some minnows are healthy, because many different species of minnow can be found in lakes nearby, and every lake nearby is teeming with healthy fish.",
+      "E": "We can be confident that the cornmeal used at Matteo’s Trattoria is healthful and organic, since cornmeal is among the ingredients used in preparing meals there; whenever a meal is prepared at Matteo’s Trattoria, only healthful, organic ingredients are used."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Quantifiers"
+    ]
+  },
+  {
+    "practiceTest": "PT140",
+    "sectionNumber": 2,
+    "questionNumber": 18,
+    "questionType": "Most Strongly Supported",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Psychologists have found that the implementation of policies allowing work schedules to be tailored to individuals’ needs does not typically increase managers’ job satisfaction or their efficiency-although this may be because most managers already have the autonomy to adjust their own schedules. But these flexible-schedule policies do increase job satisfaction, productivity, and attendance among nonmanagerial employees. The benefits dissipate somewhat over time, however, and they are reduced even further if schedules are too elastic.",
+    "questionStem": "Which one of the following statements is most supported by the information above?",
+    "answerChoices": {
+      "A": "Implementing flexible schedules would be an effective means of increasing the job satisfaction and efficiency of managers who do not already have scheduling autonomy.",
+      "B": "Flexible-schedule policies should be expected to improve the morale of some individual employees but not the overall morale of a company’s workforce.",
+      "C": "Flexible schedules should be expected to substantially improve a company’s productivity and employee satisfaction in the long run.",
+      "D": "There is little correlation between managers’ job satisfaction and their ability to set their own work schedules.",
+      "E": "The typical benefits of flexible-schedule policies cannot be reliably inferred from observations of the effects of such policies on managers."
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT140",
+    "sectionNumber": 2,
+    "questionNumber": 19,
+    "questionType": "Weaken",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Viewers surveyed immediately after the televised political debate last year between Lopez and Tanner tended to think that Lopez had made the better arguments, but the survey respondents who reported that Lopez’s arguments were better may have been biased in favor of Lopez. After all, Lopez eventually did win the election.",
+    "questionStem": "Which one of the following, if true, most seriously undermines the argument?",
+    "answerChoices": {
+      "A": "Most people who voted in the election that Lopez won did not watch the debate.",
+      "B": "Most people in the live audience watching the debate who were surveyed immediately afterward said that they thought that Tanner was more persuasive in the debate than was Lopez.",
+      "C": "The people who watched the televised debate were more likely to vote for Tanner than were the people who did not watch the debate.",
+      "D": "Most of the viewers surveyed immediately prior to the debate said that they would probably vote for Tanner.",
+      "E": "Lopez won the election over Tanner by a very narrow margin."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Anti-Causal"
+    ]
+  },
+  {
+    "practiceTest": "PT140",
+    "sectionNumber": 2,
+    "questionNumber": 20,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Recent medical and anthropological data show that prohibitions on the use of certain foods served important social, economic, and medical functions in ancient cultures. But these data cannot explain the origin of the prohibitions involved, since those who originally adopted and enforced them did not have access to the same data as modern researchers.",
+    "questionStem": "Which one of the following is an assumption required by the argument?",
+    "answerChoices": {
+      "A": "The origin of a food prohibition must be explained with reference to the understanding that the people who adopted and enforced the prohibition had.",
+      "B": "The social, economic, and medical problems of a society may lead to the adoption of contradictory food prohibitions.",
+      "C": "The social importance of the origin of a food prohibition is independent of the nutritional value of the food prohibited.",
+      "D": "The original purpose of a food prohibition is often forgotten a few generations after the prohibition is introduced.",
+      "E": "The people who originally adopted and enforced food prohibitions in ancient cultures generally had a nontechnical understanding of the medical functions of those prohibitions."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "Anti-Causal",
+      "New Concept in Conclusion",
+      "Timeframes"
+    ]
+  },
+  {
+    "practiceTest": "PT140",
+    "sectionNumber": 2,
+    "questionNumber": 21,
+    "questionType": "Must Be True",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Editor: Most of the books of fiction we have published were submitted by literary agents for writers they represented; the rest were received directly from fiction writers from whom we requested submissions. No nonfiction manuscript has been given serious attention, let alone been published, unless it was from a renowned figure or we had requested the manuscript after careful review of the writer’s book proposal.",
+    "questionStem": "Which one of the following can be properly inferred from the editor’s statements?",
+    "answerChoices": {
+      "A": "Most unrequested manuscripts that the publishing house receives are not given serious attention.",
+      "B": "Most of the books that the publishing house publishes that are not by renowned authors are books of fiction.",
+      "C": "If a manuscript has received careful attention at the publishing house, then it is either a work of fiction or the work of a renowned figure.",
+      "D": "The publishing house is less likely to give careful consideration to a manuscript that was submitted directly by a writer than one that was submitted by a writer’s literary agent.",
+      "E": "Any unrequested manuscripts not submitted by literary agents that the publishing house has published were written by renowned figures."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Binaries",
+      "Quantifiers",
+      "Worst of the Worst"
+    ]
+  },
+  {
+    "practiceTest": "PT140",
+    "sectionNumber": 2,
+    "questionNumber": 22,
+    "questionType": "Sufficient Assumption",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "If the budget does not allow for more dairy inspectors to be hired, most of the large dairies in the central valley will not meet federal standards governing the disposal of natural wastes, which can seep into streams and groundwater. The new district budget, however, does not allow for the hiring of more dairy inspectors. Consequently, most of the district’s drinking water is likely to become polluted.",
+    "questionStem": "The conclusion above follows logically if which one of the following is assumed?",
+    "answerChoices": {
+      "A": "If most of the dairies in the central valley meet federal standards for the disposal of natural wastes, it is unlikely that most of the district’s drinking water will become polluted.",
+      "B": "To keep all the drinking water in the district clean requires more dairy inspectors to monitor the dairies’ disposal of natural wastes.",
+      "C": "All of the district’s drinking water is likely to become polluted only if all of the large dairies in the central valley do not meet federal standards for the disposal of natural wastes.",
+      "D": "Most of the district’s drinking water is likely to become polluted if most of the large dairies in the central valley do not meet federal standards for the disposal of natural wastes.",
+      "E": "If none of the large dairies in the central valley meets federal standards for the disposal of natural wastes, most of the district’s drinking water is likely to become polluted."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
+  },
+  {
+    "practiceTest": "PT140",
+    "sectionNumber": 2,
+    "questionNumber": 23,
+    "questionType": "Parallel Flaw",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Company president: Almost every really successful product introduced in the last ten years has been launched by a massive television advertising campaign. We are using a massive television advertising campaign to introduce the Vegetaste Burger. So the Vegetaste Burger will probably be very successful.",
+    "questionStem": "The flawed nature of the company president’s argument can most effectively be demonstrated by noting that, by parallel reasoning, we could conclude that",
+    "answerChoices": {
+      "A": "the president of Corbin Corporation has an office that is not in Corbin’s headquarters building, since almost all of the offices in Corbin’s headquarters building are small, whereas Corbin’s president has a large office",
+      "B": "Donna has at least ten years of experience as a computer programmer, since almost every programmer who works for Coderight Software has at least ten years experience, and Donna will probably be hired as a programmer by Coderight",
+      "C": "almost all of Acme’s employees oppose the pending merger with Barrington Corporation, since almost all of Acme’s employees are factory workers, and almost all of the factory workers at Acme oppose the merger",
+      "D": "Robinson will probably be appointed as president of Sifton University, since almost every one of Sifton’s previous presidents had a Ph.D., and Robinson has a Ph.D.",
+      "E": "the novel Safekeeping will probably earn a profit for its publisher, Peninsula Press, since almost every novel published by Peninsula over the last ten years has been profitable"
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Conditional Diagramming",
+      "Sufficient vs. Necessary Flaw",
+      "Quantifiers"
+    ]
+  },
+  {
+    "practiceTest": "PT140",
+    "sectionNumber": 2,
+    "questionNumber": 24,
+    "questionType": "Role",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Biologist: Scientists have discovered fossilized bacteria in rocks 3.5 billion years old. The fossils indicate that these bacteria were quite complex and so must have already had a long evolutionary history when fossilized 3.5 billion years ago. However, Earth is only 4.6 billion years old, so the first life on Earth must have appeared soon after the planet’s formation, when conditions were extremely harsh. This suggests that life may be able to arise under many difficult conditions throughout the universe.",
+    "questionStem": "Which one of the following most accurately describes the role played in the biologist’s argument by the claim that the fossilized bacteria discovered in rocks 3.5 billion years old must have had a long evolutionary history?",
+    "answerChoices": {
+      "A": "It is a claim for which no support is provided in the argument, and that is used to illustrate the conclusion of the argument as a whole.",
+      "B": "It is a claim for which no support is provided in the argument, and that is used to support a claim that in turn lends support to the conclusion of the argument as a whole.",
+      "C": "It is a claim for which some support is provided in the argument, and that itself is used to support another claim that in turn lends support to the conclusion of the argument as a whole.",
+      "D": "It is a claim for which some support is provided in the argument, and that itself is not used to support any other claim in the argument.",
+      "E": "It is a claim for which some support is provided in the argument, and that itself is used to support two distinct conclusions, neither of which is intended to provide support for the other."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Abstract Answers",
+      "Science"
+    ]
+  },
+  {
+    "practiceTest": "PT140",
+    "sectionNumber": 2,
+    "questionNumber": 25,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "At one time, many astronomers assumed that Earth remains motionless while the stars revolve around it. They concluded from this that the stars were not more than a few million miles from Earth. They reasoned that if the stars were farther away, they would have to move at tremendously great speeds in order to circle Earth during the day and reappear in roughly the same positions each night.",
+    "questionStem": "Which one of the following is an assumption required by the reasoning described above?",
+    "answerChoices": {
+      "A": "If the stars do not revolve around Earth, it is possible for at least some stars to be more than a few million miles from Earth.",
+      "B": "All stars move at exactly the same speed when they are revolving around Earth.",
+      "C": "Earth does not remain motionless while the stars revolve around it.",
+      "D": "Stars do not move at tremendously great speeds.",
+      "E": "A star that is more than a million miles from Earth could reappear in roughly the same position each night."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Science",
+      "Contrapositive Logic",
+      "Missing Link / Idea",
+      "Untriggered Conditional"
+    ]
+  },
+  {
+    "practiceTest": "PT140",
+    "sectionNumber": 2,
+    "questionNumber": 26,
+    "questionType": "Method of Reasoning",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "People may praise the talent of a painter capable of realistically portraying a scene and dismiss as artistically worthless the efforts of abstract expressionists, but obviously an exact replica of the scene depicted is not the only thing people appreciate in a painting, for otherwise photography would have entirely displaced painting as an art form.",
+    "questionStem": "The argument proceeds by",
+    "answerChoices": {
+      "A": "using a claim about what most people appreciate to support an aesthetic principle",
+      "B": "appealing to an aesthetic principle to defend the tastes that people have",
+      "C": "explaining a historical fact in terms of the artistic preferences of people",
+      "D": "appealing to a historical fact to support a claim about people’s artistic preferences",
+      "E": "considering historical context to defend the artistic preferences of people"
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Abstract Answers",
+      "Repetitive Answers",
+      "Worst of the Worst"
+    ]
+  }
+]

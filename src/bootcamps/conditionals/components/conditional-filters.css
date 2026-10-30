@@ -1,0 +1,17 @@
+.conditional-filters{display:flex;align-items:center;flex-wrap:wrap;gap:10px 14px;margin:20px 0;color:var(--cc-ink,var(--oc-ink,#30372f));font-family:"LSATU Inter",system-ui,sans-serif}
+.conditional-filters-toggle{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:10px 14px;background:var(--cc-raised,var(--oc-card,#faf8f1));border:1px solid var(--cc-control,var(--oc-line,#ccc8bc));border-radius:7px;color:inherit;font:500 14px/1.4 "LSATU Inter",system-ui,sans-serif;cursor:pointer}
+.conditional-filters-toggle[aria-expanded=true]{background:var(--cc-surface,var(--oc-paper,#eae6dc));border-color:var(--cc-ink,var(--oc-ink,#30372f))}
+.conditional-filters-toggle[aria-expanded=true]>svg:last-child{transform:rotate(180deg)}
+.conditional-filters-toggle:focus-visible,.conditional-filters-content :is(select,input,button):focus-visible{outline:2px solid currentColor;outline-offset:3px}
+.conditional-filters-summary{font-size:13px;line-height:1.5;color:var(--cc-muted,var(--oc-muted,#5c655c))}
+.conditional-filters-content{flex-basis:100%;min-width:0;padding-top:6px}
+.conditional-filters-content[hidden]{display:none!important}
+.conditional-filters-content label{display:inline-flex;align-items:center;flex-wrap:wrap;gap:10px;font-size:14px;margin:0 18px 10px 0}
+.conditional-filters-content select{min-height:44px;max-width:100%;padding:8px 32px 8px 12px;border:1px solid var(--cc-control,var(--oc-line,#ccc8bc));border-radius:6px;background:var(--cc-raised,var(--oc-card,#faf8f1));color:inherit;font:inherit}
+.conditional-filters-content .cc-settings,.conditional-filters-content .skill-settings{margin:0}
+.cc-families[data-filtered=true]{grid-template-columns:minmax(0,1fr)}
+.conditional-filters-content nav.cc-settings{display:flex;flex-wrap:wrap;gap:8px}
+.co-flashcard-tools .conditional-filters-content nav a{display:inline-flex;align-items:center;min-height:44px;padding:10px 14px;border-radius:6px;background:#eeeadf;color:#30372f;font-size:14px;text-decoration:none}
+.co-flashcard-tools .conditional-filters-content nav a[aria-current=true]{background:#30372f;color:#fffdf7}
+@media(hover:hover)and(pointer:fine){.conditional-filters-toggle:hover{background:var(--cc-surface,var(--oc-paper,#eae6dc))}}
+@media(max-width:600px){.conditional-filters{gap:8px 12px;margin:16px 0}.conditional-filters-content label{align-items:flex-start;flex-direction:column;margin-right:0;width:100%}.conditional-filters-content select{width:100%}}

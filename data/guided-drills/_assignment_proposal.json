@@ -1,0 +1,5602 @@
+{
+  "summary": {
+    "generated": "see git/commit time",
+    "drills": 114,
+    "lr_questions": 3964,
+    "feature_vocab": 60,
+    "classification_counts": {
+      "ready": 87,
+      "blended": 26,
+      "defer-rc": 1
+    },
+    "violations": 0
+  },
+  "rows": [
+    {
+      "slug": "w4-01-reconcile-the-pivot",
+      "title": "Reconcile the Pivot",
+      "week": 4,
+      "category": "Pacing",
+      "question_count": 5,
+      "current_question_types": [
+        "Most Supported",
+        "Must Be True"
+      ],
+      "current_question_features": [
+        "Reconcile the Pivot"
+      ],
+      "target_types": [
+        "Most Strongly Supported",
+        "Must Be True"
+      ],
+      "target_features": [
+        "Important Pivot"
+      ],
+      "blended": false,
+      "relaxation": "strict",
+      "final_question_types": [
+        "Most Strongly Supported",
+        "Must Be True"
+      ],
+      "final_question_features": [
+        "Important Pivot"
+      ],
+      "final_reasoning_types": [
+        "Comparison"
+      ],
+      "difficulty_min": 2,
+      "difficulty_max": 4,
+      "pool_available": 48,
+      "pool_sample": [
+        "PT102-S3-Q24",
+        "PT104-S1-Q3",
+        "PT104-S1-Q19",
+        "PT104-S1-Q22",
+        "PT104-S4-Q14"
+      ],
+      "classification": "ready",
+      "has_override": false,
+      "notes": []
+    },
+    {
+      "slug": "w4-02-blended-set-parallel-paradox",
+      "title": "BLENDED SET: Parallel + Paradox",
+      "week": 4,
+      "category": "Pacing",
+      "question_count": 6,
+      "current_question_types": [
+        "Parallel",
+        "Paradox"
+      ],
+      "current_question_features": [
+        "Blended Set"
+      ],
+      "target_types": [
+        "Parallel Reasoning",
+        "Paradox"
+      ],
+      "target_features": [
+        "Explain Curious Fact",
+        "Alternatives"
+      ],
+      "blended": false,
+      "relaxation": "keep-type",
+      "final_question_types": [
+        "Parallel Reasoning",
+        "Paradox"
+      ],
+      "final_question_features": [],
+      "final_reasoning_types": [
+        "Comparison",
+        "Causation"
+      ],
+      "difficulty_min": 1,
+      "difficulty_max": 5,
+      "pool_available": 313,
+      "pool_sample": [
+        "PT101-S2-Q13",
+        "PT101-S2-Q18",
+        "PT101-S3-Q14",
+        "PT102-S2-Q14",
+        "PT102-S2-Q17"
+      ],
+      "classification": "ready",
+      "has_override": false,
+      "notes": [
+        "pool widened by dropping feature constraint"
+      ]
+    },
+    {
+      "slug": "w4-01-principle-strengthen-set-2",
+      "title": "Principle-Strengthen (set 2)",
+      "week": 4,
+      "category": "Process",
+      "question_count": 7,
+      "current_question_types": [
+        "Principle-Strengthen"
+      ],
+      "current_question_features": [
+        "Principle-Strengthen"
+      ],
+      "target_types": [
+        "Principle-Strengthen"
+      ],
+      "target_features": [
+        "Principles in Answers",
+        "Conditional Conclusion"
+      ],
+      "blended": false,
+      "relaxation": "strict",
+      "final_question_types": [
+        "Principle-Strengthen"
+      ],
+      "final_question_features": [
+        "Principles in Answers",
+        "Conditional Conclusion"
+      ],
+      "final_reasoning_types": [
+        "Conditional Logic"
+      ],
+      "difficulty_min": 2,
+      "difficulty_max": 4,
+      "pool_available": 68,
+      "pool_sample": [
+        "PT101-S2-Q9",
+        "PT101-S2-Q25",
+        "PT101-S3-Q20",
+        "PT101-S3-Q26",
+        "PT102-S2-Q23"
+      ],
+      "classification": "ready",
+      "has_override": false,
+      "notes": []
+    },
+    {
+      "slug": "w4-02-principle-strengthen-application-set-1",
+      "title": "Principle-Strengthen + Application (Set 1)",
+      "week": 4,
+      "category": "Process",
+      "question_count": 5,
+      "current_question_types": [
+        "Principle-Strengthen",
+        "Application"
+      ],
+      "current_question_features": [
+        "Principle-Strengthen"
+      ],
+      "target_types": [
+        "Principle-Strengthen",
+        "Principle-Conform"
+      ],
+      "target_features": [
+        "Principles in Answers",
+        "Conditional Conclusion"
+      ],
+      "blended": false,
+      "relaxation": "strict",
+      "final_question_types": [
+        "Principle-Strengthen",
+        "Principle-Conform"
+      ],
+      "final_question_features": [
+        "Principles in Answers",
+        "Conditional Conclusion"
+      ],
+      "final_reasoning_types": [
+        "Conditional Logic"
+      ],
+      "difficulty_min": 2,
+      "difficulty_max": 4,
+      "pool_available": 136,
+      "pool_sample": [
+        "PT101-S2-Q9",
+        "PT101-S2-Q25",
+        "PT101-S3-Q20",
+        "PT101-S3-Q26",
+        "PT102-S2-Q11"
+      ],
+      "classification": "ready",
+      "has_override": true,
+      "notes": []
+    },
+    {
+      "slug": "w4-03-reconcile-the-pivot-set-2",
+      "title": "Reconcile the Pivot (set 2)",
+      "week": 4,
+      "category": "Process",
+      "question_count": 9,
+      "current_question_types": [
+        "Most Supported",
+        "Must Be True"
+      ],
+      "current_question_features": [
+        "Reconcile the Pivot"
+      ],
+      "target_types": [
+        "Most Strongly Supported",
+        "Must Be True"
+      ],
+      "target_features": [
+        "Important Pivot"
+      ],
+      "blended": false,
+      "relaxation": "strict",
+      "final_question_types": [
+        "Most Strongly Supported",
+        "Must Be True"
+      ],
+      "final_question_features": [
+        "Important Pivot"
+      ],
+      "final_reasoning_types": [
+        "Comparison"
+      ],
+      "difficulty_min": 2,
+      "difficulty_max": 4,
+      "pool_available": 48,
+      "pool_sample": [
+        "PT102-S3-Q24",
+        "PT104-S1-Q3",
+        "PT104-S1-Q19",
+        "PT104-S1-Q22",
+        "PT104-S4-Q14"
+      ],
+      "classification": "ready",
+      "has_override": false,
+      "notes": []
+    },
+    {
+      "slug": "w4-04-causal-chains-set-2",
+      "title": "Causal Chains - Set 2",
+      "week": 4,
+      "category": "Process",
+      "question_count": 9,
+      "current_question_types": [
+        "Most Supported",
+        "Must Be True",
+        "Necessary Assumption"
+      ],
+      "current_question_features": [
+        "Causal Chains"
+      ],
+      "target_types": [
+        "Most Strongly Supported",
+        "Must Be True",
+        "Necessary Assumption"
+      ],
+      "target_features": [
+        "Causal Chains"
+      ],
+      "blended": false,
+      "relaxation": "strict",
+      "final_question_types": [
+        "Most Strongly Supported",
+        "Must Be True",
+        "Necessary Assumption"
+      ],
+      "final_question_features": [
+        "Causal Chains"
+      ],
+      "final_reasoning_types": [
+        "Causation",
+        "Comparison"
+      ],
+      "difficulty_min": 2,
+      "difficulty_max": 4,
+      "pool_available": 36,
+      "pool_sample": [
+        "PT103-S2-Q9",
+        "PT104-S1-Q19",
+        "PT105-S1-Q20",
+        "PT106-S1-Q16",
+        "PT106-S1-Q22"
+      ],
+      "classification": "ready",
+      "has_override": false,
+      "notes": []
+    },
+    {
+      "slug": "w4-05-causal-difference-maker-first-taste",
+      "title": "Causal Difference-Maker (First Taste)",
+      "week": 4,
+      "category": "Patterns",
+      "question_count": 6,
+      "current_question_types": [
+        "Most Supported",
+        "Must Be True"
+      ],
+      "current_question_features": [
+        "Causal Difference-Maker"
+      ],
+      "target_types": [
+        "Most Strongly Supported",
+        "Must Be True"
+      ],
+      "target_features": [
+        "Causal Difference-Maker"
+      ],
+      "blended": false,
+      "relaxation": "strict",
+      "final_question_types": [
+        "Most Strongly Supported",
+        "Must Be True"
+      ],
+      "final_question_features": [
+        "Causal Difference-Maker"
+      ],
+      "final_reasoning_types": [
+        "Comparison",
+        "Causation"
+      ],
+      "difficulty_min": 1,
+      "difficulty_max": 3,
+      "pool_available": 66,
+      "pool_sample": [
+        "PT101-S2-Q2",
+        "PT103-S2-Q2",
+        "PT104-S1-Q3",
+        "PT104-S1-Q12",
+        "PT105-S2-Q6"
+      ],
+      "classification": "ready",
+      "has_override": false,
+      "notes": []
+    },
+    {
+      "slug": "w4-06-missing-links-color-coded-set-2",
+      "title": "Missing Links (color-coded) Set 2",
+      "week": 4,
+      "category": "Process",
+      "question_count": 7,
+      "current_question_types": [
+        "Sufficient Assumption",
+        "Necessary Assumption",
+        "Principle-Strengthen"
+      ],
+      "current_question_features": [
+        "Missing Links / Common Terms / Color-Coding"
+      ],
+      "target_types": [
+        "Sufficient Assumption",
+        "Necessary Assumption",
+        "Principle-Strengthen"
+      ],
+      "target_features": [
+        "Missing Link / Idea",
+        "Links Between Premises"
+      ],
+      "blended": false,
+      "relaxation": "strict",
+      "final_question_types": [
+        "Sufficient Assumption",
+        "Necessary Assumption",
+        "Principle-Strengthen"
+      ],
+      "final_question_features": [
+        "Missing Link / Idea",
+        "Links Between Premises"
+      ],
+      "final_reasoning_types": [
+        "Conditional Logic"
+      ],
+      "difficulty_min": 2,
+      "difficulty_max": 4,
+      "pool_available": 235,
+      "pool_sample": [
+        "PT101-S2-Q9",
+        "PT101-S3-Q10",
+        "PT101-S3-Q19",
+        "PT102-S2-Q23",
+        "PT102-S4-Q18"
+      ],
+      "classification": "ready",
+      "has_override": false,
+      "notes": []
+    },
+    {
+      "slug": "w4-07-assumption-family-medium-set-1",
+      "title": "Assumption Family (Medium) Set 1",
+      "week": 4,
+      "category": "Process",
+      "question_count": 6,
+      "current_question_types": [
+        "Sufficient Assumption",
+        "Necessary Assumption",
+        "Principle-Strengthen",
+        "Strengthen",
+        "Weaken",
+        "Flaw",
+        "Evaluate"
+      ],
+      "current_question_features": [
+        "Three Main Reasoning Structures"
+      ],
+      "target_types": [
+        "Sufficient Assumption",
+        "Necessary Assumption",
+        "Principle-Strengthen",
+        "Strengthen",
+        "Weaken",
+        "Flaw",
+        "Evaluate"
+      ],
+      "target_features": [
+        "Conditional Diagramming",
+        "Explain Curious Fact",
+        "Assumes Similarity"
+      ],
+      "blended": true,
+      "relaxation": "strict",
+      "final_question_types": [
+        "Sufficient Assumption",
+        "Necessary Assumption",
+        "Principle-Strengthen",
+        "Strengthen",
+        "Weaken",
+        "Flaw",
+        "Evaluate"
+      ],
+      "final_question_features": [
+        "Conditional Diagramming",
+        "Explain Curious Fact",
+        "Assumes Similarity"
+      ],
+      "final_reasoning_types": [
+        "Causation",
+        "Comparison"
+      ],
+      "difficulty_min": 3,
+      "difficulty_max": 4,
+      "pool_available": 212,
+      "pool_sample": [
+        "PT101-S3-Q22",
+        "PT102-S2-Q10",
+        "PT102-S3-Q9",
+        "PT102-S4-Q9",
+        "PT102-S4-Q24"
+      ],
+      "classification": "blended",
+      "has_override": false,
+      "notes": []
+    },
+    {
+      "slug": "w4-08-famous-flaw-easier-set-1",
+      "title": "Famous Flaw (Easier) Set 1",
+      "week": 4,
+      "category": "Pacing",
+      "question_count": 12,
+      "current_question_types": [
+        "Flaw"
+      ],
+      "current_question_features": [
+        "Famous Flaws"
+      ],
+      "target_types": [
+        "Flaw"
+      ],
+      "target_features": [
+        "Famous Flaws"
+      ],
+      "blended": false,
+      "relaxation": "strict",
+      "final_question_types": [
+        "Flaw"
+      ],
+      "final_question_features": [
+        "Famous Flaws"
+      ],
+      "final_reasoning_types": [
+        "Comparison"
+      ],
+      "difficulty_min": 1,
+      "difficulty_max": 3,
+      "pool_available": 174,
+      "pool_sample": [
+        "PT101-S2-Q8",
+        "PT102-S3-Q1",
+        "PT102-S4-Q4",
+        "PT103-S1-Q3",
+        "PT103-S2-Q1"
+      ],
+      "classification": "ready",
+      "has_override": false,
+      "notes": []
+    },
+    {
+      "slug": "w4-09-intermediate-conclusion-set-1",
+      "title": "Intermediate Conclusion - (Set 1)",
+      "week": 4,
+      "category": "Process",
+      "question_count": 5,
+      "current_question_types": [
+        "Role",
+        "Main Conclusion"
+      ],
+      "current_question_features": [
+        "Intermediate Conclusions"
+      ],
+      "target_types": [
+        "Role",
+        "Main Conclusion"
+      ],
+      "target_features": [
+        "Intermediate Conclusions"
+      ],
+      "blended": false,
+      "relaxation": "strict",
+      "final_question_types": [
+        "Role",
+        "Main Conclusion"
+      ],
+      "final_question_features": [
+        "Intermediate Conclusions"
+      ],
+      "final_reasoning_types": [
+        "Comparison"
+      ],
+      "difficulty_min": 2,
+      "difficulty_max": 4,
+      "pool_available": 38,
+      "pool_sample": [
+        "PT106-S3-Q14",
+        "PT107-S1-Q11",
+        "PT111-S1-Q16",
+        "PT112-S4-Q13",
+        "PT115-S2-Q22"
+      ],
+      "classification": "ready",
+      "has_override": false,
+      "notes": []
+    },
+    {
+      "slug": "w8-01-famous-flaws-medium-set-1",
+      "title": "Famous Flaws (Medium) Set 1",
+      "week": 8,
+      "category": "Pacing",
+      "question_count": 5,
+      "current_question_types": [
+        "Flaw"
+      ],
+      "current_question_features": [
+        "Famous Flaws"
+      ],
+      "target_types": [
+        "Flaw"
+      ],
+      "target_features": [
+        "Famous Flaws"
+      ],
+      "blended": false,
+      "relaxation": "strict",
+      "final_question_types": [
+        "Flaw"
+      ],
+      "final_question_features": [
+        "Famous Flaws"
+      ],
+      "final_reasoning_types": [
+        "Comparison"
+      ],
+      "difficulty_min": 3,
+      "difficulty_max": 4,
+      "pool_available": 107,
+      "pool_sample": [
+        "PT101-S2-Q8",
+        "PT101-S2-Q23",
+        "PT102-S4-Q17",
+        "PT103-S3-Q10",
+        "PT105-S4-Q8"
+      ],
+      "classification": "ready",
+      "has_override": false,
+      "notes": []
+    },
+    {
+      "slug": "w8-02-conditional-logic-medium-set-6",
+      "title": "Conditional Logic (Medium) Set 6",
+      "week": 8,
+      "category": "Process",
+      "question_count": 8,
+      "current_question_types": [
+        "Mixed LR question types"
+      ],
+      "current_question_features": [
+        "Conditional Logic / Conditional Keywords"
+      ],
+      "target_types": [
+        "Most Strongly Supported",
+        "Must Be True",
+        "Sufficient Assumption",
+        "Parallel Reasoning",
+        "Parallel Flaw",
+        "Principle-Strengthen",
+        "Principle-Conform",
+        "Flaw"
+      ],
+      "target_features": [
+        "Conditional Diagramming",
+        "Contrapositive Logic"
+      ],
+      "blended": true,
+      "relaxation": "strict",
+      "final_question_types": [
+        "Most Strongly Supported",
+        "Must Be True",
+        "Sufficient Assumption",
+        "Parallel Reasoning",
+        "Parallel Flaw",
+        "Principle-Strengthen",
+        "Principle-Conform",
+        "Flaw"
+      ],
+      "final_question_features": [
+        "Conditional Diagramming",
+        "Contrapositive Logic"
+      ],
+      "final_reasoning_types": [
+        "Conditional Logic"
+      ],
+      "difficulty_min": 3,
+      "difficulty_max": 4,
+      "pool_available": 104,
+      "pool_sample": [
+        "PT105-S4-Q17",
+        "PT106-S1-Q10",
+        "PT106-S3-Q21",
+        "PT107-S1-Q8",
+        "PT107-S1-Q22"
+      ],
+      "classification": "blended",
+      "has_override": false,
+      "notes": []
+    },
+    {
+      "slug": "w8-03-must-be-false-medium-set-1",
+      "title": "Must Be False (Medium) Set 1",
+      "week": 8,
+      "category": "Process",
+      "question_count": 4,
+      "current_question_types": [
+        "Must Be False"
+      ],
+      "current_question_features": [
+        "First / Medium Must Be False"
+      ],
+      "target_types": [
+        "Must Be False"
+      ],
+      "target_features": [
+        "Conditional Diagramming"
+      ],
+      "blended": false,
+      "relaxation": "keep-type",
+      "final_question_types": [
+        "Must Be False"
+      ],
+      "final_question_features": [],
+      "final_reasoning_types": [
+        "Conditional Logic"
+      ],
+      "difficulty_min": 1,
+      "difficulty_max": 5,
+      "pool_available": 18,
+      "pool_sample": [
+        "PT102-S4-Q15",
+        "PT102-S4-Q16",
+        "PT102-S4-Q26",
+        "PT103-S3-Q12",
+        "PT111-S4-Q22"
+      ],
+      "classification": "ready",
+      "has_override": true,
+      "notes": [
+        "pool widened by dropping feature constraint"
+      ]
+    },
+    {
+      "slug": "w8-04-parallel-flaw-famous-flaws-set-2",
+      "title": "Parallel Flaw + Famous Flaws (Set 2)",
+      "week": 8,
+      "category": "Process",
+      "question_count": 5,
+      "current_question_types": [
+        "Parallel Flaw"
+      ],
+      "current_question_features": [
+        "Famous Flaws"
+      ],
+      "target_types": [
+        "Parallel Flaw"
+      ],
+      "target_features": [
+        "Famous Flaws"
+      ],
+      "blended": false,
+      "relaxation": "strict",
+      "final_question_types": [
+        "Parallel Flaw"
+      ],
+      "final_question_features": [
+        "Famous Flaws"
+      ],
+      "final_reasoning_types": [
+        "Conditional Logic",
+        "Comparison"
+      ],
+      "difficulty_min": 2,
+      "difficulty_max": 4,
+      "pool_available": 30,
+      "pool_sample": [
+        "PT103-S3-Q13",
+        "PT104-S1-Q11",
+        "PT104-S4-Q13",
+        "PT106-S1-Q3",
+        "PT106-S3-Q21"
+      ],
+      "classification": "ready",
+      "has_override": false,
+      "notes": []
+    },
+    {
+      "slug": "w8-05-relative-vs-absolute",
+      "title": "Relative vs. Absolute",
+      "week": 8,
+      "category": "Patterns",
+      "question_count": 7,
+      "current_question_types": [
+        "Mixed LR question types"
+      ],
+      "current_question_features": [
+        "Relative vs. Absolute"
+      ],
+      "target_types": [
+        "Most Strongly Supported",
+        "Must Be True",
+        "Flaw"
+      ],
+      "target_features": [
+        "Relative vs. Absolute"
+      ],
+      "blended": false,
+      "relaxation": "band±1",
+      "final_question_types": [
+        "Most Strongly Supported",
+        "Must Be True",
+        "Flaw"
+      ],
+      "final_question_features": [
+        "Relative vs. Absolute"
+      ],
+      "final_reasoning_types": [
+        "Comparison"
+      ],
+      "difficulty_min": 1,
+      "difficulty_max": 5,
+      "pool_available": 21,
+      "pool_sample": [
+        "PT101-S3-Q25",
+        "PT103-S3-Q19",
+        "PT107-S4-Q14",
+        "PT123-S3-Q4",
+        "PT124-S1-Q22"
+      ],
+      "classification": "ready",
+      "has_override": false,
+      "notes": []
+    },
+    {
+      "slug": "w8-06-science-strengthen-weaken",
+      "title": "Science + Strengthen / Weaken",
+      "week": 8,
+      "category": "Process",
+      "question_count": 8,
+      "current_question_types": [
+        "Strengthen",
+        "Weaken"
+      ],
+      "current_question_features": [
+        "Science-heavy Stimulus"
+      ],
+      "target_types": [
+        "Strengthen",
+        "Weaken"
+      ],
+      "target_features": [
+        "Science",
+        "Plausibility",
+        "Missing Link / Idea"
+      ],
+      "blended": false,
+      "relaxation": "strict",
+      "final_question_types": [
+        "Strengthen",
+        "Weaken"
+      ],
+      "final_question_features": [
+        "Science",
+        "Plausibility",
+        "Missing Link / Idea"
+      ],
+      "final_reasoning_types": [
+        "Causation",
+        "Comparison"
+      ],
+      "difficulty_min": 4,
+      "difficulty_max": 5,
+      "pool_available": 63,
+      "pool_sample": [
+        "PT102-S3-Q21",
+        "PT102-S4-Q24",
+        "PT103-S2-Q25",
+        "PT104-S1-Q18",
+        "PT106-S1-Q23"
+      ],
+      "classification": "ready",
+      "has_override": false,
+      "notes": []
+    },
+    {
+      "slug": "w8-07-principle-conform-principle-in-stimulus-set-1",
+      "title": "Principle-Conform + Principle in Stimulus (set 1)",
+      "week": 8,
+      "category": "Process",
+      "question_count": 8,
+      "current_question_types": [
+        "Principle-Conform"
+      ],
+      "current_question_features": [
+        "Principle in Stimulus"
+      ],
+      "target_types": [
+        "Principle-Conform"
+      ],
+      "target_features": [
+        "Principles in Stimulus"
+      ],
+      "blended": false,
+      "relaxation": "strict",
+      "final_question_types": [
+        "Principle-Conform"
+      ],
+      "final_question_features": [
+        "Principles in Stimulus"
+      ],
+      "final_reasoning_types": [
+        "Conditional Logic"
+      ],
+      "difficulty_min": 2,
+      "difficulty_max": 4,
+      "pool_available": 28,
+      "pool_sample": [
+        "PT106-S1-Q10",
+        "PT106-S3-Q23",
+        "PT108-S3-Q16",
+        "PT115-S2-Q11",
+        "PT116-S3-Q5"
+      ],
+      "classification": "ready",
+      "has_override": false,
+      "notes": []
+    },
+    {
+      "slug": "w8-08-principle-conform-principles-in-answers-set-1",
+      "title": "Principle-Conform + Principles in Answers (Set 1)",
+      "week": 8,
+      "category": "Process",
+      "question_count": 5,
+      "current_question_types": [
+        "Principle-Conform"
+      ],
+      "current_question_features": [
+        "Principles in Answers"
+      ],
+      "target_types": [
+        "Principle-Conform"
+      ],
+      "target_features": [
+        "Principles in Answers"
+      ],
+      "blended": false,
+      "relaxation": "strict",
+      "final_question_types": [
+        "Principle-Conform"
+      ],
+      "final_question_features": [
+        "Principles in Answers"
+      ],
+      "final_reasoning_types": [
+        "Conditional Logic",
+        "Comparison"
+      ],
+      "difficulty_min": 2,
+      "difficulty_max": 4,
+      "pool_available": 67,
+      "pool_sample": [
+        "PT102-S2-Q11",
+        "PT102-S2-Q24",
+        "PT102-S4-Q14",
+        "PT105-S4-Q12",
+        "PT105-S4-Q24"
+      ],
+      "classification": "ready",
+      "has_override": false,
+      "notes": []
+    },
+    {
+      "slug": "w8-09-most-supported-causal",
+      "title": "Most Supported + Causal",
+      "week": 8,
+      "category": "Process",
+      "question_count": 5,
+      "current_question_types": [
+        "Most Supported"
+      ],
+      "current_question_features": [
+        "Causal Relationship"
+      ],
+      "target_types": [
+        "Most Strongly Supported"
+      ],
+      "target_features": [
+        "Explain Curious Fact"
+      ],
+      "blended": false,
+      "relaxation": "band±1",
+      "final_question_types": [
+        "Most Strongly Supported"
+      ],
+      "final_question_features": [
+        "Explain Curious Fact"
+      ],
+      "final_reasoning_types": [
+        "Causation",
+        "Comparison"
+      ],
+      "difficulty_min": 1,
+      "difficulty_max": 5,
+      "pool_available": 18,
+      "pool_sample": [
+        "PT102-S2-Q8",
+        "PT104-S1-Q3",
+        "PT106-S2-Q10",
+        "PT108-S2-Q17",
+        "PT126-S1-Q5"
+      ],
+      "classification": "ready",
+      "has_override": false,
+      "notes": []
+    },
+    {
+      "slug": "w8-10-quantifiers-trait-overlap-inferences",
+      "title": "Quantifiers: Trait Overlap inferences",
+      "week": 8,
+      "category": "Process",
+      "question_count": 8,
+      "current_question_types": [
+        "Most Supported",
+        "Must Be True",
+        "Flaw"
+      ],
+      "current_question_features": [
+        "Trait Overlap Inferences"
+      ],
+      "target_types": [
+        "Most Strongly Supported",
+        "Must Be True",
+        "Flaw"
+      ],
+      "target_features": [
+        "Quantifiers"
+      ],
+      "blended": false,
+      "relaxation": "strict",
+      "final_question_types": [
+        "Most Strongly Supported",
+        "Must Be True",
+        "Flaw"
+      ],
+      "final_question_features": [
+        "Quantifiers"
+      ],
+      "final_reasoning_types": [
+        "Conditional Logic"
+      ],
+      "difficulty_min": 2,
+      "difficulty_max": 4,
+      "pool_available": 46,
+      "pool_sample": [
+        "PT101-S2-Q11",
+        "PT101-S3-Q15",
+        "PT104-S1-Q22",
+        "PT106-S3-Q8",
+        "PT107-S1-Q18"
+      ],
+      "classification": "ready",
+      "has_override": false,
+      "notes": []
+    },
+    {
+      "slug": "w8-11-must-be-false-medium-set-2",
+      "title": "Must Be False (Medium) Set 2",
+      "week": 8,
+      "category": "Process",
+      "question_count": 4,
+      "current_question_types": [
+        "Must Be False"
+      ],
+      "current_question_features": [
+        "Medium Must Be False"
+      ],
+      "target_types": [
+        "Must Be False"
+      ],
+      "target_features": [
+        "Conditional Diagramming"
+      ],
+      "blended": false,
+      "relaxation": "keep-type",
+      "final_question_types": [
+        "Must Be False"
+      ],
+      "final_question_features": [],
+      "final_reasoning_types": [
+        "Conditional Logic"
+      ],
+      "difficulty_min": 1,
+      "difficulty_max": 5,
+      "pool_available": 18,
+      "pool_sample": [
+        "PT102-S4-Q15",
+        "PT102-S4-Q16",
+        "PT102-S4-Q26",
+        "PT103-S3-Q12",
+        "PT111-S4-Q22"
+      ],
+      "classification": "ready",
+      "has_override": true,
+      "notes": [
+        "pool widened by dropping feature constraint"
+      ]
+    },
+    {
+      "slug": "w5-01-causal-difference-maker-set-1",
+      "title": "Causal Difference-Maker (Set 1)",
+      "week": 5,
+      "category": "Patterns",
+      "question_count": 6,
+      "current_question_types": [
+        "Most Supported",
+        "Must Be True"
+      ],
+      "current_question_features": [
+        "Causal Difference-Maker"
+      ],
+      "target_types": [
+        "Most Strongly Supported",
+        "Must Be True"
+      ],
+      "target_features": [
+        "Causal Difference-Maker"
+      ],
+      "blended": false,
+      "relaxation": "strict",
+      "final_question_types": [
+        "Most Strongly Supported",
+        "Must Be True"
+      ],
+      "final_question_features": [
+        "Causal Difference-Maker"
+      ],
+      "final_reasoning_types": [
+        "Comparison",
+        "Causation"
+      ],
+      "difficulty_min": 2,
+      "difficulty_max": 4,
+      "pool_available": 62,
+      "pool_sample": [
+        "PT101-S2-Q2",
+        "PT101-S3-Q11",
+        "PT102-S3-Q24",
+        "PT104-S1-Q3",
+        "PT104-S1-Q12"
+      ],
+      "classification": "ready",
+      "has_override": false,
+      "notes": []
+    },
+    {
+      "slug": "w5-02-conditional-logic-easier-set-4",
+      "title": "Conditional Logic (Easier) Set 4",
+      "week": 5,
+      "category": "Process",
+      "question_count": 9,
+      "current_question_types": [
+        "Mixed LR question types"
+      ],
+      "current_question_features": [
+        "Conditional Logic"
+      ],
+      "target_types": [
+        "Most Strongly Supported",
+        "Must Be True",
+        "Sufficient Assumption",
+        "Parallel Reasoning",
+        "Parallel Flaw",
+        "Principle-Strengthen",
+        "Principle-Conform",
+        "Flaw"
+      ],
+      "target_features": [
+        "Conditional Diagramming"
+      ],
+      "blended": true,
+      "relaxation": "strict",
+      "final_question_types": [
+        "Most Strongly Supported",
+        "Must Be True",
+        "Sufficient Assumption",
+        "Parallel Reasoning",
+        "Parallel Flaw",
+        "Principle-Strengthen",
+        "Principle-Conform",
+        "Flaw"
+      ],
+      "final_question_features": [
+        "Conditional Diagramming"
+      ],
+      "final_reasoning_types": [
+        "Conditional Logic"
+      ],
+      "difficulty_min": 1,
+      "difficulty_max": 2,
+      "pool_available": 54,
+      "pool_sample": [
+        "PT101-S3-Q21",
+        "PT103-S2-Q16",
+        "PT104-S4-Q7",
+        "PT106-S1-Q14",
+        "PT106-S2-Q15"
+      ],
+      "classification": "blended",
+      "has_override": false,
+      "notes": []
+    },
+    {
+      "slug": "w5-03-anti-causal-set-2",
+      "title": "Anti-Causal - Set 2",
+      "week": 5,
+      "category": "Process",
+      "question_count": 8,
+      "current_question_types": [
+        "Weaken",
+        "Flaw",
+        "Strengthen"
+      ],
+      "current_question_features": [
+        "Anti-Causal"
+      ],
+      "target_types": [
+        "Weaken",
+        "Flaw",
+        "Strengthen"
+      ],
+      "target_features": [
+        "Anti-Causal"
+      ],
+      "blended": false,
+      "relaxation": "strict",
+      "final_question_types": [
+        "Weaken",
+        "Flaw",
+        "Strengthen"
+      ],
+      "final_question_features": [
+        "Anti-Causal"
+      ],
+      "final_reasoning_types": [
+        "Causation",
+        "Comparison"
+      ],
+      "difficulty_min": 2,
+      "difficulty_max": 4,
+      "pool_available": 70,
+      "pool_sample": [
+        "PT102-S2-Q9",
+        "PT103-S1-Q15",
+        "PT103-S3-Q3",
+        "PT105-S2-Q12",
+        "PT105-S4-Q9"
+      ],
+      "classification": "ready",
+      "has_override": false,
+      "notes": []
+    },
+    {
+      "slug": "w5-04-explain-curious-fact-medium-set-1",
+      "title": "Explain Curious Fact (Medium) Set 1",
+      "week": 5,
+      "category": "Pacing",
+      "question_count": 6,
+      "current_question_types": [
+        "Explain Curious Fact"
+      ],
+      "current_question_features": [
+        "Explain Curious Fact"
+      ],
+      "target_types": [
+        "Paradox"
+      ],
+      "target_features": [
+        "Explain Curious Fact"
+      ],
+      "blended": false,
+      "relaxation": "keep-type",
+      "final_question_types": [
+        "Paradox"
+      ],
+      "final_question_features": [],
+      "final_reasoning_types": [
+        "Comparison",
+        "Causation"
+      ],
+      "difficulty_min": 1,
+      "difficulty_max": 5,
+      "pool_available": 212,
+      "pool_sample": [
+        "PT101-S2-Q18",
+        "PT101-S3-Q14",
+        "PT102-S2-Q14",
+        "PT102-S2-Q17",
+        "PT102-S3-Q5"
+      ],
+      "classification": "ready",
+      "has_override": false,
+      "notes": [
+        "pool widened by dropping feature constraint"
+      ]
+    },
+    {
+      "slug": "w5-05-assumption-family-medium-set-3",
+      "title": "Assumption Family (Medium) Set 3",
+      "week": 5,
+      "category": "Process",
+      "question_count": 6,
+      "current_question_types": [
+        "Sufficient Assumption",
+        "Necessary Assumption",
+        "Principle-Strengthen",
+        "Strengthen",
+        "Weaken",
+        "Flaw",
+        "Evaluate"
+      ],
+      "current_question_features": [
+        "Three Main Reasoning Types"
+      ],
+      "target_types": [
+        "Sufficient Assumption",
+        "Necessary Assumption",
+        "Principle-Strengthen",
+        "Strengthen",
+        "Weaken",
+        "Flaw",
+        "Evaluate"
+      ],
+      "target_features": [
+        "Conditional Diagramming",
+        "Explain Curious Fact",
+        "Assumes Similarity"
+      ],
+      "blended": true,
+      "relaxation": "strict",
+      "final_question_types": [
+        "Sufficient Assumption",
+        "Necessary Assumption",
+        "Principle-Strengthen",
+        "Strengthen",
+        "Weaken",
+        "Flaw",
+        "Evaluate"
+      ],
+      "final_question_features": [
+        "Conditional Diagramming",
+        "Explain Curious Fact",
+        "Assumes Similarity"
+      ],
+      "final_reasoning_types": [
+        "Causation",
+        "Comparison"
+      ],
+      "difficulty_min": 3,
+      "difficulty_max": 4,
+      "pool_available": 212,
+      "pool_sample": [
+        "PT101-S3-Q22",
+        "PT102-S2-Q10",
+        "PT102-S3-Q9",
+        "PT102-S4-Q9",
+        "PT102-S4-Q24"
+      ],
+      "classification": "blended",
+      "has_override": false,
+      "notes": []
+    },
+    {
+      "slug": "w5-06-causal-difference-maker-set-2",
+      "title": "Causal Difference-Maker (set 2)",
+      "week": 5,
+      "category": "Process",
+      "question_count": 10,
+      "current_question_types": [
+        "Most Supported",
+        "Must Be True",
+        "Necessary Assumption"
+      ],
+      "current_question_features": [
+        "Causal Difference-Maker"
+      ],
+      "target_types": [
+        "Most Strongly Supported",
+        "Must Be True",
+        "Necessary Assumption"
+      ],
+      "target_features": [
+        "Causal Difference-Maker"
+      ],
+      "blended": false,
+      "relaxation": "strict",
+      "final_question_types": [
+        "Most Strongly Supported",
+        "Must Be True",
+        "Necessary Assumption"
+      ],
+      "final_question_features": [
+        "Causal Difference-Maker"
+      ],
+      "final_reasoning_types": [
+        "Comparison",
+        "Causation"
+      ],
+      "difficulty_min": 2,
+      "difficulty_max": 4,
+      "pool_available": 67,
+      "pool_sample": [
+        "PT101-S2-Q2",
+        "PT101-S3-Q11",
+        "PT102-S3-Q24",
+        "PT104-S1-Q3",
+        "PT104-S1-Q12"
+      ],
+      "classification": "ready",
+      "has_override": false,
+      "notes": []
+    },
+    {
+      "slug": "w5-07-describing-arguments-set-2",
+      "title": "Describing Arguments (set 2)",
+      "week": 5,
+      "category": "Pacing",
+      "question_count": 10,
+      "current_question_types": [
+        "Role",
+        "Method",
+        "Main Conclusion"
+      ],
+      "current_question_features": [
+        "Describing Arguments"
+      ],
+      "target_types": [
+        "Role",
+        "Method of Reasoning",
+        "Main Conclusion"
+      ],
+      "target_features": [
+        "Focused on Evidence"
+      ],
+      "blended": false,
+      "relaxation": "keep-type",
+      "final_question_types": [
+        "Role",
+        "Method of Reasoning",
+        "Main Conclusion"
+      ],
+      "final_question_features": [],
+      "final_reasoning_types": [
+        "Comparison"
+      ],
+      "difficulty_min": 1,
+      "difficulty_max": 5,
+      "pool_available": 407,
+      "pool_sample": [
+        "PT101-S2-Q3",
+        "PT101-S2-Q10",
+        "PT101-S2-Q12",
+        "PT101-S2-Q15",
+        "PT101-S3-Q3"
+      ],
+      "classification": "ready",
+      "has_override": true,
+      "notes": [
+        "pool widened by dropping feature constraint"
+      ]
+    },
+    {
+      "slug": "w5-08-agree-disagree-set-2",
+      "title": "Agree/Disagree - Set 2",
+      "week": 5,
+      "category": "Pacing",
+      "question_count": 5,
+      "current_question_types": [
+        "Point at Issue / Agree-Disagree"
+      ],
+      "current_question_features": [
+        "Timed Agree/Disagree"
+      ],
+      "target_types": [
+        "Agree/Disagree"
+      ],
+      "target_features": [
+        "2-Speaker",
+        "Battle of Opinions"
+      ],
+      "blended": false,
+      "relaxation": "strict",
+      "final_question_types": [
+        "Agree/Disagree"
+      ],
+      "final_question_features": [
+        "2-Speaker",
+        "Battle of Opinions"
+      ],
+      "final_reasoning_types": [
+        "Comparison"
+      ],
+      "difficulty_min": 2,
+      "difficulty_max": 4,
+      "pool_available": 79,
+      "pool_sample": [
+        "PT101-S2-Q14",
+        "PT101-S3-Q1",
+        "PT102-S4-Q22",
+        "PT103-S1-Q16",
+        "PT104-S1-Q1"
+      ],
+      "classification": "ready",
+      "has_override": false,
+      "notes": []
+    },
+    {
+      "slug": "w5-09-conditional-logic-medium-set-1",
+      "title": "Conditional Logic (Medium) Set 1",
+      "week": 5,
+      "category": "Pacing",
+      "question_count": 10,
+      "current_question_types": [
+        "Mixed LR question types"
+      ],
+      "current_question_features": [
+        "Conditional Logic"
+      ],
+      "target_types": [
+        "Most Strongly Supported",
+        "Must Be True",
+        "Sufficient Assumption",
+        "Parallel Reasoning",
+        "Parallel Flaw",
+        "Principle-Strengthen",
+        "Principle-Conform",
+        "Flaw"
+      ],
+      "target_features": [
+        "Conditional Diagramming"
+      ],
+      "blended": true,
+      "relaxation": "strict",
+      "final_question_types": [
+        "Most Strongly Supported",
+        "Must Be True",
+        "Sufficient Assumption",
+        "Parallel Reasoning",
+        "Parallel Flaw",
+        "Principle-Strengthen",
+        "Principle-Conform",
+        "Flaw"
+      ],
+      "final_question_features": [
+        "Conditional Diagramming"
+      ],
+      "final_reasoning_types": [
+        "Conditional Logic"
+      ],
+      "difficulty_min": 2,
+      "difficulty_max": 4,
+      "pool_available": 128,
+      "pool_sample": [
+        "PT101-S3-Q21",
+        "PT103-S2-Q16",
+        "PT104-S4-Q7",
+        "PT105-S4-Q17",
+        "PT106-S1-Q14"
+      ],
+      "classification": "blended",
+      "has_override": false,
+      "notes": []
+    },
+    {
+      "slug": "w5-10-evaluate-first-taste",
+      "title": "Evaluate - First Taste",
+      "week": 5,
+      "category": "Process",
+      "question_count": 7,
+      "current_question_types": [
+        "Evaluate"
+      ],
+      "current_question_features": [
+        "First Taste"
+      ],
+      "target_types": [
+        "Evaluate"
+      ],
+      "target_features": [
+        "Plausibility",
+        "Alternatives"
+      ],
+      "blended": false,
+      "relaxation": "keep-type",
+      "final_question_types": [
+        "Evaluate"
+      ],
+      "final_question_features": [],
+      "final_reasoning_types": [
+        "Comparison",
+        "Causation"
+      ],
+      "difficulty_min": 1,
+      "difficulty_max": 5,
+      "pool_available": 26,
+      "pool_sample": [
+        "PT101-S2-Q16",
+        "PT103-S1-Q22",
+        "PT104-S4-Q6",
+        "PT106-S2-Q7",
+        "PT108-S2-Q9"
+      ],
+      "classification": "ready",
+      "has_override": true,
+      "notes": [
+        "pool widened by dropping feature constraint"
+      ]
+    },
+    {
+      "slug": "w5-11-evaluate-set-1",
+      "title": "Evaluate (set 1)",
+      "week": 5,
+      "category": "Process",
+      "question_count": 4,
+      "current_question_types": [
+        "Evaluate"
+      ],
+      "current_question_features": [
+        "Evaluate"
+      ],
+      "target_types": [
+        "Evaluate"
+      ],
+      "target_features": [
+        "Plausibility",
+        "Alternatives"
+      ],
+      "blended": false,
+      "relaxation": "keep-type",
+      "final_question_types": [
+        "Evaluate"
+      ],
+      "final_question_features": [],
+      "final_reasoning_types": [
+        "Comparison",
+        "Causation"
+      ],
+      "difficulty_min": 1,
+      "difficulty_max": 5,
+      "pool_available": 26,
+      "pool_sample": [
+        "PT101-S2-Q16",
+        "PT103-S1-Q22",
+        "PT104-S4-Q6",
+        "PT106-S2-Q7",
+        "PT108-S2-Q9"
+      ],
+      "classification": "ready",
+      "has_override": true,
+      "notes": [
+        "pool widened by dropping feature constraint"
+      ]
+    },
+    {
+      "slug": "w5-12-most-supported-causal-difference-maker",
+      "title": "Most Supported + Causal Difference-Maker",
+      "week": 5,
+      "category": "Patterns",
+      "question_count": 4,
+      "current_question_types": [
+        "Most Supported"
+      ],
+      "current_question_features": [
+        "Causal Difference-Maker"
+      ],
+      "target_types": [
+        "Most Strongly Supported"
+      ],
+      "target_features": [
+        "Causal Difference-Maker"
+      ],
+      "blended": false,
+      "relaxation": "strict",
+      "final_question_types": [
+        "Most Strongly Supported"
+      ],
+      "final_question_features": [
+        "Causal Difference-Maker"
+      ],
+      "final_reasoning_types": [
+        "Comparison",
+        "Causation"
+      ],
+      "difficulty_min": 2,
+      "difficulty_max": 4,
+      "pool_available": 53,
+      "pool_sample": [
+        "PT101-S2-Q2",
+        "PT104-S1-Q3",
+        "PT104-S1-Q12",
+        "PT105-S2-Q6",
+        "PT106-S1-Q22"
+      ],
+      "classification": "ready",
+      "has_override": false,
+      "notes": []
+    },
+    {
+      "slug": "w5-13-conditional-logic-medium-set-2",
+      "title": "Conditional Logic (Medium) Set 2",
+      "week": 5,
+      "category": "Process",
+      "question_count": 7,
+      "current_question_types": [
+        "Sufficient Assumption",
+        "Principle-Strengthen"
+      ],
+      "current_question_features": [
+        "Conditional Logic"
+      ],
+      "target_types": [
+        "Sufficient Assumption",
+        "Principle-Strengthen"
+      ],
+      "target_features": [
+        "Conditional Diagramming"
+      ],
+      "blended": false,
+      "relaxation": "band±1",
+      "final_question_types": [
+        "Sufficient Assumption",
+        "Principle-Strengthen"
+      ],
+      "final_question_features": [
+        "Conditional Diagramming"
+      ],
+      "final_reasoning_types": [
+        "Conditional Logic"
+      ],
+      "difficulty_min": 2,
+      "difficulty_max": 5,
+      "pool_available": 33,
+      "pool_sample": [
+        "PT101-S2-Q21",
+        "PT101-S2-Q24",
+        "PT106-S1-Q24",
+        "PT117-S3-Q7",
+        "PT117-S4-Q26"
+      ],
+      "classification": "ready",
+      "has_override": false,
+      "notes": []
+    },
+    {
+      "slug": "w9-01-abstract-flaw-set-2",
+      "title": "Abstract + Flaw (set 2)",
+      "week": 9,
+      "category": "Process",
+      "question_count": 10,
+      "current_question_types": [
+        "Flaw"
+      ],
+      "current_question_features": [
+        "Abstract Answer Choices"
+      ],
+      "target_types": [
+        "Flaw"
+      ],
+      "target_features": [
+        "Abstract Answers",
+        "Famous Flaws"
+      ],
+      "blended": false,
+      "relaxation": "strict",
+      "final_question_types": [
+        "Flaw"
+      ],
+      "final_question_features": [
+        "Abstract Answers",
+        "Famous Flaws"
+      ],
+      "final_reasoning_types": [
+        "Comparison",
+        "Conditional Logic"
+      ],
+      "difficulty_min": 4,
+      "difficulty_max": 5,
+      "pool_available": 86,
+      "pool_sample": [
+        "PT101-S2-Q23",
+        "PT102-S4-Q17",
+        "PT102-S4-Q23",
+        "PT103-S2-Q15",
+        "PT104-S4-Q25"
+      ],
+      "classification": "ready",
+      "has_override": false,
+      "notes": []
+    },
+    {
+      "slug": "w9-02-science-sufficient-assumption",
+      "title": "Science + Sufficient Assumption",
+      "week": 9,
+      "category": "Process",
+      "question_count": 6,
+      "current_question_types": [
+        "Sufficient Assumption"
+      ],
+      "current_question_features": [
+        "Science-heavy Stimulus"
+      ],
+      "target_types": [
+        "Sufficient Assumption"
+      ],
+      "target_features": [
+        "Science",
+        "Missing Link / Idea",
+        "Conditional Conclusion"
+      ],
+      "blended": false,
+      "relaxation": "strict",
+      "final_question_types": [
+        "Sufficient Assumption"
+      ],
+      "final_question_features": [
+        "Science",
+        "Missing Link / Idea",
+        "Conditional Conclusion"
+      ],
+      "final_reasoning_types": [
+        "Conditional Logic"
+      ],
+      "difficulty_min": 3,
+      "difficulty_max": 5,
+      "pool_available": 61,
+      "pool_sample": [
+        "PT101-S2-Q21",
+        "PT101-S2-Q24",
+        "PT101-S3-Q10",
+        "PT101-S3-Q19",
+        "PT102-S4-Q18"
+      ],
+      "classification": "ready",
+      "has_override": false,
+      "notes": []
+    },
+    {
+      "slug": "w9-03-except-set-1",
+      "title": "EXCEPT (set 1)",
+      "week": 9,
+      "category": "Process",
+      "question_count": 5,
+      "current_question_types": [
+        "Strengthen",
+        "Weaken",
+        "Paradox"
+      ],
+      "current_question_features": [
+        "EXCEPT"
+      ],
+      "target_types": [
+        "Strengthen",
+        "Weaken",
+        "Paradox"
+      ],
+      "target_features": [
+        "EXCEPT"
+      ],
+      "blended": false,
+      "relaxation": "strict",
+      "final_question_types": [
+        "Strengthen",
+        "Weaken",
+        "Paradox"
+      ],
+      "final_question_features": [
+        "EXCEPT"
+      ],
+      "final_reasoning_types": [
+        "Comparison",
+        "Causation"
+      ],
+      "difficulty_min": 3,
+      "difficulty_max": 5,
+      "pool_available": 39,
+      "pool_sample": [
+        "PT101-S2-Q19",
+        "PT101-S2-Q20",
+        "PT101-S3-Q22",
+        "PT105-S1-Q16",
+        "PT105-S1-Q19"
+      ],
+      "classification": "ready",
+      "has_override": false,
+      "notes": []
+    },
+    {
+      "slug": "w9-04-weaken-explain-curious-fact",
+      "title": "Weaken + Explain Curious Fact",
+      "week": 9,
+      "category": "Patterns",
+      "question_count": 5,
+      "current_question_types": [
+        "Weaken"
+      ],
+      "current_question_features": [
+        "Explain Curious Fact"
+      ],
+      "target_types": [
+        "Weaken"
+      ],
+      "target_features": [
+        "Explain Curious Fact"
+      ],
+      "blended": false,
+      "relaxation": "strict",
+      "final_question_types": [
+        "Weaken"
+      ],
+      "final_question_features": [
+        "Explain Curious Fact"
+      ],
+      "final_reasoning_types": [
+        "Causation",
+        "Comparison"
+      ],
+      "difficulty_min": 3,
+      "difficulty_max": 5,
+      "pool_available": 71,
+      "pool_sample": [
+        "PT101-S2-Q19",
+        "PT101-S3-Q22",
+        "PT102-S4-Q24",
+        "PT103-S1-Q9",
+        "PT103-S2-Q12"
+      ],
+      "classification": "ready",
+      "has_override": false,
+      "notes": []
+    },
+    {
+      "slug": "w9-05-conditional-logic-harder-set-1",
+      "title": "Conditional Logic (Harder) Set 1",
+      "week": 9,
+      "category": "Pacing",
+      "question_count": 8,
+      "current_question_types": [
+        "Mixed LR question types"
+      ],
+      "current_question_features": [
+        "Conditional Logic / Conditional Keywords"
+      ],
+      "target_types": [
+        "Most Strongly Supported",
+        "Must Be True",
+        "Sufficient Assumption",
+        "Parallel Reasoning",
+        "Parallel Flaw",
+        "Principle-Strengthen",
+        "Principle-Conform",
+        "Flaw"
+      ],
+      "target_features": [
+        "Conditional Diagramming",
+        "Contrapositive Logic"
+      ],
+      "blended": true,
+      "relaxation": "strict",
+      "final_question_types": [
+        "Most Strongly Supported",
+        "Must Be True",
+        "Sufficient Assumption",
+        "Parallel Reasoning",
+        "Parallel Flaw",
+        "Principle-Strengthen",
+        "Principle-Conform",
+        "Flaw"
+      ],
+      "final_question_features": [
+        "Conditional Diagramming",
+        "Contrapositive Logic"
+      ],
+      "final_reasoning_types": [
+        "Conditional Logic"
+      ],
+      "difficulty_min": 4,
+      "difficulty_max": 5,
+      "pool_available": 101,
+      "pool_sample": [
+        "PT101-S2-Q21",
+        "PT101-S2-Q24",
+        "PT101-S3-Q24",
+        "PT102-S4-Q23",
+        "PT104-S4-Q25"
+      ],
+      "classification": "blended",
+      "has_override": false,
+      "notes": []
+    },
+    {
+      "slug": "w9-06-must-be-false-harder-set-2",
+      "title": "Must Be False (Harder) Set 2",
+      "week": 9,
+      "category": "Process",
+      "question_count": 6,
+      "current_question_types": [
+        "Must Be False"
+      ],
+      "current_question_features": [
+        "Harder Must Be False"
+      ],
+      "target_types": [
+        "Must Be False"
+      ],
+      "target_features": [
+        "Conditional Diagramming"
+      ],
+      "blended": false,
+      "relaxation": "keep-type",
+      "final_question_types": [
+        "Must Be False"
+      ],
+      "final_question_features": [],
+      "final_reasoning_types": [
+        "Conditional Logic"
+      ],
+      "difficulty_min": 1,
+      "difficulty_max": 5,
+      "pool_available": 18,
+      "pool_sample": [
+        "PT102-S4-Q15",
+        "PT102-S4-Q16",
+        "PT102-S4-Q26",
+        "PT103-S3-Q12",
+        "PT111-S4-Q22"
+      ],
+      "classification": "ready",
+      "has_override": true,
+      "notes": [
+        "pool widened by dropping feature constraint"
+      ]
+    },
+    {
+      "slug": "w9-07-strengthen-weaken-science",
+      "title": "Strengthen / Weaken + Science",
+      "week": 9,
+      "category": "Patterns",
+      "question_count": 10,
+      "current_question_types": [
+        "Strengthen",
+        "Weaken"
+      ],
+      "current_question_features": [
+        "Science-heavy Stimulus"
+      ],
+      "target_types": [
+        "Strengthen",
+        "Weaken"
+      ],
+      "target_features": [
+        "Science",
+        "Plausibility",
+        "Missing Link / Idea"
+      ],
+      "blended": false,
+      "relaxation": "strict",
+      "final_question_types": [
+        "Strengthen",
+        "Weaken"
+      ],
+      "final_question_features": [
+        "Science",
+        "Plausibility",
+        "Missing Link / Idea"
+      ],
+      "final_reasoning_types": [
+        "Causation",
+        "Comparison"
+      ],
+      "difficulty_min": 3,
+      "difficulty_max": 5,
+      "pool_available": 95,
+      "pool_sample": [
+        "PT102-S2-Q10",
+        "PT102-S2-Q15",
+        "PT102-S3-Q21",
+        "PT102-S4-Q24",
+        "PT103-S1-Q9"
+      ],
+      "classification": "ready",
+      "has_override": false,
+      "notes": []
+    },
+    {
+      "slug": "w9-08-anti-causal-hard-mini-set",
+      "title": "Anti-Causal (Hard Mini-Set)",
+      "week": 9,
+      "category": "Patterns",
+      "question_count": 3,
+      "current_question_types": [
+        "Weaken"
+      ],
+      "current_question_features": [
+        "Anti-Causal"
+      ],
+      "target_types": [
+        "Weaken"
+      ],
+      "target_features": [
+        "Anti-Causal"
+      ],
+      "blended": false,
+      "relaxation": "strict",
+      "final_question_types": [
+        "Weaken"
+      ],
+      "final_question_features": [
+        "Anti-Causal"
+      ],
+      "final_reasoning_types": [
+        "Causation",
+        "Comparison"
+      ],
+      "difficulty_min": 4,
+      "difficulty_max": 5,
+      "pool_available": 12,
+      "pool_sample": [
+        "PT111-S1-Q8",
+        "PT114-S4-Q13",
+        "PT123-S2-Q14",
+        "PT124-S1-Q8",
+        "PT130-S3-Q12"
+      ],
+      "classification": "ready",
+      "has_override": false,
+      "notes": []
+    },
+    {
+      "slug": "w10-01-conditional-logic-harder-set-2",
+      "title": "Conditional Logic (Harder) Set 2",
+      "week": 10,
+      "category": "Pacing",
+      "question_count": 7,
+      "current_question_types": [
+        "Mixed LR question types"
+      ],
+      "current_question_features": [
+        "Conditional Logic / Conditional Keywords"
+      ],
+      "target_types": [
+        "Most Strongly Supported",
+        "Must Be True",
+        "Sufficient Assumption",
+        "Parallel Reasoning",
+        "Parallel Flaw",
+        "Principle-Strengthen",
+        "Principle-Conform",
+        "Flaw"
+      ],
+      "target_features": [
+        "Conditional Diagramming",
+        "Contrapositive Logic"
+      ],
+      "blended": true,
+      "relaxation": "strict",
+      "final_question_types": [
+        "Most Strongly Supported",
+        "Must Be True",
+        "Sufficient Assumption",
+        "Parallel Reasoning",
+        "Parallel Flaw",
+        "Principle-Strengthen",
+        "Principle-Conform",
+        "Flaw"
+      ],
+      "final_question_features": [
+        "Conditional Diagramming",
+        "Contrapositive Logic"
+      ],
+      "final_reasoning_types": [
+        "Conditional Logic"
+      ],
+      "difficulty_min": 4,
+      "difficulty_max": 5,
+      "pool_available": 101,
+      "pool_sample": [
+        "PT101-S2-Q21",
+        "PT101-S2-Q24",
+        "PT101-S3-Q24",
+        "PT102-S4-Q23",
+        "PT104-S4-Q25"
+      ],
+      "classification": "blended",
+      "has_override": false,
+      "notes": []
+    },
+    {
+      "slug": "w10-02-quantifiers-set-2",
+      "title": "Quantifiers Set 2",
+      "week": 10,
+      "category": "Process",
+      "question_count": 8,
+      "current_question_types": [
+        "Most Supported",
+        "Must Be True",
+        "Flaw"
+      ],
+      "current_question_features": [
+        "Trait Overlap Inferences"
+      ],
+      "target_types": [
+        "Most Strongly Supported",
+        "Must Be True",
+        "Flaw"
+      ],
+      "target_features": [
+        "Quantifiers"
+      ],
+      "blended": false,
+      "relaxation": "strict",
+      "final_question_types": [
+        "Most Strongly Supported",
+        "Must Be True",
+        "Flaw"
+      ],
+      "final_question_features": [
+        "Quantifiers"
+      ],
+      "final_reasoning_types": [
+        "Conditional Logic"
+      ],
+      "difficulty_min": 3,
+      "difficulty_max": 5,
+      "pool_available": 56,
+      "pool_sample": [
+        "PT101-S2-Q11",
+        "PT101-S3-Q15",
+        "PT104-S1-Q20",
+        "PT104-S1-Q22",
+        "PT104-S1-Q23"
+      ],
+      "classification": "ready",
+      "has_override": false,
+      "notes": []
+    },
+    {
+      "slug": "w10-03-explain-curious-fact-harder-set-1",
+      "title": "Explain Curious Fact (Harder) Set 1",
+      "week": 10,
+      "category": "Process",
+      "question_count": 5,
+      "current_question_types": [
+        "Explain Curious Fact"
+      ],
+      "current_question_features": [
+        "Explain Curious Fact"
+      ],
+      "target_types": [
+        "Paradox"
+      ],
+      "target_features": [
+        "Explain Curious Fact"
+      ],
+      "blended": false,
+      "relaxation": "keep-type",
+      "final_question_types": [
+        "Paradox"
+      ],
+      "final_question_features": [],
+      "final_reasoning_types": [
+        "Comparison",
+        "Causation"
+      ],
+      "difficulty_min": 1,
+      "difficulty_max": 5,
+      "pool_available": 212,
+      "pool_sample": [
+        "PT101-S2-Q18",
+        "PT101-S3-Q14",
+        "PT102-S2-Q14",
+        "PT102-S2-Q17",
+        "PT102-S3-Q5"
+      ],
+      "classification": "ready",
+      "has_override": false,
+      "notes": [
+        "pool widened by dropping feature constraint"
+      ]
+    },
+    {
+      "slug": "w10-04-except-set-2",
+      "title": "EXCEPT (set 2)",
+      "week": 10,
+      "category": "Process",
+      "question_count": 5,
+      "current_question_types": [
+        "Strengthen",
+        "Weaken",
+        "Paradox",
+        "Flaw",
+        "Must Be True"
+      ],
+      "current_question_features": [
+        "EXCEPT"
+      ],
+      "target_types": [
+        "Strengthen",
+        "Weaken",
+        "Paradox",
+        "Flaw",
+        "Must Be True"
+      ],
+      "target_features": [
+        "EXCEPT"
+      ],
+      "blended": true,
+      "relaxation": "strict",
+      "final_question_types": [
+        "Strengthen",
+        "Weaken",
+        "Paradox",
+        "Flaw",
+        "Must Be True"
+      ],
+      "final_question_features": [
+        "EXCEPT"
+      ],
+      "final_reasoning_types": [
+        "Comparison",
+        "Causation"
+      ],
+      "difficulty_min": 3,
+      "difficulty_max": 5,
+      "pool_available": 47,
+      "pool_sample": [
+        "PT101-S2-Q19",
+        "PT101-S2-Q20",
+        "PT101-S3-Q22",
+        "PT103-S2-Q22",
+        "PT104-S1-Q25"
+      ],
+      "classification": "blended",
+      "has_override": false,
+      "notes": []
+    },
+    {
+      "slug": "w10-05-conditional-logic-harder-set-3",
+      "title": "Conditional Logic (Harder) Set 3",
+      "week": 10,
+      "category": "Pacing",
+      "question_count": 6,
+      "current_question_types": [
+        "Mixed LR question types"
+      ],
+      "current_question_features": [
+        "Conditional Logic / Conditional Keywords"
+      ],
+      "target_types": [
+        "Most Strongly Supported",
+        "Must Be True",
+        "Sufficient Assumption",
+        "Parallel Reasoning",
+        "Parallel Flaw",
+        "Principle-Strengthen",
+        "Principle-Conform",
+        "Flaw"
+      ],
+      "target_features": [
+        "Conditional Diagramming",
+        "Contrapositive Logic"
+      ],
+      "blended": true,
+      "relaxation": "strict",
+      "final_question_types": [
+        "Most Strongly Supported",
+        "Must Be True",
+        "Sufficient Assumption",
+        "Parallel Reasoning",
+        "Parallel Flaw",
+        "Principle-Strengthen",
+        "Principle-Conform",
+        "Flaw"
+      ],
+      "final_question_features": [
+        "Conditional Diagramming",
+        "Contrapositive Logic"
+      ],
+      "final_reasoning_types": [
+        "Conditional Logic"
+      ],
+      "difficulty_min": 5,
+      "difficulty_max": 5,
+      "pool_available": 46,
+      "pool_sample": [
+        "PT101-S2-Q21",
+        "PT101-S2-Q24",
+        "PT101-S3-Q24",
+        "PT102-S4-Q23",
+        "PT104-S4-Q25"
+      ],
+      "classification": "blended",
+      "has_override": false,
+      "notes": []
+    },
+    {
+      "slug": "w7-01-explain-curious-fact-medium-set-2",
+      "title": "Explain Curious Fact (Medium) Set 2",
+      "week": 7,
+      "category": "Pacing",
+      "question_count": 7,
+      "current_question_types": [
+        "Explain Curious Fact"
+      ],
+      "current_question_features": [
+        "Explain Curious Fact"
+      ],
+      "target_types": [],
+      "target_features": [
+        "Explain Curious Fact"
+      ],
+      "blended": false,
+      "relaxation": "strict",
+      "final_question_types": [],
+      "final_question_features": [
+        "Explain Curious Fact"
+      ],
+      "final_reasoning_types": [
+        "Causation",
+        "Comparison"
+      ],
+      "difficulty_min": 3,
+      "difficulty_max": 4,
+      "pool_available": 178,
+      "pool_sample": [
+        "PT101-S2-Q4",
+        "PT101-S3-Q17",
+        "PT101-S3-Q22",
+        "PT102-S2-Q8",
+        "PT102-S2-Q10"
+      ],
+      "classification": "ready",
+      "has_override": true,
+      "notes": []
+    },
+    {
+      "slug": "w7-02-complete-the-analogy-set-3",
+      "title": "Complete the Analogy (set 3)",
+      "week": 7,
+      "category": "Patterns",
+      "question_count": 8,
+      "current_question_types": [
+        "Fill in the Blank",
+        "Method",
+        "Assumption Family"
+      ],
+      "current_question_features": [
+        "Complete the Analogy"
+      ],
+      "target_types": [
+        "Most Strongly Supported",
+        "Method of Reasoning"
+      ],
+      "target_features": [
+        "Analogies"
+      ],
+      "blended": false,
+      "relaxation": "strict",
+      "final_question_types": [
+        "Most Strongly Supported",
+        "Method of Reasoning"
+      ],
+      "final_question_features": [
+        "Analogies"
+      ],
+      "final_reasoning_types": [
+        "Comparison"
+      ],
+      "difficulty_min": 2,
+      "difficulty_max": 4,
+      "pool_available": 28,
+      "pool_sample": [
+        "PT109-S1-Q2",
+        "PT113-S3-Q17",
+        "PT114-S2-Q20",
+        "PT115-S4-Q3",
+        "PT118-S4-Q12"
+      ],
+      "classification": "ready",
+      "has_override": false,
+      "notes": []
+    },
+    {
+      "slug": "w7-03-assumes-similarity-mini-set",
+      "title": "Assumes Similarity (Mini-Set)",
+      "week": 7,
+      "category": "Patterns",
+      "question_count": 5,
+      "current_question_types": [
+        "Weaken",
+        "Strengthen"
+      ],
+      "current_question_features": [
+        "Assumes Similarity"
+      ],
+      "target_types": [
+        "Weaken",
+        "Strengthen"
+      ],
+      "target_features": [
+        "Assumes Similarity"
+      ],
+      "blended": false,
+      "relaxation": "strict",
+      "final_question_types": [
+        "Weaken",
+        "Strengthen"
+      ],
+      "final_question_features": [
+        "Assumes Similarity"
+      ],
+      "final_reasoning_types": [
+        "Comparison"
+      ],
+      "difficulty_min": 2,
+      "difficulty_max": 4,
+      "pool_available": 22,
+      "pool_sample": [
+        "PT106-S1-Q1",
+        "PT107-S4-Q1",
+        "PT107-S4-Q9",
+        "PT112-S1-Q2",
+        "PT117-S2-Q8"
+      ],
+      "classification": "ready",
+      "has_override": false,
+      "notes": []
+    },
+    {
+      "slug": "w7-04-conditional-logic-medium-set-3",
+      "title": "Conditional Logic (Medium) Set 3",
+      "week": 7,
+      "category": "Pacing",
+      "question_count": 7,
+      "current_question_types": [
+        "Mixed LR question types"
+      ],
+      "current_question_features": [
+        "Conditional Logic / Conditional Keywords"
+      ],
+      "target_types": [
+        "Most Strongly Supported",
+        "Must Be True",
+        "Sufficient Assumption",
+        "Parallel Reasoning",
+        "Parallel Flaw",
+        "Principle-Strengthen",
+        "Principle-Conform",
+        "Flaw"
+      ],
+      "target_features": [
+        "Conditional Diagramming",
+        "Contrapositive Logic"
+      ],
+      "blended": true,
+      "relaxation": "strict",
+      "final_question_types": [
+        "Most Strongly Supported",
+        "Must Be True",
+        "Sufficient Assumption",
+        "Parallel Reasoning",
+        "Parallel Flaw",
+        "Principle-Strengthen",
+        "Principle-Conform",
+        "Flaw"
+      ],
+      "final_question_features": [
+        "Conditional Diagramming",
+        "Contrapositive Logic"
+      ],
+      "final_reasoning_types": [
+        "Conditional Logic"
+      ],
+      "difficulty_min": 4,
+      "difficulty_max": 4,
+      "pool_available": 55,
+      "pool_sample": [
+        "PT105-S4-Q17",
+        "PT106-S1-Q10",
+        "PT106-S3-Q21",
+        "PT107-S4-Q23",
+        "PT110-S2-Q11"
+      ],
+      "classification": "blended",
+      "has_override": false,
+      "notes": []
+    },
+    {
+      "slug": "w7-05-explain-curious-fact-medium-set-3",
+      "title": "Explain Curious Fact (Medium) Set 3",
+      "week": 7,
+      "category": "Process",
+      "question_count": 7,
+      "current_question_types": [
+        "Explain Curious Fact"
+      ],
+      "current_question_features": [
+        "Explain Curious Fact"
+      ],
+      "target_types": [],
+      "target_features": [
+        "Explain Curious Fact"
+      ],
+      "blended": false,
+      "relaxation": "strict",
+      "final_question_types": [],
+      "final_question_features": [
+        "Explain Curious Fact"
+      ],
+      "final_reasoning_types": [
+        "Causation",
+        "Comparison"
+      ],
+      "difficulty_min": 3,
+      "difficulty_max": 4,
+      "pool_available": 178,
+      "pool_sample": [
+        "PT101-S2-Q4",
+        "PT101-S3-Q17",
+        "PT101-S3-Q22",
+        "PT102-S2-Q8",
+        "PT102-S2-Q10"
+      ],
+      "classification": "ready",
+      "has_override": true,
+      "notes": []
+    },
+    {
+      "slug": "w7-06-causal-chains-mini-set",
+      "title": "Causal Chains (Mini Set)",
+      "week": 7,
+      "category": "Patterns",
+      "question_count": 4,
+      "current_question_types": [
+        "Most Supported",
+        "Must Be True"
+      ],
+      "current_question_features": [
+        "Causal Chains"
+      ],
+      "target_types": [
+        "Most Strongly Supported",
+        "Must Be True"
+      ],
+      "target_features": [
+        "Causal Chains"
+      ],
+      "blended": false,
+      "relaxation": "strict",
+      "final_question_types": [
+        "Most Strongly Supported",
+        "Must Be True"
+      ],
+      "final_question_features": [
+        "Causal Chains"
+      ],
+      "final_reasoning_types": [
+        "Causation",
+        "Comparison"
+      ],
+      "difficulty_min": 2,
+      "difficulty_max": 4,
+      "pool_available": 27,
+      "pool_sample": [
+        "PT103-S2-Q9",
+        "PT104-S1-Q19",
+        "PT105-S1-Q20",
+        "PT106-S1-Q16",
+        "PT106-S1-Q22"
+      ],
+      "classification": "ready",
+      "has_override": false,
+      "notes": []
+    },
+    {
+      "slug": "w7-07-evaluate-set-2",
+      "title": "Evaluate (set 2)",
+      "week": 7,
+      "category": "Process",
+      "question_count": 7,
+      "current_question_types": [
+        "Evaluate"
+      ],
+      "current_question_features": [
+        "Evaluate"
+      ],
+      "target_types": [
+        "Evaluate"
+      ],
+      "target_features": [
+        "Plausibility",
+        "Alternatives"
+      ],
+      "blended": false,
+      "relaxation": "keep-type",
+      "final_question_types": [
+        "Evaluate"
+      ],
+      "final_question_features": [],
+      "final_reasoning_types": [
+        "Comparison",
+        "Causation"
+      ],
+      "difficulty_min": 1,
+      "difficulty_max": 5,
+      "pool_available": 26,
+      "pool_sample": [
+        "PT101-S2-Q16",
+        "PT103-S1-Q22",
+        "PT104-S4-Q6",
+        "PT106-S2-Q7",
+        "PT108-S2-Q9"
+      ],
+      "classification": "ready",
+      "has_override": true,
+      "notes": [
+        "pool widened by dropping feature constraint"
+      ]
+    },
+    {
+      "slug": "w7-08-conditional-logic-medium-set-4",
+      "title": "Conditional Logic (Medium) Set 4",
+      "week": 7,
+      "category": "Process",
+      "question_count": 9,
+      "current_question_types": [
+        "Mixed LR question types"
+      ],
+      "current_question_features": [
+        "Conditional Logic / Conditional Keywords"
+      ],
+      "target_types": [
+        "Most Strongly Supported",
+        "Must Be True",
+        "Sufficient Assumption",
+        "Parallel Reasoning",
+        "Parallel Flaw",
+        "Principle-Strengthen",
+        "Principle-Conform",
+        "Flaw"
+      ],
+      "target_features": [
+        "Conditional Diagramming",
+        "Contrapositive Logic"
+      ],
+      "blended": true,
+      "relaxation": "strict",
+      "final_question_types": [
+        "Most Strongly Supported",
+        "Must Be True",
+        "Sufficient Assumption",
+        "Parallel Reasoning",
+        "Parallel Flaw",
+        "Principle-Strengthen",
+        "Principle-Conform",
+        "Flaw"
+      ],
+      "final_question_features": [
+        "Conditional Diagramming",
+        "Contrapositive Logic"
+      ],
+      "final_reasoning_types": [
+        "Conditional Logic"
+      ],
+      "difficulty_min": 3,
+      "difficulty_max": 4,
+      "pool_available": 104,
+      "pool_sample": [
+        "PT105-S4-Q17",
+        "PT106-S1-Q10",
+        "PT106-S3-Q21",
+        "PT107-S1-Q8",
+        "PT107-S1-Q22"
+      ],
+      "classification": "blended",
+      "has_override": false,
+      "notes": []
+    },
+    {
+      "slug": "w7-09-intermediate-conclusions-set-2",
+      "title": "Intermediate Conclusions Set 2",
+      "week": 7,
+      "category": "Process",
+      "question_count": 5,
+      "current_question_types": [
+        "Role",
+        "Main Conclusion"
+      ],
+      "current_question_features": [
+        "Intermediate Conclusions"
+      ],
+      "target_types": [
+        "Role",
+        "Main Conclusion"
+      ],
+      "target_features": [
+        "Intermediate Conclusions"
+      ],
+      "blended": false,
+      "relaxation": "strict",
+      "final_question_types": [
+        "Role",
+        "Main Conclusion"
+      ],
+      "final_question_features": [
+        "Intermediate Conclusions"
+      ],
+      "final_reasoning_types": [
+        "Comparison"
+      ],
+      "difficulty_min": 2,
+      "difficulty_max": 4,
+      "pool_available": 38,
+      "pool_sample": [
+        "PT106-S3-Q14",
+        "PT107-S1-Q11",
+        "PT111-S1-Q16",
+        "PT112-S4-Q13",
+        "PT115-S2-Q22"
+      ],
+      "classification": "ready",
+      "has_override": false,
+      "notes": []
+    },
+    {
+      "slug": "w7-10-describing-arguments-set-3",
+      "title": "Describing Arguments (set 3)",
+      "week": 7,
+      "category": "Pacing",
+      "question_count": 6,
+      "current_question_types": [
+        "Role",
+        "Method",
+        "Main Conclusion"
+      ],
+      "current_question_features": [
+        "Describing Arguments"
+      ],
+      "target_types": [
+        "Role",
+        "Method of Reasoning",
+        "Main Conclusion"
+      ],
+      "target_features": [
+        "Focused on Evidence"
+      ],
+      "blended": false,
+      "relaxation": "keep-type",
+      "final_question_types": [
+        "Role",
+        "Method of Reasoning",
+        "Main Conclusion"
+      ],
+      "final_question_features": [],
+      "final_reasoning_types": [
+        "Comparison"
+      ],
+      "difficulty_min": 1,
+      "difficulty_max": 5,
+      "pool_available": 407,
+      "pool_sample": [
+        "PT101-S2-Q3",
+        "PT101-S2-Q10",
+        "PT101-S2-Q12",
+        "PT101-S2-Q15",
+        "PT101-S3-Q3"
+      ],
+      "classification": "ready",
+      "has_override": true,
+      "notes": [
+        "pool widened by dropping feature constraint"
+      ]
+    },
+    {
+      "slug": "w7-11-causal-chains-set-3",
+      "title": "Causal Chains - Set 3",
+      "week": 7,
+      "category": "Patterns",
+      "question_count": 8,
+      "current_question_types": [
+        "Assumption",
+        "Inference"
+      ],
+      "current_question_features": [
+        "Causal Chains"
+      ],
+      "target_types": [
+        "Necessary Assumption",
+        "Must Be True"
+      ],
+      "target_features": [
+        "Causal Chains"
+      ],
+      "blended": false,
+      "relaxation": "keep-feature",
+      "final_question_types": [],
+      "final_question_features": [
+        "Causal Chains"
+      ],
+      "final_reasoning_types": [
+        "Causation",
+        "Comparison"
+      ],
+      "difficulty_min": 1,
+      "difficulty_max": 5,
+      "pool_available": 73,
+      "pool_sample": [
+        "PT102-S2-Q3",
+        "PT103-S2-Q9",
+        "PT103-S3-Q12",
+        "PT104-S1-Q19",
+        "PT105-S1-Q20"
+      ],
+      "classification": "ready",
+      "has_override": false,
+      "notes": [
+        "pool widened by dropping type constraint"
+      ]
+    },
+    {
+      "slug": "w11-01-principle-strengthen-set-1",
+      "title": "Principle-Strengthen (Set 1)",
+      "week": 11,
+      "category": "Process",
+      "question_count": 7,
+      "current_question_types": [
+        "Principle-Strengthen"
+      ],
+      "current_question_features": [
+        "Principle-Strengthen / Conditional Principle"
+      ],
+      "target_types": [
+        "Principle-Strengthen"
+      ],
+      "target_features": [
+        "Principles in Answers",
+        "Conditional Conclusion"
+      ],
+      "blended": false,
+      "relaxation": "strict",
+      "final_question_types": [
+        "Principle-Strengthen"
+      ],
+      "final_question_features": [
+        "Principles in Answers",
+        "Conditional Conclusion"
+      ],
+      "final_reasoning_types": [
+        "Conditional Logic"
+      ],
+      "difficulty_min": 3,
+      "difficulty_max": 5,
+      "pool_available": 50,
+      "pool_sample": [
+        "PT101-S2-Q9",
+        "PT101-S2-Q25",
+        "PT101-S3-Q20",
+        "PT101-S3-Q26",
+        "PT102-S2-Q23"
+      ],
+      "classification": "ready",
+      "has_override": false,
+      "notes": []
+    },
+    {
+      "slug": "w11-02-explain-curious-fact-harder-set-2",
+      "title": "Explain Curious Fact (Harder) Set 2",
+      "week": 11,
+      "category": "Pacing",
+      "question_count": 8,
+      "current_question_types": [
+        "Explain Curious Fact"
+      ],
+      "current_question_features": [
+        "Explain Curious Fact"
+      ],
+      "target_types": [],
+      "target_features": [
+        "Explain Curious Fact"
+      ],
+      "blended": false,
+      "relaxation": "strict",
+      "final_question_types": [],
+      "final_question_features": [
+        "Explain Curious Fact"
+      ],
+      "final_reasoning_types": [
+        "Causation",
+        "Comparison"
+      ],
+      "difficulty_min": 4,
+      "difficulty_max": 5,
+      "pool_available": 152,
+      "pool_sample": [
+        "PT101-S2-Q19",
+        "PT101-S3-Q18",
+        "PT101-S3-Q22",
+        "PT101-S3-Q23",
+        "PT102-S2-Q8"
+      ],
+      "classification": "ready",
+      "has_override": true,
+      "notes": []
+    },
+    {
+      "slug": "w11-03-assumption-family-harder-set-1",
+      "title": "Assumption Family (Harder) Set 1",
+      "week": 11,
+      "category": "Process",
+      "question_count": 7,
+      "current_question_types": [
+        "Sufficient Assumption",
+        "Necessary Assumption",
+        "Principle-Strengthen",
+        "Strengthen",
+        "Weaken",
+        "Flaw",
+        "Evaluate"
+      ],
+      "current_question_features": [
+        "Three Main Reasoning Structures"
+      ],
+      "target_types": [
+        "Sufficient Assumption",
+        "Necessary Assumption",
+        "Principle-Strengthen",
+        "Strengthen",
+        "Weaken",
+        "Flaw",
+        "Evaluate"
+      ],
+      "target_features": [
+        "Conditional Diagramming",
+        "Explain Curious Fact",
+        "Assumes Similarity"
+      ],
+      "blended": true,
+      "relaxation": "strict",
+      "final_question_types": [
+        "Sufficient Assumption",
+        "Necessary Assumption",
+        "Principle-Strengthen",
+        "Strengthen",
+        "Weaken",
+        "Flaw",
+        "Evaluate"
+      ],
+      "final_question_features": [
+        "Conditional Diagramming",
+        "Explain Curious Fact",
+        "Assumes Similarity"
+      ],
+      "final_reasoning_types": [
+        "Causation",
+        "Comparison",
+        "Conditional Logic"
+      ],
+      "difficulty_min": 4,
+      "difficulty_max": 5,
+      "pool_available": 190,
+      "pool_sample": [
+        "PT101-S2-Q19",
+        "PT101-S2-Q21",
+        "PT101-S2-Q24",
+        "PT101-S3-Q18",
+        "PT101-S3-Q22"
+      ],
+      "classification": "blended",
+      "has_override": false,
+      "notes": []
+    },
+    {
+      "slug": "w11-04-speedwalking-lr-set-1",
+      "title": "Speedwalking LR (set 1)",
+      "week": 11,
+      "category": "Pacing",
+      "question_count": 15,
+      "current_question_types": [
+        "Paradox",
+        "Flaw",
+        "Role",
+        "Main Conclusion",
+        "Necessary Assumption",
+        "Sufficient Assumption",
+        "Strengthen",
+        "Weaken",
+        "Method",
+        "Must Be True"
+      ],
+      "current_question_features": [
+        "Speedwalking LR"
+      ],
+      "target_types": [
+        "Paradox",
+        "Flaw",
+        "Role",
+        "Main Conclusion",
+        "Necessary Assumption",
+        "Sufficient Assumption",
+        "Strengthen",
+        "Weaken",
+        "Method of Reasoning",
+        "Must Be True"
+      ],
+      "target_features": [],
+      "blended": true,
+      "relaxation": "strict",
+      "final_question_types": [
+        "Paradox",
+        "Flaw",
+        "Role",
+        "Main Conclusion",
+        "Necessary Assumption",
+        "Sufficient Assumption",
+        "Strengthen",
+        "Weaken",
+        "Method of Reasoning",
+        "Must Be True"
+      ],
+      "final_question_features": [],
+      "final_reasoning_types": [
+        "Comparison",
+        "Causation"
+      ],
+      "difficulty_min": 1,
+      "difficulty_max": 1,
+      "pool_available": 301,
+      "pool_sample": [
+        "PT101-S2-Q3",
+        "PT101-S2-Q15",
+        "PT101-S3-Q2",
+        "PT101-S3-Q13",
+        "PT102-S3-Q8"
+      ],
+      "classification": "blended",
+      "has_override": false,
+      "notes": []
+    },
+    {
+      "slug": "w8-01-explain-curious-fact-medium-set-4",
+      "title": "Explain Curious Fact (Medium) Set 4",
+      "week": 8,
+      "category": "Process",
+      "question_count": 5,
+      "current_question_types": [
+        "Explain Curious Fact"
+      ],
+      "current_question_features": [
+        "Explain Curious Fact"
+      ],
+      "target_types": [
+        "Paradox"
+      ],
+      "target_features": [
+        "Explain Curious Fact"
+      ],
+      "blended": false,
+      "relaxation": "keep-type",
+      "final_question_types": [
+        "Paradox"
+      ],
+      "final_question_features": [],
+      "final_reasoning_types": [
+        "Comparison",
+        "Causation"
+      ],
+      "difficulty_min": 1,
+      "difficulty_max": 5,
+      "pool_available": 212,
+      "pool_sample": [
+        "PT101-S2-Q18",
+        "PT101-S3-Q14",
+        "PT102-S2-Q14",
+        "PT102-S2-Q17",
+        "PT102-S3-Q5"
+      ],
+      "classification": "ready",
+      "has_override": false,
+      "notes": [
+        "pool widened by dropping feature constraint"
+      ]
+    },
+    {
+      "slug": "w8-02-assumes-similarity-set-1",
+      "title": "Assumes Similarity (set 1)",
+      "week": 8,
+      "category": "Patterns",
+      "question_count": 7,
+      "current_question_types": [
+        "Weaken",
+        "Strengthen"
+      ],
+      "current_question_features": [
+        "Assumes Similarity"
+      ],
+      "target_types": [
+        "Weaken",
+        "Strengthen"
+      ],
+      "target_features": [
+        "Assumes Similarity"
+      ],
+      "blended": false,
+      "relaxation": "strict",
+      "final_question_types": [
+        "Weaken",
+        "Strengthen"
+      ],
+      "final_question_features": [
+        "Assumes Similarity"
+      ],
+      "final_reasoning_types": [
+        "Comparison"
+      ],
+      "difficulty_min": 2,
+      "difficulty_max": 4,
+      "pool_available": 22,
+      "pool_sample": [
+        "PT106-S1-Q1",
+        "PT107-S4-Q1",
+        "PT107-S4-Q9",
+        "PT112-S1-Q2",
+        "PT117-S2-Q8"
+      ],
+      "classification": "ready",
+      "has_override": false,
+      "notes": []
+    },
+    {
+      "slug": "w8-03-anti-causal-set-3",
+      "title": "Anti-Causal - Set 3",
+      "week": 8,
+      "category": "Process",
+      "question_count": 6,
+      "current_question_types": [
+        "Weaken"
+      ],
+      "current_question_features": [
+        "Anti-Causal"
+      ],
+      "target_types": [
+        "Weaken"
+      ],
+      "target_features": [
+        "Anti-Causal"
+      ],
+      "blended": false,
+      "relaxation": "strict",
+      "final_question_types": [
+        "Weaken"
+      ],
+      "final_question_features": [
+        "Anti-Causal"
+      ],
+      "final_reasoning_types": [
+        "Causation",
+        "Comparison"
+      ],
+      "difficulty_min": 2,
+      "difficulty_max": 4,
+      "pool_available": 24,
+      "pool_sample": [
+        "PT105-S2-Q12",
+        "PT105-S4-Q9",
+        "PT106-S1-Q5",
+        "PT111-S1-Q8",
+        "PT112-S1-Q2"
+      ],
+      "classification": "ready",
+      "has_override": false,
+      "notes": []
+    },
+    {
+      "slug": "w8-04-conditional-logic-medium-set-5",
+      "title": "Conditional Logic (Medium) Set 5",
+      "week": 8,
+      "category": "Pacing",
+      "question_count": 10,
+      "current_question_types": [
+        "Mixed LR question types"
+      ],
+      "current_question_features": [
+        "Conditional Logic / Conditional Keywords"
+      ],
+      "target_types": [
+        "Most Strongly Supported",
+        "Must Be True",
+        "Sufficient Assumption",
+        "Parallel Reasoning",
+        "Parallel Flaw",
+        "Principle-Strengthen",
+        "Principle-Conform",
+        "Flaw"
+      ],
+      "target_features": [
+        "Conditional Diagramming",
+        "Contrapositive Logic"
+      ],
+      "blended": true,
+      "relaxation": "strict",
+      "final_question_types": [
+        "Most Strongly Supported",
+        "Must Be True",
+        "Sufficient Assumption",
+        "Parallel Reasoning",
+        "Parallel Flaw",
+        "Principle-Strengthen",
+        "Principle-Conform",
+        "Flaw"
+      ],
+      "final_question_features": [
+        "Conditional Diagramming",
+        "Contrapositive Logic"
+      ],
+      "final_reasoning_types": [
+        "Conditional Logic"
+      ],
+      "difficulty_min": 4,
+      "difficulty_max": 4,
+      "pool_available": 55,
+      "pool_sample": [
+        "PT105-S4-Q17",
+        "PT106-S1-Q10",
+        "PT106-S3-Q21",
+        "PT107-S4-Q23",
+        "PT110-S2-Q11"
+      ],
+      "classification": "blended",
+      "has_override": false,
+      "notes": []
+    },
+    {
+      "slug": "w12-01-assumption-family-harder-set-2",
+      "title": "Assumption Family (Harder) Set 2",
+      "week": 12,
+      "category": "Pacing",
+      "question_count": 10,
+      "current_question_types": [
+        "Sufficient Assumption",
+        "Principle",
+        "Necessary Assumption",
+        "Parallel Flaw",
+        "Strengthen",
+        "Weaken",
+        "Evaluate"
+      ],
+      "current_question_features": [
+        "Assumption Family Continuum / Timed Harder Set"
+      ],
+      "target_types": [
+        "Sufficient Assumption",
+        "Principle-Conform",
+        "Necessary Assumption",
+        "Parallel Flaw",
+        "Strengthen",
+        "Weaken",
+        "Evaluate"
+      ],
+      "target_features": [
+        "Conditional Diagramming",
+        "Explain Curious Fact",
+        "Assumes Similarity"
+      ],
+      "blended": true,
+      "relaxation": "strict",
+      "final_question_types": [
+        "Sufficient Assumption",
+        "Principle-Conform",
+        "Necessary Assumption",
+        "Parallel Flaw",
+        "Strengthen",
+        "Weaken",
+        "Evaluate"
+      ],
+      "final_question_features": [
+        "Conditional Diagramming",
+        "Explain Curious Fact",
+        "Assumes Similarity"
+      ],
+      "final_reasoning_types": [
+        "Causation",
+        "Comparison",
+        "Conditional Logic"
+      ],
+      "difficulty_min": 4,
+      "difficulty_max": 5,
+      "pool_available": 166,
+      "pool_sample": [
+        "PT101-S2-Q19",
+        "PT101-S2-Q21",
+        "PT101-S2-Q24",
+        "PT101-S3-Q18",
+        "PT101-S3-Q22"
+      ],
+      "classification": "blended",
+      "has_override": false,
+      "notes": []
+    },
+    {
+      "slug": "w12-02-explain-curious-fact-harder-set-3",
+      "title": "Explain Curious Fact (Harder) Set 3",
+      "week": 12,
+      "category": "Process",
+      "question_count": 5,
+      "current_question_types": [
+        "Explain Curious Fact"
+      ],
+      "current_question_features": [
+        "Explain Curious Fact"
+      ],
+      "target_types": [
+        "Paradox"
+      ],
+      "target_features": [
+        "Explain Curious Fact"
+      ],
+      "blended": false,
+      "relaxation": "keep-type",
+      "final_question_types": [
+        "Paradox"
+      ],
+      "final_question_features": [],
+      "final_reasoning_types": [
+        "Comparison",
+        "Causation"
+      ],
+      "difficulty_min": 1,
+      "difficulty_max": 5,
+      "pool_available": 212,
+      "pool_sample": [
+        "PT101-S2-Q18",
+        "PT101-S3-Q14",
+        "PT102-S2-Q14",
+        "PT102-S2-Q17",
+        "PT102-S3-Q5"
+      ],
+      "classification": "ready",
+      "has_override": false,
+      "notes": [
+        "pool widened by dropping feature constraint"
+      ]
+    },
+    {
+      "slug": "w12-03-conditional-logic-harder-set-4",
+      "title": "Conditional Logic (Harder) Set 4",
+      "week": 12,
+      "category": "Process",
+      "question_count": 7,
+      "current_question_types": [
+        "Mixed LR question types"
+      ],
+      "current_question_features": [
+        "Conditional Logic"
+      ],
+      "target_types": [
+        "Most Strongly Supported",
+        "Must Be True",
+        "Sufficient Assumption",
+        "Parallel Reasoning",
+        "Parallel Flaw",
+        "Principle-Strengthen",
+        "Principle-Conform",
+        "Flaw"
+      ],
+      "target_features": [
+        "Conditional Diagramming"
+      ],
+      "blended": true,
+      "relaxation": "strict",
+      "final_question_types": [
+        "Most Strongly Supported",
+        "Must Be True",
+        "Sufficient Assumption",
+        "Parallel Reasoning",
+        "Parallel Flaw",
+        "Principle-Strengthen",
+        "Principle-Conform",
+        "Flaw"
+      ],
+      "final_question_features": [
+        "Conditional Diagramming"
+      ],
+      "final_reasoning_types": [
+        "Conditional Logic"
+      ],
+      "difficulty_min": 4,
+      "difficulty_max": 5,
+      "pool_available": 80,
+      "pool_sample": [
+        "PT101-S2-Q21",
+        "PT101-S2-Q24",
+        "PT101-S3-Q24",
+        "PT102-S4-Q23",
+        "PT104-S4-Q25"
+      ],
+      "classification": "blended",
+      "has_override": false,
+      "notes": []
+    },
+    {
+      "slug": "w12-04-speedwalking-lr-set-2",
+      "title": "Speedwalking LR (set 2)",
+      "week": 12,
+      "category": "Pacing",
+      "question_count": 15,
+      "current_question_types": [
+        "Paradox",
+        "Flaw",
+        "Role",
+        "Main Conclusion",
+        "Necessary Assumption",
+        "Sufficient Assumption",
+        "Strengthen",
+        "Weaken",
+        "Method",
+        "Must Be True"
+      ],
+      "current_question_features": [
+        "Speedwalking LR"
+      ],
+      "target_types": [
+        "Paradox",
+        "Flaw",
+        "Role",
+        "Main Conclusion",
+        "Necessary Assumption",
+        "Sufficient Assumption",
+        "Strengthen",
+        "Weaken",
+        "Method of Reasoning",
+        "Must Be True"
+      ],
+      "target_features": [],
+      "blended": true,
+      "relaxation": "strict",
+      "final_question_types": [
+        "Paradox",
+        "Flaw",
+        "Role",
+        "Main Conclusion",
+        "Necessary Assumption",
+        "Sufficient Assumption",
+        "Strengthen",
+        "Weaken",
+        "Method of Reasoning",
+        "Must Be True"
+      ],
+      "final_question_features": [],
+      "final_reasoning_types": [
+        "Comparison",
+        "Causation"
+      ],
+      "difficulty_min": 1,
+      "difficulty_max": 1,
+      "pool_available": 301,
+      "pool_sample": [
+        "PT101-S2-Q3",
+        "PT101-S2-Q15",
+        "PT101-S3-Q2",
+        "PT101-S3-Q13",
+        "PT102-S3-Q8"
+      ],
+      "classification": "blended",
+      "has_override": false,
+      "notes": []
+    },
+    {
+      "slug": "w1-01-first-sentence-conclusions",
+      "title": "First Sentence Conclusions",
+      "week": 1,
+      "category": "Patterns",
+      "question_count": 6,
+      "current_question_types": [
+        "Main Conclusion",
+        "Role"
+      ],
+      "current_question_features": [
+        "First Sentence Conclusion"
+      ],
+      "target_types": [
+        "Main Conclusion",
+        "Role"
+      ],
+      "target_features": [
+        "First Sentence Conclusion"
+      ],
+      "blended": false,
+      "relaxation": "strict",
+      "final_question_types": [
+        "Main Conclusion",
+        "Role"
+      ],
+      "final_question_features": [
+        "First Sentence Conclusion"
+      ],
+      "final_reasoning_types": [
+        "Comparison"
+      ],
+      "difficulty_min": 1,
+      "difficulty_max": 3,
+      "pool_available": 50,
+      "pool_sample": [
+        "PT101-S2-Q10",
+        "PT102-S4-Q1",
+        "PT103-S2-Q8",
+        "PT105-S1-Q1",
+        "PT105-S1-Q2"
+      ],
+      "classification": "ready",
+      "has_override": false,
+      "notes": []
+    },
+    {
+      "slug": "w1-02-the-core-connection",
+      "title": "The Core Connection",
+      "week": 1,
+      "category": "Patterns",
+      "question_count": 7,
+      "current_question_types": [
+        "Sufficient Assumption",
+        "Necessary Assumption",
+        "Flaw",
+        "Weaken",
+        "Strengthen",
+        "Principle-Strengthen",
+        "Evaluate"
+      ],
+      "current_question_features": [
+        "Missing Link / Core Connection"
+      ],
+      "target_types": [
+        "Sufficient Assumption",
+        "Necessary Assumption",
+        "Flaw",
+        "Weaken",
+        "Strengthen",
+        "Principle-Strengthen",
+        "Evaluate"
+      ],
+      "target_features": [
+        "Missing Link / Idea",
+        "Links Between Premises"
+      ],
+      "blended": true,
+      "relaxation": "strict",
+      "final_question_types": [
+        "Sufficient Assumption",
+        "Necessary Assumption",
+        "Flaw",
+        "Weaken",
+        "Strengthen",
+        "Principle-Strengthen",
+        "Evaluate"
+      ],
+      "final_question_features": [
+        "Missing Link / Idea",
+        "Links Between Premises"
+      ],
+      "final_reasoning_types": [
+        "Conditional Logic"
+      ],
+      "difficulty_min": 1,
+      "difficulty_max": 3,
+      "pool_available": 246,
+      "pool_sample": [
+        "PT101-S2-Q9",
+        "PT101-S3-Q13",
+        "PT101-S3-Q19",
+        "PT102-S4-Q18",
+        "PT103-S1-Q4"
+      ],
+      "classification": "blended",
+      "has_override": true,
+      "notes": []
+    },
+    {
+      "slug": "w1-03-assumption-family-easier-set-1",
+      "title": "Assumption Family (Easier) Set 1",
+      "week": 1,
+      "category": "Process",
+      "question_count": 9,
+      "current_question_types": [
+        "Sufficient Assumption",
+        "Necessary Assumption",
+        "Principle-Strengthen",
+        "Strengthen",
+        "Weaken",
+        "Flaw",
+        "Evaluate"
+      ],
+      "current_question_features": [
+        "Mixed Assumption Family / Internal Logic vs Courtroom Debate"
+      ],
+      "target_types": [
+        "Sufficient Assumption",
+        "Necessary Assumption",
+        "Principle-Strengthen",
+        "Strengthen",
+        "Weaken",
+        "Flaw",
+        "Evaluate"
+      ],
+      "target_features": [
+        "Missing Link / Idea",
+        "Argue the Anti-Conclusion"
+      ],
+      "blended": true,
+      "relaxation": "strict",
+      "final_question_types": [
+        "Sufficient Assumption",
+        "Necessary Assumption",
+        "Principle-Strengthen",
+        "Strengthen",
+        "Weaken",
+        "Flaw",
+        "Evaluate"
+      ],
+      "final_question_features": [
+        "Missing Link / Idea",
+        "Argue the Anti-Conclusion"
+      ],
+      "final_reasoning_types": [
+        "Conditional Logic",
+        "Comparison"
+      ],
+      "difficulty_min": 1,
+      "difficulty_max": 3,
+      "pool_available": 345,
+      "pool_sample": [
+        "PT101-S2-Q6",
+        "PT101-S2-Q9",
+        "PT101-S3-Q5",
+        "PT101-S3-Q13",
+        "PT101-S3-Q19"
+      ],
+      "classification": "blended",
+      "has_override": false,
+      "notes": []
+    },
+    {
+      "slug": "w1-04-framework-sampler",
+      "title": "Framework Sampler",
+      "week": 1,
+      "classification": "defer-rc",
+      "question_count": 6,
+      "notes": [
+        "RC-oriented card; left untouched (LR-only pass)."
+      ],
+      "skipped": true
+    },
+    {
+      "slug": "w1-05-paradox-first-taste",
+      "title": "Paradox - (First Taste)",
+      "week": 1,
+      "category": "Process",
+      "question_count": 6,
+      "current_question_types": [
+        "Paradox"
+      ],
+      "current_question_features": [
+        "First Taste"
+      ],
+      "target_types": [
+        "Paradox"
+      ],
+      "target_features": [
+        "Explain Curious Fact",
+        "Alternatives"
+      ],
+      "blended": false,
+      "relaxation": "keep-type",
+      "final_question_types": [
+        "Paradox"
+      ],
+      "final_question_features": [],
+      "final_reasoning_types": [
+        "Comparison",
+        "Causation"
+      ],
+      "difficulty_min": 1,
+      "difficulty_max": 5,
+      "pool_available": 212,
+      "pool_sample": [
+        "PT101-S2-Q18",
+        "PT101-S3-Q14",
+        "PT102-S2-Q14",
+        "PT102-S2-Q17",
+        "PT102-S3-Q5"
+      ],
+      "classification": "ready",
+      "has_override": false,
+      "notes": [
+        "pool widened by dropping feature constraint"
+      ]
+    },
+    {
+      "slug": "w1-06-explain-curious-fact-first-taste",
+      "title": "Explain Curious Fact (First Taste)",
+      "week": 1,
+      "category": "Patterns",
+      "question_count": 8,
+      "current_question_types": [
+        "Explain Curious Fact"
+      ],
+      "current_question_features": [
+        "Explain Curious Fact"
+      ],
+      "target_types": [],
+      "target_features": [
+        "Explain Curious Fact"
+      ],
+      "blended": false,
+      "relaxation": "strict",
+      "final_question_types": [],
+      "final_question_features": [
+        "Explain Curious Fact"
+      ],
+      "final_reasoning_types": [
+        "Causation",
+        "Comparison"
+      ],
+      "difficulty_min": 1,
+      "difficulty_max": 3,
+      "pool_available": 281,
+      "pool_sample": [
+        "PT101-S2-Q3",
+        "PT101-S2-Q4",
+        "PT101-S3-Q17",
+        "PT102-S2-Q9",
+        "PT102-S2-Q10"
+      ],
+      "classification": "ready",
+      "has_override": true,
+      "notes": []
+    },
+    {
+      "slug": "w1-07-flaw-first-taste",
+      "title": "Flaw - First Taste",
+      "week": 1,
+      "category": "Process",
+      "question_count": 7,
+      "current_question_types": [
+        "Flaw"
+      ],
+      "current_question_features": [
+        "First Taste"
+      ],
+      "target_types": [
+        "Flaw"
+      ],
+      "target_features": [
+        "Famous Flaws"
+      ],
+      "blended": false,
+      "relaxation": "strict",
+      "final_question_types": [
+        "Flaw"
+      ],
+      "final_question_features": [
+        "Famous Flaws"
+      ],
+      "final_reasoning_types": [
+        "Comparison"
+      ],
+      "difficulty_min": 1,
+      "difficulty_max": 3,
+      "pool_available": 174,
+      "pool_sample": [
+        "PT101-S2-Q8",
+        "PT102-S3-Q1",
+        "PT102-S4-Q4",
+        "PT103-S1-Q3",
+        "PT103-S2-Q1"
+      ],
+      "classification": "ready",
+      "has_override": false,
+      "notes": []
+    },
+    {
+      "slug": "w2-01-sampling",
+      "title": "Sampling",
+      "week": 2,
+      "category": "Patterns",
+      "question_count": 10,
+      "current_question_types": [
+        "Flaw"
+      ],
+      "current_question_features": [
+        "Sampling",
+        "Part vs. Whole"
+      ],
+      "target_types": [
+        "Flaw"
+      ],
+      "target_features": [
+        "Sampling",
+        "Part vs. Whole"
+      ],
+      "blended": false,
+      "relaxation": "strict",
+      "final_question_types": [
+        "Flaw"
+      ],
+      "final_question_features": [
+        "Sampling",
+        "Part vs. Whole"
+      ],
+      "final_reasoning_types": [
+        "Comparison"
+      ],
+      "difficulty_min": 2,
+      "difficulty_max": 4,
+      "pool_available": 34,
+      "pool_sample": [
+        "PT103-S1-Q3",
+        "PT106-S3-Q2",
+        "PT106-S3-Q20",
+        "PT108-S2-Q12",
+        "PT111-S4-Q18"
+      ],
+      "classification": "ready",
+      "has_override": false,
+      "notes": []
+    },
+    {
+      "slug": "w2-02-abstract-flaw-set-1",
+      "title": "Abstract + Flaw (set 1)",
+      "week": 2,
+      "category": "Process",
+      "question_count": 10,
+      "current_question_types": [
+        "Flaw"
+      ],
+      "current_question_features": [
+        "Abstract Answer Choices"
+      ],
+      "target_types": [
+        "Flaw"
+      ],
+      "target_features": [
+        "Abstract Answers",
+        "Famous Flaws"
+      ],
+      "blended": false,
+      "relaxation": "strict",
+      "final_question_types": [
+        "Flaw"
+      ],
+      "final_question_features": [
+        "Abstract Answers",
+        "Famous Flaws"
+      ],
+      "final_reasoning_types": [
+        "Comparison"
+      ],
+      "difficulty_min": 2,
+      "difficulty_max": 4,
+      "pool_available": 193,
+      "pool_sample": [
+        "PT101-S2-Q8",
+        "PT101-S2-Q23",
+        "PT102-S3-Q1",
+        "PT102-S3-Q23",
+        "PT102-S4-Q4"
+      ],
+      "classification": "ready",
+      "has_override": false,
+      "notes": []
+    },
+    {
+      "slug": "w2-03-must-be-true-first-taste",
+      "title": "Must Be True - First Taste",
+      "week": 2,
+      "category": "Process",
+      "question_count": 6,
+      "current_question_types": [
+        "Must Be True"
+      ],
+      "current_question_features": [
+        "First Taste"
+      ],
+      "target_types": [
+        "Must Be True"
+      ],
+      "target_features": [
+        "Ruling Out Options"
+      ],
+      "blended": false,
+      "relaxation": "keep-type",
+      "final_question_types": [
+        "Must Be True"
+      ],
+      "final_question_features": [],
+      "final_reasoning_types": [
+        "Conditional Logic"
+      ],
+      "difficulty_min": 1,
+      "difficulty_max": 5,
+      "pool_available": 182,
+      "pool_sample": [
+        "PT101-S2-Q11",
+        "PT101-S3-Q8",
+        "PT101-S3-Q11",
+        "PT101-S3-Q15",
+        "PT102-S2-Q21"
+      ],
+      "classification": "ready",
+      "has_override": true,
+      "notes": [
+        "pool widened by dropping feature constraint"
+      ]
+    },
+    {
+      "slug": "w2-04-conditional-logic-easier-set-1",
+      "title": "Conditional Logic (Easier) Set 1",
+      "week": 2,
+      "category": "Process",
+      "question_count": 9,
+      "current_question_types": [
+        "Mixed LR question types"
+      ],
+      "current_question_features": [
+        "Conditional Logic"
+      ],
+      "target_types": [
+        "Most Strongly Supported",
+        "Must Be True",
+        "Sufficient Assumption",
+        "Parallel Reasoning",
+        "Parallel Flaw",
+        "Principle-Strengthen",
+        "Principle-Conform",
+        "Flaw"
+      ],
+      "target_features": [
+        "Conditional Diagramming"
+      ],
+      "blended": true,
+      "relaxation": "strict",
+      "final_question_types": [
+        "Most Strongly Supported",
+        "Must Be True",
+        "Sufficient Assumption",
+        "Parallel Reasoning",
+        "Parallel Flaw",
+        "Principle-Strengthen",
+        "Principle-Conform",
+        "Flaw"
+      ],
+      "final_question_features": [
+        "Conditional Diagramming"
+      ],
+      "final_reasoning_types": [
+        "Conditional Logic"
+      ],
+      "difficulty_min": 1,
+      "difficulty_max": 3,
+      "pool_available": 93,
+      "pool_sample": [
+        "PT101-S3-Q21",
+        "PT103-S2-Q16",
+        "PT104-S4-Q7",
+        "PT106-S1-Q14",
+        "PT106-S2-Q15"
+      ],
+      "classification": "blended",
+      "has_override": false,
+      "notes": []
+    },
+    {
+      "slug": "w2-05-reconcile-the-pivot-first-taste",
+      "title": "Reconcile the Pivot (First Taste)",
+      "week": 2,
+      "category": "Patterns",
+      "question_count": 5,
+      "current_question_types": [
+        "Most Supported",
+        "Must Be True"
+      ],
+      "current_question_features": [
+        "Reconcile the Pivot"
+      ],
+      "target_types": [
+        "Most Strongly Supported",
+        "Must Be True"
+      ],
+      "target_features": [
+        "Important Pivot"
+      ],
+      "blended": false,
+      "relaxation": "strict",
+      "final_question_types": [
+        "Most Strongly Supported",
+        "Must Be True"
+      ],
+      "final_question_features": [
+        "Important Pivot"
+      ],
+      "final_reasoning_types": [
+        "Comparison"
+      ],
+      "difficulty_min": 1,
+      "difficulty_max": 3,
+      "pool_available": 47,
+      "pool_sample": [
+        "PT104-S1-Q3",
+        "PT104-S1-Q22",
+        "PT104-S4-Q23",
+        "PT105-S4-Q1",
+        "PT107-S1-Q21"
+      ],
+      "classification": "ready",
+      "has_override": false,
+      "notes": []
+    },
+    {
+      "slug": "w2-06-missing-links-first-taste",
+      "title": "Missing Links: First Taste",
+      "week": 2,
+      "category": "Patterns",
+      "question_count": 6,
+      "current_question_types": [
+        "Sufficient Assumption",
+        "Necessary Assumption",
+        "Principle-Strengthen"
+      ],
+      "current_question_features": [
+        "Missing Links"
+      ],
+      "target_types": [
+        "Sufficient Assumption",
+        "Necessary Assumption",
+        "Principle-Strengthen"
+      ],
+      "target_features": [
+        "Missing Link / Idea"
+      ],
+      "blended": false,
+      "relaxation": "strict",
+      "final_question_types": [
+        "Sufficient Assumption",
+        "Necessary Assumption",
+        "Principle-Strengthen"
+      ],
+      "final_question_features": [
+        "Missing Link / Idea"
+      ],
+      "final_reasoning_types": [
+        "Conditional Logic"
+      ],
+      "difficulty_min": 1,
+      "difficulty_max": 3,
+      "pool_available": 193,
+      "pool_sample": [
+        "PT101-S2-Q9",
+        "PT101-S3-Q13",
+        "PT101-S3-Q19",
+        "PT102-S4-Q18",
+        "PT103-S1-Q4"
+      ],
+      "classification": "ready",
+      "has_override": false,
+      "notes": []
+    },
+    {
+      "slug": "w2-07-necessary-assumption-first-taste",
+      "title": "Necessary Assumption - First Taste",
+      "week": 2,
+      "category": "Process",
+      "question_count": 10,
+      "current_question_types": [
+        "Necessary Assumption"
+      ],
+      "current_question_features": [
+        "First Taste"
+      ],
+      "target_types": [
+        "Necessary Assumption"
+      ],
+      "target_features": [
+        "Defender"
+      ],
+      "blended": false,
+      "relaxation": "strict",
+      "final_question_types": [
+        "Necessary Assumption"
+      ],
+      "final_question_features": [
+        "Defender"
+      ],
+      "final_reasoning_types": [
+        "Comparison",
+        "Causation"
+      ],
+      "difficulty_min": 1,
+      "difficulty_max": 3,
+      "pool_available": 98,
+      "pool_sample": [
+        "PT101-S3-Q5",
+        "PT102-S2-Q6",
+        "PT102-S2-Q12",
+        "PT102-S3-Q2",
+        "PT102-S3-Q13"
+      ],
+      "classification": "ready",
+      "has_override": false,
+      "notes": []
+    },
+    {
+      "slug": "w2-08-assumption-family-easier-set-2",
+      "title": "Assumption Family (Easier) Set 2",
+      "week": 2,
+      "category": "Process",
+      "question_count": 6,
+      "current_question_types": [
+        "Sufficient Assumption",
+        "Necessary Assumption",
+        "Principle-Strengthen",
+        "Strengthen",
+        "Weaken",
+        "Flaw",
+        "Evaluate"
+      ],
+      "current_question_features": [
+        "Three Main Reasoning Types"
+      ],
+      "target_types": [
+        "Sufficient Assumption",
+        "Necessary Assumption",
+        "Principle-Strengthen",
+        "Strengthen",
+        "Weaken",
+        "Flaw",
+        "Evaluate"
+      ],
+      "target_features": [
+        "Conditional Diagramming",
+        "Explain Curious Fact",
+        "Assumes Similarity"
+      ],
+      "blended": true,
+      "relaxation": "strict",
+      "final_question_types": [
+        "Sufficient Assumption",
+        "Necessary Assumption",
+        "Principle-Strengthen",
+        "Strengthen",
+        "Weaken",
+        "Flaw",
+        "Evaluate"
+      ],
+      "final_question_features": [
+        "Conditional Diagramming",
+        "Explain Curious Fact",
+        "Assumes Similarity"
+      ],
+      "final_reasoning_types": [
+        "Causation",
+        "Comparison"
+      ],
+      "difficulty_min": 1,
+      "difficulty_max": 3,
+      "pool_available": 306,
+      "pool_sample": [
+        "PT102-S2-Q9",
+        "PT102-S2-Q10",
+        "PT102-S4-Q6",
+        "PT102-S4-Q9",
+        "PT103-S1-Q9"
+      ],
+      "classification": "blended",
+      "has_override": false,
+      "notes": []
+    },
+    {
+      "slug": "w2-09-most-supported-first-taste",
+      "title": "Most Supported - First Taste",
+      "week": 2,
+      "category": "Process",
+      "question_count": 8,
+      "current_question_types": [
+        "Most Supported"
+      ],
+      "current_question_features": [
+        "First Taste / Most Supported Variations"
+      ],
+      "target_types": [
+        "Most Strongly Supported"
+      ],
+      "target_features": [
+        "Ruling Out Options"
+      ],
+      "blended": false,
+      "relaxation": "keep-type",
+      "final_question_types": [
+        "Most Strongly Supported"
+      ],
+      "final_question_features": [],
+      "final_reasoning_types": [
+        "Comparison",
+        "Causation"
+      ],
+      "difficulty_min": 1,
+      "difficulty_max": 5,
+      "pool_available": 394,
+      "pool_sample": [
+        "PT101-S2-Q2",
+        "PT101-S3-Q7",
+        "PT102-S2-Q3",
+        "PT102-S2-Q8",
+        "PT102-S2-Q13"
+      ],
+      "classification": "ready",
+      "has_override": true,
+      "notes": [
+        "pool widened by dropping feature constraint"
+      ]
+    },
+    {
+      "slug": "w2-10-causal-chains",
+      "title": "Causal Chains",
+      "week": 2,
+      "category": "Patterns",
+      "question_count": 3,
+      "current_question_types": [
+        "Most Supported",
+        "Must Be True"
+      ],
+      "current_question_features": [
+        "Causal Chains"
+      ],
+      "target_types": [
+        "Most Strongly Supported",
+        "Must Be True"
+      ],
+      "target_features": [
+        "Causal Chains"
+      ],
+      "blended": false,
+      "relaxation": "strict",
+      "final_question_types": [
+        "Most Strongly Supported",
+        "Must Be True"
+      ],
+      "final_question_features": [
+        "Causal Chains"
+      ],
+      "final_reasoning_types": [
+        "Causation",
+        "Comparison"
+      ],
+      "difficulty_min": 1,
+      "difficulty_max": 3,
+      "pool_available": 21,
+      "pool_sample": [
+        "PT102-S2-Q3",
+        "PT103-S2-Q9",
+        "PT105-S1-Q20",
+        "PT107-S1-Q8",
+        "PT107-S3-Q5"
+      ],
+      "classification": "ready",
+      "has_override": false,
+      "notes": []
+    },
+    {
+      "slug": "w2-11-assumption-family-easier-set-3",
+      "title": "Assumption Family (Easier) Set 3",
+      "week": 2,
+      "category": "Process",
+      "question_count": 8,
+      "current_question_types": [
+        "Sufficient Assumption",
+        "Necessary Assumption",
+        "Principle-Strengthen",
+        "Strengthen",
+        "Weaken",
+        "Flaw",
+        "Evaluate"
+      ],
+      "current_question_features": [
+        "Mixed Assumption Family / Internal Logic vs Courtroom Debate"
+      ],
+      "target_types": [
+        "Sufficient Assumption",
+        "Necessary Assumption",
+        "Principle-Strengthen",
+        "Strengthen",
+        "Weaken",
+        "Flaw",
+        "Evaluate"
+      ],
+      "target_features": [
+        "Missing Link / Idea",
+        "Argue the Anti-Conclusion"
+      ],
+      "blended": true,
+      "relaxation": "strict",
+      "final_question_types": [
+        "Sufficient Assumption",
+        "Necessary Assumption",
+        "Principle-Strengthen",
+        "Strengthen",
+        "Weaken",
+        "Flaw",
+        "Evaluate"
+      ],
+      "final_question_features": [
+        "Missing Link / Idea",
+        "Argue the Anti-Conclusion"
+      ],
+      "final_reasoning_types": [
+        "Conditional Logic",
+        "Comparison"
+      ],
+      "difficulty_min": 1,
+      "difficulty_max": 3,
+      "pool_available": 345,
+      "pool_sample": [
+        "PT101-S2-Q6",
+        "PT101-S2-Q9",
+        "PT101-S3-Q5",
+        "PT101-S3-Q13",
+        "PT101-S3-Q19"
+      ],
+      "classification": "blended",
+      "has_override": false,
+      "notes": []
+    },
+    {
+      "slug": "w2-12-missing-links-color-coded",
+      "title": "Missing Links (color-coded)",
+      "week": 2,
+      "category": "Patterns",
+      "question_count": 9,
+      "current_question_types": [
+        "Sufficient Assumption",
+        "Necessary Assumption",
+        "Principle-Strengthen"
+      ],
+      "current_question_features": [
+        "Missing Links / Common Terms / Color-Coding"
+      ],
+      "target_types": [
+        "Sufficient Assumption",
+        "Necessary Assumption",
+        "Principle-Strengthen"
+      ],
+      "target_features": [
+        "Missing Link / Idea",
+        "Links Between Premises"
+      ],
+      "blended": false,
+      "relaxation": "strict",
+      "final_question_types": [
+        "Sufficient Assumption",
+        "Necessary Assumption",
+        "Principle-Strengthen"
+      ],
+      "final_question_features": [
+        "Missing Link / Idea",
+        "Links Between Premises"
+      ],
+      "final_reasoning_types": [
+        "Conditional Logic"
+      ],
+      "difficulty_min": 1,
+      "difficulty_max": 3,
+      "pool_available": 196,
+      "pool_sample": [
+        "PT101-S2-Q9",
+        "PT101-S3-Q13",
+        "PT101-S3-Q19",
+        "PT102-S4-Q18",
+        "PT103-S1-Q4"
+      ],
+      "classification": "ready",
+      "has_override": false,
+      "notes": []
+    },
+    {
+      "slug": "w2-13-principle-conform-first-taste",
+      "title": "Principle-Conform - (First Taste)",
+      "week": 2,
+      "category": "Process",
+      "question_count": 6,
+      "current_question_types": [
+        "Principle-Conform"
+      ],
+      "current_question_features": [
+        "First Taste / Principle Matching"
+      ],
+      "target_types": [
+        "Principle-Conform"
+      ],
+      "target_features": [
+        "Principles in Answers"
+      ],
+      "blended": false,
+      "relaxation": "strict",
+      "final_question_types": [
+        "Principle-Conform"
+      ],
+      "final_question_features": [
+        "Principles in Answers"
+      ],
+      "final_reasoning_types": [
+        "Conditional Logic",
+        "Comparison"
+      ],
+      "difficulty_min": 1,
+      "difficulty_max": 3,
+      "pool_available": 66,
+      "pool_sample": [
+        "PT102-S2-Q11",
+        "PT102-S4-Q14",
+        "PT105-S4-Q12",
+        "PT107-S1-Q19",
+        "PT107-S4-Q17"
+      ],
+      "classification": "ready",
+      "has_override": false,
+      "notes": []
+    },
+    {
+      "slug": "w2-14-principle-strengthen-first-taste",
+      "title": "Principle-Strengthen - (First Taste)",
+      "week": 2,
+      "category": "Process",
+      "question_count": 4,
+      "current_question_types": [
+        "Principle-Strengthen"
+      ],
+      "current_question_features": [
+        "First Taste / Conditional Principle"
+      ],
+      "target_types": [
+        "Principle-Strengthen"
+      ],
+      "target_features": [
+        "Principles in Answers",
+        "Conditional Conclusion"
+      ],
+      "blended": false,
+      "relaxation": "strict",
+      "final_question_types": [
+        "Principle-Strengthen"
+      ],
+      "final_question_features": [
+        "Principles in Answers",
+        "Conditional Conclusion"
+      ],
+      "final_reasoning_types": [
+        "Conditional Logic"
+      ],
+      "difficulty_min": 1,
+      "difficulty_max": 3,
+      "pool_available": 68,
+      "pool_sample": [
+        "PT101-S2-Q9",
+        "PT102-S4-Q5",
+        "PT105-S1-Q24",
+        "PT105-S4-Q7",
+        "PT106-S1-Q4"
+      ],
+      "classification": "ready",
+      "has_override": false,
+      "notes": []
+    },
+    {
+      "slug": "w2-15-strengthen-first-taste",
+      "title": "Strengthen - (First Taste)",
+      "week": 2,
+      "category": "Process",
+      "question_count": 6,
+      "current_question_types": [
+        "Strengthen"
+      ],
+      "current_question_features": [
+        "First Taste"
+      ],
+      "target_types": [
+        "Strengthen"
+      ],
+      "target_features": [
+        "Plausibility",
+        "Missing Link / Idea"
+      ],
+      "blended": false,
+      "relaxation": "strict",
+      "final_question_types": [
+        "Strengthen"
+      ],
+      "final_question_features": [
+        "Plausibility",
+        "Missing Link / Idea"
+      ],
+      "final_reasoning_types": [
+        "Causation",
+        "Comparison"
+      ],
+      "difficulty_min": 1,
+      "difficulty_max": 3,
+      "pool_available": 59,
+      "pool_sample": [
+        "PT102-S2-Q10",
+        "PT102-S4-Q6",
+        "PT104-S1-Q5",
+        "PT104-S4-Q2",
+        "PT104-S4-Q16"
+      ],
+      "classification": "ready",
+      "has_override": false,
+      "notes": []
+    },
+    {
+      "slug": "w3-01-except-first-taste",
+      "title": "EXCEPT - First Taste",
+      "week": 3,
+      "category": "Process",
+      "question_count": 5,
+      "current_question_types": [
+        "Paradox",
+        "Strengthen",
+        "Most Supported"
+      ],
+      "current_question_features": [
+        "EXCEPT"
+      ],
+      "target_types": [
+        "Paradox",
+        "Strengthen",
+        "Most Strongly Supported"
+      ],
+      "target_features": [
+        "EXCEPT"
+      ],
+      "blended": false,
+      "relaxation": "strict",
+      "final_question_types": [
+        "Paradox",
+        "Strengthen",
+        "Most Strongly Supported"
+      ],
+      "final_question_features": [
+        "EXCEPT"
+      ],
+      "final_reasoning_types": [
+        "Comparison",
+        "Causation"
+      ],
+      "difficulty_min": 1,
+      "difficulty_max": 3,
+      "pool_available": 33,
+      "pool_sample": [
+        "PT101-S3-Q14",
+        "PT102-S2-Q19",
+        "PT104-S4-Q16",
+        "PT106-S1-Q1",
+        "PT106-S3-Q4"
+      ],
+      "classification": "ready",
+      "has_override": false,
+      "notes": []
+    },
+    {
+      "slug": "w3-02-anti-causal-set-1",
+      "title": "Anti-Causal - Set 1",
+      "week": 3,
+      "category": "Patterns",
+      "question_count": 5,
+      "current_question_types": [
+        "Weaken",
+        "Flaw",
+        "Strengthen"
+      ],
+      "current_question_features": [
+        "Anti-Causal"
+      ],
+      "target_types": [
+        "Weaken",
+        "Flaw",
+        "Strengthen"
+      ],
+      "target_features": [
+        "Anti-Causal"
+      ],
+      "blended": false,
+      "relaxation": "strict",
+      "final_question_types": [
+        "Weaken",
+        "Flaw",
+        "Strengthen"
+      ],
+      "final_question_features": [
+        "Anti-Causal"
+      ],
+      "final_reasoning_types": [
+        "Causation",
+        "Comparison"
+      ],
+      "difficulty_min": 1,
+      "difficulty_max": 3,
+      "pool_available": 66,
+      "pool_sample": [
+        "PT102-S2-Q9",
+        "PT103-S1-Q15",
+        "PT103-S3-Q3",
+        "PT103-S3-Q5",
+        "PT105-S2-Q12"
+      ],
+      "classification": "ready",
+      "has_override": false,
+      "notes": []
+    },
+    {
+      "slug": "w3-03-explain-curious-fact-easier-set-1",
+      "title": "Explain Curious Fact (Easier) Set 1",
+      "week": 3,
+      "category": "Process",
+      "question_count": 6,
+      "current_question_types": [
+        "Explain Curious Fact"
+      ],
+      "current_question_features": [
+        "Explain Curious Fact"
+      ],
+      "target_types": [
+        "Paradox"
+      ],
+      "target_features": [
+        "Explain Curious Fact"
+      ],
+      "blended": false,
+      "relaxation": "keep-type",
+      "final_question_types": [
+        "Paradox"
+      ],
+      "final_question_features": [],
+      "final_reasoning_types": [
+        "Comparison",
+        "Causation"
+      ],
+      "difficulty_min": 1,
+      "difficulty_max": 5,
+      "pool_available": 212,
+      "pool_sample": [
+        "PT101-S2-Q18",
+        "PT101-S3-Q14",
+        "PT102-S2-Q14",
+        "PT102-S2-Q17",
+        "PT102-S3-Q5"
+      ],
+      "classification": "ready",
+      "has_override": false,
+      "notes": [
+        "pool widened by dropping feature constraint"
+      ]
+    },
+    {
+      "slug": "w3-04-analogies-set-1",
+      "title": "Analogies (set 1)",
+      "week": 3,
+      "category": "Patterns",
+      "question_count": 6,
+      "current_question_types": [
+        "Must Be True",
+        "Most Supported"
+      ],
+      "current_question_features": [
+        "Analogies"
+      ],
+      "target_types": [
+        "Must Be True",
+        "Most Strongly Supported"
+      ],
+      "target_features": [
+        "Analogies"
+      ],
+      "blended": false,
+      "relaxation": "strict",
+      "final_question_types": [
+        "Must Be True",
+        "Most Strongly Supported"
+      ],
+      "final_question_features": [
+        "Analogies"
+      ],
+      "final_reasoning_types": [
+        "Comparison"
+      ],
+      "difficulty_min": 1,
+      "difficulty_max": 3,
+      "pool_available": 20,
+      "pool_sample": [
+        "PT104-S4-Q22",
+        "PT119-S4-Q7",
+        "PT123-S2-Q3",
+        "PT129-S2-Q18",
+        "PT133-S2-Q5"
+      ],
+      "classification": "ready",
+      "has_override": false,
+      "notes": []
+    },
+    {
+      "slug": "w3-05-break-the-comparison",
+      "title": "Break the Comparison!",
+      "week": 3,
+      "category": "Process",
+      "question_count": 8,
+      "current_question_types": [
+        "Flaw",
+        "Weaken",
+        "Necessary Assumption",
+        "Strengthen"
+      ],
+      "current_question_features": [
+        "Break the Comparison"
+      ],
+      "target_types": [
+        "Flaw",
+        "Weaken",
+        "Necessary Assumption",
+        "Strengthen"
+      ],
+      "target_features": [
+        "Assumes Difference",
+        "Assumes Similarity"
+      ],
+      "blended": false,
+      "relaxation": "strict",
+      "final_question_types": [
+        "Flaw",
+        "Weaken",
+        "Necessary Assumption",
+        "Strengthen"
+      ],
+      "final_question_features": [
+        "Assumes Difference",
+        "Assumes Similarity"
+      ],
+      "final_reasoning_types": [
+        "Comparison"
+      ],
+      "difficulty_min": 1,
+      "difficulty_max": 3,
+      "pool_available": 114,
+      "pool_sample": [
+        "PT102-S3-Q13",
+        "PT102-S4-Q9",
+        "PT103-S2-Q5",
+        "PT103-S2-Q22",
+        "PT103-S3-Q11"
+      ],
+      "classification": "ready",
+      "has_override": false,
+      "notes": []
+    },
+    {
+      "slug": "w3-06-agree-disagree-set-1",
+      "title": "Agree/Disagree - Set 1",
+      "week": 3,
+      "category": "Pacing",
+      "question_count": 8,
+      "current_question_types": [
+        "Point at Issue / Agree-Disagree"
+      ],
+      "current_question_features": [
+        "Timed Agree/Disagree"
+      ],
+      "target_types": [
+        "Agree/Disagree"
+      ],
+      "target_features": [
+        "2-Speaker",
+        "Battle of Opinions"
+      ],
+      "blended": false,
+      "relaxation": "strict",
+      "final_question_types": [
+        "Agree/Disagree"
+      ],
+      "final_question_features": [
+        "2-Speaker",
+        "Battle of Opinions"
+      ],
+      "final_reasoning_types": [
+        "Comparison"
+      ],
+      "difficulty_min": 2,
+      "difficulty_max": 4,
+      "pool_available": 79,
+      "pool_sample": [
+        "PT101-S2-Q14",
+        "PT101-S3-Q1",
+        "PT102-S4-Q22",
+        "PT103-S1-Q16",
+        "PT104-S1-Q1"
+      ],
+      "classification": "ready",
+      "has_override": false,
+      "notes": []
+    },
+    {
+      "slug": "w3-07-rebuttal-conclusions",
+      "title": "Rebuttal Conclusions",
+      "week": 3,
+      "category": "Patterns",
+      "question_count": 4,
+      "current_question_types": [
+        "Main Conclusion"
+      ],
+      "current_question_features": [
+        "Rebuttal Conclusions"
+      ],
+      "target_types": [
+        "Main Conclusion"
+      ],
+      "target_features": [
+        "Rebuttals"
+      ],
+      "blended": false,
+      "relaxation": "strict",
+      "final_question_types": [
+        "Main Conclusion"
+      ],
+      "final_question_features": [
+        "Rebuttals"
+      ],
+      "final_reasoning_types": [],
+      "difficulty_min": 1,
+      "difficulty_max": 3,
+      "pool_available": 67,
+      "pool_sample": [
+        "PT101-S2-Q15",
+        "PT102-S2-Q7",
+        "PT102-S4-Q1",
+        "PT103-S2-Q8",
+        "PT105-S1-Q1"
+      ],
+      "classification": "ready",
+      "has_override": false,
+      "notes": []
+    },
+    {
+      "slug": "w3-08-describing-arguments-set-1",
+      "title": "Describing Arguments (set 1)",
+      "week": 3,
+      "category": "Process",
+      "question_count": 5,
+      "current_question_types": [
+        "Role",
+        "Main Conclusion"
+      ],
+      "current_question_features": [
+        "Describing Arguments"
+      ],
+      "target_types": [
+        "Role",
+        "Method of Reasoning",
+        "Main Conclusion"
+      ],
+      "target_features": [
+        "Focused on Evidence"
+      ],
+      "blended": false,
+      "relaxation": "keep-type",
+      "final_question_types": [
+        "Role",
+        "Method of Reasoning",
+        "Main Conclusion"
+      ],
+      "final_question_features": [],
+      "final_reasoning_types": [
+        "Comparison"
+      ],
+      "difficulty_min": 1,
+      "difficulty_max": 5,
+      "pool_available": 407,
+      "pool_sample": [
+        "PT101-S2-Q3",
+        "PT101-S2-Q10",
+        "PT101-S2-Q12",
+        "PT101-S2-Q15",
+        "PT101-S3-Q3"
+      ],
+      "classification": "ready",
+      "has_override": true,
+      "notes": [
+        "pool widened by dropping feature constraint"
+      ]
+    },
+    {
+      "slug": "w3-09-assumption-family-easier-set-4",
+      "title": "Assumption Family (Easier) Set 4",
+      "week": 3,
+      "category": "Process",
+      "question_count": 6,
+      "current_question_types": [
+        "Sufficient Assumption",
+        "Necessary Assumption",
+        "Principle",
+        "Flaw",
+        "Strengthen",
+        "Weaken",
+        "Evaluate"
+      ],
+      "current_question_features": [
+        "Idea Math vs Courtroom Debate"
+      ],
+      "target_types": [
+        "Sufficient Assumption",
+        "Necessary Assumption",
+        "Principle-Conform",
+        "Flaw",
+        "Strengthen",
+        "Weaken",
+        "Evaluate"
+      ],
+      "target_features": [
+        "Missing Link / Idea",
+        "Argue the Anti-Conclusion"
+      ],
+      "blended": true,
+      "relaxation": "strict",
+      "final_question_types": [
+        "Sufficient Assumption",
+        "Necessary Assumption",
+        "Principle-Conform",
+        "Flaw",
+        "Strengthen",
+        "Weaken",
+        "Evaluate"
+      ],
+      "final_question_features": [
+        "Missing Link / Idea",
+        "Argue the Anti-Conclusion"
+      ],
+      "final_reasoning_types": [
+        "Conditional Logic",
+        "Comparison"
+      ],
+      "difficulty_min": 1,
+      "difficulty_max": 3,
+      "pool_available": 337,
+      "pool_sample": [
+        "PT101-S2-Q6",
+        "PT101-S3-Q5",
+        "PT101-S3-Q13",
+        "PT101-S3-Q19",
+        "PT102-S2-Q9"
+      ],
+      "classification": "blended",
+      "has_override": false,
+      "notes": []
+    },
+    {
+      "slug": "w3-10-fill-in-the-blank-logical-completion-first-taste",
+      "title": "Fill in the Blank (Logical Completion) - First Taste",
+      "week": 3,
+      "category": "Pacing",
+      "question_count": 4,
+      "current_question_types": [
+        "Fill in the Blank"
+      ],
+      "current_question_features": [
+        "Logical Completion"
+      ],
+      "target_types": [
+        "Most Strongly Supported"
+      ],
+      "target_features": [
+        "Logical Completion"
+      ],
+      "blended": false,
+      "relaxation": "strict",
+      "final_question_types": [
+        "Most Strongly Supported"
+      ],
+      "final_question_features": [
+        "Logical Completion"
+      ],
+      "final_reasoning_types": [
+        "Comparison"
+      ],
+      "difficulty_min": 1,
+      "difficulty_max": 3,
+      "pool_available": 51,
+      "pool_sample": [
+        "PT102-S2-Q3",
+        "PT113-S2-Q9",
+        "PT113-S4-Q1",
+        "PT115-S2-Q6",
+        "PT119-S4-Q7"
+      ],
+      "classification": "ready",
+      "has_override": false,
+      "notes": []
+    },
+    {
+      "slug": "w3-11-complete-the-analogy-set-1",
+      "title": "Complete the Analogy (set 1)",
+      "week": 3,
+      "category": "Process",
+      "question_count": 5,
+      "current_question_types": [
+        "Fill in the Blank"
+      ],
+      "current_question_features": [
+        "Complete the Analogy"
+      ],
+      "target_types": [
+        "Most Strongly Supported"
+      ],
+      "target_features": [
+        "Analogies"
+      ],
+      "blended": false,
+      "relaxation": "strict",
+      "final_question_types": [
+        "Most Strongly Supported"
+      ],
+      "final_question_features": [
+        "Analogies"
+      ],
+      "final_reasoning_types": [
+        "Comparison"
+      ],
+      "difficulty_min": 1,
+      "difficulty_max": 3,
+      "pool_available": 19,
+      "pool_sample": [
+        "PT119-S4-Q7",
+        "PT123-S2-Q3",
+        "PT129-S2-Q18",
+        "PT133-S2-Q5",
+        "PT134-S2-Q13"
+      ],
+      "classification": "ready",
+      "has_override": false,
+      "notes": []
+    },
+    {
+      "slug": "w3-12-conditional-logic-easier-set-2",
+      "title": "Conditional Logic (Easier) Set 2",
+      "week": 3,
+      "category": "Process",
+      "question_count": 7,
+      "current_question_types": [
+        "Mixed LR question types"
+      ],
+      "current_question_features": [
+        "Conditional Logic"
+      ],
+      "target_types": [
+        "Most Strongly Supported",
+        "Must Be True",
+        "Sufficient Assumption",
+        "Parallel Reasoning",
+        "Parallel Flaw",
+        "Principle-Strengthen",
+        "Principle-Conform",
+        "Flaw"
+      ],
+      "target_features": [
+        "Conditional Diagramming"
+      ],
+      "blended": true,
+      "relaxation": "strict",
+      "final_question_types": [
+        "Most Strongly Supported",
+        "Must Be True",
+        "Sufficient Assumption",
+        "Parallel Reasoning",
+        "Parallel Flaw",
+        "Principle-Strengthen",
+        "Principle-Conform",
+        "Flaw"
+      ],
+      "final_question_features": [
+        "Conditional Diagramming"
+      ],
+      "final_reasoning_types": [
+        "Conditional Logic"
+      ],
+      "difficulty_min": 2,
+      "difficulty_max": 3,
+      "pool_available": 81,
+      "pool_sample": [
+        "PT101-S3-Q21",
+        "PT103-S2-Q16",
+        "PT104-S4-Q7",
+        "PT106-S1-Q14",
+        "PT106-S2-Q15"
+      ],
+      "classification": "blended",
+      "has_override": false,
+      "notes": []
+    },
+    {
+      "slug": "w3-13-weaken-comparison",
+      "title": "Weaken + Comparison",
+      "week": 3,
+      "category": "Process",
+      "question_count": 6,
+      "current_question_types": [
+        "Weaken"
+      ],
+      "current_question_features": [
+        "Weaken + Comparison"
+      ],
+      "target_types": [
+        "Weaken"
+      ],
+      "target_features": [
+        "Assumes Difference",
+        "Assumes Similarity"
+      ],
+      "blended": false,
+      "relaxation": "band±1",
+      "final_question_types": [
+        "Weaken"
+      ],
+      "final_question_features": [
+        "Assumes Difference",
+        "Assumes Similarity"
+      ],
+      "final_reasoning_types": [
+        "Comparison"
+      ],
+      "difficulty_min": 1,
+      "difficulty_max": 4,
+      "pool_available": 23,
+      "pool_sample": [
+        "PT103-S2-Q5",
+        "PT106-S3-Q17",
+        "PT107-S4-Q9",
+        "PT110-S2-Q17",
+        "PT111-S4-Q20"
+      ],
+      "classification": "ready",
+      "has_override": false,
+      "notes": []
+    },
+    {
+      "slug": "w3-14-complete-the-analogy-set-2",
+      "title": "Complete the Analogy (set 2)",
+      "week": 3,
+      "category": "Process",
+      "question_count": 9,
+      "current_question_types": [
+        "Necessary Assumption",
+        "Strengthen",
+        "Principle",
+        "Most Supported",
+        "Flaw",
+        "Weaken"
+      ],
+      "current_question_features": [
+        "Complete the Analogy"
+      ],
+      "target_types": [
+        "Necessary Assumption",
+        "Strengthen",
+        "Principle-Conform",
+        "Most Strongly Supported",
+        "Flaw",
+        "Weaken"
+      ],
+      "target_features": [
+        "Analogies"
+      ],
+      "blended": true,
+      "relaxation": "strict",
+      "final_question_types": [
+        "Necessary Assumption",
+        "Strengthen",
+        "Principle-Conform",
+        "Most Strongly Supported",
+        "Flaw",
+        "Weaken"
+      ],
+      "final_question_features": [
+        "Analogies"
+      ],
+      "final_reasoning_types": [
+        "Comparison"
+      ],
+      "difficulty_min": 1,
+      "difficulty_max": 3,
+      "pool_available": 51,
+      "pool_sample": [
+        "PT101-S3-Q2",
+        "PT103-S3-Q11",
+        "PT107-S3-Q1",
+        "PT111-S3-Q8",
+        "PT114-S2-Q5"
+      ],
+      "classification": "blended",
+      "has_override": false,
+      "notes": []
+    },
+    {
+      "slug": "w3-15-role-main-conclusion-set-1",
+      "title": "Role + Main Conclusion (set 1)",
+      "week": 3,
+      "category": "Process",
+      "question_count": 7,
+      "current_question_types": [
+        "Role",
+        "Main Conclusion"
+      ],
+      "current_question_features": [
+        "Role + Main Conclusion"
+      ],
+      "target_types": [
+        "Role",
+        "Main Conclusion"
+      ],
+      "target_features": [],
+      "blended": false,
+      "relaxation": "strict",
+      "final_question_types": [
+        "Role",
+        "Main Conclusion"
+      ],
+      "final_question_features": [],
+      "final_reasoning_types": [
+        "Comparison"
+      ],
+      "difficulty_min": 1,
+      "difficulty_max": 2,
+      "pool_available": 123,
+      "pool_sample": [
+        "PT101-S2-Q10",
+        "PT101-S2-Q15",
+        "PT102-S2-Q1",
+        "PT103-S3-Q4",
+        "PT105-S1-Q1"
+      ],
+      "classification": "ready",
+      "has_override": false,
+      "notes": []
+    },
+    {
+      "slug": "w10-assumption-family-medium-set-2",
+      "title": "Assumption Family (Medium) Set 2",
+      "week": 10,
+      "category": "Process",
+      "question_count": 10,
+      "current_question_types": [
+        "Sufficient Assumption",
+        "Necessary Assumption",
+        "Principle-Strengthen",
+        "Strengthen",
+        "Weaken",
+        "Flaw",
+        "Evaluate"
+      ],
+      "current_question_features": [
+        "Three Main Reasoning Structures"
+      ],
+      "target_types": [
+        "Sufficient Assumption",
+        "Necessary Assumption",
+        "Principle-Strengthen",
+        "Strengthen",
+        "Weaken",
+        "Flaw",
+        "Evaluate"
+      ],
+      "target_features": [
+        "Conditional Diagramming",
+        "Explain Curious Fact",
+        "Assumes Similarity"
+      ],
+      "blended": true,
+      "relaxation": "strict",
+      "final_question_types": [
+        "Sufficient Assumption",
+        "Necessary Assumption",
+        "Principle-Strengthen",
+        "Strengthen",
+        "Weaken",
+        "Flaw",
+        "Evaluate"
+      ],
+      "final_question_features": [
+        "Conditional Diagramming",
+        "Explain Curious Fact",
+        "Assumes Similarity"
+      ],
+      "final_reasoning_types": [
+        "Causation",
+        "Comparison"
+      ],
+      "difficulty_min": 3,
+      "difficulty_max": 4,
+      "pool_available": 212,
+      "pool_sample": [
+        "PT101-S3-Q22",
+        "PT102-S2-Q10",
+        "PT102-S3-Q9",
+        "PT102-S4-Q9",
+        "PT102-S4-Q24"
+      ],
+      "classification": "blended",
+      "has_override": false,
+      "notes": []
+    },
+    {
+      "slug": "w11-explain-curious-fact-easier-set-2",
+      "title": "Explain Curious Fact (Easier) Set 2",
+      "week": 11,
+      "category": "Pacing",
+      "question_count": 6,
+      "current_question_types": [
+        "Explain Curious Fact"
+      ],
+      "current_question_features": [
+        "Explain Curious Fact"
+      ],
+      "target_types": [
+        "Paradox"
+      ],
+      "target_features": [
+        "Explain Curious Fact"
+      ],
+      "blended": false,
+      "relaxation": "keep-type",
+      "final_question_types": [
+        "Paradox"
+      ],
+      "final_question_features": [],
+      "final_reasoning_types": [
+        "Comparison",
+        "Causation"
+      ],
+      "difficulty_min": 1,
+      "difficulty_max": 5,
+      "pool_available": 212,
+      "pool_sample": [
+        "PT101-S2-Q18",
+        "PT101-S3-Q14",
+        "PT102-S2-Q14",
+        "PT102-S2-Q17",
+        "PT102-S3-Q5"
+      ],
+      "classification": "ready",
+      "has_override": false,
+      "notes": [
+        "pool widened by dropping feature constraint"
+      ]
+    },
+    {
+      "slug": "w10-famous-flaws-easier",
+      "title": "Famous Flaws (Easier)",
+      "week": 10,
+      "category": "Process",
+      "question_count": 5,
+      "current_question_types": [
+        "Flaw"
+      ],
+      "current_question_features": [
+        "Famous Flaws"
+      ],
+      "target_types": [
+        "Flaw"
+      ],
+      "target_features": [
+        "Famous Flaws"
+      ],
+      "blended": false,
+      "relaxation": "strict",
+      "final_question_types": [
+        "Flaw"
+      ],
+      "final_question_features": [
+        "Famous Flaws"
+      ],
+      "final_reasoning_types": [
+        "Comparison"
+      ],
+      "difficulty_min": 1,
+      "difficulty_max": 2,
+      "pool_available": 112,
+      "pool_sample": [
+        "PT102-S3-Q1",
+        "PT102-S4-Q4",
+        "PT103-S1-Q3",
+        "PT103-S2-Q1",
+        "PT103-S2-Q4"
+      ],
+      "classification": "ready",
+      "has_override": false,
+      "notes": []
+    },
+    {
+      "slug": "w10-famous-flaws-easier-set-2",
+      "title": "Famous Flaws (Easier) Set 2",
+      "week": 10,
+      "category": "Pacing",
+      "question_count": 5,
+      "current_question_types": [
+        "Flaw"
+      ],
+      "current_question_features": [
+        "Famous Flaws"
+      ],
+      "target_types": [
+        "Flaw"
+      ],
+      "target_features": [
+        "Famous Flaws"
+      ],
+      "blended": false,
+      "relaxation": "strict",
+      "final_question_types": [
+        "Flaw"
+      ],
+      "final_question_features": [
+        "Famous Flaws"
+      ],
+      "final_reasoning_types": [
+        "Comparison"
+      ],
+      "difficulty_min": 1,
+      "difficulty_max": 2,
+      "pool_available": 112,
+      "pool_sample": [
+        "PT102-S3-Q1",
+        "PT102-S4-Q4",
+        "PT103-S1-Q3",
+        "PT103-S2-Q1",
+        "PT103-S2-Q4"
+      ],
+      "classification": "ready",
+      "has_override": false,
+      "notes": []
+    },
+    {
+      "slug": "w12-missing-links-set-2",
+      "title": "Missing Links Set 2",
+      "week": 12,
+      "category": "Process",
+      "question_count": 6,
+      "current_question_types": [
+        "Sufficient Assumption",
+        "Necessary Assumption",
+        "Principle-Strengthen"
+      ],
+      "current_question_features": [
+        "Missing Links"
+      ],
+      "target_types": [
+        "Sufficient Assumption",
+        "Necessary Assumption",
+        "Principle-Strengthen"
+      ],
+      "target_features": [
+        "Missing Link / Idea"
+      ],
+      "blended": false,
+      "relaxation": "strict",
+      "final_question_types": [
+        "Sufficient Assumption",
+        "Necessary Assumption",
+        "Principle-Strengthen"
+      ],
+      "final_question_features": [
+        "Missing Link / Idea"
+      ],
+      "final_reasoning_types": [
+        "Conditional Logic"
+      ],
+      "difficulty_min": 3,
+      "difficulty_max": 5,
+      "pool_available": 183,
+      "pool_sample": [
+        "PT101-S2-Q9",
+        "PT101-S2-Q21",
+        "PT101-S2-Q24",
+        "PT101-S3-Q10",
+        "PT101-S3-Q19"
+      ],
+      "classification": "ready",
+      "has_override": false,
+      "notes": []
+    },
+    {
+      "slug": "w13-describing-arguments-match-family",
+      "title": "Describing Arguments (Match Family)",
+      "week": 13,
+      "category": "Process",
+      "question_count": 10,
+      "current_question_types": [
+        "Role",
+        "Method",
+        "Main Conclusion"
+      ],
+      "current_question_features": [
+        "Describing Arguments"
+      ],
+      "target_types": [
+        "Role",
+        "Method of Reasoning",
+        "Main Conclusion"
+      ],
+      "target_features": [
+        "Focused on Evidence"
+      ],
+      "blended": false,
+      "relaxation": "keep-type",
+      "final_question_types": [
+        "Role",
+        "Method of Reasoning",
+        "Main Conclusion"
+      ],
+      "final_question_features": [],
+      "final_reasoning_types": [
+        "Comparison"
+      ],
+      "difficulty_min": 1,
+      "difficulty_max": 5,
+      "pool_available": 407,
+      "pool_sample": [
+        "PT101-S2-Q3",
+        "PT101-S2-Q10",
+        "PT101-S2-Q12",
+        "PT101-S2-Q15",
+        "PT101-S3-Q3"
+      ],
+      "classification": "ready",
+      "has_override": true,
+      "notes": [
+        "pool widened by dropping feature constraint"
+      ]
+    }
+  ]
+}
