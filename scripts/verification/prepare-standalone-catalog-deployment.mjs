@@ -1,0 +1,53 @@
+import {readFile,writeFile} from 'node:fs/promises';
+import {createHash} from 'node:crypto';
+import {resolve} from 'node:path';
+import {preservingDeployment} from './build-preserving-deployment.mjs';
+const directory=resolve('docs/implementation-plans/artifacts');
+const names=['practice_test_runs','attempts','bootcamp_kv','section_history','rc_drill_sessions','rc_attempts','wrong_answer_journal','profiles','user_roles','practice_test_assignments','timed_pt_configuration_v1','timed_content_manifests_v1','timed_pt_receipts_v1','timed_pt_lr_bindings_v1','timed_section_configuration_v1','timed_section_sittings_v1','timed_section_receipts_v1','timed_section_source_bindings_v1','review_episodes_v1','review_episode_events_v1','intro_lr_attempts'];
+const catalog=JSON.parse(await readFile(resolve(directory,'timed-section-all-sections-v2.generated.json'),'utf8'));
+const common=`with preserved as (
+${names.map(name=>`select '${name}' table_name,count(*) row_count,md5(coalesce(string_agg(md5(to_jsonb(t)::text),'' order by md5(to_jsonb(t)::text)),'')) digest from public.${name} t`).join('\nunion all\n')}
+), unchanged_functions as (
+ select md5(coalesce(string_agg(pg_get_functiondef(p.oid)||coalesce(p.proacl::text,'')||p.proowner::text,'' order by p.oid),'')) digest
+ from pg_proc p join pg_namespace n on n.oid=p.pronamespace where n.nspname='public' and p.prokind='f'
+ and p.proname not in ('create_timed_section_v1','guard_timed_section_foundation_v1','guard_timed_section_catalog_v1')
+), unchanged_policies as (
+ select md5(coalesce(string_agg(to_jsonb(p)::text,'' order by tablename,policyname),'')) digest
+ from pg_policies p where schemaname='public' and tablename<>'timed_section_content_manifests_v1'
+), memberships as (
+ select md5(coalesce(string_agg(to_jsonb(m)::text,'' order by oid),'')) digest from pg_auth_members m
+ where roleid in(select oid from pg_roles where rolname in ('timed_pt_executor','timed_section_executor'))
+)
+select jsonb_build_object(
+ 'preservedTables',(select jsonb_agg(to_jsonb(p) order by table_name) from preserved p),
+ 'unchangedFunctions',(select digest from unchanged_functions),
+ 'unchangedPolicies',(select digest from unchanged_policies),
+ 'executorMemberships',(select digest from memberships),
+ 'publicSchemaAcl',(select nspacl::text from pg_namespace where nspname='public'),
+ 'ptConfiguration',(select to_jsonb(c) from public.timed_pt_configuration_v1 c),
+ 'sectionConfiguration',(select to_jsonb(c) from public.timed_section_configuration_v1 c),
+ 'ordinaryExecutorSet',pg_has_role('authenticated','timed_section_executor','SET'),
+ 'ordinaryExecutorInherit',pg_has_role('authenticated','timed_section_executor','USAGE'),
+ 'standaloneSittingCount',(select count(*) from public.timed_section_sittings_v1),
+ 'standaloneCatalogExists',to_regclass('public.timed_section_content_manifests_v1') is not null
+ ) preservation_snapshot;\n`;
+const post=`${common}
+select jsonb_build_object(
+ 'fullCatalogHash','${catalog.manifestSha256}',
+ 'fullCatalogSections',(select count(*) from public.timed_section_content_manifests_v1 where manifest_sha256='${catalog.manifestSha256}'),
+ 'fullCatalogKinds',(select jsonb_object_agg(kind,total) from(select kind,count(*) total from public.timed_section_content_manifests_v1 where manifest_sha256='${catalog.manifestSha256}' group by kind) kinds),
+ 'allOldDefinitionsCopied',not exists(select 1 from public.timed_content_manifests_v1 m,lateral jsonb_array_elements(m.blueprint->'legs') leg
+ where not exists(select 1 from public.timed_section_content_manifests_v1 c where c.manifest_sha256=m.manifest_sha256 and c.pt=m.pt and c.kind=leg->>'kind' and c.section=(leg->>'section')::integer and c.definition=leg)),
+ 'allSittingFrozenDefinitionsMatch',not exists(select 1 from public.timed_section_sittings_v1 s where not exists(select 1 from public.timed_section_content_manifests_v1 c where c.manifest_sha256=s.manifest_sha256 and c.pt=s.pt and c.kind=s.kind and c.section=s.section and c.definition=s.frozen_source)),
+ 'ordinaryCatalogSelect',has_table_privilege('authenticated','public.timed_section_content_manifests_v1','SELECT'),
+ 'ordinaryCatalogInsert',has_table_privilege('authenticated','public.timed_section_content_manifests_v1','INSERT'),
+ 'executorCatalogInsert',has_table_privilege('timed_section_executor','public.timed_section_content_manifests_v1','INSERT'),
+ 'standaloneForeignKeys',(select jsonb_agg(pg_get_constraintdef(oid) order by conname) from pg_constraint where conrelid='public.timed_section_sittings_v1'::regclass and contype='f')
+) catalog_install_evidence;\n`;
+const artifacts=await Promise.all(['2026-09-30-standalone-section-catalog-upgrade.sql','timed-section-all-sections-v2.generated.sql'].map(name=>readFile(resolve(directory,name),'utf8')));
+const combined=preservingDeployment(artifacts,names);
+const outputIndex=process.argv.indexOf('--output');if(outputIndex<0)throw new Error('Pass --output absolute temp SQL path');
+const output=resolve(process.argv[outputIndex+1]);await writeFile(output,combined);
+await writeFile(resolve(directory,'2026-09-30-standalone-catalog-preflight.sql'),'-- Read-only fresh baseline. Compare with post-install snapshot.\n'+common);
+await writeFile(resolve(directory,'2026-09-30-standalone-catalog-postinstall.sql'),'-- Read-only proof. Configuration remains selected on the prior catalog.\n'+post);
+console.log(JSON.stringify({output,sha256:createHash('sha256').update(combined).digest('hex'),bytes:Buffer.byteLength(combined),preservedTables:names,catalogHash:catalog.manifestSha256,sections:236,activation:false}));

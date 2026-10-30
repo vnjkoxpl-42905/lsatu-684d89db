@@ -1,0 +1,51 @@
+/* Shared working rows keep lesson choice and practice choice in the same frame. */
+.oc-course-screen .oc-browse{font-family:"LSATU Inter",system-ui,sans-serif;--font-mc-sans:"LSATU Inter",system-ui,sans-serif}
+.oc-browse .oc-back{margin-bottom:22px}
+.oc-browse .oc-browse-summary{display:flex;align-items:center;justify-content:space-between;gap:20px;font-variant-numeric:tabular-nums;margin:16px 0 22px}
+.oc-browse-summary>.oc-topic-progress{width:180px;flex:0 1 180px;margin:0}
+.oc-browse .oc-index-filters{margin:0;max-width:none}
+.oc-browse .oc-browse-toolbar{margin:0 0 22px;align-items:flex-start}
+.oc-browse-toolbar:has(.conditional-filters-toggle[aria-expanded=true]) .oc-index-filters{flex:1 1 100%}
+.oc-browse .oc-browse-continue{color:var(--oc-ink);text-decoration:none;background:var(--oc-surface);padding:16px 20px;margin:0 0 26px;transition:background-color .16s}
+.oc-browse-continue>span:first-child{display:grid;gap:4px}
+.oc-browse-next-label{font-size:.8125rem;color:var(--oc-muted)}
+.oc-browse-continue strong{font-size:1rem;line-height:1.4;font-weight:600}
+.oc-browse-next-action{display:inline-flex;align-items:center;gap:12px;font-size:.875rem;font-weight:500}
+.oc-browse-continue:hover{background:var(--oc-hover)}
+.oc-browse-continue:focus-visible{outline:2px solid var(--oc-ink);outline-offset:3px}
+.oc-browse-results{font-size:.8125rem;color:var(--oc-muted);font-variant-numeric:tabular-nums;margin:0 0 12px}
+.oc-browse .oc-browse-chapter{margin:28px 0 32px}
+.oc-browse .oc-browse-chapter>h2{display:grid;gap:4px;margin:0 0 12px;font:400 1.25rem/1.3 Georgia,serif}
+.oc-browse-chapter-number{font:500 .8125rem/1.5 "LSATU Inter",system-ui,sans-serif;color:var(--oc-muted)}
+.oc-browse .oc-browse-list{border:1px solid var(--oc-line);border-radius:8px;overflow:hidden;background:var(--oc-surface)}
+.oc-browse .oc-browse-list .oc-path-step{display:block;padding:0;border-bottom:1px solid var(--oc-line)}
+.oc-browse .oc-browse-list .oc-path-step:last-child{border-bottom:0}
+.oc-browse .oc-path-step::before,.oc-browse .oc-path-station{display:none}
+.oc-browse .oc-path-row{display:grid;grid-template-columns:minmax(0,1fr) 100px 50px 16px;gap:18px;min-height:96px;padding:18px 22px;border-radius:0;text-decoration:none}
+.oc-browse .oc-path-text{gap:5px}
+.oc-browse .oc-path-title,.oc-browse .oc-path-step[data-kind=drill] .oc-path-title{font:600 1rem/1.45 "LSATU Inter",system-ui,sans-serif;color:var(--oc-ink)}
+.oc-browse .oc-path-kicker{font-size:.75rem;line-height:1.4;font-variant-numeric:tabular-nums}
+.oc-browse .oc-path-summary{max-width:65ch;font-size:.875rem;line-height:1.55}
+.oc-browse .oc-path-status{font-size:.75rem;font-weight:400;color:var(--oc-muted)}
+.oc-browse .oc-path-status[data-status=done]{color:var(--oc-accent)}
+.oc-browse-row-action{font-size:.8125rem;font-weight:500;text-align:right;color:var(--oc-ink)}
+.oc-browse .oc-path-arrow{opacity:1}
+.oc-browse-finished{font-size:.875rem;line-height:1.6;margin:0 0 22px;color:var(--oc-muted)}
+@media(max-width:640px){.oc-browse .oc-back{margin-bottom:18px}.oc-browse .oc-browse-summary{display:block;font-size:.8125rem}.oc-browse-summary>.oc-topic-progress{width:100%;margin-top:10px}.oc-browse .oc-browse-toolbar{gap:12px}.oc-browse .oc-browse-switch{flex:1 1 100%}.oc-browse .oc-path-row{grid-template-columns:minmax(0,1fr) auto;gap:12px;padding:18px 16px}.oc-browse .oc-path-text{grid-column:1/-1}.oc-browse .oc-path-row>span[id]{grid-row:2}.oc-browse-row-action{grid-row:2}.oc-browse .oc-path-arrow{display:none}.oc-browse .oc-browse-continue{padding:16px}.oc-browse-next-action{font-size:.8125rem}.oc-browse .oc-browse-chapter>h2{font-size:1.125rem}}
+@media(prefers-reduced-motion:reduce){.oc-browse .oc-browse-continue{transition:none}}
+
+.oc-browse-summary strong{display:inline-block;margin-left:10px;font-size:.8125rem;font-weight:500;color:var(--oc-ink)}
+
+.oc-workspace,.oc-course-drawer{font-family:"LSATU Inter",system-ui,sans-serif;--font-mc-sans:"LSATU Inter",system-ui,sans-serif}
+.oc-course-screen .oc-browse .oc-browse-header h1{font:400 1.75rem/1.15 Georgia,serif;letter-spacing:-.025em;margin:0 0 10px}
+@media(max-width:640px){.oc-course-screen .oc-browse .oc-browse-header h1{font-size:1.5rem}}
+
+/* A content switch must keep its frame, type scale and chapter summary in place. */
+.oc-course-screen .oc-browse{max-width:860px;margin-inline:auto;padding-top:0}
+.oc-course-screen .oc-browse .oc-browse-description{font-size:.9375rem;line-height:1.65;margin:0}
+.oc-course-screen .oc-browse .co-card-collection>header{margin:0 0 12px;padding:0;display:block}
+.oc-course-screen .oc-browse .co-card-collection>header p{font-size:.8125rem;line-height:1.5;margin:4px 0 0}
+.oc-course-screen .oc-browse .co-card-collection li p{font-size:.875rem;line-height:1.55;margin:4px 0 0}
+.oc-course-screen .oc-browse .co-card-collections{margin-top:24px;gap:26px}
+.oc-workspace .oc-course-rail nav :is(p,a,span),.oc-course-drawer nav :is(p,a,span),.oc-workspace .oc-course-screen select{font-family:"LSATU Inter",system-ui,sans-serif}
+.oc-course-screen .oc-browse .oc-browse-header{margin:0 0 20px}

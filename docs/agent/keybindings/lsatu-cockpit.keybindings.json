@@ -1,0 +1,28 @@
+[
+  {
+    "key": "cmd+alt+c",
+    "command": "chatgpt.newCodexPanel"
+  },
+  {
+    "key": "cmd+alt+a",
+    "command": "claude-vscode.focus"
+  },
+  {
+    "key": "cmd+alt+t",
+    "command": "workbench.action.terminal.toggleTerminal"
+  },
+  {
+    "key": "cmd+alt+b",
+    "command": "simpleBrowser.show",
+    "args": "http://localhost:8080"
+  },
+  {
+    "key": "cmd+alt+r",
+    "command": "workbench.action.tasks.reRunTask"
+  },
+  {
+    "key": "cmd+alt+v",
+    "command": "workbench.action.tasks.runTask",
+    "args": "verify-current-lane"
+  }
+]

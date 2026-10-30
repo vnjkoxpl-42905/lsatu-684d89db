@@ -1,0 +1,1 @@
+GRANT UPDATE (onboarding, onboarding_completed_at) ON public.profiles TO authenticated;
