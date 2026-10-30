@@ -95,7 +95,8 @@ const difficultyLabel = (difficulty: number) => difficulty <= 2 ? 'Easy' : diffi
 const COL = {
   select: 48,
   pt: 84,
-  sectionQ: 104,
+  section: 76,
+  qnum: 52,
   type: 164,
   level: 100,
 } as const;
@@ -1081,7 +1082,8 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
             <colgroup>
               <col style={{ width: COL.select }} />
               <col style={{ width: COL.pt }} />
-              <col style={{ width: COL.sectionQ }} />
+              <col style={{ width: COL.section }} />
+              <col style={{ width: COL.qnum }} />
               <col style={{ minWidth: STEM_MIN_WIDTH }} />
               <col style={{ width: COL.type }} />
               <col style={{ width: COL.level }} />
@@ -1110,9 +1112,10 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
                   />
                 </TableHead>
                 <TableHead>PrepTest</TableHead>
-                {/* Sec and Q# merged. Two headers cost ~112px to show four
-                    characters of data; one column shows the same as `2 · 14`. */}
-                <TableHead>Section / question</TableHead>
+                {/* Split on 2026-10-29 so each is labelled like its neighbours.
+                    16px padding (not the cell's 32) keeps the pair to 128px. */}
+                <TableHead className="px-2">Section</TableHead>
+                <TableHead className="px-2">Q#</TableHead>
                 <TableHead>Question</TableHead>
                 <TableHead>Type</TableHead>
                 <TableHead
@@ -1125,10 +1128,9 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
             <TableBody>
               {paginatedQuestions.length === 0 ? (
                 <TableRow>
-                  {/* Six columns, with section and question sharing a column. Under
-                      `table-layout: fixed` an extra column would mint an
-                      anonymous eighth column and skew every width. */}
-                  <TableCell colSpan={6} className="text-center py-12 text-muted-foreground">
+                  {/* Seven columns. Under `table-layout: fixed` a colSpan
+                      short of the real count would skew every width. */}
+                  <TableCell colSpan={7} className="text-center py-12 text-muted-foreground">
                     {discoverySearch.trim() ? 'No questions match this search' : 'No questions match your choices'}
                   </TableCell>
                 </TableRow>
@@ -1150,11 +1152,8 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
                       />
                     </TableCell>
                     <TableCell className="py-0 font-medium tabular-nums">{q.pt}</TableCell>
-                    <TableCell className="py-0 tabular-nums text-muted-foreground">
-                      <span className="text-foreground">{q.section}</span>
-                      <span className="px-1 opacity-40">·</span>
-                      <span className="text-foreground">{q.qnum}</span>
-                    </TableCell>
+                    <TableCell className="px-2 py-0 tabular-nums">{q.section}</TableCell>
+                    <TableCell className="px-2 py-0 tabular-nums">{q.qnum}</TableCell>
                     <TableCell className="py-0 text-sm">
                       {/* The column is the clamp now; a fixed max-width here
                           would stop the stem growing with the table. */}
