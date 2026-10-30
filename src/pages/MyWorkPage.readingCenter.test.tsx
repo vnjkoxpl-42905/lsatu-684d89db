@@ -1,3 +1,4 @@
+vi.mock('@/components/my-work/MyWorkTabCount', () => ({ MyWorkTabCount: () => null }));
 vi.mock('@/hooks/useStudentWorkState', () => ({ useAssignmentGroupAcknowledgment: vi.fn() }));
 import React from 'react';
 import { act, render, screen, waitFor } from '@testing-library/react';
@@ -45,7 +46,7 @@ beforeEach(() => {
 
 describe('My Work with a specific Reading Center grant', () => {
   it('shows only the assigned tool without broad Classroom access or weekly plans', async () => {
-    open(); expect(await screen.findByRole('link', { name: /Reading Center Five reading modes In progress/ })).toHaveAttribute('href', '/reading-center');
+    open(); expect(await screen.findByRole('link', { name: /Reading Center Five reading modes/ })).toHaveAttribute('href', '/reading-center');
     expect(screen.queryByText('Other coursework')).toBeNull(); expect(screen.queryByText('Weekly plan')).toBeNull();
     expect(screen.queryByText('Wrong source')).toBeNull();
     expect(screen.getByText('1 to do')).toBeTruthy();

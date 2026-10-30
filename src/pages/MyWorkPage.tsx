@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link, useLocation, useSearchParams } from "react-router-dom";
 import { ArrowRight, Search } from 'lucide-react';
 import { routeWithReturnTo, useAssignedTodoFeed } from "@/hooks/useAssignedTodoFeed";
@@ -6,7 +6,7 @@ import PrescribedWeek from "@/components/classroom/PrescribedWeek";
 import { useUserPermissions } from '@/hooks/useUserPermissions';
 import { useReadingCenterAccess } from '@/hooks/useReadingCenterAccess';
 import { READING_CENTER_SOURCE } from '@/lib/readingCenterAccess';
-import { groupAssignedWork, workKindLabel, workDateLabel, WORK_SUBJECT_LABELS, WORK_KINDS } from '@/components/my-work/assignedWorkOrganization';
+import { groupAssignedWork, workDisplayState, workProgressLine, WORK_ACTION_LABEL, workKindLabel, workDateLabel, WORK_SUBJECT_LABELS, WORK_KINDS } from '@/components/my-work/assignedWorkOrganization';
 import { WorkFilterSelect } from '@/components/my-work/WorkFilterSelect';
 import { notifyClassroomListIntent } from '@/hooks/useClassroomMotion';
 import AssignmentUpdate from '@/components/my-work/AssignmentUpdate';
@@ -44,7 +44,8 @@ function MyWorkList({ completed, generalAccess, readingCenterAllowed }: { comple
   const search = params.get('q') ?? '';
   const requestedSubject = params.get('subject') ?? '';
   const requestedKind = params.get('kind') ?? '';
-  const { rows, loading, failed, retry, evidenceWarnings = [] } = useAssignedTodoFeed();  const visible = rows.filter((row) => row.sourceTable === READING_CENTER_SOURCE
+  const { rows, loading, failed, retry, evidenceWarnings = [] } = useAssignedTodoFeed();
+  const visible = rows.filter((row) => row.sourceTable === READING_CENTER_SOURCE
     ? readingCenterAllowed && row.refId === 'library'
     : generalAccess).filter((row) => (row.status === "completed") === completed);
   // A selected filter is intent, independent of partial feed contents and completion.
@@ -61,6 +62,16 @@ function MyWorkList({ completed, generalAccess, readingCenterAllowed }: { comple
     recoverFilterKeyboard.current = false;
   });
   const hasFilters = Boolean(search || subject || kind);
+  // Say where finished work went, so a row leaving this list never looks like a loss.
+  const completedKeys = useRef<Set<string> | null>(null);
+  const [movedCount, setMovedCount] = useState(0);
+  useEffect(() => {
+    if (loading) return;
+    const now = new Set(rows.filter((row) => row.status === 'completed').map((row) => row.key));
+    const before = completedKeys.current;
+    completedKeys.current = now;
+    if (before) { const added = [...now].filter((key) => !before.has(key)).length; if (added > 0) setMovedCount(added); }
+  }, [rows, loading]);
   const matches = visible.filter((row) => (!subject || (row.workSection ?? 'unknown') === subject) && (!kind || workKindLabel(row) === kind) && `${row.title} ${row.subtitle ?? ''} ${workKindLabel(row)}`.toLocaleLowerCase().includes(search.trim().toLocaleLowerCase()));
   const groups = groupAssignedWork(matches, completed);
   function updateFilter(key: string, value: string, focusedWithin = false, modality: 'keyboard' | 'pointer' = 'pointer') {
@@ -82,6 +93,7 @@ function MyWorkList({ completed, generalAccess, readingCenterAllowed }: { comple
 
   return (
     <section ref={sectionRef} data-work-sync="issuance-read-owner-20261028" tabIndex={-1} className="student-work-list my-work-organized" aria-label={completed ? "Completed work" : "Work to do"}>
+      {movedCount > 0 && !completed && <p className="my-work-moved" role="status">Moved to Completed. <Link to="/my-work/completed">See it</Link> <button type="button" className="my-work-retry-button" onClick={() => setMovedCount(0)}>Dismiss</button></p>}
       {failed && (
         <div className="student-destination-message" role="alert">
           <p>{rows.length === 0 ? "We could not load your assignments or confirm whether any match these filters." : evidenceWarnings.length > 0 ? `Could not confirm ${evidenceWarnings.join(", ")}. Available saved work is still shown.` : "Some assignments could not refresh. Your saved work is still shown."}</p>
@@ -104,10 +116,11 @@ function MyWorkList({ completed, generalAccess, readingCenterAllowed }: { comple
                 <span>
                   <strong>{row.title}{!completed && row.isUnread ? <span className="my-work-unread-label">Unread</span> : null}</strong>
                   <small>{row.subtitle}</small>
-                  <span className="my-work-row-meta">{!completed && row.openedAt && !row.isUnread ? <span>Read</span> : null}{row.title !== workKindLabel(row) && <span>{workKindLabel(row)}</span>}{workDateLabel(row.createdAt) && <span>Assigned <time dateTime={row.createdAt}>{workDateLabel(row.createdAt)}</time></span>}{row.dueAt && workDateLabel(row.dueAt) && <span className="my-work-due">Due <time dateTime={row.dueAt}>{workDateLabel(row.dueAt)}</time></span>}</span>
+                  <span className="my-work-row-meta"><span className="my-work-progress-line">{workProgressLine(row)}</span>{row.title !== workKindLabel(row) && <span>{workKindLabel(row)}</span>}{workDateLabel(row.createdAt) && <span>Assigned <time dateTime={row.createdAt}>{workDateLabel(row.createdAt)}</time></span>}{row.dueAt && workDateLabel(row.dueAt) && <span className="my-work-due">Due <time dateTime={row.dueAt}>{workDateLabel(row.dueAt)}</time></span>}</span>
                 </span>
-                <span className="my-work-row-action"><span className="student-work-status">{row.progressUnverified ? "Progress unverified" : row.status === "in_progress" ? "In progress" : completed ? "Completed" : "Assigned"}</span><ArrowRight size={18} aria-hidden="true" /></span>
+                <span className="my-work-row-action"><span className={`my-work-row-button my-work-row-button-${workDisplayState(row)}`}>{WORK_ACTION_LABEL[workDisplayState(row)]}</span><ArrowRight size={18} aria-hidden="true" /></span>
               </Link>
+              {row.progressUnverified && <p className="my-work-retry" role="status">We couldn't check this. <button type="button" className="my-work-retry-button" onClick={retry}>Tap to retry</button></p>}
             </li>
           ))}
         </ul></section>)}</>

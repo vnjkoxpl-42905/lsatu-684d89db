@@ -88,7 +88,7 @@ it('names rejected saved progress, retains other work, and clears the warning af
   const client = new QueryClient({ defaultOptions: { queries: { retry: false } } });
   client.setQueryData(['weekly-plan', 'assigned-status', 'student-1'], { 'plan-task-1': 'assigned' });
   render(<QueryClientProvider client={client}><MemoryRouter><MyWorkPage completed={false} /></MemoryRouter></QueryClientProvider>);
-  await waitFor(() => expect(screen.getByText('Progress unverified')).toBeInTheDocument());
+  await waitFor(() => expect(screen.getByText(/couldn't check this/)).toBeInTheDocument());
   expect(screen.getByText(/Could not confirm saved assignment sessions/)).toBeInTheDocument();
   expect(screen.getByText(/shown \(list may be incomplete\)/)).toBeInTheDocument();
   expect(screen.getByText('Intro to LR')).toBeInTheDocument();

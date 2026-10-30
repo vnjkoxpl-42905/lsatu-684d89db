@@ -19,6 +19,7 @@ import { DestinationHeadingContext } from "@/contexts/DestinationHeadingContext"
 import { useReadingCenterAccess } from '@/hooks/useReadingCenterAccess';
 import { useClassroomMotion } from '@/hooks/useClassroomMotion';
 import { parseProgressWindow } from '@/hooks/useProgressWindow';
+import { MyWorkTabCount } from '@/components/my-work/MyWorkTabCount';
 
 function useDestinationPermissions(destination: Destination) {
   const permissions = useUserPermissions();
@@ -71,6 +72,7 @@ export function StudentDestination({ destination }: { destination: Destination }
           aria-current={active ? "page" : undefined}
         >
           {tab.label}
+          {destination === 'my-work' && row === 'primary' ? <MyWorkTabCount path={tab.path} readingCenterAssigned={Boolean(permissions.readingCenterAssigned)} /> : null}
         </Link>
       );
     }
@@ -100,7 +102,7 @@ export function StudentDestination({ destination }: { destination: Destination }
           <p data-motion-item>{config.introduction}</p>
         </div>
       </header>
-      <nav data-motion-skip className="student-destination-tabs" aria-label={`${config.title} sections`} aria-busy={permissions.loading || (permissions.readingCenterChecking && !permissions.has_classroom_access)}>
+      <nav data-motion-skip className={destination === 'my-work' ? "student-destination-tabs student-destination-tabs-segmented" : "student-destination-tabs"} aria-label={`${config.title} sections`} aria-busy={permissions.loading || (permissions.readingCenterChecking && !permissions.has_classroom_access)}>
         {renderTabs(config.tabs, "primary")}
       </nav>
       {destination === 'review' ? <nav className="review-hub-utilities" aria-label="Review tools">

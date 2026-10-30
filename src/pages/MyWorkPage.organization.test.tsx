@@ -176,11 +176,20 @@ describe('My Work organization', () => {
     expect(screen.queryByRole('combobox')).not.toBeInTheDocument();
   });
 
+  it('puts opened work with nothing saved in Continue without changing its status', () => {
+    state.failed = false;
+    state.rows = [row('a'), row('b', { openedAt: '2026-10-30T10:00:00Z', isUnread: false })];
+    open();
+    expect(within(screen.getByRole('region', { name: 'Continue' })).getByText('Assignment b')).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /Assignment b/ })).toHaveTextContent('Opened, not started');
+    expect(within(screen.getByRole('region', { name: 'To start' })).getByText('Assignment a')).toBeInTheDocument();
+  });
+
   it('separates reliable in-progress work, work to start and unverified progress without dropping identities', () => {
     state.failed = false;
     state.rows = [row('a'), row('b', { status: 'in_progress' }), row('c', { status: 'in_progress', progressUnverified: true })];
     open();
-    expect(within(screen.getByRole('region', { name: 'In progress' })).getByText('Assignment b')).toBeInTheDocument();
+    expect(within(screen.getByRole('region', { name: 'Continue' })).getByText('Assignment b')).toBeInTheDocument();
     expect(within(screen.getByRole('region', { name: 'To start' })).getByText('Assignment a')).toBeInTheDocument();
     expect(within(screen.getByRole('region', { name: 'Progress to confirm' })).getByText('Assignment c')).toBeInTheDocument();
     expect(screen.getAllByRole('link')).toHaveLength(3);
@@ -233,9 +242,9 @@ describe('My Work organization', () => {
  state.rows = [row('new', {isUnread:true}), row('started',{status:'in_progress',isUnread:false,openedAt:'2026-10-28T12:00:00Z'})];
  const view=open();
  expect(screen.getAllByText('Unread')).toHaveLength(1);
- expect(screen.getByRole('link', {name:/Assignment started/})).toHaveTextContent('In progress');
- expect(screen.getByRole('link', {name:/Assignment started/})).toHaveTextContent('Read');
+ expect(screen.getByRole('link', {name:/Assignment started/})).toHaveTextContent('Continue');
+ expect(screen.getByRole('link', {name:/Assignment started/})).toHaveTextContent('Started, not finished');
  view.unmount();state.rows=[row('finished',{status:'completed',isUnread:true})];open(true);
  expect(screen.queryByText('Unread')).not.toBeInTheDocument();
- expect(screen.getByText('Completed')).toBeInTheDocument();
+ expect(screen.getByText('Review')).toBeInTheDocument();
  });
