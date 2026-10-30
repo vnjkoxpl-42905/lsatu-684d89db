@@ -25,6 +25,7 @@ import "./questionFinder.css";
 import { safeRcReturnTo } from "@/features/rc/lib/rcReturnTo";
 import { questionBank, type LRQuestion } from '@/lib/questionLoader';
 import { FinderLrPreview } from './FinderLrPreview';
+import { launchDrill } from '@/lib/drillLaunch';
 import { resolveFinderAddress, resolveFinderHit, type FinderResolution } from './resolveFinderTarget';
 
 const PER_BANK_LIMIT = 6;
@@ -240,8 +241,9 @@ function FinderPanel({
     if (resolution.status !== 'ready') { setResolutionMessage({ message: resolution.message, status: resolution.status }); return; }
     targetSelected.current = true;
     if (resolution.target.bank === 'lr') {
-      onLrPreview(resolution.target.question);
+      // Opens in the regular LR runner, one question, not the read-only sheet.
       onTarget();
+      navigate(`/drill?${launchDrill({ kind: 'questions', qids: [resolution.target.question.qid], options: { returnTo } })}`);
       return;
     }
     const params = new URLSearchParams({ passage: String(resolution.target.passageId) });

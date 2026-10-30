@@ -78,7 +78,8 @@ vi.mock("@/components/drill/QuestionPicker", () => ({
   QuestionPicker: () => <div role="region" aria-label="Unified LR drill builder" />,
 }));
 
-vi.mock("@/lib/questionLoader", () => ({
+vi.mock("@/lib/questionLoader", async importOriginal => ({
+  ...(await importOriginal<typeof import("@/lib/questionLoader")>()),
   questionBank: {
     getAllQuestions: () => [
       {
@@ -178,7 +179,8 @@ describe("AcademyMainhub", () => {
     expect(screen.queryByText("Robot scene")).not.toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "Build the drill you need." })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Set up an LR drill" })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Open a question" })).toBeInTheDocument();
+    // The LR launcher hides the finder's own trigger (hideTrigger); the builder carries the search.
+    expect(screen.queryByRole("button", { name: "Find a question" })).not.toBeInTheDocument();
     expect(screen.queryByRole("button", { name: /Advanced/i })).not.toBeInTheDocument();
     expect(
       screen.getByRole("region", { name: "Practice and insight workspace" }),
@@ -193,9 +195,8 @@ describe("AcademyMainhub", () => {
     // Insights are a static list now, not a rotating carousel.
     expect(screen.getByRole("list", { name: "Insights" })).toBeInTheDocument();
     expect(screen.queryByRole("tablist", { name: "Insight slides" })).not.toBeInTheDocument();
-    // The Question finder's second mount. Without it, a student standing on the
-    // page that exists for picking questions has to go back to Home to search.
-    expect(screen.getAllByRole("button", { name: "Open a question" })).toHaveLength(1);
+    // No second finder trigger on the LR launcher; the finder mounts but stays closed.
+    expect(screen.queryAllByRole("button", { name: "Find a question" })).toHaveLength(0);
     expect(screen.getByRole("region", { name: "Assigned work" })).toBeInTheDocument();
     expect(await screen.findByText("Nothing assigned right now.")).toBeInTheDocument();
     expect(screen.queryByText("Orbital workspace")).not.toBeInTheDocument();
