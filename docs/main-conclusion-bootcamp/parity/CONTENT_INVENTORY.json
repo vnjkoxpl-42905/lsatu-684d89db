@@ -1,0 +1,475 @@
+{
+  "$schema": "./CONTENT_INVENTORY.schema.json",
+  "meta": {
+    "version": "1.0.0-gate2-draft",
+    "generated_at": "2026-04-30",
+    "generator": "Claude Code (manual authoring; build-time import script will refresh)",
+    "gate": 2,
+    "source_truth": {
+      "spec_html": "/Users/joshuaf/Documents/Claude/02_PROJECTS/lsat-u/Curriculum/Main Conclusion/_export_2026-04-29/spec.html",
+      "rules_dir": "/Users/joshuaf/Documents/Claude/02_PROJECTS/lsat-u/Curriculum/Main Conclusion/_export_2026-04-29/rules/",
+      "notes_dir": "/Users/joshuaf/Documents/Claude/02_PROJECTS/lsat-u/Curriculum/Main Conclusion/Notes/",
+      "homework_dir": "/Users/joshuaf/Documents/Claude/02_PROJECTS/lsat-u/Curriculum/Main Conclusion/Homework/",
+      "netlify_dir": "/Users/joshuaf/Documents/Claude/02_PROJECTS/lsat-u/Curriculum/Netlify/"
+    },
+    "totals": {
+      "modules": 6,
+      "lessons_M1": 13,
+      "reference_M2": 11,
+      "drills_M3": 9,
+      "simulator_M4_sections": 8,
+      "trap_traits": 7,
+      "hard_sentences_M5": 8,
+      "diagnostics_M6": 10,
+      "named_tools": 15,
+      "worked_examples_preserved_verbatim": 12,
+      "voice_passages_preserved_verbatim": 14,
+      "indicator_categories": 6,
+      "conclusion_types": 5,
+      "answer_choice_traps_legacy": 3,
+      "source_files_notes": 49,
+      "source_files_homework": 21,
+      "netlify_prototypes_unique": 5,
+      "netlify_prototypes_deployed": 6,
+      "canonical_simulator_questions": 20,
+      "items_table_A": 173,
+      "items_table_B": 12
+    },
+    "v1_status_legend": {
+      "v1": "ships in v1",
+      "v1.5": "deferred to v1.5 / LSAT U absorption",
+      "blocked": "ship-blocking question outstanding (see open_question)"
+    }
+  },
+
+  "modules": [
+    {
+      "id": "M1",
+      "name": "Lessons",
+      "route": "/lessons",
+      "tagline": "Conceptual teaching layer. 12 voice-led lessons + 1 capstone calibration.",
+      "voice_register_dominant": "register-2-whimsical",
+      "v1_status": "v1",
+      "sections": [
+        {"id": "MC-LSN-1.1", "title": "What's an argument?", "spec_loc": "spec.html L1235", "v1": "v1", "uses_named_tools": [], "uses_examples": ["EX-cake-on-blocks"], "uses_voice_passages": ["VP-hark-simple-argument", "VP-claimy-judgments", "VP-conclusions-hot-mess"], "sources_S": ["NT-Logical_Reasoning_Notes_Final.pdf"], "sources_A": ["NT-Argument_Core_Periph_dup1.pdf"], "sources_S2": ["NT-Lecture_1_Notes.pdf"], "visual": "Animated cake-on-blocks (Gap Simulator), lifted from logicalreasoningfoundation"},
+        {"id": "MC-LSN-1.2", "title": "Premises and conclusions: what each one is", "spec_loc": "spec.html L1261", "v1": "v1", "uses_named_tools": [], "uses_examples": ["EX-monica-dinosaurs"], "uses_voice_passages": ["VP-claimy-judgments"], "sources_S": ["NT-Logical_Reasoning_Notes_Final.pdf", "NT-Lecture_1_Notes.pdf"], "sources_prototype": ["PR-logicalreasoningfoundation"]},
+        {"id": "MC-LSN-1.3", "title": "Indicator words: the visible signposts", "spec_loc": "spec.html L1291", "v1": "v1", "uses_named_tools": ["NT-FABS"], "uses_examples": [], "sources_S": ["NT-main_conclusion_role_merged_note.pdf"], "sources_A": ["NT-Indicator_word_list.pdf"], "sources_B": ["NT-Keyword.pdf"]},
+        {"id": "MC-LSN-1.4", "title": "Main Conclusion: the most salvageable question type ever", "spec_loc": "spec.html L1316", "v1": "v1", "uses_named_tools": ["NT-Upside-Down-Argument"], "uses_voice_passages": ["VP-most-salvageable", "VP-most-lovable", "VP-dont-over-complicate"], "sources_S": ["NT-Main_Conclusion_Synopsis.pdf", "NT-main_conclusion_role_merged_note.pdf", "NT-Main_conclusion_recap_dup1.pdf"]},
+        {"id": "MC-LSN-1.5", "title": "Hiding spot 1: the first sentence", "spec_loc": "spec.html L1339", "v1": "v1", "uses_examples": ["EX-vision-test"], "sources_A": ["HW-First_sentence_Conclusion_Reading_Drill.md"], "sources_S": ["NT-MCFIRST_SENTENCE_REBUTTAL.pdf", "NT-Main_Conclusion_Synopsis.pdf"]},
+        {"id": "MC-LSN-1.6", "title": "Hiding spot 2: after the pivot (Rebuttal-styled conclusion)", "spec_loc": "spec.html L1368", "v1": "v1", "uses_examples": ["EX-tomato-fruit-seeds"], "sources_S": ["NT-Main_Conclusion_Synopsis.pdf", "NT-main_conclusion_role_merged_note.pdf"], "sources_A": ["NT-Skeletal_Breakdown_LR_dup1.pdf"]},
+        {"id": "MC-LSN-1.7", "title": "Intermediate conclusions vs multi-premise arguments", "spec_loc": "spec.html L1402", "v1": "v1", "uses_named_tools": ["NT-Stegosaurus-Interrogation"], "uses_examples": ["EX-EV-cars-three-stage", "EX-stegosaurus-eucalyptus"], "sources_S": ["NT-LOGICAL_CHAIN.pdf", "NT-Intermediate_conclusion_Hybrid_argument_notes_dup1.docx", "NT-Intermediate_Conclusions_Practice_Full.docx"]},
+        {"id": "MC-LSN-1.8", "title": "The Trojan Horse: opposing viewpoints and concessions", "spec_loc": "spec.html L1446", "v1": "v1", "uses_named_tools": ["NT-Trojan-Horse-Concession", "NT-Concession-Decoder"], "uses_examples": ["EX-William-Harry-standardized-testing", "EX-all-nighter-paper"], "sources_A": ["NT-Argument_Core_Periph_dup1.pdf", "NT-Skeletal_Breakdown_LR_dup1.pdf"], "sources_prototype": ["PR-argumentslr"]},
+        {"id": "MC-LSN-1.9", "title": "The five types of conclusions", "spec_loc": "spec.html L1485", "v1": "v1", "uses_examples": ["EX-eddie-arsonist"], "sources_A": ["NT-Skeletal_Breakdown_LR_dup1.pdf"]},
+        {"id": "MC-LSN-1.10", "title": "Pre-phrase: replace the pronouns before you say the conclusion back", "spec_loc": "spec.html L1512", "v1": "v1", "uses_named_tools": ["NT-Pre-Phrase-Goal", "NT-Pronoun-Reference-Library"], "uses_examples": ["EX-gun-laws-pronoun-replacement"], "sources_S": ["NT-Main_Conclusion_Synopsis.pdf", "NT-main_conclusion_role_merged_note.pdf"]},
+        {"id": "MC-LSN-1.11", "title": "The 2-Part Conclusion Check", "spec_loc": "spec.html L1544", "v1": "v1", "uses_named_tools": ["NT-2-Part-Conclusion-Check"], "uses_examples": ["EX-tornado-syntax-equivalence", "EX-3-classic-traps-recycling"], "sources_S": ["NT-Main_conclusion_recap_dup1.pdf", "NT-Main_Conclusion_Synopsis.pdf"]},
+        {"id": "MC-LSN-1.12", "title": "The trap landscape (preview)", "spec_loc": "spec.html L1581", "v1": "v1", "uses_named_tools": ["NT-Trap-Master"], "sources_A": ["NT-Advanced_MP_Question_Traps_dup1.docx"], "sources_S": ["NT-_scan_Main_conclusion_part_1.pdf", "NT-_scan_Main_conclusion_part_2.pdf"]},
+        {"id": "MC-LSN-1.13", "title": "End-of-module calibration drill (CAPSTONE)", "spec_loc": "spec.html L1605", "v1": "v1", "is_capstone": true, "calibration_question_count": 10, "uses_named_tools": ["NT-Coach-Note", "NT-Trap-Master"], "calibration_source": "Module 4 Simulator infrastructure + canonical 20-argument bank", "v1_note": "Per Gate 1 #3, v1 calibration draws from corpus (Notes + Homework + Netlify extractions). External PT bank deferred to v1.5."}
+      ]
+    },
+
+    {
+      "id": "M2",
+      "name": "Reference + Indicator Vault",
+      "route": "/reference",
+      "tagline": "Canonical resource library. Glanceable. Used as overlay during drills.",
+      "voice_register_dominant": "register-1-decisive",
+      "v1_status": "v1",
+      "sections": [
+        {"id": "MC-REF-2.A", "title": "The Indicator Vault", "spec_loc": "spec.html L1644", "v1": "v1", "uses_named_tools": ["NT-Indicator-Vault", "NT-FABS"], "indicator_categories": ["conclusion", "premise-FABS", "pivot", "opinion", "opposing-viewpoint", "concession"], "indicator_word_count_minimum": 50, "sources_A": ["NT-Indicator_word_list.pdf"], "sources_S": ["NT-main_conclusion_role_merged_note.pdf"], "sources_B": ["NT-Keyword.pdf"], "sources_prototype": ["PR-mainconclusionrebuttalvsfirst"]},
+        {"id": "MC-REF-2.B", "title": "The 2-Part Conclusion Check", "spec_loc": "spec.html L1715", "v1": "v1", "uses_named_tools": ["NT-2-Part-Conclusion-Check"], "uses_examples": ["EX-recycling-program-verification", "EX-mediterranean-diet-verification"], "sources_S": ["NT-Main_conclusion_recap_dup1.pdf", "NT-Main_Conclusion_Synopsis.pdf", "HW-Main_Conclusion_Drill_Answer_Key.pdf"]},
+        {"id": "MC-REF-2.C", "title": "FABS — the support indicator quartet", "spec_loc": "spec.html L1755", "v1": "v1", "uses_named_tools": ["NT-FABS"], "uses_examples": ["EX-tea-boba-FABS"], "sources_S": ["NT-main_conclusion_role_merged_note.pdf"], "sources_A": ["NT-Indicator_word_list.pdf"]},
+        {"id": "MC-REF-2.D", "title": "Stimulus Tendencies — where LSAC hides the conclusion", "spec_loc": "spec.html L1782", "v1": "v1", "uses_named_tools": ["NT-Last-Claim-Trap"], "sources_S": ["NT-Main_Conclusion_Synopsis.pdf", "NT-main_conclusion_role_merged_note.pdf", "NT-Main_conclusion_recap_dup1.pdf"]},
+        {"id": "MC-REF-2.E", "title": "The Five Types of Conclusions", "spec_loc": "spec.html L1803", "v1": "v1", "conclusion_types": ["recommendations", "causal-hypotheses", "rebuttals", "predictions", "judgments-labels"], "uses_examples": ["EX-eating-meat-recommendation", "EX-eddie-arsonist", "EX-tomato-fruit-seeds", "EX-millennials-genz-prediction", "EX-miguel-blueberry-pie"], "sources_A": ["NT-Skeletal_Breakdown_LR_dup1.pdf"]},
+        {"id": "MC-REF-2.F", "title": "The Rebuttal Structure (Counterpoint → Pivot → Conclusion → Support)", "spec_loc": "spec.html L1845", "v1": "v1", "uses_examples": ["EX-tomato-fruit-seeds"], "sources_S": ["NT-main_conclusion_role_merged_note.pdf"], "sources_A": ["NT-Skeletal_Breakdown_LR_dup1.pdf", "NT-Argument_Core_Periph_dup1.pdf"]},
+        {"id": "MC-REF-2.G", "title": "The Three Incorrect-Answer Trap Types (legacy gateway)", "spec_loc": "spec.html L1881", "v1": "v1", "trap_types": ["premise-trap", "last-claim-trap", "intermediate-conclusion-trap"], "sources_S": ["NT-Main_Conclusion_Synopsis.pdf"], "sources_A": ["NT-Advanced_MP_Question_Traps_dup1.docx"]},
+        {"id": "MC-REF-2.H", "title": "Pronoun & Reference Library — for the Pre-Phrase Goal", "spec_loc": "spec.html L1907", "v1": "v1", "uses_named_tools": ["NT-Pronoun-Reference-Library", "NT-Pre-Phrase-Goal"], "uses_examples": ["EX-gun-laws-pronoun-replacement"], "sources_S": ["NT-Main_Conclusion_Synopsis.pdf", "NT-main_conclusion_role_merged_note.pdf"]},
+        {"id": "MC-REF-2.I", "title": "The Concession Decoder", "spec_loc": "spec.html L1945", "v1": "v1", "uses_named_tools": ["NT-Concession-Decoder", "NT-Trojan-Horse-Concession"], "uses_examples": ["EX-all-nighter-paper", "EX-transit-policy-concession"], "sources_A": ["NT-Argument_Core_Periph_dup1.pdf", "NT-Skeletal_Breakdown_LR_dup1.pdf", "NT-Indicator_word_list.pdf"]},
+        {"id": "MC-REF-2.J", "title": "Quick Reference Card (printable, single page)", "spec_loc": "spec.html L1969", "v1": "v1", "is_printable": true, "panels": ["two-stashes", "2-part-check", "FABS", "pivots", "three-traps-legacy", "pre-phrase", "five-types", "rebuttal-structure"]},
+        {"id": "MC-REF-2.K", "title": "Reference-as-Companion (CAPSTONE — no standalone test)", "spec_loc": "spec.html L2030", "v1": "v1", "is_capstone": true, "capstone_type": "implicit-via-overlay", "v1_note": "No standalone calibration drill. Capstone = use during M1/M3/M4 calibrations."}
+      ]
+    },
+
+    {
+      "id": "M3",
+      "name": "Drills",
+      "route": "/drills",
+      "tagline": "Stratified by mechanic. Each drill = its own Stage-Gate.",
+      "voice_register_dominant": "mixed (R1 procedural, R2 for whimsical setups)",
+      "v1_status": "v1",
+      "drills": [
+        {
+          "id": "MC-DRL-3.1",
+          "title": "Indicator-Word ID — quick-fire recognition",
+          "spec_loc": "spec.html L2068",
+          "v1": "v1",
+          "mechanic": "tap-category-on-word; 4 stages",
+          "stages": 4,
+          "stages_detail": [
+            {"stage": 1, "items": 30, "config": "5 from each category"},
+            {"stage": 2, "items": "mixed", "config": "untimed mixed set"},
+            {"stage": 3, "items": "mixed", "config": "3-second timer"},
+            {"stage": 4, "items": "tricky-set", "config": "disguised entries"}
+          ],
+          "content_count_min": 30,
+          "sources_S": ["NT-main_conclusion_role_merged_note.pdf", "HW-Argument_Structure_refresher_worksheet_dup1.pdf", "HW-Argument_structure_answer_key_docx_dup1.pdf"],
+          "sources_A": ["NT-Indicator_word_list.pdf"],
+          "sources_B": ["NT-Keyword.pdf"]
+        },
+        {
+          "id": "MC-DRL-3.2",
+          "title": "Argument Structure Highlighting — the X-Ray Drill",
+          "spec_loc": "spec.html L2108",
+          "v1": "v1",
+          "mechanic": "tap-sentence + assign-role + X-Ray reveal",
+          "stages": 4,
+          "stages_detail": [
+            {"stage": 1, "items": 10, "config": "single-claim arguments"},
+            {"stage": 2, "items": 15, "config": "multi-premise no IC"},
+            {"stage": 3, "items": 15, "config": "intermediate conclusion"},
+            {"stage": 4, "items": 10, "config": "full peripheral"}
+          ],
+          "content_count_target": 50,
+          "uses_named_tools": ["NT-X-Ray-Scan"],
+          "sources_A": ["NT-LR_BODY_DRILL_PT_1.pdf", "NT-LSAT_argument_identification_Homework_drill.pdf", "HW-Homework_Dissect_LSAT_arguments.pdf"],
+          "sources_S": ["HW-Premise_Conc_exercise_dup1.pdf"],
+          "sources_B": ["HW-prem_conc_homework_level_2.pdf"],
+          "sources_prototype": ["PR-logicalreasoningfoundation"]
+        },
+        {
+          "id": "MC-DRL-3.3",
+          "title": "First-Sentence Reading Drill — feel the pattern",
+          "spec_loc": "spec.html L2156",
+          "v1": "v1",
+          "mechanic": "read-only, no scoring, recognition training",
+          "content_count": 9,
+          "content_pt_refs": ["PT141 S2 Q1-3", "PT141 S4 Q1-4", "PT140 S1", "PT140 S3"],
+          "sources_A": ["HW-First_sentence_Conclusion_Reading_Drill.md"]
+        },
+        {
+          "id": "MC-DRL-3.4",
+          "title": "Rebuttal vs First-Sentence — Stage-Gate Tracker",
+          "spec_loc": "spec.html L2180",
+          "v1": "v1",
+          "mechanic": "type-toggle + reason input + restated conclusion + self-grade; 4 stages × 5 questions; 4/5 to unlock next",
+          "stages": 4,
+          "items_per_stage": 5,
+          "items_total": 20,
+          "stages_detail": [
+            {"stage": 1, "config": "First-Sentence (L2)", "pt_refs": ["PT118 S3 Q12", "PT130 S3 Q25", "PT130 S3 Q4", "PT139 S4 Q24", "PT138 S19 Q2"]},
+            {"stage": 2, "config": "First-Sentence (L3)", "pt_refs": ["PT105 S1 Q1", "PT113 S3 Q4", "PT122 S1 Q5", "PT111 S4 Q9", "PT121 S1 Q5"]},
+            {"stage": 3, "config": "Rebuttal-Styled (L2)", "pt_refs": ["PT105 S4 Q25", "PT124 S1 Q4", "PT124 S3 Q3", "PT138 S3 Q11", "PT125 S2 Q11"]},
+            {"stage": 4, "config": "Rebuttal-Styled (L3)", "pt_refs": ["PT111 S1 Q16", "PT120 S3 Q6", "PT109 S1 Q5", "PT112 S3 Q9", "PT112 S4 Q2"]}
+          ],
+          "uses_named_tools": ["NT-Stage-Gate-Tracker"],
+          "sources_A": ["HW-Main_Conclusion_Homework_Rebuttal_vs_First_Sentence_Updated.pdf", "HW-_scan_Main_Conclusion_Homework.pdf"],
+          "sources_S": ["HW-Main_Conclusion_Drill_Answer_Key.pdf"],
+          "sources_prototype": ["PR-mainconclusionrebuttalvsfirst"],
+          "v1_note": "Stage-Gate UI lifted from MC Companion. PT references resolve to actual stimuli that live OUTSIDE this corpus (the external PT bank, v1.5). For v1, the 20 stimuli are sourced from the canonical 20-argument bank in Notes/Homework where overlap exists, plus author-supplied paraphrases for unmatched references — see open question OQ-DRL-3.4."
+        },
+        {
+          "id": "MC-DRL-3.5",
+          "title": "Intermediate vs Multi-Premise — chain mapping",
+          "spec_loc": "spec.html L2222",
+          "v1": "v1",
+          "mechanic": "drag-arrow chain mapping",
+          "stages": 4,
+          "stages_detail": [
+            {"stage": 1, "config": "EV scaffold (3 examples)"},
+            {"stage": 2, "config": "Single IC arguments"},
+            {"stage": 3, "config": "Real PT questions"},
+            {"stage": 4, "config": "Multi-IC and multi-premise mixed"}
+          ],
+          "content_count_target": 12,
+          "uses_named_tools": ["NT-Stegosaurus-Interrogation"],
+          "uses_examples": ["EX-EV-cars-three-stage", "EX-stegosaurus-eucalyptus"],
+          "sources_S": ["NT-LOGICAL_CHAIN.pdf", "NT-Intermediate_conclusion_Hybrid_argument_notes_dup1.docx", "NT-Intermediate_Conclusions_Practice_Full.docx"],
+          "sources_A": ["NT-Intermediate_Conclusion_Practice.docx"]
+        },
+        {
+          "id": "MC-DRL-3.6",
+          "title": "Design-the-Conclusion — the Whimsical Premise Drill",
+          "spec_loc": "spec.html L2265",
+          "v1": "v1",
+          "mechanic": "type valid + invalid conclusion from premise pair; AI evaluates",
+          "volumes": 3,
+          "items_per_volume": 8,
+          "items_total": 24,
+          "uses_voice_passages": ["VP-world-of-the-premises", "VP-MEMORIZE-tattoo", "VP-beautiful-starships"],
+          "sources_S": ["NT-Valid_Conclusion_Worksheet_HW_dup1.pdf"],
+          "sources_A": ["NT-Conclusion_mastery_question_set_Valid_vs_Invalid.pdf", "NT-Valid_conclusion_Question_Mastery_PT_2_dup1.pdf", "HW-_scan_Valid_Conclusion_Drill_dup1.docx"],
+          "sources_B": ["NT-Valid_Conclusion_Question_Mastery_SET_PC_indicators_dup1.docx"],
+          "v1_note": "AI evaluation per Gate 1 #5: slot-filled templates default; hand-authored copy for top 5–10 most-specific responses."
+        },
+        {
+          "id": "MC-DRL-3.7",
+          "title": "Pronoun-Replacement Drill (NEW)",
+          "spec_loc": "spec.html L2304",
+          "v1": "v1",
+          "mechanic": "type replaced conclusion; AI verifies meaning preservation",
+          "stages": 4,
+          "stages_detail": [
+            {"stage": 1, "config": "single pronoun"},
+            {"stage": 2, "config": "two pronouns same conclusion"},
+            {"stage": 3, "config": "pronoun chain (one ref points to another)"},
+            {"stage": 4, "config": "implicit reference"}
+          ],
+          "content_count_target": 15,
+          "uses_named_tools": ["NT-Pre-Phrase-Goal", "NT-Pronoun-Reference-Library"],
+          "uses_examples": ["EX-gun-laws-pronoun-replacement"],
+          "sources_S": ["NT-Main_Conclusion_Synopsis.pdf", "NT-main_conclusion_role_merged_note.pdf", "HW-main_conclusion_answer_key_dup1.pdf"]
+        },
+        {
+          "id": "MC-DRL-3.8",
+          "title": "R&R Drill — Read & Restate (Voice-Record Mode)",
+          "spec_loc": "spec.html L2342",
+          "v1": "v1",
+          "mechanic": "live mic + cover-and-rephrase + Skeptic's Ear Check + cumulative recall + AI flags",
+          "v1_capability": "templated diff highlighting (no LLM)",
+          "v15_capability": "LLM-driven semantic comparison (Left Out / Added / Mischaracterized)",
+          "platform": "desktop-primary, mobile fallback",
+          "session_size_target": "~25 stimuli (one full LR section)",
+          "uses_named_tools": ["NT-R-R-Drill", "NT-Skeptic-Ear-Check"],
+          "sources_S": ["HW-RR_Drill_Stage_2_Instructions.pdf"],
+          "sources_A": ["HW-RR_Drill_Review_Form.pdf"]
+        },
+        {
+          "id": "MC-DRL-3.9",
+          "title": "Nested Claims & Hybrid Arguments — fashion-themed advanced extension",
+          "spec_loc": "spec.html L2402",
+          "v1": "v1",
+          "mechanic": "bracket nested claim + underline IC + TRUE/FALSE hybrid",
+          "content_count_target": 10,
+          "items_examples": ["fedora industry / financial ruin / cultural prominence", "fez / crime prevention / faulty data", "trucker hats / jaywalking / Aaron and Talia"],
+          "preserve_voicy": true,
+          "uses_examples": ["EX-fashion-fedora-fez-trucker", "EX-red-bull-wings", "EX-felipe-atoms"],
+          "sources_A": ["NT-Intermediate_Conclusions_Nested_Claims_Drill.pdf"],
+          "sources_S": ["NT-Intermediate_conclusion_Hybrid_argument_notes_dup1.docx"],
+          "v1_note": "Source PDF is image-only OCR'd (S-tier difficulty). Re-OCR with better quality OR re-author for digital use."
+        }
+      ]
+    },
+
+    {
+      "id": "M4",
+      "name": "Question Simulator + Trap Master",
+      "route": "/simulator",
+      "tagline": "Real LSAT-format questions with full 5-choice answer set + 7-trait diagnostic.",
+      "voice_register_dominant": "register-1-decisive (Coach's Note)",
+      "v1_status": "v1",
+      "sections": [
+        {"id": "MC-SIM-4.1", "title": "How the Simulator works (overview)", "spec_loc": "spec.html L2460", "v1": "v1"},
+        {"id": "MC-SIM-4.2", "title": "The 20-Argument Classification Drill — the canonical spine", "spec_loc": "spec.html L2477", "v1": "v1", "items_total": 20, "stimuli_listing_authoritative_source": "Notes/MCFIRST SENTENCE : REBUTTAL.pdf (per Step 1.5 smoke test 2026-04-30; spec L2493-2507 had drift in 5 titles — see PROJECT_MEMORY.md Decisions Log)", "stimuli_listing": ["Q1: Vision test for driver's licenses (First-sentence)", "Q2: Freedom of speech / Policy Adviser (First-sentence)", "Q3: Trade Europe-East Asia / yeti analogy (First-sentence)", "Q4: No computer / human minds / mechanical rules (First-sentence)", "Q5: Toy-labeling law / Consumer advocate (First-sentence)", "Q6: Diet refined sugar / adult-onset diabetes (First-sentence)", "Q7: Legal theorist / incarceration / serious threat (First-sentence)", "Q8: Nylon industry spokesperson / cotton vs nylon natural (Rebuttal)", "Q9: Mayor McKinney / wealthy residents / property taxes (Rebuttal)", "Q10: Some legislators / public funds for scientific research / molds & antibiotics (Rebuttal)", "Q11: Letter to the editor / Judge Mosston (Rebuttal)", "Q12: Witnessing violence in movies / rhetorical-question rebuttal (Rebuttal)", "Q13: Computers replacing teachers / understanding vs facts-and-rules (Rebuttal)", "Q14: Golden Lake Development / so-called environmentalists / bird migration (Rebuttal)", "Q15: Long-term cigarette smoking / tobacco companies / candy-cavities analogy (Rebuttal)", "Q16: Pharmacists / doctors selling medicine / monopoly objection (Rebuttal)", "Q17: Broadcaster / private lives of local celebrities / public interest (Rebuttal)", "Q18: Thomas / Municipal Building fire / must-have-seen-it (Rebuttal)", "Q19: Figurative painting revival / late 1970s (First-sentence)", "Q20: Multinational grain companies / food-distribution / since-clause leading (First-sentence)"], "family_distribution": {"first_sentence": 9, "rebuttal": 11}, "answer_key_views": ["narrative-MCFIRST", "structured-table-main_conclusion_answer_key"], "sources_A": ["NT-main_conclusion_questions_dup1.pdf"], "sources_S": ["NT-MCFIRST_SENTENCE_REBUTTAL.pdf", "HW-main_conclusion_answer_key_dup1.pdf"]},
+        {"id": "MC-SIM-4.3", "title": "The Trap Master — the seven traits, in depth", "spec_loc": "spec.html L2513", "v1": "v1", "uses_named_tools": ["NT-Trap-Master"], "trap_traits_count": 7, "sources_A": ["NT-Advanced_MP_Question_Traps_dup1.docx"], "sources_S": ["NT-_scan_Main_conclusion_part_1.pdf", "NT-_scan_Main_conclusion_part_2.pdf", "NT-LOGICAL_CHAIN.pdf", "NT-Main_Conclusion_Synopsis.pdf"]},
+        {"id": "MC-SIM-4.4", "title": "Two Answer-Key Views — narrative vs structured-table toggle", "spec_loc": "spec.html L2723", "v1": "v1", "view_a": "MCFIRST narrative format (structure family + reasoning + structure map + follow-up answer)", "view_b": "main_conclusion_answer_key structured-table format (conclusion verbatim + conclusion type + keywords-present + argument-parts table)", "sources_S": ["NT-MCFIRST_SENTENCE_REBUTTAL.pdf", "HW-main_conclusion_answer_key_dup1.pdf"]},
+        {"id": "MC-SIM-4.5", "title": "Coach's Note — per-question explanation system", "spec_loc": "spec.html L2769", "v1": "v1", "uses_named_tools": ["NT-Coach-Note"], "structure": ["structure-map", "core-move", "per-answer-audit"], "uses_voice_passages": ["VP-stay-narrow", "VP-too-strong", "VP-unsupported", "VP-out-of-scope"], "sources_S": ["NT-_scan_Main_conclusion_part_1.pdf", "NT-_scan_Main_conclusion_part_2.pdf"], "sources_prototype": ["PR-argumentslr"]},
+        {"id": "MC-SIM-4.6", "title": "Trait Diagnostic — performance analytics by trap-trait", "spec_loc": "spec.html L2800", "v1": "v1", "v1_note": "Diagnostic mechanic invented (no prototype implements). Trait taxonomy from Advanced- MP Question Traps + masterclass workbooks."},
+        {"id": "MC-SIM-4.7", "title": "The Hard Question Mastery layer", "spec_loc": "spec.html L2825", "v1": "v1", "uses_voice_passages": ["VP-masterclass-150s-160s-intro"], "sources_S": ["NT-_scan_Main_conclusion_part_1.pdf", "NT-_scan_Main_conclusion_part_2.pdf"], "sources_B_repurposed": ["NT-LR_MASTERY_Main_conclusion_Questions.pdf"]},
+        {"id": "MC-SIM-4.8", "title": "Simulator UX Spec", "spec_loc": "spec.html L2843", "v1": "v1", "features": ["question-display", "answer-reveal", "answer-key-view-toggle", "trait-deep-link", "pre-phrase-prompt-optional", "session-diagnostic", "hard-question-mode-toggle", "rr-integration"]}
+      ],
+      "trap_traits": [
+        {"id": "MC-TRAIT-1", "name": "Trap statement that sounds like the conclusion but has no support", "pt_example": "PT58 S1 Q13 — intriguing person", "spec_loc": "spec.html L2522"},
+        {"id": "MC-TRAIT-2", "name": "Main conclusion not explicitly stated in the stimulus", "pt_example": "Tomato example", "spec_loc": "spec.html L2556"},
+        {"id": "MC-TRAIT-3", "name": "Correct answer doesn't match the conclusion word for word", "pt_example": "Tornado syntax-equivalence", "spec_loc": "spec.html L2583"},
+        {"id": "MC-TRAIT-4", "name": "Subtle shift in scope", "pt_example": "(quantifier/modal/subject/domain shift catalog)", "spec_loc": "spec.html L2615"},
+        {"id": "MC-TRAIT-5", "name": "Wrong answer expresses something the author would agree with — but isn't the conclusion", "pt_example": "PT24 S2 Q12 — extraterrestrial life", "spec_loc": "spec.html L2640"},
+        {"id": "MC-TRAIT-6", "name": "Correct answer vaguely worded, placed next to an attractive wrong answer", "pt_example": "(catalog only)", "spec_loc": "spec.html L2674"},
+        {"id": "MC-TRAIT-7", "name": "Intermediate Conclusion traps and Cause/Effect traps", "pt_example": "EV chain (LOGICAL CHAIN)", "spec_loc": "spec.html L2693"}
+      ]
+    },
+
+    {
+      "id": "M5",
+      "name": "Reading Hard Sentences (Cluster Sentences sub-module)",
+      "route": "/hard-sentences",
+      "tagline": "Decompose monsters called cluster sentences.",
+      "voice_register_dominant": "register-2-whimsical",
+      "v1_status": "v1",
+      "sections": [
+        {"id": "MC-HSL-5.1", "title": "Why this module exists", "spec_loc": "spec.html L2899", "v1": "v1", "uses_voice_passages": ["VP-monsters-cluster-sentences", "VP-purpose-of-writing"], "sources_S": ["NT-Cluster_Sentences_Review.docx", "NT-Cluster_Sentences_Review_docx.pdf"]},
+        {"id": "MC-HSL-5.2", "title": "What's a cluster sentence?", "spec_loc": "spec.html L2917", "v1": "v1", "sources_S": ["NT-Cluster_Sentences_Review.docx"]},
+        {"id": "MC-HSL-5.3", "title": "Specifiers — what makes cluster sentences a cluster", "spec_loc": "spec.html L2935", "v1": "v1", "uses_voice_passages": ["VP-aghhhhhhhhh", "VP-bad-writing-called-to-action"], "specifier_count_minimum": 20, "sources_S": ["NT-Cluster_Sentences_Review.docx"], "sources_A": ["NT-complicated_sentence_notes.docx"]},
+        {"id": "MC-HSL-5.4", "title": "The decomposition method — Alex, Jordan, and the red-sensor", "spec_loc": "spec.html L2960", "v1": "v1", "uses_examples": ["EX-alex-jordan-red-sensor"], "sources_S": ["NT-Cluster_Sentences_Review.docx"]},
+        {"id": "MC-HSL-5.5", "title": "Optional elements vs core elements", "spec_loc": "spec.html L2998", "v1": "v1", "rules": ["optional-element", "core-element", "2-comma-rule-middle-out", "3-plus-commas"], "sources_A": ["NT-complicated_sentence_notes.docx"]},
+        {"id": "MC-HSL-5.6", "title": "Practice — decomposition drills (3 levels)", "spec_loc": "spec.html L3024", "v1": "v1", "levels": [{"level": 1, "items_target": 10, "config": "single comma, one optional element"}, {"level": 2, "items_target": 10, "config": "two commas, middle-out"}, {"level": 3, "items_target": 8, "config": "specifier chains"}]},
+        {"id": "MC-HSL-5.7", "title": "The Cluster Sentence Decomposer — interaction spec", "spec_loc": "spec.html L3048", "v1": "v1", "mechanic": "tap specifier → clause lifts → tap lifted → resolved thought reveals", "sources_S": ["NT-Cluster_Sentences_Review.docx"]},
+        {"id": "MC-HSL-5.8", "title": "End-of-module calibration drill (CAPSTONE)", "spec_loc": "spec.html L3073", "v1": "v1", "is_capstone": true, "calibration_question_count": 5, "v1_note": "Per Gate 1 #3, v1 calibration questions sourced from corpus + Module 3 X-Ray drill stimuli (since the M3 set already pulls from the Argument Structure drill set per spec L3044)."}
+      ]
+    },
+
+    {
+      "id": "M6",
+      "name": "Diagnostics + AI Tutor + Progress",
+      "route": "/diagnostics",
+      "tagline": "The smart layer. Calibration after teaching, not gatekeeping before.",
+      "voice_register_dominant": "register-1-decisive",
+      "v1_status": "v1",
+      "sections": [
+        {"id": "MC-DIA-6.1", "title": "The diagnostic philosophy — calibration after teaching, not gatekeeping before", "spec_loc": "spec.html L3095", "v1": "v1"},
+        {"id": "MC-DIA-6.2", "title": "Stage-Gate progression — the universal drill wrapper", "spec_loc": "spec.html L3110", "v1": "v1", "uses_named_tools": ["NT-Stage-Gate-Tracker"], "sources_prototype": ["PR-mainconclusionrebuttalvsfirst"], "sources_A": ["HW-_scan_Main_Conclusion_Homework.pdf", "HW-Main_Conclusion_Homework_Rebuttal_vs_First_Sentence_Updated.pdf"]},
+        {"id": "MC-DIA-6.3", "title": "Performance analytics — by mechanic and by trait", "spec_loc": "spec.html L3122", "v1": "v1", "dashboards": ["accuracy-by-mechanic", "accuracy-by-trait"], "trait_count": 7, "mechanic_count_minimum": 6},
+        {"id": "MC-DIA-6.4", "title": "Weak-area surfacing — the recommendation engine", "spec_loc": "spec.html L3163", "v1": "v1", "rules_decision_tree": true, "v1_note": "Templated decision tree per Gate 1 #5 (no live LLM in v1)."},
+        {"id": "MC-DIA-6.5", "title": "Pronoun-replacement live verification", "spec_loc": "spec.html L3181", "v1": "v1", "checks": ["pronoun-present", "antecedent-matched", "meaning-preserved"], "uses_named_tools": ["NT-Pre-Phrase-Goal"]},
+        {"id": "MC-DIA-6.6", "title": "Smart hints — when stuck", "spec_loc": "spec.html L3198", "v1": "v1", "trigger": "90s-no-select-OR-30s-hover-no-lock", "v1_note": "Templated phrasings drawn from Joshua's Register 1 voice."},
+        {"id": "MC-DIA-6.7", "title": "R&R voice-record review — the differentiator (ships in two stages)", "spec_loc": "spec.html L3215", "v1": "v1", "v1_capability": "templated diff", "v15_capability": "LLM semantic comparison"},
+        {"id": "MC-DIA-6.8", "title": "AI Tutor overlay — ships stub-then-real", "spec_loc": "spec.html L3242", "v1": "v1", "v1_mode": "templated routes (no LLM)", "v15_mode": "live LLM with daily cap", "v1_routes": ["why-is-X-the-answer", "what-does-FABS-mean", "what-is-trojan-horse", "what-should-I-work-on-next", "did-I-replace-the-pronoun-right"]},
+        {"id": "MC-DIA-6.9", "title": "Progress tracking + persistence — storage adapter pattern", "spec_loc": "spec.html L3277", "v1": "v1", "v1_implementation": "LocalStoragePersistence + IndexedDBPersistence", "v15_implementation": "SupabasePersistence (one-file swap)", "schema_tables": ["users", "module_progress", "simulator_attempts", "sr_queue", "annotations", "recordings"]},
+        {"id": "MC-DIA-6.10", "title": "LSAT U integration spec", "spec_loc": "spec.html L3323", "v1": "v1", "v1_scope": "design-only (no auth in v1, stubbed useUser)", "v15_scope": "auth wrap + adapter swap + migration script"}
+      ]
+    }
+  ],
+
+  "named_tools": [
+    {"id": "NT-FABS", "name": "FABS", "what": "Premise/support indicator quartet (For, After all, Because, Since)", "where": ["MC-REF-2.C", "MC-LSN-1.3", "MC-LSN-1.10"], "source": "main_conclusion_role_merged_note.pdf (S), Indicator word list.pdf (A)", "v1": "v1"},
+    {"id": "NT-2-Part-Conclusion-Check", "name": "2-Part Conclusion Check", "what": "Verification protocol: (1) Sounds like author's opinion? (2) Supported by at least one explicit claim?", "where": ["MC-REF-2.B", "MC-LSN-1.11", "MC-REF-2.J"], "source": "Main conclusion (recap).pdf (S), Synopsis.pdf (S)", "v1": "v1"},
+    {"id": "NT-Upside-Down-Argument", "name": "Upside Down Argument", "what": "LSAT pattern: conclusion before its support (vs school's 'conclusion goes last')", "where": ["MC-LSN-1.4"], "source": "Main Conclusion Synopsis.pdf (S)", "v1": "v1"},
+    {"id": "NT-Trojan-Horse-Concession", "name": "Trojan Horse Concession", "what": "Concessions look like agreement but set up the rebuttal", "where": ["MC-LSN-1.8", "MC-REF-2.I"], "source": "argumentslr prototype + Joshua's concession content", "v1": "v1"},
+    {"id": "NT-Pre-Phrase-Goal", "name": "Pre-Phrase Goal", "what": "Pronoun-replacement protocol — replace 'such laws' / 'this' / 'they' with actual reference language before stating conclusion", "where": ["MC-LSN-1.10", "MC-REF-2.H", "MC-DRL-3.7"], "source": "Main Conclusion Synopsis.pdf (S)", "v1": "v1"},
+    {"id": "NT-Skeptic-Ear-Check", "name": "Skeptic's Ear Check", "what": "R&R prompt: 'What's the simplest question or challenge to this statement?' after each rephrase", "where": ["MC-DRL-3.8"], "source": "R&R Drill Stage 2 Instructions.pdf (S)", "v1": "v1"},
+    {"id": "NT-Stegosaurus-Interrogation", "name": "Stegosaurus Interrogation", "what": "Diagnostic technique: ask 'How do I know that?' to tell premise / conclusion / IC apart", "where": ["MC-LSN-1.7", "MC-DRL-3.5"], "source": "Hybrid argument notes.docx (S)", "v1": "v1"},
+    {"id": "NT-Indicator-Vault", "name": "Indicator Vault", "what": "6-category color-coded indicator-words lookup", "where": ["MC-REF-2.A"], "source": "Naming new for build (lifted from MC Companion's UI label)", "v1": "v1", "is_also_ui_surface": true},
+    {"id": "NT-Coach-Note", "name": "Coach's Note", "what": "Per-question explanation card: structure map + core move + per-answer audit", "where": ["MC-SIM-4.5"], "source": "Masterclass workbooks (S, format kept verbatim) + argumentslr framing", "v1": "v1", "is_also_ui_surface": true},
+    {"id": "NT-R-R-Drill", "name": "R&R Drill (Read & Restate)", "what": "Methodology: read piece, cover, rephrase from memory, Skeptic's Ear Check, cumulative recall, full recollection", "where": ["MC-DRL-3.8"], "source": "R&R Drill Stage 2 Instructions.pdf (S)", "v1": "v1"},
+    {"id": "NT-X-Ray-Scan", "name": "X-Ray Scan", "what": "Toggle reveal of role colors over a quote/stimulus block", "where": ["MC-DRL-3.2", "MC-LSN-1.1-1.8 quote blocks", "MC-SIM-4.5"], "source": "logicalreasoningfoundation.netlify.app prototype (S codebase)", "v1": "v1"},
+    {"id": "NT-Trap-Master", "name": "Trap Master", "what": "7-trait diagnostic system; every wrong answer in Simulator is tagged with one of 7 traits", "where": ["MC-SIM-4.3", "MC-DIA-6.3"], "source": "Built on Advanced- MP Question Traps.docx (A) + masterclass workbooks (S)", "v1": "v1"},
+    {"id": "NT-Stage-Gate-Tracker", "name": "Stage-Gate Tracker", "what": "Universal drill wrapper: 4 stages × 5 questions, 4/5 to unlock next, auto-save, PDF export", "where": ["MC-DRL-3.4 (and applied to all M3 drills as universal frame)", "MC-DIA-6.2"], "source": "mainconclusionrebuttalvsfirst.netlify.app (S codebase, lifted verbatim)", "v1": "v1"},
+    {"id": "NT-Pronoun-Reference-Library", "name": "Pronoun & Reference Library", "what": "Words to scan for in candidate conclusions: this/that/they/such/these/those/this position/such laws/etc.", "where": ["MC-REF-2.H", "MC-DRL-3.7"], "source": "New naming for content from Synopsis.pdf and role_merged.pdf", "v1": "v1"},
+    {"id": "NT-Concession-Decoder", "name": "Concession Decoder", "what": "Structural reveal: Concession → Pivot → Author's claim → Support", "where": ["MC-REF-2.I", "MC-LSN-1.8"], "source": "New naming for content from Argument Core & Periph.pdf and Indicator word list.pdf", "v1": "v1"}
+  ],
+
+  "worked_examples": [
+    {"id": "EX-cake-on-blocks", "name": "Cake-on-blocks", "preserve_verbatim": true, "source": "Logical_Reasoning_Notes_Final.pdf (S)", "used_in": ["MC-LSN-1.1", "MC-LSN-1.2"], "v1": "v1"},
+    {"id": "EX-stegosaurus-eucalyptus", "name": "Stegosaurus / eucalyptus interrogation", "preserve_verbatim": true, "source": "Hybrid argument notes.docx (S)", "used_in": ["MC-LSN-1.7", "MC-DRL-3.5"], "v1": "v1"},
+    {"id": "EX-William-Harry-standardized-testing", "name": "William and Harry standardized testing dialog", "preserve_verbatim": true, "source": "Argument Core & Periph.pdf (A)", "used_in": ["MC-LSN-1.8"], "v1": "v1"},
+    {"id": "EX-gun-laws-pronoun-replacement", "name": "Gun-laws pronoun replacement", "preserve_verbatim": true, "source": "Main Conclusion Synopsis.pdf (S)", "used_in": ["MC-LSN-1.10", "MC-REF-2.H", "MC-DRL-3.7"], "v1": "v1"},
+    {"id": "EX-EV-cars-three-stage", "name": "EV cars three-stage chain", "preserve_verbatim": true, "source": "LOGICAL CHAIN.pdf (S)", "used_in": ["MC-LSN-1.7", "MC-DRL-3.5", "MC-TRAIT-7"], "v1": "v1"},
+    {"id": "EX-monica-dinosaurs", "name": "Monica claimed dinosaurs", "preserve_verbatim": true, "source": "logicalreasoningfoundation prototype (S)", "used_in": ["MC-LSN-1.2"], "v1": "v1"},
+    {"id": "EX-tomato-fruit-seeds", "name": "Tomato / fruit / seeds", "preserve_verbatim": true, "source": "Skeletal Breakdown LR.pdf (A)", "used_in": ["MC-LSN-1.6", "MC-REF-2.E", "MC-REF-2.F", "MC-TRAIT-2"], "v1": "v1"},
+    {"id": "EX-all-nighter-paper", "name": "All-nighter paper concession", "preserve_verbatim": true, "source": "Argument Core & Periph.pdf (A)", "used_in": ["MC-LSN-1.8", "MC-REF-2.I"], "v1": "v1"},
+    {"id": "EX-tornado-syntax-equivalence", "name": "Tornado syntax-equivalence", "preserve_verbatim": true, "source": "Main conclusion (recap).pdf (S)", "used_in": ["MC-LSN-1.11", "MC-TRAIT-3"], "v1": "v1"},
+    {"id": "EX-alex-jordan-red-sensor", "name": "Alex / Jordan red-sensor decomposition", "preserve_verbatim": true, "source": "Cluster Sentences Review.docx (S)", "used_in": ["MC-HSL-5.4"], "v1": "v1"},
+    {"id": "EX-fashion-fedora-fez-trucker", "name": "Fashion-themed nested-claim drill (fedora, fez, trucker hats)", "preserve_verbatim": true, "source": "Intermediate Conclusions & Nested Claims Drill.pdf (A, image-only OCR)", "used_in": ["MC-DRL-3.9"], "v1": "v1", "v1_note": "Source PDF image-only; needs re-OCR or re-author for digital use."},
+    {"id": "EX-red-bull-wings", "name": "Red Bull actually does give you wings", "preserve_verbatim": true, "source": "Hybrid argument notes.docx (S)", "used_in": ["MC-DRL-3.9"], "v1": "v1"},
+    {"id": "EX-felipe-atoms", "name": "Felipe believes we're all atoms bumping together", "preserve_verbatim": true, "source": "Hybrid argument notes.docx (S)", "used_in": ["MC-DRL-3.9"], "v1": "v1"},
+    {"id": "EX-vision-test", "name": "Vision test for driver's license (PT-style first-sentence)", "preserve_verbatim": true, "source": "MCFIRST SENTENCE : REBUTTAL.pdf (S)", "used_in": ["MC-LSN-1.5", "MC-SIM-4.2-Q1", "MC-SIM-4.4 sample"], "v1": "v1"},
+    {"id": "EX-eddie-arsonist", "name": "Eddie / arsonist / gas can (causal)", "preserve_verbatim": true, "source": "spec L2A example", "used_in": ["MC-REF-2.A", "MC-REF-2.E"], "v1": "v1"},
+    {"id": "EX-tea-boba-FABS", "name": "Tea / boba FABS examples", "preserve_verbatim": true, "source": "main_conclusion_role_merged_note.pdf (S)", "used_in": ["MC-REF-2.A", "MC-REF-2.C"], "v1": "v1"},
+    {"id": "EX-recycling-program-verification", "name": "Recycling program 2-Part Check verification", "preserve_verbatim": true, "source": "spec L1733-1740", "used_in": ["MC-REF-2.B"], "v1": "v1"},
+    {"id": "EX-mediterranean-diet-verification", "name": "Mediterranean diet 2-Part Check verification", "preserve_verbatim": true, "source": "spec L1742-1749 + main_conclusion_questions PT-style", "used_in": ["MC-REF-2.B"], "v1": "v1"},
+    {"id": "EX-eating-meat-recommendation", "name": "Eating meat / vegetarian recommendation type", "preserve_verbatim": true, "source": "Skeletal Breakdown LR (A)", "used_in": ["MC-LSN-1.9", "MC-REF-2.E"], "v1": "v1"},
+    {"id": "EX-millennials-genz-prediction", "name": "Millennials / Gen-Z prediction type", "preserve_verbatim": true, "source": "Skeletal Breakdown LR (A)", "used_in": ["MC-LSN-1.9", "MC-REF-2.E"], "v1": "v1"},
+    {"id": "EX-miguel-blueberry-pie", "name": "Miguel's blueberry pie judgment type", "preserve_verbatim": true, "source": "Skeletal Breakdown LR (A)", "used_in": ["MC-LSN-1.9", "MC-REF-2.E"], "v1": "v1"},
+    {"id": "EX-3-classic-traps-recycling", "name": "Three classic incorrect-answer traps (Premise/Last Claim/IC)", "preserve_verbatim": true, "source": "Main Conclusion Synopsis.pdf (S)", "used_in": ["MC-LSN-1.11", "MC-REF-2.G"], "v1": "v1"},
+    {"id": "EX-transit-policy-concession", "name": "Transit policy concession", "preserve_verbatim": true, "source": "spec L1702 (Concession indicator example)", "used_in": ["MC-REF-2.A", "MC-REF-2.I"], "v1": "v1"}
+  ],
+
+  "voice_passages": [
+    {"id": "VP-hark-simple-argument", "passage": "HARK, A SIMPLE ARGUMENT", "preserve_verbatim": true, "register": 2, "source": "Logical_Reasoning_Notes_Final.pdf (S)", "used_in": ["MC-LSN-1.1"], "v1": "v1"},
+    {"id": "VP-claimy-judgments", "passage": "claimy judgments that are usually wrong", "preserve_verbatim": true, "register": 2, "source": "Logical_Reasoning_Notes_Final.pdf (S)", "used_in": ["MC-LSN-1.1", "MC-LSN-1.2"], "v1": "v1"},
+    {"id": "VP-conclusions-hot-mess", "passage": "Conclusions are worthless and ridiculous like this. They can't keep themselves off the floor. If left to their own devices, conclusions would turn into a hot mess on the floor.", "preserve_verbatim": true, "register": 2, "source": "Logical_Reasoning_Notes_Final.pdf (S) + Valid Conclusion Homework + Note", "used_in": ["MC-LSN-1.1"], "v1": "v1"},
+    {"id": "VP-most-salvageable", "passage": "the most salvageable question type ever", "preserve_verbatim": true, "register": 1, "source": "Main Conclusion Synopsis.pdf (S)", "used_in": ["MC-LSN-1.4"], "v1": "v1", "frequency_cap": "once per module"},
+    {"id": "VP-most-lovable", "passage": "the most lovable question type ever", "preserve_verbatim": true, "register": 1, "source": "main_conclusion_role_merged_note.pdf (S)", "used_in": ["MC-LSN-1.4"], "v1": "v1", "frequency_cap": "once per module"},
+    {"id": "VP-dont-over-complicate", "passage": "Don't over-complicate this", "preserve_verbatim": true, "register": 1, "source": "Main Conclusion Synopsis.pdf (S)", "used_in": ["MC-LSN-1.4"], "v1": "v1"},
+    {"id": "VP-monsters-cluster-sentences", "passage": "monsters called cluster sentences", "preserve_verbatim": true, "register": 2, "source": "Cluster Sentences Review.docx (S)", "used_in": ["MC-HSL-5.1", "MC-HSL-5.2"], "v1": "v1"},
+    {"id": "VP-aghhhhhhhhh", "passage": "(aghhhhhhhhh)", "preserve_verbatim": true, "register": 2, "source": "Cluster Sentences Review.docx (S)", "used_in": ["MC-HSL-5.3"], "v1": "v1", "frequency_cap": "one per module"},
+    {"id": "VP-bad-writing-called-to-action", "passage": "This is called bad writing. As a reader, you are completely within your rights to call the author out for being a bad writer. As an LSAT test taker, you are called to action.", "preserve_verbatim": true, "register": 2, "source": "Cluster Sentences Review.docx (S)", "used_in": ["MC-HSL-5.3"], "v1": "v1"},
+    {"id": "VP-purpose-of-writing", "passage": "The purpose of writing is one thing: conveying information to the reader skillfully enough to make it easy for them. This is about sentences that do the opposite. They try to make the reading difficult for you. The test writers purposefully write poorly. They purposefully hide their points in difficult language. In doing so, they create monsters called cluster sentences.", "preserve_verbatim": true, "register": 2, "source": "Cluster Sentences Review.docx (S)", "used_in": ["MC-HSL-5.1"], "v1": "v1"},
+    {"id": "VP-MEMORIZE-tattoo", "passage": "MEMORIZE (TATTOO IT IF YOU HAVE TO)", "preserve_verbatim": true, "register": 2, "source": "Valid Conclusion Question Mastery SET docx (B)", "used_in": ["MC-DRL-3.6", "MC-REF-2.A"], "v1": "v1", "tightening_note": "tighten ALL-CAPS but preserve passage; cap to one occurrence per module"},
+    {"id": "VP-beautiful-starships", "passage": "We call these beautiful starships valid conclusions.", "preserve_verbatim": true, "register": 2, "source": "Valid Conclusion Homework + Note (Homework megadoc, the only place this passage survives)", "used_in": ["MC-DRL-3.6"], "v1": "v1"},
+    {"id": "VP-world-of-the-premises", "passage": "These whimsical premises keep you from bringing too much outside knowledge into the drill, which would cause you to make possibly unwarranted assumptions without realizing it. We want to train you to stay within whatever the premises happen to be. You have to assume that the premises are true on the LSAT, no matter how outlandish they are. In logic reasoning, the world of the premises is your whole world.", "preserve_verbatim": true, "register": 2, "source": "Valid Conclusion Worksheet HW.pdf (S)", "used_in": ["MC-DRL-3.6"], "v1": "v1"},
+    {"id": "VP-stay-narrow", "passage": "Stay narrow.", "preserve_verbatim": true, "register": 1, "source": "_scan_Main conclusion part 1.pdf (S, masterclass)", "used_in": ["MC-SIM-4.5", "MC-TRAIT-5"], "v1": "v1"},
+    {"id": "VP-too-strong", "passage": "Too strong.", "preserve_verbatim": true, "register": 1, "source": "_scan_Main conclusion part 1.pdf (S)", "used_in": ["MC-SIM-4.5"], "v1": "v1"},
+    {"id": "VP-unsupported", "passage": "Unsupported.", "preserve_verbatim": true, "register": 1, "source": "_scan_Main conclusion part 1.pdf (S)", "used_in": ["MC-SIM-4.5"], "v1": "v1"},
+    {"id": "VP-out-of-scope", "passage": "Out of scope.", "preserve_verbatim": true, "register": 1, "source": "_scan_Main conclusion part 1.pdf (S)", "used_in": ["MC-SIM-4.5"], "v1": "v1"},
+    {"id": "VP-masterclass-150s-160s-intro", "passage": "For the student who is stuck in the 150s or 160s, the most effective strategy would be to study the harder/hardest questions in excruciating detail. The intermediate student already has a fairly comprehensive understanding of the different types of questions, the different approaches required for them, and a rough idea of the knowledge behind different questions. So by looking at the harder questions, we are essentially forcing ourselves to operate at a higher capacity and to analyze the questions on a deeper level. This will not only make us more confident with these harder questions but also make tackling the easier questions a much more manageable process.", "preserve_verbatim": true, "register": "1-with-2-flourishes", "source": "_scan_Main conclusion part 1.pdf (S, masterclass intro)", "used_in": ["MC-SIM-4.7"], "v1": "v1"},
+    {"id": "VP-take-time-on-answer-choices", "passage": "Take just as much time to look over the answer choices as the stimulus, if not more. Half the battle to success in Logical Reasoning questions is to differentiate between all the answer choices, choose the best one, and have a clear rationale for your choice.", "preserve_verbatim": true, "register": 1, "source": "_scan_Main conclusion part 1.pdf (S)", "used_in": ["MC-SIM-4.7"], "v1": "v1"},
+    {"id": "VP-feeling-the-pattern", "passage": "This exercise is about getting our brains used to the feel of a pattern. Focus on noticing how the first claim is an opinion, and then feeling how the subsequent claims go on to defend that initial opinion.", "preserve_verbatim": true, "register": 2, "source": "First sentence Conclusion (Reading Drill).md (A)", "used_in": ["MC-DRL-3.3"], "v1": "v1"},
+    {"id": "VP-attribution-pivot-opinion", "passage": "the govt argues = attribution (usually Opposing); but = Pivot into author's argument; it is clear that = Opinion (usually Conclusion); misguided = Opinion / Rebuttal", "preserve_verbatim": true, "register": 1, "source": "Main Conclusion Drill Answer Key.pdf (S)", "used_in": ["MC-SIM-4.5"], "v1": "v1"},
+    {"id": "VP-very-interesting-life", "passage": "you live a very interesting life in this example", "preserve_verbatim": true, "register": 2, "source": "Logical_Reasoning_Notes_Final.pdf (S)", "used_in": ["MC-LSN-1.1"], "v1": "v1"},
+    {"id": "VP-call-out-author-bad-writer", "passage": "Remember all those things your English teachers used to write on your essays?", "preserve_verbatim": true, "register": 2, "source": "Cluster Sentences Review.docx (S)", "used_in": ["MC-HSL-5.1"], "v1": "v1"}
+  ],
+
+  "indicator_categories_canonical": [
+    {"id": "IND-conclusion", "name": "Conclusion Indicators", "color": "--role-conclusion (#10b981 green)", "words": ["so", "thus", "hence", "therefore", "it follows", "it follows that", "as a result", "consequently", "this shows that", "this indicates that", "accordingly", "conclude"]},
+    {"id": "IND-premise-FABS", "name": "Premise Indicators (FABS)", "color": "--role-premise (#60a5fa blue)", "words": ["for", "after all", "because", "since", "as", "given that", "as indicated by", "and (factual data)"]},
+    {"id": "IND-pivot", "name": "Pivot Indicators", "color": "--role-pivot (#f97316 orange)", "words": ["but", "yet", "however", "nevertheless", "nonetheless", "on the other hand"]},
+    {"id": "IND-opinion", "name": "Opinion Indicators", "color": "--accent (gold #E8D08B)", "words": ["should", "ought", "must", "clearly", "obviously", "evidently", "apparently", "probably", "likely", "essential", "misguided"]},
+    {"id": "IND-opposing", "name": "Opposing Viewpoint Indicators", "color": "--role-opposing (#a855f7 purple)", "words": ["some people say", "it's commonly believed", "some economists believe", "some biologists", "critics argue that", "most people think", "many people argue", "[someone] contends that"]},
+    {"id": "IND-concession", "name": "Concession Indicators", "color": "--role-concession (#facc15 yellow)", "words": ["although", "while", "despite", "granted", "naturally", "though it is true", "yes, it is true that", "admittedly"]}
+  ],
+
+  "specifier_words_M5": ["by", "in", "on", "which", "until", "since", "in addition to", "that", "for", "when", "as", "because", "of", "although", "while", "if", "after", "around", "between", "who"],
+
+  "pronoun_reference_library_M2_2H": ["this", "that", "they", "it", "such", "these", "those", "this position", "such laws", "these views", "that argument", "this approach", "such measures", "the practice"],
+
+  "source_files": {
+    "notes": [
+      {"id": "NT-_scan_Main_conclusion_part_1.pdf", "filename": "_scan_Main conclusion part 1.pdf", "tier": "S", "format": "pdf", "size_kb": 30, "audit_score_pct": 100, "tag": "MASTERCLASS", "summary": "Main Conclusion Masterclass Part 1: Traits 1-4. Real PT questions. Each has structure map + core move + per-answer audit. THE flagship teaching content.", "v1": "v1", "v1_destinations": ["MC-LSN-1.12", "MC-SIM-4.3", "MC-SIM-4.5", "MC-SIM-4.7"]},
+      {"id": "NT-_scan_Main_conclusion_part_2.pdf", "filename": "_scan_Main conclusion part 2 .pdf", "tier": "S", "format": "pdf", "size_kb": 21, "audit_score_pct": 100, "tag": "MASTERCLASS", "summary": "Masterclass Part 2: Traits 5-7. Same caliber as Part 1.", "v1": "v1", "v1_destinations": ["MC-LSN-1.12", "MC-SIM-4.3", "MC-SIM-4.5", "MC-SIM-4.7"]},
+      {"id": "NT-Main_Conclusion_Synopsis.pdf", "filename": "Main Conclusion Synopsis.pdf", "tier": "S", "format": "pdf", "size_kb": 66, "audit_score_pct": 94, "summary": "Canonical synopsis. Upside Down Argument, first-sentence rule, Pivot/Pushback, referential language, gun-laws example, 2-Part Check, traps.", "v1": "v1", "v1_destinations": ["MC-LSN-1.4", "MC-LSN-1.5", "MC-LSN-1.6", "MC-LSN-1.10", "MC-LSN-1.11", "MC-REF-2.B", "MC-REF-2.D", "MC-REF-2.G", "MC-REF-2.H", "MC-DRL-3.7"]},
+      {"id": "NT-Intermediate_conclusion_Hybrid_argument_notes_dup1.docx", "filename": "Intermediate conclusion and Hybrid argument notes _dup1.docx", "tier": "S", "format": "docx", "size_kb": 17, "audit_score_pct": 94, "summary": "Stegosaurus/eucalyptus, hybrid vs nested distinction (Red Bull, Felipe). Voicy and unique.", "v1": "v1", "v1_destinations": ["MC-LSN-1.7", "MC-DRL-3.5", "MC-DRL-3.9"]},
+      {"id": "NT-MCFIRST_SENTENCE_REBUTTAL.pdf", "filename": "MCFIRST SENTENCE : REBUTTAL.pdf", "tier": "S", "format": "pdf", "size_kb": 108, "audit_score_pct": 91, "tag": "PAIR with main_conclusion_questions", "summary": "20-question First-sentence vs Rebuttal classification drill WITH narrative answer key.", "v1": "v1", "v1_destinations": ["MC-LSN-1.5", "MC-SIM-4.2", "MC-SIM-4.4 view A"]},
+      {"id": "NT-LOGICAL_CHAIN.pdf", "filename": "LOGICAL CHAIN (Multi-Premise Argument vs Intermediate Conclusion).pdf", "tier": "S", "format": "pdf", "size_kb": 39, "audit_score_pct": 91, "summary": "Multi-premise vs intermediate definitive. EV cars chain. ICE car is doomed.", "v1": "v1", "v1_destinations": ["MC-LSN-1.7", "MC-DRL-3.5", "MC-TRAIT-7"]},
+      {"id": "NT-Logical_Reasoning_Notes_Final.pdf", "filename": "Logical_Reasoning_Notes_Final.pdf", "tier": "S", "format": "pdf", "size_kb": 5.6, "audit_score_pct": 91, "tag": "VOICE ANCHOR", "summary": "Voice gold standard. HARK A SIMPLE ARGUMENT, cake-on-blocks metaphor, claimy judgments.", "v1": "v1", "v1_destinations": ["MC-LSN-1.1", "MC-LSN-1.2"]},
+      {"id": "NT-main_conclusion_role_merged_note.pdf", "filename": "main_conclusion_role_merged_note.pdf", "tier": "S", "format": "pdf", "size_kb": 99, "audit_score_pct": 89, "summary": "Pre-merged Main Conclusion + Role reference sheet. Indicator keyword TABLE. FABS tea/boba examples.", "v1": "v1", "v1_destinations": ["MC-LSN-1.3", "MC-LSN-1.4", "MC-LSN-1.6", "MC-LSN-1.10", "MC-REF-2.A", "MC-REF-2.C", "MC-REF-2.D", "MC-REF-2.F", "MC-REF-2.H"]},
+      {"id": "NT-Main_conclusion_recap_dup1.pdf", "filename": "Main conclusion (recap)_dup1.pdf", "tier": "S", "format": "pdf", "size_kb": 208, "audit_score_pct": 89, "summary": "Retention quiz format. FABS reference, 2-Part Check, Stimulus Tendencies, tornado equivalence.", "v1": "v1", "v1_destinations": ["MC-LSN-1.4", "MC-LSN-1.11", "MC-REF-2.B", "MC-REF-2.D"]},
+      {"id": "NT-Lecture_1_Notes.pdf", "filename": "Lecture 1 Notes LR Arguments Foundation (1)_dup1.pdf", "tier": "S", "format": "pdf", "size_kb": 49, "audit_score_pct": 89, "summary": "Adds principle and generalization to types of statements. All-caps voice notes. Most complete single source.", "v1": "v1", "v1_destinations": ["MC-LSN-1.1", "MC-LSN-1.2"]},
+      {"id": "NT-Cluster_Sentences_Review.docx", "filename": "Cluster Sentences Review.docx", "tier": "S", "format": "docx", "size_kb": 3500, "audit_score_pct": 89, "tag": "CANONICAL CLUSTER SOURCE", "summary": "Monsters called cluster sentences. Specifiers framework. Alex/Jordan walk-through.", "v1": "v1", "v1_destinations": ["MC-HSL-5.1", "MC-HSL-5.2", "MC-HSL-5.3", "MC-HSL-5.4", "MC-HSL-5.6", "MC-HSL-5.7"]},
+      {"id": "NT-Cluster_Sentences_Review_docx.pdf", "filename": "Cluster Sentences Review.docx.pdf", "tier": "S", "format": "pdf", "size_kb": 209, "audit_score_pct": 89, "summary": "PDF export of the docx. Same content, more portable. Keep both for tooling flexibility.", "v1": "v1", "v1_destinations": ["MC-HSL-5.1"]},
+      {"id": "NT-Intermediate_Conclusions_Practice_Full.docx", "filename": "Intermediate_Conclusions_Practice_Full.docx", "tier": "S", "format": "docx", "size_kb": 38, "audit_score_pct": 89, "summary": "3-rule diagnostic + 2 LSAT questions WITH answer key (D, E).", "v1": "v1", "v1_destinations": ["MC-LSN-1.7", "MC-DRL-3.5"]},
+      {"id": "NT-Valid_Conclusion_Worksheet_HW_dup1.pdf", "filename": "Valid Conclusion Worksheet HW_dup1.pdf", "tier": "S", "format": "pdf", "size_kb": 89, "audit_score_pct": 86, "tag": "PAIR with Conclusion mastery Valid vs Invalid", "summary": "Design-the-conclusion drill. Whimsical premises (Monica/Frida, Microphones, QWERTY). Meta-explanation about staying in the world of premises.", "v1": "v1", "v1_destinations": ["MC-DRL-3.6"]},
+      {"id": "NT-main_conclusion_questions_dup1.pdf", "filename": "main_conclusion_questions_dup1.pdf", "tier": "A", "format": "pdf", "size_kb": 64, "audit_score_pct": 83, "tag": "PAIR with MCFIRST", "summary": "Same 20 arguments as MCFIRST, questions only.", "v1": "v1", "v1_destinations": ["MC-SIM-4.2"]},
+      {"id": "NT-main_conclusion_answer_dup1.docx", "filename": "main_conclusion_answer_dup1.docx", "tier": "A", "format": "docx", "size_kb": 38, "audit_score_pct": 83, "tag": "PAIR with main_conclusion_student", "summary": "7-question MC Identification worksheet, answer key.", "v1": "v1", "v1_destinations": ["MC-DRL-3.1 (auxiliary)"]},
+      {"id": "NT-Argument_Core_Periph_dup1.pdf", "filename": "Argument Core & Periph_dup1.pdf", "tier": "A", "format": "pdf", "size_kb": 42, "audit_score_pct": 83, "summary": "Cleanest argument-core-vs-peripheral breakdown. William/Harry standardized testing dialog worth preserving verbatim.", "v1": "v1", "v1_destinations": ["MC-LSN-1.1", "MC-LSN-1.8", "MC-REF-2.F", "MC-REF-2.I"]},
+      {"id": "NT-Indicator_word_list.pdf", "filename": "Indicator word list .pdf", "tier": "A", "format": "pdf", "size_kb": 21, "audit_score_pct": 83, "summary": "Canonical indicator reference, 6 categories.", "v1": "v1", "v1_destinations": ["MC-LSN-1.3", "MC-REF-2.A", "MC-REF-2.C", "MC-REF-2.I", "MC-DRL-3.1"]},
+      {"id": "NT-Skeletal_Breakdown_LR_dup1.pdf", "filename": "Skeletal Breakdown LR (1)_dup1.pdf", "tier": "A", "format": "pdf", "size_kb": 47, "audit_score_pct": 83, "summary": "Types of conclusions taxonomy + worked tomato example.", "v1": "v1", "v1_destinations": ["MC-LSN-1.6", "MC-LSN-1.8", "MC-LSN-1.9", "MC-REF-2.E", "MC-REF-2.F", "MC-REF-2.I"]},
+      {"id": "NT-skeletal_lecture_notes_dup1.pdf", "filename": "skeletal lecture notes _dup1.pdf", "tier": "A", "format": "pdf", "size_kb": 6.4, "audit_score_pct": 80, "summary": "Aspiring Attorneys lesson. Reference-toned. Heavy overlap with Lecture 1.", "v1": "v1", "v1_destinations": ["MC-LSN-1.1 (supplemental)"]},
+      {"id": "NT-Conclusion_mastery_question_set_Valid_vs_Invalid.pdf", "filename": "Conclusion mastery question set Valid vs Invalid (1) (7) (3).pdf", "tier": "A", "format": "pdf", "size_kb": 32, "audit_score_pct": 80, "summary": "Design-the-conclusion drill, 8 questions. Pair with Worksheet HW.", "v1": "v1", "v1_destinations": ["MC-DRL-3.6"]},
+      {"id": "NT-Valid_conclusion_Question_Mastery_PT_2_dup1.pdf", "filename": "Valid conclusion Question Mastery PT 2 _dup1.pdf", "tier": "A", "format": "pdf", "size_kb": 100, "audit_score_pct": 80, "summary": "PT 2 of design-the-conclusion drill. Penguins/cheese moon, dragons/marshmallows, SPUMES, chipotle mayonnaise.", "v1": "v1", "v1_destinations": ["MC-DRL-3.6"]},
+      {"id": "NT-Intermediate_Conclusions_Nested_Claims_Drill.pdf", "filename": "Intermediate Conclusions & Nested Claims Drill.pdf", "tier": "A", "format": "pdf", "size_kb": 809, "audit_score_pct": 77, "summary": "Image-only PDF (OCR'd). Bracket-and-underline drill with fashion-themed examples (fedora, fez, trucker hats). Voicy. Needs rebuild for digital.", "v1": "v1", "v1_destinations": ["MC-DRL-3.9"]},
+      {"id": "NT-LSAT_argument_identification_Homework_drill.pdf", "filename": "LSAT argument identification Homework drill.pdf", "tier": "A", "format": "pdf", "size_kb": 29, "audit_score_pct": 77, "summary": "16+ questions. Highlight + bracket + direct/indirect support + multi-premise.", "v1": "v1", "v1_destinations": ["MC-DRL-3.2"]},
+      {"id": "NT-Advanced_MP_Question_Traps_dup1.docx", "filename": "Advanced- MP Question Traps_dup1.docx", "tier": "A", "format": "docx", "size_kb": 14, "audit_score_pct": 77, "tag": "INDEX TO MASTERCLASS", "summary": "7 trap types as a brief taxonomy. Use as the trap-reference index.", "v1": "v1", "v1_destinations": ["MC-LSN-1.12", "MC-SIM-4.3", "MC-REF-2.G"]},
+      {"id": "NT-Intermediate_Conclusion_Practice.docx", "filename": "Intermediate Conclusion Practice.docx", "tier": "A", "format": "docx", "size_kb": 39, "audit_score_pct": 77, "summary": "5-6 real LSAT role/purpose questions. No answer key in this file.", "v1": "v1", "v1_destinations": ["MC-DRL-3.5"]},
+      {"id": "NT-main_conclusion_student_dup1.docx", "filename": "main_conclusion_student_dup1.docx", "tier": "A", "format": "docx", "size_kb": 38, "audit_score_pct": 77, "tag": "PAIR with main_conclusion_answer", "summary": "Question side of the answer-key pair (7 questions).", "v1": "v1", "v1_destinations": ["MC-DRL-3.1 (auxiliary)"]},
+      {"id": "NT-Argument_parts_core_dup1.pdf", "filename": "Argument  parts (core)_dup1.pdf", "tier": "A", "format": "pdf", "size_kb": 143, "audit_score_pct": 77, "summary": "Condensed sibling of Lecture 1 Notes. Largely subsumed.", "v1": "v1.5", "v1_destinations": [], "note": "Subsumed by Lecture 1 Notes. Move to v1.5 backlog as supplemental reading. See NOT_INCLUDED_IN_V1.md."},
+      {"id": "NT-complicated_sentence_notes.docx", "filename": "complicated sentence notes .docx", "tier": "A", "format": "docx", "size_kb": 16, "audit_score_pct": 71, "summary": "Commas / optional elements / middle-out decoder. Sub-module material.", "v1": "v1", "v1_destinations": ["MC-HSL-5.3", "MC-HSL-5.5"]},
+      {"id": "NT-LR_BODY_DRILL_PT_1.pdf", "filename": "LR BODY DRILL PT 1.pdf", "tier": "A", "format": "pdf", "size_kb": 28, "audit_score_pct": 71, "summary": "10-question highlighting drill. Real LSAT stimuli. No answer key visible.", "v1": "v1", "v1_destinations": ["MC-DRL-3.2 stage 1"]},
+      {"id": "NT-Keyword.pdf", "filename": "Keyword.pdf", "tier": "B", "format": "pdf", "size_kb": 24, "audit_score_pct": 69, "summary": "Keyword reference card. Mostly redundant; unique addition: explicit FABS category callout.", "v1": "v1", "v1_destinations": ["MC-LSN-1.3 supplemental", "MC-REF-2.A supplemental"]},
+      {"id": "NT-LR_MASTERY_Main_conclusion_Questions.pdf", "filename": "LR MASTERY ( Main conclusion Questions).pdf", "tier": "B", "format": "pdf", "size_kb": 36, "audit_score_pct": 63, "summary": "Meta-pedagogy intro. Promised question set isn't in this file. Voicy framing only.", "v1": "v1", "v1_destinations": ["MC-SIM-4.7 motivational context"]},
+      {"id": "NT-premise_conclusion_indicators_pt2_dup1.pdf", "filename": "premise and conclusion indicators pt2 _dup1.pdf", "tier": "B", "format": "pdf", "size_kb": 116, "audit_score_pct": 63, "summary": "5 LSAT stimuli. Interactive answer-reveal mechanic implied but not extracted.", "v1": "v1", "v1_destinations": ["MC-DRL-3.2 (stimuli)"]},
+      {"id": "NT-Valid_Conclusion_Question_Mastery_SET_PC_indicators_dup1.docx", "filename": "Valid Conclusion Question Mastery SET + (P + C)indicators _dup1.docx", "tier": "B", "format": "docx", "size_kb": 18, "audit_score_pct": 63, "summary": "Same 8 questions as Valid vs Invalid PDF + MEMORIZE TATTOO callout.", "v1": "v1", "v1_destinations": ["MC-DRL-3.6 supplemental (callout only)"]}
+    ],
+    "homework": [
+      {"id": "HW-main_conclusion_answer_key_dup1.pdf", "filename": "main_conclusion_answer_key_dup1.pdf", "tier": "S", "format": "pdf", "size_kb": 255, "audit_score_pct": 91, "tag": "PRIMARY ANSWER KEY", "summary": "Full answer key for 20-argument classification drill. Per question: Conclusion verbatim + Conclusion type + Keywords present + Argument parts table.", "v1": "v1", "v1_destinations": ["MC-SIM-4.2", "MC-SIM-4.4 view B", "MC-DRL-3.7"]},
+      {"id": "HW-Main_Conclusion_Drill_Answer_Key.pdf", "filename": "Main Conclusion Drill Answer Key.pdf", "tier": "S", "format": "pdf", "size_kb": 139, "audit_score_pct": 91, "tag": "PAIR with _scan_Main Conclusion Drill", "summary": "Voicy answer key. Claim attribution, indicator words tagged, role of each.", "v1": "v1", "v1_destinations": ["MC-DRL-3.4", "MC-REF-2.B"]},
+      {"id": "HW-Argument_structure_answer_key_docx_dup1.pdf", "filename": "Argument structure answer key.docx_dup1.pdf", "tier": "S", "format": "pdf", "size_kb": 142, "audit_score_pct": 89, "tag": "PAIR with refresher worksheet", "summary": "Full answer key for Argument Structure refresher: indicator IDs + main conclusion identifications with rationale.", "v1": "v1", "v1_destinations": ["MC-DRL-3.1"]},
+      {"id": "HW-RR_Drill_Stage_2_Instructions.pdf", "filename": "R&R Drill Stage 2 Instructions (1).pdf", "tier": "S", "format": "pdf", "size_kb": 60, "audit_score_pct": 89, "summary": "R&R methodology. Step-by-step: read piece → cover → rephrase → real-world conceptualize → Skeptic's Ear Check → cumulative recall.", "v1": "v1", "v1_destinations": ["MC-DRL-3.8"]},
+      {"id": "HW-AP_Answer_Key.pdf", "filename": "AP Answer Key (1).pdf", "tier": "S", "format": "pdf", "size_kb": 36, "audit_score_pct": 86, "tag": "PAIR with Argument parts exercise", "summary": "Full breakdowns of multi-paragraph arguments into numbered claims. Real LSAT-style stimuli.", "v1": "v1", "v1_destinations": ["MC-DRL-3.2"]},
+      {"id": "HW-Argument_Structure_refresher_worksheet_dup1.pdf", "filename": "Argument Structure (refresher worksheet)_dup1.pdf", "tier": "S", "format": "pdf", "size_kb": 130, "audit_score_pct": 86, "tag": "PAIR with answer key", "summary": "14+ question worksheet: 7 indicator-ID, 1 simpler-term, 4+ main-conclusion identification.", "v1": "v1", "v1_destinations": ["MC-DRL-3.1"]},
+      {"id": "HW-Premise_Conc_exercise_dup1.pdf", "filename": "Premise & Conc exercise_dup1.pdf", "tier": "S", "format": "pdf", "size_kb": 26, "audit_score_pct": 86, "summary": "3-part quiz with ~13 real LSAT stimuli for premise/conclusion identification with color highlighting.", "v1": "v1", "v1_destinations": ["MC-DRL-3.2"]},
+      {"id": "HW-Main_Conclusion_Homework_Rebuttal_vs_First_Sentence_Updated.pdf", "filename": "Main_Conclusion_Homework_Rebuttal_vs_First_Sentence_Updated.pdf", "tier": "A", "format": "pdf", "size_kb": 2.8, "audit_score_pct": 83, "summary": "4 stages × 5 questions, each tagged with PT/Section/Question + short stimulus preview.", "v1": "v1", "v1_destinations": ["MC-DRL-3.4", "MC-DIA-6.2"]},
+      {"id": "HW-First_sentence_Conclusion_Reading_Drill.md", "filename": "First sentence Conclusion (Reading Drill).md", "tier": "A", "format": "md", "size_kb": 1.7, "audit_score_pct": 83, "summary": "Reading-only drill, 9 questions. 9 PT references. Pure recognition exercise.", "v1": "v1", "v1_destinations": ["MC-LSN-1.5", "MC-DRL-3.3"]},
+      {"id": "HW-_scan_Main_Conclusion_Drill.pdf", "filename": "_scan_Main Conclusion Drill.pdf", "tier": "A", "format": "pdf", "size_kb": 94, "audit_score_pct": 80, "tag": "PAIR with Drill Answer Key", "summary": "9+ MC identification questions, real LSAT-style stimuli. Question side.", "v1": "v1", "v1_destinations": ["MC-DRL-3.4 (supplemental)"]},
+      {"id": "HW-_scan_Main_Conclusion_Homework.pdf", "filename": "_scan_Main Conclusion Homework.pdf", "tier": "A", "format": "pdf", "size_kb": 20, "audit_score_pct": 80, "tag": "GRID TEMPLATE", "summary": "Worksheet template (4 stages × 5 questions, grid format with score tracking).", "v1": "v1", "v1_destinations": ["MC-DIA-6.2", "MC-DRL-3.4"]},
+      {"id": "HW-Homework_Dissect_LSAT_arguments.pdf", "filename": "Homework ( Dissect LSAT arguments).pdf", "tier": "A", "format": "pdf", "size_kb": 32, "audit_score_pct": 80, "summary": "Dissection worksheet using real PT73/PT70 questions. Key elements list.", "v1": "v1", "v1_destinations": ["MC-DRL-3.2"]},
+      {"id": "HW-Argument_parts_exercise.pdf", "filename": "Argument parts exercise (1).pdf", "tier": "A", "format": "pdf", "size_kb": 29, "audit_score_pct": 77, "tag": "PAIR with AP Answer Key", "summary": "Question side of the AP Answer Key pair. 6+ multi-paragraph LSAT-style arguments.", "v1": "v1", "v1_destinations": ["MC-DRL-3.2"]},
+      {"id": "HW-RR_Drill_Review_Form.pdf", "filename": "R&R Drill Review Form (1).pdf", "tier": "A", "format": "pdf", "size_kb": 122, "audit_score_pct": 71, "summary": "10-question form for reviewing R&R recordings. Categories: Quick Mark / Left Out / Added / Mischaracterized.", "v1": "v1", "v1_destinations": ["MC-DRL-3.8", "MC-DIA-6.7"]},
+      {"id": "HW-prem_conc_homework_level_2.pdf", "filename": "prem + conc homework level 2.pdf", "tier": "B", "format": "pdf", "size_kb": 25, "audit_score_pct": 63, "summary": "5 numbered LSAT-style arguments. Subset/sibling of LR BODY DRILL PT 1.", "v1": "v1", "v1_destinations": ["MC-DRL-3.2 (supplemental)"]}
+    ],
+    "prototypes": [
+      {"id": "PR-mainconclusionrebuttalvsfirst", "deployed_name": "mainconclusionrebuttalvsfirst.netlify.app", "alias": "MC Companion", "local_file": "index (4).html", "ux_tier": "S", "code_tier": "S", "ux_score_pct": 98, "code_score_pct": 100, "tag": "FLAGSHIP", "summary": "Identity → Synopsis Briefing (4 rules + Indicator Vault, 6 categories) → Stage 1-4 with 5 questions each, type toggle (First Sentence/Rebuttal), reason input, restated conclusion, self-grading, score gating, localStorage persistence, PDF report generation.", "v1": "v1", "v1_destinations_mechanic": ["MC-DRL-3.4", "MC-DIA-6.2", "MC-DIA-6.9"], "v1_destinations_content": ["MC-REF-2.A (color-coded vault design)"], "extracts_questions": false, "questions_extracted_count": 0, "questions_note": "Drill list is PT-references only (PT/sec/q) → external PT bank (v1.5). v1 reuses the Stage-Gate frame with corpus-sourced stimuli."},
+      {"id": "PR-logicalreasoningfoundation", "deployed_name": "logicalreasoningfoundation.netlify.app", "alias": "LR Field Manual", "local_file": "index (3).html", "ux_tier": "S", "code_tier": "S", "ux_score_pct": 93, "code_score_pct": 93, "tag": "FLAGSHIP", "summary": "6 modules (Introduction, Anatomy, Core, Components, Process, Context). X-Ray Scan + Gap Simulator + Focus Mode mechanics.", "v1": "v1", "v1_destinations_mechanic": ["MC-LSN-1.1 (Gap Simulator)", "MC-DRL-3.2 (X-Ray Scan)", "MC-LSN-1.1-1.8 quote blocks (X-Ray)", "workspace shell (sidebar nav + global progress)"], "v1_destinations_content": ["MC-LSN-1.2 (Monica claimed dinosaurs example)"], "extracts_questions": false, "questions_extracted_count": 0, "questions_note": "Multi-topic LR foundation; Main-Conclusion-relevant content already absorbed into Module 1. Other LR topics out of scope for this v1."},
+      {"id": "PR-mainconclusion", "deployed_name": "mainconclusion.netlify.app", "alias": "MC Drill (cyberpunk)", "local_file": "index (6).html", "ux_tier": "A", "code_tier": "A", "ux_score_pct": 83, "code_score_pct": 73, "summary": "20-question chunk-tap drill using canonical PT-style questions (govt + ed spending, Mediterranean diet, salt fortification — same 20 as MCFIRST + main_conclusion_questions). Cyberpunk styling.", "v1": "v1", "v1_destinations_mechanic": ["MC-DRL-3.4 supplemental (chunk-tap + keyword-glow hint pattern)", "MC-DRL-3.2 (chunk-tap variant)"], "v1_destinations_content": [], "extracts_questions": "20 in prototype, but content overlaps with corpus", "questions_extracted_count": 20, "questions_note": "Questions are paraphrased / chunk-formatted versions of the canonical 20-argument drill from Notes/Homework. Source the canonical version from Notes/Homework; reuse the chunk-tap mechanic. Cyberpunk visual REJECTED in favor of Aspiring Attorneys gold."},
+      {"id": "PR-introconclusiondrill", "deployed_name": "introconclusiondrill.netlify.app", "alias": "MC Analysis Lab", "local_file": "index (5).html", "ux_tier": "A", "code_tier": "A", "ux_score_pct": 78, "code_score_pct": 80, "summary": "20-question sentence-tap drill with original (non-PT) stimuli. On success: structural roles revealed (conclusion/premise/opposing color reveal). On failure: hint shown.", "v1": "v1", "v1_destinations_mechanic": ["MC-DRL-3.2 (role-reveal-on-success pattern)", "MC-DRL-3.4 (role-reveal supplement)"], "v1_destinations_content": [], "extracts_questions": "20 originals not in source files", "questions_extracted_count": 20, "questions_note": "20 ORIGINAL stimuli that don't exist in Notes/Homework. Per spec §6 Cluster T: pedagogically thinner than canonical PT-style content. CONTENT goes to Table B (v1.5 'training-wheels mode'). MECHANIC ports forward."},
+      {"id": "PR-argumentslr", "deployed_name": "argumentslr.netlify.app + structuredrill.netlify.app", "alias": "LSAT Logic Tool", "local_file": "index (1).html (= index (2).html byte-identical)", "ux_tier": "A", "code_tier": "B", "ux_score_pct": 75, "code_score_pct": 60, "summary": "React-stack multi-topic: Argument Structure + Conditional Rules + Binary Validity + Conditional Triggers + Trojan Horse Concession + Hunting for Main Conclusion + Practice Simulator + Coach's Note.", "v1": "v1", "v1_destinations_mechanic": ["MC-SIM-4.5 (Coach's Note framing)", "MC-LSN-1.8 (Trojan Horse framing)"], "v1_destinations_content": [], "extracts_questions": "Multi-topic; Trojan Horse + Coach's Note framings only", "questions_extracted_count": 0, "questions_note": "Multi-topic scope dilutes Main Conclusion focus. Conditional Rules / Binary Validity / Conditional Triggers belong to other LSAT U topics. Trojan Horse Concession framing already absorbed into Lesson 1.8 + Reference 2.I."}
+    ]
+  },
+
+  "open_questions": [
+    {"id": "OQ-DRL-3.4", "topic": "Drill 3.4 Stage-Gate content sourcing", "question": "The 20 PT-references in MC Companion (PT118 S3 Q12, etc.) point to the external PT bank (v1.5). For v1, do we (a) substitute author-paraphrased stimuli that test the same first-sentence/rebuttal classification, (b) reuse the canonical 20-argument drill from Notes/Homework as the Stage-Gate content (overlap with Module 4 Simulator), or (c) ship Drill 3.4 with placeholder slots and a 'PT bank coming in v1.5' indicator?", "blocker_for": "Gate 3 architecture (drill content schema)", "recommendation": "Option (b) — reuse canonical 20 from Notes/Homework. Module 4 Simulator and Drill 3.4 share content but differ in mechanic (Drill 3.4 = Stage-Gate self-grade flow; Simulator = full 5-choice answer set + Coach's Note + Trap Master)."},
+    {"id": "OQ-SIM-4.2-AC", "topic": "Module 4 Simulator answer choices for the 20 canonical questions", "question": "The 20 canonical stimuli have answer keys but several do not have full 5-answer-choice sets in the source files (the source documents focus on classification, not multiple-choice). Spec §4.2 calls for 'Five answer choices (A through E). Sourced from the corpus's full answer-choice sets where available; supplemented with Coach's Note distractors where missing.' Confirm: missing answer choices to be authored by Joshua at Stage 4 build time, or by Claude with Joshua review?", "blocker_for": "Gate 4 build of Module 4", "recommendation": "Joshua authors. The voice and trap-tagging on each distractor is a critical-path authorship task that warrants Joshua's review."},
+    {"id": "OQ-DRL-3.6-AI", "topic": "Drill 3.6 AI evaluation in v1", "question": "Drill 3.6 (Design-the-Conclusion) requires AI evaluation of a free-text 'valid conclusion' / 'invalid conclusion' from a whimsical premise pair. v1 = templated (per Gate 1 #5). What's the templated logic? Pre-authored model answers per question with a fuzzy-match similarity check?", "blocker_for": "Gate 4 build of Drill 3.6", "recommendation": "Pre-authored model answers per question (one valid + one invalid) with a meaning-similarity check using local-only sentence embeddings (e.g., transformers.js MiniLM, runs in-browser). No LLM call. Fuzzy match against pre-authored answers earns 'Valid (here's why)' / 'Invalid but interesting' / 'Misses the premises entirely' classification. v1.5 swaps in LLM."},
+    {"id": "OQ-DRL-3.9-OCR", "topic": "Drill 3.9 fashion-themed source PDF re-author", "question": "Intermediate Conclusions & Nested Claims Drill.pdf is image-only OCR'd. Re-OCR with a better engine, or re-author the questions in Markdown using the existing fashion-themed framing?", "blocker_for": "Gate 4 build of Drill 3.9", "resolution": "RESOLVED 2026-04-30 (Joshua): re-OCR first using a vision-model OCR pass. Re-author only if OCR fails. Preserves corpus tier preservation. Plan: scripts/import-content.ts runs vision-model OCR on the source PDF at build time; on failure (confidence threshold or missing fields), the import surfaces a build error and falls back to a re-authored Markdown stub at src/content/drill-3.9-fallback.md (authored only after OCR provably fails)."},
+    {"id": "OQ-RR-MOBILE", "topic": "R&R Drill mobile fallback", "question": "Spec §3.6.2 says R&R is desktop-primary with a mobile fallback. What is the mobile fallback's exact shape — same 'cover-and-rephrase' flow per piece without the full-section continuous recording, or no mobile R&R at all in v1?", "blocker_for": "Gate 4 build of Drill 3.8", "resolution": "RESOLVED 2026-04-30 (Joshua): text-only fallback on mobile in v1. Audio-on-mobile is v1.5. Do not block mobile users from R&R. Plan: mobile flow surfaces the R&R protocol (read piece → cover → type rephrase from memory → Skeptic's Ear Check → cumulative recall typed) without microphone capture. Typed responses are the artifact reviewed in the three-column Left Out / Added / Mischaracterized form. Continuous-recording R&R remains desktop-only."},
+    {"id": "OQ-CALIBRATION-CONTENT", "topic": "Capstone calibration drill content for M1.13 + M5.8", "question": "Per Gate 1 #3, calibration drills draw from corpus + Netlify extractions, NOT external PT bank. M1.13 needs ~10 questions; M5.8 needs ~5 cluster sentences. Do we source these from existing canonical 20 (overlap with Module 4) or curate a separate 'calibration-only' subset?", "blocker_for": "Gate 4 build of M1 + M5 capstones", "recommendation": "Curate a separate calibration-only subset from the canonical 20 (M1.13 = 10 of the 20, varied trait coverage) and from the Cluster Sentences Review walkthrough variants (M5.8 = 5). Mark them in the inventory as `calibration_only: true` so they're not double-counted in Module 4 attempts."}
+  ]
+}

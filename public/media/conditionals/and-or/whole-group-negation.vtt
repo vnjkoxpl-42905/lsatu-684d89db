@@ -1,0 +1,41 @@
+WEBVTT
+
+1
+00:00:00.600 --> 00:00:04.312
+A parade float is approved if its brakes pass and its lights work.
+
+2
+00:00:04.712 --> 00:00:09.875
+To deny a group, ask when it fails. This one fails when at least one member is missing.
+
+3
+00:00:10.675 --> 00:00:15.389
+Now a different rule: a float is approved if its brakes pass or its lights work.
+
+4
+00:00:15.789 --> 00:00:22.445
+An OR fails only when every member fails. So its denial is: the brakes don't pass, and the lights don't work.
+
+5
+00:00:23.245 --> 00:00:27.384
+Back to the float. To take its contrapositive, follow three steps.
+
+6
+00:00:27.784 --> 00:00:34.547
+Step one: flip the sides. Step two: put a NOT on every member. Step three: switch the group's connector.
+
+7
+00:00:34.947 --> 00:00:39.363
+If the float is not approved, then the brakes don't pass, or the lights don't work.
+
+8
+00:00:40.163 --> 00:00:47.565
+Here's a rule that already has a not in it: if the pool is open, then the lifeguard is on duty or the pool is not crowded.
+
+9
+00:00:47.965 --> 00:00:57.885
+Flip the sides and deny the requirement as a whole: no lifeguard, and the pool is crowded. The old not and the new not cancel, and the pool is not open.
+
+10
+00:00:58.685 --> 00:01:00.925
+Deny the whole group, member by member.

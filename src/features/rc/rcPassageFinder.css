@@ -1,0 +1,814 @@
+/* RC passage finder: the left side of the RC builder only.
+   Every rule is scoped to .rc-finder (in the page) or to the finder's own
+   portal layers (.rc-finder-panel, .rc-finder-sheet). Nothing here reaches
+   the practice-conditions workspace on the right.
+
+   Materials: a warm-paper search instrument with a recessed PT / S / P plate,
+   and a charcoal index whose one highlighted row lifts out as a paper card. */
+
+.rc-finder,
+.rc-finder-panel,
+.rc-finder-sheet {
+  --fd-paper: #f8f5ee;
+  --fd-paper-top: #fcfaf5;
+  --fd-paper-edge: #d6d0c2;
+  --fd-paper-contact: #cbc4b4;
+  --fd-ink: var(--rc-paper-ink, #252b26);
+  --fd-muted: var(--rc-paper-muted, #64645b);
+  --fd-placeholder: #737368;
+  --fd-bay: #ebe6d9;
+  --fd-slot: #fdfbf6;
+  --fd-ring: #646f60;
+  --fd-red: #b23b31;
+  --fd-ease: cubic-bezier(.23, 1, .32, 1);
+  --fd-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --fd-serif: "Fraunces", Georgia, "Times New Roman", serif;
+}
+
+.rc-finder {
+  position: relative;
+  container-type: inline-size;
+  font-family: "Outfit", ui-sans-serif, system-ui, sans-serif;
+}
+
+.rc-finder-sr {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ------------------------------------------------------------ instrument */
+
+.rc-finder-instrument {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  width: 100%;
+  min-height: 60px;
+  padding: 6px 6px 6px 14px;
+  box-sizing: border-box;
+  color: var(--fd-ink);
+  text-align: left;
+  background: linear-gradient(180deg, var(--fd-paper-top) 0%, var(--fd-paper) 100%);
+  border: 1px solid var(--fd-paper-edge);
+  border-radius: 14px;
+  box-shadow:
+    inset 0 1px 0 #fffefb,
+    0 1px 0 var(--fd-paper-contact),
+    0 12px 24px -20px rgba(37, 43, 38, .45);
+  transition: border-color 160ms ease, box-shadow 200ms var(--fd-ease);
+}
+.rc-finder-instrument:focus-within,
+.rc-finder-instrument[data-open] {
+  border-color: #9a9f90;
+  box-shadow:
+    inset 0 1px 0 #fffefb,
+    0 1px 0 var(--fd-paper-contact),
+    0 18px 30px -22px rgba(37, 43, 38, .55);
+}
+.rc-finder-instrument:has(.rc-finder-input:focus-visible),
+.rc-final-builder .rc-finder .rc-finder-trigger:focus-visible {
+  outline: 2px solid var(--fd-ring) !important;
+  outline-offset: 3px !important;
+}
+
+.rc-finder-glyph {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  margin-right: 6px;
+  color: var(--fd-muted);
+}
+
+.rc-finder-field {
+  display: grid;
+  flex: 1 1 auto;
+  min-width: 0;
+  gap: 1px;
+}
+
+.rc-finder-label {
+  padding-left: 2px;
+  color: var(--fd-muted);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.25;
+}
+
+/* Beats the builder's generic dark text-field rules; this field is paper. */
+.rc-finder .rc-finder-input,
+.rc-finder-sheet .rc-finder-input {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 100%;
+  min-width: 0;
+  min-height: 28px !important;
+  margin: 0;
+  padding: 0 2px !important;
+  color: var(--fd-ink) !important;
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  font: inherit;
+  font-size: 16px !important;
+  line-height: 1.4;
+}
+.rc-finder .rc-finder-input::placeholder,
+.rc-finder-sheet .rc-finder-input::placeholder {
+  color: var(--fd-placeholder) !important;
+  opacity: 1;
+}
+.rc-finder .rc-finder-input::-webkit-search-cancel-button,
+.rc-finder .rc-finder-input::-webkit-search-decoration,
+.rc-finder-sheet .rc-finder-input::-webkit-search-cancel-button,
+.rc-finder-sheet .rc-finder-input::-webkit-search-decoration {
+  -webkit-appearance: none;
+  appearance: none;
+}
+/* The ring belongs to the whole instrument, drawn above. */
+.rc-final-builder .rc-finder .rc-finder-input:focus-visible,
+.rc-finder .rc-finder-input:focus-visible,
+.rc-finder-sheet .rc-finder-input:focus-visible {
+  outline: none !important;
+}
+
+.rc-finder .rc-finder-icon-button,
+.rc-finder-sheet .rc-finder-icon-button {
+  display: inline-grid;
+  flex: none;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  color: var(--fd-muted);
+  background: transparent;
+  border: 0;
+  border-radius: 10px;
+  cursor: pointer;
+}
+.rc-finder .rc-finder-icon-button svg,
+.rc-finder-sheet .rc-finder-icon-button svg { width: 18px; height: 18px; }
+.rc-finder .rc-finder-icon-button:hover { color: var(--fd-ink); background: rgba(37, 43, 38, .06); }
+.rc-finder .rc-finder-browse svg { transition: transform 220ms var(--fd-ease); }
+.rc-finder-instrument[data-open] .rc-finder-browse svg { transform: rotate(180deg); }
+
+/* ------------------------------------------------------------ PT/S/P plate */
+
+.rc-finder-plate {
+  display: flex;
+  flex: none;
+  gap: 3px;
+  padding: 3px;
+  border-radius: 10px;
+  background: var(--fd-bay);
+  box-shadow: inset 0 1px 2px rgba(37, 43, 38, .14), inset 0 -1px 0 rgba(255, 255, 255, .55);
+}
+.rc-finder-slot {
+  position: relative;
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  gap: 1px;
+  min-width: 40px;
+  height: 42px;
+  padding: 0 6px;
+  box-sizing: border-box;
+  overflow: hidden;
+  border-radius: 7px;
+  background: var(--fd-slot);
+  box-shadow: 0 1px 0 rgba(37, 43, 38, .16), inset 0 1px 0 #fff;
+}
+.rc-finder-slot[data-state=empty] { background: transparent; box-shadow: none; }
+.rc-finder-slot[data-state=committed] { box-shadow: inset 0 2px 0 var(--fd-red), 0 1px 0 rgba(37, 43, 38, .16); }
+.rc-finder-slot-label {
+  color: #66665c;
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1;
+}
+.rc-finder-slot-value {
+  color: var(--fd-ink);
+  font-family: var(--fd-mono);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.25;
+  font-variant-numeric: tabular-nums;
+}
+.rc-finder-slot[data-state=empty] .rc-finder-slot-value { color: #8c8c81; }
+.rc-finder-slot[data-state=draft] .rc-finder-slot-value {
+  color: var(--fd-muted);
+  text-decoration: underline dotted 1px;
+  text-underline-offset: 3px;
+}
+.rc-finder-slot-value[data-roll] { animation: rc-finder-roll 220ms var(--fd-ease); }
+
+.rc-finder-plate[data-surface=dark] {
+  width: 100%;
+  box-sizing: border-box;
+  background: #0e1112;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, .5), inset 0 -1px 0 rgba(255, 255, 255, .04);
+}
+.rc-finder-plate[data-surface=dark] .rc-finder-slot {
+  flex: 1 1 0;
+  grid-auto-flow: column;
+  gap: 8px;
+  height: 46px;
+  background: #1f2426;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .06), 0 1px 0 #070909;
+}
+.rc-finder-plate[data-surface=dark] .rc-finder-slot[data-state=empty] { background: transparent; box-shadow: none; }
+.rc-finder-plate[data-surface=dark] .rc-finder-slot[data-state=committed] { box-shadow: inset 0 2px 0 #d65a4c, inset 0 1px 0 rgba(255, 255, 255, .06); }
+.rc-finder-plate[data-surface=dark] .rc-finder-slot-label { color: #a9aca2; font-size: 11px; }
+.rc-finder-plate[data-surface=dark] .rc-finder-slot-value { color: #efede6; font-size: 16px; }
+.rc-finder-plate[data-surface=dark] .rc-finder-slot[data-state=empty] .rc-finder-slot-value { color: #7d8178; }
+.rc-finder-plate[data-surface=dark] .rc-finder-slot[data-state=draft] .rc-finder-slot-value { color: #c9cbc2; }
+
+/* Narrow columns keep the field readable; the status row still names the address. */
+@container (max-width: 400px) {
+  .rc-finder-slot { min-width: 32px; padding: 0 4px; }
+  .rc-finder-slot-label { display: none; }
+}
+@container (max-width: 330px) {
+  .rc-finder-instrument > .rc-finder-plate { display: none; }
+}
+
+/* -------------------------------------------------- committed status row */
+
+.rc-finder-status {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2px 10px;
+  min-height: 52px;
+  margin-top: 12px;
+  padding: 4px 4px 4px 14px;
+  box-sizing: border-box;
+  color: var(--fd-ink);
+  border: 1px dashed var(--fd-paper-edge);
+  border-radius: 12px;
+  animation: rc-finder-settle 240ms var(--fd-ease);
+}
+.rc-finder-status[data-complete] {
+  padding-left: 22px;
+  border-style: solid;
+  background:
+    linear-gradient(90deg, transparent 11px, rgba(178, 59, 49, .5) 11px, rgba(178, 59, 49, .5) 12px, transparent 12px),
+    var(--fd-slot);
+  box-shadow: 0 1px 0 var(--fd-paper-contact), 0 10px 20px -18px rgba(37, 43, 38, .5);
+}
+.rc-finder-status-text {
+  display: grid;
+  flex: 1 1 180px;
+  min-width: 0;
+  color: var(--fd-muted);
+  font-size: 13px;
+  line-height: 1.45;
+}
+.rc-finder-status-ref {
+  color: var(--fd-muted);
+  font-family: var(--fd-mono);
+  font-size: 12px;
+}
+.rc-finder-status-title {
+  overflow: hidden;
+  color: var(--fd-ink);
+  font-family: var(--fd-serif);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.3;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.rc-finder-status-actions { display: flex; flex: none; gap: 2px; }
+.rc-finder .rc-finder-status .rc-finder-status-actions button {
+  min-height: 44px;
+  padding: 4px 10px;
+  color: var(--fd-ink);
+  background: transparent;
+  border: 0;
+  border-radius: 8px;
+  font: inherit;
+  font-size: 13.5px;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-color: rgba(37, 43, 38, .35);
+  cursor: pointer;
+}
+.rc-finder .rc-finder-status .rc-finder-status-actions button:hover { text-decoration-color: currentColor; background: rgba(37, 43, 38, .05); }
+
+/* The RC create workspace resets every span and button to `font-family:
+   inherit` and 14px at (0,2,1), and loads after this file. These restate the
+   finder's type, and give its buttons a ring that reads on paper. */
+.rc-finder .rc-finder-plate .rc-finder-slot-value,
+.rc-finder .rc-finder-status .rc-finder-status-ref { font-family: var(--fd-mono); }
+.rc-finder .rc-finder-status .rc-finder-status-title { font-family: var(--fd-serif); }
+.rc-finder .rc-finder-instrument.rc-finder-trigger { font: inherit; font-size: 16px; }
+.rc-final-builder .rc-finder button:focus-visible,
+.rc-finder .rc-finder-instrument button:focus-visible,
+.rc-finder .rc-finder-status button:focus-visible {
+  outline: 2px solid var(--fd-ring) !important;
+  outline-offset: 2px !important;
+}
+
+/* -------------------------------------------------- phone sheet trigger */
+
+.rc-finder .rc-finder-trigger { font: inherit; cursor: pointer; }
+.rc-finder-trigger-value {
+  overflow: hidden;
+  padding-left: 2px;
+  color: var(--fd-ink);
+  font-size: 16px;
+  line-height: 1.4;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.rc-finder-trigger-value[data-empty] { color: var(--fd-placeholder); }
+
+/* ------------------------------------------------- charcoal index panel */
+
+.rc-finder-panel,
+.rc-finder-sheet {
+  --fp-surface: #161a1b;
+  --fp-raise: #1f2426;
+  --fp-edge: rgba(239, 237, 230, .1);
+  --fp-ink: #efede6;
+  --fp-muted: #b6b8af;
+  --fp-faint: #a0a399;
+  --fp-paper: #f6f2e8;
+  --fp-paper-ink: #1d231e;
+  --fp-paper-muted: #55584f;
+  --fp-red: #d65a4c;
+}
+
+.rc-finder-panel {
+  position: fixed;
+  z-index: 60;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  overflow: hidden;
+  color: var(--fp-ink);
+  font-family: "Outfit", ui-sans-serif, system-ui, sans-serif;
+  background: var(--fp-surface);
+  border: 1px solid var(--fp-edge);
+  border-radius: 16px;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, .05),
+    0 1px 2px rgba(19, 23, 24, .25),
+    0 28px 56px -28px rgba(19, 23, 24, .7);
+  transform-origin: top center;
+  animation: rc-finder-open 190ms var(--fd-ease, cubic-bezier(.23, 1, .32, 1));
+}
+
+.rc-finder-panel-head {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 48px;
+  padding: 2px 12px 2px 6px;
+  border-bottom: 1px solid var(--fp-edge);
+}
+.rc-finder-crumbs {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  gap: 0;
+  font-size: 13.5px;
+}
+.rc-finder-crumbs button,
+.rc-finder-crumbs [aria-current] {
+  min-height: 44px;
+  padding: 0 8px;
+  white-space: nowrap;
+}
+.rc-finder-crumbs button {
+  color: var(--fp-muted);
+  background: transparent;
+  border: 0;
+  border-radius: 8px;
+  font: inherit;
+  cursor: pointer;
+}
+.rc-finder-crumbs button:hover { color: var(--fp-ink); background: rgba(255, 255, 255, .06); }
+.rc-finder-crumbs [aria-current] { display: inline-flex; align-items: center; color: var(--fp-ink); font-weight: 600; }
+.rc-finder-crumb-sep { color: #747970; }
+.rc-finder-level {
+  flex: none;
+  color: var(--fp-faint);
+  font-family: var(--fd-mono, ui-monospace, monospace);
+  font-size: 12px;
+}
+
+.rc-finder-listbox {
+  flex: 1 1 auto;
+  min-height: 0;
+  padding: 8px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scroll-padding: 12px;
+  scrollbar-color: #3c4345 transparent;
+  scrollbar-width: thin;
+}
+.rc-finder-listbox:empty { display: none; }
+.rc-finder-listbox[data-step=forward] > * { animation: rc-finder-step-forward 200ms var(--fd-ease, ease-out) both; }
+.rc-finder-listbox[data-step=back] > * { animation: rc-finder-step-back 200ms var(--fd-ease, ease-out) both; }
+.rc-finder-listbox[data-step] > :nth-child(2) { animation-delay: 30ms; }
+.rc-finder-listbox[data-step] > :nth-child(n+3) { animation-delay: 60ms; }
+
+/* Decade bays: a recessed tray of label plates, one per PrepTest. */
+.rc-finder-group[data-layout=bay] {
+  display: grid;
+  grid-template-columns: 48px minmax(0, 1fr);
+  gap: 8px;
+  padding: 5px 0;
+}
+.rc-finder-group[data-layout=bay] + .rc-finder-group[data-layout=bay] { border-top: 1px solid var(--fp-edge); }
+.rc-finder-group[data-layout=bay] > .rc-finder-group-label {
+  padding: 15px 0 0 4px;
+  color: var(--fp-faint);
+  font-family: var(--fd-mono, ui-monospace, monospace);
+  font-size: 12px;
+}
+.rc-finder-bay {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(56px, 1fr));
+  gap: 6px;
+  padding: 6px;
+  border-radius: 12px;
+  background: #0e1112;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, .5), inset 0 -1px 0 rgba(255, 255, 255, .04);
+}
+.rc-finder-group[data-layout=stack] > .rc-finder-group-label {
+  position: sticky;
+  top: -8px;
+  z-index: 1;
+  margin: 0 -8px;
+  padding: 8px 18px 6px;
+  color: var(--fp-faint);
+  font-family: var(--fd-mono, ui-monospace, monospace);
+  font-size: 12px;
+  background: linear-gradient(180deg, var(--fp-surface) 70%, rgba(22, 26, 27, 0));
+}
+.rc-finder-group[data-layout=plain] > .rc-finder-group-label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+.rc-finder-rows { display: grid; gap: 2px; }
+
+.rc-finder-option {
+  position: relative;
+  box-sizing: border-box;
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.rc-finder-option-preptest {
+  display: grid;
+  place-items: center;
+  min-height: 46px;
+  color: var(--fp-ink);
+  font-family: var(--fd-mono, ui-monospace, monospace);
+  font-size: 15px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  background: linear-gradient(180deg, #262c2e, #1f2426);
+  border: 1px solid #353c3e;
+  border-radius: 8px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .06), 0 1px 0 #070909;
+}
+.rc-finder-plate-mark {
+  position: absolute;
+  top: 3px;
+  right: 5px;
+  color: var(--fp-faint);
+  font-size: 10.5px;
+  line-height: 1;
+}
+.rc-finder-option-preptest[data-highlighted] {
+  color: var(--fp-paper-ink);
+  background: var(--fp-paper);
+  border-color: #fffdf7;
+  box-shadow: 0 1px 0 #070909, 0 10px 18px -10px rgba(0, 0, 0, .85);
+  transform: translateY(-1px);
+}
+.rc-finder-option-preptest[data-highlighted] .rc-finder-plate-mark { color: var(--fp-paper-muted); }
+.rc-finder-option-preptest[data-chosen]::before {
+  content: "";
+  position: absolute;
+  top: -1px;
+  left: 10px;
+  right: 10px;
+  height: 3px;
+  border-radius: 0 0 3px 3px;
+  background: var(--fp-red);
+}
+
+.rc-finder-option-section,
+.rc-finder-option-passage {
+  display: grid;
+  gap: 2px;
+  min-height: 52px;
+  padding: 10px 14px;
+  color: var(--fp-ink);
+  border: 1px solid transparent;
+  border-radius: 10px;
+}
+.rc-finder-option-section {
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  font-size: 15px;
+}
+.rc-finder-row-main { display: inline-flex; align-items: center; gap: 10px; font-weight: 500; }
+.rc-finder-row-meta {
+  color: var(--fp-muted);
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+.rc-finder-card-ref {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 5px;
+  margin-bottom: 2px;
+  color: var(--fp-faint);
+  font-family: var(--fd-mono, ui-monospace, monospace);
+  font-size: 12px;
+  border-bottom: 1px solid transparent;
+}
+.rc-finder-card-key { color: var(--fp-paper-muted); }
+.rc-finder-card-title {
+  color: #f2efe7;
+  font-family: var(--fd-serif, Georgia, serif);
+  font-size: 17px;
+  font-weight: 450;
+  line-height: 1.3;
+}
+.rc-finder-card-meta { color: var(--fp-muted); font-size: 13px; line-height: 1.4; }
+.rc-finder-chosen {
+  color: #f0a79d;
+  font-family: "Outfit", ui-sans-serif, system-ui, sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* The one highlighted row lifts out of the charcoal as a ruled paper card. */
+.rc-finder-option-section[data-highlighted],
+.rc-finder-option-passage[data-highlighted] {
+  color: var(--fp-paper-ink);
+  background:
+    repeating-linear-gradient(180deg, transparent 0 23px, rgba(29, 35, 30, .055) 23px 24px),
+    var(--fp-paper);
+  border-color: #fffdf7;
+  box-shadow: inset 0 1px 0 #fff, 0 1px 0 #070909, 0 12px 24px -14px rgba(0, 0, 0, .9);
+}
+.rc-finder-option-section[data-highlighted] .rc-finder-row-meta,
+.rc-finder-option-passage[data-highlighted] .rc-finder-card-meta,
+.rc-finder-option-passage[data-highlighted] .rc-finder-card-ref { color: var(--fp-paper-muted); }
+.rc-finder-option-passage[data-highlighted] .rc-finder-card-ref { border-bottom-color: rgba(178, 59, 49, .45); }
+.rc-finder-option-passage[data-highlighted] .rc-finder-card-title { color: var(--fp-paper-ink); }
+.rc-finder-option[data-highlighted] .rc-finder-chosen { color: #9b3229; }
+.rc-finder-option-section[data-chosen]::before,
+.rc-finder-option-passage[data-chosen]::before {
+  content: "";
+  position: absolute;
+  top: 12px;
+  bottom: 12px;
+  left: -1px;
+  width: 3px;
+  border-radius: 0 3px 3px 0;
+  background: var(--fp-red);
+}
+
+.rc-finder-mark {
+  padding: 0 1px;
+  color: inherit;
+  background: rgba(214, 90, 76, .28);
+  border-radius: 2px;
+}
+.rc-finder-option[data-highlighted] .rc-finder-mark { background: rgba(178, 59, 49, .16); }
+
+.rc-finder-message {
+  flex: none;
+  margin: 0;
+  padding: 14px 16px;
+  color: var(--fp-ink);
+  font-size: 14px;
+  line-height: 1.5;
+}
+.rc-finder-message-quiet { padding-top: 0; color: var(--fp-muted); font-size: 13px; }
+
+.rc-finder-state { display: grid; gap: 12px; padding: 16px; }
+.rc-finder-state p { margin: 0; color: var(--fp-ink); font-size: 14px; line-height: 1.5; }
+.rc-finder-skeleton { display: grid; gap: 6px; }
+.rc-finder-skeleton span { display: block; height: 46px; border-radius: 8px; background: var(--fp-raise); }
+.rc-finder-skeleton span:nth-child(2) { opacity: .7; }
+.rc-finder-skeleton span:nth-child(3) { opacity: .45; }
+.rc-finder-retry {
+  justify-self: start;
+  min-height: 44px;
+  padding: 0 18px;
+  color: var(--fp-paper-ink);
+  background: var(--fp-paper);
+  border: 0;
+  border-radius: 999px;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.rc-finder-panel-foot {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 9px 14px;
+  color: var(--fp-faint);
+  font-family: var(--fd-mono, ui-monospace, monospace);
+  font-size: 11.5px;
+  border-top: 1px solid var(--fp-edge);
+}
+.rc-finder-keys kbd { margin-left: 6px; color: var(--fp-muted); font: inherit; }
+.rc-finder-keys kbd:first-child { margin-left: 0; }
+@media (pointer: coarse) {
+  .rc-finder-keys, .rc-finder-card-key { display: none; }
+}
+
+.rc-finder-panel button:focus-visible,
+.rc-finder-sheet button:focus-visible {
+  outline: 2px solid #c9d3c0;
+  outline-offset: 2px;
+}
+
+/* ------------------------------------------------------- phone sheet */
+
+.rc-finder-sheet-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  background: rgba(12, 14, 15, .55);
+  animation: rc-finder-fade 180ms ease-out;
+}
+.rc-finder-sheet {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 71;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  height: min(92dvh, 760px);
+  padding: 6px 12px calc(12px + env(safe-area-inset-bottom, 0px));
+  box-sizing: border-box;
+  color: var(--fp-ink);
+  font-family: "Outfit", ui-sans-serif, system-ui, sans-serif;
+  background: var(--fp-surface);
+  border-radius: 20px 20px 0 0;
+  box-shadow: 0 -1px 0 rgba(255, 255, 255, .06), 0 -24px 48px -28px rgba(0, 0, 0, .7);
+  animation: rc-finder-sheet-in 260ms cubic-bezier(.32, .72, 0, 1);
+}
+.rc-finder-sheet:focus { outline: none; }
+.rc-finder-sheet-grip {
+  align-self: center;
+  width: 36px;
+  height: 4px;
+  border-radius: 2px;
+  background: #3e4547;
+}
+.rc-finder-sheet-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 2px 2px 0 4px;
+}
+.rc-finder-sheet-title { margin: 0; color: var(--fp-ink); font-size: 20px; font-weight: 600; line-height: 1.25; }
+.rc-finder-sheet-description { margin: 2px 0 0; color: var(--fp-muted); font-family: var(--fd-mono); font-size: 12px; }
+.rc-finder-sheet-close {
+  flex: none;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0 16px;
+  color: var(--fp-ink);
+  background: transparent;
+  border: 1px solid rgba(239, 237, 230, .22);
+  border-radius: 999px;
+  font: inherit;
+  font-size: 14px;
+  cursor: pointer;
+}
+.rc-finder-sheet .rc-finder-sheet-field { flex: none; }
+.rc-finder-panel-inline {
+  position: static;
+  flex: 1 1 auto;
+  min-height: 0;
+  border-radius: 14px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .04);
+  animation: none;
+}
+
+/* ------------------------------------------------------------- dark host */
+
+html.dark .rc-finder,
+html.dark .rc-finder-sheet {
+  --fd-paper: #1c2022;
+  --fd-paper-top: #22272a;
+  --fd-paper-edge: #3c433e;
+  --fd-paper-contact: #0b0d0e;
+  --fd-ink: var(--rc-paper-ink, #efede6);
+  --fd-muted: #b9bbb2;
+  --fd-placeholder: #9c9f96;
+  --fd-bay: #111415;
+  --fd-slot: #25292b;
+  --fd-ring: #b4bfa9;
+  --fd-red: #d65a4c;
+}
+html.dark .rc-finder-instrument {
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .05), 0 1px 0 #0b0d0e, 0 14px 28px -20px rgba(0, 0, 0, .7);
+}
+html.dark .rc-finder-instrument:focus-within,
+html.dark .rc-finder-instrument[data-open] { border-color: #5d665e; }
+html.dark .rc-finder-slot { box-shadow: 0 1px 0 #0b0d0e, inset 0 1px 0 rgba(255, 255, 255, .05); }
+html.dark .rc-finder-slot[data-state=committed] { box-shadow: inset 0 2px 0 var(--fd-red), 0 1px 0 #0b0d0e; }
+html.dark .rc-finder-slot-label { color: #a7aaa0; }
+html.dark .rc-finder-slot[data-state=empty] .rc-finder-slot-value { color: #858980; }
+html.dark .rc-finder .rc-finder-icon-button:hover { background: rgba(255, 255, 255, .06); }
+html.dark .rc-finder-status[data-complete] {
+  background:
+    linear-gradient(90deg, transparent 11px, rgba(214, 90, 76, .55) 11px, rgba(214, 90, 76, .55) 12px, transparent 12px),
+    var(--fd-slot);
+}
+html.dark .rc-finder .rc-finder-status .rc-finder-status-actions button { text-decoration-color: rgba(239, 237, 230, .4); }
+html.dark .rc-finder .rc-finder-status .rc-finder-status-actions button:hover { background: rgba(255, 255, 255, .05); }
+/* On a dark page the index needs an edge, not just a darker fill. */
+html.dark .rc-finder-panel {
+  --fp-surface: #191d1f;
+  --fp-edge: rgba(239, 237, 230, .15);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, .06),
+    0 0 0 1px rgba(0, 0, 0, .45),
+    0 28px 56px -24px rgba(0, 0, 0, .85);
+}
+
+/* ------------------------------------------------------------------ motion */
+
+@keyframes rc-finder-open {
+  from { opacity: 0; transform: translateY(-6px) scale(.985); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes rc-finder-step-forward {
+  from { opacity: 0; transform: translateX(10px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes rc-finder-step-back {
+  from { opacity: 0; transform: translateX(-10px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes rc-finder-roll {
+  from { opacity: 0; transform: translateY(55%); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes rc-finder-settle {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes rc-finder-sheet-in {
+  from { opacity: .6; transform: translateY(28px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes rc-finder-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rc-finder *,
+  .rc-finder-panel,
+  .rc-finder-panel *,
+  .rc-finder-sheet,
+  .rc-finder-sheet *,
+  .rc-finder-sheet-overlay {
+    animation: none !important;
+    transition: none !important;
+  }
+  .rc-finder-option-preptest[data-highlighted] { transform: none; }
+}

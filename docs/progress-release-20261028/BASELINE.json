@@ -1,0 +1,11 @@
+{
+  "date": "2026-10-28",
+  "baseCommit": "dbf78f7e68f995e68cdbe9fa1d83337f9d386ad2",
+  "source": "CUA signed-in teacher account, live /progress/overview",
+  "oldBundle": "/assets/index-CE3zVQGP.js",
+  "windows": {
+    "30": { "LR": { "correct": 3, "total": 5, "percent": 60 }, "RC": { "correct": 0, "total": 1, "percent": null } },
+    "all": { "LR": { "correct": 23, "total": 63, "percent": 37 }, "RC": { "correct": 4, "total": 12, "percent": 33 } }
+  },
+  "limits": "Teacher's own persisted data only. No student RLS proof or data writes. Recheck after release, explaining intentional RC timestamp/provenance corrections and any intervening saved practice."
+}

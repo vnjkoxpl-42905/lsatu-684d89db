@@ -1,0 +1,590 @@
+[
+  {
+    "practiceTest": "PT101",
+    "sectionNumber": 2,
+    "questionNumber": 1,
+    "questionType": "Flaw",
+    "reasoningType": [],
+    "questionDifficulty": 4,
+    "stimulus": "Press release: A comprehensive review evaluating the\nmedical studies done up to the present time has\nfound no reason to think that drinking coffee\nin normal amounts harms the coffee-drinker’s\nheart. So coffee drinkers can relax and enjoy their\nbeverage—it is safe to drink coffee.",
+    "questionStem": "Which one of the following points to a weakness in the reasoning in the press release’s argument?",
+    "answerChoices": {
+      "A": "The review was only an evaluation of studies and did not itself undertake to study patients.",
+      "B": "The health of the heart is not identical with the general health of the body.",
+      "C": "Coffee drinkers might choose to eat, along with their coffee, foods containing substances that harm the heart.",
+      "D": "Other beverages besides coffee might contain stimulants that have some effect on the heart.",
+      "E": "Drinking unusually large amounts of coffee could be caused by stress that itself directly harms the heart."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "Argue the Anti-Conclusion"
+    ]
+  },
+  {
+    "practiceTest": "PT101",
+    "sectionNumber": 2,
+    "questionNumber": 2,
+    "questionType": "Most Supported",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "All people prefer colors that they can distinguish easily to\ncolors that they have difficulty distinguishing. Infants can\neasily distinguish bright colors but, unlike adults, have\ndifficulty distinguishing subtle shades. A brightly colored\ntoy for infants sells better than the same toy in subtle\nshades at the same price.",
+    "questionStem": "Which one of the following conclusions is most strongly\nsupported by the information in the passage?",
+    "answerChoices": {
+      "A": "Infants prefer bright primary colors to bright secondary colors.",
+      "B": "Color is the most important factor in determining which toys an infant will prefer to play with.",
+      "C": "Individual infants do not have strong preferences for one particular bright color over other bright colors.",
+      "D": "The sales of toys for infants reflect the preferences of infants in at least one respect.",
+      "E": "Toy makers study infants to determine what colors the infants can distinguish easily."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
+  },
+  {
+    "practiceTest": "PT101",
+    "sectionNumber": 2,
+    "questionNumber": 3,
+    "questionType": "Method",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "A group of unusual meteorites was found in Shergotty,\nIndia. Their structure indicates that they originated on\none of the geologically active planets, Mercury, Venus,\nor Mars. Because of Mercury’s proximity to the Sun,\nany material dislodged from that planet’s surface would\nhave been captured by the Sun, rather than falling to\nEarth as meteorites. Nor could Venus be the source of\nthe meteorites, because its gravity would have prevented\ndislodged material from escaping into space. The\nmeteorites, therefore, probably fell to Earth after being\ndislodged from Mars, perhaps as the result of a collision\nwith a large object.",
+    "questionStem": "The argument derives its conclusion by",
+    "answerChoices": {
+      "A": "offering a counterexample to a theory",
+      "B": "eliminating competing alternative explanations",
+      "C": "contrasting present circumstances with past circumstances",
+      "D": "questioning an assumption",
+      "E": "abstracting a general principle from specific data"
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Abstract Answers",
+      "Explain Curious Fact",
+      "Ruling Out Options",
+      "Science"
+    ]
+  },
+  {
+    "practiceTest": "PT101",
+    "sectionNumber": 2,
+    "questionNumber": 4,
+    "questionType": "Strengthen (EXCEPT)",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Because quitting smoking is very stressful and leads\nto weight gain, it is difficult to do. The key to quitting,\nhowever, may be as simple as replacing an unhealthy\nactivity with a healthy one. In one study, half of those\nattempting to quit were assigned to a smoking-cessation\nprogram alone, and the other half were assigned to the\nsame program plus fifteen weeks of aerobic exercise. At\nthe one-month mark, none in the first group had quit, but\n40 percent of those in the second group had not smoked.",
+    "questionStem": "Each of the following, if true, provides some support for\nthe argument except :",
+    "answerChoices": {
+      "A": "Regular exercise prevents weight gain.",
+      "B": "Each group in the study included four hundred randomly selected participants.",
+      "C": "Nonsmokers accustomed to regular exercise do not gain weight when they stop exercising.",
+      "D": "Aerobic exercise can stimulate the brain’s production of endorphins, which reduce tension.",
+      "E": "Of those in the second group in the study, 38 percent had not smoked at the one-year mark."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Explain Curious Fact",
+      "Breadcrumbs",
+      "EXCEPT",
+      "Focused on Evidence",
+      "Plausibility"
+    ]
+  },
+  {
+    "practiceTest": "PT101",
+    "sectionNumber": 2,
+    "questionNumber": 5,
+    "questionType": "Parallel Flaw",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 1,
+    "stimulus": "Altogether, the students in Ms. Tarnowski’s Milton\nElementary School class collected more aluminum cans\nthan did the students in any of the school’s other classes.\nTherefore, the Milton student who collected the most\naluminum cans was in Ms. Tarnowski’s class.",
+    "questionStem": "Which one of the following arguments contains flawed\nreasoning that is most parallel to that in the argument\nabove?",
+    "answerChoices": {
+      "A": "Altogether, more trees were planted by the students in Mr. Kelly’s class than were planted by those in Mr. Liang’s class and Ms. Jackson’s class combined. Therefore, Mr. Kelly’s students planted more trees than Ms. Jackson’s students planted.",
+      "B": "More than half of Milton Elementary School’s students play in the band and more than half of the school’s students sing in the choir. Therefore, every student at Milton Elementary School either plays in the band or sings in the choir.",
+      "C": "Mr. Rowe’s Milton Elementary School class raised more money by selling candy bars than Ms. Hunt’s class raised by holding a raffle. Therefore, the number of candy bars sold by Mr. Rowe’s class was greater than the number of raffle tickets sold by Ms. Hunt’s class.",
+      "D": "The total number of tickets to the school fair sold by the students in Ms. Ramirez’s Milton Elementary School class was greater than the number sold by Milton students from any other class. Therefore, the Milton student who sold the most tickets to the school fair was a student in Ms. Ramirez’s class.",
+      "E": "Ms. Ventura’s Milton Elementary School class assembled more birdhouses than did any of the school’s other classes. Since Ms. Ventura’s class had fewer students than any other Milton class, her students assembled more birdhouses, on average, than did the students in any other Milton class."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Part vs. Whole",
+      "Math-y Stuff"
+    ]
+  },
+  {
+    "practiceTest": "PT101",
+    "sectionNumber": 2,
+    "questionNumber": 6,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Several excellent candidates have been proposed for\nthe presidency of United Wire, and each candidate\nwould bring to the job different talents and experience.\nIf the others are compared with Jones, however, it will\nbe apparent that none of them has her unique set of\nqualifications. Jones, therefore, is best qualified to be the\nnew president of United Wire.",
+    "questionStem": "The argument is vulnerable to criticism on the ground\nthat it",
+    "answerChoices": {
+      "A": "uses flattery to win over those who hold an opposing position",
+      "B": "refutes a distorted version of an opposing position",
+      "C": "seeks to distinguish one member of a group on the basis of something that applies to all",
+      "D": "supports a universal claim on the basis of a single example",
+      "E": "describes an individual in terms that appropriately refer only to the group as a whole"
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion"
+    ]
+  },
+  {
+    "practiceTest": "PT101",
+    "sectionNumber": 2,
+    "questionNumber": 7,
+    "questionType": "Weaken",
+    "reasoningType": [],
+    "questionDifficulty": 2,
+    "stimulus": "A neighborhood group plans to protest the closing of the neighborhood’s only recreation center on the grounds that to do so would leave the neighborhood without local access to a recreation center. “Our neighborhood already has the most residents per center of any neighborhood in the city, ” complained one resident, “and closing this center would make the situation unacceptable since access to recreational facilities is a necessity for this neighborhood. ”",
+    "questionStem": "Each of the following, if true, weakens the resident’s argument EXCEPT:",
+    "answerChoices": {
+      "A": "A large number of the neighborhood’s residents are unable to travel outside their locality to gain access to recreational facilities.",
+      "B": "Children, the main users of recreational facilities, make up a disproportionately small segment of the neighborhood’s population.",
+      "C": "Often the recreation center in the neighborhood is open but not being used.",
+      "D": "Programs that are routinely filled at other recreation centers must be canceled at the neighborhood’s recreation center due to lack of interest.",
+      "E": "As people become more involved in computers and computer games, recreation centers are becoming increasingly less important."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "EXCEPT"
+    ]
+  },
+  {
+    "practiceTest": "PT101",
+    "sectionNumber": 2,
+    "questionNumber": 8,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Sociologist: The claim that there is a large number of violent crimes in our society is false, for this claim is based upon the large number of stories in newspapers about violent crimes. But since violent crimes are very rare occurrences, newspapers are likely to print stories about them.",
+    "questionStem": "The sociologist’s argument is flawed because it",
+    "answerChoices": {
+      "A": "presupposes that most newspaper stories are about violent crime",
+      "B": "presupposes the truth of the conclusion it is attempting to establish",
+      "C": "assumes without warrant that the newspaper stories in question are not biased",
+      "D": "mistakes a property of each member of a group taken as an individual for a property of the group taken as a whole",
+      "E": "uncritically draws an inference from what has been true in the past to what will be true in the future"
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
+  },
+  {
+    "practiceTest": "PT101",
+    "sectionNumber": 2,
+    "questionNumber": 9,
+    "questionType": "Principle-Strengthen",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "Historian: Anyone who thinks that the terrors of the ancient regime of Q were exclusively the work of fanatics is overlooking a basic truth: the regime was made up primarily of ordinary people enthusiastically seeking paradise. The regime executed many people in pursuit of its goal; but it later became clear that paradise,\nas they defined it, is unrealizable. So at least some of the ordinary people of Q were in fact murderers.",
+    "questionStem": "Which one of the following principles, if valid, provides the most support for the historian’s argumentation?",
+    "answerChoices": {
+      "A": "The pursuit of paradise does not justify murder.",
+      "B": "The pursuit of paradise justifies fanaticism.",
+      "C": "Execution in pursuit of what is later found to be unattainable constitutes murder.",
+      "D": "Fanaticism in pursuit of paradise constitutes inhumanity.",
+      "E": "Enthusiasm in pursuit of what is eventually found to be unattainable constitutes fanaticism."
+    },
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Missing Link / Idea",
+      "Principles in Answers"
+    ]
+  },
+  {
+    "practiceTest": "PT101",
+    "sectionNumber": 2,
+    "questionNumber": 10,
+    "questionType": "Role",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 2,
+    "stimulus": "Economist: The economy seems to be heading out of recession. Recent figures show that consumers\nare buying more durable goods than before, indicating that they expect economic growth in the near future.",
+    "questionStem": "That consumers are buying more durable goods than before figures in the economist’s argument in which one of the following ways?",
+    "answerChoices": {
+      "A": "It is the phenomenon that the argument seeks to explain.",
+      "B": "Its truth is required in order for the argument’s conclusion to be true.",
+      "C": "It is an inference drawn from the premise that the recession seems to be ending.",
+      "D": "It is an inference drawn from the premise that consumers expect economic growth in the near future.",
+      "E": "It is the primary evidence from which the argument’s conclusion is drawn."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
+  },
+  {
+    "practiceTest": "PT101",
+    "sectionNumber": 2,
+    "questionNumber": 11,
+    "questionType": "Must be True",
+    "reasoningType": [],
+    "questionDifficulty": 3,
+    "stimulus": "Not surprisingly, there are no professors under the age of eighteen. And, as is well known, no one under eighteen can vote legally. Finally, some brilliant people are professors, some are legal voters, and some are under eighteen.",
+    "questionStem": "If the statements above are true, then on the basis of them which one of the following must also be true?",
+    "answerChoices": {
+      "A": "No professors are eighteen-year-olds.",
+      "B": "All brilliant people are either professors, legal voters, or under eighteen.",
+      "C": "Some legal voters are not professors.",
+      "D": "Some professors are neither legal voters nor brilliant people.",
+      "E": "Some brilliant people are neither professors nor legal voters."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Quantifiers"
+    ]
+  },
+  {
+    "practiceTest": "PT101",
+    "sectionNumber": 2,
+    "questionNumber": 12,
+    "questionType": "Main Conclusion",
+    "reasoningType": [],
+    "questionDifficulty": 4,
+    "stimulus": "For years scientists have been scanning the skies in the hope of finding life on other planets. But in spite of the ever-increasing sophistication of the equipment they employ, some of it costing hundreds of millions of dollars, not the first shred of evidence of such life has been forthcoming. And there is no reason to think that these scientists will be anymore successful in the future, no matter how much money is invested in the search. The dream of finding extraterrestrial life is destined to remain a dream, as science’s experience up to this point should indicate.",
+    "questionStem": "Which one of the following most accurately states the main point of the argument?",
+    "answerChoices": {
+      "A": "There is no reason to believe that life exists on other planets.",
+      "B": "The equipment that scientists employ is not as sophisticated as it should be.",
+      "C": "Scientists searching for extraterrestrial life will not find it.",
+      "D": "Only if scientists had already found evidence of life on other planets would continued search be justified.",
+      "E": "We should not spend money on sophisticated equipment to aid in the search for extraterrestrial life."
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT101",
+    "sectionNumber": 2,
+    "questionNumber": 13,
+    "questionType": "Parallel",
+    "reasoningType": [],
+    "questionDifficulty": 3,
+    "stimulus": "Carl’s Coffee Emporium stocks only two decaffeinated coffees: French Roast and Mocha Java. Yusef only serves decaffeinated coffee, and the coffee he served after dinner last night was far too smooth and mellow to have been French Roast. So, if Yusef still gets all his coffee from Carl’s, what he served last night was Mocha Java.",
+    "questionStem": "The argument above is most similar in its logical structure to which one of the following?",
+    "answerChoices": {
+      "A": "Samuel wants to take three friends to the beach. His mother owns both a sedan and a convertible. The convertible holds four people so, although the sedan has a more powerful engine, if Samuel borrows a vehicle from his mother, he will borrow the convertible.",
+      "B": "If Anna wants to walk from her house to the office where she works, she must either go through the park or take the overpass across the railroad tracks. The park paths are muddy, and Anna does not like using the overpass, so she never walks to work.",
+      "C": "Rose can either take a two-week vacation in July or wait until October and take a three-week vacation. The trail she had planned to hike requires three weeks to complete but is closed by October, so if Rose takes a vacation, it will not be the one she had planned.",
+      "D": "Werdix, Inc., has offered Arno a choice between a job in sales and a job in research. Arno would like to work at Werdix but he would never take a job in sales when another job is available, so if he accepts one of these jobs, it will be the one in research.",
+      "E": "If Teresa does not fire her assistant, her staff will rebel and her department’s efficiency will decline. Losing her assistant would also reduce its efficiency, so, if no alternative solution can be found, Teresa’s department will become less efficient."
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT101",
+    "sectionNumber": 2,
+    "questionNumber": 14,
+    "questionType": "Agree/Disagree",
+    "reasoningType": [
+      "Causation"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Steven: The allowable blood alcohol level for drivers should be cut in half. With this reduced limit, social drinkers will be deterred from drinking and driving, resulting in significantly increased highway safety.\n\nMiguel: No, lowering the current allowable blood alcohol level would have little effect on highway safety, because it would not address the most important aspect of the drunken driving problem, which is the danger to the public posed by heavy drinkers, who often drive with a blood alcohol level of twice the current legal limit.",
+    "questionStem": "Steven and Miguel's statements provide the most support for holding that they would disagree about the truth of which one of the following statements?",
+    "answerChoices": {
+      "A": "Social drinkers who drink and drive pose a substantial threat to the public.",
+      "B": "There is a direct correlation between a driver's blood alcohol level and the driver's ability to drive safely.",
+      "C": "A driver with a blood alcohol level above the current legal limit poses a substantial danger to the public.",
+      "D": "Some drivers whose blood alcohol level is lower than the current legal limit pose a danger to the public.",
+      "E": "A driver with a blood alcohol level slightly greater than half the current legal limit poses no danger to the public."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
+  },
+  {
+    "practiceTest": "PT101",
+    "sectionNumber": 2,
+    "questionNumber": 15,
+    "questionType": "Main Conclusion",
+    "reasoningType": [],
+    "questionDifficulty": 1,
+    "stimulus": "The authors of a recent article examined warnings of an impending wave of extinctions of animal species within the next 100 years. These authors say that no evidence exists to support the idea that the rate of extinction of animal species is now accelerating. They are wrong, however. Consider only the data on fishes: 40 species and subspecies of North American fishes have vanished in the twentieth century, 13 between 1900 and 1950, and 27 since 1950.",
+    "questionStem": "Which one of the following is the main point of the argument?",
+    "answerChoices": {
+      "A": "There is evidence that the rate of extinction of animal species is accelerating.",
+      "B": "The future rate of extinction of animal species cannot be determined from available evidence.",
+      "C": "The rate of extinction of North American fishes is parallel to the rate of extinction of all animal species taken together.",
+      "D": "Forty species and subspecies of North American fishes have vanished in the twentieth century.",
+      "E": "A substantial number of fish species are in danger of imminent extinction."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Rebuttals",
+      "Important Pivot"
+    ]
+  },
+  {
+    "practiceTest": "PT101",
+    "sectionNumber": 2,
+    "questionNumber": 16,
+    "questionType": "Evaluate",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 3,
+    "stimulus": "The authors of a recent article examined warnings of an impending wave of extinctions of animal species within the next 100 years. These authors say that no evidence exists to support the idea that the rate of extinction of animal species is now accelerating. They are wrong, however. Consider only the data on fishes: 40 species and subspecies of North American fishes have vanished in the twentieth century, 13 between 1900 and 1950, and 27 since 1950.",
+    "questionStem": "The answer to which one of the following questions would contribute most to an evaluation of the argument?",
+    "answerChoices": {
+      "A": "Were the fish species and subspecies that became extinct unrepresentative of animal species in general with regard to their pattern of extinction?",
+      "B": "How numerous were the populations in 1950 of the species and subspecies of North American fishes that have become extinct since 1950?",
+      "C": "Did any of the species or subspecies of North American fishes that became extinct in the twentieth century originate in regions outside of North America?",
+      "D": "What proportion of North American fish species and subspecies whose populations were endangered in 1950 are now thriving?",
+      "E": "Were any of the species or subspecies of North American fishes that became extinct in the twentieth century commercially important?"
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Part vs. Whole",
+      "Rebuttals",
+      "Sampling"
+    ]
+  },
+  {
+    "practiceTest": "PT101",
+    "sectionNumber": 2,
+    "questionNumber": 17,
+    "questionType": "Necessary Assumption",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "After the Second World War, the charter of the newly formed United Nations established an eleven-member Security Council and charged it with taking collective action in response to threats to world peace. The charter further provided that the five nations that were then the major powers would permanently have sole authority to cast vetoes. The reason given for this arrangement was that the burden of maintaining world peace would rest on the world’s major powers, and no nation should be required to assume the burden of enforcing a decision it found repugnant.",
+    "questionStem": "The reasoning given for the structure of the Security Council assumes that",
+    "answerChoices": {
+      "A": "it does not make sense to provide for democracy among nations when nations themselves are not all democracies",
+      "B": "no nation that was not among the major powers at the end of the Second World War would become a major power",
+      "C": "nations would not eventually gravitate into large geographical blocs, each containing minor powers as well as at least one major power",
+      "D": "minor powers would not ally themselves with major powers to gain the protection of the veto exercised by major powers",
+      "E": "decisions reached by a majority of nations in response to threats to world peace would be biased in favor of one or more major powers"
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Plans / Recommendations",
+      "Timeframes",
+      "Defender",
+      "Assumes Similarity"
+    ]
+  },
+  {
+    "practiceTest": "PT101",
+    "sectionNumber": 2,
+    "questionNumber": 18,
+    "questionType": "Paradox",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Environmental scientist: It is true that over the past ten years, there has been a sixfold increase in government funding for the preservation of wetlands, while the total area of wetlands needing such preservation has increased only twofold (although this area was already large ten years ago). Even when inflation is taken into account, the amount of funding now is at least three times what it was ten years ago. Nevertheless, the current amount of government funding for the preservation of wetlands is inadequate and should be augmented.",
+    "questionStem": "Which one of the following, if true, most helps to reconcile the environmental scientist’s conclusion with the evidence cited above?",
+    "answerChoices": {
+      "A": "The governmental agency responsible for administering wetland-preservation funds has been consistently mismanaged and run inefficiently over the past ten years.",
+      "B": "Over the past ten years, the salaries of scientists employed by the government to work on the preservation of wetlands have increased at a rate higher than the inflation rate.",
+      "C": "Research over the past ten years has enabled scientists today to identify wetlands in need of preservation well before the areas are at serious risk of destruction.",
+      "D": "More people today, scientists and nonscientists alike, are working to preserve all natural resources, including wetlands.",
+      "E": "Unlike today, funding for the preservation of wetlands was almost nonexistent ten years ago."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Math-y Stuff"
+    ]
+  },
+  {
+    "practiceTest": "PT101",
+    "sectionNumber": 2,
+    "questionNumber": 19,
+    "questionType": "Weaken",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "In Australia the population that is of driving age has grown larger over the last five years, but the annual number of traffic fatalities has declined. This leads to the conclusion that, overall, the driving-age population of Australia consists of more skillful drivers now than five years ago.",
+    "questionStem": "Each of the statements below, if true, weakens the argument except:",
+    "answerChoices": {
+      "A": "Three years ago, a mandatory seat-belt law went into effect throughout Australia.",
+      "B": "Five years ago, Australia began a major road repair project.",
+      "C": "Because of increases in the price of fuel, Australians on average drive less each year than in the preceding year.",
+      "D": "The number of hospital emergency facilities in Australia has doubled in the last five years.",
+      "E": "In response to an increase in traffic fatalities, Australia instituted a program of mandatory driver education five years ago."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "EXCEPT",
+      "Explain Curious Fact"
+    ]
+  },
+  {
+    "practiceTest": "PT101",
+    "sectionNumber": 2,
+    "questionNumber": 20,
+    "questionType": "Weaken",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Anthropological studies indicate that distinct cultures differ in their moral codes. Thus, as long as\nthere are distinct cultures, there are no values shared across cultures.",
+    "questionStem": "Each of the following, if true, would weaken the argument except:",
+    "answerChoices": {
+      "A": "Anthropologists rely on inadequate translation techniques to investigate the values of cultures that use languages different from the anthropologists’ languages.",
+      "B": "As a result of advancing technology and global communication, we will someday all share the same culture and the same values.",
+      "C": "Although specific moral values differ across cultures, more general moral principles, such as “Friendship is good,” are common to all cultures.",
+      "D": "The anthropologists who have studied various cultures have been biased in favor of finding differences rather than similarities between distinct cultures.",
+      "E": "What appear to be differences in values between distinct cultures are nothing more than differences in beliefs about how to live in accordance with shared values."
+    },
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "EXCEPT",
+      "Argue the Anti-Conclusion",
+      "Focused on Evidence"
+    ]
+  },
+  {
+    "practiceTest": "PT101",
+    "sectionNumber": 2,
+    "questionNumber": 21,
+    "questionType": "Sufficient Assumption",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Newspaper editor: Law enforcement experts, as well as most citizens, have finally come to recognize that legal prohibitions against gambling all share a common flaw: no matter how diligent the effort, the laws are impossible to enforce. Ethical qualms notwithstanding, when a law fails to be effective, it should not be a law. That is why there should be no legal prohibition against gambling.",
+    "questionStem": "Which one of the following, if assumed, allows the argument’s conclusion to be properly drawn?",
+    "answerChoices": {
+      "A": "No effective law is unenforceable.",
+      "B": "All enforceable laws are effective.",
+      "C": "No legal prohibitions against gambling are enforceable.",
+      "D": "Most citizens must agree with a law for the law to be effective.",
+      "E": "Most citizens must agree with a law for the law to be enforceable."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Conditional Diagramming",
+      "Missing Link / Idea",
+      "Links Between Premises"
+    ]
+  },
+  {
+    "practiceTest": "PT101",
+    "sectionNumber": 2,
+    "questionNumber": 22,
+    "questionType": "Principle-Conform",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "Copernicus’s astronomical system is superior to Ptolemy’s and was so at the time it was proposed, even though at that time all observational evidence was equally consistent with both theories. Ptolemy believed that the stars revolved around the earth at great speeds.\nThis struck Copernicus as unlikely; he correctly thought that a simpler theory is that the earth rotates on its axis.",
+    "questionStem": "The argument most closely conforms to which one of the following principles?",
+    "answerChoices": {
+      "A": "Simplicity should be the sole deciding factor in choosing among competing scientific theories.",
+      "B": "If one theory is likely to be true, and another competing theory is likely to be false, then the one likely to be true is the superior of the two.",
+      "C": "If all observational evidence is consistent with two competing theories, the one that is more intuitively true is the more practical theory to adopt.",
+      "D": "Other things being equal, the more complex of two competing theories is the inferior theory.",
+      "E": "Other things being equal, the simpler of two competing theories is the more scientifically important theory."
+    },
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "First Sentence Conclusion",
+      "Battle of Opinions",
+      "Causal Difference-Maker",
+      "Principles in Answers",
+      "Weighing Tradeoffs"
+    ]
+  },
+  {
+    "practiceTest": "PT101",
+    "sectionNumber": 2,
+    "questionNumber": 23,
+    "questionType": "Flaw",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "Essayist: The existence of a moral order in the universe—i.e., an order in which bad is always eventually punished and good rewarded—depends upon human souls being immortal. In some cultures this moral order is regarded as the result of a karma that controls how one is reincarnated, in others it results from the actions of a supreme being who metes out justice to people after their death. But however a moral order is represented, if human souls are immortal, then it follows that the bad will be punished.",
+    "questionStem": "Which one of the following most accurately describes a flaw in the essayist’s reasoning?",
+    "answerChoices": {
+      "A": "From the assertion that something is necessary to a moral order, the argument concludes that that thing is sufficient for an element of the moral order to be realized.",
+      "B": "The argument takes mere beliefs to be established facts.",
+      "C": "From the claim that the immortality of human souls implies that there is a moral order in the universe, the argument concludes that there being a moral order in the universe implies that human souls are immortal.",
+      "D": "The argument treats two fundamentally different conceptions of a moral order as essentially the same.",
+      "E": "The argument’s conclusion is presupposed in the definition it gives of a moral order."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Famous Flaws",
+      "Abstract Answers",
+      "Dense Stimulus"
+    ]
+  },
+  {
+    "practiceTest": "PT101",
+    "sectionNumber": 2,
+    "questionNumber": 24,
+    "questionType": "Sufficient Assumption",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 5,
+    "stimulus": "No mathematical proposition can be proven true by observation. It follows that it is impossible to know any mathematical proposition to be true.",
+    "questionStem": "The conclusion follows logically if which one of the following is assumed?",
+    "answerChoices": {
+      "A": "Only propositions that can be proven true can be known to be true.",
+      "B": "Observation alone cannot be used to prove the truth of any proposition.",
+      "C": "If a proposition can be proven true by observation, then it can be known to be true.",
+      "D": "Knowing a proposition to be true is impossible only if it cannot be proven true by observation.",
+      "E": "Knowing a proposition to be true requires proving it true by observation."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Conditional Diagramming",
+      "Missing Link / Idea"
+    ]
+  },
+  {
+    "practiceTest": "PT101",
+    "sectionNumber": 2,
+    "questionNumber": 25,
+    "questionType": "Principle-Strengthen",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
+    "questionDifficulty": 4,
+    "stimulus": "The publisher of a best-selling self-help book had, in some promotional material, claimed that it showed readers how to become exceptionally successful. Of course, everyone knows that no book can deliver to the many what, by definition, must remain limited to the few: exceptional success. Thus, although it is clear that the publisher knowingly made a false claim, doing so should not be considered unethical in this case.",
+    "questionStem": "Which one of the following principles, if valid, most strongly supports the reasoning above?",
+    "answerChoices": {
+      "A": "Knowingly making a false claim is unethical only if it is reasonable for people to accept the claim as true.",
+      "B": "Knowingly making a false claim is unethical if those making it derive a gain at the expense of those acting as if the claim were true.",
+      "C": "Knowingly making a false claim is unethical in only those cases in which those who accept the claim as true suffer a hardship greater than the gain they were anticipating.",
+      "D": "Knowingly making a false claim is unethical only if there is a possibility that someone will act as if the claim might be true.",
+      "E": "Knowingly making a false claim is unethical in at least those cases in which for someone else to discover that the claim is false, that person must have acted as if the claim were true."
+    },
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Principles in Answers"
+    ]
+  }
+]

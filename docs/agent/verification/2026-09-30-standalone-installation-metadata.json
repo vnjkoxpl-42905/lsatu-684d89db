@@ -1,0 +1,174 @@
+{
+  "rows": [
+    {
+      "standalone_installation": {
+        "anonymousIsExecutorMember": false,
+        "authenticatedCanCallCheckpointHelper": false,
+        "authenticatedCanCallCloseHelper": false,
+        "authenticatedCanSetExecutor": false,
+        "capability": {
+          "contractVersion": 1,
+          "enabled": false,
+          "operations": [
+            "read",
+            "create",
+            "claim",
+            "start",
+            "checkpoint",
+            "heartbeat",
+            "pause",
+            "resume",
+            "close",
+            "abandon"
+          ],
+          "sources": [
+            "manual-canonical"
+          ],
+          "stage": "writer-installed",
+          "workKind": "standalone-section"
+        },
+        "executorHasAuthSchemaUsage": false,
+        "executorHasPublicSchemaCreate": false,
+        "guards": [
+          {
+            "enabled": "O",
+            "table": "attempts",
+            "trigger": "section_lr_attempt_guard_v1"
+          },
+          {
+            "enabled": "O",
+            "table": "bootcamp_kv",
+            "trigger": "section_kv_guard_v1"
+          },
+          {
+            "enabled": "O",
+            "table": "rc_attempts",
+            "trigger": "section_rc_attempt_guard_v1"
+          },
+          {
+            "enabled": "O",
+            "table": "rc_drill_sessions",
+            "trigger": "section_rc_session_guard_v1"
+          },
+          {
+            "enabled": "O",
+            "table": "section_history",
+            "trigger": "section_history_guard_v1"
+          },
+          {
+            "enabled": "O",
+            "table": "timed_section_receipts_v1",
+            "trigger": "timed_section_receipt_guard"
+          },
+          {
+            "enabled": "O",
+            "table": "timed_section_sittings_v1",
+            "trigger": "timed_section_sitting_guard"
+          },
+          {
+            "enabled": "O",
+            "table": "timed_section_source_bindings_v1",
+            "trigger": "timed_section_binding_guard"
+          }
+        ],
+        "ptConfiguration": {
+          "enabled": true,
+          "lease_ms": 30000,
+          "manifest_sha256": "c27b478f2d50f8353a98d4a1a905d2f94f87929ba2ea2179230d4f7a3d51c25c",
+          "singleton": true
+        },
+        "rpcOwners": [
+          {
+            "name": "commit_timed_section_v1",
+            "owner": "timed_section_executor",
+            "securityDefiner": true
+          },
+          {
+            "name": "create_timed_section_v1",
+            "owner": "timed_section_executor",
+            "securityDefiner": true
+          },
+          {
+            "name": "read_timed_section_v1",
+            "owner": "timed_section_executor",
+            "securityDefiner": true
+          },
+          {
+            "name": "timed_section_capability_v1",
+            "owner": "timed_section_executor",
+            "securityDefiner": true
+          }
+        ],
+        "sectionBindingCount": 0,
+        "sectionReceiptCount": 0,
+        "sectionRole": {
+          "bypassRls": false,
+          "canLogin": false,
+          "createDb": false,
+          "createRole": false,
+          "superuser": false
+        },
+        "sectionSittingCount": 0,
+        "selectedCatalogCounts": {
+          "ptCount": 59,
+          "sectionCount": 177
+        },
+        "sourceColumns": [
+          {
+            "column": "timed_section_sitting_id",
+            "table": "attempts",
+            "type": "uuid"
+          },
+          {
+            "column": "timed_section_sitting_id",
+            "table": "rc_drill_sessions",
+            "type": "uuid"
+          },
+          {
+            "column": "timed_section_sitting_id",
+            "table": "section_history",
+            "type": "uuid"
+          }
+        ],
+        "sourceConstraints": [
+          {
+            "deferrable": true,
+            "definition": "FOREIGN KEY (owner_id, namespace, record_id) REFERENCES bootcamp_kv(user_id, table_name, record_id) DEFERRABLE INITIALLY DEFERRED",
+            "initiallyDeferred": true,
+            "name": "section_lr_binding_owner_v1"
+          },
+          {
+            "deferrable": false,
+            "definition": "FOREIGN KEY (rc_session_id, owner_id) REFERENCES rc_drill_sessions(id, user_id)",
+            "initiallyDeferred": false,
+            "name": "section_rc_binding_owner_v1"
+          },
+          {
+            "deferrable": false,
+            "definition": "FOREIGN KEY (timed_section_sitting_id, user_id) REFERENCES timed_section_sittings_v1(id, owner_id)",
+            "initiallyDeferred": false,
+            "name": "timed_section_attempt_owner_v1"
+          },
+          {
+            "deferrable": false,
+            "definition": "FOREIGN KEY (timed_section_sitting_id, user_id) REFERENCES timed_section_sittings_v1(id, owner_id)",
+            "initiallyDeferred": false,
+            "name": "timed_section_history_owner_v1"
+          },
+          {
+            "deferrable": false,
+            "definition": "FOREIGN KEY (timed_section_sitting_id, user_id) REFERENCES timed_section_sittings_v1(id, owner_id)",
+            "initiallyDeferred": false,
+            "name": "timed_section_rc_owner_v1"
+          }
+        ],
+        "standaloneConfiguration": {
+          "enabled": false,
+          "lease_ms": 30000,
+          "manifest_sha256": null,
+          "singleton": true
+        }
+      }
+    }
+  ]
+}

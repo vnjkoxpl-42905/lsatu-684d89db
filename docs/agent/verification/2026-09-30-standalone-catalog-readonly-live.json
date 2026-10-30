@@ -1,0 +1,37 @@
+{
+  "checkedAt": "2026-10-01T03:04:53.145Z",
+  "ordinaryJwt": true,
+  "readOnly": true,
+  "recordsWritten": false,
+  "configurationChanged": false,
+  "scope": "ordinary capability and exact owned sitting read; catalog hash independently verified by managed read-only SQL",
+  "ownedCounts": {
+    "student": 2,
+    "admin": 0
+  },
+  "checks": {
+    "studentOwnedScope": true,
+    "studentExistingFixture": true,
+    "studentEnabledCapability": true,
+    "studentManualSource": true,
+    "studentExactRead_lr": true,
+    "studentExactRead_rc": true,
+    "studentPrivate_timed_section_content_manifests_v1": true,
+    "studentPrivate_timed_section_configuration_v1": true,
+    "studentMissingDenied": true,
+    "studentReadPreserves_timed_section_sittings_v1": true,
+    "studentReadPreserves_timed_section_receipts_v1": true,
+    "studentReadPreserves_timed_section_source_bindings_v1": true,
+    "adminOwnedScope": true,
+    "adminEnabledCapability": true,
+    "adminManualSource": true,
+    "adminPrivate_timed_section_content_manifests_v1": true,
+    "adminPrivate_timed_section_configuration_v1": true,
+    "adminMissingDenied": true,
+    "adminReadPreserves_timed_section_sittings_v1": true,
+    "adminReadPreserves_timed_section_receipts_v1": true,
+    "adminReadPreserves_timed_section_source_bindings_v1": true,
+    "foreignSittingDenied": true,
+    "anonymousCapabilityDenied": true
+  }
+}

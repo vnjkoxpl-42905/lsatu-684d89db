@@ -1,0 +1,3 @@
+# Minimal Codex project config.
+# Keep secrets, credentials, and machine-specific overrides out of this file.
+# Existing repository hooks remain defined separately in `.codex/hooks.json`.
