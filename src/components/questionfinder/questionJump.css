@@ -1,0 +1,146 @@
+/* ── the question jump row ────────────────────────────────────────────────
+ *
+ * One band, four controls: three address selects and the text-search trigger.
+ * It inherits the finder's tokens (questionFinder.css defines them on `.qf`,
+ * and `.qj` repeats the same set) so the two never drift apart visually — they
+ * are one control surface split across an inline row and a panel.
+ *
+ * Rank: this sits under the masthead and above the hero, and must read as a
+ * utility strip rather than a headline. Hence the sunk surface, the hairline
+ * rather than a border, and no shadow of its own — it recedes, the hero stays
+ * the loudest thing on the page. */
+
+.qj {
+  --qj-ink: #332f2c;
+  --qj-muted: #6b6662;
+  --qj-sunk: #fbf8f3;
+  --qj-hair: rgba(68, 64, 61, 0.09);
+  --qj-ui: "Outfit", ui-sans-serif, system-ui, sans-serif;
+
+  /* The field rules (.qf-field-label, .qf-select) are the finder's and read
+     --qf-* tokens, which only exist under .qf. Outside it they resolved to
+     nothing and the row inherited its host's ink: ivory on the drill hub's
+     cream stage, at 1.06:1. The jump row declares its own values under the
+     names the rules actually use. */
+  --qf-ink: var(--qj-ink);
+  --qf-muted: var(--qj-muted);
+  --qf-surface: #ffffff;
+  --qf-hair-08: var(--qj-hair);
+  --qf-accent: #ff8906;
+  --qf-ui: var(--qj-ui);
+  --qf-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  width: 100%;
+}
+
+.qj[data-tone="dark"] {
+  --qj-ink: #f5f1ec;
+  /* 5.9:1 on the sunk surface over the drill hub's dark stage (#191720). The
+     earlier #8b837b measured 4.75:1 there, passing by a quarter point. The
+     drill hub's section switch reads the same value, so keep the two equal. */
+  --qj-muted: #9a938c;
+  --qj-sunk: rgba(255, 255, 255, 0.03);
+  --qj-hair: rgba(255, 255, 255, 0.1);
+  --qf-surface: #17161c;
+}
+
+.qj-row {
+  align-items: end;
+  background: var(--qj-sunk);
+  border-radius: 14px;
+  box-shadow: inset 0 0 0 1px var(--qj-hair);
+  display: grid;
+  /* The three addresses share equally; search takes only what its trigger
+     needs. A fourth equal column made the search button stretch into a slab
+     the width of a dropdown, which read as a fourth step in the sequence. */
+  grid-template-columns: repeat(3, minmax(0, 1fr)) auto;
+  gap: 10px;
+  padding: 12px 14px;
+}
+
+/* Without the search trigger the row is three addresses and nothing else, so
+   the reserved `auto` column would leave a dead gutter on the right. */
+.qj-row[data-search="false"] {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.qj-field {
+  min-width: 0;
+}
+
+/* The trigger is a control, not a field, so it aligns to the selects' baseline
+   rather than to the label row above them. */
+.qj-search {
+  display: flex;
+  align-items: center;
+  padding-bottom: 1px;
+}
+
+/* Phones: the addresses stay a row of three — breaking them into a column
+   turns a three-second jump into a scroll — and search drops beneath. */
+@media (max-width: 600px) {
+  .qj-row {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    row-gap: 12px;
+  }
+
+  .qj-search {
+    grid-column: 1 / -1;
+    padding-bottom: 0;
+  }
+
+  .qj-search .qf,
+  .qj-search .qf-trigger {
+    width: 100%;
+  }
+}
+
+/* The portal menu uses the same quiet surface as the address row. Its height
+   stays inside the viewport even when the bank contains dozens of PrepTests. */
+.qj .qj-trigger {
+  min-height: 44px;
+  min-width: 0;
+  border: 0;
+  border-radius: 9px;
+  background: var(--qf-surface);
+  box-shadow: 0 0 0 1px var(--qf-hair-08);
+  color: var(--qf-ink);
+  font-family: var(--qf-ui);
+  font-size: 13px;
+}
+
+.qj .qj-trigger:hover:not(:disabled) {
+  box-shadow: 0 0 0 1px color-mix(in oklab, var(--qf-ink) 26%, transparent);
+}
+
+.qj .qj-trigger:focus-visible {
+  outline: 2px solid var(--qf-accent);
+  outline-offset: 1px;
+}
+
+.qj-menu.qj-menu {
+  max-height: min(360px, var(--radix-select-content-available-height, 360px));
+  min-width: var(--radix-select-trigger-width);
+  border: 1px solid rgba(68, 64, 61, 0.14);
+  border-radius: 10px;
+  background: #fbf8f3;
+  color: #332f2c;
+  box-shadow: 0 14px 35px rgba(32, 28, 24, 0.16);
+  font-family: "Outfit", ui-sans-serif, system-ui, sans-serif;
+}
+
+.qj-menu [role="option"][data-highlighted] {
+  background: rgba(51, 47, 44, 0.09);
+  color: #332f2c;
+}
+
+.qj-menu.qj-menu-dark {
+  border-color: rgba(255, 255, 255, 0.14);
+  background: #17161c;
+  color: #f5f1ec;
+}
+
+.qj-menu-dark [role="option"][data-highlighted] {
+  background: rgba(255, 255, 255, 0.1);
+  color: #f5f1ec;
+}

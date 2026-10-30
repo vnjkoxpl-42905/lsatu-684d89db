@@ -1,0 +1,2 @@
+ALTER TABLE public.classroom_items DROP CONSTRAINT classroom_items_type_check;
+ALTER TABLE public.classroom_items ADD CONSTRAINT classroom_items_type_check CHECK (type = ANY (ARRAY['drill'::text, 'homework'::text, 'bootcamp_module'::text, 'note'::text, 'session_recap'::text, 'announcement'::text, 'upload_summary'::text, 'weekly_plan_task'::text, 'smartboard_recap'::text, 'activity'::text]));

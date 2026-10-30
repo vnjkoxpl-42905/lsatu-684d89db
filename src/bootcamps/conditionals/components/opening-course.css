@@ -1,0 +1,619 @@
+/* Local copy keeps bootcamp typography independent of external font loading. */
+@font-face{font-family:"LSATU Inter";font-style:normal;font-weight:400 800;font-display:swap;src:url('/fonts/inter/inter-latin-variable.woff2') format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+/* Course structure follows Intro LR's NewGuidedIntro and WorkspaceShell. */
+.oc-workspace,.oc-course-drawer {
+  color-scheme:light;
+  --oc-canvas:#f5f2ed;
+  --oc-surface:#fffefa;
+  --oc-ink:#252824;
+  --oc-muted:#64665f;
+  --oc-line:#e0ddd5;
+  --oc-control-line:#aaa99f;
+  --oc-current:#e8e4dd;
+  --oc-hover:#eeebe5;
+  --oc-action-hover:#363633;
+  --oc-accent:#193c2e;
+  --oc-shadow-subtle:0 1px 2px #25282406;
+  --oc-shadow-raised:0 2px 4px #25282405,0 12px 28px -20px #25282420;
+}
+/* ThemeContext expresses the saved dark preference by removing html.light. */
+:root:not(.light) .oc-workspace,:root:not(.light) .oc-course-drawer {
+  color-scheme:dark;
+  --oc-canvas:#1b1d1b;
+  --oc-surface:#252724;
+  --oc-ink:#eeeee5;
+  --oc-muted:#b9bbb1;
+  --oc-line:#363933;
+  --oc-control-line:#777b70;
+  --oc-current:#343730;
+  --oc-hover:#30332d;
+  --oc-action-hover:#d9ddd1;
+  --oc-accent:#a9c7b3;
+  --oc-shadow-subtle:none;
+  --oc-shadow-raised:none;
+  /* The authenticated workspace bar and shared header use RGB triplets. */
+  --ink:238 238 229;
+  --ink-soft:238 238 229 / .78;
+  --ink-faint:238 238 229 / .70;
+  --bg:27 29 27;
+  --surface:37 39 36;
+  --surface-elev:48 51 45;
+}
+.oc-workspace { min-height:100vh; background:var(--oc-canvas); color:var(--oc-ink); display:grid; grid-template-columns:220px minmax(0,1fr); }
+.oc-course-rail { position:sticky; top:0; height:100dvh; padding:28px 24px; border-right:1px solid var(--oc-line); background:var(--oc-canvas); overflow-y:auto; scrollbar-width:thin; scrollbar-gutter:stable; }
+.oc-brand { font-family:Georgia,serif; font-size:1.25rem; line-height:1.3; margin:24px 0 32px; }
+.oc-course-rail nav p,.oc-course-drawer nav p { font-size:.8125rem; text-transform:none; letter-spacing:0; color:var(--oc-muted); margin:24px 10px 8px; }
+.oc-course-rail nav a,.oc-course-drawer nav a { display:flex; align-items:center; gap:10px; padding:10px; min-height:44px; border-radius:8px; color:var(--oc-muted); font-size:0.875rem; line-height:1.4; text-decoration:none; transition:background-color 140ms ease,color 140ms ease; }
+.oc-course-rail nav a[aria-current],.oc-course-drawer nav a[aria-current] { background:var(--oc-current); color:var(--oc-ink); font-weight:600; }
+.oc-course-rail nav a:hover,.oc-course-drawer nav a:hover { background:var(--oc-hover); }
+.oc-course-screen { min-width:0; background:var(--oc-canvas); padding:48px 40px 72px; }
+.oc-course-index,.oc-course-note,.oc-course-bodies,.oc-course-turn { width:100%; max-width:860px; margin:0 auto; }
+.oc-course-index>div[data-course-heading] { margin-bottom:36px; }
+.oc-course-screen [data-course-heading] h1 { font-family:var(--font-mc-serif,Georgia,serif); font-size:clamp(1.75rem,2.8vw,2.5rem); font-weight:400; line-height:1.12; letter-spacing:-.025em; scroll-margin-top:28px; text-wrap:balance; }
+.oc-course-screen [data-course-heading] h1:focus { outline:none; }
+.oc-course-screen h1,.oc-course-screen h2,.oc-course-turn strong { overflow-wrap:anywhere; }
+.oc-course-path { list-style:none; padding:0; margin:0; display:grid; gap:40px; }
+.oc-path-card { padding:32px; background:var(--oc-surface); border:1px solid var(--oc-line); border-radius:4px; box-shadow:var(--oc-shadow-subtle); }
+.oc-label { font-size:.8125rem; text-transform:none; letter-spacing:0; color:var(--oc-muted); }
+.oc-path-card h3,.oc-drill-entry h2 { font-family:Georgia,serif; font-style:italic; font-weight:400; font-size:1.875rem; line-height:1.2; margin:16px 0; }
+.oc-path-card p,.oc-drill-entry p,.oc-drill-entry li { color:var(--oc-muted); font-size:1.125rem; line-height:1.7; }
+.oc-path-card p { margin:0 0 28px; max-width:62ch; }
+.oc-action { display:inline-flex; align-items:center; justify-content:center; gap:10px; padding:12px 20px; min-height:44px; border-radius:8px; background:var(--oc-ink); color:var(--oc-canvas); text-decoration:none; font-size:.875rem; font-weight:600; text-transform:none; letter-spacing:0; transition:background-color 140ms ease,transform 140ms cubic-bezier(.23,1,.32,1); }
+.oc-action:active:not(:focus-visible) { transform:scale(.98); }
+.oc-action:hover { background:var(--oc-action-hover); }
+.oc-back { display:inline-flex; align-items:center; gap:9px; color:var(--oc-muted); text-decoration:none; font-size:0.8125rem; min-height:44px; margin-bottom:22px; }
+.oc-drill-entry { border:1px solid var(--oc-line); border-radius:16px; padding:28px; background:var(--oc-surface); }
+.oc-drill-entry ol { list-style:decimal; padding-left:24px; margin:22px 0; }
+.oc-drill-entry .oc-action { margin-top:20px; }
+.oc-course-body { max-width:none; border-radius:16px; background:var(--oc-surface); overflow:visible; }
+.oc-course-body[hidden] { display:none!important; }
+.oc-course-body .co-section { padding:36px 42px; }
+.oc-course-body .co-section h2 { font-size:1.875rem; }
+.oc-course-body .cr-number { display:none; }
+.oc-course-body .cr-step-heading { grid-template-columns:1fr; }
+.oc-course-body .co-section-heading { gap:12px; }
+.oc-course-body .co-kicker { letter-spacing:.12em; }
+.oc-course-turn { display:flex; justify-content:space-between; gap:24px; padding:32px 0; border-top:1px solid var(--oc-line); margin-top:36px; }
+.oc-course-turn>a { flex:1; color:var(--oc-ink); text-decoration:none; line-height:1.5; min-height:48px; }
+.oc-course-turn>a:last-child { text-align:right; }
+.oc-course-turn span { display:block; text-transform:uppercase; letter-spacing:.08em; font-size:.875rem; color:var(--oc-muted); margin-bottom:8px; }
+.oc-course-turn strong { font-family:Georgia,serif; font-weight:400; font-size:1.25rem; }
+.oc-course-turn svg { display:inline; vertical-align:middle; margin-left:8px; }
+.oc-workspace a:focus-visible,.oc-workspace button:focus-visible,.oc-course-screen a:focus-visible { outline:2px solid var(--oc-ink); outline-offset:4px; }
+.oc-mobile-nav { display:none; }
+.oc-course-note>.co-opening { padding:28px; background:var(--oc-surface); }
+.oc-course-note>.co-opening>h2 { font-size:1.75rem; margin:24px 0; }
+.oc-course-drawer { background:var(--oc-canvas); color:var(--oc-ink); width:min(88vw,320px); }
+.oc-course-drawer>button:last-child { display:flex; align-items:center; justify-content:center; min-width:44px; min-height:44px; padding:12px; top:12px; right:12px; opacity:1; }
+.oc-course-drawer>h2 { padding-right:48px; }
+.oc-course-drawer a:focus-visible,.oc-course-drawer button:focus-visible { outline:2px solid var(--oc-ink); outline-offset:4px; }
+.oc-drill-landing { display:grid; grid-template-columns:minmax(0,1.35fr) minmax(0,1fr); gap:48px; max-width:980px; margin:0 auto; align-items:start; }
+.oc-drill-overview header { margin-top:36px; }
+.oc-drill-overview h1 { font-family:var(--font-mc-serif,Georgia,serif); font-size:clamp(2.375rem,5vw,4rem); line-height:1.05; letter-spacing:-.04em; margin:0 0 24px; font-weight:500; }
+.oc-drill-overview header>p { font-size:1.1875rem; line-height:1.7; max-width:52ch; color:var(--oc-muted); }
+.oc-drill-start { margin-top:64px; background:var(--oc-surface); border:1px solid var(--oc-line); border-radius:16px; padding:28px; box-shadow:var(--oc-shadow-raised); }
+.oc-drill-start h2 { font-family:Georgia,serif; font-size:1.5625rem; line-height:1.25; margin:14px 0 20px; }
+.oc-drill-start ol { padding-left:20px; font-size:1rem; line-height:1.65; color:var(--oc-muted); }
+.oc-drill-start li+li { margin-top:16px; }
+.oc-drill-start .oc-action { margin-top:24px; }
+.oc-drill-teaching { margin-top:32px; color:var(--oc-muted); line-height:1.7; }
+.oc-drill-teaching h2 { font:500 28px/1.2 Georgia,serif; color:var(--oc-accent); margin-bottom:20px; }
+.oc-drill-teaching>p { margin-bottom:22px; }
+.oc-drill-stages { padding-left:20px; margin:28px 0; }
+.oc-drill-stages li { padding:0 0 16px 8px; }
+.oc-drill-stages strong { color:var(--oc-accent); font-size:1rem; }
+.oc-drill-stages p { margin-top:6px; font-size:1rem; }
+.oc-drill-run-header { display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:center; gap:20px 24px; margin-bottom:28px; }
+.oc-save-scope { color:var(--oc-muted); font-size:.875rem; line-height:1.6; max-width:65ch; margin:20px 0 0; }
+.oc-drill-run-header>.oc-save-scope { grid-column:1/-1; margin:0; }
+.oc-course-screen .oc-drill-run-header [data-course-heading] h1 { font-family:Georgia,serif; font-size:2rem; line-height:1.15; letter-spacing:-.02em; font-weight:500; margin:10px 0 0; }
+.oc-drill-run-header>.oc-back { flex-shrink:0; }
+.oc-drill-back { display:inline-flex; align-items:center; gap:8px; min-height:44px; padding:10px 14px; border:1px solid var(--oc-control-line); border-radius:10px; background:var(--oc-surface); color:var(--oc-accent); }
+.oc-translation-entry { gap:56px; padding:16px 0 48px; }
+.oc-translation-entry .oc-entry-back { display:inline-flex; align-items:center; gap:8px; min-height:44px; margin-bottom:40px; }
+.oc-translation-entry .oc-drill-overview header { margin-top:0; }
+.oc-translation-entry .oc-drill-overview header>.oc-label { font-size:.875rem; margin-bottom:16px; }
+.oc-course-screen .oc-translation-entry [data-course-heading] h1 { font-size:3rem; line-height:1.12; letter-spacing:-.025em; }
+.oc-translation-entry .oc-drill-start { margin-top:84px; padding:32px; box-shadow:none; border-radius:12px; }
+.oc-translation-entry .oc-drill-start h2 { margin:0 0 16px; }
+.oc-translation-entry .oc-drill-start>p { color:var(--oc-muted); font-size:1rem; line-height:1.7; }
+.oc-translation-entry .oc-drill-start>.oc-save-scope { font-size:.875rem; line-height:1.6; margin-top:20px; }
+.oc-start-pulse { position:relative; isolation:isolate; }
+@media(max-width:900px) { .oc-translation-entry .oc-drill-start { margin-top:0; } }
+@media(max-width:640px) { .oc-translation-entry { gap:32px; padding-top:0; } .oc-course-screen .oc-translation-entry [data-course-heading] h1 { font-size:clamp(1.5rem,6vw + 1rem,2.25rem); } .oc-course-screen .oc-drill-run-header [data-course-heading] h1 { font-size:1.625rem; } .oc-translation-entry .oc-entry-back { margin-bottom:24px; } .oc-translation-entry .oc-drill-start { padding:24px; } }
+@media(prefers-reduced-motion:reduce) { .oc-start-pulse::after { animation:none; } }
+@media(max-width:900px) {
+  .oc-drill-landing { gap:28px; grid-template-columns:minmax(0,1fr); }
+  .oc-drill-start { margin-top:0; }
+}
+@media(max-width:640px) {
+  .oc-drill-run-header { grid-template-columns:minmax(0,1fr); align-items:start; gap:18px; }
+  .oc-drill-run-header>.oc-back { grid-row:1; justify-self:start; }
+  .oc-drill-overview header { margin-top:28px; }
+  .oc-drill-start { padding:24px 20px; }
+}
+.oc-course-drawer nav { margin-top:32px; }
+@media(max-width:900px) {
+  .oc-workspace { grid-template-columns:208px minmax(0,1fr); }
+  .oc-course-rail { padding:24px; }
+  .oc-course-screen { padding:48px 24px 70px; --oc-crumb-x:24px; }
+  .oc-course-body .co-section { padding:30px 26px; }
+}
+@media(max-width:640px) {
+  .oc-workspace { display:block; }
+  .oc-course-rail { display:none; }
+  .oc-mobile-nav { display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:12px; padding:12px 16px; border-bottom:1px solid var(--oc-line); }
+  .oc-mobile-nav>a { display:inline-flex; align-items:center; min-height:44px; font-family:Georgia,serif; color:var(--oc-ink); font-size:1.0625rem; }
+  .oc-mobile-nav button { display:flex; align-items:center; gap:8px; font-size:.875rem; min-height:44px; padding:8px; }
+  .oc-course-screen { padding:32px 16px 60px; --oc-crumb-x:16px; }
+  .oc-course-index>div[data-course-heading] { margin-bottom:36px; }
+  .oc-course-path { gap:24px; }
+  .oc-path-card { padding:24px 20px; }
+  .oc-path-card h3 { font-size:1.6875rem; }
+  .oc-path-card p { font-size:1.0625rem; }
+  .oc-course-body .co-section { padding:28px 18px; }
+  .oc-course-body .co-lab,.oc-course-body .co-check { padding:16px; }
+  .oc-course-turn { gap:20px; }
+  .oc-course-turn strong { font-size:1.0625rem; }
+  .oc-course-note>.co-opening { padding:18px; }
+}
+@media(prefers-reduced-motion:reduce) { .oc-course-drawer { animation:none!important; transition:none!important; } }
+
+/* The authenticated shell already has a main gutter; the course canvas owns it here. */
+.cb-shell.oc-workspace { grid-template-columns:220px minmax(0,1fr); }
+.cb-shell.oc-workspace>.cb-main:has(.oc-course-screen) { max-width:none; min-width:0; padding:0; }
+.cb-shell.oc-workspace>.cb-main:has(.oc-course-screen)>.cb-workspace-bar { padding:14px 24px; flex-wrap:wrap; }
+@media(max-width:900px) { .cb-shell.oc-workspace { grid-template-columns:208px minmax(0,1fr); } }
+@media(max-width:640px) { .cb-shell.oc-workspace { display:block; } }
+
+.co-round-links { display:flex; flex-wrap:wrap; gap:12px 24px; }
+.co-round-links a { color:var(--co-teal); line-height:1.6; padding:8px 0; }
+.co-practice-round { scroll-margin-top:24px; }
+.co-opening .co-round-heading { margin:0; padding:28px 42px; background:#e8eee4; font-size:1.75rem; }
+.co-attempt-input { display:block; width:100%; min-height:100px; margin:10px 0 22px; padding:14px; border:1px solid var(--co-ink); border-radius:8px; background:#fffefa; color:var(--co-ink); font:inherit; line-height:1.6; resize:vertical; }
+.co-attempt-input:focus-visible { outline:3px solid var(--co-coral); outline-offset:3px; }
+.co-task-header { padding:28px 42px; border-bottom:1px solid #b9cdbd; }
+.co-task-header h2 { margin:0 0 20px; font-size:1.75rem; }
+.co-task-header h2:focus { outline:none; }
+.co-task-header progress { display:block; width:100%; height:8px; border:0; border-radius:8px; accent-color:var(--co-teal); }
+.co-task-header progress::-webkit-progress-bar { background:#e8eee4; border-radius:8px; }
+.co-task-header progress::-webkit-progress-value { background:var(--co-teal); border-radius:8px; }
+.co-task-header progress::-moz-progress-bar { background:var(--co-teal); border-radius:8px; }
+.co-task-runner>.co-round-links { padding:24px 42px 0; }
+.co-task-runner .co-section-heading { display:none; }
+.co-task-turn { display:flex; justify-content:space-between; gap:16px; padding:24px 42px; border-top:1px solid #b9cdbd; }
+.co-combination-table { width:100%; border-collapse:collapse; font-size:1rem; line-height:1.6; margin:24px 0; }
+.co-combination-table caption { text-align:left; margin-bottom:12px; font-weight:600; }
+.co-combination-table th,.co-combination-table td { text-align:left; vertical-align:top; padding:12px 10px; border-bottom:1px solid #b9cdbd; }
+.co-combination-table th { font-weight:600; }
+@media(max-width:640px) {
+  .co-opening .co-round-heading { padding:24px 18px; font-size:1.5625rem; }
+  .co-combination-table { font-size:0.875rem; }
+  .co-combination-table th,.co-combination-table td { padding:10px 6px; }
+  .co-task-header,.co-task-turn { padding:24px 18px; }
+  .co-task-runner>.co-round-links { padding:24px 18px 0; }
+}
+
+/* Flashcards retain the course typography and separate concepts from indicators. */
+.co-flashcard-tools header { margin:0 0 2.25rem; }
+.co-flashcard-tools h1 { font-family:var(--font-mc-serif,Georgia,serif); font-size:clamp(1.75rem,2.8vw,2rem); font-weight:400; line-height:1.15; margin:.6rem 0 1rem; }
+.co-flashcard-tools header>p:last-child { font-size:1.125rem; line-height:1.7; max-width:65ch; }
+.co-flashcard-sets { display:grid; gap:1.25rem; }
+.co-flashcard-sets section { padding:clamp(1.25rem,3vw,1.75rem); border:1px solid var(--oc-line); border-radius:16px; background:var(--oc-surface); }
+.co-flashcard-sets h2 { font-family:var(--font-mc-serif,Georgia,serif); font-size:1.75rem; margin:0 0 .75rem; }
+.co-flashcard-sets p { font-size:1.125rem; line-height:1.6; margin:0 0 1.25rem; }
+.co-flashcard-return { display:flex; flex-wrap:wrap; justify-content:space-between; gap:1rem; margin-bottom:2rem; }
+.co-flashcard-return a,.co-indicator-card-link { display:flex; align-items:center; gap:.65rem; }
+.co-indicator-card-link { justify-content:space-between; padding:.3rem .4rem; border-radius:6px; text-decoration:underline; text-underline-offset:.25em; }
+.co-indicator-card-link:hover { background:var(--oc-hover); }
+.co-indicator-card-link:focus-visible,.co-flashcard-tools a:focus-visible,.co-expression-picker select:focus-visible { outline:2px solid var(--oc-ink); outline-offset:4px; }
+.co-flashcard-entry { margin:1rem 0; }
+.co-expression-picker { display:grid; gap:.6rem; font-weight:600; margin-bottom:1.5rem; }
+.co-expression-picker select { width:100%; min-height:44px; padding:.75rem; font:inherit; border:1px solid var(--oc-control-line); border-radius:8px; background:var(--oc-surface); color:inherit; }
+.co-focused-deck .co-deck-controls { display:flex; justify-content:space-between; flex-wrap:wrap; gap:1rem; }
+.co-focused-deck .co-study-card { text-align:left; min-height:18rem; }
+@media(prefers-reduced-motion:reduce) { .co-focused-deck * { animation:none!important; transition:none!important; } }
+
+/* Drill cards: ghost numeral and a quiet lift on hover. */
+.oc-drill-card { position:relative; overflow:hidden; transition:transform .22s ease, box-shadow .22s ease, border-color .22s ease; }
+.oc-drill-card > :not(.oc-card-num) { position:relative; }
+.oc-card-num { position:absolute; top:-.14em; right:28px; font-family:Georgia,serif; font-style:italic; font-size:9.5rem; line-height:1; letter-spacing:-.06em; color:rgba(26,26,26,.055); pointer-events:none; user-select:none; transition:color .22s ease, transform .22s ease; }
+@media(hover:hover) and (pointer:fine) {
+  .oc-drill-card:hover { transform:translateY(-2px); border-color:var(--oc-control-line); box-shadow:0 8px 18px -14px rgba(26,26,26,.24); }
+  .oc-drill-card:hover .oc-card-num { color:rgba(26,26,26,.09); transform:translateX(-4px); }
+}
+.oc-card-foot { display:flex; flex-wrap:wrap; align-items:center; gap:14px 22px; }
+.oc-card-count { font-size:.9375rem; color:var(--oc-muted); letter-spacing:.01em; }
+@media (prefers-reduced-motion:reduce) { .oc-drill-card, .oc-card-num { transition:none; } .oc-drill-card:hover { transform:none; } }
+@media (max-width:640px) { .oc-card-num { font-size:6.5rem; right:14px; } }
+/* 2026-10-11: progress tracker */
+.oc-tracker{margin:28px 0 22px;padding:20px 22px;border:1px solid var(--oc-line);border-radius:14px;background:var(--oc-surface);box-shadow:var(--oc-shadow-subtle)}
+.oc-tracker-top{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:14px}.oc-tracker-top>span{font-size:13px;font-weight:500;letter-spacing:0;text-transform:none;color:var(--oc-muted)}
+.oc-tracker-top strong{font:400 30px/1 Georgia,serif;color:var(--oc-ink)}.oc-tracker-top small{font:500 14px/1 inherit;font-family:inherit;color:var(--oc-muted)}
+.oc-tracker-steps{display:flex;gap:4px}.oc-tracker-steps i{flex:1;height:8px;border-radius:4px;background:var(--oc-current);transition:background .4s}
+.oc-tracker-steps i[data-type=drill]{height:8px;border-radius:2px}
+.oc-tracker-steps i[data-progress=started]{background:#e5bd77}.oc-tracker-steps i[data-progress=done]{background:#1f7a54}
+.oc-status{display:inline-flex;align-items:center;gap:6px;margin-left:10px;font-size:12px;font-weight:600;padding:3px 9px;border-radius:999px;vertical-align:middle}
+.oc-status-new{color:var(--oc-muted);background:var(--oc-current)}
+.oc-status-started{color:#7a4f12;background:#f8ead0}
+.oc-status-done{color:#fff;background:#1f7a54}
+.oc-status-bar{display:inline-block;width:42px;height:4px;border-radius:2px;background:#e9d2a8;overflow:hidden}.oc-status-bar i{display:block;height:100%;background:#b77847}
+.oc-path-card[data-progress=done]{border-left:4px solid #1f7a54}.oc-path-card[data-progress=started]{border-left:4px solid #e5bd77}
+.dark .oc-status-started{color:#f6dfb5;background:#4a3a1f}.dark .oc-tracker-steps i[data-progress=done],.dark .oc-status-done{background:#2f9a6d}
+
+/* One course navigation, shared by the desktop rail and mobile drawer. */
+.cb-shell.oc-workspace .cb-workspace-status { display:flex; align-items:center; border-bottom:1px solid var(--oc-line); justify-content:flex-end; min-height:48px; padding:12px 24px; margin-bottom:0; }
+.cb-shell.oc-workspace .cb-workspace-status .cb-save { margin-left:0; color:var(--oc-muted); font-size:.8125rem; line-height:1.5; }
+.oc-course-rail nav a:hover,.oc-course-drawer nav a:hover { background:var(--oc-hover); color:var(--oc-ink); }
+.oc-course-rail nav a svg,.oc-course-drawer nav a svg { flex-shrink:0; }
+@media(max-width:600px) { .cb-shell.oc-workspace .cb-workspace-status { padding:10px 20px; } }
+
+/* Lesson numbers describe the course order and remain readable on every card. */
+.oc-path-card > .oc-card-num { position:static; display:inline-block; margin-right:12px; font-family:inherit; font-style:normal; font-size:1rem; font-weight:700; line-height:1.4; letter-spacing:0; color:var(--oc-ink); user-select:auto; }
+
+.oc-course-continue { display:flex; flex-wrap:wrap; gap:10px; margin:20px 0 28px; max-width:100%; }
+.oc-course-continue span { font-weight:400; }
+
+.oc-part-title { margin:30px 0 18px; font-size:1.4rem; font-weight:600; color:var(--oc-ink); }
+
+
+/* Open learning timeline: labels and icons distinguish teaching from practice. */
+.oc-course-rail { display:flex; flex-direction:column; }
+.oc-classroom-footer { display:flex; align-items:center; gap:9px; margin-top:auto; padding:24px 10px 4px; min-height:44px; color:var(--oc-muted); font-size:.875rem; text-decoration:none; }
+.oc-course-drawer { display:flex; flex-direction:column; }
+.oc-course-index .oc-course-path { display:grid; grid-template-columns:1fr; gap:0; padding:0; margin:0; list-style:none; }
+.oc-course-index .oc-path-card { --oc-kind:#245b91; position:relative; display:grid; grid-template-columns:42px minmax(0,1fr) auto; align-items:center; gap:6px 18px; padding:22px 0; min-height:0; background:transparent; border:0; border-radius:0; box-shadow:none; }
+.oc-course-index .oc-path-card[data-kind=drill] { --oc-kind:#087d75; }
+.oc-course-index .oc-path-card::before { content:""; position:absolute; left:20px; top:0; bottom:0; width:2px; background:var(--oc-line); }
+.oc-course-index .oc-path-card:first-child::before { top:40px; }
+.oc-course-index .oc-path-card:last-child::before { bottom:calc(100% - 40px); }
+.oc-timeline-node { grid-column:1; grid-row:1 / 4; align-self:start; position:relative; z-index:1; display:grid; place-items:center; width:42px; height:42px; border-radius:50%; background:var(--oc-canvas); color:var(--oc-kind); border:2px solid currentColor; }
+.oc-course-index .oc-path-card > .oc-label { grid-column:2; grid-row:1; color:var(--oc-kind); font-size:.75rem; font-weight:700; }
+.oc-course-index .oc-path-card > .oc-status { grid-column:3; grid-row:1; justify-self:end; }
+.oc-course-index .oc-path-card h3 { grid-column:2; grid-row:2; margin:0; font-family:inherit; font-style:normal; font-size:1.15rem; font-weight:600; line-height:1.35; }
+.oc-course-index .oc-path-card > p { grid-column:2; grid-row:3; margin:0; font-size:.925rem; line-height:1.45; }
+.oc-course-index .oc-card-foot { grid-column:3; grid-row:2 / 4; margin:0; display:flex; flex-direction:column; align-items:flex-end; gap:6px; }
+.oc-course-index .oc-card-foot .oc-action { color:var(--oc-kind); background:transparent; border:0; box-shadow:none; text-decoration:underline; text-underline-offset:4px; font-size:.875rem; padding:7px 0 7px 12px; }
+.oc-course-index .oc-drill-card:hover { transform:none; box-shadow:none; background:transparent; }
+.oc-completion-rail { height:7px; overflow:hidden; border-radius:9px; background:var(--oc-line); margin-top:14px; }
+.oc-completion-rail > span { display:block; height:100%; border-radius:inherit; background:#087d75; }
+@media(max-width:640px) { .oc-course-rail { display:none; } }
+@media(max-width:640px) {
+ .oc-course-index .oc-path-card { grid-template-columns:36px minmax(0,1fr); gap:7px 12px; padding:18px 0; }
+ .oc-timeline-node { width:36px; height:36px; }
+ .oc-course-index .oc-path-card::before { left:17px; }
+ .oc-course-index .oc-path-card > .oc-status { grid-column:2; grid-row:4; justify-self:start; }
+ .oc-course-index .oc-card-foot { grid-column:2; grid-row:5; align-items:flex-start; }
+ .oc-course-index .oc-card-foot .oc-action { padding-left:0; }
+}
+
+.oc-course-index .oc-tracker { padding:16px 0; border:0; border-radius:0; background:transparent; box-shadow:none; }
+.dark .oc-course-index .oc-path-card { --oc-kind:#91c4f5; }
+.dark .oc-course-index .oc-path-card[data-kind=drill] { --oc-kind:#7cd9cb; }
+.oc-course-index{container-type:inline-size}
+@container(max-width:600px){
+ .oc-course-index .oc-path-card{grid-template-columns:36px minmax(0,1fr);gap:7px 12px;padding:20px 0}
+ .oc-course-index .oc-path-card::before{left:17px}
+ .oc-course-index .oc-path-card>.oc-status{grid-column:2;grid-row:4;justify-self:start}
+ .oc-course-index .oc-card-foot{grid-column:2;grid-row:5;align-items:flex-start}
+ .oc-course-index .oc-card-foot .oc-action{padding-left:0}
+}
+
+
+/* Sidebar: Home, then Course opens to the chapters. */
+.oc-nav-course summary{display:flex;align-items:center;gap:10px;padding:10px;min-height:44px;border-radius:8px;color:var(--oc-muted);font-size:.875rem;line-height:1.4;cursor:pointer;list-style:none}
+.oc-nav-course summary::-webkit-details-marker{display:none}
+.oc-nav-course summary:hover{background:var(--oc-hover);color:var(--oc-ink)}
+.oc-nav-course summary:focus-visible{outline:3px solid var(--oc-accent);outline-offset:-3px}
+.oc-nav-chevron{margin-left:auto;transition:transform .2s}
+.oc-nav-course[open] .oc-nav-chevron{transform:rotate(180deg)}
+.oc-nav-course>div{display:grid;gap:2px;margin:2px 0 6px 18px;padding-left:10px;border-left:1px solid var(--oc-line)}
+.oc-course-rail nav .oc-nav-course>div a,.oc-course-drawer nav .oc-nav-course>div a{display:grid;gap:1px;align-content:center;min-height:44px;padding:6px 10px;font-size:.84rem;line-height:1.3}
+.oc-nav-course>div a span{font-size:.78rem;color:var(--oc-muted)}
+
+/* Home. The course's own artwork (the 07 Atmosphere paper strata) carries the depth:
+   a dark scene for the next step, and seven chapter volumes cut from the same landscape.
+   A volume's tone is its real progress: untouched chapters stay in mist, finished ones come up to full light. */
+.oc-home{container-type:inline-size;--oc-art:url("/conditionals/paper-landscape.jpg");--oc-night:#0e1112;--oc-mist:#efede6}
+.oc-hero{position:relative;display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:end;gap:2rem;min-height:clamp(26rem,52cqi,34rem);padding:clamp(1.5rem,4.5cqi,3rem);border-radius:20px;overflow:hidden;isolation:isolate;background:var(--oc-night);color:var(--oc-mist);margin-bottom:3.25rem;box-shadow:0 1px 0 rgb(255 255 255 / .06) inset,0 30px 60px -38px rgb(8 10 11 / .7)}
+.oc-hero-art{position:absolute;inset:-4%;z-index:-1;background:var(--oc-art) 78% 40%/cover no-repeat;transform-origin:70% 40%}
+.oc-hero-art::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgb(14 17 18 / .92) 10%,rgb(14 17 18 / .55) 45%,rgb(14 17 18 / .05) 85%),linear-gradient(0deg,rgb(14 17 18 / .85),transparent 55%)}
+.oc-hero-main{display:grid;gap:.6rem;align-content:end;max-width:40rem}
+.oc-hero-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:.25rem 1rem;margin-bottom:auto;padding-bottom:clamp(2.5rem,8cqi,5rem)}
+.oc-course-screen .oc-hero .oc-hero-head h1{margin:0;line-height:1.3;letter-spacing:.01em;font-style:normal;font-family:Georgia,"Times New Roman",serif;font-size:1.05rem;font-weight:400;letter-spacing:.01em;color:var(--oc-mist)}
+.oc-hero-head p{margin:0;font-size:.88rem;color:rgb(239 237 230 / .62)}
+.oc-hero-kicker{margin:0;font-size:.95rem;color:rgb(239 237 230 / .72)}
+.oc-hero h2{margin:0;font-family:Georgia,"Times New Roman",serif;font-size:clamp(2.6rem,1.6rem + 5cqi,4.6rem);font-weight:400;line-height:.98;letter-spacing:-.025em;text-wrap:balance}
+.oc-hero-summary{margin:.2rem 0 0;max-width:46ch;font-size:1.05rem;line-height:1.55;color:rgb(239 237 230 / .8)}
+.oc-hero-actions{display:flex;flex-wrap:wrap;align-items:center;gap:.9rem 1.6rem;margin-top:1.1rem}
+.oc-hero-go{display:inline-flex;align-items:center;gap:.6rem;min-height:52px;padding:0 1.4rem;border-radius:10px;background:var(--oc-mist);color:#161d18;font-size:1rem;font-weight:600;text-decoration:none;box-shadow:0 10px 24px -14px rgb(0 0 0 / .8),inset 0 -1px 0 rgb(0 0 0 / .12);transition:background-color .2s,transform .2s cubic-bezier(.22,1,.36,1)}
+.oc-hero-go:hover{background:#fff}
+@media(hover:hover) and (pointer:fine){.oc-hero-go:hover{transform:translateY(-1px)}}
+.oc-hero-go:active{transform:translateY(0)}
+.oc-hero-then{margin:0;font-size:.92rem;color:rgb(239 237 230 / .66)}
+.oc-hero-then a{color:var(--oc-mist);text-underline-offset:3px}
+.oc-hero-go:focus-visible,.oc-hero-then a:focus-visible,.oc-hero-place:focus-visible{outline:2px solid var(--oc-mist);outline-offset:3px}
+.oc-hero-place{display:grid;gap:.5rem;width:13rem;padding:1.15rem 1.25rem 1.2rem;border-radius:14px;background:#252927;border:1px solid rgb(239 237 230 / .14);color:var(--oc-mist);text-decoration:none;transition:border-color .2s}
+.oc-hero-place:hover{border-color:rgb(239 237 230 / .3)}
+.oc-hero-place-label{font-size:.82rem;color:rgb(239 237 230 / .66)}
+.oc-hero-place-count{display:flex;align-items:baseline;font-family:Georgia,"Times New Roman",serif;line-height:.85;font-variant-numeric:lining-nums tabular-nums}
+.oc-hero-place-count strong{font-size:4.4rem;font-weight:400;letter-spacing:-.04em}
+.oc-hero-place-count span{font-size:1.25rem;color:rgb(239 237 230 / .6);margin-left:.15rem}
+.oc-hero-place-chapter{display:grid;gap:.1rem;font-size:.82rem;color:rgb(239 237 230 / .66)}
+.oc-hero-place-chapter span{font-size:.95rem;color:var(--oc-mist);line-height:1.3}
+
+.oc-home-section{margin:0 0 1rem;font-family:Georgia,"Times New Roman",serif;font-size:1.6rem;font-weight:400;color:var(--oc-ink)}
+.oc-volumes{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1rem;margin:0;padding:0;list-style:none;perspective:1100px}
+.oc-vol{display:block;height:100%;color:var(--oc-mist);text-decoration:none;border-radius:16px;outline-offset:3px}
+.oc-vol:focus-visible{outline:2px solid var(--oc-ink)}
+.oc-vol-body{position:relative;display:grid;align-content:space-between;min-height:17.5rem;height:100%;padding:1.1rem 1.15rem 1.15rem;border-radius:16px;overflow:hidden;isolation:isolate;transform-style:preserve-3d;background:var(--oc-night);box-shadow:inset 0 0 0 1px rgb(239 237 230 / .1),inset 0 1px 0 rgb(255 255 255 / .12),0 22px 40px -26px rgb(8 10 11 / .75);transition:box-shadow .3s}
+.oc-vol:hover .oc-vol-body{box-shadow:inset 0 0 0 1px rgb(239 237 230 / .2),inset 0 1px 0 rgb(255 255 255 / .16),0 34px 56px -28px rgb(8 10 11 / .8)}
+.oc-vol-art{position:absolute;inset:-6%;z-index:-3;background:var(--oc-art) no-repeat;background-size:auto 240%;background-position:calc(46% + var(--slice) * 54%) calc(28% + var(--slice) * 40%);filter:grayscale(1) brightness(calc(.78 + var(--p) * .4)) contrast(calc(1 + var(--p) * .25));transform:translateZ(-30px) scale(1.08);transition:filter .6s}
+.oc-vol:hover .oc-vol-art{filter:grayscale(1) brightness(calc(.88 + var(--p) * .4)) contrast(calc(1.05 + var(--p) * .25))}
+/* The mist lifts as the chapter's steps are done. */
+.oc-vol-mist{position:absolute;inset:0;z-index:-2;background:linear-gradient(180deg,rgb(206 208 204 / .38),rgb(170 174 171 / .2) 55%,rgb(120 124 122 / .06));opacity:calc(1 - var(--p));transition:opacity .6s}
+.oc-vol-veil{position:absolute;inset:0;z-index:-2;background:linear-gradient(180deg,rgb(14 17 18 / .2) 0%,transparent 35%,rgb(14 17 18 / .55) 62%,rgb(14 17 18 / .92) 100%)}
+.oc-vol-glare{position:absolute;inset:0;z-index:-1;background:radial-gradient(40rem circle at var(--gx,50%) var(--gy,0%),rgb(255 255 255 / .1),transparent 45%);opacity:0;transition:opacity .3s}
+.oc-vol:hover .oc-vol-glare{opacity:1}
+.oc-vol-num{font-variant-numeric:lining-nums;font-family:Georgia,"Times New Roman",serif;font-size:3.6rem;line-height:.8;letter-spacing:-.04em;color:rgb(239 237 230 / .92);transform:translateZ(46px);text-shadow:0 8px 24px rgb(0 0 0 / .45)}
+.oc-vol-text{display:grid;gap:.35rem;transform:translateZ(32px)}
+.oc-vol-label{display:inline-flex;align-items:center;gap:.3rem;font-size:.82rem;color:rgb(239 237 230 / .7)}
+.oc-vol[data-here] .oc-vol-label{color:var(--oc-mist);font-weight:600}
+.oc-vol[data-here] .oc-vol-label::before{content:"";width:.5rem;height:.5rem;border-radius:50%;background:var(--oc-mist);box-shadow:0 0 0 4px rgb(239 237 230 / .18)}
+.oc-vol-title{font-family:Georgia,"Times New Roman",serif;font-size:1.3rem;line-height:1.15;text-wrap:balance}
+.oc-vol-meta{font-size:.82rem;color:rgb(239 237 230 / .66)}
+.oc-vol[data-here] .oc-vol-body{box-shadow:inset 0 0 0 1px rgb(239 237 230 / .38),inset 0 1px 0 rgb(255 255 255 / .2),0 26px 48px -26px rgb(8 10 11 / .8)}
+/* Lesson segments on a volume: done is solid mist, the current lesson glows, pending stays visible as glass. */
+.oc-vol-segments{display:flex;gap:4px;margin-top:.55rem}
+.oc-vol-segments i{position:relative;flex:1;height:5px;border-radius:99px;overflow:hidden;background:rgb(239 237 230 / .2);box-shadow:inset 0 0 0 1px rgb(239 237 230 / .1)}
+.oc-vol-segments i::after{content:"";position:absolute;inset:0;width:var(--fill);border-radius:inherit;background:rgb(239 237 230 / .92)}
+.oc-vol-segments i[data-state=current]{background:rgb(239 237 230 / .32);box-shadow:inset 0 0 0 1px rgb(239 237 230 / .45),0 0 12px rgb(239 237 230 / .35)}
+.oc-vol-segments i[data-state=done]{box-shadow:0 0 8px rgb(239 237 230 / .25)}
+.oc-vol-meta{display:block;margin-top:.15rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* Practice and review: the light counterpart to the volumes, cut from the same strata, inverted to paper. */
+.oc-practice{position:relative;display:grid;align-content:start;gap:.85rem;padding:1.2rem 1.15rem 1.1rem;border-radius:16px;overflow:hidden;isolation:isolate;background:#f4f2ec;color:#1f2422;box-shadow:inset 0 0 0 1px rgb(31 36 34 / .1),inset 0 1px 0 #fff,0 22px 40px -28px rgb(8 10 11 / .45)}
+.oc-practice-art{position:absolute;inset:0;z-index:-1;background:var(--oc-art) no-repeat;background-size:auto 240%;background-position:96% 62%;filter:grayscale(1) invert(1) contrast(.7) brightness(1.05);opacity:.32;mask-image:linear-gradient(200deg,#000 10%,transparent 70%)}
+.oc-practice h3{margin:0;font-family:Georgia,"Times New Roman",serif;font-size:1.35rem;font-weight:400}
+.oc-practice-next{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:.2rem .75rem;padding:.9rem 1rem;border-radius:12px;background:#161a1b;color:#efede6;text-decoration:none;box-shadow:inset 0 1px 0 rgb(255 255 255 / .1),0 12px 22px -16px rgb(0 0 0 / .7);transition:background-color .2s}
+.oc-practice-next:hover{background:#22272a}
+.oc-practice-next-label{grid-column:1;font-size:.8rem;color:rgb(239 237 230 / .66)}
+.oc-practice-next-title{grid-column:1;font-family:Georgia,"Times New Roman",serif;font-size:1.12rem;line-height:1.25}
+.oc-practice-next svg{grid-column:2;grid-row:1/3}
+.oc-practice-next-done{display:block;font-size:.92rem;line-height:1.5}
+.oc-practice-links{display:grid;gap:.45rem}
+.oc-practice-links a{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;column-gap:.7rem;min-height:52px;padding:.6rem .85rem;border-radius:10px;background:rgb(255 255 255 / .62);box-shadow:inset 0 0 0 1px rgb(31 36 34 / .12);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);color:#1f2422;text-decoration:none;transition:background-color .2s}
+.oc-practice-links a:hover{background:#fff}
+.oc-practice-links a svg{grid-row:1/3;box-sizing:content-box;padding:8px;border-radius:10px;background:rgb(31 36 34 / .07);color:#262b29}
+.oc-practice-links a strong{grid-column:2;font-size:.92rem;font-weight:600;line-height:1.3}
+.oc-practice-links a span{grid-column:2;font-size:.8rem;line-height:1.35;color:#5d625f;font-variant-numeric:tabular-nums}
+.oc-practice-links a::after{content:"";grid-column:3;grid-row:1/3;width:7px;height:7px;border-top:1.75px solid #5d625f;border-right:1.75px solid #5d625f;transform:rotate(45deg);margin-right:3px}
+.oc-practice-next:focus-visible,.oc-practice-links a:focus-visible{outline:2px solid #1f2422;outline-offset:2px}
+.oc-chapter-progress{display:flex;align-items:center;gap:.75rem;font-size:.8rem;color:var(--oc-muted);white-space:nowrap}
+.oc-chapter-progress-rail{flex:1;height:4px;border-radius:99px;background:var(--oc-line);overflow:hidden}
+.oc-chapter-progress-rail i{display:block;height:100%;background:var(--oc-accent);border-radius:inherit}
+@container (max-width:56rem){.oc-volumes{grid-template-columns:repeat(2,minmax(0,1fr))}.oc-vol-body{min-height:14rem}}
+@container (max-width:40rem){.oc-hero{grid-template-columns:1fr;min-height:0}.oc-hero-place{width:auto;grid-template-columns:auto 1fr;align-items:end;column-gap:1.25rem}.oc-hero-place-label{grid-column:1/-1}.oc-hero-place-count strong{font-size:3.2rem}}
+@container (max-width:30rem){.oc-volumes{grid-template-columns:1fr}.oc-vol-body{min-height:9.5rem;grid-template-columns:auto 1fr;align-content:end;align-items:end;gap:1rem}.oc-vol-num{font-size:3rem}.oc-hero h2{font-size:2.4rem}}
+@media(prefers-reduced-motion:reduce){.oc-hero-art{animation:none}.oc-hero-go,.oc-vol-art,.oc-vol-body,.oc-vol-glare{transition:none}.oc-hero-go:hover{transform:none}}
+
+/* Chapter page. The volume opens into a hero cut from the same artwork, then the chapter runs as a path:
+   stations on one line, solid through finished work, one raised card for the next step. */
+.oc-chapter-page{container-type:inline-size;--oc-art:url("/conditionals/paper-landscape.jpg");--oc-night:#0e1112;--oc-mist:#efede6}
+.oc-chapter-back{display:inline-flex;align-items:center;gap:.4rem;min-height:44px;margin-bottom:.75rem}
+.oc-chapter-hero{position:relative;display:grid;align-items:end;min-height:clamp(20rem,44cqi,26rem);padding:clamp(1.4rem,4.5cqi,2.6rem);border-radius:20px;overflow:hidden;isolation:isolate;background:var(--oc-night);color:var(--oc-mist);margin-bottom:2.75rem;box-shadow:inset 0 1px 0 rgb(255 255 255 / .06),0 30px 60px -38px rgb(8 10 11 / .7)}
+.oc-chapter-hero-art{position:absolute;inset:-4%;z-index:-2;background:var(--oc-art) no-repeat;background-size:auto 200%;background-position:calc(46% + var(--slice) * 54%) calc(28% + var(--slice) * 40%);filter:grayscale(1) brightness(calc(.8 + var(--p) * .35)) contrast(calc(1 + var(--p) * .2))}
+.oc-chapter-hero::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(0deg,rgb(14 17 18 / .94) 8%,rgb(14 17 18 / .55) 55%,rgb(14 17 18 / .15)),linear-gradient(90deg,rgb(14 17 18 / .6),transparent 70%)}
+.oc-chapter-hero-num{position:absolute;top:clamp(1rem,3cqi,1.8rem);right:clamp(1.2rem,4cqi,2.4rem);font-family:Georgia,"Times New Roman",serif;font-variant-numeric:lining-nums;font-size:clamp(6rem,4rem + 10cqi,11rem);line-height:.8;letter-spacing:-.05em;color:rgb(239 237 230 / .9);text-shadow:0 12px 40px rgb(0 0 0 / .5)}
+.oc-chapter-hero-body{display:grid;gap:.6rem;max-width:36rem}
+.oc-chapter-hero-label{margin:0;font-size:.92rem;color:rgb(239 237 230 / .7)}
+.oc-course-screen .oc-chapter-hero h1{margin:.15rem 0 0;font-family:Georgia,"Times New Roman",serif;font-style:normal;font-weight:400;font-size:clamp(2.3rem,1.5rem + 4cqi,3.8rem);line-height:1;letter-spacing:-.025em;color:var(--oc-mist);text-wrap:balance}
+.oc-chapter-hero-summary{margin:0;font-size:1.02rem;line-height:1.55;color:rgb(239 237 230 / .78)}
+.oc-chapter-hero-progress{display:grid;gap:.3rem;max-width:22rem;margin:.35rem 0 .6rem;font-size:.85rem;color:rgb(239 237 230 / .7)}
+.oc-chapter-hero-progress .oc-vol-segments{margin-top:0}
+.oc-chapter-hero .oc-hero-go{justify-self:start}
+
+/* The path */
+.oc-path{--station:2.75rem;position:relative;display:grid;margin:0;padding:0;list-style:none}
+.oc-path-step{position:relative;display:grid;grid-template-columns:var(--station) minmax(0,1fr);column-gap:1.1rem;padding-bottom:1.1rem}
+.oc-path-step::before{content:"";position:absolute;left:calc(var(--station) / 2 - 1px);top:0;bottom:0;width:2px;background:var(--oc-line)}
+.oc-path-step:first-child::before{top:calc(var(--station) / 2)}
+.oc-path-step:last-child::before{bottom:auto;height:calc(var(--station) / 2)}
+.oc-path-step[data-state=done]::before{background:var(--oc-ink)}
+.oc-path-station{position:relative;z-index:1;display:grid;place-items:center;width:var(--station);height:var(--station);border-radius:50%;border:1.5px solid var(--oc-control-line);background:var(--oc-canvas);color:var(--oc-muted);font-size:.85rem;font-weight:600;font-variant-numeric:tabular-nums}
+.oc-path-step[data-kind=drill] .oc-path-station{width:1.9rem;height:1.9rem;margin:.42rem auto 0;justify-self:center}
+.oc-path-step[data-state=done] .oc-path-station{background:var(--oc-ink);border-color:var(--oc-ink);color:var(--oc-canvas)}
+.oc-path-step[data-state=next] .oc-path-station{border:2px solid var(--oc-ink);color:var(--oc-ink);box-shadow:0 0 0 5px var(--oc-current)}
+.oc-path-row{display:grid;grid-template-columns:minmax(0,1fr) auto auto;align-items:center;gap:.9rem;width:100%;min-height:var(--station);padding:.35rem .6rem .35rem .2rem;border:0;border-radius:10px;background:none;font:inherit;text-align:left;color:var(--oc-ink);cursor:pointer;transition:background-color .15s}
+.oc-path-row:hover{background:var(--oc-hover)}
+.oc-path-row:focus-visible,.oc-path-next-head:focus-visible,.oc-path-next-go:focus-visible{outline:2px solid var(--oc-ink);outline-offset:2px}
+.oc-path-text{display:grid;gap:.2rem;min-width:0}
+.oc-path-kicker{font-size:.82rem;color:var(--oc-muted)}
+.oc-path-title{font-family:Georgia,"Times New Roman",serif;font-size:1.22rem;line-height:1.25}
+.oc-path-step[data-kind=drill] .oc-path-title{font-size:1.05rem}
+.oc-path-summary{font-size:.92rem;line-height:1.5;color:var(--oc-muted);max-width:58ch}
+.oc-path-step[data-state=ahead] .oc-path-title{color:color-mix(in oklab,var(--oc-ink) 82%,var(--oc-canvas))}
+.oc-path-status{display:inline-flex;align-items:center;gap:.3rem;font-size:.82rem;font-weight:600;white-space:nowrap}
+.oc-path-status[data-status=done]{color:var(--oc-accent)}
+.oc-path-status[data-status=started]{color:var(--oc-ink)}
+.oc-path-arrow{color:var(--oc-muted);opacity:0;transition:opacity .15s}
+.oc-path-row:hover .oc-path-arrow,.oc-path-row:focus-visible .oc-path-arrow{opacity:1}
+.oc-path-next{display:grid;gap:.5rem;padding:1.1rem 1.25rem 1.2rem;border-radius:14px;background:var(--oc-surface);border:1px solid var(--oc-control-line);box-shadow:0 18px 36px -26px rgb(8 10 11 / .5)}
+.oc-path-next-flag{margin-bottom:.3rem;font-size:.82rem;font-weight:600;color:var(--oc-ink)}
+.oc-path-next-head{display:grid;gap:.2rem;width:100%;padding:0;border:0;background:none;font:inherit;text-align:left;color:var(--oc-ink);cursor:pointer}
+.oc-path-next{animation:oc-pop .22s cubic-bezier(.22,1,.36,1) both}
+@keyframes oc-pop{from{opacity:0;transform:translateY(4px) scale(.985)}to{opacity:1;transform:none}}
+.oc-path-next .oc-path-title{font-size:1.45rem}
+.oc-path-next-go{justify-self:start;display:inline-flex;align-items:center;gap:.5rem;min-height:44px;margin-top:.35rem;padding:0 1.1rem;border-radius:10px;background:var(--oc-ink);color:var(--oc-canvas);font-weight:600;text-decoration:none;transition:opacity .15s}
+.oc-path-next-go:hover{opacity:.88}
+@container (max-width:34rem){.oc-path{--station:2.25rem}.oc-path-step{column-gap:.75rem}.oc-chapter-hero-num{font-size:7rem;color:rgb(239 237 230 / .22);text-shadow:none}.oc-path-row{grid-template-columns:minmax(0,1fr) auto}.oc-path-arrow{display:none}}
+@media(prefers-reduced-motion:reduce){.oc-chapter-hero-art,.oc-path-next{animation:none}.oc-path-row,.oc-path-arrow,.oc-path-next-go{transition:none}}
+@media(prefers-reduced-motion:reduce){.oc-home-card,.oc-nav-chevron,.oc-focus-go,.oc-chapter-lesson{transition:none}}
+
+/* Practice page: the same hero material and path, one section per chapter. */
+.oc-practice-hero{min-height:clamp(16rem,36cqi,21rem)}
+.oc-practice-hero .oc-chapter-hero-summary strong{font-weight:600;color:var(--oc-mist)}
+.oc-practice-chapter{margin-bottom:2.25rem}
+.oc-practice-chapter h2{display:grid;gap:.15rem;margin:0 0 1rem;font-family:Georgia,"Times New Roman",serif;font-size:1.45rem;font-weight:400;line-height:1.2;color:var(--oc-ink)}
+.oc-practice-chapter h2 span{font-family:"LSATU Inter",ui-sans-serif,system-ui,sans-serif;font-size:.82rem;color:var(--oc-muted)}
+
+
+/* Lesson breadcrumb: the chapter (a link back to its page), then the lesson. */
+.oc-course-screen{position:relative}
+/* Pinned in the top-left corner of the content area, out of the layout flow. */
+.oc-course-screen .oc-crumb{position:absolute;top:1.1rem;left:var(--oc-crumb-x,40px);right:var(--oc-crumb-x,40px);display:flex;flex-wrap:nowrap;align-items:baseline;gap:.4rem;margin:0;text-transform:none;letter-spacing:.01em;font-size:.75rem;line-height:1.4;color:var(--oc-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.oc-course-screen .oc-crumb a{overflow:hidden;text-overflow:ellipsis}
+.oc-crumb a{color:inherit;text-decoration:underline;text-decoration-color:transparent;text-underline-offset:3px;transition:text-decoration-color .15s,color .15s}
+.oc-crumb a:hover{color:var(--oc-ink);text-decoration-color:currentColor}
+.oc-crumb a:focus-visible{outline:2px solid var(--oc-ink);outline-offset:3px;border-radius:2px}
+.oc-crumb span{color:var(--oc-control-line)}
+
+/* Lesson summary: no lone last word. */
+.oc-course-note header > p.font-mc-sans{text-wrap:pretty}
+@media(max-width:640px){.oc-course-screen .oc-crumb{top:.55rem}}
+
+/* The reading surface, controls and navigation use one material scale. */
+.oc-workspace { --oc-ease:cubic-bezier(.23,1,.32,1); }
+.oc-workspace :is(.oc-drill-back,.oc-action,.oc-path-next-go) { transition:background-color 140ms ease,transform 140ms var(--oc-ease); }
+.oc-workspace :is(.oc-drill-back,.oc-path-next-go):active:not(:focus-visible) { transform:scale(.98); }
+.oc-course-turn span { text-transform:none; letter-spacing:0; font-size:.8125rem; }
+.co-flashcard-sets h2 { font-weight:400; font-size:1.5rem; }
+.co-flashcard-sets p { font-size:1rem; line-height:1.6; }
+.oc-workspace .oc-practice-links a { background:var(--oc-surface); box-shadow:inset 0 0 0 1px var(--oc-line); backdrop-filter:none; -webkit-backdrop-filter:none; color:var(--oc-ink); }
+.oc-workspace .oc-practice-links a span { color:var(--oc-muted); }
+.oc-workspace .oc-practice-links a svg { background:none; color:var(--oc-muted); padding:4px; }
+.oc-workspace .oc-practice-links a:hover { background:var(--oc-hover); }
+.oc-workspace .oc-practice-links a::after { border-color:var(--oc-muted); }
+.oc-workspace :is(.oc-practice-next,.oc-practice-links a):focus-visible { outline-color:var(--oc-ink); }
+:root:not(.light) .oc-workspace .oc-practice { background:var(--oc-surface); color:var(--oc-ink); box-shadow:inset 0 0 0 1px var(--oc-line); }
+:root:not(.light) .oc-workspace .oc-practice-art { opacity:.08; }
+:root:not(.light) .oc-workspace .oc-practice-links a { background:var(--oc-canvas); }
+:root:not(.light) .oc-workspace .oc-practice-next { background:var(--oc-current); }
+@media(max-width:640px) {
+  .oc-course-screen [data-course-heading] h1 { font-size:1.75rem; }
+  .oc-course-screen { padding-top:28px; }
+  .oc-course-index>div[data-course-heading] { margin-bottom:28px; }
+}
+@media(prefers-reduced-motion:reduce) {
+  .oc-workspace :is(.oc-drill-back,.oc-action,.oc-path-next-go,.oc-course-rail nav a),.oc-course-drawer nav a { transition:none; }
+  .oc-workspace :is(.oc-drill-back,.oc-action,.oc-path-next-go):active { transform:none; }
+}
+/* Topic cards: the artwork opens the chapter; sibling actions go straight to work. */
+.oc-home-shortcuts{display:flex;flex-wrap:wrap;gap:8px;margin:20px 0 28px}
+.oc-home-shortcuts a,.oc-related-work>a{display:inline-flex;align-items:center;min-height:44px;padding:9px 14px;border:1px solid var(--oc-control-line);border-radius:6px;background:var(--oc-surface);color:var(--oc-ink);font-size:.875rem;font-weight:500;text-decoration:none}
+.oc-home-shortcuts a:hover,.oc-related-work>a:hover{background:var(--oc-hover)}
+.oc-home-section-row{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;margin-bottom:16px;flex-wrap:wrap}
+.oc-home-section-row .oc-home-section{margin:10px 0}
+.oc-home-section-row .oc-index-filters{flex:1 1 320px;max-width:640px;margin:0}
+.oc-topic-card{display:flex;flex-direction:column;min-width:0;background:var(--oc-surface);border-radius:12px;overflow:clip;border:1px solid var(--oc-line)}
+.oc-topic-card .oc-vol{height:auto;border-radius:0}
+.oc-topic-card .oc-vol-body{min-height:210px;border-radius:0;box-shadow:none}
+.oc-topic-card .oc-vol-num{font-size:2.6rem}
+.oc-topic-card .oc-vol-meta{white-space:normal;line-height:1.5}
+.oc-topic-work{padding:16px;min-width:0;flex:1}
+.oc-topic-counts{margin:0 0 10px;font-size:.8125rem;line-height:1.5;color:var(--oc-muted)}
+.oc-topic-progress{height:5px;border-radius:3px;background:var(--oc-line);overflow:hidden;margin-bottom:16px}
+.oc-topic-progress>span{display:block;height:100%;background:var(--oc-ink)}
+/* 21st.dev Halaska segmented-control inspiration, adapted as direct navigation.
+   Home has no selected view: the shared thumb only follows hover/keyboard focus. */
+.oc-topic-progress-label{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:9px;font-size:.8125rem;line-height:1.4}
+.oc-topic-progress-label strong{font-weight:500}
+.oc-topic-progress-label>span{color:var(--oc-muted);font-variant-numeric:tabular-nums}
+.oc-topic-actions{--oc-choices:3;position:relative;isolation:isolate;display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:0;padding:5px;margin:0 0 18px;border-radius:10px;background:#d7d9ce;box-shadow:inset 0 1px 3px rgb(45 54 41 / 12%)}
+.oc-topic-actions::before{content:"";position:absolute;z-index:-1;top:5px;left:5px;height:calc(100% - 10px);width:calc((100% - 10px)/var(--oc-choices));border-radius:6px;background:#eceee4;box-shadow:0 1px 2px rgb(24 33 14 / 10%),inset 0 1px 0 rgb(255 255 255 / 60%);opacity:0;pointer-events:none;transition:transform 180ms ease,opacity 100ms}
+.oc-topic-actions:has(a:hover)::before,.oc-topic-actions:has(a:focus-visible)::before{opacity:1}
+.oc-topic-actions:has(a:nth-child(2):hover)::before,.oc-topic-actions:has(a:nth-child(2):focus-visible)::before{transform:translateX(100%)}
+.oc-topic-actions:has(a:nth-child(3):hover)::before,.oc-topic-actions:has(a:nth-child(3):focus-visible)::before{transform:translateX(200%)}
+.oc-topic-actions a{display:flex;align-items:center;justify-content:center;gap:6px;min-width:0;min-height:44px;padding:10px 4px;border:0;border-radius:6px;background:transparent;box-shadow:none;color:#252d27;text-align:center;text-decoration:none}
+.oc-topic-actions a strong{font-size:.875rem;line-height:1.3;font-weight:600}
+.oc-topic-actions a svg{flex-shrink:0;color:#505b4a}
+.oc-topic-actions a:active{background:rgb(37 45 39 / 9%);box-shadow:inset 0 1px 2px rgb(37 45 39 / 10%)}
+.oc-topic-actions a:focus-visible{outline:2px solid #353e31;outline-offset:2px}
+@media(hover:none){.oc-topic-actions::before{display:none}}
+@media(max-width:360px){.oc-topic-actions a svg{display:none}}
+@media(prefers-reduced-motion:reduce){.oc-topic-actions::before{transition:none}}
+.oc-topic-lessons{border-top:1px solid var(--oc-line);margin-top:8px}
+.oc-topic-lessons summary{display:flex;justify-content:space-between;align-items:center;gap:8px;min-height:44px;padding:10px 0;font-size:.8125rem;font-weight:600;cursor:pointer}
+.oc-topic-lessons summary span{color:var(--oc-muted);font-weight:400}
+.oc-topic-lessons summary:focus-visible{outline:2px solid var(--oc-ink);outline-offset:3px}
+.oc-topic-lessons ol{list-style:none;margin:0;padding:0}
+.oc-topic-lessons li+li{border-top:1px solid var(--oc-line)}
+.oc-topic-lessons li a{display:grid;gap:4px;min-height:54px;padding:10px 0;color:var(--oc-ink);font-size:.875rem;line-height:1.4;text-decoration:none}
+.oc-topic-lessons li a:hover{text-decoration:underline;text-underline-offset:3px}
+.oc-lesson-state{display:inline-flex;align-items:center;gap:5px;font-size:.75rem;color:var(--oc-muted)}
+.oc-lesson-state[data-status=completed]{color:var(--oc-ink)}
+.oc-index-filters{margin:20px 0}
+.oc-index-filters .conditional-filters-content{display:flex;flex-wrap:wrap;align-items:end;gap:16px}
+.oc-index-filters label{display:grid;gap:8px;flex:1 1 180px;font-size:.8125rem;font-weight:600;color:var(--oc-muted)}
+.oc-index-filters select{min-height:44px;max-width:100%;width:100%;padding:8px 10px;background:var(--oc-surface);color:var(--oc-ink);border:1px solid var(--oc-control-line);border-radius:5px;font:400 .875rem/1.4 "LSATU Inter",system-ui,sans-serif}
+.oc-filter-reset{min-height:44px;padding:8px 12px;font-size:.8125rem;text-decoration:underline;text-underline-offset:3px;color:var(--oc-ink)}
+.oc-index-empty{padding:20px;background:var(--oc-surface);border-radius:8px;color:var(--oc-muted);margin:20px 0}
+.oc-index-empty a{display:inline-flex;min-height:44px;align-items:center;color:var(--oc-ink);text-underline-offset:3px}
+.oc-related-work{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 28px}
+.oc-path-row{text-decoration:none}
+.oc-path-row .oc-path-arrow{opacity:1}
+@media(max-width:1100px){.oc-home .oc-volumes{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:640px){.oc-home .oc-volumes{grid-template-columns:minmax(0,1fr)}.oc-topic-card .oc-vol-body{min-height:180px}.oc-home-section-row{display:block}.oc-home-section-row .oc-index-filters{max-width:none;margin-top:12px}.oc-index-filters label{flex-basis:100%}.oc-related-work>a{width:100%}}
+
+/* Keep chapter choices close to the next step, with quiet contact depth. */
+.oc-home .oc-hero{min-height:340px;padding:32px;margin-bottom:24px;gap:24px;box-shadow:0 3px 12px rgb(0 0 0 / .06)}
+.oc-home .oc-hero-head{padding-bottom:28px}
+.oc-home .oc-hero h2{font-size:clamp(2rem,3.2cqi,2.625rem);line-height:1.08}
+.oc-home .oc-hero-place-count strong{font-size:2.5rem}
+.oc-home .oc-hero-go{box-shadow:none}
+.oc-home .oc-vol-num{font-size:2.5rem;text-shadow:none}
+.oc-home .oc-topic-card .oc-vol-body,.oc-home .oc-topic-card .oc-vol:hover .oc-vol-body{box-shadow:none}
+.oc-home .oc-practice{box-shadow:inset 0 0 0 1px var(--oc-line)}
+.oc-home .oc-practice-next{box-shadow:none}
+.oc-chapter-hero{box-shadow:0 3px 12px rgb(0 0 0 / .06)}
+.oc-chapter-hero-num{text-shadow:none}
+@media(max-width:640px){.oc-home .oc-hero{padding:24px;min-height:0;gap:24px}.oc-home .oc-hero-head{padding-bottom:16px}.oc-home .oc-hero-place{padding:16px}.oc-home .oc-hero-actions{gap:16px}.oc-home .oc-hero-summary{font-size:1rem}}
+.oc-home .oc-practice-links a{box-shadow:none;border:1px solid var(--oc-line)}
+.oc-hero-go{box-shadow:none}
+.oc-chapter-hero{min-height:260px;padding:28px;margin-bottom:24px}
+.oc-course-screen .oc-chapter-hero h1{font-size:2rem;line-height:1.12}
+.oc-chapter-hero-num{font-size:4.5rem;opacity:.45}
+.oc-course-screen .co-flashcard-tools h1{font-size:2rem}
+@media(max-width:640px){.oc-chapter-hero{padding:24px;min-height:240px}.oc-course-screen .oc-chapter-hero h1{font-size:1.75rem}.oc-chapter-hero-num{font-size:3rem;opacity:.2}}
+
+/* Home review desk: one charcoal material, with tactile controls instead of white cards. */
+.oc-workspace .oc-home .oc-practice{background:#292e2c;color:#f3f0e8;border:1px solid #393e3b;box-shadow:inset 0 1px 0 rgb(255 255 255 / 9%),0 12px 22px -18px rgb(24 28 25 / 55%);gap:20px;padding:24px;align-self:start}
+.oc-workspace .oc-home .oc-practice-art{filter:grayscale(1);opacity:.12;mask-image:linear-gradient(180deg,#000,transparent 80%)}
+.oc-workspace .oc-home .oc-practice h3{color:#f3f0e8;font-size:1.4rem}
+.oc-workspace .oc-home .oc-practice-next{display:flex;align-items:flex-start;flex-direction:column;gap:9px;padding:18px;background:#3b423e;border:1px solid #515a53;box-shadow:inset 0 1px 0 rgb(255 255 255 / 7%),0 6px 12px -9px #101713;color:#faf7ef;border-radius:10px}
+.oc-workspace .oc-home .oc-practice-next:hover{background:#454e47}
+.oc-workspace .oc-home .oc-practice-next-label{color:#d4d9d0;font-size:.75rem}
+.oc-workspace .oc-home .oc-practice-next-title{font-size:1.25rem;line-height:1.35}
+.oc-workspace .oc-home .oc-practice-next-action{display:inline-flex;align-items:center;min-height:36px;padding:5px 13px;margin-top:3px;border-radius:18px;background:#cbd3c1;color:#222b23;font-size:.8125rem;font-weight:600;box-shadow:inset 0 1px 0 rgb(255 255 255 / 40%),0 2px 3px rgb(0 0 0 / 12%)}
+.oc-workspace .oc-home .oc-practice-links{gap:0}
+.oc-workspace .oc-home .oc-practice-links a{grid-template-columns:auto minmax(0,1fr);padding:14px 3px;column-gap:14px;min-height:76px;border:0;border-top:1px solid rgb(239 237 226 / 14%);border-radius:0;background:transparent;box-shadow:none;color:#f3f0e8;transition:background-color 140ms}
+.oc-workspace .oc-home .oc-practice-links a:first-child{border-top:0}
+.oc-workspace .oc-home .oc-practice-links a:hover{background:rgb(255 255 255 / 6%)}
+.oc-workspace .oc-home .oc-practice-links a:active{background:rgb(0 0 0 / 14%)}
+.oc-workspace .oc-home .oc-practice-links a svg{padding:10px;border:1px solid rgb(239 237 226 / 20%);border-radius:50%;background:linear-gradient(145deg,#454d46,#343a36);color:#e5e9dc;box-shadow:inset 0 1px 0 rgb(255 255 255 / 8%),0 3px 5px rgb(0 0 0 / 10%)}
+.oc-workspace .oc-home .oc-practice-links a span{color:#c4cbc0}
+.oc-workspace .oc-home .oc-practice-links a::after{display:none}
+.oc-workspace .oc-home :is(.oc-practice-next,.oc-practice-links a):focus-visible{outline:2px solid #dae4ca;outline-offset:3px}
+@media(prefers-reduced-motion:reduce){.oc-workspace .oc-home .oc-practice-links a{transition:none}}
+
+.oc-home .oc-topic-work{padding:20px;display:flex;flex-direction:column}
+.oc-home .oc-topic-counts{font-size:.8125rem;margin:0 0 12px;order:2}
+.oc-home .oc-topic-progress-label{order:0}
+.oc-home .oc-topic-progress{order:1;height:4px;margin-bottom:9px}
+.oc-home .oc-topic-actions{order:3;margin-top:5px}
+.oc-home .oc-topic-lessons{order:4;margin-top:0;border-color:var(--oc-line)}
+.oc-home .oc-topic-card{background:#eeece4;border-color:transparent;box-shadow:0 1px 2px rgb(52 56 44 / 5%)}
+.oc-home .oc-home-shortcuts a{background:#e9e8df;border-color:transparent;border-radius:7px}
+.oc-home .oc-home-shortcuts a:hover{background:#dedfd3}
+.oc-home .oc-home-shortcuts a:active{box-shadow:inset 0 1px 2px rgb(37 45 39 / 12%)}
+.oc-home .oc-home-shortcuts a:focus-visible{outline:2px solid var(--oc-ink);outline-offset:3px}
+@media(max-width:640px){.oc-home .oc-topic-work{padding:16px}}
+
+/* Release fixes: keep light Home materials legible in either host theme. */
+.oc-home .oc-topic-card{--oc-ink:#252d27;--oc-muted:#60665b;--oc-line:#d5d8cb;--oc-control-line:#aeb4a4;color:var(--oc-ink)}
+.oc-home .oc-home-shortcuts a{color:#252d27}
+/* Focus wins over a stationary pointer; keyboard movement has no tracking delay. */
+.oc-topic-actions:has(a:focus-visible)::before{transition:none}
+.oc-topic-actions:has(a:nth-child(1):focus-visible)::before{transform:translateX(0)}
+.oc-topic-actions:has(a:nth-child(2):focus-visible)::before{transform:translateX(100%)}
+.oc-topic-actions:has(a:nth-child(3):focus-visible)::before{transform:translateX(200%)}

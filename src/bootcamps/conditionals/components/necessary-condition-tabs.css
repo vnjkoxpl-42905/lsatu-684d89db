@@ -1,0 +1,40 @@
+#root .nc-lesson .nc-tab-layout {
+  display:grid;
+  grid-template-columns:minmax(11rem,.8fr) minmax(0,2fr);
+  gap:clamp(1.25rem,3vw,2rem);
+  margin-top:1.5rem;
+  align-items:start;
+}
+#root .nc-lesson .nc-person-tabs { display:flex; flex-direction:column; gap:.5rem; }
+#root .nc-lesson .nc-person-tabs button {
+  width:100%; min-height:52px; padding:.9rem 1rem; text-align:left;
+  border:1px solid var(--sc-dark-line); border-left:4px solid transparent;
+  border-radius:.4rem; background:transparent; color:var(--sc-white);
+  font-size:1.125rem; line-height:1.5; transition:background 180ms;
+}
+#root .nc-lesson .nc-person-tabs button[aria-selected="true"] {
+  background:var(--sc-brass); border-color:var(--sc-brass); color:var(--sc-ink); font-weight:700;
+}
+#root .nc-lesson .nc-person-tabs button:hover:not([aria-selected="true"]) { background:oklch(33% .04 252); }
+#root .nc-lesson :is(.nc-person-tabs button,.nc-person-panel):focus-visible { outline:2px solid var(--sc-brass); outline-offset:4px; }
+#root .nc-lesson .nc-person-panels { min-width:0; }
+#root .nc-lesson .nc-person-panel:not([hidden]) { animation:nc-person-enter 220ms ease-out; }
+#root .nc-lesson .nc-person-fact { margin:0 0 1.25rem; font-weight:600; }
+#root .nc-lesson .nc-person-facts { margin:0 0 1.5rem; }
+#root .nc-lesson .nc-person-facts>div { padding:1rem 0; border-top:1px solid var(--sc-dark-line); }
+#root .nc-lesson .nc-person-facts dt { font-size:1rem; line-height:1.5; color:oklch(87% .018 252); }
+#root .nc-lesson .nc-person-facts dd { margin:.35rem 0 0; }
+#root .nc-lesson .nc-person-facts strong { display:block; font-size:1.3rem; line-height:1.4; color:var(--sc-white); }
+#root .nc-lesson .nc-person-facts span { display:block; margin-top:.3rem; font-size:1rem; line-height:1.5; color:oklch(87% .018 252); }
+@keyframes nc-person-enter { from { opacity:.65; transform:translateY(3px); } to { opacity:1; transform:translateY(0); } }
+@media(max-width:760px) {
+  #root .nc-lesson .nc-tab-layout { grid-template-columns:minmax(0,1fr); }
+}
+@media(prefers-reduced-motion:reduce) {
+  #root .nc-lesson .nc-person-tabs button { transition:none; }
+  #root .nc-lesson .nc-person-panel:not([hidden]) { animation:none; }
+}
+
+#root .nc-lesson .nc-case-rule { border-left: 3px solid var(--sc-brass); padding: .7rem 1.1rem; margin-block: 1.5rem; background: oklch(100% 0 0 / .04); border-radius: 0 .6rem .6rem 0; }
+#root .nc-case-rule > span { color: var(--sc-brass); font-size: .8rem; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; }
+#root .nc-lesson .nc-case-rule p { margin: .5rem 0 0; color: var(--sc-white); font-size: 1.2rem; line-height: 1.6; }
