@@ -254,7 +254,8 @@ describe("AcademyMainhub — the LR/RC section switch", () => {
     expect(url().get("finderReturnTo")).toBeNull();
     fireEvent.change(within(dialog).getByRole("textbox"), { target: { value: "PT140 S4 Q17" } });
     fireEvent.click(within(dialog).getByRole("button", { name: "Open preview" }));
-    expect(url().get("returnTo")).toBe("/progress/history?view=completed");
+    // The legacy /progress/history origin is canonicalized to /review/history (reviewHubReturn).
+    expect(url().get("returnTo")).toBe("/review/history");
   });
 
   it("opens on LR when nothing says otherwise", () => {

@@ -67,7 +67,7 @@ describe("Saved Sets question preview", () => {
 
   it("shows the stored questions in order without launching or writing practice data", async () => {
     render(<MemoryRouter initialEntries={["/practice/sets"]}><SavedSets /><Location /></MemoryRouter>);
-    await screen.findByText("No saved RC sets or recipes yet.");
+    await screen.findByText("No saved passages or settings yet.");
 
     fireEvent.click(screen.getByRole("button", { name: "View questions in Causal reasoning" }));
     const dialog = screen.getByRole("dialog", { name: "Causal reasoning" });
@@ -85,7 +85,7 @@ describe("Saved Sets question preview", () => {
   it("keeps the question preview unavailable for a set owned by another account", async () => {
     state.userId = "student-2";
     render(<MemoryRouter><SavedSets /></MemoryRouter>);
-    await screen.findByText("No saved RC sets or recipes yet.");
+    await screen.findByText("No saved passages or settings yet.");
     expect(screen.getByRole("button", { name: "View questions in Causal reasoning" })).toBeDisabled();
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
   });
