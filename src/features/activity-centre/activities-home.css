@@ -1,0 +1,1171 @@
+/*
+ * Activities homepage (intro) world.
+ *
+ * Scoped entirely under `.act-home`. It now fits the bootcamp's warm tactile
+ * workbook (DESIGN.md): a clean warm-ivory paper canvas (refined, not sepia),
+ * crisp near-neutral ink, Inter for UI/title and Georgia for reading prose,
+ * soft ink-tinted depth, calm motion. The one departure each activity keeps is
+ * its accent hue, used sparingly. Negation Station = burnt orange, restrained
+ * to the CTA and directional marks only. The drill + completion screens do NOT
+ * use `.act-home`, so they are unaffected by anything here.
+ *
+ * One fixed skeleton, one accent per activity. To theme a future activity,
+ * override only the `--act-accent*` tokens on its own `.act-home.<activity>`
+ * modifier; the warm paper skeleton below stays identical.
+ */
+
+.act-home {
+  /* ---- Per-activity accent slot (Negation Station = burnt orange, ref #E8531F) ---- */
+  --act-accent: 16 80% 52%;         /* warm burnt-orange accent             */
+  --act-accent-strong: 14 82% 46%;  /* deeper orange for the CTA + marks    */
+  --act-on-accent: 40 44% 97%;      /* warm off-white on the accent         */
+
+  /* ---- Clean warm-ivory canvas (refined, not sepia/beige) ---- */
+  --act-canvas: var(--lsatu-canvas-hsl);
+  --act-canvas-2: var(--lsatu-canvas-hsl);
+  --act-surface: var(--lsatu-canvas-hsl);
+  --act-ink: var(--lsatu-ink-hsl);
+  --act-ink-soft: var(--lsatu-ink-muted-hsl);
+  --act-hairline: 54.545 11.579% 81.373%;
+
+  /* ---- Fixed skeleton (radius + depth + motion match the workbook) ---- */
+  --act-r-card: 18px;
+  --act-r-button: 10px;
+  --act-r-chip: 8px;
+  --act-shadow-1: 0 0 0 1px hsl(var(--act-ink) / 0.04), 0 1px 2px hsl(var(--act-ink) / 0.1);
+  --act-shadow-2: 0 14px 34px hsl(var(--act-ink) / 0.075);
+  --act-ease: cubic-bezier(0.4, 0, 0.2, 1);
+
+  min-height: 100vh;
+  background-color: hsl(var(--act-canvas));
+  background-image: radial-gradient(circle at 16% 0%, hsl(var(--act-canvas-2) / 0.82), transparent 30%);
+  color: hsl(var(--act-ink));
+  font-family: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Keep the Switchyard lobby self-contained. Lovable's preview can load this
+   stylesheet after the shared world-token bridge, which leaves the dark
+   Switchyard ink on the default ivory canvas. Pinning this world's resolved
+   values here keeps the canvas and text in the same theme in preview and in
+   the published build. */
+.activity-centre.act-home[data-world="conditional-rephrase"] {
+  --act-canvas: 214 26% 6%;
+  --act-canvas-2: 213 22% 10%;
+  --act-surface: 213 18% 12%;
+  --act-ink: 38 32% 92%;
+  --act-ink-soft: 214 14% 70%;
+  --act-hairline: 213 16% 26%;
+  --act-accent: 36 90% 56%;
+  --act-accent-strong: 36 95% 62%;
+  --act-on-accent: 214 30% 8%;
+  background-color: hsl(214 26% 6%);
+  color: hsl(38 32% 92%);
+}
+
+/* Reading prose (tagline, the "why" line) is Georgia, like the workbook. */
+.act-home .act-prose {
+  font-family: Georgia, "Times New Roman", serif;
+  font-feature-settings: "liga" 1, "kern" 1;
+}
+
+/* ---------- Single centered reading column ---------- */
+
+.act-home .act-body {
+  max-width: 44rem;
+  margin: 0 auto;
+  padding: clamp(2.5rem, 6vw, 4.5rem) 1.5rem 4rem;
+}
+
+/* ---------- Header (calm, no loud banner) ---------- */
+
+.act-home .act-header {
+  margin-bottom: 2rem;
+}
+
+.act-home .act-eyebrow {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  color: hsl(var(--act-accent));
+  margin-bottom: 0.6rem;
+}
+
+.act-home .act-title {
+  font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  font-size: clamp(2rem, 5vw, 2.75rem);
+  color: hsl(var(--act-ink));
+}
+
+.act-home .act-subtitle {
+  margin-top: 0.5rem;
+  font-size: 1rem;
+  color: hsl(var(--act-ink-soft));
+}
+
+.act-home .act-tagline {
+  font-size: 1.15rem;
+  line-height: 1.7;
+  color: hsl(var(--act-ink));
+}
+
+/* ---------- How it works (numbered steps) ---------- */
+
+.act-home .act-steps {
+  list-style: none;
+  margin: 2rem 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.act-home .act-step {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.85rem;
+  align-items: start;
+}
+
+.act-home .act-step-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.8rem;
+  height: 1.8rem;
+  border-radius: 999px;
+  background: hsl(var(--act-ink) / 0.06);
+  color: hsl(var(--act-ink) / 0.72);
+  font-weight: 700;
+  font-size: 0.88rem;
+  flex-shrink: 0;
+}
+
+.act-home .act-step-text {
+  font-size: 0.98rem;
+  line-height: 1.6;
+  color: hsl(var(--act-ink) / 0.9);
+  padding-top: 0.22rem;
+}
+
+/* ---------- Worked example (before -> after, two paper cards) ---------- */
+
+.act-home .act-example {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.75rem;
+  align-items: stretch;
+  margin-top: 2rem;
+}
+
+@media (min-width: 640px) {
+  .act-home .act-example {
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+  }
+}
+
+.act-home .act-card {
+  background: hsl(var(--act-surface));
+  border: 1px solid hsl(var(--act-hairline));
+  border-radius: var(--act-r-card);
+  box-shadow: var(--act-shadow-1);
+  padding: 1.25rem;
+}
+
+.act-home .act-card-label {
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: hsl(var(--act-ink-soft));
+  margin-bottom: 0.5rem;
+}
+
+.act-home .act-card-statement {
+  font-size: 1.05rem;
+  line-height: 1.45;
+  color: hsl(var(--act-ink));
+}
+
+.act-home .act-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: hsl(var(--act-accent-strong));
+}
+
+/* Cards stack vertically below 640px, so the arrow points down there. */
+.act-home .act-arrow svg {
+  transform: rotate(90deg);
+}
+
+@media (min-width: 640px) {
+  .act-home .act-arrow svg {
+    transform: none;
+  }
+}
+
+.act-home .act-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.act-home .act-chip {
+  background: hsl(var(--act-accent) / 0.1);
+  color: hsl(var(--act-accent-strong));
+  border-radius: var(--act-r-chip);
+  padding: 0.32rem 0.7rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.act-home .act-why {
+  margin-top: 1rem;
+  font-size: 1rem;
+  line-height: 1.7;
+  color: hsl(var(--act-ink-soft));
+}
+
+/* ---------- Task line + Start ---------- */
+
+.act-home .act-task {
+  margin-top: 2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.5;
+  color: hsl(var(--act-ink));
+}
+
+.act-home .act-start {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1.25rem;
+  min-height: 48px;
+  padding: 0 1.6rem;
+  border-radius: var(--act-r-button);
+  background: hsl(var(--act-accent-strong));
+  color: hsl(var(--act-on-accent));
+  font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  box-shadow: var(--act-shadow-2);
+  transition: transform 180ms var(--act-ease), background-color 180ms var(--act-ease);
+}
+
+.act-home .act-start:hover {
+  transform: translateY(-2px);
+  background: hsl(var(--act-accent));
+}
+
+.act-home .act-start:active {
+  transform: translateY(0);
+}
+
+.act-home .act-start:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px hsl(var(--act-canvas)), 0 0 0 4px hsl(var(--act-accent) / 0.6);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .act-home .act-start {
+    transition: none;
+  }
+}
+
+/* =====================================================================
+ * Editorial layout (.act-edit) — used inside .act-home.
+ * Mirrors the reference: small breadcrumb-with-arrows label, NN/total
+ * counter with thin accent rule, oversized mixed-weight headline, and a
+ * worked-example as two overlapping orbs (dark Before + light After).
+ * ===================================================================== */
+
+.act-home .act-edit {
+  max-width: 76rem;
+  margin: 0 auto;
+  /* Fill one viewport and center the column so the detail section (rules +
+     credited answers + Start) is pulled up into view instead of falling
+     below the orbs. */
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(1.5rem, 3vh, 2.5rem) clamp(1.25rem, 4vw, 3rem);
+}
+
+/* --- Breadcrumb (top-left, orange arrows) --- */
+.act-home .act-edit-crumb {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: hsl(var(--act-ink) / 0.78);
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+}
+
+.act-home .act-edit-crumb-arrow {
+  color: hsl(var(--act-accent-strong));
+  font-size: 0.7rem;
+  line-height: 1;
+}
+
+/* --- Title (top-right, mixed weight, right-aligned) --- */
+.act-home .act-edit-title {
+  font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+  font-weight: 300;
+  letter-spacing: -0.025em;
+  line-height: 1.08;
+  font-size: clamp(1.9rem, 3.4vw, 3.1rem);
+  color: hsl(var(--act-ink));
+  margin: 0;
+  text-align: right;
+  max-width: 30rem;
+}
+
+.act-home .act-edit-title-bold {
+  font-weight: 700;
+}
+
+.act-home .act-edit-title-light {
+  font-weight: 300;
+  color: hsl(var(--act-ink) / 0.82);
+}
+
+/* =====================================================================
+ * HERO: crumb top-left, title top-right, two big overlapping circles
+ * dominant in the lower-left. Pixel-matches the reference slide.
+ * ===================================================================== */
+.act-home .act-hero {
+  position: relative;
+}
+
+.act-home .act-hero-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 2rem;
+  padding-top: 0.5rem;
+  margin-bottom: clamp(0.75rem, 1.5vh, 1.5rem);
+}
+
+/* --- Orbs (overlapping circles), pushed left and large --- */
+.act-home .act-orbs {
+  position: relative;
+  /* Height-driven so the orb cluster shrinks to fit the viewport instead of
+     forcing a fixed ~736px tall that pushes the detail below the fold. */
+  height: min(52vh, 30rem);
+  width: auto;
+  max-width: 100%;
+  aspect-ratio: 1 / 0.92;
+  margin: 0 auto 0 0;   /* hug the left edge */
+}
+
+.act-home .act-orb {
+  position: absolute;
+  width: 62%;
+  aspect-ratio: 1 / 1;
+  border-radius: 9999px;
+}
+
+.act-home .act-orb-inner {
+  /* Centred on the circle and sized to the square that fits inside it
+     (diameter / root 2 is about 70%). It used to be positioned from the left
+     edge with a fixed 15rem cap, which on any orb narrower than 15rem ran the
+     text straight out past the curve. */
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  /* 58%, not the full inscribed 70%: a circle narrows toward the top and bottom
+     of that square, so a block sized to the widest chord still clips its first
+     and last lines against the curve. */
+  width: 58%;
+  text-align: left;
+}
+
+.act-home .act-orb--before {
+  top: 0;
+  left: 0;
+  background: #050505;
+  color: hsl(40 30% 96%);
+  z-index: 1;
+  box-shadow:
+    0 40px 80px -28px rgba(0, 0, 0, 0.5),
+    inset 0 -10px 30px rgba(255, 255, 255, 0.03);
+}
+
+.act-home .act-orb--before .act-orb-inner {
+  /* Pulled up and left of centre so the After orb, which overlaps this one from
+     the lower right, stops sitting on top of the sentence. */
+  left: 44%;
+  top: 42%;
+}
+
+.act-home .act-orb--after {
+  right: 0;
+  bottom: 0;
+  /* Chrome pearl sphere: a clean diagonal from a dark charcoal upper-left rim
+     (the overlap seam with the Before orb) down to a wide bright-white body in
+     the lower-right. The linear ramp keeps the lower-right rim white (not dark);
+     a soft radial hotspot adds the glossy pop, and a tight upper-left shadow
+     deepens the crescent on the rim. */
+  background:
+    radial-gradient(46% 46% at 70% 78%, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0) 60%),
+    radial-gradient(42% 42% at 20% 15%, rgba(2, 2, 2, 0.55) 0%, rgba(2, 2, 2, 0) 70%),
+    linear-gradient(135deg,
+      #141414 0%,
+      #3a3a3a 13%,
+      #7e7e7e 27%,
+      #b8b8b8 41%,
+      #e2e2e2 55%,
+      #f7f7f7 70%,
+      #ffffff 84%
+    );
+  color: hsl(var(--act-ink));
+  z-index: 2;
+  box-shadow:
+    0 40px 80px -30px rgba(20, 20, 20, 0.45),
+    inset 0 16px 30px rgba(255, 255, 255, 0.7),
+    inset 0 -16px 34px rgba(20, 20, 20, 0.12);
+}
+
+.act-home .act-orb--after .act-orb-inner {
+  left: 52%;
+  top: 52%;
+}
+
+.act-home .act-orb-label {
+  font-size: clamp(1.3rem, 1.9vw, 1.7rem);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin: 0 0 0.6rem;
+}
+
+.act-home .act-orb--before .act-orb-label {
+  color: hsl(40 30% 94%);
+}
+
+.act-home .act-orb--after .act-orb-label {
+  color: hsl(30 6% 10%);
+}
+
+.act-home .act-orb-statement {
+  font-size: clamp(0.82rem, 0.98vw, 0.94rem);
+  line-height: 1.5;
+  /* Was 400 at 0.6 alpha, which on a black circle and on a light gradient both
+     read as grey haze rather than text. */
+  font-weight: 500;
+  margin: 0;
+  /* A worked example can be a whole paragraph, and a paragraph does not fit in
+     a circle. Clamp it rather than let it spill: the full text of every example
+     is on the page below, under the rules and the credited answers. */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  line-clamp: 4;
+  overflow: hidden;
+  overflow-wrap: break-word;
+}
+
+.act-home .act-orb--before .act-orb-statement {
+  color: hsl(40 18% 96% / 0.95);
+}
+
+.act-home .act-orb--after .act-orb-statement {
+  color: hsl(30 6% 10% / 0.92);
+}
+
+/* =====================================================================
+ * DETAIL: compact section below the hero. Lean rules on the left,
+ * the three credited negations on the right, then the Start action.
+ * ===================================================================== */
+.act-home .act-detail {
+  margin-top: clamp(1.25rem, 2.5vh, 2rem);
+  padding-top: clamp(1.25rem, 2.5vh, 2rem);
+  border-top: 1px solid hsl(var(--act-hairline));
+}
+
+.act-home .act-detail-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2.5rem;
+  align-items: start;
+}
+
+.act-home .act-detail-grid[data-conditional-map="true"] {
+  display: block;
+}
+
+.act-home .act-conditional-map-heading {
+  margin-bottom: clamp(1.25rem, 2.4vw, 2rem);
+}
+
+.act-home .act-conditional-map-heading h2 {
+  margin: 0;
+  font-family: var(--act-display);
+  font-size: clamp(1.35rem, 2.2vw, 2rem);
+  font-weight: 650;
+  color: hsl(var(--act-ink));
+}
+
+.act-home .act-conditional-map-heading p {
+  margin: 0.4rem 0 0;
+  max-width: 36rem;
+  font-size: 0.92rem;
+  line-height: 1.45;
+  color: hsl(var(--act-ink-soft));
+}
+
+.act-home .act-conditional-sides {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(2rem, 5vw, 5rem);
+  padding-bottom: clamp(1.5rem, 3vw, 2.5rem);
+  border-bottom: 1px solid hsl(var(--act-hairline));
+}
+
+.act-home .act-conditional-side + .act-conditional-side {
+  border-left: 1px solid hsl(var(--act-hairline));
+  padding-left: clamp(2rem, 5vw, 5rem);
+}
+
+.act-home .act-conditional-group-label {
+  margin-bottom: 0.55rem;
+  color: hsl(var(--act-ink-soft));
+  font-size: 0.78rem;
+  font-weight: 650;
+  line-height: 1;
+}
+
+.act-home .act-conditional-side h3,
+.act-home .act-conditional-special h3 {
+  margin: 0;
+  color: hsl(var(--act-ink));
+}
+
+.act-home .act-conditional-side h3 {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+}
+
+.act-home .act-conditional-side h3 > span {
+  font-family: var(--act-display);
+  font-size: clamp(1.65rem, 3vw, 2.55rem);
+  line-height: 1;
+  font-weight: 700;
+}
+
+.act-home .act-conditional-side h3 > small {
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: hsl(var(--act-ink-soft));
+}
+
+.act-home .act-conditional-side.is-left h3 > span {
+  color: hsl(207 88% 68%);
+}
+
+.act-home .act-conditional-side.is-right h3 > span {
+  color: hsl(131 68% 68%);
+}
+
+.act-home .act-conditional-side > p {
+  margin: 0.9rem 0 0;
+  max-width: 35rem;
+  font-size: clamp(0.98rem, 1.25vw, 1.12rem);
+  line-height: 1.65;
+}
+
+.act-home .act-conditional-side.is-left > p {
+  color: hsl(207 78% 76%);
+}
+
+.act-home .act-conditional-side.is-right > p {
+  color: hsl(131 58% 76%);
+}
+
+.act-home .act-conditional-specials {
+  display: grid;
+  grid-template-columns: 1.35fr 1fr;
+  gap: 0;
+  padding-top: clamp(1.25rem, 2.5vw, 2rem);
+}
+
+.act-home .act-conditional-special {
+  min-width: 0;
+  padding-right: clamp(1.25rem, 3vw, 2.75rem);
+}
+
+.act-home .act-conditional-special + .act-conditional-special {
+  border-left: 1px solid hsl(var(--act-hairline));
+  padding-left: clamp(1.25rem, 3vw, 2.75rem);
+}
+
+.act-home .act-conditional-special:last-child {
+  padding-right: 0;
+}
+
+.act-home .act-conditional-special h3 {
+  font-family: var(--act-display);
+  font-size: clamp(1.05rem, 1.55vw, 1.3rem);
+  font-weight: 650;
+}
+
+.act-home .act-conditional-special.is-negative h3,
+.act-home .act-conditional-special.is-negative strong {
+  color: hsl(2 82% 70%);
+}
+
+.act-home .act-conditional-special p {
+  margin: 0.55rem 0 0;
+  font-size: 0.93rem;
+  line-height: 1.55;
+  color: hsl(var(--act-ink) / 0.78);
+}
+
+.act-home .act-conditional-special strong {
+  font-weight: 600;
+}
+
+.act-home .act-conditional-takeaway {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  margin-top: clamp(1.25rem, 2.5vw, 2rem);
+  padding: 1rem 1.1rem;
+  border-left: 3px solid hsl(131 68% 68%);
+  background: hsl(var(--act-surface) / 0.6);
+}
+
+.act-home .act-conditional-takeaway h3,
+.act-home .act-conditional-takeaway p {
+  margin: 0;
+}
+
+.act-home .act-conditional-takeaway h3 {
+  flex: 0 0 auto;
+  font-family: var(--act-display);
+  font-size: 1rem;
+  color: hsl(131 68% 74%);
+}
+
+.act-home .act-conditional-takeaway p {
+  font-size: 0.92rem;
+  line-height: 1.5;
+  color: hsl(var(--act-ink) / 0.82);
+}
+
+@media (min-width: 820px) {
+  .act-home .act-detail-grid {
+    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+    gap: 4rem;
+  }
+}
+
+@media (max-width: 819px) {
+  .act-home .act-conditional-sides,
+  .act-home .act-conditional-specials {
+    grid-template-columns: 1fr;
+  }
+
+  .act-home .act-conditional-side + .act-conditional-side,
+  .act-home .act-conditional-special + .act-conditional-special {
+    margin-top: 1.25rem;
+    padding-top: 1.25rem;
+    padding-left: 0;
+    border-top: 1px solid hsl(var(--act-hairline));
+    border-left: 0;
+  }
+
+  .act-home .act-conditional-special {
+    padding-right: 0;
+  }
+
+  .act-home .act-conditional-takeaway {
+    display: block;
+  }
+
+  .act-home .act-conditional-takeaway p {
+    margin-top: 0.35rem;
+  }
+}
+
+.act-home .act-steps {
+  margin-top: 0;
+}
+
+.act-home .act-credited-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: hsl(var(--act-ink-soft));
+  margin: 0.2rem 0 0.9rem;
+}
+
+.act-home .act-orb-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  font-size: 0.98rem;
+  line-height: 1.5;
+  font-weight: 500;
+  color: hsl(var(--act-ink));
+}
+
+.act-home .act-orb-list li::before {
+  content: "→ ";
+  color: hsl(var(--act-accent-strong));
+  font-weight: 700;
+  margin-right: 0.25rem;
+}
+
+.act-home .act-detail .act-start {
+  margin-top: clamp(2rem, 4vw, 3rem);
+}
+
+/* On narrow screens, drop the one-viewport constraint so content stacks and
+   scrolls naturally and the orbs fall back to width-driven sizing. */
+@media (max-width: 640px) {
+  .act-home .act-edit {
+    min-height: auto;
+    display: block;
+  }
+
+  .act-home .act-orbs {
+    height: auto;
+    width: min(100%, 26rem);
+  }
+}
+
+/* ---------------------------------------------------------------------
+ * The brief: the tagline under the title, and the task above the rules.
+ *
+ * The intro used to name its subject and withhold its instruction. These are
+ * the two blocks that say what the student is about to do, so they sit on the
+ * two positions the eye already lands on: beside the title, and first in the
+ * detail section above the rules.
+ * ------------------------------------------------------------------- */
+
+.act-home .act-hero-heading {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.6rem;
+  min-width: 0;
+}
+
+.act-home .act-hero-tagline {
+  margin: 0;
+  text-align: right;
+  max-width: 30rem;
+  font-size: clamp(0.95rem, 1.15vw, 1.08rem);
+  line-height: 1.55;
+  font-weight: 400;
+  color: hsl(var(--act-ink) / 0.68);
+}
+
+.act-home .act-brief {
+  margin-top: clamp(1.25rem, 2.5vh, 2rem);
+  padding-top: clamp(1.25rem, 2.5vh, 1.75rem);
+  border-top: 1px solid hsl(var(--act-hairline));
+}
+
+/* Wide enough for the orbs to leave the hero's right half empty: the brief
+   moves into that space and the page grows by nothing.
+ *
+ * Gated on `data-orbs` because the orb cluster is the only thing that gives the
+ * hero a lower half to move into. An Activity with a task and no worked example
+ * renders no orbs, the hero collapses to the height of the title row, and a
+ * brief pinned to `bottom: 0` prints straight over the title. Read, Recall,
+ * Colour and Dumb it Down are both that shape. With no orbs the brief keeps its
+ * ordinary flow position under the title, which is what the narrow layout
+ * already does. */
+@media (min-width: 900px) {
+  .act-home .act-hero[data-orbs="true"] .act-brief {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: min(32rem, 48%);
+    margin-top: 0;
+    padding-top: 0;
+    border-top: 0;
+  }
+}
+
+.act-home .act-brief-label {
+  margin: 0 0 0.55rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: hsl(var(--act-ink-soft));
+}
+
+.act-home .act-brief .act-task {
+  margin: 0;
+  font-size: clamp(1.05rem, 1.5vw, 1.3rem);
+  font-weight: 600;
+  line-height: 1.45;
+  color: hsl(var(--act-ink));
+}
+
+.act-home .act-how {
+  margin: 0.7rem 0 0;
+  max-width: 46rem;
+  font-size: 0.92rem;
+  line-height: 1.6;
+  color: hsl(var(--act-ink-soft));
+}
+
+@media (max-width: 640px) {
+  .act-home .act-hero-heading {
+    align-items: flex-start;
+  }
+  .act-home .act-hero-tagline {
+    text-align: left;
+  }
+}
+
+
+/* ---------- The Start dock ----------
+ *
+ * The intro ends with its primary action, under the rules and the worked
+ * example: measured at 1280x900, Start sat 1123px down an 1186px page. The one
+ * button the student came for was below the fold on a desktop window and
+ * further on a laptop.
+ *
+ * The dock carries it until the real button is on screen, then retires. It is
+ * never a second button competing with the first: only one of the two is
+ * reachable at a time.
+ */
+.act-start-dock {
+  position: sticky;
+  bottom: 0;
+  z-index: 30;
+  display: flex;
+  justify-content: flex-end;
+  padding: 0.75rem 1.25rem calc(0.75rem + env(safe-area-inset-bottom, 0px));
+  background: linear-gradient(
+    to top,
+    hsl(var(--aw-page, var(--background))) 45%,
+    hsl(var(--aw-page, var(--background)) / 0)
+  );
+  transition: opacity 160ms ease, transform 160ms ease;
+}
+
+@media (min-width: 768px) {
+  .act-start-dock {
+    padding-right: 2.5rem;
+  }
+}
+
+.act-start-dock[data-retired="true"] {
+  opacity: 0;
+  transform: translateY(8px);
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .act-start-dock {
+    transition: none;
+  }
+}
+
+/* ---------------------------------------------------------------------
+ * The hero without orbs.
+ *
+ * The title is right-aligned because the orb cluster owns the lower left and
+ * the two read as one diagonal composition. With no worked example there are
+ * no orbs, so a right-aligned title hangs beside an empty left half while the
+ * brief, the rules and the Start action below it all run left. The hero was
+ * the only element on the page not agreeing with the others.
+ *
+ * Scoped to `[data-orbs="false"]` so the six Activities that do have orbs keep
+ * the composition the layout was drawn for.
+ * ------------------------------------------------------------------- */
+@media (min-width: 900px) {
+  .act-home .act-hero[data-orbs="false"] .act-hero-top {
+    display: block;
+  }
+
+  .act-home .act-hero[data-orbs="false"] .act-hero-heading {
+    align-items: flex-start;
+    margin-top: 1.25rem;
+  }
+
+  .act-home .act-hero[data-orbs="false"] .act-edit-title,
+  .act-home .act-hero[data-orbs="false"] .act-hero-tagline {
+    text-align: left;
+    max-width: 44rem;
+  }
+}
+
+/* ---------------------------------------------------------------------
+ * The hero on a phone.
+ *
+ * `.act-hero-top` is a two-column flex row: the exit control and crumb on the
+ * left, the title block on the right. At 375px that leaves the title 143px of
+ * a 335px row, so it sets one or two words per line down a tall right-hand
+ * gutter with the whole left side empty.
+ *
+ * The existing `max-width: 640px` rules fixed half of this -- they start-align
+ * the heading box and left-align the tagline -- but the row itself stayed a
+ * flex pair and the title kept `text-align: right`, so neither could take
+ * effect. Stacking the row is what actually gives the title the full measure.
+ * This is not specific to Read, Recall, Colour; every Activity intro reads
+ * this way on a phone.
+ * ------------------------------------------------------------------- */
+@media (max-width: 640px) {
+  .act-home .act-hero-top {
+    display: block;
+  }
+
+  .act-home .act-hero-heading {
+    margin-top: 1rem;
+  }
+
+  .act-home .act-edit-title {
+    text-align: left;
+    max-width: none;
+  }
+}
+
+/* ---------------------------------------------------------------------
+ * The breakdown.
+ *
+ * A reading surface, not chrome. The numbered rules above are scannable and
+ * procedural; this is the part a student actually reads once, before they
+ * start, and it has to be worth reading.
+ *
+ * Two columns from 1024px so the whole thing is one page rather than a long
+ * scroll, with sections kept intact across the break. Below that it is a
+ * single column at a comfortable measure.
+ * ------------------------------------------------------------------- */
+.act-home .act-briefing {
+  margin-top: clamp(2rem, 4vh, 3rem);
+  padding-top: clamp(1.5rem, 3vh, 2.25rem);
+  border-top: 1px solid hsl(var(--act-hairline));
+}
+
+.act-home .act-briefing-lede {
+  margin: 0 0 clamp(1.5rem, 3vh, 2.25rem);
+  max-width: 46rem;
+  font-size: clamp(1.15rem, 1.7vw, 1.45rem);
+  font-weight: 400;
+  line-height: 1.45;
+  letter-spacing: -0.012em;
+  color: hsl(var(--act-ink) / 0.9);
+}
+
+.act-home .act-briefing-section {
+  /* Keeps a heading from being orphaned at the foot of a column. */
+  break-inside: avoid;
+  page-break-inside: avoid;
+  max-width: 40rem;
+}
+
+.act-home .act-briefing-section + .act-briefing-section {
+  margin-top: 1.9rem;
+}
+
+.act-home .act-briefing-heading {
+  margin: 0 0 0.6rem;
+  font-size: 1.02rem;
+  font-weight: 650;
+  line-height: 1.35;
+  letter-spacing: -0.008em;
+  color: hsl(var(--act-ink));
+}
+
+.act-home .act-briefing-body {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.68;
+  color: hsl(var(--act-ink-soft));
+}
+
+.act-home .act-briefing-body + .act-briefing-body {
+  margin-top: 0.7rem;
+}
+
+/* The numbered procedure inside a briefing section.
+ *
+ * The number is drawn rather than left to the list marker so it can sit in its
+ * own column and the step text can hang in a straight edge beside it. A default
+ * ol indents the text differently for one-digit and two-digit numbers, which
+ * reads as a ragged left edge exactly where a procedure needs to be scannable.
+ */
+.act-home .act-briefing-steps {
+  counter-reset: act-step;
+  margin: 1.1rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.act-home .act-briefing-step {
+  display: grid;
+  grid-template-columns: 1.75rem 1fr;
+  align-items: baseline;
+  gap: 0.1rem 0.75rem;
+  counter-increment: act-step;
+}
+
+.act-home .act-briefing-step + .act-briefing-step {
+  margin-top: 0.85rem;
+}
+
+.act-home .act-briefing-step::before {
+  content: counter(act-step);
+  grid-row: span 2;
+  font-size: 0.8rem;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.6;
+  color: hsl(var(--act-ink) / 0.45);
+}
+
+.act-home .act-briefing-step-label {
+  font-size: 0.95rem;
+  font-weight: 650;
+  line-height: 1.5;
+  color: hsl(var(--act-ink));
+}
+
+.act-home .act-briefing-step-body {
+  grid-column: 2;
+  font-size: 0.95rem;
+  line-height: 1.68;
+  color: hsl(var(--act-ink-soft));
+}
+
+/* A worked run of one real stimulus, beat by beat.
+ *
+ * Set on its own inset panel because it is quoted work rather than instruction:
+ * the surrounding prose tells her what to do, and this shows it being done. The
+ * beat labels run down a fixed column so the three kinds of beat line up and
+ * the alternation between them is visible at a glance.
+ */
+.act-home .act-briefing-demo {
+  margin-top: 1.2rem;
+  border-radius: 14px;
+  background: hsl(var(--act-ink) / 0.035);
+  padding: 1.1rem 1.25rem;
+}
+
+.act-home .act-briefing-demo-caption {
+  margin: 0 0 0.9rem;
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: hsl(var(--act-ink-soft));
+}
+
+.act-home .act-briefing-beats {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.act-home .act-briefing-beat {
+  display: grid;
+  grid-template-columns: 6.25rem 1fr;
+  gap: 0.75rem;
+  align-items: baseline;
+  font-size: 0.92rem;
+  line-height: 1.6;
+}
+
+.act-home .act-briefing-beat + .act-briefing-beat {
+  margin-top: 0.6rem;
+}
+
+.act-home .act-briefing-beat-kind {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: hsl(var(--act-ink) / 0.45);
+}
+
+.act-home .act-briefing-beat-text {
+  color: hsl(var(--act-ink-soft));
+}
+
+/* The read beats are the stimulus itself, so they carry the weight; what she
+   says about them is her own voice and sits lighter. */
+.act-home .act-briefing-beat.is-read .act-briefing-beat-text {
+  color: hsl(var(--act-ink));
+}
+
+@media (max-width: 640px) {
+  .act-home .act-briefing-beat {
+    grid-template-columns: 1fr;
+    gap: 0.15rem;
+  }
+}
+
+/* The last beat before Start. Set apart by a rule and the accent, so the page
+   ends on a sentence rather than trailing off into the final section. */
+.act-home .act-briefing-closer {
+  margin: clamp(1.75rem, 3.5vh, 2.5rem) 0 0;
+  padding-left: 0.9rem;
+  border-left: 1px solid hsl(var(--act-accent-strong) / 0.55);
+  max-width: 40rem;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: hsl(var(--act-ink) / 0.86);
+}
+
+@media (min-width: 1024px) {
+  .act-home .act-briefing-flow {
+    columns: 2;
+    column-gap: 3.5rem;
+  }
+
+  /* `margin-top` on the first section of the second column would push it off
+     the top rule and break the two columns' shared baseline. */
+  .act-home .act-briefing-section {
+    margin-top: 0;
+    margin-bottom: 1.9rem;
+  }
+
+  .act-home .act-briefing-section + .act-briefing-section {
+    margin-top: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .act-home .act-briefing {
+    transition: none;
+  }
+}
+
+/* The detail grid reserves a second column for the credited answers. An
+   Activity with no worked example has none, so the rules were left sitting
+   against an empty half at every width above 820px. */
+@media (min-width: 820px) {
+  .act-home .act-detail-grid[data-credited="false"] {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .act-home .act-detail-grid[data-credited="false"] .act-steps {
+    max-width: 46rem;
+  }
+}

@@ -1,0 +1,87 @@
+-- Activity Centre Phase 1: seed the first Activity, Negation Station.
+-- Content is the 30-item Statement Negation Drill, used verbatim from the
+-- canonical PDFs (NegationStationDrill + NegationStationAnswer_Key). Each item
+-- carries the original statement (prompt), the credited negation, the answer
+-- key explanation, and its category label. The intro/rules + worked example
+-- live in instructions.
+--
+-- Owner is the primary admin (looked up by email). If the admin row does not
+-- exist yet, the seed is a no-op and can be re-run later. Idempotent on slug.
+
+DO $$
+DECLARE
+  v_admin_id uuid;
+BEGIN
+  SELECT id INTO v_admin_id
+  FROM auth.users
+  WHERE email = 'contact@aspiringattorneys.com'
+  LIMIT 1;
+
+  IF v_admin_id IS NULL THEN
+    RAISE NOTICE 'negation_station seed: admin user not found, skipping.';
+    RETURN;
+  END IF;
+
+  INSERT INTO public.activities (slug, title, subtitle, item_format, instructions, items, created_by, class_id)
+  VALUES (
+    'negation-station',
+    'Negation Station',
+    'Statement Negation Drill',
+    'free-text',
+    $json${
+      "tagline": "Practice the Negation Test using the weakest statement that contradicts the original.",
+      "rules": [
+        "Statement negation is an advanced Logical Reasoning technique with many different uses. I'll give you a statement and you try to negate it.",
+        "The rules are simple: I'll give you a statement. Imagine it's an answer on a Necessary Assumption question and you want to use the Negation Test. Tell me how you would negate it. Remember, a negation isn't a polar opposite: it's the weakest pushback that would contradict the original.",
+        "Keep in mind that a negation is not a polar opposite; it's the weakest statement that will contradict the original."
+      ],
+      "worked_example": {
+        "statement": "All babies are cute.",
+        "credited_answers": ["Some babies are not cute.", "Not all babies are cute.", "There is at least one baby that isn't cute."],
+        "explanation": "The word \"all\" expresses 100% conformity. The weakest claim that contradicts 100% conformity is a single non-conforming case. All three credited answers express that it's possible for there to be a baby that isn't cute."
+      },
+      "task": "Negate each statement. The negation will (1) contradict the original, and (2) be the weakest statement that will do so."
+    }$json$::jsonb,
+    $json$[
+      {"order": 1, "category": "Universal Statement", "prompt": "Every river in this region flows north.", "credited_answers": ["At least one river in this region does not flow north."], "explanation": "To negate \"every,\" show just one counterexample."},
+      {"order": 2, "category": "Conditional Statement", "prompt": "You can graduate only if you pass all your final exams.", "credited_answers": ["You can graduate without passing all your final exams."], "explanation": "The necessity is challenged; graduation can occur without passing all exams."},
+      {"order": 3, "category": "Causal Statement", "prompt": "Pollution causes the depletion of the ozone layer.", "credited_answers": ["Pollution does not necessarily cause the depletion of the ozone layer."], "explanation": "To negate causation, raise the possibility that depletion happens without pollution as the cause."},
+      {"order": 4, "category": "Quantifier Statement", "prompt": "Most of the committee members support the new policy.", "credited_answers": ["Half or fewer of the committee members support the new policy."], "explanation": "To negate \"most\" (majority), say the support does not reach a majority."},
+      {"order": 5, "category": "Value Judgment Statement", "prompt": "It is generally agreed that caffeine improves focus.", "credited_answers": ["It is not generally agreed that caffeine improves focus."], "explanation": "Negate the consensus claim by showing lack of general agreement."},
+      {"order": 6, "category": "Universal Statement", "prompt": "All books in the library are available for borrowing.", "credited_answers": ["At least one book in the library is not available for borrowing."], "explanation": "Negate \"all\" by allowing for one exception."},
+      {"order": 7, "category": "Conditional Statement", "prompt": "If the store is open, then you will find the product in stock.", "credited_answers": ["The store can be open without the product being in stock."], "explanation": "Negate by showing the sufficient condition without the necessary."},
+      {"order": 8, "category": "General Statement", "prompt": "The lecture is generally interesting to all students.", "credited_answers": ["The lecture is not generally interesting to all students."], "explanation": "Negate the generality by suggesting some students do not find it interesting."},
+      {"order": 9, "category": "Universal Negative", "prompt": "No pets are allowed in the building.", "credited_answers": ["At least one pet is allowed in the building."], "explanation": "Negate \"no\" by providing one exception."},
+      {"order": 10, "category": "Conditional Statement", "prompt": "If a plant needs water, then its leaves will droop.", "credited_answers": ["A plant can need water without its leaves drooping."], "explanation": "Negate by separating the sufficient from the necessary."},
+      {"order": 11, "category": "Universal Statement", "prompt": "All forms of higher education lead to better societal understanding and cultural empathy.", "credited_answers": ["At least one form of higher education does not lead to better societal understanding or cultural empathy."], "explanation": "Negate \"all\" with a single counterexample."},
+      {"order": 12, "category": "Causal Statement", "prompt": "The increase in global temperatures results solely from human industrial activities over the past century.", "credited_answers": ["Global temperatures can increase for reasons other than human industrial activities over the past century."], "explanation": "Negate sole causation by pointing to other possible causes."},
+      {"order": 13, "category": "Quantifier Statement", "prompt": "Most nutritional experts agree that intermittent fasting is the superior method for weight loss compared to other diets.", "credited_answers": ["Fewer than a majority of nutritional experts agree that intermittent fasting is the superior method for weight loss."], "explanation": "Negate \"most\" by reducing it below majority."},
+      {"order": 14, "category": "Biconditional Statement", "prompt": "If and only if historical texts are preserved, will future generations understand past societies.", "credited_answers": ["Future generations can understand past societies even without preserving historical texts."], "explanation": "Negate by allowing the outcome without the condition."},
+      {"order": 15, "category": "Generalization", "prompt": "Typically, countries with vast natural resources enjoy higher economic prosperity than those with limited resources.", "credited_answers": ["It is not typically true that countries with vast natural resources enjoy higher prosperity than those with limited resources."], "explanation": "Negate by denying the general tendency."},
+      {"order": 16, "category": "Universal Statement", "prompt": "Every instance of financial instability within the market leads to a decline in consumer confidence, as historically supported by data from the past several decades.", "credited_answers": ["There are instances of financial instability that do not lead to a decline in consumer confidence."], "explanation": "Negate \"every\" with at least one counterexample."},
+      {"order": 17, "category": "Causal Statement", "prompt": "The exclusive reliance on fossil fuels for energy production inevitably results in catastrophic environmental disasters, a consensus reached by environmental scientists globally.", "credited_answers": ["Fossil fuels can be relied upon for energy production without inevitably causing catastrophic environmental disasters."], "explanation": "Negate inevitability by allowing a case where disaster does not occur."},
+      {"order": 18, "category": "Quantifier Statement", "prompt": "Most authors, when asked about writer's block, conclude that it stems from the pressure to produce content that perpetually meets the highest literary standards.", "credited_answers": ["Less than a majority of authors conclude that writer's block stems from pressure to meet the highest standards."], "explanation": "Negate \"most\" by reducing it below majority."},
+      {"order": 19, "category": "Causal Statement", "prompt": "Continental drift is solely responsible for all tectonic shifts observed in the Earth's crust, as evidenced by geological research spanning decades.", "credited_answers": ["Some tectonic shifts are caused by factors other than continental drift."], "explanation": "Negate sole causation by suggesting additional causes."},
+      {"order": 20, "category": "Universal Statement", "prompt": "All reputable journalism follows strict ethical guidelines set forth by international press councils, ensuring unbiased and factual reporting in all situations.", "credited_answers": ["Some reputable journalism does not follow the strict ethical guidelines set forth by international press councils."], "explanation": "Negate \"all\" by allowing an exception."},
+      {"order": 21, "category": "Conditional Statement", "prompt": "If economic sanctions are imposed, then the targeted nation will experience a significant reduction in its global trade volume.", "credited_answers": ["Economic sanctions can be imposed without significantly reducing the targeted nation's global trade volume."], "explanation": "Negate by showing the condition without the outcome."},
+      {"order": 22, "category": "Necessary Condition", "prompt": "Without formal education, an individual cannot master the intricate nuances of language comprehension and usage, a necessity for advanced literacy.", "credited_answers": ["An individual can master the intricate nuances of language comprehension and usage without formal education."], "explanation": "Negate the claimed necessity by showing the outcome without the requirement."},
+      {"order": 23, "category": "Generalization", "prompt": "Typically, advancements in technology result in increased efficiency within industrial processes, benefiting overall productivity.", "credited_answers": ["It is not typically true that advancements in technology result in increased efficiency within industrial processes."], "explanation": "Negate the general trend."},
+      {"order": 24, "category": "Sole Purpose", "prompt": "The sole purpose of establishing international treaties is to promote and maintain global peace, as historically documented by diplomatic correspondences.", "credited_answers": ["International treaties are sometimes established for purposes other than promoting and maintaining global peace."], "explanation": "Negate exclusivity by suggesting other purposes exist."},
+      {"order": 25, "category": "Necessary Condition", "prompt": "It is necessary to have universal healthcare to achieve equitable health outcomes in diverse populations, according to numerous public health studies.", "credited_answers": ["Equitable health outcomes in diverse populations can be achieved without universal healthcare."], "explanation": "Negate necessity by showing the outcome without the condition."},
+      {"order": 26, "category": "Universal Statement", "prompt": "Every comprehensive urban development plan in modern cities incorporates elements that aim to enhance green spaces alongside transportation infrastructures while ensuring minimal environmental impact.", "credited_answers": ["At least one comprehensive urban development plan in a modern city does not incorporate those elements."], "explanation": "Negate \"every\" with one exception."},
+      {"order": 27, "category": "Quantifier Statement", "prompt": "Most analytical frameworks employed in the field of sociology draw upon interdisciplinary methodologies to provide insights into complex social dynamics that traditional approaches might overlook.", "credited_answers": ["Fewer than a majority of analytical frameworks in sociology draw upon interdisciplinary methodologies."], "explanation": "Negate \"most\" by reducing it below majority."},
+      {"order": 28, "category": "Quantifier Statement", "prompt": "A significant portion of contemporary philosophical discourse revolves around the reevaluation of classical theories in light of new evidence and interpretations provided by recent scientific advancements.", "credited_answers": ["A significant portion of contemporary philosophical discourse does not revolve around the reevaluation of classical theories."], "explanation": "Negate \"a significant portion\" by asserting it is not true for such a portion."},
+      {"order": 29, "category": "Quantifier Statement", "prompt": "Some economic theories posit that an increasing global interdependence leads to a redistribution of wealth that disproportionately benefits developed nations over emerging markets.", "credited_answers": ["No economic theories posit that increasing global interdependence leads to such redistribution."], "explanation": "Negate \"some\" by eliminating all instances."},
+      {"order": 30, "category": "Quantifier Statement", "prompt": "Few educational programs are structured to adequately equip students with the necessary skills to seamlessly transition into evolving job markets dominated by digital technologies and artificial intelligence.", "credited_answers": ["Several educational programs are structured to adequately equip students with those skills."], "explanation": "Negate \"few\" by asserting more than just a few exist."}
+    ]$json$::jsonb,
+    v_admin_id,
+    v_admin_id
+  )
+  ON CONFLICT (slug) DO UPDATE SET
+    title        = EXCLUDED.title,
+    subtitle     = EXCLUDED.subtitle,
+    item_format  = EXCLUDED.item_format,
+    instructions = EXCLUDED.instructions,
+    items        = EXCLUDED.items,
+    updated_at   = now();
+END $$;

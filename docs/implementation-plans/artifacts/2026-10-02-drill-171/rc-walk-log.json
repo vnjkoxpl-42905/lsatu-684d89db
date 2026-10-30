@@ -1,0 +1,392 @@
+[
+  [
+    "fail.label",
+    "PASSAGE LIST UNAVAILABLE"
+  ],
+  [
+    "fail.inspectDisabled",
+    true
+  ],
+  [
+    "fail.summaryAvailable",
+    "REQUESTED\n1 passage\nAVAILABLE\nNot known until the passage list loads\nTHIS DRILL\nInspect the set to see its exact passages and question count\nTIMING\nUntimed practice, no time limit\nANSWERS\nAfter each passage. Finish a passage, then walk through it.\n\nInspect set shows passages and questions without answers and records nothing. Start this drill begins a saved, scored drill."
+  ],
+  [
+    "retry.label",
+    "CHOOSING FROM 256 OF 320 PASSAGES"
+  ],
+  [
+    "retry.inspectEnabled",
+    true
+  ],
+  [
+    "retry.overflow",
+    {
+      "scrollWidth": 390,
+      "clientWidth": 390
+    }
+  ],
+  [
+    "390.historyNotice",
+    1
+  ],
+  [
+    "390.invalidValue",
+    "8:75"
+  ],
+  [
+    "390.invalidError",
+    "Seconds must be between 00 and 59. Inspect and Start wait for a valid time."
+  ],
+  [
+    "390.inspectDisabledWhileInvalid",
+    true
+  ],
+  [
+    "390.normalised",
+    "10:00"
+  ],
+  [
+    "390.timingHint",
+    "10:00 per passage · 30:00 for 3 passages"
+  ],
+  [
+    "390.summaryAfterInspect",
+    "REQUESTED\n3 passages\nAVAILABLE\n256 passages match your filters\nTHIS DRILL\n3 passages · 20 questions\nTIMING\nTimed, 10:00 per passage (30:00 in all)\nANSWERS\nAfter each passage. Finish a passage, then walk through it.\n\nInspect set shows passages and questions without answers and records nothing. Start this drill begins a saved, scored drill."
+  ],
+  [
+    "390.inspectedPassages",
+    [
+      "1. PT 116 · Defense Lawyers · 7 questions",
+      "2. PT 110 · The Blues · 6 questions",
+      "3. PT 123 · Cullen · 7 questions"
+    ]
+  ],
+  [
+    "390.questionsFromInspectRows",
+    20
+  ],
+  [
+    "390.answerKeyLeak",
+    false
+  ],
+  [
+    "390.overflow",
+    {
+      "scrollWidth": 390,
+      "clientWidth": 390
+    }
+  ],
+  [
+    "390.staleNotice",
+    1
+  ],
+  [
+    "390.primaryAfterChange",
+    "Inspect set"
+  ],
+  [
+    "390.focusOutline",
+    "solid 2px"
+  ],
+  [
+    "700.historyNotice",
+    1
+  ],
+  [
+    "700.invalidValue",
+    "8:75"
+  ],
+  [
+    "700.invalidError",
+    "Seconds must be between 00 and 59. Inspect and Start wait for a valid time."
+  ],
+  [
+    "700.inspectDisabledWhileInvalid",
+    true
+  ],
+  [
+    "700.normalised",
+    "10:00"
+  ],
+  [
+    "700.timingHint",
+    "10:00 per passage · 30:00 for 3 passages"
+  ],
+  [
+    "700.summaryAfterInspect",
+    "REQUESTED\n3 passages\nAVAILABLE\n256 passages match your filters\nTHIS DRILL\n3 passages · 21 questions\nTIMING\nTimed, 10:00 per passage (30:00 in all)\nANSWERS\nAfter each passage. Finish a passage, then walk through it.\n\nInspect set shows passages and questions without answers and records nothing. Start this drill begins a saved, scored drill."
+  ],
+  [
+    "700.inspectedPassages",
+    [
+      "1. PT 145 · Federal Theater Project · 7 questions",
+      "2. PT 126 · Trade Secrets · 6 questions",
+      "3. PT 125 · Groupthink · 8 questions"
+    ]
+  ],
+  [
+    "700.questionsFromInspectRows",
+    21
+  ],
+  [
+    "700.answerKeyLeak",
+    false
+  ],
+  [
+    "700.overflow",
+    {
+      "scrollWidth": 700,
+      "clientWidth": 700
+    }
+  ],
+  [
+    "700.staleNotice",
+    1
+  ],
+  [
+    "700.primaryAfterChange",
+    "Inspect set"
+  ],
+  [
+    "700.focusOutline",
+    "solid 2px"
+  ],
+  [
+    "820.historyNotice",
+    1
+  ],
+  [
+    "820.invalidValue",
+    "8:75"
+  ],
+  [
+    "820.invalidError",
+    "Seconds must be between 00 and 59. Inspect and Start wait for a valid time."
+  ],
+  [
+    "820.inspectDisabledWhileInvalid",
+    true
+  ],
+  [
+    "820.normalised",
+    "10:00"
+  ],
+  [
+    "820.timingHint",
+    "10:00 per passage · 30:00 for 3 passages"
+  ],
+  [
+    "820.summaryAfterInspect",
+    "REQUESTED\n3 passages\nAVAILABLE\n256 passages match your filters\nTHIS DRILL\n3 passages · 23 questions\nTIMING\nTimed, 10:00 per passage (30:00 in all)\nANSWERS\nAfter each passage. Finish a passage, then walk through it.\n\nInspect set shows passages and questions without answers and records nothing. Start this drill begins a saved, scored drill."
+  ],
+  [
+    "820.inspectedPassages",
+    [
+      "1. PT 107 · Traditional Languages · 8 questions",
+      "2. PT 123 · Cullen · 7 questions",
+      "3. PT 132 · Lichenometry · 8 questions"
+    ]
+  ],
+  [
+    "820.questionsFromInspectRows",
+    23
+  ],
+  [
+    "820.answerKeyLeak",
+    false
+  ],
+  [
+    "820.overflow",
+    {
+      "scrollWidth": 820,
+      "clientWidth": 820
+    }
+  ],
+  [
+    "820.staleNotice",
+    1
+  ],
+  [
+    "820.primaryAfterChange",
+    "Inspect set"
+  ],
+  [
+    "820.focusOutline",
+    "solid 2px"
+  ],
+  [
+    "1280.historyNotice",
+    1
+  ],
+  [
+    "1280.invalidValue",
+    "8:75"
+  ],
+  [
+    "1280.invalidError",
+    "Seconds must be between 00 and 59. Inspect and Start wait for a valid time."
+  ],
+  [
+    "1280.inspectDisabledWhileInvalid",
+    true
+  ],
+  [
+    "1280.normalised",
+    "10:00"
+  ],
+  [
+    "1280.timingHint",
+    "10:00 per passage · 30:00 for 3 passages"
+  ],
+  [
+    "1280.summaryAfterInspect",
+    "REQUESTED\n3 passages\nAVAILABLE\n256 passages match your filters\nTHIS DRILL\n3 passages · 19 questions\nTIMING\nTimed, 10:00 per passage (30:00 in all)\nANSWERS\nAfter each passage. Finish a passage, then walk through it.\n\nInspect set shows passages and questions without answers and records nothing. Start this drill begins a saved, scored drill."
+  ],
+  [
+    "1280.inspectedPassages",
+    [
+      "1. PT 136 · Narrative · 6 questions",
+      "2. PT 126 · Trade Secrets · 6 questions",
+      "3. PT 141 · Prions · 7 questions"
+    ]
+  ],
+  [
+    "1280.questionsFromInspectRows",
+    19
+  ],
+  [
+    "1280.answerKeyLeak",
+    false
+  ],
+  [
+    "1280.overflow",
+    {
+      "scrollWidth": 1280,
+      "clientWidth": 1280
+    }
+  ],
+  [
+    "1280.staleNotice",
+    1
+  ],
+  [
+    "1280.primaryAfterChange",
+    "Inspect set"
+  ],
+  [
+    "1280.focusOutline",
+    "solid 2px"
+  ],
+  [
+    "1440.historyNotice",
+    1
+  ],
+  [
+    "1440.invalidValue",
+    "8:75"
+  ],
+  [
+    "1440.invalidError",
+    "Seconds must be between 00 and 59. Inspect and Start wait for a valid time."
+  ],
+  [
+    "1440.inspectDisabledWhileInvalid",
+    true
+  ],
+  [
+    "1440.normalised",
+    "10:00"
+  ],
+  [
+    "1440.timingHint",
+    "10:00 per passage · 30:00 for 3 passages"
+  ],
+  [
+    "1440.summaryAfterInspect",
+    "REQUESTED\n3 passages\nAVAILABLE\n256 passages match your filters\nTHIS DRILL\n3 passages · 19 questions\nTIMING\nTimed, 10:00 per passage (30:00 in all)\nANSWERS\nAfter each passage. Finish a passage, then walk through it.\n\nInspect set shows passages and questions without answers and records nothing. Start this drill begins a saved, scored drill."
+  ],
+  [
+    "1440.inspectedPassages",
+    [
+      "1. PT 141 · Prions · 7 questions",
+      "2. PT 110 · Lamarck’s Theory · 6 questions",
+      "3. PT 146 · Jury Nullification · 6 questions"
+    ]
+  ],
+  [
+    "1440.questionsFromInspectRows",
+    19
+  ],
+  [
+    "1440.answerKeyLeak",
+    false
+  ],
+  [
+    "1440.overflow",
+    {
+      "scrollWidth": 1440,
+      "clientWidth": 1440
+    }
+  ],
+  [
+    "1440.staleNotice",
+    1
+  ],
+  [
+    "1440.primaryAfterChange",
+    "Inspect set"
+  ],
+  [
+    "1440.focusOutline",
+    "solid 2px"
+  ],
+  [
+    "short.pool",
+    "CHOOSING FROM 2 OF 320 PASSAGES"
+  ],
+  [
+    "short.summary",
+    "REQUESTED\n4 passages\nAVAILABLE\n2 passages match your filters\nTHIS DRILL\n2 passages · 15 questions\nTIMING\nUntimed practice, no time limit\nANSWERS\nAfter each passage. Finish a passage, then walk through it.\nOnly 2 passages of the 4 you asked for match these filters. Start with 2 passages.\n\nInspect set shows passages and questions without answers and records nothing. Start this drill begins a saved, scored drill."
+  ],
+  [
+    "short.startDisabledBeforeAck",
+    true
+  ],
+  [
+    "short.startEnabledAfterAck",
+    true
+  ],
+  [
+    "short.duringStart",
+    "Starting…"
+  ],
+  [
+    "short.afterStartUrl",
+    "http://127.0.0.1:8080/dev/rc-builder-harness"
+  ],
+  [
+    "short.afterStartButton",
+    "Start this drill"
+  ],
+  [
+    "short.afterStartNotice",
+    [
+      "You need to be signed in to drill. We could not confirm whether the drill was created. Press Start again and we will check before making a new one."
+    ]
+  ],
+  [
+    "text2x.390.overflow",
+    {
+      "scrollWidth": 390,
+      "clientWidth": 390
+    }
+  ],
+  [
+    "text2x.820.overflow",
+    {
+      "scrollWidth": 820,
+      "clientWidth": 820
+    }
+  ]
+]

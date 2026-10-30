@@ -1,0 +1,1 @@
+GRANT INSERT, UPDATE, SELECT ON public.guided_drills TO postgres;
