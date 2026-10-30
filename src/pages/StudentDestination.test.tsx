@@ -6,6 +6,7 @@ const BASE = { loading: false, is_admin: false, has_classroom_access: false, has
 const permissions = vi.hoisted(() => ({ loading: false, is_admin: false, has_classroom_access: false, has_analytics_access: false, has_drill_access: false, has_practice_access: false, has_journal_access: false, has_flagged_access: false, has_activity_access: false, has_bootcamp_access: false, has_chat_access: false }));
 const readingCenter = vi.hoisted(() => ({ allowed: false, isPending: false }));
 const headingMotion = vi.hoisted(() => vi.fn());
+vi.mock('@/components/my-work/MyWorkTabCount', () => ({ MyWorkTabCount: () => null }));
 vi.mock('@/hooks/useClassroomMotion', () => ({ useClassroomMotion: headingMotion }));
 const auth = vi.hoisted(() => ({user: {id: "student"}}));
 vi.mock("@/contexts/AuthContext", () => ({ useAuth: () => auth }));

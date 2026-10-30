@@ -17,12 +17,36 @@ export function workDateLabel(value: string | undefined): string {
   return new Intl.DateTimeFormat(undefined, { month: 'short', day: 'numeric', year: 'numeric' }).format(new Date(value));
 }
 
+/**
+ * What a student sees for a row. Display only: opening work never changes the
+ * stored status, so completion still comes from saved work evidence.
+ */
+export type WorkDisplayState = 'to_start' | 'continue' | 'completed' | 'unverified';
+
+export function workDisplayState(row: AssignedTodoRow): WorkDisplayState {
+  if (row.status === 'completed') return 'completed';
+  if (row.progressUnverified) return 'unverified';
+  if (row.status === 'in_progress' || (row.status === 'assigned' && Boolean(row.openedAt))) return 'continue';
+  return 'to_start';
+}
+
+export const WORK_ACTION_LABEL: Record<WorkDisplayState, string> = { to_start: 'Start', continue: 'Continue', completed: 'Review', unverified: 'Open' };
+
+/** One plain line about where the student is. Never invents a count. */
+export function workProgressLine(row: AssignedTodoRow): string {
+  const state = workDisplayState(row);
+  if (state === 'completed') return 'Finished';
+  if (state === 'unverified') return 'Not checked yet';
+  if (state === 'continue') return row.status === 'in_progress' ? 'Started, not finished' : 'Opened, not started';
+  return 'Not started';
+}
+
 /** Preserve the feed's ordering and identities within each evidence-backed group. */
 export function groupAssignedWork(rows: AssignedTodoRow[], completed: boolean) {
   if (completed) return rows.length ? [{ label: 'Completed assignments', rows }] : [];
   return [
-    { label: 'In progress', rows: rows.filter((row) => row.status === 'in_progress' && !row.progressUnverified) },
-    { label: 'To start', rows: rows.filter((row) => row.status === 'assigned' && !row.progressUnverified) },
-    { label: 'Progress to confirm', rows: rows.filter((row) => row.progressUnverified) },
+    { label: 'Continue', rows: rows.filter((row) => workDisplayState(row) === 'continue') },
+    { label: 'To start', rows: rows.filter((row) => workDisplayState(row) === 'to_start') },
+    { label: 'Progress to confirm', rows: rows.filter((row) => workDisplayState(row) === 'unverified') },
   ].filter((group) => group.rows.length > 0);
 }
