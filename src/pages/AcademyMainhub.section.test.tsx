@@ -93,7 +93,8 @@ vi.mock("@/components/drill/QuestionPicker", () => ({
   QuestionPicker: ({ onCancel }: { onCancel: () => void }) => <div role="region" aria-label="Unified LR drill builder"><button onClick={onCancel}>Back to practice options</button></div>,
 }));
 
-vi.mock("@/lib/questionLoader", () => ({
+vi.mock("@/lib/questionLoader", async importOriginal => ({
+  ...(await importOriginal<typeof import("@/lib/questionLoader")>()),
   questionBank: {
     getQuestion: (qid: string) => qid === finderLrQuestion.qid ? finderLrQuestion : undefined,
     getAllQuestions: () => [
@@ -253,7 +254,8 @@ describe("AcademyMainhub — the LR/RC section switch", () => {
     expect(url().get("finderReturnTo")).toBeNull();
     fireEvent.change(within(dialog).getByRole("textbox"), { target: { value: "PT140 S4 Q17" } });
     fireEvent.click(within(dialog).getByRole("button", { name: "Open preview" }));
-    expect(url().get("returnTo")).toBe("/progress/history?view=completed");
+    // The legacy /progress/history origin is canonicalized to /review/history (reviewHubReturn).
+    expect(url().get("returnTo")).toBe("/review/history");
   });
 
   it("opens on LR when nothing says otherwise", () => {
@@ -674,17 +676,13 @@ describe("Question finder URL ownership", () => {
     expect(screen.getByTestId("pathname")).toHaveTextContent("/practice/drills");
     expect(screen.queryByRole("dialog", {name: "Find a question"})).not.toBeInTheDocument();
   });
-  it("returns a URL-launched LR preview to its origin by replacing the temporary entry", () => {
+  it("opens a URL-launched LR hit in the regular LR runner", () => {
     renderHub(launch("section=lr"), "/classroom");
     const dialog = screen.getByRole("dialog", {name: "Find a question"});
     fireEvent.change(within(dialog).getByRole("textbox"), {target: {value: "PT151 S2 Q8"}});
     fireEvent.click(within(dialog).getByRole("button", {name: "Open preview"}));
-    expect(screen.getByText("Read-only preview. This does not start or score a drill.")).toBeInTheDocument();
-    fireEvent.click(screen.getByRole("button", {name: "Back"}));
-    expect(screen.getByTestId("pathname")).toHaveTextContent("/my-work");
-    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
-    fireEvent.click(screen.getByRole("button", {name: "go back"}));
-    expect(screen.getByTestId("pathname")).toHaveTextContent("/classroom");
+    expect(screen.getByTestId("pathname")).toHaveTextContent("/drill");
+    expect(screen.queryByText("Read-only preview. This does not start or score a drill.")).not.toBeInTheDocument();
   });
   it("keeps one open dialog across repeated route effects, then closes it on actor change", () => {
     renderHub(launch("section=rc"));

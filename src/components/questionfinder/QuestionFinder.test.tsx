@@ -4,7 +4,7 @@ import { describe, expect, it, vi, beforeEach } from "vitest";
 import QuestionFinder from "./QuestionFinder";
 
 const navigate = vi.fn();
-vi.mock('@/lib/questionLoader', () => ({ questionBank: { getQuestion: (qid: string) => ({ qid, pt:90, section:1, qnum:12, stimulus:'The ecologist considers drought.', questionStem:'Which is a flaw?', answerChoices:{A:'One',B:'Two',C:'Three',D:'Four',E:'Five'}, correctAnswer:'B' }) } }));
+vi.mock('@/lib/questionLoader', async importOriginal => ({ ...(await importOriginal<typeof import('@/lib/questionLoader')>()), questionBank: { getQuestion: (qid: string) => ({ qid, pt:90, section:1, qnum:12, stimulus:'The ecologist considers drought.', questionStem:'Which is a flaw?', answerChoices:{A:'One',B:'Two',C:'Three',D:'Four',E:'Five'}, correctAnswer:'B' }) } }));
 vi.mock("react-router-dom", async () => {
   const actual = await vi.importActual<typeof import("react-router-dom")>("react-router-dom");
   return { ...actual, useNavigate: () => navigate };
@@ -80,12 +80,12 @@ describe("QuestionFinder", () => {
     view.rerender(<MemoryRouter><QuestionFinder returnTo='/classroom' enabled actorId='b' /></MemoryRouter>);
     expect(screen.queryByRole('dialog')).toBeNull();
   });
-  it('removes an open preview on actor change', () => {
+  it('closes the finder on actor change', () => {
     const view = render(<MemoryRouter><QuestionFinder returnTo='/classroom' actorId='a' /></MemoryRouter>);
     fireEvent.click(screen.getByRole('button', { name: 'Find a question' }));
     const dialog = screen.getByRole('dialog'); type(dialog, 'PT90 S1 Q12');
     fireEvent.click(within(dialog).getByRole('button', { name: /PT 90/ }));
-    expect(screen.getByRole('button', { name: 'Reveal answer' })).toBeInTheDocument();
+    expect(navigate).toHaveBeenCalledWith(expect.stringMatching(/^\/drill\?drill=questions/));
     view.rerender(<MemoryRouter><QuestionFinder returnTo='/classroom' actorId='b' /></MemoryRouter>);
     expect(screen.queryByRole('dialog')).toBeNull();
   });
@@ -98,12 +98,11 @@ describe("QuestionFinder", () => {
     expect(within(dialog).getByText("PT90 S1 Q12")).toBeInTheDocument();
   });
 
-  it("opens an LR hit as a full read-only preview", async () => {
+  it("opens an LR hit in the regular LR runner", async () => {
     const dialog = openFinder(); type(dialog, "flaw in the reasoning");
     fireEvent.click(await within(dialog).findByRole("button", { name: /PT 90/ }));
     expect(screen.queryByRole('dialog', { name: 'Find a question' })).toBeNull();
-    expect(screen.getByRole('button', { name: 'Reveal answer' })).toBeInTheDocument();
-    expect(navigate).not.toHaveBeenCalled();
+    expect(navigate).toHaveBeenCalledWith(expect.stringMatching(/^\/drill\?drill=questions/));
   });
   it("opens an RC hit directly using validated identity", async () => {
     const dialog = openFinder(); type(dialog, "stretcher frame");
@@ -130,8 +129,7 @@ describe("QuestionFinder", () => {
   it("opens the highlighted hit on Enter", async () => {
     const dialog = openFinder(); type(dialog, "PT90 S1 Q12");
     fireEvent.keyDown(within(dialog).getByRole('textbox'), { key: 'Enter' });
-    expect(screen.getByRole('button', { name: 'Reveal answer' })).toBeInTheDocument();
-    expect(navigate).not.toHaveBeenCalled();
+    expect(navigate).toHaveBeenCalledWith(expect.stringMatching(/^\/drill\?drill=questions/));
   });
   it("clears the query on the first Escape and closes on the second", async () => {
     const dialog = openFinder();

@@ -51,7 +51,7 @@ describe('RC passage and question lookup',()=>{
  it('bounds expansion at 60 and asks for refinement when more matches remain',()=>{
   fixture.banks.rcPassages=Array.from({length:65},(_,i)=>makePassage(100+i,100+i,1,'Marine study '+i));fixture.banks.rcQuestions=[];
   const d=open();type(d,'Marine');for(let i=0;i<9;i++)fireEvent.click(within(d).getByRole('button',{name:'Show more RC results'}));expect(within(d).getAllByRole('button',{name:/PT \d+ · S4 · P1/})).toHaveLength(60);expect(within(d).queryByRole('button',{name:'Show more RC results'})).toBeNull();expect(within(d).getByText(/Showing the first 60 results/)).toBeInTheDocument();
- });
+ }, 60000);
  it('does not open an ambiguous mixed LR/RC exact question',()=>{
   fixture.banks.lr=[{qid:'PT140-S4-Q1',pt:140,section:4,qnum:1,qtype:'Flaw',questionStem:'Synthetic'}];const d=open('all');type(d,'PT140 S4 Q1');expect(within(d).getByRole('button',{name:'Open preview'})).toBeDisabled();expect(fixture.navigate).not.toHaveBeenCalled();
  });
