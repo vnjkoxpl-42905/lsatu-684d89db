@@ -4,7 +4,7 @@ import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import RcResults from '../../src/features/rc/pages/RcResults';
 import RcSearch from '../../src/features/rc/pages/RcSearch';
 import { RcHubSurface } from '../../src/features/rc/components/RcHubSurface';
-import { TimedFixture, ChildTimedFixture } from './timed';
+import { TimedFixture, ChildTimedFixture, LrChildTimedFixture } from './timed';
 import { ReviewFixture, TrainingFixture } from './review';
 import { ComposerFixture } from './composer';
 import '../../src/index.css';
@@ -18,7 +18,7 @@ function SavedFixtureControls() {
     <output className="ml-3">{state.count} synthetic RC definitions · last command {state.lastCommand || 'none'}</output>
   </aside>;
 }
-createRoot(document.getElementById('root')!).render(mode === 'composer' ? <ComposerFixture /> : mode === 'child' ? <ChildTimedFixture /> : mode === 'timed' ? <div style={new URLSearchParams(location.search).has('sidecar') ? { width: 'min(100%, 650px)' } : undefined}><TimedFixture /></div> : mode === 'training' ? <TrainingFixture /> : mode === 'review' ? <ReviewFixture /> :
+createRoot(document.getElementById('root')!).render(mode === 'composer' ? <ComposerFixture /> : mode === 'child' ? <ChildTimedFixture /> : mode === 'child-lr' ? <LrChildTimedFixture /> : mode === 'timed' ? <div style={new URLSearchParams(location.search).has('sidecar') ? { width: 'min(100%, 650px)' } : undefined}><TimedFixture /></div> : mode === 'training' ? <TrainingFixture /> : mode === 'review' ? <ReviewFixture /> :
   <MemoryRouter initialEntries={[mode === 'saved' ? '/rc' : mode === 'search' ? '/rc/search' : mode === 'builder' ? '/rc' : '/rc/results/fixture-session']}>
     {mode === 'saved' && <SavedFixtureControls />}
     <Routes><Route path="/rc" element={<RcHubSurface embedded />} /><Route path="/rc/search" element={<RcSearch />} /><Route path="/rc/results/:sessionId" element={<RcResults />} />

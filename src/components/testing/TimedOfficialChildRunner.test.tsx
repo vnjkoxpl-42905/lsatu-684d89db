@@ -58,6 +58,30 @@ describe('official timed child integration boundaries', () => {
     await act(async () => { fireEvent.click(screen.getByRole('button', { name: 'Retry saved command' })); await Promise.resolve(); });
     expect(retry).toHaveBeenCalledTimes(1); expect(checkpoint).toHaveBeenCalledTimes(1); expect(screen.getByTestId('question-pane')).toBeInTheDocument();
   });
+  it('retries a saved command found on load once, without waiting for a click', async () => {
+    pending = { operation: 'checkpoint', commandId: 'saved' }; current = { ...current, pending } as TimedChildState;
+    await mount();
+    await act(async () => { await Promise.resolve(); });
+    expect(retry).toHaveBeenCalledTimes(1); expect(screen.getByTestId('question-pane')).toBeInTheDocument(); expect(screen.queryByText('Section paused')).not.toBeInTheDocument();
+  });
+  it('stops at the manual button when the automatic retry fails, and does not loop', async () => {
+    pending = { operation: 'checkpoint', commandId: 'saved' }; current = { ...current, pending } as TimedChildState;
+    retry.mockImplementation(async () => { throw new Error('TypeError: Failed to fetch'); });
+    await mount();
+    await act(async () => { await Promise.resolve(); });
+    await act(async () => { vi.advanceTimersByTime(6000); await Promise.resolve(); });
+    expect(retry).toHaveBeenCalledTimes(1); expect(screen.getByRole('button', { name: 'Retry saved command' })).toBeInTheDocument();
+  });
+  it('keeps the section on screen while a save is in flight', async () => {
+    let release: () => void = () => undefined;
+    checkpoint.mockImplementation(async () => { pending = { operation: 'checkpoint', commandId: 'inflight' }; await new Promise<void>(resolve => { release = resolve; }); pending = null; return current; });
+    await mount();
+    await act(async () => { fireEvent.click(screen.getByRole('button', { name: 'Choose B' })); await Promise.resolve(); });
+    await act(async () => { vi.advanceTimersByTime(2000); await Promise.resolve(); });
+    expect(screen.queryByText('Section paused')).not.toBeInTheDocument(); expect(screen.getByTestId('question-pane')).toBeInTheDocument();
+    await act(async () => { release(); await Promise.resolve(); });
+    expect(screen.getByTestId('question-pane')).toBeInTheDocument();
+  });
   it('preserves dwell accumulated during a pending acknowledgment in the next checkpoint', async () => {
     let acknowledge!: (value: TimedChildState) => void;
     checkpoint.mockImplementationOnce(() => new Promise<TimedChildState>(resolve => { acknowledge = resolve; }));

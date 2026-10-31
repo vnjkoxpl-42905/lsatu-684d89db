@@ -106,7 +106,8 @@ export default function TimedStandaloneSectionRunner({ controllerFactory = facto
     return () => { cancelled = true; };
   }, [controller, apply, identity]);
   const clock = state && controller ? controller.clock(state) : null;
-  const pending = controller?.pending();
+  // A save in flight has already stored its command; that is not a stalled save, so the section stays on screen.
+  const pending = busy ? null : controller?.pending();
   const blocked = busy || Boolean(error) || !state || state.snapshot.sitting.phase !== 'running' || clock?.writer !== 'active'
     || clock.remainingMs === 0 && (state.snapshot.sitting.kind === 'rc' || !regulationAcknowledged.current);
   const accrue = (current: TimedSectionState) => {

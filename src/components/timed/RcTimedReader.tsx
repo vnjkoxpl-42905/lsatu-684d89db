@@ -2,6 +2,7 @@ import * as React from 'react';
 import { RcExamPane, rcTypeStyles } from '@/features/rc/components/RcExamPane';
 import { RcPassagePane } from '@/features/rc/components/RcPassagePane';
 import { RcQuestionPane } from '@/features/rc/components/RcQuestionPane';
+import { addRcTimedMark } from './rcTimedReaderStorage';
 import type { RcSessionItem } from '@/features/rc/lib/rcSession';
 import type { RcHighlight, RcHighlightColor, RcHighlightMode } from '@/features/rc/lib/rcTypes';
 import type { HighlightMode } from '@/lib/highlightUtils';
@@ -63,7 +64,7 @@ export function RcTimedReader({
   }, []);
   const marksBlocked = blocked || annotationsDisabled;
   const addMark = (target: RcHighlight['target'], start: number, end: number, c: RcHighlightColor, annotation: 'highlight' | 'underline') =>
-    !marksBlocked && onMarksChange([...marks, { target, start, end, color: c, kind: annotation }]);
+    !marksBlocked && onMarksChange(addRcTimedMark(marks, { target, start, end, color: c, kind: annotation }));
   const passage = <RcPassagePane annotationsDisabled={marksBlocked} paragraphFocus={paragraphFocus} passage={item.passage} highlights={marks} color={color} onColorChange={onColorChange} highlightMode={marker as RcHighlightMode}
       findQuery={find} findIndex={findIndex} onFindCount={setFindCount} scrollTop={scrollTop} onScroll={onScrollTop} textStyle={type.passage} passageOnly={passageOnly}
       onAddHighlight={(start, end, c, annotation) => addMark('passage', start, end, c, annotation)}

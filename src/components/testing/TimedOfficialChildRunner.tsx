@@ -7,7 +7,7 @@ import OfficialQuestionPane from '@/components/drill/official/OfficialQuestionPa
 import { TimedWorkClient, type TimedLetter, type TimedObject } from '@/lib/timedWorkClient';
 import { TimedChildController, type TimedChildAnswer, type TimedChildState } from '@/lib/timedChildController';
 import { getPracticeTestDeviceId } from '@/lib/practiceTestStore';
-import { captureSelectionAcross, type Highlight, type HighlightMode } from '@/lib/highlightUtils';
+import { captureSelectionAcross, eraseRange, replaceOverlappingHighlights, type Highlight, type HighlightMode } from '@/lib/highlightUtils';
 import { RcTimedReader } from '@/components/timed/RcTimedReader';
 import { validateRcTimedMarks } from '@/components/timed/rcTimedReaderStorage';
 import type { RcHighlight, RcHighlightColor } from '@/features/rc/lib/rcTypes';
@@ -171,6 +171,14 @@ export default function TimedOfficialChildRunner({ kind, controllerFactory = def
     }, 5000);
     return () => window.clearInterval(timer);
   }, [controller, perform]);
+  // A saved command that survived a reload or a dropped connection is retried once on its own. Retrying is safe: the
+  // command id makes the account replay the original reply. A denial or a second failure still stops at the manual button.
+  const autoRetried = React.useRef<string | null>(null);
+  React.useEffect(() => {
+    const waiting = state?.pending;
+    if (loading || !waiting || error || busyRef.current || state.snapshot.rejection || autoRetried.current === waiting.commandId) return;
+    autoRetried.current = waiting.commandId; void perform('retry');
+  }, [loading, state, error, busy, perform]);
   const clock = controller && state ? controller.clock(state) : null;
   const paused = state?.snapshot.parent.timed_phase === 'leg-paused';
   const blocked = busy || Boolean(error) || !state?.view || clock?.writer !== 'active' || paused || (clock?.remainingMs === 0 && (kind === 'rc' || !regulationAcknowledged.current));
@@ -191,7 +199,8 @@ export default function TimedOfficialChildRunner({ kind, controllerFactory = def
   });
   const toggleElimination = (letter: TimedLetter) => mutate(previous => ({ ...previous, eliminations: previous.eliminations.includes(letter) ? previous.eliminations.filter(value => value !== letter) : [...previous.eliminations, letter] }));
   const back = () => navigate(`/testing/test/${encodeURIComponent(runId)}`);
-  const pending = controller?.pending();
+  // While a save is in flight its command is already stored. That is not a stalled save, so the section stays on screen.
+  const pending = busy ? null : controller?.pending();
   if (loading || (state && (state.snapshot.parent.user_id !== ownerId || state.snapshot.parent.id !== runId || state.snapshot.parent.timed_frozen_legs[legIndex]?.kind !== kind
     || (state.view && state.snapshot.parent.current_leg !== legIndex)))) return <div role="status" className="p-8">Loading your account section. The section has not opened.</div>;
   if (!state || error || pending || clock?.writer === 'claim-required' || clock?.writer === 'terminal') return <div className="max-w-xl mx-auto p-8 space-y-4">
@@ -224,8 +233,11 @@ export default function TimedOfficialChildRunner({ kind, controllerFactory = def
         selectedAnswer={answer.selected ?? ''} eliminatedAnswers={new Set(answer.eliminations)} isFlagged={answer.flagged} interactionLocked={blocked}
         highlights={highlights[question.qid] ?? []} highlightMode={marker} searchTerm={find} fontScale={fontScale}
         onAnswerSelect={value => select(value as TimedLetter)} onEliminate={value => toggleElimination(value as TimedLetter)} onToggleFlag={() => mutate(previous => ({ ...previous, flagged: !previous.flagged }))}
-        onTextSelection={regions => { if (blocked || busyRef.current || markersReady !== markerKey || marker === 'none' || marker === 'erase') return false; const captured = captureSelectionAcross(regions); if (!captured.length) return false;
-          setHighlights(previous => ({ ...previous, [question.qid]: [...(previous[question.qid] ?? []), ...captured.map(value => ({ ...value, id: crypto.randomUUID(), color: marker }))] })); window.getSelection()?.removeAllRanges(); return true; }}
+        onTextSelection={regions => { if (blocked || busyRef.current || markersReady !== markerKey || marker === 'none') return false; const captured = captureSelectionAcross(regions); if (!captured.length) return false;
+          // Same overlap rules as the drill: a new mark cuts away what it covers, so the passage text is never drawn twice.
+          setHighlights(previous => ({ ...previous, [question.qid]: captured.reduce((marks, value) => marker === 'erase'
+            ? eraseRange(marks, value.section, value.start, value.end)
+            : replaceOverlappingHighlights(marks, { ...value, id: crypto.randomUUID(), color: marker }), previous[question.qid] ?? []) })); window.getSelection()?.removeAllRanges(); return true; }}
         onHighlightClick={id => { if (!blocked && !busyRef.current && markersReady === markerKey && marker === 'erase') setHighlights(previous => ({ ...previous, [question.qid]: (previous[question.qid] ?? []).filter(value => value.id !== id) })); }} />}
       {kind === 'rc' && rcItem && answer && <RcTimedReader item={rcItem} answer={answer} blocked={blocked} annotationsDisabled={markersReady !== markerKey} fontScale={fontScale} find={find} marker={marker}
         color={color} onColorChange={setColor} passageOnly={passageOnly} marks={rcMarks} onMarksChange={updateRcMarks}
