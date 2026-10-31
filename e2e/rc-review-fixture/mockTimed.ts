@@ -37,3 +37,29 @@ export const syntheticChildController = {
   control: async (_state: TimedChildState, operation: string) => { child = { ...child, snapshot: { ...child.snapshot, parent: { ...child.snapshot.parent, timed_phase: operation === 'pause' ? 'leg-paused' : 'leg-running' } } }; return child; },
   close: async () => { child = { ...child, snapshot: { ...child.snapshot, parent: { ...child.snapshot.parent, current_leg: 1 } }, view: null }; return child; },
 } as unknown as TimedChildController;
+
+// LR child runner over the real PT107 plankton question, where a student's repeated drags once garbled the passage.
+import pt107 from '../../public/data/PT107-S1-LR.json';
+const lrRaw = (pt107 as { questionNumber: number; stimulus: string; questionStem: string; answerChoices: Record<string, string>; correctAnswer: string; questionType: string; questionDifficulty: number }[]).find(row => row.questionNumber === 11)!;
+const lrQuestion = { qid: 'PT107-S1-Q11', qnum: 11, pt: 107, section: 1, qtype: lrRaw.questionType, difficulty: lrRaw.questionDifficulty, stimulus: lrRaw.stimulus.split('\n').slice(1).join('\n'),
+  questionStem: lrRaw.questionStem, answerChoices: lrRaw.answerChoices, correctAnswer: lrRaw.correctAnswer };
+const lrScenario = new URLSearchParams(location.search).get('scenario');
+let lrPending: { operation: string; commandId: string } | null = lrScenario === 'pending-on-load' ? { operation: 'checkpoint', commandId: 'saved-before-reload' } : null;
+export const lrFixtureLog: string[] = []; (window as unknown as { lrFixtureLog: string[] }).lrFixtureLog = lrFixtureLog;
+let lrChild: TimedChildState;
+const lrBase = (): TimedChildState => ({ questions: [lrQuestion], passages: [], answers: lrChild?.answers ?? {}, currentIndex: 0, pending: lrPending,
+  snapshot: { parent: { id: 'synthetic-run', user_id: 'synthetic-owner', pt: 107, current_leg: 0, timed_phase: 'leg-running', timed_frozen_legs: [{ kind: 'lr' }], section_seconds: 2100 }, observedAt: 0, rejection: null },
+  view: { questions: [lrQuestion], session: { regulation_answered_qids: undefined } } } as unknown as TimedChildState);
+export const syntheticLrChildController = {
+  load: async () => { lrChild = lrBase(); return lrChild; },
+  pending: () => lrPending,
+  clock: () => ({ writer: 'active', remainingMs: 2100000, elapsedMs: 0, leaseExpired: false }),
+  checkpoint: async (_state: TimedChildState, index: number, answers: TimedChildState['answers']) => {
+    lrPending = { operation: 'checkpoint', commandId: crypto.randomUUID() }; lrFixtureLog.push('checkpoint-prepared');
+    if (lrScenario === 'slow-save') await new Promise(resolve => setTimeout(resolve, 3500));
+    lrPending = null; lrFixtureLog.push('checkpoint-acknowledged'); lrChild = { ...lrBase(), answers, currentIndex: index, pending: null }; return lrChild;
+  },
+  retry: async () => { lrFixtureLog.push('retry'); lrPending = null; lrChild = { ...lrBase(), answers: lrChild?.answers ?? {}, pending: null }; return lrChild; },
+  control: async (state: TimedChildState) => state,
+  close: async () => lrChild,
+} as unknown as TimedChildController;

@@ -118,22 +118,27 @@ function renderSegments(
 
   for (let i = 0; i < sorted.length; i++) {
     const h = sorted[i];
-    if (h.start > cursor) {
-      const slice = text.slice(cursor, h.start);
+    // Stored highlights can overlap. Each character is drawn once: a highlight starts where the
+    // previous one ended, and one swallowed whole by an earlier highlight draws nothing.
+    const start = Math.max(h.start, cursor);
+    const end = Math.min(h.end, text.length);
+    if (end <= start) continue;
+    if (start > cursor) {
+      const slice = text.slice(cursor, start);
       nodes.push(<span key={`${prefix}-t${i}`}>{renderWithSearch(slice, searchTerm, `${prefix}-t${i}`)}</span>);
     }
     nodes.push(
       <span
-        key={`${prefix}-h${h.id}`}
+        key={`${prefix}-h${i}-${h.id}`}
         data-highlight-id={h.id}
         className={cn('hl', 'transition-all', eraserMode && 'cursor-pointer hover:opacity-60')}
         style={getHighlightStyles(h.color)}
         onClick={() => eraserMode && onHighlightClick?.(h.id)}
       >
-        {text.slice(h.start, h.end)}
+        {text.slice(start, end)}
       </span>
     );
-    cursor = h.end;
+    cursor = end;
   }
 
   if (cursor < text.length) {
