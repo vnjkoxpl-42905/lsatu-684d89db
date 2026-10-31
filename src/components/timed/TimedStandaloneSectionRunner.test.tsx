@@ -18,7 +18,9 @@ vi.mock('@/components/timed/RcTimedReader', () => ({
       <button onClick={() => props.onMarksChange([...props.marks, { target: 'passage', start: 0, end: 4, color: 'yellow', kind: 'highlight' }])}>Mark text</button>
     </div>,
 }));
-vi.mock('@/components/drill/official/OfficialQuestionPane', () => ({ default: ({ question, onAnswerSelect, interactionLocked }: { question: { questionStem: string }; onAnswerSelect(answer: string): void; interactionLocked: boolean }) => <div>{question.questionStem}<button disabled={interactionLocked} onClick={() => onAnswerSelect('A')}>Select A</button></div> }));
+vi.mock('@/lib/highlightUtils', async importOriginal => ({ ...(await importOriginal<typeof import('@/lib/highlightUtils')>()), captureSelectionAcross: () => nextCapture }));
+let nextCapture: { section: 'stimulus'; start: number; end: number; text: string }[] = [];
+vi.mock('@/components/drill/official/OfficialQuestionPane', () => ({ default: ({ question, onAnswerSelect, interactionLocked, highlights, onTextSelection }: { question: { questionStem: string }; onAnswerSelect(answer: string): void; interactionLocked: boolean; highlights: { start: number; end: number }[]; onTextSelection(regions: unknown[]): boolean }) => <div>{question.questionStem}<span data-testid="lr-marks">{highlights.map(value => `${value.start}-${value.end}`).join(',')}</span><button onClick={() => onTextSelection([])}>Drag select</button><button disabled={interactionLocked} onClick={() => onAnswerSelect('A')}>Select A</button></div> }));
 function state(phase = 'running'): TimedSectionState {
   return { snapshot: { sitting: { id: work, owner_id: owner, pt: 140, section: 1, kind: 'lr', phase, budget_ms: 2100000 }, pending: null },
     questions: [{ qid: 'q1', qnum: 1, questionStem: 'Verified question', stimulus: 'Text', answerChoices: { A: 'a', B: 'b', C: 'c', D: 'd', E: 'e' }, correctAnswer: 'A', qtype: 'Necessary Assumption', difficulty: 3 }],
@@ -215,6 +217,24 @@ describe('standalone account section runner', () => {
     expect(controller.retry).toHaveBeenCalledTimes(1);
     expect(controller.retry.mock.invocationCallOrder[0]).toBeLessThan(controller.close.mock.invocationCallOrder[0]);
     expect(controller.close).toHaveBeenCalledTimes(1);
+  });
+  it('keeps LR highlights on this device, cuts overlaps, and restores them after a reload', async () => {
+    const view = mount();
+    await screen.findByText('Verified question');
+    fireEvent.change(screen.getByLabelText('Marker'), { target: { value: 'yellow' } });
+    nextCapture = [{ section: 'stimulus', start: 0, end: 4, text: 'Text' }];
+    fireEvent.click(screen.getByRole('button', { name: 'Drag select' }));
+    fireEvent.change(screen.getByLabelText('Marker'), { target: { value: 'pink' } });
+    nextCapture = [{ section: 'stimulus', start: 2, end: 6, text: 'xt ab' }];
+    fireEvent.click(screen.getByRole('button', { name: 'Drag select' }));
+    expect(screen.getByTestId('lr-marks').textContent).toBe('0-2,2-6');
+    fireEvent.click(screen.getByRole('button', { name: 'Pause' }));
+    await waitFor(() => expect(controller.checkpoint).toHaveBeenCalled());
+    expect(JSON.stringify(controller.checkpoint.mock.calls[0][2])).not.toContain('"section":"stimulus"');
+    view.unmount();
+    mount();
+    await screen.findByText('Verified question');
+    expect(screen.getByTestId('lr-marks').textContent).toBe('0-2,2-6');
   });
   it('freezes LR regulation answers before permitting overtime answers', async () => {
     const lr = state(); lr.answers.q1.selected = 'A'; controller.load.mockResolvedValue(lr);

@@ -12,7 +12,7 @@ import { getPracticeTestDeviceId } from '@/lib/practiceTestStore';
 import { RcTimedReader } from '@/components/timed/RcTimedReader';
 import { initialState } from '@/features/rc/lib/rcSession';
 import type { RcHighlight, RcHighlightColor } from '@/features/rc/lib/rcTypes';
-import type { HighlightMode } from '@/lib/highlightUtils';
+import { captureSelectionAcross, eraseRange, replaceOverlappingHighlights, type Highlight, type HighlightMode } from '@/lib/highlightUtils';
 import { validateRcTimedMarks } from './rcTimedReaderStorage';
 
 export type StandaloneControllerFactory = (owner: string, sitting: string, device: string) => TimedSectionController;
@@ -56,6 +56,7 @@ export default function TimedStandaloneSectionRunner({ controllerFactory = facto
   const [marker, setMarker] = React.useState<HighlightMode>('none'); const [color, setColor] = React.useState<RcHighlightColor>('yellow');
   const [passageOnly, setPassageOnly] = React.useState(false); const [scrollTops, setScrollTops] = React.useState<Record<string, number>>({});
   const [rcMarks, setRcMarks] = React.useState<Record<string, RcHighlight[]>>({});
+  const [lrMarks, setLrMarks] = React.useState<Record<string, Highlight[]>>({});
   const [marksReady, setMarksReady] = React.useState<string | null>(null);
   const marksKey = `lsatu:timed-section-markers:v1:${encodeURIComponent(owner ?? '')}:${encodeURIComponent(sittingId)}`;
   const [localSaveError, setLocalSaveError] = React.useState<string | null>(null);
@@ -63,11 +64,12 @@ export default function TimedStandaloneSectionRunner({ controllerFactory = facto
   React.useEffect(() => {
     if (!state || state.snapshot.sitting.owner_id !== owner || state.snapshot.sitting.id !== sittingId || marksReady === marksKey) return;
     setLocalSaveError(null);
-    setRcMarks({}); setFontScale(1); setExtraLeading(0); setScheme(''); setParagraphFocus(false); setPassageOnly(false); setFind(''); setMarker('none'); setColor('yellow'); setScrollTops({});
+    setRcMarks({}); setLrMarks({}); setFontScale(1); setExtraLeading(0); setScheme(''); setParagraphFocus(false); setPassageOnly(false); setFind(''); setMarker('none'); setColor('yellow'); setScrollTops({});
     try {
       const stored = JSON.parse(localStorage.getItem(marksKey) ?? 'null');
       if (stored?.ownerId === owner && stored?.sittingId === sittingId) {
         setRcMarks(validateRcTimedMarks(stored.rcMarks, state.passages));
+        if (stored.lrMarks && typeof stored.lrMarks === 'object' && !Array.isArray(stored.lrMarks)) setLrMarks(stored.lrMarks);
         if ([1, 1.15, 1.3].includes(stored.fontScale)) setFontScale(stored.fontScale);
         if (typeof stored.passageOnly === 'boolean') setPassageOnly(stored.passageOnly);
         if ([0, 0.2, 0.4].includes(stored.extraLeading)) setExtraLeading(stored.extraLeading);
@@ -80,12 +82,12 @@ export default function TimedStandaloneSectionRunner({ controllerFactory = facto
   React.useEffect(() => {
     if (marksReady !== marksKey) return;
     try {
-      localStorage.setItem(marksKey, JSON.stringify({ ownerId: owner, sittingId, rcMarks, fontScale, extraLeading, scheme, paragraphFocus, passageOnly }));
+      localStorage.setItem(marksKey, JSON.stringify({ ownerId: owner, sittingId, rcMarks, lrMarks, fontScale, extraLeading, scheme, paragraphFocus, passageOnly }));
       setLocalSaveError(null);
     } catch {
       setLocalSaveError('Marks and display settings are not saved on this device. Keep this page open and retry. Account answers are saved separately.');
     }
-  }, [marksReady, marksKey, owner, sittingId, rcMarks, fontScale, extraLeading, scheme, paragraphFocus, passageOnly, localRetry]);
+  }, [marksReady, marksKey, owner, sittingId, rcMarks, lrMarks, fontScale, extraLeading, scheme, paragraphFocus, passageOnly, localRetry]);
   const rcItems = React.useMemo(() => state?.snapshot.sitting.kind === 'rc' ? initialState(state.passages).items : [], [state?.passages, state?.snapshot.sitting.kind]);
   const apply = React.useCallback((next: TimedSectionState) => {
     if (active.current !== identity || next.snapshot.sitting.owner_id !== owner || next.snapshot.sitting.id !== sittingId) return;
@@ -215,6 +217,10 @@ export default function TimedStandaloneSectionRunner({ controllerFactory = facto
       <input aria-label="Find in passage" className="border rounded px-2 w-36" value={find} onChange={event => setFind(event.target.value)} placeholder="Find in passage" />
       <Button size="sm" variant="outline" onClick={() => setPassageOnly(value => !value)}>{passageOnly ? 'Show questions' : 'Passage only'}</Button>
     </div>}
+    {!rcItem && question && <div className="flex flex-wrap items-center gap-2 border-b p-2">
+      <label className="text-sm">Marker <select aria-label="Marker" value={marker} onChange={event => setMarker(event.target.value as HighlightMode)}><option value="none">Select</option><option value="yellow">Yellow</option><option value="pink">Pink</option><option value="orange">Orange</option><option value="underline">Underline</option><option value="erase">Erase</option></select></label>
+      {!localSaveError && <p className="text-sm">Marks are saved on this device only.</p>}
+    </div>}
     {rcItem ? <RcTimedReader item={rcItem} answer={answer} blocked={blocked} annotationsDisabled={marksReady !== marksKey} fontScale={fontScale} extraLeading={extraLeading} paragraphFocus={paragraphFocus} schemeClassName={scheme ? `rc-scheme-${scheme}` : ''} find={find} marker={marker}
       color={color} onColorChange={setColor} passageOnly={passageOnly}
       marks={marksReady === marksKey ? rcMarks[String(rcItem.passage.passageId)] ?? [] : []} onMarksChange={next => { if (!blocked && !busyRef.current && marksReady === marksKey) setRcMarks(previous => ({ ...previous, ...validateRcTimedMarks({ [rcItem.passage.passageId]: next }, [rcItem.passage]) })); }}
@@ -224,10 +230,15 @@ export default function TimedStandaloneSectionRunner({ controllerFactory = facto
       onToggleFlag={() => change(previous => ({ ...previous, flagged: !previous.flagged }))} /> : (
     <OfficialQuestionPane question={{ ...question, stimulus: question.stimulus ?? '' }} displayNumber={state.currentIndex + 1}
       selectedAnswer={answer.selected ?? ''} eliminatedAnswers={new Set(answer.eliminations)} isFlagged={answer.flagged} interactionLocked={blocked}
-      highlights={[]} highlightMode="none" searchTerm="" fontScale={1}
+      highlights={lrMarks[question.qid] ?? []} highlightMode={marker} searchTerm="" fontScale={1}
       onAnswerSelect={value => change(previous => ({ ...previous, selected: value as TimedLetter, switchCount: previous.switchCount + (previous.selected && previous.selected !== value ? 1 : 0), eliminations: previous.eliminations.filter(letter => letter !== value) }))}
       onEliminate={value => change(previous => ({ ...previous, eliminations: previous.eliminations.includes(value as TimedLetter) ? previous.eliminations.filter(letter => letter !== value) : [...previous.eliminations, value as TimedLetter] }))}
-      onToggleFlag={() => change(previous => ({ ...previous, flagged: !previous.flagged }))} onTextSelection={() => false} onHighlightClick={() => undefined} />
+      onToggleFlag={() => change(previous => ({ ...previous, flagged: !previous.flagged }))} onTextSelection={regions => { if (blocked || busyRef.current || marksReady !== marksKey || marker === 'none') return false; const captured = captureSelectionAcross(regions); if (!captured.length) return false;
+        // Same overlap rules as the PrepTest runner: a new mark cuts away what it covers, so text is never drawn twice.
+        setLrMarks(previous => ({ ...previous, [question.qid]: captured.reduce((marks, value) => marker === 'erase'
+          ? eraseRange(marks, value.section, value.start, value.end)
+          : replaceOverlappingHighlights(marks, { ...value, id: crypto.randomUUID(), color: marker }), previous[question.qid] ?? []) })); window.getSelection()?.removeAllRanges(); return true; }}
+      onHighlightClick={id => { if (!blocked && !busyRef.current && marksReady === marksKey && marker === 'erase') setLrMarks(previous => ({ ...previous, [question.qid]: (previous[question.qid] ?? []).filter(value => value.id !== id) })); }} />
     )}
     <div className="border-t p-3 flex flex-wrap gap-2"><Button variant="outline" disabled={blocked || state.currentIndex === 0} onClick={() => void perform('save', state.currentIndex - 1)}>Previous</Button>
       <nav aria-label="Section questions" className="flex flex-wrap gap-1 flex-1">{state.questions.map((value, index) => <button key={value.qid} aria-current={index === state.currentIndex ? 'step' : undefined} disabled={blocked} onClick={() => void perform('save', index)} className="border rounded px-2 py-1">{index + 1}{answers[value.qid].flagged ? ' ⚑' : ''}{answers[value.qid].selected ? ' •' : ''}</button>)}</nav>
