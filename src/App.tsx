@@ -33,6 +33,7 @@ import { safeLazy } from "@/lib/safeLazy";
 const AcademyMainhub = safeLazy(loadDrillHub);
 const DrillSetupPreview = React.lazy(() => import('./dev/DrillSetupPreview'));
 const PracticeExamsPreview = React.lazy(() => import('./dev/PracticeExamsPreview'));
+const LrQuestionPage = React.lazy(() => import('./pages/LrQuestionPage'));
 const ConditionalOpeningPreview = import.meta.env.DEV
   ? safeLazy(() => import('./dev/ConditionalOpeningPreview'))
   : () => null;
@@ -695,6 +696,15 @@ const App = () => {
                     {/* Review keeps both historic URL families. The shared tabs
                         switch between them while each route retains its own
                         permission gate and data surface. */}
+                    {/* One LR question by address; notes link here. Signed-in only, and it reads
+                        a single section file, so /question is bank-free in QuestionBankContext. */}
+                    <Route path="/question/lr/:pt/:section/:qnum" element={
+                      <ProtectedRoute allowSignedIn>
+                        <React.Suspense fallback={<div className="min-h-screen" />}>
+                          <LrQuestionPage />
+                        </React.Suspense>
+                      </ProtectedRoute>
+                    } />
                     <Route path="/flagged" element={<RedirectWithSearch to="/review/flagged" />} />
                     <Route path="/flagged/:qid" element={
                       <ProtectedRoute flag="has_flagged_access"><FlaggedQuestionView /></ProtectedRoute>
