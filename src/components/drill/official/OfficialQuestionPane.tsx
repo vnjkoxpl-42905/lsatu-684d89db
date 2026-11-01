@@ -69,6 +69,11 @@ interface Props {
    * class and style it has; this slot is a sibling below it.
    */
   belowStimulus?: React.ReactNode;
+  /**
+   * Tailwind classes for the stimulus column's surface (background and divider).
+   * Omit it and the column is white, as the exam screens have it.
+   */
+  stimulusSurfaceClassName?: string;
   highlights: Highlight[];
   highlightMode: HighlightMode;
   searchTerm?: string;
@@ -133,6 +138,7 @@ export default function OfficialQuestionPane({
   interactionLocked = false,
   onResetResponse,
   belowStimulus,
+  stimulusSurfaceClassName,
 }: Props) {
   // Which Choice Notes are open. Empty whenever the notes arrive or the
   // question changes: pressing Explanation shows the chevrons, not the prose.
@@ -247,7 +253,10 @@ export default function OfficialQuestionPane({
           // Stimulus column. The wrapper scrolls; the stimulus block keeps its
           // own padding, face and measure, and the Argument Breakdown sits
           // under it as a sibling rather than inside its serif/pre-wrap box.
-          <div ref={stimulusColumnRef} className="flex min-h-0 flex-col overflow-y-auto lg:border-r border-slate-200">
+          <div
+            ref={stimulusColumnRef}
+            className={cn("flex min-h-0 flex-col overflow-y-auto lg:border-r border-slate-200", stimulusSurfaceClassName)}
+          >
           <div
             className={cn(
               "min-w-0 px-6 pt-3 pb-6 sm:pl-9 sm:pr-8 whitespace-pre-wrap",
@@ -260,7 +269,7 @@ export default function OfficialQuestionPane({
               "subpixel-antialiased",
               "selection:bg-blue-100 selection:text-slate-950",
               "[&_p]:mb-4 [&_p:last-child]:mb-0",
-              "bg-white",
+              stimulusSurfaceClassName ? "bg-transparent" : "bg-white",
             )}
             style={stimStyle}
             ref={stimulusRef}
