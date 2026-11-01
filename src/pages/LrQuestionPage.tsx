@@ -4,7 +4,6 @@ import { ArrowLeft, CheckCircle2, StickyNote, XCircle } from "lucide-react";
 import OfficialQuestionPane from "@/components/drill/official/OfficialQuestionPane";
 import type { InlineChoiceNotes } from "@/components/drill/official/InlineChoiceExplanation";
 import { useLrExplanation } from "@/hooks/useLrExplanation";
-import type { Highlight } from "@/lib/highlightUtils";
 import { normalizeQuestionTextFields } from "@/lib/questionLoader";
 import { lrAddressLabel, lrSectionFile, parseLrAddress } from "@/lib/lrQuestionAddress";
 import { annotationStimulus, lrAnnotationFor } from "@/lib/lrQuestionAnnotations";
@@ -30,6 +29,9 @@ type Load =
 
 const NO_HIGHLIGHTS: never[] = [];
 
+/** The first few words of a sentence, so a note can say which sentence it is about. */
+const opening = (text: string) => `${text.split(/\s+/).slice(0, 6).join(" ")}…`;
+
 /**
  * One Logical Reasoning question by address. A note links here so the student can
  * open the exact question the lesson is about. It shows the question in the same
@@ -46,7 +48,6 @@ export default function LrQuestionPage() {
   const [eliminated, setEliminated] = React.useState<Set<string>>(() => new Set());
   const [flagged, setFlagged] = React.useState(false);
   const [annotated, setAnnotated] = React.useState(false);
-  const [activeSentence, setActiveSentence] = React.useState<number | null>(null);
 
   React.useEffect(() => {
     setPicked("");
@@ -54,7 +55,6 @@ export default function LrQuestionPage() {
     setEliminated(new Set());
     setFlagged(false);
     setAnnotated(false);
-    setActiveSentence(null);
     if (!address) {
       setLoad({ status: "missing" });
       return;
@@ -95,26 +95,6 @@ export default function LrQuestionPage() {
   const showNotes = annotated && !!annotation;
   const stimulusText = annotationStimulus(load.status === "ready" ? load.question.stimulus ?? "" : "");
 
-  // The marked sentences ride on the pane's own highlight layer, so they look and
-  // wrap exactly like a student's highlights. The open one turns orange.
-  const highlights = React.useMemo<Highlight[]>(() => {
-    if (!showNotes || !annotation) return [];
-    const marks: Highlight[] = [];
-    annotation.sentences.forEach((sentence, index) => {
-      const start = stimulusText.indexOf(sentence.text);
-      if (start < 0) return;
-      marks.push({
-        id: `ann-${index}`,
-        start,
-        end: start + sentence.text.length,
-        text: sentence.text,
-        color: activeSentence === index ? "orange" : "yellow",
-        section: "stimulus",
-      });
-    });
-    return marks;
-  }, [showNotes, annotation, stimulusText, activeSentence]);
-
   const inlineNotes = React.useMemo<InlineChoiceNotes | null>(() => {
     if (!checked && !showNotes) return null;
     const notes = checked ? lrExplanation?.styles[0]?.notesByLetter ?? {} : {};
@@ -131,14 +111,6 @@ export default function LrQuestionPage() {
     }
     return map;
   }, [checked, showNotes, annotation, lrExplanation]);
-
-  const onPaneClick = (event: React.MouseEvent) => {
-    const mark = (event.target as HTMLElement).closest<HTMLElement>("[data-highlight-id]");
-    const id = mark?.dataset.highlightId;
-    if (!id?.startsWith("ann-")) return;
-    const index = Number(id.slice(4));
-    setActiveSentence((current) => (current === index ? null : index));
-  };
 
   const goBack = () => {
     if (window.history.length > 1) navigate(-1);
@@ -188,10 +160,7 @@ export default function LrQuestionPage() {
                 <button
                   type="button"
                   aria-pressed={annotated}
-                  onClick={() => {
-                    setAnnotated((value) => !value);
-                    setActiveSentence(null);
-                  }}
+                  onClick={() => setAnnotated((value) => !value)}
                   className={
                     annotated
                       ? "inline-flex min-h-8 items-center gap-1.5 rounded-full bg-amber-300 px-3 text-xs font-bold text-slate-900 transition-colors hover:bg-amber-200"
@@ -224,7 +193,7 @@ export default function LrQuestionPage() {
 
         {question && address && (
           <>
-            <div className="flex min-h-0 flex-1 flex-col [&_.hl]:cursor-pointer" onClick={onPaneClick}>
+            <div className="flex min-h-0 flex-1 flex-col">
               <OfficialQuestionPane
                 question={{
                   qid: `PT${address.pt}-S${address.section}-Q${address.qnum}`,
@@ -241,7 +210,7 @@ export default function LrQuestionPage() {
                 correctAnswer={correctAnswer}
                 inlineNotes={inlineNotes}
                 choiceNoteExpanders={!showNotes}
-                highlights={showNotes ? highlights : NO_HIGHLIGHTS}
+                highlights={NO_HIGHLIGHTS}
                 highlightMode="none"
                 onAnswerSelect={(key) => !checked && setPicked(key)}
                 onEliminate={toggleEliminated}
@@ -251,40 +220,26 @@ export default function LrQuestionPage() {
                 stimulusSurfaceClassName="bg-indigo-50 lg:border-indigo-200"
                 belowStimulus={
                   showNotes && annotation ? (
-                    <aside aria-label="Session notes" className="rounded-xl border border-amber-300 bg-amber-50 p-4 text-slate-900">
-                      <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-amber-800">Notes from the session</p>
-                      <div className="mt-2 flex flex-wrap gap-2">
-                        {annotation.sentences.map((_, index) => (
-                          <button
-                            key={index}
-                            type="button"
-                            aria-pressed={activeSentence === index}
-                            onClick={() => setActiveSentence((current) => (current === index ? null : index))}
-                            className={
-                              activeSentence === index
-                                ? "min-h-8 rounded-full bg-slate-900 px-3 text-xs font-semibold text-white"
-                                : "min-h-8 rounded-full bg-white px-3 text-xs font-semibold text-slate-700 ring-1 ring-amber-300 hover:bg-amber-100"
-                            }
-                          >
-                            Sentence {index + 1}
-                          </button>
+                    <section aria-label="Session notes" className="text-slate-900">
+                      <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-indigo-700">Notes from the session</p>
+                      <ol className="mt-3 space-y-4">
+                        {annotation.sentences.map((sentence) => (
+                          <li key={sentence.text}>
+                            <p className="font-serif text-[15px] italic leading-snug text-slate-600">&ldquo;{opening(sentence.text)}&rdquo;</p>
+                            <p className="mt-1 text-sm font-semibold leading-snug">{sentence.note}</p>
+                          </li>
                         ))}
-                      </div>
-                      <p className="mt-3 text-sm font-semibold leading-snug" aria-live="polite">
-                        {activeSentence !== null
-                          ? annotation.sentences[activeSentence].note
-                          : "Tap a marked sentence, or a button above, to see what it is doing."}
-                      </p>
-                      <p className="mt-3 text-sm leading-snug text-slate-700">{annotation.wrapUp}</p>
-                      <p className="mt-4 text-[11px] font-bold uppercase tracking-[0.14em] text-amber-800">Lessons from this question</p>
-                      <ul className="mt-2 flex flex-wrap gap-2">
+                      </ol>
+                      <p className="mt-4 text-sm leading-snug text-slate-700">{annotation.wrapUp}</p>
+                      <p className="mt-5 text-[11px] font-bold uppercase tracking-[0.14em] text-indigo-700">Take this with you</p>
+                      <ul className="mt-2 space-y-1">
                         {annotation.lessons.map((lesson) => (
-                          <li key={lesson} className="rounded-full bg-white px-3 py-1 text-xs font-semibold text-slate-800 ring-1 ring-amber-300">
+                          <li key={lesson} className="text-sm font-semibold leading-snug">
                             {lesson}
                           </li>
                         ))}
                       </ul>
-                    </aside>
+                    </section>
                   ) : undefined
                 }
               />

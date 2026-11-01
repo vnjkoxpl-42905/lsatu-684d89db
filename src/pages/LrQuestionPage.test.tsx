@@ -81,27 +81,23 @@ describe("LrQuestionPage", () => {
     expect(screen.queryByRole("img", { name: "Correct answer" })).toBeNull();
   });
 
-  it("shows the session notes only when asked, and marks the sentences", async () => {
+  it("shows the session notes only when asked, beside an unmarked passage", async () => {
     const { container } = renderAt("/question/lr/151/4/10");
     await screen.findByRole("heading", { name: "PT151 Section 4 Question 10" });
-    expect(container.querySelectorAll("[data-highlight-id]")).toHaveLength(0);
     expect(screen.queryByText("Notes from the session")).toBeNull();
 
     fireEvent.click(screen.getByRole("button", { name: "Show session notes" }));
     expect(screen.getByText("Notes from the session")).toBeTruthy();
-    expect(container.querySelectorAll("[data-highlight-id]")).toHaveLength(3);
+    expect(container.querySelectorAll("[data-highlight-id]")).toHaveLength(0);
+    expect(screen.getByText("A causal claim. One side of a call diverts attention.")).toBeTruthy();
+    expect(screen.getByText("A causal claim. Loud talking diverts attention.")).toBeTruthy();
+    expect(screen.getByText("Take this with you")).toBeTruthy();
     expect(screen.getByText("Check the verb")).toBeTruthy();
     expect(screen.getByText(/The wording is soft: a driver's performance gets a little worse/)).toBeTruthy();
     expect(screen.getByText(/Inevitably means every time/)).toBeTruthy();
 
-    const marks = container.querySelectorAll<HTMLElement>("[data-highlight-id]");
-    fireEvent.click(marks[2]);
-    expect(screen.getAllByText("A causal claim. Loud talking diverts attention.").length).toBeGreaterThan(0);
-    fireEvent.click(screen.getByRole("button", { name: "Sentence 1" }));
-    expect(screen.getByText("A causal claim. One side of a call diverts attention.")).toBeTruthy();
-
     fireEvent.click(screen.getByRole("button", { name: "Session notes on" }));
-    expect(container.querySelectorAll("[data-highlight-id]")).toHaveLength(0);
+    expect(screen.queryByText("Notes from the session")).toBeNull();
   });
 
   it("offers no session notes on a question without any", async () => {
