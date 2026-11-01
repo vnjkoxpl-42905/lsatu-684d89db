@@ -56,6 +56,7 @@ const BANK_FREE_PREFIXES = [
   '/auth',
   '/rc',
   '/classroom/recaps',
+  '/question',
 ] as const;
 
 function routeNeedsQuestionBank(pathname: string): boolean {
