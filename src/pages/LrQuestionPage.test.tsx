@@ -6,8 +6,10 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 import LrQuestionPage from "./LrQuestionPage";
 
-vi.mock("@/components/drill/shared/LrChoiceNote", () => ({
-  LrChoiceNote: ({ letter }: { letter: string }) => <p data-testid={`note-${letter}`}>note {letter}</p>,
+vi.mock("@/hooks/useLrExplanation", () => ({
+  useLrExplanation: (_query: unknown, enabled = true) => ({
+    data: enabled ? { styles: [{ notesByLetter: { B: "Why B is supported." } }], choices: [] } : undefined,
+  }),
 }));
 
 function bankFile(name: string): unknown {
@@ -51,28 +53,32 @@ describe("LrQuestionPage", () => {
     expect(await screen.findByRole("heading", { name: "PT151 Section 4 Question 10" })).toBeTruthy();
     expect(screen.getByText(/Overhearing only one side of a cell-phone conversation/)).toBeTruthy();
     expect(screen.getByText(/most strongly\s+support which one of the following/)).toBeTruthy();
-    expect(screen.getAllByRole("button", { pressed: false }).filter((b) => /^[A-E]\./.test(b.textContent ?? ""))).toHaveLength(5);
+    for (const letter of ["A", "B", "C", "D", "E"]) {
+      expect(screen.getByRole("button", { name: letter })).toBeTruthy();
+    }
     expect(fetchMock).toHaveBeenCalledTimes(1);
     expect(fetchMock.mock.calls[0][0]).toBe("/data/PT151-S4-LR.json");
   });
 
-  it("checks the answer and marks the credited one", async () => {
+  it("checks the answer, marks the credited one and opens its note on request", async () => {
     renderAt("/question/lr/151/4/10");
     await screen.findByRole("heading", { name: "PT151 Section 4 Question 10" });
     const check = screen.getByRole("button", { name: "Check answer" }) as HTMLButtonElement;
     expect(check.disabled).toBe(true);
 
-    fireEvent.click(screen.getByRole("button", { name: /^D\./ }));
+    fireEvent.click(screen.getByRole("button", { name: "D" }));
     expect(check.disabled).toBe(false);
     fireEvent.click(check);
 
-    const right = screen.getByRole("button", { name: /^B\./ });
-    expect(right.getAttribute("data-correct")).toBe("true");
-    expect(screen.getByRole("button", { name: /^D\./ }).getAttribute("data-wrong")).toBe("true");
-    expect(screen.getByTestId("note-B")).toBeTruthy();
+    expect(screen.getByRole("img", { name: "Correct answer" })).toBeTruthy();
+    expect(screen.getByRole("img", { name: "Your answer, incorrect" })).toBeTruthy();
+    expect(screen.getByText("Incorrect, the answer is B")).toBeTruthy();
+
+    fireEvent.click(screen.getByRole("button", { name: "Show explanation for B" }));
+    expect(screen.getByText("Why B is supported.")).toBeTruthy();
 
     fireEvent.click(screen.getByRole("button", { name: "Try again" }));
-    expect(screen.queryByTestId("note-B")).toBeNull();
+    expect(screen.queryByRole("img", { name: "Correct answer" })).toBeNull();
   });
 
   it("says so when the question is not in the bank", async () => {
