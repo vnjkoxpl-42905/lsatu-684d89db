@@ -44,6 +44,13 @@ describe("lrAnnotationFor", () => {
     expect(annotation.verdicts[question.correctAnswer]).toBeDefined();
   });
 
+  it("Question 16 asks which world the answer is about, as the session did", () => {
+    const annotation = lrAnnotationFor({ pt: 151, section: 4, qnum: 16 })!;
+    expect(annotation.lessons).toContain("Ask which world the answer is about");
+    expect(JSON.stringify(annotation)).not.toContain("author's world");
+    expect(annotation.verdicts.A.text).toContain("tells us nothing about how much electricity they use");
+  });
+
   it("carries no em or en dashes", () => {
     for (const qnum of [10, 16]) {
       expect(JSON.stringify(lrAnnotationFor({ pt: 151, section: 4, qnum }))).not.toMatch(/[–—]/);

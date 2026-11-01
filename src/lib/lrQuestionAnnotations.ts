@@ -65,14 +65,14 @@ const ANNOTATIONS: Record<string, LrAnnotation> = {
       },
       E: {
         tag: "Too light",
-        text: "Some people conserving for other reasons is one group, and it doesn't stop them conserving more when they are billed.",
+        text: "It says only some people. Conserving for other reasons doesn't rule out conserving more once they are billed.",
       },
       A: {
-        tag: "The world as it is",
-        text: "It describes tenants who don't pay, and says nothing about the new world.",
+        tag: "About today's world",
+        text: "It describes the world as it is now, where tenants pay higher rent. That tells us nothing about how much electricity they use once they pay their own bills.",
       },
     },
-    lessons: ["Stay inside the author's world", "Land the heaviest blow", "The fewest problems wins"],
+    lessons: ["Ask which world the answer is about", "Land the heaviest blow", "The fewest problems wins"],
   },
 };
 
