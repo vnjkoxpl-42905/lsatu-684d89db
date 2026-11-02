@@ -236,7 +236,7 @@ function ClassroomSidebar({
     : railPrefs;
   const railGroups = resolveRailGroups(displayedRailPrefs).map((group) => ({
     ...group,
-    items: group.items.filter((item) => item.id !== "schedule" || !permissions.is_admin),
+    items: group.items.filter((item) => (item.id !== "schedule" && item.id !== "my-work") || !permissions.is_admin),
   }));
 
   // Behavior stays here (it needs closures over routing + section state); the
