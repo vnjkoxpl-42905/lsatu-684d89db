@@ -124,6 +124,9 @@ export default function NotificationBell({ mouseX, quiet = false }: Props) {
           </button>
         </PopoverTrigger>
         <PopoverContent
+          // Radix hands focus back to the bell on close, which left its focus
+          // ring stuck on after the panel closed.
+          onCloseAutoFocus={(event) => event.preventDefault()}
           align="end"
           side="top"
           sideOffset={12}
