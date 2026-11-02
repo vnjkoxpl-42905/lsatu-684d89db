@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useAuth } from '@/contexts/AuthContext';
+import { useUserPermissions } from '@/hooks/useUserPermissions';
 import { useStudentWorkAccessReceipts } from '@/hooks/useStudentWorkState';
 import { deduplicateEquivalentClassroomItems, withWorkIdentity, type StudentWorkIdentity } from '@/lib/studentWorkIdentity';
 import type { StudentWorkAccess, StudentWorkReceipt } from '@/lib/studentWorkState';
@@ -58,6 +59,7 @@ export interface AssignedTodoRow {
 
 type GuidedRow = GuidedDrillAssignment & { guided_drill: GuidedDrill };
 const EMPTY_ACTIVITY_EVIDENCE = new Set<string>();
+const EMPTY_ROWS: AssignedTodoRow[] = [];
 
 function normalizeStatus(raw: string | null | undefined): AssignedTodoRow['status'] {
   if (raw === 'completed') return 'completed';
@@ -320,6 +322,10 @@ export function useAssignedTodoFeed(): {
   retry: () => void;
 } {
   const { user } = useAuth();
+  // The teacher account is never a recipient. Work Joshua assigns is read on the
+  // teaching side (who has what, and their progress), so his own feed is empty
+  // even if a stray row once landed on his id.
+  const { is_admin: isTeacher } = useUserPermissions();
   const userId = user?.id;
   const workState=useStudentWorkAccessReceipts();
   const practiceTestsQuery=useQuery({queryKey:['todo-feed:practice-tests',userId],enabled:!!userId,queryFn:async()=>{const {data,error}=await supabase.from('practice_test_assignments').select('*').eq('student_id',userId!);if(error)throw error;return data??[];}});
@@ -395,6 +401,7 @@ export function useAssignedTodoFeed(): {
   );
 
   const evidenceWarnings = assignmentEvidenceWarnings(assignmentEvidence);
+  if (isTeacher) return { rows: EMPTY_ROWS, evidenceWarnings: [], loading: false, failed: false, retry };
   return {
     rows,
     evidenceWarnings,

@@ -93,6 +93,8 @@ function isMissingColumnError(error: unknown): boolean {
  * levelled gets null and therefore the drill's own range -- the behaviour that
  * predates levels. Inventing a default here would be the system overruling him.
  */
+const TEACHER_SELF_ASSIGN_ERROR = 'Work is assigned to students, never to the teacher account.';
+
 async function fetchStudentLevels(studentIds: string[]): Promise<StudentLevelMap> {
   const levels = new Map<string, StudentLevel | null>(
     studentIds.map((id) => [id, null]),
@@ -408,6 +410,10 @@ export async function assignWork(input: {
     const ok: StudentResult[] = [];
     const failed: StudentResult[] = [];
     for (const studentId of [...new Set(input.studentIds)]) {
+      if (studentId === input.teacherId) {
+        failed.push({ studentId, error: TEACHER_SELF_ASSIGN_ERROR });
+        continue;
+      }
       const delivery = newAssignmentDelivery(input.notify !== false);
       const signal = assignmentWriteSignal();
       try {
@@ -518,6 +524,15 @@ async function runAssign(input: {
   const failed: StudentResult[] = [];
 
   if (studentIds.length === 0 || items.length === 0) return { ok, failed };
+
+  // The teacher is never a recipient. Refuse before anything is written.
+  if (studentIds.includes(teacherId)) {
+    const rest = studentIds.filter((id) => id !== teacherId);
+    const refused = { studentId: teacherId, error: TEACHER_SELF_ASSIGN_ERROR };
+    if (rest.length === 0) return { ok, failed: [refused] };
+    const result = await runAssign({ ...input, studentIds: rest });
+    return { ok: result.ok, failed: [refused, ...result.failed] };
+  }
 
   /*
    * Freezing is validated before any write, and it throws rather than

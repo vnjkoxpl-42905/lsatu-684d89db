@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import { Navigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { useUserPermissions } from '@/hooks/useUserPermissions';
 import { useReadingCenterAccess } from '@/hooks/useReadingCenterAccess';
@@ -12,6 +13,9 @@ export default function MyWorkGate({ children }: { children: ReactNode }) {
   const permissions = useUserPermissions();
   const generalAccess = permissions.is_admin || permissions.has_classroom_access;
   const readingCenter = useReadingCenterAccess(!generalAccess);
+  // My Work is the student's list. The teacher reads what was assigned, to whom,
+  // and how far they got, on the teaching side.
+  if (!permissions.loading && permissions.is_admin) return <Navigate to="/teacher/library/assignments" replace />;
   if (!authReady || permissions.loading || (!!user && !generalAccess && readingCenter.isPending)) {
     return <div role="status" className="student-destination-message">Checking assigned work access…</div>;
   }

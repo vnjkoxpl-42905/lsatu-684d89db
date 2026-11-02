@@ -115,6 +115,32 @@ describe('assignWork', () => {
     });
   });
 
+  it('never assigns to the teacher, and still assigns the real students', async () => {
+    const result = await assignWork({
+      teacherId: TEACHER,
+      studentIds: [TEACHER, 'student-a'],
+      item: { kind: 'homework_set', setId: 'set-1' },
+    });
+
+    expect(result.ok.map((row) => row.studentId)).toEqual(['student-a']);
+    expect(result.failed.map((row) => row.studentId)).toEqual([TEACHER]);
+    expect(inserted.homework_assignments).toHaveLength(1);
+    expect(inserted.homework_assignments[0]).toMatchObject({ student_id: 'student-a' });
+  });
+
+  it('writes nothing when the teacher is the only recipient', async () => {
+    const result = await assignWork({
+      teacherId: TEACHER,
+      studentIds: [TEACHER],
+      item: { kind: 'homework_set', setId: 'set-1' },
+    });
+
+    expect(result.ok).toEqual([]);
+    expect(result.failed).toHaveLength(1);
+    expect(inserted.homework_assignments).toBeUndefined();
+    expect(mockNotify).not.toHaveBeenCalled();
+  });
+
   it('creates the row, the classroom item, and the notification for each student', async () => {
     const result = await assignWork({
       teacherId: TEACHER,
