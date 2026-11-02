@@ -42,6 +42,19 @@ export default function NotificationBell({ mouseX, quiet = false }: Props) {
 
   useEffect(() => subscribeNotifications(() => setOpen(true)), []);
 
+  // Opening the bell is enough to count as seen: clear the unread badge once
+  // per open instead of making the user click every notification.
+  const clearedThisOpen = useRef(false);
+  useEffect(() => {
+    if (!open) {
+      clearedThisOpen.current = false;
+      return;
+    }
+    if (clearedThisOpen.current || unreadCount === 0) return;
+    clearedThisOpen.current = true;
+    void markAllRead();
+  }, [open, unreadCount, markAllRead]);
+
   const distance = useTransform(mouseX, (val) => {
     const bounds = ref.current?.getBoundingClientRect() ?? { x: 0, width: 0 };
     return val - bounds.x - bounds.width / 2;
