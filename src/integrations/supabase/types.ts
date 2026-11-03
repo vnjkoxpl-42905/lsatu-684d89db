@@ -6158,6 +6158,36 @@ export type Database = {
         }
         Relationships: []
       }
+      student_access_notices: {
+        Row: {
+          acknowledged_at: string | null
+          kind: string
+          message: string
+          pause_at: string | null
+          revision: string
+          show_at: string
+          student_id: string
+        }
+        Insert: {
+          acknowledged_at?: string | null
+          kind: string
+          message: string
+          pause_at?: string | null
+          revision?: string
+          show_at: string
+          student_id: string
+        }
+        Update: {
+          acknowledged_at?: string | null
+          kind?: string
+          message?: string
+          pause_at?: string | null
+          revision?: string
+          show_at?: string
+          student_id?: string
+        }
+        Relationships: []
+      }
       student_analytics_sources: {
         Row: {
           created_at: string
@@ -8167,6 +8197,10 @@ export type Database = {
         Args: { p_group_id: string }
         Returns: boolean
       }
+      acknowledge_student_access_notice: {
+        Args: { notice_revision: string }
+        Returns: boolean
+      }
       acknowledge_student_work: {
         Args: {
           p_issuance: number
@@ -9362,6 +9396,7 @@ export type Database = {
         }
         Returns: Json
       }
+      get_student_access_notice: { Args: never; Returns: Json }
       get_student_booking: { Args: { _auth_user_id: string }; Returns: Json }
       get_student_email: { Args: { _student_id: string }; Returns: string }
       get_student_progress_user_id: {
@@ -10135,6 +10170,31 @@ export type Database = {
           isSetofReturn: false
         }
       }
+      set_student_access_notice: {
+        Args: {
+          notice_kind: string
+          notice_message?: string
+          pause_time?: string
+          show_time?: string
+          start_one_day_notice?: boolean
+          student: string
+        }
+        Returns: {
+          acknowledged_at: string | null
+          kind: string
+          message: string
+          pause_at: string | null
+          revision: string
+          show_at: string
+          student_id: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "student_access_notices"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
       single_session_booking_window_end: {
         Args: { _event_slug?: string; _now?: string }
         Returns: string
@@ -10151,6 +10211,7 @@ export type Database = {
         Args: { p_assignment_id: string; p_slugs: string[] }
         Returns: string
       }
+      student_access_is_paused: { Args: never; Returns: boolean }
       student_work_assigned_route: { Args: { p_item: Json }; Returns: string }
       student_work_evidence_timestamp: {
         Args: { p_text: string }

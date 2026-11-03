@@ -309,6 +309,13 @@
       "when": 1793203890711,
       "tag": "0043_teacher_home_access_booking",
       "breakpoints": true
+    },
+    {
+      "idx": 44,
+      "version": "7",
+      "when": 1793749936424,
+      "tag": "0044_student_access_notices",
+      "breakpoints": true
     }
   ]
 }
