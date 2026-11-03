@@ -136,6 +136,13 @@ Deno.serve(async (req) => {
         throw err;
       }
 
+      // Permanent per-event failures (stamp points at a deleted redemption) are
+      // logged and skipped so one stale event cannot pin the sync token forever.
+      const pushReconcileErr = (label: string, eventId: string, err: { message: string; code?: string }) => {
+        const permanent = err.code === "P0404" || /redemption_not_found/.test(err.message);
+        console.error("gcal-sync-pull reconcile failed", { label, eventId, permanent, error: err.message });
+        if (!permanent) errors.push(`${label} ${eventId}: ${err.message}`);
+      };
       const items = body.items ?? [];
       for (const ev of items) {
         if (ev.id) seenEventIds.add(String(ev.id));
@@ -154,7 +161,7 @@ Deno.serve(async (req) => {
               _start_at: new Date().toISOString(), _end_at: new Date().toISOString(),
               _deleted: true, _meet_url: null,
             });
-            if (reconcileErr) errors.push(`reconcile delete ${ev.id}: ${reconcileErr.message}`);
+            if (reconcileErr) pushReconcileErr("reconcile delete", ev.id, reconcileErr);
           }
           const singleSession = singleSessionCalendarCancellation(ev);
           if (singleSession) {
@@ -206,7 +213,7 @@ Deno.serve(async (req) => {
             _start_at: startAt, _end_at: endAt, _deleted: false,
             _meet_url: meetUrlFromEvent(ev),
           });
-          if (reconcileErr) errors.push(`reconcile move ${ev.id}: ${reconcileErr.message}`);
+          if (reconcileErr) pushReconcileErr("reconcile move", ev.id, reconcileErr);
         }
         processed++;
       }

@@ -596,23 +596,24 @@ export function buildJudgeResponseSchema(input: {
     evidence_ids: { type: "array", items: { type: "integer" } },
   };
   const verdict = object({
-    id: { type: "integer", enum: ids }, carried: flag, ...evidenceProperties, reason: text,
+    id: { type: "integer" }, carried: flag, ...evidenceProperties, reason: text,
     material: flag, material_reason: text,
   });
   const properties: Record<string, unknown> = {
-    verdicts: { type: "array", items: verdict, minItems: ids.length, maxItems: ids.length },
-    uncertain_details: { type: "array", items: { type: "integer", enum: ids },
-      minItems: 0, maxItems: ids.length },
+    // Integer enums and exact lengths are rejected by Gemini structured output
+    // (400 INVALID_ARGUMENT); the audited parser enforces ids and counts.
+    verdicts: { type: "array", items: verdict },
+    uncertain_details: { type: "array", items: { type: "integer" } },
     reciting: flag, reciting_reason: text, listing: flag, listing_reason: text,
     coloured: flag, colour_specific: flag,
-    big_misses: { type: "array", items: text, minItems: 0, maxItems: 3 }, next_time: text,
+    big_misses: { type: "array", items: text }, next_time: text,
   };
   if (input.theRead) Object.assign(properties, { read_given: flag, read_matches: flag, read_reason: text });
   if (input.lines?.length) {
     const lineIds = [...new Set(input.lines.map((line) => line.n))];
     const assessment = { verdict: { type: "string", enum: ["strong", "partial", "thin", "skipped"] }, note: text };
-    properties.lines = { type: "array", items: object({ n: { type: "integer", enum: lineIds }, ...assessment }),
-      minItems: lineIds.length, maxItems: lineIds.length };
+    properties.lines = { type: "array", items: object({ n: { type: "integer" }, ...assessment }) };
+    void lineIds;
     properties.recall = object(assessment);
   }
   return object(properties);
