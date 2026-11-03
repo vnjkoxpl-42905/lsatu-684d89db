@@ -21,7 +21,6 @@ describe("structured judge response contract", () => {
     const schema = buildJudgeResponseSchema({ entries: [{ id: 1 }], theRead: "A mistaken reversal.",
       lines: [{ n: 1 }, { n: 3 }] }) as any;
     expect(schema.properties.lines.items.properties.n).toEqual({ type: "integer" });
-    expect(schema.properties.lines.items.properties.n.enum).toEqual([1, 3]);
     const visit = (node: any) => {
       if (!node || typeof node !== "object") return;
       if (node.type === "object") {
