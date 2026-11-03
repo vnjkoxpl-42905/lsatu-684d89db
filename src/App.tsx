@@ -33,6 +33,7 @@ import { safeLazy } from "@/lib/safeLazy";
 const AcademyMainhub = safeLazy(loadDrillHub);
 const DrillSetupPreview = React.lazy(() => import('./dev/DrillSetupPreview'));
 const PracticeExamsPreview = React.lazy(() => import('./dev/PracticeExamsPreview'));
+const TeacherHomePreview = React.lazy(() => import('./dev/TeacherHomePreview'));
 const LrQuestionPage = React.lazy(() => import('./pages/LrQuestionPage'));
 const ConditionalOpeningPreview = import.meta.env.DEV
   ? safeLazy(() => import('./dev/ConditionalOpeningPreview'))
@@ -303,6 +304,7 @@ const App = () => {
             {/* Dev-only: the Abstract bootcamp without sign-in or assignment, for local QA. Progress writes are skipped with no user. */}
             {import.meta.env.DEV && <Route path="/dev/abstract-preview" element={<AbstractBootcamp />} />}
             {import.meta.env.DEV && <Route path="/dev/practice-exams-preview/*" element={<PracticeExamsPreview />} />}
+            {import.meta.env.DEV && <Route path="/dev/teacher-home-preview" element={<TeacherHomePreview />} />}
             <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/trust" element={<React.Suspense fallback={null}><Trust /></React.Suspense>} />
 

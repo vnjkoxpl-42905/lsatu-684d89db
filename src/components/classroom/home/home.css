@@ -1652,3 +1652,188 @@ html.dark .home-desk-schedule-sheet,html.dark .booking-dialog-teacher {
 .home-desk-schedule-sheet .booking-shadow > .grid > div:first-child > div:nth-last-child(2) > div:last-child { margin-top:0; }
 .home-desk-schedule-sheet .booking-shadow > .grid > div:first-child > div:last-child { display:flex; flex-wrap:wrap; gap:8px 16px; margin-top:10px; font-size:12px; line-height:1.4; }
 .home-desk-schedule-sheet .booking-shadow > .grid > div:first-child > div:last-child > div { margin-top:0; }
+
+/* ── Teacher Home hierarchy (2026-11-02) ─────────────────────────────────
+   Three tiers on a deeper warm ground instead of one repeated pale card:
+   1. Primary: After-session work (lightest sheet, strongest edge and lift)
+      and Next up (charcoal), the two things that need Joshua today.
+   2. Secondary: My list, Needs a decision, Students (tinted panels, lighter edge).
+   3. Quiet: Correspondence and Payment activity (no card, ruled ledger).
+   Everything is scoped to .home-desk, so student Home and shared sheets are untouched. */
+.classroom-root .home-desk {
+  --hd-stage:#e8e3d6;
+  --hd-sheet:#fffdf8;
+  --hd-panel:#f6f2e8;
+  --hd-row:#f8f5ec;
+  --hd-edge:#d6cfbe;
+  --hd-edge-soft:#e2dccd;
+  --hd-ink:#252b26;
+  --hd-dark:#2a302b;
+  --hd-dark-ink:#f4f1e8;
+  --hd-dark-muted:#c6cbbf;
+  --hd-muted:#4f574e;
+  --hd-sheet-shadow:0 0 0 1px var(--hd-edge),0 1px 2px rgb(37 43 38 / .06),0 14px 28px -10px rgb(37 43 38 / .18);
+  --hd-panel-shadow:0 0 0 1px var(--hd-edge-soft),0 1px 2px rgb(37 43 38 / .04);
+  --hd-dark-shadow:0 1px 2px rgb(20 25 21 / .2),0 18px 30px -12px rgb(20 25 21 / .4);
+  gap:22px;
+}
+html.dark .classroom-root .home-desk {
+  --hd-stage:#181d1a;
+  --hd-sheet:#262d28;
+  --hd-panel:#212823;
+  --hd-row:#2c342e;
+  --hd-edge:#3f4840;
+  --hd-edge-soft:#343c35;
+  --hd-ink:#efede6;
+  --hd-dark:#e6e8df;
+  --hd-dark-ink:#252b26;
+  --hd-dark-muted:#4b544c;
+  --hd-muted:#bcc2b4;
+  --hd-sheet-shadow:0 0 0 1px var(--hd-edge),0 14px 28px -10px rgb(0 0 0 / .5);
+  --hd-panel-shadow:0 0 0 1px var(--hd-edge-soft);
+  --hd-dark-shadow:0 14px 28px -12px rgb(0 0 0 / .5);
+}
+
+/* Ground: the page itself is the deepest surface, edge to edge. */
+.classroom-root .classroom-stage:has(.home-desk) {background:#e8e3d6;}
+html.dark .classroom-root .classroom-stage:has(.home-desk) {background:#181d1a;}
+
+/* Masthead: open on the ground, not another card. */
+.classroom-root .home-desk-masthead {
+  background:transparent;box-shadow:none;border-radius:0;padding:6px 2px 2px;
+  grid-template-columns:minmax(0,1fr) minmax(300px,.8fr);align-items:end;gap:28px;
+}
+.classroom-root .home-desk-masthead h1 {font-size:clamp(30px,2.8vw,40px);line-height:1.04;}
+.classroom-root .home-desk-name {display:inline;}
+.classroom-root .home-desk-masthead .home-desk-dateline {margin-bottom:8px;color:var(--hd-muted);}
+.classroom-root .home-desk-masthead .home-desk-summary {font-size:15px;font-weight:500;color:var(--hd-ink);margin-top:10px;max-width:46ch;}
+.classroom-root .home-desk-launcher {min-height:64px;padding:12px 16px 12px 20px;border-radius:14px;}
+.classroom-root .home-desk-launcher-title {font-size:17px;}
+.classroom-root .home-desk-launcher-description {font-size:12.5px;}
+.classroom-root .home-desk-launcher-arrow {width:34px;height:34px;}
+.classroom-root .home-desk-header-actions>a,
+.classroom-root .home-desk-header-actions>button,
+.classroom-root .home-desk-more-menu>summary {background:transparent;box-shadow:inset 0 0 0 1px var(--hd-edge);font-size:13px!important;}
+
+/* Attention bar: one instrument, After-session first and weightiest. */
+.classroom-root .home-desk-attention {
+  display:grid;grid-template-columns:1.35fr 1fr 1fr 1fr;gap:0;padding:0;
+  background:var(--hd-sheet);border-radius:14px;overflow:hidden;box-shadow:var(--hd-panel-shadow);
+}
+.classroom-root .home-desk-attention button {border-radius:0;padding:10px 16px;min-height:52px;gap:10px;color:var(--hd-muted);}
+.classroom-root .home-desk-attention button+button {box-shadow:inset 1px 0 var(--hd-edge-soft);}
+.classroom-root .home-desk-attention button:first-child {color:var(--hd-ink);font-weight:600;}
+.classroom-root .home-desk-attention b {background:var(--hd-panel);box-shadow:inset 0 0 0 1px var(--hd-edge-soft);min-width:28px;font-size:14px;color:var(--hd-ink);}
+.classroom-root .home-desk-attention button:first-child b {background:var(--hd-dark);color:var(--hd-dark-ink);box-shadow:none;font-size:15px;min-width:30px;padding:3px 8px;}
+
+/* Columns: primary column wider, rail narrower. */
+.classroom-root .home-desk-main {grid-template-columns:minmax(0,3fr) minmax(300px,1.25fr);gap:22px;}
+.classroom-root .home-desk-work-column,.classroom-root .home-desk-side-column {gap:22px;}
+
+/* Tier 1: After-session work. */
+.classroom-root .home-desk .classroom-home-post-session {
+  background:var(--hd-sheet);border:0;border-radius:18px;box-shadow:var(--hd-sheet-shadow);padding:24px 26px 20px;gap:4px;
+}
+.classroom-root .home-desk .classroom-home-post-session .classroom-home-region-head {margin-bottom:8px;}
+.classroom-root .home-desk .classroom-home-post-session .classroom-home-region-head h2 {font:400 26px/1.15 var(--home-display);letter-spacing:-.025em;}
+.classroom-root .home-desk .classroom-home-post-session .classroom-home-count {background:var(--hd-dark);color:var(--hd-dark-ink);min-width:28px;height:28px;font-size:14px;font-weight:600;}
+.classroom-root .home-desk .classroom-home-post-session .classroom-home-session-task {
+  background:var(--hd-row);box-shadow:inset 0 0 0 1px var(--hd-edge-soft),inset 4px 0 0 var(--hd-dark);
+  border-radius:12px;padding:14px 16px 14px 20px;margin-top:10px;
+}
+.classroom-root .home-desk .classroom-home-post-session .classroom-home-task-heading h3 {font-size:17px;font-weight:600;}
+.classroom-root .home-desk .classroom-home-post-session .classroom-home-task-heading button {
+  background:var(--hd-dark);color:var(--hd-dark-ink);border:0;box-shadow:0 1px 2px rgb(20 25 21 / .2);min-height:40px;padding:0 16px;font-weight:500;
+}
+
+/* Tier 2: tinted panels, lighter edge, tighter type. */
+.classroom-root .home-desk .home-desk-my-list,
+.classroom-root .home-desk .home-desk-decisions,
+.classroom-root .home-desk .home-desk-students {
+  background:var(--hd-panel);border:0;border-radius:14px;box-shadow:var(--hd-panel-shadow);padding:18px 20px;
+}
+.classroom-root .home-desk .home-desk-my-list .classroom-home-region-head h2,
+.classroom-root .home-desk .home-desk-decisions .classroom-home-region-head h2,
+.classroom-root .home-desk .home-desk-students .classroom-home-region-head h2 {font-size:15px;font-weight:600;letter-spacing:-.005em;}
+.classroom-root .home-desk .home-desk-decisions:has(li) {box-shadow:var(--hd-panel-shadow),inset 0 3px 0 #b7791f;}
+.classroom-root .home-desk .home-desk-check {background:var(--hd-sheet);}
+
+/* Tier 1b: Next up, the charcoal anchor of the rail. */
+.classroom-root .home-desk .home-desk-agenda {
+  background:var(--hd-dark);color:var(--hd-dark-ink);border:0;border-radius:18px;box-shadow:var(--hd-dark-shadow);padding:22px 22px 16px;
+}
+.classroom-root .home-desk .home-desk-agenda h2 {color:var(--hd-dark-ink);font:400 22px/1.15 var(--home-display);letter-spacing:-.02em;}
+.classroom-root .home-desk .home-desk-agenda .classroom-home-region-head a {color:var(--hd-dark-muted);font-size:13px;}
+.classroom-root .home-desk .home-desk-agenda-list li {border-top-color:rgb(244 241 232 / .14);padding:12px 0;}
+.classroom-root .home-desk .home-desk-agenda-list time {color:var(--hd-dark-muted);font-weight:500;}
+.classroom-root .home-desk .home-desk-agenda-list li>a,
+.classroom-root .home-desk .home-desk-agenda-list li>b {color:var(--hd-dark-ink);}
+.classroom-root .home-desk .home-desk-agenda-list li:first-child>a,
+.classroom-root .home-desk .home-desk-agenda-list li:first-child>b {font-size:16px!important;font-weight:600;}
+.classroom-root .home-desk .home-desk-agenda-list li:first-child {background:rgb(244 241 232 / .07);margin:0 -10px;padding:14px 10px;border-radius:10px;border-top-color:transparent;}
+.classroom-root .home-desk .home-desk-agenda-list li>button,
+.classroom-root .home-desk .home-desk-agenda-list details summary {color:var(--hd-dark-muted);}
+.classroom-root .home-desk .home-desk-agenda-list details p {color:var(--hd-dark-muted);}
+.classroom-root .home-desk .home-desk-agenda-list details button {background:rgb(244 241 232 / .1);color:var(--hd-dark-ink);border-radius:8px;}
+.classroom-root .home-desk .home-desk-agenda .home-desk-footnote,
+.classroom-root .home-desk .home-desk-agenda .home-desk-empty {color:var(--hd-dark-muted);}
+.classroom-root .home-desk .home-desk-agenda :is(a,button,summary):focus-visible {outline-color:var(--hd-dark-ink);}
+
+/* Tier 3: quiet ledgers. No card, hairline top rule, small type. */
+.classroom-root .home-desk .home-desk-correspondence-region,
+.classroom-root .home-desk .home-desk-payments {
+  background:transparent;box-shadow:none;border:0;border-radius:0;padding:14px 4px 0;
+  border-top:1px solid var(--hd-edge);
+}
+.classroom-root .home-desk .home-desk-correspondence-region .classroom-home-region-head h2 {font-size:14px;font-weight:600;}
+.classroom-root .home-desk .home-desk-payments {gap:2px;padding-top:12px;}
+.classroom-root .home-desk .home-desk-payments .classroom-home-region-head {min-height:0;margin:0 0 2px;}
+.classroom-root .home-desk .home-desk-payments .classroom-home-region-head h2 {
+  font:600 11px/1.3 var(--home-ui);letter-spacing:.1em;text-transform:uppercase;color:var(--hd-muted);
+}
+.classroom-root .home-desk .home-desk-payments .home-desk-period {font-size:11px;color:var(--hd-muted);}
+.classroom-root .home-desk .classroom-home-session-task .home-desk-blocker {margin-left:0;}
+.classroom-root .home-desk .home-desk-payments :is(button,a,li,b,small,strong,p) {font-size:12.5px!important;}
+.classroom-root .home-desk .home-desk-payments .classroom-home-more {min-height:32px;margin-left:auto;color:var(--hd-muted);}
+.classroom-root .home-desk .home-desk-payments .home-desk-payment-list li {padding:7px 0;border-top:1px solid var(--hd-edge-soft);color:var(--hd-muted);}
+.classroom-root .home-desk .home-desk-payments .home-desk-payment-list small {margin:1px 0 0;color:var(--hd-muted);}
+.classroom-root .home-desk .home-desk-payments .home-desk-payment-list span {display:flex;flex-direction:column;}
+.classroom-root .home-desk .home-desk-payments .home-desk-payment-list b {font-weight:500;}
+.classroom-root .home-desk .home-desk-payments .home-desk-payment-list strong {color:var(--hd-muted);}
+
+/* Students: a working panel with a compact account toolbar. */
+.classroom-root .home-desk .home-desk-students {padding:18px 22px 20px;}
+.home-desk .home-desk-students .home-desk-account-actions {padding:6px 0 16px;margin-bottom:16px;border-bottom-color:var(--hd-edge);gap:8px;}
+.home-desk .home-desk-students .home-desk-account-actions h3 {font-size:13px;margin:0 0 2px;}
+.home-desk .home-desk-students .home-desk-account-actions p {font-size:12.5px;}
+.home-desk .home-desk-students .home-desk-account-actions>button {min-height:38px;padding:7px 12px;font-size:13px!important;border-radius:999px;background:var(--hd-sheet);border-color:var(--hd-edge);}
+
+@container classroom-home (max-width:860px) {
+  /* One stack, ordered by importance rather than by column. */
+  .classroom-root .home-desk-main {display:flex;flex-direction:column;gap:18px;}
+  .classroom-root .home-desk-work-column,.classroom-root .home-desk-side-column {display:contents;}
+  .classroom-root .home-desk-main>*,.classroom-root .home-desk-work-column>*,.classroom-root .home-desk-side-column>* {width:100%;align-self:stretch;}
+  .classroom-root .home-desk .classroom-home-post-session {order:1;}
+  .classroom-root .home-desk .home-desk-agenda {order:2;}
+  .classroom-root .home-desk .home-desk-decisions {order:3;}
+  .classroom-root .home-desk .home-desk-my-list {order:4;}
+  .classroom-root .home-desk .home-desk-correspondence-region {order:5;}
+  .classroom-root .home-desk .home-desk-payments {order:6;}
+  .classroom-root .home-desk .classroom-home-post-session .classroom-home-task-heading button {min-height:44px;}
+  .classroom-root .home-desk-masthead {grid-template-columns:1fr;gap:16px;align-items:start;}
+  .classroom-root .home-desk-attention {grid-template-columns:1fr 1fr;}
+  .classroom-root .home-desk-attention button:nth-child(n+3) {box-shadow:inset 0 1px var(--hd-edge-soft);}
+  .classroom-root .home-desk-attention button:nth-child(4) {box-shadow:inset 1px 1px var(--hd-edge-soft);}
+}
+@container classroom-home (max-width:600px) {
+  .classroom-root .home-desk {gap:16px;}
+  .classroom-root .home-desk-masthead {padding:2px 0 0;}
+  .classroom-root .home-desk .classroom-home-post-session {padding:18px 16px 14px;border-radius:16px;}
+  .classroom-root .home-desk .classroom-home-post-session .classroom-home-region-head h2 {font-size:23px;}
+  .classroom-root .home-desk .home-desk-agenda {padding:18px 16px 12px;border-radius:16px;}
+  .classroom-root .home-desk .home-desk-my-list,
+  .classroom-root .home-desk .home-desk-decisions,
+  .classroom-root .home-desk .home-desk-students {padding:16px;border-radius:14px;}
+  .classroom-root .home-desk-attention {display:grid;grid-template-columns:1fr 1fr;overflow:hidden;}
+  .classroom-root .home-desk .home-desk-payments .classroom-home-more {min-height:44px;}
+}
