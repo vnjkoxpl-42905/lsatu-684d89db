@@ -45,7 +45,19 @@ export function StudentAccessNoticeGate({ children }: { children: ReactNode }) {
   }, [remaining, refetch]);
   const allowed = pathname === "/booking" || pathname === "/schedule" ||
     pathname === "/inbox" || pathname.startsWith("/inbox/");
-  if (user && noticeQuery.isPending) return <p role="status">Checking access…</p>;
+  if (user && !allowed && noticeQuery.isPending) return <p role="status">Checking access…</p>;
+  if (user && !allowed && noticeQuery.isError) {
+    return (
+      <main className="mx-auto max-w-lg px-6 py-20 text-center">
+        <p role="alert">We couldn’t check your access. Please try again.</p>
+        <div className="mt-6 flex flex-wrap justify-center gap-3">
+          <Button onClick={() => void refetch()} disabled={noticeQuery.isFetching}>Try again</Button>
+          <Button asChild variant="outline"><Link to="/inbox">Messages</Link></Button>
+          <Button asChild variant="outline"><Link to="/booking">Book a session</Link></Button>
+        </div>
+      </main>
+    );
+  }
   if (noticeQuery.data?.paused && !allowed) {
     return (
       <main className="mx-auto max-w-lg px-6 py-20 text-center">

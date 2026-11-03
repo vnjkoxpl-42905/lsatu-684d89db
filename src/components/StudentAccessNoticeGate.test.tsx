@@ -49,6 +49,13 @@ describe("student access notice", () => {
     expect(screen.getByRole("link", { name: "Book a session" }).getAttribute("href")).toBe("/booking");
   });
 
+  it("shows a retry screen when access cannot be verified", async () => {
+    rpc.mockResolvedValue({ error: new Error("Offline") });
+    mount("/practice/drills");
+    expect(await screen.findByRole("alert")).toHaveTextContent("couldn’t check your access");
+    expect(screen.queryByText("Route content")).toBeNull();
+    expect(screen.getByRole("button", { name: "Try again" })).toBeTruthy();
+  });
   it.each(["/inbox/thread", "/booking"])("leaves %s reachable during a pause", async (path) => {
     rpc.mockResolvedValue({ data: { paused: true, notice: null } });
     mount(path);
