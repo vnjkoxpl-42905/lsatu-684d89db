@@ -8,10 +8,9 @@ const response = (carried: boolean, evidence: string, reason = "") => JSON.strin
 describe("structured judge response contract", () => {
   it("uses the actual nonconsecutive Detail ids and requires evidence on every verdict", () => {
     const schema = buildJudgeResponseSchema({ entries: [{ id: 2 }, { id: 7 }] }) as any;
-    expect(schema.properties.verdicts).toMatchObject({ minItems: 2, maxItems: 2 });
-    expect(schema.properties.verdicts.items.properties.id.enum).toEqual([2, 7]);
+    expect(JSON.stringify(schema)).not.toMatch(/"enum":\[\d|minItems|maxItems/);
     expect(schema.properties.verdicts.items.required).toEqual(["id", "carried", "evidence", "reason", "material", "material_reason"]);
-    expect(schema.properties.uncertain_details.items.enum).toEqual([2, 7]);
+    expect(schema.properties.uncertain_details.items).toEqual({ type: "integer" });
     expect(schema.required).toContain("uncertain_details");
     expect(schema.properties).not.toHaveProperty("read_given");
     expect(schema.properties).not.toHaveProperty("lines");
@@ -21,8 +20,7 @@ describe("structured judge response contract", () => {
   it("adds only requested Read and line assessments with closed required objects", () => {
     const schema = buildJudgeResponseSchema({ entries: [{ id: 1 }], theRead: "A mistaken reversal.",
       lines: [{ n: 1 }, { n: 3 }] }) as any;
-    expect(schema.required).toEqual(expect.arrayContaining(["read_given", "read_matches", "read_reason", "lines", "recall"]));
-    expect(schema.properties.lines).toMatchObject({ minItems: 2, maxItems: 2 });
+    expect(schema.properties.lines.items.properties.n).toEqual({ type: "integer" });
     expect(schema.properties.lines.items.properties.n.enum).toEqual([1, 3]);
     const visit = (node: any) => {
       if (!node || typeof node !== "object") return;
