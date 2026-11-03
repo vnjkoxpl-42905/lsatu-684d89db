@@ -1661,230 +1661,62 @@ html.dark .home-desk-schedule-sheet,html.dark .booking-dialog-teacher {
    3. Quiet: Correspondence and Payment activity (no card, ruled ledger).
    Everything is scoped to .home-desk, so student Home and shared sheets are untouched. */
 .classroom-root .home-desk {
-  --hd-stage:#e8e3d6;
+  --hd-stage:#f0ede5;
   --hd-sheet:#fffdf8;
   --hd-panel:#f6f2e8;
   --hd-row:#f8f5ec;
   --hd-edge:#d6cfbe;
   --hd-edge-soft:#e2dccd;
-  --hd-ink:#252b26;
-  --hd-dark:#2a302b;
-  --hd-dark-ink:#f4f1e8;
-  --hd-dark-muted:#c6cbbf;
-  --hd-muted:#4f574e;
-  --hd-sheet-shadow:0 0 0 1px var(--hd-edge),0 1px 2px rgb(37 43 38 / .06),0 14px 28px -10px rgb(37 43 38 / .18);
-  --hd-panel-shadow:0 0 0 1px var(--hd-edge-soft),0 1px 2px rgb(37 43 38 / .04);
-  --hd-dark-shadow:0 1px 2px rgb(20 25 21 / .2),0 18px 30px -12px rgb(20 25 21 / .4);
+  /* Approved paper and ink palette (index.css, 2026-10-21): neutral charcoal,
+     no green cast. */
+  --hd-ink:var(--lsatu-ink);
+  --hd-dark:var(--lsatu-field-dark);
+  --hd-dark-ink:var(--lsatu-text-on-dark);
+  --hd-dark-muted:#babcb5;
+  --hd-muted:var(--lsatu-ink-muted);
+  --hd-sheet-shadow:0 0 0 1px var(--hd-edge),0 1px 2px rgb(20 22 23 / .06),0 14px 28px -10px rgb(20 22 23 / .18);
+  --hd-panel-shadow:0 0 0 1px var(--hd-edge-soft),0 1px 2px rgb(20 22 23 / .04);
+  --hd-dark-shadow:0 1px 2px rgb(20 22 23 / .2),0 18px 30px -12px rgb(20 22 23 / .4);
   gap:22px;
 }
 html.dark .classroom-root .home-desk {
-  --hd-stage:#181d1a;
-  --hd-sheet:#262d28;
-  --hd-panel:#212823;
-  --hd-row:#2c342e;
-  --hd-edge:#3f4840;
-  --hd-edge-soft:#343c35;
-  --hd-ink:#efede6;
-  --hd-dark:#e6e8df;
-  --hd-dark-ink:#252b26;
-  --hd-dark-muted:#4b544c;
-  --hd-muted:#bcc2b4;
+  --hd-stage:var(--lsatu-surface-dark);
+  --hd-sheet:#262a2b;
+  --hd-panel:#1d2122;
+  --hd-row:#2c3031;
+  --hd-edge:#3e4443;
+  --hd-edge-soft:#33383a;
+  --hd-ink:var(--lsatu-text-on-dark);
+  --hd-dark:var(--lsatu-action-on-dark);
+  --hd-dark-ink:var(--lsatu-surface-dark);
+  --hd-dark-muted:#55585a;
+  --hd-muted:#babcb5;
   --hd-sheet-shadow:0 0 0 1px var(--hd-edge),0 14px 28px -10px rgb(0 0 0 / .5);
   --hd-panel-shadow:0 0 0 1px var(--hd-edge-soft);
   --hd-dark-shadow:0 14px 28px -12px rgb(0 0 0 / .5);
 }
 
 /* Ground: the page itself is the deepest surface, edge to edge. */
-.classroom-root .classroom-stage:has(.home-desk) {background:#e8e3d6;}
-html.dark .classroom-root .classroom-stage:has(.home-desk) {background:#181d1a;}
+.classroom-root .classroom-stage:has(.home-desk) {background:#f0ede5;}
+html.dark .classroom-root .classroom-stage:has(.home-desk) {background:var(--lsatu-surface-dark);}
 
-/* Masthead: open on the ground, not another card. */
-.classroom-root .home-desk-masthead {
-  background:transparent;box-shadow:none;border-radius:0;padding:6px 2px 2px;
-  grid-template-columns:minmax(0,1fr) minmax(300px,.8fr);align-items:end;gap:28px;
-}
-.classroom-root .home-desk-masthead h1 {font-size:clamp(30px,2.8vw,40px);line-height:1.04;}
-.classroom-root .home-desk-name {display:inline;}
-.classroom-root .home-desk-masthead .home-desk-dateline {margin-bottom:8px;color:var(--hd-muted);}
-.classroom-root .home-desk-masthead .home-desk-summary {font-size:15px;font-weight:500;color:var(--hd-ink);margin-top:10px;max-width:46ch;}
-.classroom-root .home-desk-launcher {min-height:64px;padding:12px 16px 12px 20px;border-radius:14px;}
-.classroom-root .home-desk-launcher-title {font-size:17px;}
-.classroom-root .home-desk-launcher-description {font-size:12.5px;}
-.classroom-root .home-desk-launcher-arrow {width:34px;height:34px;}
-.classroom-root .home-desk-header-actions>a,
-.classroom-root .home-desk-header-actions>button,
-.classroom-root .home-desk-more-menu>summary {background:transparent;box-shadow:inset 0 0 0 1px var(--hd-edge);font-size:13px!important;}
-
-/* Attention bar: one instrument, After-session first and weightiest. */
-.classroom-root .home-desk-attention {
-  display:grid;grid-template-columns:1.35fr 1fr 1fr 1fr;gap:0;padding:0;
-  background:var(--hd-sheet);border-radius:14px;overflow:hidden;box-shadow:var(--hd-panel-shadow);
-}
-.classroom-root .home-desk-attention button {border-radius:0;padding:10px 16px;min-height:52px;gap:10px;color:var(--hd-muted);}
-.classroom-root .home-desk-attention button+button {box-shadow:inset 1px 0 var(--hd-edge-soft);}
-.classroom-root .home-desk-attention button:first-child {color:var(--hd-ink);font-weight:600;}
-.classroom-root .home-desk-attention b {background:var(--hd-panel);box-shadow:inset 0 0 0 1px var(--hd-edge-soft);min-width:28px;font-size:14px;color:var(--hd-ink);}
-.classroom-root .home-desk-attention button:first-child b {background:var(--hd-dark);color:var(--hd-dark-ink);box-shadow:none;font-size:15px;min-width:30px;padding:3px 8px;}
-
-/* Columns: primary column wider, rail narrower. */
-.classroom-root .home-desk-main {grid-template-columns:minmax(0,3fr) minmax(300px,1.25fr);gap:22px;}
-.classroom-root .home-desk-work-column,.classroom-root .home-desk-side-column {gap:22px;}
-
-/* Tier 1: After-session work. */
-.classroom-root .home-desk .classroom-home-post-session {
-  background:var(--hd-sheet);border:0;border-radius:18px;box-shadow:var(--hd-sheet-shadow);padding:24px 26px 20px;gap:4px;
-}
-.classroom-root .home-desk .classroom-home-post-session .classroom-home-region-head {margin-bottom:8px;}
-.classroom-root .home-desk .classroom-home-post-session .classroom-home-region-head h2 {font:400 26px/1.15 var(--home-display);letter-spacing:-.025em;}
-.classroom-root .home-desk .classroom-home-post-session .classroom-home-count {background:var(--hd-dark);color:var(--hd-dark-ink);min-width:28px;height:28px;font-size:14px;font-weight:600;}
-.classroom-root .home-desk .classroom-home-post-session .classroom-home-session-task {
-  background:var(--hd-row);box-shadow:inset 0 0 0 1px var(--hd-edge-soft),inset 4px 0 0 var(--hd-dark);
-  border-radius:12px;padding:14px 16px 14px 20px;margin-top:10px;
-}
-.classroom-root .home-desk .classroom-home-post-session .classroom-home-task-heading h3 {font-size:17px;font-weight:600;}
-.classroom-root .home-desk .classroom-home-post-session .classroom-home-task-heading button {
-  background:var(--hd-dark);color:var(--hd-dark-ink);border:0;box-shadow:0 1px 2px rgb(20 25 21 / .2);min-height:40px;padding:0 16px;font-weight:500;
-}
-
-/* Tier 2: tinted panels, lighter edge, tighter type. */
-.classroom-root .home-desk .home-desk-my-list,
-.classroom-root .home-desk .home-desk-decisions,
-.classroom-root .home-desk .home-desk-students {
-  background:var(--hd-panel);border:0;border-radius:14px;box-shadow:var(--hd-panel-shadow);padding:18px 20px;
-}
-.classroom-root .home-desk .home-desk-my-list .classroom-home-region-head h2,
-.classroom-root .home-desk .home-desk-decisions .classroom-home-region-head h2,
-.classroom-root .home-desk .home-desk-students .classroom-home-region-head h2 {font-size:15px;font-weight:600;letter-spacing:-.005em;}
-.classroom-root .home-desk .home-desk-decisions:has(li) {box-shadow:var(--hd-panel-shadow),inset 0 3px 0 #b7791f;}
-.classroom-root .home-desk .home-desk-check {background:var(--hd-sheet);}
-
-/* Tier 1b: Next up, the charcoal anchor of the rail. */
-.classroom-root .home-desk .home-desk-agenda {
-  background:var(--hd-dark);color:var(--hd-dark-ink);border:0;border-radius:18px;box-shadow:var(--hd-dark-shadow);padding:22px 22px 16px;
-}
-.classroom-root .home-desk .home-desk-agenda h2 {color:var(--hd-dark-ink);font:400 22px/1.15 var(--home-display);letter-spacing:-.02em;}
-.classroom-root .home-desk .home-desk-agenda .classroom-home-region-head a {color:var(--hd-dark-muted);font-size:13px;}
-.classroom-root .home-desk .home-desk-agenda-list li {border-top-color:rgb(244 241 232 / .14);padding:12px 0;}
-.classroom-root .home-desk .home-desk-agenda-list time {color:var(--hd-dark-muted);font-weight:500;}
-.classroom-root .home-desk .home-desk-agenda-list li>a,
-.classroom-root .home-desk .home-desk-agenda-list li>b {color:var(--hd-dark-ink);}
-.classroom-root .home-desk .home-desk-agenda-list li:first-child>a,
-.classroom-root .home-desk .home-desk-agenda-list li:first-child>b {font-size:16px!important;font-weight:600;}
-.classroom-root .home-desk .home-desk-agenda-list li:first-child {background:rgb(244 241 232 / .07);margin:0 -10px;padding:14px 10px;border-radius:10px;border-top-color:transparent;}
-.classroom-root .home-desk .home-desk-agenda-list li>button,
-.classroom-root .home-desk .home-desk-agenda-list details summary {color:var(--hd-dark-muted);}
-.classroom-root .home-desk .home-desk-agenda-list details p {color:var(--hd-dark-muted);}
-.classroom-root .home-desk .home-desk-agenda-list details button {background:rgb(244 241 232 / .1);color:var(--hd-dark-ink);border-radius:8px;}
-.classroom-root .home-desk .home-desk-agenda .home-desk-footnote,
-.classroom-root .home-desk .home-desk-agenda .home-desk-empty {color:var(--hd-dark-muted);}
-.classroom-root .home-desk .home-desk-agenda :is(a,button,summary):focus-visible {outline-color:var(--hd-dark-ink);}
-
-/* Tier 3: quiet ledgers. No card, hairline top rule, small type. */
-.classroom-root .home-desk .home-desk-correspondence-region,
-.classroom-root .home-desk .home-desk-payments {
-  background:transparent;box-shadow:none;border:0;border-radius:0;padding:14px 4px 0;
-  border-top:1px solid var(--hd-edge);
-}
-.classroom-root .home-desk .home-desk-correspondence-region .classroom-home-region-head h2 {font-size:14px;font-weight:600;}
-.classroom-root .home-desk .home-desk-payments {gap:2px;padding-top:12px;}
-.classroom-root .home-desk .home-desk-payments .classroom-home-region-head {min-height:0;margin:0 0 2px;}
-.classroom-root .home-desk .home-desk-payments .classroom-home-region-head h2 {
-  font:600 11px/1.3 var(--home-ui);letter-spacing:.1em;text-transform:uppercase;color:var(--hd-muted);
-}
-.classroom-root .home-desk .home-desk-payments .home-desk-period {font-size:11px;color:var(--hd-muted);}
-.classroom-root .home-desk .classroom-home-session-task .home-desk-blocker {margin-left:0;}
-.classroom-root .home-desk .home-desk-payments :is(button,a,li,b,small,strong,p) {font-size:12.5px!important;}
-.classroom-root .home-desk .home-desk-payments .classroom-home-more {min-height:32px;margin-left:auto;color:var(--hd-muted);}
-.classroom-root .home-desk .home-desk-payments .home-desk-payment-list li {padding:7px 0;border-top:1px solid var(--hd-edge-soft);color:var(--hd-muted);}
-.classroom-root .home-desk .home-desk-payments .home-desk-payment-list small {margin:1px 0 0;color:var(--hd-muted);}
-.classroom-root .home-desk .home-desk-payments .home-desk-payment-list span {display:flex;flex-direction:column;}
-.classroom-root .home-desk .home-desk-payments .home-desk-payment-list b {font-weight:500;}
-.classroom-root .home-desk .home-desk-payments .home-desk-payment-list strong {color:var(--hd-muted);}
-
-/* Students: a working panel with a compact account toolbar. */
-.classroom-root .home-desk .home-desk-students {padding:18px 22px 20px;}
-.home-desk .home-desk-students .home-desk-account-actions {padding:6px 0 16px;margin-bottom:16px;border-bottom-color:var(--hd-edge);gap:8px;}
-.home-desk .home-desk-students .home-desk-account-actions h3 {font-size:13px;margin:0 0 2px;}
-.home-desk .home-desk-students .home-desk-account-actions p {font-size:12.5px;}
-.home-desk .home-desk-students .home-desk-account-actions>button {min-height:38px;padding:7px 12px;font-size:13px!important;border-radius:999px;background:var(--hd-sheet);border-color:var(--hd-edge);}
-
-@container classroom-home (max-width:860px) {
-  /* One stack, ordered by importance rather than by column. */
-  .classroom-root .home-desk-main {display:flex;flex-direction:column;gap:18px;}
-  .classroom-root .home-desk-work-column,.classroom-root .home-desk-side-column {display:contents;}
-  .classroom-root .home-desk-main>*,.classroom-root .home-desk-work-column>*,.classroom-root .home-desk-side-column>* {width:100%;align-self:stretch;}
-  .classroom-root .home-desk .classroom-home-post-session {order:1;}
-  .classroom-root .home-desk .home-desk-agenda {order:2;}
-  .classroom-root .home-desk .home-desk-decisions {order:3;}
-  .classroom-root .home-desk .home-desk-my-list {order:4;}
-  .classroom-root .home-desk .home-desk-correspondence-region {order:5;}
-  .classroom-root .home-desk .home-desk-payments {order:6;}
-  .classroom-root .home-desk .classroom-home-post-session .classroom-home-task-heading button {min-height:44px;}
-  .classroom-root .home-desk-masthead {grid-template-columns:1fr;gap:16px;align-items:start;}
-  .classroom-root .home-desk-attention {grid-template-columns:1fr 1fr;}
-  .classroom-root .home-desk-attention button:nth-child(n+3) {box-shadow:inset 0 1px var(--hd-edge-soft);}
-  .classroom-root .home-desk-attention button:nth-child(4) {box-shadow:inset 1px 1px var(--hd-edge-soft);}
-}
-@container classroom-home (max-width:600px) {
-  .classroom-root .home-desk {gap:16px;}
-  .classroom-root .home-desk-masthead {padding:2px 0 0;}
-  .classroom-root .home-desk .classroom-home-post-session {padding:18px 16px 14px;border-radius:16px;}
-  .classroom-root .home-desk .classroom-home-post-session .classroom-home-region-head h2 {font-size:23px;}
-  .classroom-root .home-desk .home-desk-agenda {padding:18px 16px 12px;border-radius:16px;}
-  .classroom-root .home-desk .home-desk-my-list,
-  .classroom-root .home-desk .home-desk-decisions,
-  .classroom-root .home-desk .home-desk-students {padding:16px;border-radius:14px;}
-  .classroom-root .home-desk-attention {display:grid;grid-template-columns:1fr 1fr;overflow:hidden;}
-  .classroom-root .home-desk .home-desk-payments .classroom-home-more {min-height:44px;}
-}
 
 /* ── Teacher Home visual widgets (2026-11-02) ────────────────────────────
-   Show the state instead of describing it: a seven-day calendar on Next up,
-   a four-step tracker on each follow-up, recency avatars and score bars in
+   Show the state instead of describing it: a four-step tracker on each follow-up, recency avatars and score bars in
    Students. Every mark is drawn from stored data; text stays alongside so
    colour or shape is never the only signal. */
 
-/* Week calendar, sitting on the charcoal Next up card. */
-.classroom-root .home-desk .home-desk-week {margin:2px 0 6px;}
-.classroom-root .home-desk .home-desk-week-days {display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px;}
-.classroom-root .home-desk .home-desk-week-day {
-  display:flex;flex-direction:column;align-items:center;gap:3px;width:100%;min-height:84px;
-  padding:8px 0 7px;border:0;border-radius:11px;background:transparent;color:var(--hd-dark-ink);
-  box-shadow:inset 0 0 0 1px rgb(244 241 232 / .12);cursor:pointer;
-}
-html.dark .classroom-root .home-desk .home-desk-week-day {box-shadow:inset 0 0 0 1px rgb(37 43 38 / .16);}
-.classroom-root .home-desk .home-desk-week-day:hover {text-decoration:none;background:rgb(244 241 232 / .09);}
-html.dark .classroom-root .home-desk .home-desk-week-day:hover {background:rgb(37 43 38 / .08);}
-.classroom-root .home-desk .home-desk-week-weekday {font:600 10.5px/1.2 var(--home-ui);letter-spacing:.08em;text-transform:uppercase;color:var(--hd-dark-muted);}
-.classroom-root .home-desk .home-desk-week-date {font:500 19px/1.1 var(--home-ui);font-variant-numeric:tabular-nums;}
-.classroom-root .home-desk .home-desk-week-day:not([data-busy]) .home-desk-week-date {opacity:.62;}
-.classroom-root .home-desk .home-desk-week-day[data-today] {background:rgb(244 241 232 / .12);box-shadow:inset 0 0 0 1.5px var(--hd-dark-ink);}
-html.dark .classroom-root .home-desk .home-desk-week-day[data-today] {background:rgb(37 43 38 / .1);}
-.classroom-root .home-desk .home-desk-week-day[aria-pressed="true"] {background:var(--hd-dark-ink);color:var(--hd-dark);box-shadow:none;}
-.classroom-root .home-desk .home-desk-week-day[aria-pressed="true"] .home-desk-week-weekday {color:var(--hd-dark);}
-.classroom-root .home-desk .home-desk-week-day[aria-pressed="true"] .home-desk-week-date {opacity:1;}
-.classroom-root .home-desk .home-desk-week-marks {display:flex;flex-direction:column;align-items:stretch;gap:3px;width:100%;padding:0 2px;min-height:20px;}
-.classroom-root .home-desk .home-desk-week-marks i {
-  display:block;font:600 9.5px/1 var(--home-ui);letter-spacing:-.02em;font-style:normal;text-align:center;white-space:nowrap;overflow:hidden;min-width:0;padding:3px 0;border-radius:5px;
-  box-shadow:inset 0 0 0 1px currentColor;color:inherit;
-}
-.classroom-root .home-desk .home-desk-week-marks i[data-session] {background:var(--hd-dark-ink);color:var(--hd-dark);box-shadow:none;}
-.classroom-root .home-desk .home-desk-week-day[aria-pressed="true"] .home-desk-week-marks i[data-session] {background:var(--hd-dark);color:var(--hd-dark-ink);}
-.classroom-root .home-desk .home-desk-week-marks b {font:600 9.5px/1 var(--home-ui);text-align:center;}
-.classroom-root .home-desk .home-desk-week-legend i {display:block;width:9px;height:9px;border-radius:3px;box-sizing:border-box;border:1.5px solid currentColor;background:transparent;}
-.classroom-root .home-desk .home-desk-week-legend i[data-session] {background:currentColor;}
-.classroom-root .home-desk .home-desk-week-legend {display:flex;gap:14px;margin:9px 2px 4px!important;font-size:11.5px!important;color:var(--hd-dark-muted);}
-.classroom-root .home-desk .home-desk-week-legend span {display:inline-flex;align-items:center;gap:6px;}
-.classroom-root .home-desk .home-desk-agenda .home-desk-week+.home-desk-agenda-list {margin-top:6px;}
-
-/* Follow-up tracker: four steps, filled as each is done. */
-.classroom-root .home-desk .home-desk-steps {display:flex;flex-wrap:wrap;gap:6px 14px;margin:10px 0 2px!important;}
-.classroom-root .home-desk .home-desk-steps li {display:inline-flex;align-items:center;gap:6px;font:500 12.5px/1 var(--home-ui);color:var(--hd-muted);}
-.classroom-root .home-desk .home-desk-steps li span {
+/* Follow-up tracker: four steps, filled as each is done. The All tasks sheet
+   is portaled outside .home-desk, so it gets the same rules and tokens. */
+.home-desk-sheet {--hd-muted:var(--lsatu-ink-muted);--hd-ink:var(--lsatu-ink);--hd-dark:var(--lsatu-field-dark);--hd-dark-ink:var(--lsatu-text-on-dark);}
+html.dark .home-desk-sheet {--hd-muted:#babcb5;--hd-ink:var(--lsatu-text-on-dark);--hd-dark:var(--lsatu-action-on-dark);--hd-dark-ink:var(--lsatu-surface-dark);}
+:is(.classroom-root .home-desk, .home-desk-sheet) .home-desk-steps {display:flex;flex-wrap:wrap;gap:6px 14px;margin:10px 0 2px!important;}
+:is(.classroom-root .home-desk, .home-desk-sheet) .home-desk-steps li {display:inline-flex;align-items:center;gap:6px;font:500 12.5px/1 var(--home-ui, Outfit, sans-serif);color:var(--hd-muted);}
+:is(.classroom-root .home-desk, .home-desk-sheet) .home-desk-steps li span {
   display:grid;place-items:center;width:16px;height:16px;border-radius:50%;box-sizing:border-box;border:1.5px solid var(--hd-muted);color:var(--hd-dark-ink);
 }
-.classroom-root .home-desk .home-desk-steps li[data-done] {color:var(--hd-ink);font-weight:600;}
-.classroom-root .home-desk .home-desk-steps li[data-done] span {background:var(--hd-dark);border-color:var(--hd-dark);}
+:is(.classroom-root .home-desk, .home-desk-sheet) .home-desk-steps li[data-done] {color:var(--hd-ink);font-weight:600;}
+:is(.classroom-root .home-desk, .home-desk-sheet) .home-desk-steps li[data-done] span {background:var(--hd-dark);border-color:var(--hd-dark);}
 .classroom-root .home-desk .classroom-home-session-task .home-desk-task-summary {margin-top:8px;}
 
 /* Students: recency avatars and score bars. */
@@ -1897,21 +1729,635 @@ html.dark .classroom-root .home-desk .home-desk-week-day[data-today] {background
 }
 .classroom-root .home-desk .home-desk-avatar::after {
   content:"";position:absolute;right:-1px;bottom:-1px;width:10px;height:10px;border-radius:50%;box-sizing:border-box;
-  border:2px solid var(--hd-panel);background:#8b9086;
+  border:2px solid var(--hd-panel);background:#a3a39b;
 }
-.classroom-root .home-desk .home-desk-avatar[data-recency="today"]::after {background:#3f7d58;}
+.classroom-root .home-desk .home-desk-avatar[data-recency="today"]::after {background:var(--hd-ink);}
 .classroom-root .home-desk .home-desk-avatar[data-recency="recent"]::after {background:#b7791f;}
 .classroom-root .home-desk .home-desk-meter {display:block;width:min(100%,170px);height:6px;margin-top:7px;border-radius:999px;background:var(--hd-edge-soft);overflow:hidden;}
 .classroom-root .home-desk .home-desk-meter i {display:block;height:100%;border-radius:999px;background:var(--hd-ink);}
 
 @media (prefers-reduced-motion:no-preference) {
-  .classroom-root .home-desk .home-desk-week-day,
   .classroom-root .home-desk .home-desk-meter i {transition:background-color 160ms,color 160ms,box-shadow 160ms,width 260ms cubic-bezier(0.23,1,0.32,1);}
 }
-@container classroom-home (max-width:600px) {
-  .classroom-root .home-desk .home-desk-week-days {gap:3px;}
-  .classroom-root .home-desk .home-desk-week-day {min-height:80px;border-radius:10px;}
-  .classroom-root .home-desk .home-desk-week-date {font-size:17px;}
+
+/* ── Next up calendar (2026-11-03) ───────────────────────────────────────
+   A full-width week instrument: a spotlight dial for the next event beside a
+   seven-day time grid; the picked day opens like an accordion. Phone widths
+   swap the grid for a week row and a list. Amber marks "now" and nothing
+   else; session versus other is fill versus outline, never hue. All tones
+   derive from the card ink, so the inverted dark-theme card works unchanged. */
+.classroom-root .home-desk .home-desk-cal {
+  --cal-ink:var(--hd-ink);--cal-bg:var(--hd-sheet);--cal-muted:var(--hd-muted);
+  --cal-hair:color-mix(in srgb,var(--cal-ink) 9%,transparent);
+  --cal-hair-soft:color-mix(in srgb,var(--cal-ink) 4.5%,transparent);
+  --cal-plane:color-mix(in srgb,var(--cal-ink) 3.5%,transparent);
+  --cal-plane-hover:color-mix(in srgb,var(--cal-ink) 6.5%,transparent);
+  --cal-plane-lit:color-mix(in srgb,var(--cal-ink) 9%,transparent);
+  --cal-edge:color-mix(in srgb,var(--cal-ink) 15%,transparent);
+  --cal-glow:color-mix(in srgb,var(--cal-ink) 34%,transparent);
+  --cal-now:#d9a24a;
+  --cal-now-glow:color-mix(in srgb,var(--cal-now) 45%,transparent);
+  --cal-raise:0 14px 28px -16px rgb(0 0 0 / .6);
+  --cal-ease:cubic-bezier(.22,1,.36,1);
+  --cal-module:300px;--cal-gap:24px;--cal-axis:44px;--cal-colgap:4px;--cal-fr-open:2.9fr;--cal-fr-shut:.82fr;
+  --cal-head-h:68px;--cal-allday-h:0px;
+  grid-column:1 / -1;container:cal / inline-size;padding:20px 26px 18px;border-radius:22px;border:0;color:var(--cal-ink);
+  background:radial-gradient(900px 280px at 16% -14%,color-mix(in srgb,var(--cal-ink) 7%,transparent),transparent 62%),var(--cal-bg);
+  box-shadow:var(--hd-panel-shadow);
 }
-.classroom-root .home-desk .home-desk-week-days>li {display:flex;}
-.classroom-root .home-desk .home-desk-week-days>li>button {flex:1;}
+html.dark .classroom-root .home-desk .home-desk-cal {
+  --cal-now:#7d5110;--cal-glow:color-mix(in srgb,var(--cal-ink) 18%,transparent);
+  --cal-now-glow:color-mix(in srgb,var(--cal-now) 30%,transparent);--cal-raise:0 14px 24px -16px rgb(20 22 23 / .35);
+}
+.home-desk .home-desk-cal .classroom-home-region-head h2 {color:var(--cal-ink);font:400 24px/1.15 var(--home-display);letter-spacing:-.02em;}
+.home-desk .home-desk-cal .classroom-home-region-head a {color:var(--cal-muted);}
+.home-desk .home-desk-cal :is(button,a,summary):hover {text-decoration:none;}
+.home-desk .home-desk-cal :is(.home-desk-cal-name,.home-desk-cal-ev-name,.home-desk-cal-then-name,.home-desk-cal-row-name,.home-desk-cal-note,.home-desk-cal-allday-pill) a:hover {text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:4px;}
+.home-desk .home-desk-cal :is(button,a,summary):focus-visible {outline:2px solid var(--cal-ink);outline-offset:2px;}
+.home-desk .home-desk-cal :is(.home-desk-cal-footnote,.home-desk-footnote,.home-desk-empty) {color:var(--cal-muted);}
+.home-desk .home-desk-cal :is(h3,h4,p,ol,dl,dd) {margin:0;}
+.home-desk .home-desk-cal ol {list-style:none;padding:0;}
+.home-desk-cal-frame {--cal-hour:clamp(28px,calc(360px / var(--cal-span-h)),40px);}
+.home-desk-cal-frame[data-allday] {--cal-allday-h:32px;}
+.home-desk-cal-layout {display:grid;grid-template-columns:var(--cal-module) minmax(0,1fr);gap:var(--cal-gap);align-items:stretch;margin-top:6px;}
+
+/* Spotlight: the raised glass module with the countdown dial. */
+.home-desk .home-desk-cal-spot {
+  --cal-ink:var(--hd-dark-ink);--cal-bg:var(--hd-dark);--cal-muted:var(--hd-dark-muted);
+  --cal-edge:color-mix(in srgb,var(--cal-ink) 15%,transparent);
+  --cal-hair:color-mix(in srgb,var(--cal-ink) 9%,transparent);
+  --cal-glow:color-mix(in srgb,var(--cal-ink) 20%,transparent);
+  position:relative;display:flex;flex-direction:column;align-items:center;gap:12px;min-width:0;padding:16px 20px 14px;border-radius:18px;text-align:center;
+  background:linear-gradient(150deg,color-mix(in srgb,var(--cal-ink) 5%,var(--cal-bg)),var(--cal-bg));
+  box-shadow:inset 0 1px 0 var(--cal-edge),0 5px 12px -8px rgb(20 22 23 / .35);
+}
+.home-desk .home-desk-cal-kicker {display:flex;justify-content:space-between;width:100%;font:600 10.5px/1 var(--home-ui);letter-spacing:.12em;text-transform:uppercase;color:var(--cal-muted);}
+.home-desk .home-desk-cal-kicker [data-live] {display:inline-flex;align-items:center;gap:7px;color:var(--cal-ink);}
+.home-desk .home-desk-cal-kicker [data-live]::before {content:"";width:7px;height:7px;border-radius:50%;background:var(--cal-now);box-shadow:0 0 8px var(--cal-now-glow);}
+.home-desk .home-desk-cal-dial-wrap {width:176px;max-width:100%;}
+.home-desk .home-desk-cal-dial {position:relative;width:100%;aspect-ratio:1;}
+.home-desk .home-desk-cal-dial svg {display:block;width:100%;height:100%;overflow:visible;}
+.home-desk-cal-dial-track {fill:none;stroke:var(--cal-hair);stroke-width:6;}
+.home-desk-cal-dial-tick {stroke:color-mix(in srgb,var(--cal-ink) 20%,transparent);stroke-width:1.5;stroke-linecap:round;}
+.home-desk-cal-dial-tick[data-lit] {stroke:color-mix(in srgb,var(--cal-ink) 64%,transparent);}
+.home-desk-cal-dial-arc {fill:none;stroke:var(--cal-ink);stroke-width:6;stroke-linecap:round;filter:drop-shadow(0 0 5px var(--cal-glow));}
+.home-desk-cal-dial-head {fill:var(--cal-ink);stroke:var(--cal-bg);stroke-width:3;}
+.home-desk-cal-dial:is([data-mode="standby"],[data-mode="later"],[data-mode="none"]) .home-desk-cal-dial-arc {stroke:color-mix(in srgb,var(--cal-ink) 26%,transparent);filter:none;}
+.home-desk-cal-dial[data-soon] :is(.home-desk-cal-dial-arc,.home-desk-cal-dial-head) {stroke:var(--cal-now);filter:drop-shadow(0 0 7px var(--cal-now-glow));}
+.home-desk-cal-dial[data-soon] .home-desk-cal-dial-head {fill:var(--cal-now);stroke:var(--cal-bg);}
+.home-desk .home-desk-cal-read {position:absolute;inset:17%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;}
+.home-desk .home-desk-cal-read span {font:500 12px/1.2 var(--home-ui);color:var(--cal-muted);}
+.home-desk .home-desk-cal-read strong {font:400 46px/.95 var(--home-display);letter-spacing:-.035em;font-variant-numeric:lining-nums tabular-nums;color:var(--cal-ink);}
+.classroom-root .home-desk .home-desk-cal-read strong small {display:inline;font:500 .4em/1 var(--home-ui);color:var(--cal-muted);margin:0 .25em 0 .06em;letter-spacing:0;}
+.home-desk .home-desk-cal-read[data-word] strong {font-size:28px;line-height:1.05;}
+.home-desk .home-desk-cal-read strong {white-space:nowrap;}
+.home-desk .home-desk-cal-read[data-long] strong {font-size:34px;}
+.home-desk .home-desk-cal-spot-text {display:flex;flex-direction:column;align-items:center;gap:5px;min-width:0;width:100%;}
+.home-desk .home-desk-cal-countline {position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;}
+.home-desk .home-desk-cal-when {font:500 15px/1.3 var(--home-ui);font-variant-numeric:tabular-nums;}
+.home-desk .home-desk-cal-when span {color:var(--cal-muted);font-size:13px;}
+.home-desk .home-desk-cal-name {font:400 26px/1.1 var(--home-display);letter-spacing:-.02em;overflow-wrap:anywhere;color:var(--cal-ink);}
+.home-desk .home-desk-cal-name :is(a,b) {color:inherit;font:inherit!important;}
+.home-desk .home-desk-cal-name[data-empty] {font-weight:300;font-size:24px;color:var(--cal-muted);}
+.home-desk .home-desk-cal-sub {font-size:12.5px;color:var(--cal-muted);}
+.home-desk .home-desk-cal-kind {display:inline-flex;align-items:center;gap:7px;height:22px;padding:0 10px;margin-top:2px;border-radius:999px;box-shadow:inset 0 0 0 1px var(--cal-edge);font:600 11px/1 var(--home-ui);letter-spacing:.02em;}
+.home-desk .home-desk-cal-kind i,.home-desk .home-desk-cal-then-name i {width:8px;height:8px;border-radius:2px;box-shadow:inset 0 0 0 1.5px currentColor;flex:none;}
+.home-desk .home-desk-cal-kind[data-session] i,.home-desk [data-session] > .home-desk-cal-then-name i {background:currentColor;}
+.home-desk .home-desk-cal-act {align-self:stretch;position:relative;}
+.home-desk .home-desk-cal-go {
+  display:flex;width:100%;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 16px;border:0;border-radius:12px;
+  background:var(--cal-ink);color:var(--cal-bg);font-weight:600;cursor:pointer;
+  box-shadow:inset 0 1px 0 rgb(255 255 255 / .35),0 10px 20px -12px var(--cal-glow);
+}
+.home-desk .home-desk-cal-go span {overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:14.5px;}
+.home-desk .home-desk-cal-go:hover {background:color-mix(in srgb,var(--cal-ink) 90%,var(--cal-bg));}
+.home-desk .home-desk-cal-go svg {flex:none;transition:transform 160ms var(--cal-ease);}
+.home-desk .home-desk-cal-go:hover svg {transform:translateX(3px);}
+.home-desk .home-desk-cal-then {align-self:stretch;margin-top:auto;text-align:left;}
+.home-desk .home-desk-cal-then h4 {font:600 10.5px/1 var(--home-ui);letter-spacing:.12em;text-transform:uppercase;color:var(--cal-muted);margin:4px 0 4px;}
+.home-desk .home-desk-cal-then li {display:grid;grid-template-columns:58px minmax(0,1fr) auto;align-items:center;gap:8px;min-height:42px;border-top:1px solid var(--cal-hair);}
+.home-desk .home-desk-cal-then time {font:500 12px/1.2 var(--home-ui);font-variant-numeric:tabular-nums;color:var(--cal-muted);}
+.home-desk .home-desk-cal-then-name {display:flex;align-items:center;gap:7px;min-width:0;}
+.home-desk .home-desk-cal-then-name :is(a,b) {overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--cal-ink);font-weight:500;}
+
+/* Event action chips and the label popover. */
+.home-desk .home-desk-cal-chip,.home-desk .home-desk-cal-tag summary {
+  display:inline-flex;align-items:center;gap:5px;height:28px;padding:0 10px;border:0;border-radius:999px;cursor:pointer;white-space:nowrap;
+  background:var(--cal-ink);color:var(--cal-bg);list-style:none;
+}
+.home-desk .home-desk-cal-chip span,.home-desk .home-desk-cal-tag summary span {font:600 12px/1 var(--home-ui);}
+.home-desk .home-desk-cal-tag summary {background:transparent;color:var(--cal-ink);box-shadow:inset 0 0 0 1px currentColor;}
+.home-desk .home-desk-cal-tag summary::-webkit-details-marker {display:none;}
+.home-desk .home-desk-cal-tag[data-variant="spot"] summary {display:flex;justify-content:center;width:100%;height:44px;border-radius:12px;box-shadow:inset 0 0 0 1.5px var(--cal-ink);}
+.home-desk .home-desk-cal-tag[data-variant="spot"] summary span {font-size:14.5px;}
+.home-desk .home-desk-cal-tag[data-variant="spot"] .home-desk-cal-pop {left:0;right:0;width:auto;}
+.home-desk .home-desk-cal-chip:hover {background:color-mix(in srgb,var(--cal-ink) 88%,var(--cal-bg));}
+.home-desk .home-desk-cal-tag summary:hover {background:var(--cal-plane-lit);}
+.home-desk .home-desk-cal-tag {position:relative;}
+.home-desk .home-desk-cal-pop {
+  position:absolute;top:calc(100% + 8px);left:0;width:224px;z-index:30;padding:12px;border-radius:12px;text-align:left;
+  display:grid;gap:8px;background:var(--hd-sheet);color:var(--hd-ink);
+  box-shadow:0 0 0 1px rgb(20 22 23 / .08),0 18px 40px -12px rgb(0 0 0 / .55);
+}
+.home-desk .home-desk-cal-pop p {font-size:12.5px;line-height:1.45;color:var(--hd-muted);}
+.home-desk .home-desk-cal-pop button {min-height:40px;border:0;border-radius:9px;background:var(--hd-panel);box-shadow:inset 0 0 0 1px var(--hd-edge);color:var(--hd-ink);font-weight:600;cursor:pointer;}
+.home-desk .home-desk-cal-pop :is(button):focus-visible {outline-color:var(--hd-ink);}
+.home-desk .home-desk-cal-col[data-align="end"] .home-desk-cal-pop {left:auto;right:0;}
+.home-desk .home-desk-cal-ev[data-up] .home-desk-cal-pop {top:auto;bottom:calc(100% + 8px);}
+
+/* Instrument: readouts bar, day headers, time grid. */
+.home-desk .home-desk-cal-inst {position:relative;min-width:0;display:flex;flex-direction:column;}
+.home-desk .home-desk-cal-bar {display:flex;flex-wrap:wrap;align-items:center;gap:6px 14px;min-height:36px;margin-bottom:10px;}
+.home-desk .home-desk-cal-bar h3 {font:600 15px/1.2 var(--home-ui);}
+.home-desk .home-desk-cal-bar-meta {font-size:13px;color:var(--cal-muted);font-variant-numeric:tabular-nums;}
+.home-desk .home-desk-cal-range {font:600 10.5px/1 var(--home-ui);letter-spacing:.12em;text-transform:uppercase;color:var(--cal-muted);}
+.home-desk .home-desk-cal-readouts {display:flex;margin-left:auto;}
+.home-desk .home-desk-cal-readouts div {display:grid;gap:3px;padding:0 14px;border-left:1px solid var(--cal-hair);}
+.home-desk .home-desk-cal-readouts div:first-child {border-left:0;}
+.home-desk .home-desk-cal-readouts dt {font:600 10px/1 var(--home-ui);letter-spacing:.12em;text-transform:uppercase;color:var(--cal-muted);}
+.home-desk .home-desk-cal-readouts dd {font:500 15px/1.1 var(--home-ui);font-variant-numeric:tabular-nums;}
+.home-desk .home-desk-cal-reset {margin-left:auto;height:34px;padding:0 14px;border:0;border-radius:999px;background:var(--cal-plane-lit);box-shadow:inset 0 0 0 1px var(--cal-edge);color:var(--cal-ink);cursor:pointer;}
+.home-desk .home-desk-cal-reset:hover {background:color-mix(in srgb,var(--cal-ink) 14%,transparent);}
+.home-desk .home-desk-cal-allday-pill {display:inline-flex;align-items:center;gap:8px;height:30px;padding:0 4px 0 12px;border-radius:999px;box-shadow:inset 0 0 0 1px var(--cal-edge);font:600 12px/1 var(--home-ui);}
+.home-desk .home-desk-cal-allday-pill > a {font-size:12px!important;color:inherit;}
+.home-desk .home-desk-cal-allday-pill .home-desk-cal-chip,.home-desk .home-desk-cal-allday-pill .home-desk-cal-tag summary {height:24px;}
+
+.home-desk .home-desk-cal-heads,.home-desk .home-desk-cal-body {display:grid;grid-template-columns:var(--cal-cols);column-gap:var(--cal-colgap);}
+.home-desk .home-desk-cal-head {
+  position:relative;container:calhead / inline-size;min-width:0;height:var(--cal-head-h);display:grid;grid-template-columns:minmax(0,1fr) auto;
+  grid-template-areas:"wd n" "date date" "pips pips";align-content:start;row-gap:5px;padding:10px 10px 0;border:0;border-radius:12px 12px 0 0;
+  background:var(--cal-plane);color:var(--cal-ink);text-align:left;cursor:pointer;
+}
+.home-desk .home-desk-cal-head:hover {background:var(--cal-plane-hover);}
+.home-desk .home-desk-cal-head:focus-visible {outline-offset:-4px;}
+.home-desk .home-desk-cal-wd {grid-area:wd;font:600 10.5px/1 var(--home-ui);letter-spacing:.1em;text-transform:uppercase;color:var(--cal-muted);white-space:nowrap;overflow:hidden;}
+.home-desk .home-desk-cal-wd-short {display:none;}
+.home-desk .home-desk-cal-n {grid-area:n;font:600 11px/1 var(--home-ui);font-variant-numeric:tabular-nums;color:color-mix(in srgb,var(--cal-ink) 78%,transparent);}
+.home-desk .home-desk-cal-n[data-zero] {color:var(--cal-muted);}
+.home-desk .home-desk-cal-date {grid-area:date;font:400 26px/1 var(--home-display);font-variant-numeric:lining-nums tabular-nums;transition:transform 160ms var(--cal-ease);}
+.home-desk .home-desk-cal-head:hover .home-desk-cal-date {transform:translateY(-1px);}
+.home-desk .home-desk-cal-pips {grid-area:pips;display:flex;gap:2px;max-width:72px;}
+.home-desk .home-desk-cal-pips i {flex:1;height:5px;border-radius:1.5px;background:var(--cal-hair);}
+.home-desk .home-desk-cal-pips i[data-k="s"] {background:var(--cal-ink);}
+.home-desk .home-desk-cal-pips i[data-k="o"] {background:transparent;box-shadow:inset 0 0 0 1px var(--cal-ink);}
+.home-desk .home-desk-cal-pips i[data-past] {opacity:.35;}
+.home-desk .home-desk-cal-strip {display:none;}
+.home-desk .home-desk-cal-head[data-today] {background:var(--cal-plane-lit);box-shadow:inset 0 2px 0 var(--cal-ink);}
+.home-desk .home-desk-cal-head[data-today] .home-desk-cal-wd {color:var(--cal-ink);}
+.home-desk .home-desk-cal-head[data-today] .home-desk-cal-date span {
+  display:inline-grid;place-items:center;width:34px;height:34px;margin:-4px 0 -4px -2px;border-radius:50%;background:var(--cal-ink);color:var(--cal-bg);font-size:19px;
+  box-shadow:0 0 0 4px color-mix(in srgb,var(--cal-ink) 12%,transparent),0 0 18px var(--cal-glow);
+}
+.home-desk .home-desk-cal-head[aria-pressed="true"] {background:var(--cal-plane-lit);}
+.home-desk .home-desk-cal-head[aria-pressed="true"]::after {content:"";position:absolute;inset:0;border:1.5px solid var(--cal-ink);border-bottom:0;border-radius:12px 12px 0 0;z-index:4;pointer-events:none;}
+.home-desk .home-desk-cal-head[data-unknown] .home-desk-cal-date {opacity:.55;}
+
+.home-desk .home-desk-cal-body {position:relative;}
+.home-desk .home-desk-cal-axis {position:relative;height:calc(var(--cal-allday-h) + var(--cal-span-h) * var(--cal-hour) + 4px);}
+.home-desk .home-desk-cal-axis span {position:absolute;right:7px;top:calc(var(--cal-allday-h) + var(--m) * var(--cal-hour) / 60);transform:translateY(-50%);font:500 10.5px/1 var(--home-ui);font-variant-numeric:tabular-nums;color:color-mix(in srgb,var(--cal-ink) 55%,transparent);}
+.home-desk .home-desk-cal-axis span[data-edge="first"] {transform:none;}
+.home-desk .home-desk-cal-axis span[data-edge="last"] {transform:translateY(-100%);}
+.home-desk .home-desk-cal-axis span[data-near] {opacity:0;}
+.home-desk .home-desk-cal-axis .home-desk-cal-axis-allday {top:10px;transform:none;font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;}
+.home-desk .home-desk-cal-nowtag {
+  position:absolute;right:3px;top:calc(var(--cal-allday-h) + var(--cal-now-y) * var(--cal-hour) / 60);transform:translateY(-50%);z-index:3;
+  padding:3px 6px;border-radius:999px;background:var(--cal-now);color:#1d1f20;font:600 10.5px/1 var(--home-ui);font-variant-numeric:tabular-nums;
+  box-shadow:0 0 0 3px var(--cal-bg);
+}
+html.dark .classroom-root .home-desk .home-desk-cal-nowtag {color:#fffdf8;}
+.home-desk .home-desk-cal-col {
+  position:relative;container:calcol / inline-size;z-index:1;min-width:0;height:calc(var(--cal-allday-h) + var(--cal-span-h) * var(--cal-hour) + 4px);
+  border-radius:0 0 12px 12px;background:var(--cal-plane);cursor:pointer;
+}
+.home-desk .home-desk-cal-col:hover {background:var(--cal-plane-hover);}
+.home-desk .home-desk-cal-col:is([data-today],[data-selected]) {background:var(--cal-plane-lit);}
+.home-desk .home-desk-cal-col[data-selected] {cursor:default;}
+.home-desk .home-desk-cal-col[data-selected]::after {content:"";position:absolute;inset:0;border:1.5px solid var(--cal-ink);border-top:0;border-radius:0 0 12px 12px;z-index:4;pointer-events:none;}
+.home-desk .home-desk-cal-col:has(details[open]) {z-index:5;}
+.home-desk .home-desk-cal-hours {
+  position:absolute;inset:var(--cal-allday-h) 0 auto;height:calc(var(--cal-span-h) * var(--cal-hour));pointer-events:none;
+  background-image:repeating-linear-gradient(to bottom,var(--cal-hair) 0 1px,transparent 1px calc(var(--cal-hour) / 2),var(--cal-hair-soft) calc(var(--cal-hour) / 2) calc(var(--cal-hour) / 2 + 1px),transparent calc(var(--cal-hour) / 2 + 1px) var(--cal-hour));
+}
+.home-desk .home-desk-cal-col[data-unknown] .home-desk-cal-hours {background-image:radial-gradient(circle,var(--cal-hair) 0 1px,transparent 1.5px);background-size:8px 8px;}
+.home-desk .home-desk-cal-past {
+  position:absolute;inset:var(--cal-allday-h) 0 auto;height:calc(var(--cal-now-y) * var(--cal-hour) / 60);pointer-events:none;
+  background:repeating-linear-gradient(135deg,color-mix(in srgb,var(--cal-ink) 11%,transparent) 0 1px,transparent 1px 6px);
+}
+.home-desk .home-desk-cal-frame[data-now="after"] .home-desk-cal-past {height:calc(var(--cal-span-h) * var(--cal-hour));}
+.home-desk .home-desk-cal-beam {
+  position:absolute;left:-3px;right:0;top:calc(var(--cal-allday-h) + var(--cal-now-y) * var(--cal-hour) / 60 - 1px);height:2px;border-radius:2px;z-index:3;
+  background:var(--cal-now);box-shadow:0 0 10px 1px var(--cal-now-glow);pointer-events:none;
+}
+.home-desk .home-desk-cal-beam::before {content:"";position:absolute;left:0;top:50%;width:8px;height:8px;border-radius:50%;transform:translate(-2px,-50%);background:var(--cal-now);box-shadow:0 0 0 3px var(--cal-bg);}
+.home-desk .home-desk-cal-meridian {
+  position:absolute;left:var(--cal-axis);right:0;top:calc(var(--cal-allday-h) + var(--cal-now-y) * var(--cal-hour) / 60);z-index:0;pointer-events:none;
+  border-top:1px dashed color-mix(in srgb,var(--cal-ink) 22%,transparent);
+}
+.home-desk .home-desk-cal-approach {
+  position:absolute;left:2px;width:2px;top:calc(var(--cal-allday-h) + var(--cal-now-y) * var(--cal-hour) / 60 + 3px);
+  height:calc(var(--len) * var(--cal-hour) / 60 - 6px);z-index:2;opacity:.8;pointer-events:none;
+  background:repeating-linear-gradient(180deg,var(--cal-now) 0 4px,transparent 4px 8px);
+}
+.home-desk .home-desk-cal-offwindow {position:absolute;left:4px;z-index:3;display:inline-flex;align-items:center;gap:3px;padding:2px 6px 2px 3px;border-radius:999px;background:var(--cal-now);color:#1d1f20;font:600 10px/1 var(--home-ui);}
+.home-desk .home-desk-cal-offwindow[data-now="before"] {top:calc(var(--cal-allday-h) + 4px);}
+.home-desk .home-desk-cal-offwindow[data-now="after"] {bottom:6px;}
+html.dark .classroom-root .home-desk .home-desk-cal-offwindow {color:#fffdf8;}
+.home-desk .home-desk-cal-allday {
+  position:absolute;top:4px;left:3px;right:3px;height:24px;display:flex;align-items:center;padding:0 7px;border-radius:7px;
+  box-shadow:inset 0 0 0 1px var(--cal-edge);font:600 10.5px/1 var(--home-ui);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.home-desk .home-desk-cal-allday[data-session] {background:var(--cal-ink);color:var(--cal-bg);box-shadow:none;}
+.home-desk .home-desk-cal-free {position:absolute;left:0;right:0;top:calc(var(--cal-allday-h) + var(--cal-span-h) * var(--cal-hour) / 2);transform:translateY(-50%);text-align:center;font:600 10px/1 var(--home-ui);letter-spacing:.14em;text-transform:uppercase;color:color-mix(in srgb,var(--cal-ink) 40%,transparent);pointer-events:none;}
+.home-desk .home-desk-cal-free[data-open] {font-size:13px;letter-spacing:0;text-transform:none;}
+
+/* Event geometry shared by compact capsules and open-day rows. */
+.home-desk :is(.home-desk-cal-cap,.home-desk-cal-ev) {
+  --lane-w:calc((100% - 6px - (var(--lanes) - 1) * 2px) / var(--lanes));
+  position:absolute;z-index:2;top:calc(var(--cal-allday-h) + var(--y) * var(--cal-hour) / 60 + 1px);
+  height:max(20px,calc(var(--h) * var(--cal-hour) / 60 - 2px));width:var(--lane-w);left:calc(3px + var(--lane) * (var(--lane-w) + 2px));border-radius:7px;
+}
+.home-desk .home-desk-cal-cap {padding:4px 6px;font:600 11px/1.2 var(--home-ui);}
+.home-desk .home-desk-cal-cap-in {display:flex;gap:4px;overflow:hidden;white-space:nowrap;}
+.home-desk .home-desk-cal-cap-in b {font-weight:600;font-variant-numeric:tabular-nums;}
+.home-desk .home-desk-cal-cap-in span {font-weight:500;opacity:.82;overflow:hidden;text-overflow:ellipsis;}
+.home-desk :is(.home-desk-cal-cap,.home-desk-cal-ev)[data-k="s"] {
+  background-color:var(--cal-ink);background-image:linear-gradient(180deg,rgb(255 255 255 / .18),rgb(255 255 255 / 0) 60%);color:var(--cal-bg);
+  box-shadow:0 0 0 2px var(--cal-bg),inset 0 1px 0 rgb(255 255 255 / .4),0 6px 16px -8px var(--cal-glow);
+}
+.home-desk :is(.home-desk-cal-cap,.home-desk-cal-ev)[data-k="o"] {background:color-mix(in srgb,var(--cal-ink) 7%,var(--cal-bg));color:var(--cal-ink);box-shadow:0 0 0 2px var(--cal-bg),inset 0 0 0 1.25px color-mix(in srgb,var(--cal-ink) 62%,transparent);}
+.home-desk :is(.home-desk-cal-cap,.home-desk-cal-ev)[data-past] {opacity:.62;}
+html.dark .classroom-root .home-desk :is(.home-desk-cal-cap,.home-desk-cal-ev)[data-past] {opacity:.72;}
+.home-desk .home-desk-cal-cap[data-live] {background-image:linear-gradient(180deg,color-mix(in srgb,var(--cal-bg) 30%,transparent) 0 calc(var(--elapsed) * 100%),transparent 0);}
+.home-desk :is(.home-desk-cal-cap,.home-desk-cal-ev)[data-live]::before {content:"";position:absolute;inset:-3px;border-radius:10px;box-shadow:0 0 0 1.5px var(--cal-now),0 0 16px 2px var(--cal-now-glow);pointer-events:none;}
+.home-desk :is(.home-desk-cal-cap,.home-desk-cal-ev)[data-next] {outline:1.5px solid var(--cal-ink);outline-offset:3px;}
+.home-desk .home-desk-cal-col:hover .home-desk-cal-cap[data-k="s"] {box-shadow:0 0 0 2px var(--cal-bg),inset 0 1px 0 rgb(255 255 255 / .4),0 8px 20px -8px var(--cal-glow);}
+.home-desk .home-desk-cal:has(.home-desk-cal-spot:hover) .home-desk-cal-cap[data-next] {box-shadow:0 0 0 2px var(--cal-bg),0 0 22px 2px var(--cal-glow);}
+
+.home-desk .home-desk-cal-ev {display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;column-gap:8px;min-height:24px;padding:0 4px 0 9px;}
+.home-desk .home-desk-cal-ev[data-tall] {grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"t t" "n a";align-content:center;row-gap:3px;}
+.home-desk .home-desk-cal-ev[data-tall] time {grid-area:t;}
+.home-desk .home-desk-cal-ev time {font:600 10.5px/1 var(--home-ui);font-variant-numeric:tabular-nums;opacity:.72;white-space:nowrap;}
+.home-desk .home-desk-cal-ev-name {min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.home-desk .home-desk-cal-ev-name :is(a,b) {font-weight:600;color:inherit;}
+.home-desk .home-desk-cal-ev[data-k="s"] .home-desk-cal-chip {background:var(--cal-bg);color:var(--cal-ink);height:24px;}
+.home-desk .home-desk-cal-ev .home-desk-cal-tag summary {height:24px;}
+.home-desk .home-desk-cal-ev[data-k="s"] :is(a,button,summary):focus-visible {outline:2px solid var(--cal-bg);box-shadow:0 0 0 4px var(--cal-ink);}
+.home-desk .home-desk-cal-ev:has(details[open]) {z-index:30;}
+
+/* Foot: legend, window, zone, partial note. */
+.home-desk .home-desk-cal-foot {display:flex;flex-wrap:wrap;align-items:center;gap:8px 16px;margin-top:12px;font:500 11.5px/1.3 var(--home-ui);color:var(--cal-muted);}
+.home-desk .home-desk-cal-legend {display:inline-flex;gap:12px;}
+.home-desk .home-desk-cal-legend span {display:inline-flex;align-items:center;gap:6px;}
+.home-desk .home-desk-cal-legend i {width:14px;height:8px;border-radius:3px;}
+.home-desk .home-desk-cal-legend i[data-k="s"] {background:var(--cal-ink);}
+.home-desk .home-desk-cal-legend i[data-k="o"] {box-shadow:inset 0 0 0 1.25px var(--cal-ink);}
+.home-desk .home-desk-cal-legend i[data-k="p"] {background:repeating-linear-gradient(135deg,color-mix(in srgb,var(--cal-ink) 40%,transparent) 0 1px,transparent 1px 4px);box-shadow:inset 0 0 0 1px var(--cal-hair);}
+.home-desk .home-desk-cal-tz {margin-left:auto;}
+.home-desk .home-desk-cal-note {flex-basis:100%;display:flex;align-items:flex-start;gap:8px;padding:8px 12px;border-radius:10px;background:color-mix(in srgb,var(--cal-ink) 6%,transparent);box-shadow:inset 0 0 0 1px var(--cal-edge);font-size:12.5px;line-height:1.45;color:var(--cal-ink);}
+.home-desk .home-desk-cal-note svg {flex:none;margin-top:1px;}
+.home-desk .home-desk-cal-note a {color:inherit;font-size:12.5px!important;text-decoration:underline;text-underline-offset:3px;}
+.home-desk .home-desk-cal .home-desk-footnote {margin-top:10px;}
+
+/* Phone: a week row of day cells, then a list. */
+.home-desk .home-desk-cal-frame[data-compact] .home-desk-cal-layout {grid-template-columns:minmax(0,1fr);gap:16px;}
+.home-desk .home-desk-cal-frame[data-compact] .home-desk-cal-spot {
+  display:grid;grid-template-columns:96px minmax(0,1fr);grid-template-areas:"kicker kicker" "dial text" "act act";column-gap:14px;row-gap:12px;padding:14px;text-align:left;align-items:center;
+}
+.home-desk .home-desk-cal-frame[data-compact] .home-desk-cal-kicker {grid-area:kicker;}
+.home-desk .home-desk-cal-frame[data-compact] .home-desk-cal-dial-wrap {grid-area:dial;width:96px;}
+.home-desk .home-desk-cal-frame[data-compact] .home-desk-cal-read span {display:none;}
+.home-desk .home-desk-cal-frame[data-compact] .home-desk-cal-read strong {font-size:24px;}
+.home-desk .home-desk-cal-frame[data-compact] .home-desk-cal-read[data-long] strong {font-size:17px;}
+.home-desk .home-desk-cal-frame[data-compact] .home-desk-cal-read[data-word] strong {font-size:14px;font-family:var(--home-ui);font-weight:600;}
+.home-desk .home-desk-cal-frame[data-compact] .home-desk-cal-spot-text {grid-area:text;align-items:flex-start;}
+.home-desk .home-desk-cal-frame[data-compact] .home-desk-cal-countline {position:static;width:auto;height:auto;clip:auto;white-space:normal;font:600 13px/1.2 var(--home-ui);}
+.home-desk .home-desk-cal-frame[data-compact] .home-desk-cal-name {font-size:22px;}
+.home-desk .home-desk-cal-frame[data-compact] .home-desk-cal-act {grid-area:act;}
+.home-desk .home-desk-cal-frame[data-compact] .home-desk-cal-heads {grid-template-columns:repeat(7,minmax(0,1fr));gap:4px;}
+.home-desk .home-desk-cal-frame[data-compact] .home-desk-cal-head {
+  display:flex;flex-direction:column;align-items:center;gap:6px;height:auto;min-height:112px;padding:8px 0;border-radius:12px;text-align:center;box-shadow:none;
+}
+.home-desk .home-desk-cal-frame[data-compact] .home-desk-cal-head::after {border-bottom:1.5px solid var(--cal-ink);border-radius:12px;}
+.home-desk .home-desk-cal-frame[data-compact] :is(.home-desk-cal-wd-long,.home-desk-cal-pips) {display:none;}
+.home-desk .home-desk-cal-frame[data-compact] .home-desk-cal-wd-short {display:inline;font-size:11px;}
+.home-desk .home-desk-cal-frame[data-compact] .home-desk-cal-date span {display:inline-grid;place-items:center;width:30px;height:30px;border-radius:50%;font-size:18px;}
+.home-desk .home-desk-cal-frame[data-compact] .home-desk-cal-head[data-today] .home-desk-cal-date span {width:30px;height:30px;margin:0;font-size:18px;box-shadow:none;}
+.home-desk .home-desk-cal-frame[data-compact] .home-desk-cal-head[aria-pressed="true"] .home-desk-cal-date span {box-shadow:inset 0 0 0 1.5px var(--cal-ink);}
+.home-desk .home-desk-cal-frame[data-compact] .home-desk-cal-head[data-today][aria-pressed="true"] .home-desk-cal-date span {box-shadow:0 0 0 2px var(--cal-bg),0 0 0 3.5px var(--cal-ink);}
+.home-desk .home-desk-cal-frame[data-compact] .home-desk-cal-n {order:4;font-size:12px;}
+.home-desk .home-desk-cal-frame[data-compact] .home-desk-cal-strip {display:block;position:relative;width:4px;height:30px;border-radius:2px;background:var(--cal-hair);}
+.home-desk .home-desk-cal-strip i {position:absolute;left:0;right:0;top:calc(var(--s) * 100%);height:max(2px,calc(var(--w) * 100% - 1px));border-radius:1px;background:color-mix(in srgb,var(--cal-ink) 85%,transparent);}
+.home-desk .home-desk-cal-strip i[data-k="o"] {background:transparent;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--cal-ink) 70%,transparent);}
+.home-desk .home-desk-cal-strip i[data-past] {opacity:.4;}
+.home-desk .home-desk-cal-strip b {position:absolute;left:-3px;width:10px;height:2px;top:calc(var(--p) * 100%);border-radius:1px;background:var(--cal-now);}
+.home-desk .home-desk-cal-listwrap {margin-top:14px;}
+.home-desk .home-desk-cal-list-title {font:600 13px/1.3 var(--home-ui);margin-bottom:4px;}
+.home-desk .home-desk-cal-row {display:grid;grid-template-columns:4px 58px minmax(0,1fr);align-items:center;column-gap:10px;row-gap:8px;min-height:48px;padding:10px 0;border-top:1px solid var(--cal-hair);}
+.home-desk .home-desk-cal-row > i {align-self:stretch;border-radius:2px;background:var(--cal-ink);}
+.home-desk .home-desk-cal-row[data-k="o"] > i {background:transparent;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--cal-ink) 60%,transparent);}
+.home-desk .home-desk-cal-row[data-past] {opacity:.62;}
+.home-desk .home-desk-cal-row time {font:500 13px/1.2 var(--home-ui);font-variant-numeric:tabular-nums;}
+.home-desk .home-desk-cal-row-name {display:grid;min-width:0;}
+.home-desk .home-desk-cal-row-name :is(a,b) {overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:600;color:var(--cal-ink);font-size:14.5px!important;}
+.home-desk .home-desk-cal-row-name small {font:600 11px/1.3 var(--home-ui);letter-spacing:.08em;text-transform:uppercase;color:var(--cal-muted);}
+.home-desk .home-desk-cal-row-act {grid-column:2 / -1;}
+.home-desk .home-desk-cal-row-act :is(.home-desk-cal-chip,.home-desk-cal-tag summary) {height:44px;width:100%;justify-content:center;border-radius:12px;}
+.home-desk .home-desk-cal-row-act :is(.home-desk-cal-chip,.home-desk-cal-tag summary) span {font-size:14px;}
+.home-desk .home-desk-cal-row-act .home-desk-cal-pop {left:0;right:0;width:auto;}
+.home-desk .home-desk-cal-now-rule {position:relative;height:14px;}
+.home-desk .home-desk-cal-now-rule::before {content:"";position:absolute;left:0;right:0;top:50%;border-top:1px solid color-mix(in srgb,var(--cal-now) 60%,transparent);}
+.home-desk .home-desk-cal-now-rule span {position:relative;padding-right:8px;background:var(--cal-bg);font:600 10.5px/14px var(--home-ui);color:var(--cal-ink);}
+
+/* Width tiers, by the card's own width. */
+@container cal (max-width:999px) {
+  .home-desk .home-desk-cal-frame {--cal-module:248px;--cal-gap:20px;--cal-axis:36px;--cal-colgap:3px;--cal-fr-open:2.6fr;--cal-fr-shut:.7fr;--cal-head-h:64px;}
+  .home-desk .home-desk-cal-dial-wrap {width:148px;}
+  .home-desk .home-desk-cal-read strong {font-size:38px;}
+  .home-desk .home-desk-cal-read[data-long] strong {font-size:28px;}
+  .home-desk .home-desk-cal-name {font-size:22px;}
+  .home-desk .home-desk-cal-date {font-size:22px;}
+  .home-desk .home-desk-cal-head[data-today] .home-desk-cal-date span {width:30px;height:30px;font-size:17px;}
+  .home-desk .home-desk-cal-readouts div:last-child {display:none;}
+}
+@container cal (max-width:819px) {
+  .home-desk .home-desk-cal-frame:not([data-compact]) {--cal-axis:40px;}
+  .home-desk .home-desk-cal-frame:not([data-compact]) .home-desk-cal-layout {grid-template-columns:minmax(0,1fr);gap:16px;}
+  .home-desk .home-desk-cal-frame:not([data-compact]) .home-desk-cal-spot {
+    display:grid;grid-template-columns:120px minmax(0,1fr) minmax(200px,auto);grid-template-areas:"kicker kicker kicker" "dial text act";column-gap:20px;row-gap:10px;padding:14px 18px;text-align:left;align-items:center;
+  }
+  .home-desk .home-desk-cal-frame:not([data-compact]) .home-desk-cal-kicker {grid-area:kicker;}
+  .home-desk .home-desk-cal-frame:not([data-compact]) .home-desk-cal-dial-wrap {grid-area:dial;width:120px;}
+  .home-desk .home-desk-cal-frame:not([data-compact]) .home-desk-cal-read span {font-size:10.5px;}
+  .home-desk .home-desk-cal-frame:not([data-compact]) .home-desk-cal-read strong {font-size:30px;}
+  .home-desk .home-desk-cal-frame:not([data-compact]) .home-desk-cal-read[data-long] strong {font-size:22px;}
+  .home-desk .home-desk-cal-frame:not([data-compact]) .home-desk-cal-read[data-word] strong {font-size:18px;}
+  .home-desk .home-desk-cal-frame:not([data-compact]) .home-desk-cal-spot-text {grid-area:text;align-items:flex-start;}
+  .home-desk .home-desk-cal-frame:not([data-compact]) .home-desk-cal-act {grid-area:act;}
+  .home-desk .home-desk-cal-frame:not([data-compact]) .home-desk-cal-then {display:none;}
+}
+@container cal (max-width:599px) {
+  .classroom-root .home-desk .home-desk-cal {padding:18px 16px 16px;border-radius:18px;}
+}
+@container calcol (max-width:69px) {.home-desk .home-desk-cal-cap-in span {display:none;}}
+@container calcol (max-width:36px) {.home-desk .home-desk-cal-cap-in b,.home-desk .home-desk-cal-free {display:none;}.home-desk .home-desk-cal-cap {padding:0;border-radius:4px;}}
+@container calcol (max-width:279px) {.home-desk .home-desk-cal-end,.home-desk .home-desk-cal-chip span {display:none;}.home-desk .home-desk-cal-ev .home-desk-cal-chip {width:28px;padding:0;justify-content:center;}}
+@container calhead (max-width:64px) {.home-desk .home-desk-cal-n {display:none;}.home-desk .home-desk-cal-date {font-size:18px;}}
+@container calhead (max-width:51px) {.home-desk .home-desk-cal-pips,.home-desk .home-desk-cal-wd-long {display:none;}.home-desk .home-desk-cal-wd-short {display:inline;}}
+
+@media (prefers-reduced-motion:no-preference) {
+  .home-desk .home-desk-cal-heads,.home-desk .home-desk-cal-body {transition:grid-template-columns 420ms var(--cal-ease);}
+  .home-desk :is(.home-desk-cal-head,.home-desk-cal-col,.home-desk-cal-cap) {transition:background-color 160ms,box-shadow 160ms,opacity 600ms;}
+  .home-desk :is(.home-desk-cal-beam,.home-desk-cal-nowtag,.home-desk-cal-meridian) {transition:top var(--cal-beam-dur) linear;}
+  .home-desk :is(.home-desk-cal-past,.home-desk-cal-approach) {transition:height var(--cal-beam-dur) linear,top var(--cal-beam-dur) linear;}
+  .home-desk .home-desk-cal-dial-arc {transition:stroke-dasharray var(--cal-beam-dur) linear,stroke 400ms;}
+  .home-desk :is(.home-desk-cal-ev,.home-desk-cal-row) {animation:home-desk-cal-in 240ms var(--cal-ease) both;animation-delay:calc(120ms + var(--i) * 30ms);}
+  .home-desk .home-desk-cal-kicker [data-live]::before,.home-desk .home-desk-cal-cap[data-live]::before {animation:home-desk-cal-breathe 2.8s ease-in-out infinite;}
+  .home-desk .home-desk-cal-pop {animation:home-desk-cal-in 160ms var(--cal-ease) both;}
+}
+@keyframes home-desk-cal-in {from {opacity:0;transform:translateY(4px);}}
+@keyframes home-desk-cal-breathe {0%,100% {opacity:.5;} 50% {opacity:1;}}
+@media (forced-colors:active) {
+  .home-desk :is(.home-desk-cal-cap,.home-desk-cal-ev)[data-k="s"] {background:CanvasText;color:Canvas;}
+  .home-desk :is(.home-desk-cal-cap,.home-desk-cal-ev)[data-k="o"] {border:2px dashed CanvasText;}
+  .home-desk :is(.home-desk-cal-beam,.home-desk-cal-nowtag,.home-desk-cal-approach) {background:Highlight;}
+  .home-desk .home-desk-cal-head[aria-pressed="true"] {outline:3px solid Highlight;}
+  .home-desk :is(.home-desk-cal-col,.home-desk-cal-head) {border:1px solid CanvasText;}
+  .home-desk .home-desk-cal * {box-shadow:none!important;}
+}
+
+/* Compact band: the week stays a supporting strip, not the page's centrepiece. */
+.home-desk-cal-frame {--cal-hour:clamp(13px,calc(190px / var(--cal-span-h)),20px);}
+.home-desk-cal-frame[data-mode="day"] {--cal-hour:42px;}
+.classroom-root .home-desk .home-desk-cal {--cal-module:260px;--cal-head-h:50px;padding:16px 20px 12px;border-radius:18px;}
+.home-desk .home-desk-cal .classroom-home-region-head h2 {font-size:19px;}
+.home-desk .home-desk-cal-frame:not([data-compact]) .home-desk-cal-spot {display:grid;grid-template-columns:92px minmax(0,1fr);grid-template-areas:"kicker kicker" "dial text" "act act";column-gap:14px;row-gap:10px;padding:12px 14px;text-align:left;align-items:center;}
+.home-desk .home-desk-cal-frame:not([data-compact]) .home-desk-cal-kicker {grid-area:kicker;}
+.home-desk .home-desk-cal-frame:not([data-compact]) .home-desk-cal-dial-wrap {grid-area:dial;width:92px;}
+.home-desk .home-desk-cal-frame:not([data-compact]) .home-desk-cal-read span {display:none;}
+.home-desk .home-desk-cal-frame:not([data-compact]) .home-desk-cal-read strong {font-size:24px;}
+.home-desk .home-desk-cal-frame:not([data-compact]) .home-desk-cal-read[data-long] strong {font-size:16px;}
+.home-desk .home-desk-cal-frame:not([data-compact]) .home-desk-cal-read[data-word] strong {font-size:13px;font-family:var(--home-ui);font-weight:600;}
+.home-desk .home-desk-cal-frame:not([data-compact]) .home-desk-cal-spot-text {grid-area:text;align-items:flex-start;gap:3px;}
+.home-desk .home-desk-cal-frame:not([data-compact]) .home-desk-cal-countline {position:static;width:auto;height:auto;clip:auto;white-space:normal;font:600 12.5px/1.2 var(--home-ui);color:var(--cal-muted);}
+.home-desk .home-desk-cal-frame:not([data-compact]) .home-desk-cal-when {font-size:13px;}
+.home-desk .home-desk-cal-frame:not([data-compact]) .home-desk-cal-name {font-size:19px;}
+.home-desk .home-desk-cal-frame:not([data-compact]) :is(.home-desk-cal-sub,.home-desk-cal-kind,.home-desk-cal-then) {display:none;}
+.home-desk .home-desk-cal-frame:not([data-compact]) .home-desk-cal-act {grid-area:act;}
+.home-desk .home-desk-cal-go,.home-desk .home-desk-cal-tag[data-variant="spot"] summary {min-height:38px;height:38px;}
+.home-desk .home-desk-cal-bar {min-height:28px;margin-bottom:6px;}
+.home-desk .home-desk-cal-head {padding:7px 8px 0;row-gap:3px;}
+.home-desk .home-desk-cal-date {font-size:19px;}
+.home-desk .home-desk-cal-head[data-today] .home-desk-cal-date span {width:26px;height:26px;font-size:15px;margin:-3px 0 -3px -2px;}
+.home-desk .home-desk-cal-cap {padding:1px 5px;font-size:10px;}
+.home-desk .home-desk-cal-ev {min-height:20px;}
+.home-desk .home-desk-cal-axis span {font-size:9.5px;}
+.home-desk .home-desk-cal-foot {margin-top:8px;}
+.home-desk :is(.home-desk-cal-cap,.home-desk-cal-ev) {height:max(16px,calc(var(--h) * var(--cal-hour) / 60 - 2px));}
+.home-desk .home-desk-cal-frame[data-compact] .home-desk-cal-head {min-height:88px;gap:4px;border-radius:8px;}
+.home-desk .home-desk-cal-frame[data-compact] .home-desk-cal-strip {height:16px;}
+.home-desk .home-desk-cal-frame[data-compact] :is(.home-desk-cal-sub,.home-desk-cal-kind) {display:none;}
+.home-desk .home-desk-cal-frame[data-compact] .home-desk-cal-spot {row-gap:8px;border-radius:12px;}
+.home-desk .home-desk-cal-frame[data-compact] .home-desk-cal-spot-text {gap:4px;}
+.home-desk .home-desk-cal-frame[data-compact] .home-desk-cal-name {font-size:23px;}
+.home-desk .home-desk-cal-row-name small {margin-top:2px;}
+.home-desk .home-desk-cal-more {min-height:44px;padding:8px 0;border:0;background:transparent;color:var(--cal-ink);font:500 13px/1.3 var(--home-ui);text-decoration:underline;text-underline-offset:4px;cursor:pointer;}
+.classroom-root .home-desk .home-desk-cal-spot :is(.home-desk-cal-when,.home-desk-cal-countline) {color:var(--cal-ink);}
+@container cal (min-width:460px) {
+  .home-desk .home-desk-cal-row {grid-template-columns:3px 64px minmax(0,1fr) auto;gap:10px;min-height:58px;padding:8px 0;}
+  .home-desk .home-desk-cal-row-act {grid-column:4;}
+  .home-desk .home-desk-cal-row-act :is(.home-desk-cal-chip,.home-desk-cal-tag summary) {width:auto;min-width:44px;padding:0 12px;border-radius:8px;background:transparent;color:var(--cal-ink);box-shadow:inset 0 0 0 1px var(--cal-edge);}
+}
+@container classroom-home (max-width:540px) {
+  .classroom-root .home-desk-attention button {min-width:0;padding:10px 12px;justify-content:space-between;}
+  .classroom-root .home-desk-attention button>span {min-width:0;text-align:left;white-space:normal;line-height:1.3;}
+  .classroom-root .home-desk-attention b {flex:none;}
+}
+@container cal (max-width:350px) {
+  .home-desk .home-desk-cal-frame[data-compact] .home-desk-cal-spot {grid-template-columns:64px minmax(0,1fr);column-gap:10px;padding:12px;}
+  .home-desk .home-desk-cal-frame[data-compact] .home-desk-cal-dial-wrap {width:64px;}
+  .home-desk .home-desk-cal-frame[data-compact] .home-desk-cal-read[data-long] strong {font-size:13px;}
+  .home-desk .home-desk-cal-frame[data-compact] .home-desk-cal-name {font-size:20px;overflow-wrap:normal;}
+  .home-desk .home-desk-cal-frame[data-compact] .home-desk-cal-when {font-size:12px;}
+  .home-desk .home-desk-cal-frame[data-compact] .home-desk-cal-countline {font-size:11.5px;}
+}
+.home-desk-cal-layout {align-items:start;}
+.home-desk .home-desk-cal-axis span:nth-of-type(even):not([data-edge]) {opacity:0;}
+
+/* ── Teacher desk v2 (2026-11-03) ─────────────────────────────────────────
+   One system for the whole page, replacing the stacked tier overrides.
+   - Three surfaces only: the ground, one paper panel, and charcoal ink for the one thing to do.
+   - Two panels lead with the display face (Next up, After-session); every other panel uses
+     the UI face, so rank reads from type before it reads from colour.
+   - Rows are hairline-ruled, never boxed. Panels never nest.
+   - One way to go anywhere: the command field, plus the board and Assign work beside it.
+   Focus is ink, not the app-wide green-teal, inside the desk. */
+.classroom-root .home-desk {gap:18px;}
+.classroom-root .home-desk :is(button,a,input,select,summary):focus-visible {outline:2px solid var(--hd-ink);outline-offset:3px;}
+
+/* Masthead: the greeting on the ground, quiet utilities at the far edge. */
+.classroom-root .home-desk-masthead {display:flex;align-items:flex-end;justify-content:space-between;gap:24px;padding:4px 2px 0;background:transparent;box-shadow:none;border-radius:0;}
+.classroom-root .home-desk-masthead h1 {font:400 clamp(30px,3vw,40px)/1.05 var(--home-display);letter-spacing:-.025em;}
+.classroom-root .home-desk-masthead .home-desk-dateline {margin-bottom:8px;color:var(--hd-muted);}
+.classroom-root .home-desk-masthead .home-desk-summary {margin-top:10px;font-size:15px;font-weight:500;color:var(--hd-ink);}
+.classroom-root .home-desk-header-actions {display:flex;align-items:center;gap:2px;flex-wrap:nowrap;}
+.classroom-root .home-desk-header-actions>a,
+.classroom-root .home-desk-header-actions>button,
+.classroom-root .home-desk-more-menu>summary {display:inline-flex;align-items:center;min-height:40px;padding:0 12px;border-radius:999px;background:transparent;box-shadow:none;font:500 13px/1 var(--home-ui)!important;color:var(--hd-muted);white-space:nowrap;list-style:none;}
+.classroom-root .home-desk-more-menu>summary::-webkit-details-marker {display:none;}
+.classroom-root .home-desk-header-actions>:is(a,button):hover,
+.classroom-root .home-desk-more-menu>summary:hover {background:color-mix(in srgb,var(--hd-ink) 7%,transparent);color:var(--hd-ink);text-decoration:none;}
+.classroom-root .home-desk-more-menu>div {background:var(--hd-sheet);border-radius:12px;box-shadow:0 0 0 1px var(--hd-edge),0 16px 32px -12px rgb(20 22 23 / .3);padding:6px;}
+.classroom-root .home-desk-more-menu button {border-radius:8px;}
+.classroom-root .home-desk-more-menu button:hover {background:var(--hd-panel);text-decoration:none;}
+
+/* Command row: the field is the widest thing on the page after the week. */
+.classroom-root .home-desk-command {position:relative;z-index:6;display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:10px;align-items:stretch;}
+.home-desk-quick {position:relative;min-width:0;}
+.classroom-root .home-desk .home-desk-quick-field {display:flex;align-items:center;gap:11px;height:54px;padding:0 16px;border-radius:14px;background:var(--hd-sheet);box-shadow:var(--hd-panel-shadow);color:var(--hd-muted);transition:box-shadow 160ms;}
+.classroom-root .home-desk .home-desk-quick-field:focus-within {box-shadow:0 0 0 2px var(--hd-ink);}
+.classroom-root .home-desk .home-desk-quick-field input {flex:1;min-width:0;height:100%;margin:0;padding:0;border:0;border-radius:0;background:transparent;box-shadow:none;outline:0;color:var(--hd-ink);font:400 15px/1.3 var(--home-ui);}
+.classroom-root .home-desk .home-desk-quick-field input::placeholder {color:var(--hd-muted);opacity:1;}
+.classroom-root .home-desk .home-desk-quick-field input:focus-visible {outline:0;}
+.classroom-root .home-desk .home-desk-quick-field kbd {font:500 12px/1 var(--home-ui);padding:4px 8px;border-radius:7px;box-shadow:inset 0 0 0 1px var(--hd-edge);color:var(--hd-muted);}
+.classroom-root .home-desk .home-desk-quick-panel {position:absolute;left:0;right:0;top:calc(100% + 8px);padding:8px;border-radius:14px;background:var(--hd-sheet);box-shadow:0 0 0 1px var(--hd-edge),0 20px 44px -14px rgb(20 22 23 / .32);max-height:min(70vh,520px);overflow-y:auto;}
+.classroom-root .home-desk .home-desk-quick-panel h3 {margin:10px 10px 4px;font:600 11px/1.3 var(--home-ui);letter-spacing:.1em;text-transform:uppercase;color:var(--hd-muted);}
+.classroom-root .home-desk .home-desk-quick-panel section:first-child h3 {margin-top:4px;}
+.classroom-root .home-desk .home-desk-quick-panel li {display:flex;align-items:center;gap:6px;}
+.classroom-root .home-desk .home-desk-quick-panel li>button:first-child {flex:1;display:flex;align-items:center;gap:12px;min-width:0;min-height:50px;padding:6px 12px;border-radius:10px;background:transparent;text-align:left;color:var(--hd-ink);}
+.classroom-root .home-desk .home-desk-quick-panel li>button:first-child svg {flex:none;color:var(--hd-muted);}
+.classroom-root .home-desk .home-desk-quick-panel li>button:is(:hover,:focus-visible) {background:var(--hd-panel);text-decoration:none;}
+.classroom-root .home-desk .home-desk-quick-main {display:grid;flex:1;min-width:0;}
+.classroom-root .home-desk .home-desk-quick-main b {font:500 14px/1.35 var(--home-ui);overflow-wrap:anywhere;}
+.classroom-root .home-desk .home-desk-quick-main small {margin:0;font-size:12px;color:var(--hd-muted);}
+.classroom-root .home-desk .home-desk-quick-side {flex:none;min-height:40px;padding:0 14px;border-radius:999px;background:transparent;box-shadow:inset 0 0 0 1px var(--hd-edge);font:500 12.5px/1 var(--home-ui);color:var(--hd-ink);}
+.classroom-root .home-desk .home-desk-quick-side:hover {background:var(--hd-panel);text-decoration:none;}
+.classroom-root .home-desk .home-desk-quick-tip {margin:6px 12px 2px;font-size:13px;color:var(--hd-muted);}
+.classroom-root .home-desk .home-desk-quick-tip b {color:var(--hd-ink);font-weight:600;}
+.classroom-root .home-desk .home-desk-whiteboard,
+.classroom-root .home-desk .home-desk-assign {display:inline-flex;align-items:center;justify-content:center;gap:9px;height:54px;padding:0 22px;border-radius:14px;border:0;font:500 15px/1 var(--home-ui);white-space:nowrap;cursor:pointer;}
+.classroom-root .home-desk .home-desk-whiteboard {background:var(--hd-dark);color:var(--hd-dark-ink);box-shadow:var(--hd-dark-shadow);}
+.classroom-root .home-desk .home-desk-whiteboard:hover {filter:brightness(1.14);text-decoration:none;}
+.classroom-root .home-desk .home-desk-assign {background:var(--hd-sheet);color:var(--hd-ink);box-shadow:var(--hd-panel-shadow);}
+.classroom-root .home-desk .home-desk-assign:hover {background:var(--hd-panel);text-decoration:none;}
+
+/* Jump row: counts as quiet chips, After-session first. */
+.classroom-root .home-desk-attention {display:flex;flex-wrap:wrap;gap:8px;padding:0;background:transparent;border-radius:0;box-shadow:none;overflow:visible;}
+.classroom-root .home-desk-attention button {flex:0 0 auto;display:inline-flex;align-items:center;gap:10px;min-height:40px;padding:0 8px 0 14px;border-radius:999px;background:transparent;box-shadow:inset 0 0 0 1px var(--hd-edge);font:500 13px/1 var(--home-ui);color:var(--hd-muted);}
+.classroom-root .home-desk-attention button:hover {background:var(--hd-sheet);color:var(--hd-ink);text-decoration:none;}
+.classroom-root .home-desk-attention b {display:grid;place-items:center;min-width:24px;height:24px;padding:0 7px;border-radius:999px;background:var(--hd-panel);box-shadow:none;font:500 13px/1 var(--home-ui);color:var(--hd-ink);font-variant-numeric:tabular-nums;}
+.classroom-root .home-desk-attention button:first-child {color:var(--hd-ink);}
+.classroom-root .home-desk-attention button:first-child b {background:var(--hd-dark);color:var(--hd-dark-ink);}
+
+/* Grid: the work reads left, the inbox and money read right. */
+.classroom-root .home-desk-main {grid-template-columns:minmax(0,1.55fr) minmax(320px,1fr);gap:18px;align-items:start;}
+.classroom-root .home-desk-work-column,.classroom-root .home-desk-side-column {display:grid;gap:18px;min-width:0;align-content:start;}
+
+/* One panel. */
+.classroom-root .home-desk .home-desk-main .classroom-home-region:not(.home-desk-cal),
+.classroom-root .home-desk>.home-desk-students.classroom-home-region {background:var(--hd-sheet);border:0;border-radius:16px;box-shadow:var(--hd-panel-shadow);padding:20px 22px;}
+.classroom-root .home-desk .home-desk-main .classroom-home-region:not(.home-desk-cal) .classroom-home-region-head,
+.classroom-root .home-desk>.home-desk-students .classroom-home-region-head {display:flex;align-items:center;gap:10px;min-height:32px;margin:0 0 8px;}
+.classroom-root .home-desk .home-desk-main .classroom-home-region:not(.home-desk-cal) .classroom-home-region-head h2,
+.classroom-root .home-desk>.home-desk-students .classroom-home-region-head h2 {font:600 15px/1.3 var(--home-ui);letter-spacing:-.005em;color:var(--hd-ink);}
+.classroom-root .home-desk .home-desk-main .classroom-home-post-session .classroom-home-region-head h2 {font:400 24px/1.15 var(--home-display);letter-spacing:-.02em;}
+.classroom-root .home-desk .classroom-home-region-head :is(a,.classroom-home-more) {margin-left:auto;min-height:32px;display:inline-flex;align-items:center;font:500 13px/1 var(--home-ui);color:var(--hd-muted);}
+.classroom-root .home-desk .classroom-home-region-head :is(a,.classroom-home-more):hover {color:var(--hd-ink);}
+.classroom-root .home-desk .classroom-home-count {display:inline-grid;place-items:center;min-width:24px;height:24px;padding:0 7px;border-radius:999px;background:var(--hd-panel);color:var(--hd-ink);font:500 13px/1 var(--home-ui);font-variant-numeric:tabular-nums;}
+.classroom-root .home-desk .classroom-home-post-session .classroom-home-count {background:var(--hd-dark);color:var(--hd-dark-ink);}
+.classroom-root .home-desk .home-desk-period {font-size:12px;color:var(--hd-muted);}
+
+/* Rows: ruled, not boxed. */
+.classroom-root .home-desk .classroom-home-session-task {background:transparent;box-shadow:none;border-radius:0;margin:0;padding:16px 0;border-top:1px solid var(--hd-edge-soft);}
+.classroom-root .home-desk .classroom-home-session-task:first-child {border-top:0;padding-top:8px;}
+.classroom-root .home-desk .classroom-home-task-heading h3 {margin:0;font:600 16px/1.3 var(--home-ui);}
+.classroom-root .home-desk .classroom-home-task-heading button {min-height:40px;padding:0 16px;border-radius:999px;border:0;background:var(--hd-dark);color:var(--hd-dark-ink);font:500 13px/1 var(--home-ui);}
+.classroom-root .home-desk .classroom-home-task-heading button:hover {filter:brightness(1.14);text-decoration:none;}
+.classroom-root .home-desk .home-desk-manual-row {border-top:1px solid var(--hd-edge-soft);}
+.classroom-root .home-desk .home-desk-manual-list>.home-desk-manual-row:first-child {border-top:0;}
+.classroom-root .home-desk .home-desk-check {background:var(--hd-sheet);border-color:var(--hd-edge);}
+.classroom-root .home-desk .home-desk-decisions li+li,
+.classroom-root .home-desk .home-desk-payment-list li,
+.classroom-root .home-desk .home-desk-correspondence li {border-top:1px solid var(--hd-edge-soft);}
+.classroom-root .home-desk .home-desk-decisions ul>li:first-child,
+.classroom-root .home-desk .home-desk-payment-list>li:first-child,
+.classroom-root .home-desk .home-desk-correspondence ul>li:first-child {border-top:0;}
+.classroom-root .home-desk .home-desk-decisions li>button {min-height:56px;color:var(--hd-ink);}
+.classroom-root .home-desk .home-desk-decisions li>button>span[aria-hidden] {color:var(--hd-muted);}
+.classroom-root .home-desk .home-desk-decisions li>button:hover {background:transparent;}
+.classroom-root .home-desk .home-desk-decisions:has(li) .classroom-home-region-head h2::after {content:"";display:inline-block;width:7px;height:7px;margin-left:9px;border-radius:50%;background:#b7791f;vertical-align:2px;}
+.classroom-root .home-desk .home-desk-decision-actions {gap:2px 18px;margin-top:4px;padding-top:6px;border-top:1px solid var(--hd-edge-soft);}
+.classroom-root .home-desk .home-desk-decision-actions button {color:var(--hd-muted);font-weight:500;}
+.classroom-root .home-desk .home-desk-decision-actions button:hover {color:var(--hd-ink);}
+.classroom-root .home-desk .home-desk-payment-list li {padding:11px 0;align-items:baseline;}
+.classroom-root .home-desk .home-desk-payment-list b {font-weight:500;}
+.classroom-root .home-desk .home-desk-payment-list small {margin-top:2px;}
+.classroom-root .home-desk .home-desk-payment-list strong {font-weight:500;color:var(--hd-ink);}
+.classroom-root .home-desk .home-desk-correspondence {grid-template-columns:repeat(2,minmax(0,1fr));gap:6px 40px;}
+.classroom-root .home-desk-masthead .home-desk-greeting {flex:1 1 auto;min-width:0;}
+.classroom-root .home-desk-masthead h1 {white-space:nowrap;}
+.classroom-root .home-desk-name {display:inline;}
+.home-desk-quick-field input[type="search"]::-webkit-search-cancel-button {-webkit-appearance:none;appearance:none;height:16px;width:16px;cursor:pointer;opacity:.55;background:no-repeat center/12px url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23252b26' stroke-width='2.4' stroke-linecap='round'%3E%3Cpath d='M6 6l12 12M18 6L6 18'/%3E%3C/svg%3E");}
+.classroom-root .home-desk .home-desk-subhead {margin:0;}
+.classroom-root .home-desk .home-desk-subhead h3 {margin:10px 0 0;font:600 11px/1.3 var(--home-ui);letter-spacing:.1em;text-transform:uppercase;color:var(--hd-muted);}
+.classroom-root .home-desk .home-desk-subhead :is(a,button) {font:500 13px/1 var(--home-ui);color:var(--hd-muted);}
+.classroom-root .home-desk .home-desk-subhead :is(a,button):hover {color:var(--hd-ink);}
+
+/* Students: header, then the account tools on one line, then two ledgers. */
+.classroom-root .home-desk .home-desk-students .home-desk-account-actions {display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:2px 0 16px;margin:0 0 16px;border:0;border-bottom:1px solid var(--hd-edge-soft);}
+.classroom-root .home-desk .home-desk-account-label {margin-right:6px;font:600 11px/1 var(--home-ui);letter-spacing:.1em;text-transform:uppercase;color:var(--hd-muted);}
+.classroom-root .home-desk .home-desk-students .home-desk-account-actions>button {min-height:40px;padding:0 16px;border-radius:999px;background:transparent;border:0;box-shadow:inset 0 0 0 1px var(--hd-edge);font:500 13px/1 var(--home-ui)!important;color:var(--hd-ink);}
+.classroom-root .home-desk .home-desk-students .home-desk-account-actions>button:hover {background:var(--hd-panel);text-decoration:none;}
+.classroom-root .home-desk .home-desk-student-columns {grid-template-columns:1fr 1fr;gap:12px 40px;}
+.classroom-root .home-desk .home-desk-student-columns h3 {margin:0 0 4px;font:600 11px/1.3 var(--home-ui);letter-spacing:.1em;text-transform:uppercase;color:var(--hd-muted);}
+.classroom-root .home-desk .home-desk-student-columns li>button {min-height:52px;padding:6px 0;}
+.classroom-root .home-desk .home-desk-student-columns li+li {border-top:1px solid var(--hd-edge-soft);}
+.classroom-root .home-desk .home-desk-student-columns b {font-size:14px;font-weight:500;}
+.classroom-root .home-desk .home-desk-avatar {background:var(--hd-panel);}
+.classroom-root .home-desk .home-desk-avatar::after {border-color:var(--hd-sheet);}
+/* Lookup results: the row Enter will take is tinted and carries the return glyph. */
+.classroom-root .home-desk .home-desk-quick-main small {white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.classroom-root .home-desk .home-desk-quick-main b em {margin-left:9px;padding:2px 6px;border-radius:5px;background:var(--hd-panel);color:var(--hd-muted);font:600 10px/1.2 var(--home-ui);font-style:normal;letter-spacing:.08em;vertical-align:1px;}
+.classroom-root .home-desk .home-desk-quick-panel li>button[data-default] em {background:var(--hd-sheet);}
+.classroom-root .home-desk .home-desk-quick-main mark {background:color-mix(in srgb,#d9a24a 38%,transparent);color:inherit;border-radius:3px;padding:0 1px;}
+.classroom-root .home-desk .home-desk-quick-panel li>button[data-default] {background:var(--hd-panel);}
+.classroom-root .home-desk .home-desk-quick-panel .home-desk-quick-enter {margin-left:auto;flex:none;}
+.classroom-root .home-desk .home-desk-quick-chips {display:flex;flex-wrap:wrap;gap:6px;padding:4px 10px 8px;}
+.classroom-root .home-desk .home-desk-quick-chip {display:inline-flex;align-items:center;justify-content:center;gap:8px;min-width:42px;height:38px;padding:0 10px;border-radius:10px;background:transparent;box-shadow:inset 0 0 0 1px var(--hd-edge);color:var(--hd-ink);font:500 14px/1 var(--home-ui);font-variant-numeric:tabular-nums;}
+.classroom-root .home-desk .home-desk-quick-chip:is(:hover,:focus-visible) {background:var(--hd-panel);text-decoration:none;}
+.classroom-root .home-desk .home-desk-quick-chip[data-exact] {background:var(--hd-dark);color:var(--hd-dark-ink);box-shadow:none;}
+.classroom-root .home-desk .home-desk-quick-chip-wide {height:46px;padding:0 16px;}
+.classroom-root .home-desk .home-desk-quick-chip-wide b {font-weight:600;}
+.classroom-root .home-desk .home-desk-quick-chip-wide small {margin:0;font-size:12px;color:var(--hd-muted);}
+.classroom-root .home-desk .home-desk-quick-problem {margin:6px 12px;font-size:13px;line-height:1.45;color:#814e30;}
+.classroom-root .home-desk .home-desk-quick-keys {display:flex;justify-content:flex-end;gap:16px;margin:8px 10px 2px;padding-top:8px;border-top:1px solid var(--hd-edge-soft);font:400 12px/1 var(--home-ui);color:var(--hd-muted);}
+.classroom-root .home-desk .home-desk-quick-keys kbd {display:inline-block;min-width:18px;margin-right:3px;padding:3px 5px;border-radius:5px;box-shadow:inset 0 0 0 1px var(--hd-edge);font:500 11px/1 var(--home-ui);text-align:center;}
+@container classroom-home (max-width:600px) {
+  .classroom-root .home-desk .home-desk-quick-keys {display:none;}
+}
+.home-desk-quick-panel .home-desk-avatar {position:relative;display:grid;place-items:center;flex:none;width:32px;height:32px;border-radius:50%;background:var(--hd-panel);font:600 11.5px/1 var(--home-ui);letter-spacing:.02em;color:var(--hd-ink);}
+
+@container classroom-home (max-width:860px) {
+  .classroom-root .home-desk-main {display:flex;flex-direction:column;gap:18px;}
+  .classroom-root .home-desk-main>* {width:100%;align-self:stretch;}
+  .classroom-root .home-desk-masthead {flex-direction:column;align-items:flex-start;gap:12px;}
+  .classroom-root .home-desk-header-actions {margin-left:-12px;}
+  .classroom-root .home-desk-command {grid-template-columns:repeat(2,minmax(0,1fr));}
+  .classroom-root .home-desk-command>.home-desk-quick {grid-column:1 / -1;}
+  .classroom-root .home-desk .home-desk-student-columns,
+  .classroom-root .home-desk .home-desk-correspondence {grid-template-columns:1fr;}
+  .classroom-root .home-desk-masthead h1 {white-space:normal;}
+}
+@container classroom-home (max-width:600px) {
+  .classroom-root .home-desk {gap:14px;}
+  .classroom-root .home-desk .home-desk-main .classroom-home-region:not(.home-desk-cal),
+  .classroom-root .home-desk>.home-desk-students.classroom-home-region {padding:16px;border-radius:14px;}
+  .classroom-root .home-desk .home-desk-whiteboard,
+  .classroom-root .home-desk .home-desk-assign {padding:0 10px;gap:8px;font-size:14px;}
+  .classroom-root .home-desk .home-desk-quick-field kbd {display:none;}
+  .classroom-root .home-desk-header-actions {flex-wrap:wrap;}
+  .classroom-root .home-desk-attention {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));}
+  .classroom-root .home-desk-attention button {justify-content:space-between;padding:0 8px 0 12px;text-align:left;line-height:1.2;}
+}
+@media (prefers-reduced-motion:reduce) {
+  .classroom-root .home-desk .home-desk-quick-field {transition:none;}
+}

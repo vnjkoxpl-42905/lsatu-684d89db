@@ -23,6 +23,14 @@ export function parseLrAddress(params: { pt?: string; section?: string; qnum?: s
   return { pt, section, qnum };
 }
 
+/** Free text a person types: "PT151 S4 Q10", "151.4.10", "pt 151 section 4 question 10". */
+export function readLrAddressText(text: string): LrAddress | null {
+  const m = text.match(
+    /^\s*(?:p(?:t|reptest)?\s*)?(\d{1,3})\D+(?:s(?:ec(?:tion)?)?\s*)?(\d{1,2})\D+(?:q(?:uestion)?\s*)?(\d{1,3})\s*$/i,
+  );
+  return m ? parseLrAddress({ pt: m[1], section: m[2], qnum: m[3] }) : null;
+}
+
 export function lrQuestionPath({ pt, section, qnum }: LrAddress): string {
   return `/question/lr/${pt}/${section}/${qnum}`;
 }

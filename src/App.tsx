@@ -33,7 +33,9 @@ import { safeLazy } from "@/lib/safeLazy";
 const AcademyMainhub = safeLazy(loadDrillHub);
 const DrillSetupPreview = React.lazy(() => import('./dev/DrillSetupPreview'));
 const PracticeExamsPreview = React.lazy(() => import('./dev/PracticeExamsPreview'));
-const TeacherHomePreview = React.lazy(() => import('./dev/TeacherHomePreview'));
+const TeacherHomePreview = import.meta.env.DEV
+  ? safeLazy(() => import('./dev/TeacherHomePreview'))
+  : () => null;
 const LrQuestionPage = React.lazy(() => import('./pages/LrQuestionPage'));
 const ConditionalOpeningPreview = import.meta.env.DEV
   ? safeLazy(() => import('./dev/ConditionalOpeningPreview'))

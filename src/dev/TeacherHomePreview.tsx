@@ -8,16 +8,17 @@ import "@/components/classroom/home/home.css";
 
 /* Dev-only fixture for the teacher Home. Mirrors the shape the live hooks
    return so the page can be inspected and screenshotted without signing in.
-   ?state=empty shows the confirmed-empty desk. */
+   ?state=empty shows the confirmed-empty desk; ?state=live puts a session
+   in progress. */
 
 const HOUR = 3600_000;
 const iso = (offsetHours: number) => new Date(Date.now() + offsetHours * HOUR).toISOString();
 
 const STUDENTS = [
-  { id: "s1", name: "Sofia Minassian", activityLabel: "Active today", route: "/teacher/students/s1" },
-  { id: "s2", name: "Celia Moreno", activityLabel: "Active today", route: "/teacher/students/s2" },
-  { id: "s3", name: "Dakota Reyes", activityLabel: "Active yesterday", route: "/teacher/students/s3" },
-  { id: "s4", name: "Ivory Chen", activityLabel: "Last active Oct 28", route: "/teacher/students/s4" },
+  { id: "s1", name: "Maya Ostrowski", activityLabel: "Active today", route: "/teacher/students/s1" },
+  { id: "s2", name: "Nora Whitfield", activityLabel: "Active today", route: "/teacher/students/s2" },
+  { id: "s3", name: "Theo Lindqvist", activityLabel: "Active yesterday", route: "/teacher/students/s3" },
+  { id: "s4", name: "June Okafor", activityLabel: "Last active Oct 28", route: "/teacher/students/s4" },
 ];
 
 function task(over: Partial<PostSessionTask>): PostSessionTask {
@@ -25,13 +26,13 @@ function task(over: Partial<PostSessionTask>): PostSessionTask {
     id: "t",
     revision: 1,
     student_id: "s1",
-    student_name: "Sofia Minassian",
-    source_title: "Sofia Minassian session",
+    student_name: "Maya Ostrowski",
+    source_title: "Maya Ostrowski session",
     starts_at: iso(-26),
     ends_at: iso(-25),
     source_state: "ended",
     match_state: "matched",
-    transcript_doc_id: "1Ec9oPvlHjgxzoGH-ZxHy5pWIO4UoT9vKbxNd9cP8H9Q",
+    transcript_doc_id: "fixture-transcript-doc",
     transcript_source: "auto",
     transcript_status: "linked",
     drive_folder_url: null,
@@ -50,8 +51,8 @@ const TASKS: PostSessionTask[] = [
   task({
     id: "t2",
     student_id: "s2",
-    student_name: "Celia Moreno",
-    source_title: "Celia Moreno session",
+    student_name: "Nora Whitfield",
+    source_title: "Nora Whitfield session",
     starts_at: iso(-50),
     ends_at: iso(-49),
     recap_done: true,
@@ -59,8 +60,8 @@ const TASKS: PostSessionTask[] = [
   task({
     id: "t3",
     student_id: "s3",
-    student_name: "Dakota Reyes",
-    source_title: "Dakota Reyes session",
+    student_name: "Theo Lindqvist",
+    source_title: "Theo Lindqvist session",
     starts_at: iso(-74),
     ends_at: iso(-73),
     transcript_doc_id: null,
@@ -69,7 +70,66 @@ const TASKS: PostSessionTask[] = [
   }),
 ];
 
-function model(empty: boolean): TeacherHomeModel {
+/* A realistic teaching week on local clock times: a dense Thursday-style day,
+   an overlap, an all-day block, an open day, and (with ?state=live) a session
+   already in progress. */
+function at(day: number, hour: number, minute = 0) {
+  const d = new Date();
+  d.setDate(d.getDate() + day);
+  d.setHours(hour, minute, 0, 0);
+  return d;
+}
+function agendaFixture(live: boolean) {
+  const rows: Array<[Date, number, string, string | null, string | null]> = [];
+  const now = new Date();
+  const soon = new Date(Math.ceil(now.getTime() / (30 * 60_000)) * 30 * 60_000);
+  const plus = (base: Date, h: number) => new Date(base.getTime() + h * HOUR);
+  if (live) rows.push([new Date(now.getTime() - 20 * 60_000), 1, "Theo Lindqvist · 1:1 session", "s3", "Theo Lindqvist"]);
+  rows.push([plus(soon, -3), 1, "Nora Whitfield · 1:1 session", "s2", "Nora Whitfield"]);
+  rows.push([plus(soon, live ? 2 : 1.5), 1, "Theo Lindqvist · 1:1 session", "s3", "Theo Lindqvist"]);
+  rows.push([plus(soon, 4), 0.5, "Consultation · Sam K.", null, null]);
+  rows.push([at(1, 15), 1, "Maya Ostrowski · 1:1 session", "s1", "Maya Ostrowski"]);
+  rows.push([at(1, 16, 30), 0.5, "Consultation · Ellis R.", null, null]);
+  rows.push([at(1, 18), 1, "Nora Whitfield · 1:1 session", "s2", "Nora Whitfield"]);
+  rows.push([at(1, 19, 30), 1, "June Okafor · 1:1 session", "s4", "June Okafor"]);
+  rows.push([at(2, 17), 1.5, "Maya Ostrowski · 1:1 session", "s1", "Maya Ostrowski"]);
+  rows.push([at(2, 18), 1, "Dentist", null, null]);
+  rows.push([at(3, 19), 1, "June Okafor · 1:1 session", "s4", "June Okafor"]);
+  for (const [i, [h, name, id]] of ([
+    [13, "Maya Ostrowski", "s1"], [14, "Nora Whitfield", "s2"], [15, "Theo Lindqvist", "s3"],
+    [16, "June Okafor", "s4"], [17, "Maya Ostrowski", "s1"], [18, "Nora Whitfield", "s2"],
+    [19, "Theo Lindqvist", "s3"], [20, "June Okafor", "s4"],
+  ] as const).entries())
+    rows.push([at(4, h), 1, `${name} · ${i % 3 === 2 ? "Drill review" : "1:1 session"}`, id, name]);
+  rows.push([at(6, 11), 1, "Nora Whitfield · 1:1 session", "s2", "Nora Whitfield"]);
+  rows.push([at(6, 12, 30), 1, "Team planning", null, null]);
+  const events = rows.map(([start, hours, title, student_id, student_name], i) => ({
+    id: `e${i}`,
+    title,
+    starts_at: start.toISOString(),
+    ends_at: new Date(start.getTime() + hours * HOUR).toISOString(),
+    status: "confirmed",
+    calendar_url: `https://calendar.google.com/calendar/event?eid=${i}`,
+    student_id,
+    student_name,
+  }));
+  const allDay = at(3, 12);
+  const ymd = (d: Date) =>
+    `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+  events.push({
+    id: "allday",
+    title: "LSAC deadline",
+    starts_at: ymd(allDay),
+    ends_at: ymd(at(4, 12)),
+    status: "confirmed",
+    calendar_url: "https://calendar.google.com/calendar/event?eid=allday",
+    student_id: null,
+    student_name: null,
+  });
+  return events;
+}
+
+function model(empty: boolean, live = false): TeacherHomeModel {
   const desk: TeachingDesk = {
     actorId: "preview",
     manual: {
@@ -81,9 +141,9 @@ function model(empty: boolean): TeacherHomeModel {
               {
                 id: "m1",
                 revision: 1,
-                title: "Send Ivory the LSAC accommodations form",
+                title: "Send June the LSAC accommodations form",
                 student_id: "s4",
-                student_name: "Ivory Chen",
+                student_name: "June Okafor",
                 blocker: null,
                 kind: "manual",
                 handled_at: null,
@@ -97,17 +157,7 @@ function model(empty: boolean): TeacherHomeModel {
     agenda: {
       state: "ready",
       data: {
-        events: empty
-          ? []
-          : [
-              { id: "e1", title: "Dakota Reyes · 1:1 session", starts_at: iso(5), ends_at: iso(6), status: "confirmed", calendar_url: "https://calendar.google.com/calendar/event?eid=a", student_id: "s3", student_name: "Dakota Reyes" },
-              { id: "e2", title: "Consultation · Priya N.", starts_at: iso(22), ends_at: iso(23), status: "confirmed", calendar_url: "https://calendar.google.com/calendar/event?eid=b", student_id: null, student_name: null },
-              { id: "e3", title: "Sofia Minassian · 1:1 session", starts_at: iso(46), ends_at: iso(47), status: "confirmed", calendar_url: "https://calendar.google.com/calendar/event?eid=c", student_id: "s1", student_name: "Sofia Minassian" },
-              { id: "e4", title: "Celia Moreno · 1:1 session", starts_at: iso(70), ends_at: iso(71), status: "confirmed", calendar_url: "https://calendar.google.com/calendar/event?eid=d", student_id: "s2", student_name: "Celia Moreno" },
-              { id: "e5", title: "Ivory Chen · 1:1 session", starts_at: iso(100), ends_at: iso(101), status: "confirmed", calendar_url: "https://calendar.google.com/calendar/event?eid=e", student_id: "s4", student_name: "Ivory Chen" },
-              { id: "e6", title: "Sofia Minassian · 1:1 session", starts_at: iso(124), ends_at: iso(125), status: "confirmed", calendar_url: "https://calendar.google.com/calendar/event?eid=f", student_id: "s1", student_name: "Sofia Minassian" },
-              { id: "e7", title: "Dakota Reyes · 1:1 session", starts_at: iso(126), ends_at: iso(127), status: "confirmed", calendar_url: "https://calendar.google.com/calendar/event?eid=g", student_id: "s3", student_name: "Dakota Reyes" },
-            ],
+        events: empty ? [] : agendaFixture(live),
         next_cursor: null,
         fetched_at: iso(0),
       },
@@ -118,8 +168,8 @@ function model(empty: boolean): TeacherHomeModel {
         threads: empty
           ? []
           : [
-              { id: "g1", subject: "Question about the March LSAT", sender: "Priya N.", snippet: "Hi Joshua, I found your site and…", received_at: iso(-3), url: "https://mail.google.com/mail/u/0/#inbox/g1", kind: "enquiry" },
-              { id: "g2", subject: "Re: Friday session", sender: "Celia Moreno", snippet: "Can we move to 6?", received_at: iso(-5), url: "https://mail.google.com/mail/u/0/#inbox/g2", kind: "student" },
+              { id: "g1", subject: "Question about the March LSAT", sender: "Sam K.", snippet: "Hi Joshua, I found your site and…", received_at: iso(-3), url: "https://mail.google.com/mail/u/0/#inbox/g1", kind: "enquiry" },
+              { id: "g2", subject: "Re: Friday session", sender: "Nora Whitfield", snippet: "Can we move to 6?", received_at: iso(-5), url: "https://mail.google.com/mail/u/0/#inbox/g2", kind: "student" },
             ],
         count: empty ? 0 : 2,
         fetched_at: iso(0),
@@ -132,13 +182,13 @@ function model(empty: boolean): TeacherHomeModel {
         recent: empty
           ? []
           : [
-              { id: "p1", student_id: "s1", payer_name: "Sofia Minassian", email: null, amount_cents: 12000, currency: "cad", paid_at: iso(-20), status: "succeeded", grant_state: "granted", match_state: "matched", source: "stripe", granted_credits: 1 },
-              { id: "p2", student_id: "s2", payer_name: "Celia Moreno", email: null, amount_cents: 12000, currency: "cad", paid_at: iso(-90), status: "succeeded", grant_state: "granted", match_state: "matched", source: "stripe", granted_credits: 1 },
-              { id: "p3", student_id: null, payer_name: null, email: "r.alvarez@example.com", amount_cents: 6000, currency: "cad", paid_at: iso(-140), status: "succeeded", grant_state: "pending", match_state: "unmatched", source: "stripe", granted_credits: null },
+              { id: "p1", student_id: "s1", payer_name: "Maya Ostrowski", email: null, amount_cents: 12000, currency: "cad", paid_at: iso(-20), status: "succeeded", grant_state: "granted", match_state: "matched", source: "stripe", granted_credits: 1 },
+              { id: "p2", student_id: "s2", payer_name: "Nora Whitfield", email: null, amount_cents: 12000, currency: "cad", paid_at: iso(-90), status: "succeeded", grant_state: "granted", match_state: "matched", source: "stripe", granted_credits: 1 },
+              { id: "p3", student_id: null, payer_name: null, email: "payer@example.com", amount_cents: 6000, currency: "cad", paid_at: iso(-140), status: "succeeded", grant_state: "pending", match_state: "unmatched", source: "stripe", granted_credits: null },
             ],
         attention: empty
           ? []
-          : [{ id: "p3", student_id: null, payer_name: null, email: "r.alvarez@example.com", amount_cents: 6000, currency: "cad", paid_at: iso(-140), status: "succeeded", grant_state: "pending", match_state: "unmatched", source: "stripe", granted_credits: null }],
+          : [{ id: "p3", student_id: null, payer_name: null, email: "payer@example.com", amount_cents: 6000, currency: "cad", paid_at: iso(-140), status: "succeeded", grant_state: "pending", match_state: "unmatched", source: "stripe", granted_credits: null }],
         total: empty ? 0 : 3,
         attention_total: empty ? 0 : 1,
       },
@@ -148,8 +198,8 @@ function model(empty: boolean): TeacherHomeModel {
       data: empty
         ? []
         : [
-            { id: "r1", student_id: "s1", student_name: "Sofia Minassian", title: "Necessary Assumption - First Taste", score: "9 / 10", completed_at: iso(-60) },
-            { id: "r2", student_id: "s2", student_name: "Celia Moreno", title: "PT 105 Section 2", score: "21 / 26", completed_at: iso(-80) },
+            { id: "r1", student_id: "s1", student_name: "Maya Ostrowski", title: "Necessary Assumption - First Taste", score: "9 / 10", completed_at: iso(-60) },
+            { id: "r2", student_id: "s2", student_name: "Nora Whitfield", title: "PT 105 Section 2", score: "21 / 26", completed_at: iso(-80) },
           ],
     },
     access: {
@@ -157,8 +207,8 @@ function model(empty: boolean): TeacherHomeModel {
       data: empty
         ? []
         : ([
-            { class_id: "a1", display_name: "Priya N.", email: "priya@example.com", role: "student", access_tier: null, archived_at: null },
-            { class_id: "a2", display_name: "R. Alvarez", email: "r.alvarez@example.com", role: "student", access_tier: null, archived_at: null },
+            { class_id: "a1", display_name: "Sam K.", email: "priya@example.com", role: "student", access_tier: null, archived_at: null },
+            { class_id: "a2", display_name: "R. Alvarez", email: "payer@example.com", role: "student", access_tier: null, archived_at: null },
           ] as any),
     },
     classify: async () => {},
@@ -191,8 +241,8 @@ function model(empty: boolean): TeacherHomeModel {
       rows: empty
         ? []
         : [
-            { id: "c1", name: "Celia", initial: "C", snippet: "Can we move Friday?", timeLabel: "1:40 pm", receivedAt: iso(-4), hasAttachments: false, route: "/teacher/inbox/platform:c1" },
-            { id: "c2", name: "Ivory", initial: "I", snippet: "Here is the PDF", timeLabel: "Yesterday", receivedAt: iso(-28), hasAttachments: true, route: "/teacher/inbox/platform:c2" },
+            { id: "c1", name: "Nora", initial: "C", snippet: "Can we move Friday?", timeLabel: "1:40 pm", receivedAt: iso(-4), hasAttachments: false, route: "/teacher/inbox/platform:c1" },
+            { id: "c2", name: "June", initial: "I", snippet: "Here is the PDF", timeLabel: "Yesterday", receivedAt: iso(-28), hasAttachments: true, route: "/teacher/inbox/platform:c2" },
           ],
     },
     roster: { state: "ready", total: STUDENTS.length, recent: STUDENTS.slice(0, 3), all: STUDENTS },
@@ -201,8 +251,8 @@ function model(empty: boolean): TeacherHomeModel {
 }
 
 export default function TeacherHomePreview() {
-  const empty = new URLSearchParams(window.location.search).get("state") === "empty";
-  const m = React.useMemo(() => model(empty), [empty]);
+  const state = new URLSearchParams(window.location.search).get("state");
+  const m = React.useMemo(() => model(state === "empty", state === "live"), [state]);
   return (
     <div className="classroom-root" style={{ minHeight: "100vh" }}>
       <main className="classroom-stage" style={{ minHeight: "100vh" }}>
