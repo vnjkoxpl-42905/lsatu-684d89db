@@ -8,6 +8,7 @@ import { PostSessionWork } from "./PostSessionWork";
 import { MyList, AllTasksSheet, DeskStatus } from "./TeacherTasks";
 import { TeacherScheduleSheet } from "./TeacherScheduleSheet";
 import { AccessSheet, BookingSheet } from "./TeacherAccessBooking";
+import { WeekStrip, buildWeek } from "./WeekStrip";
 import {
   EMPTY_DESK,
   deskMoney,
@@ -16,6 +17,26 @@ import {
 } from "./teachingDeskModel";
 import type { ManagedUser } from "@/lib/adminUsers";
 const CALENDAR = "https://calendar.google.com/calendar/u/0/r";
+const initials = (name: string) =>
+  name
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => part[0]!.toUpperCase())
+    .join("");
+/** Recency band read from the activity label the roster already produces. */
+const recency = (label: string) =>
+  /^Active today/i.test(label)
+    ? "today"
+    : /^Active yesterday/i.test(label)
+      ? "recent"
+      : "older";
+/** "9 / 10" or "21 of 26" becomes a 0 to 1 fill; anything else shows no bar. */
+function scoreFill(score: string | number | null | undefined) {
+  const m = String(score ?? "").match(/(\d+(?:\.\d+)?)\s*(?:\/|of)\s*(\d+(?:\.\d+)?)/i);
+  if (!m || Number(m[2]) <= 0) return null;
+  return Math.min(1, Number(m[1]) / Number(m[2]));
+}
 const EMAIL = "https://mail.google.com/mail/u/0/#inbox";
 function when(value: string) {
   if (/^\d{4}-\d{2}-\d{2}$/.test(value))
@@ -66,6 +87,21 @@ function TeacherDeskContent({
   const [access, setAccess] = React.useState<ManagedUser | null>(null);
   const [search, setSearch] = React.useState("");
   const [classifyError, setClassifyError] = React.useState("");
+  const [pickedDay, setPickedDay] = React.useState<string | null>(null);
+  const agendaEvents = desk.agenda.data?.events ?? [];
+  const week = React.useMemo(
+    () =>
+      buildWeek(
+        agendaEvents,
+        new Date(),
+        desk.agenda.data?.time_zone,
+      ),
+    [agendaEvents, desk.agenda.data?.time_zone],
+  );
+  const pickedWeekDay = week.find((day) => day.key === pickedDay) ?? null;
+  const shownEvents = pickedWeekDay
+    ? pickedWeekDay.events
+    : agendaEvents.slice(0, 3);
   const pendingAccess = desk.access.data?.filter((p) => !p.access_tier) ?? [];
   const matches = search.trim()
     ? filterStudents(students, search).slice(0, 5)
@@ -373,9 +409,17 @@ function TeacherDeskContent({
             </header>
             <DeskStatus region={desk.agenda} noun="primary calendar" />
             {desk.agenda.state === "ready" ? (
-              desk.agenda.data?.events?.length ? (
+              <WeekStrip
+                days={week}
+                selected={pickedDay}
+                onSelect={setPickedDay}
+                timeZone={desk.agenda.data?.time_zone}
+              />
+            ) : null}
+            {desk.agenda.state === "ready" ? (
+              shownEvents.length ? (
                 <ul className="home-desk-agenda-list">
-                  {desk.agenda.data.events.slice(0, 3).map((event) => (
+                  {shownEvents.map((event) => (
                     <li key={event.id}>
                       <time dateTime={event.starts_at}>
                         {when(event.starts_at)}
@@ -443,7 +487,9 @@ function TeacherDeskContent({
                 </ul>
               ) : (
                 <p className="home-desk-empty">
-                  No events in the next seven days.
+                  {pickedWeekDay
+                    ? `Nothing scheduled on ${pickedWeekDay.longLabel}.`
+                    : "No events in the next seven days."}
                 </p>
               )
             ) : null}
@@ -553,8 +599,17 @@ function TeacherDeskContent({
                 {model.roster.recent.slice(0, 3).map((s) => (
                   <li key={s.id}>
                     <button onClick={() => onOpen(s.route)}>
-                      <b>{s.name}</b>
-                      <small>{s.activityLabel}</small>
+                      <span
+                        className="home-desk-avatar"
+                        data-recency={recency(s.activityLabel)}
+                        aria-hidden="true"
+                      >
+                        {initials(s.name)}
+                      </span>
+                      <span className="home-desk-person">
+                        <b>{s.name}</b>
+                        <small>{s.activityLabel}</small>
+                      </span>
                     </button>
                   </li>
                 ))}
@@ -583,6 +638,19 @@ function TeacherDeskContent({
                         <small>
                           {r.title} · {r.score ?? "Result available"}
                         </small>
+                        {scoreFill(r.score) !== null ? (
+                          <span
+                            className="home-desk-meter"
+                            role="img"
+                            aria-label={`Score ${r.score}`}
+                          >
+                            <i
+                              style={{
+                                width: `${Math.round(scoreFill(r.score)! * 100)}%`,
+                              }}
+                            />
+                          </span>
+                        ) : null}
                       </button>
                     </li>
                   ))}

@@ -1837,3 +1837,81 @@ html.dark .classroom-root .classroom-stage:has(.home-desk) {background:#181d1a;}
   .classroom-root .home-desk-attention {display:grid;grid-template-columns:1fr 1fr;overflow:hidden;}
   .classroom-root .home-desk .home-desk-payments .classroom-home-more {min-height:44px;}
 }
+
+/* ── Teacher Home visual widgets (2026-11-02) ────────────────────────────
+   Show the state instead of describing it: a seven-day calendar on Next up,
+   a four-step tracker on each follow-up, recency avatars and score bars in
+   Students. Every mark is drawn from stored data; text stays alongside so
+   colour or shape is never the only signal. */
+
+/* Week calendar, sitting on the charcoal Next up card. */
+.classroom-root .home-desk .home-desk-week {margin:2px 0 6px;}
+.classroom-root .home-desk .home-desk-week-days {display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px;}
+.classroom-root .home-desk .home-desk-week-day {
+  display:flex;flex-direction:column;align-items:center;gap:3px;width:100%;min-height:84px;
+  padding:8px 0 7px;border:0;border-radius:11px;background:transparent;color:var(--hd-dark-ink);
+  box-shadow:inset 0 0 0 1px rgb(244 241 232 / .12);cursor:pointer;
+}
+html.dark .classroom-root .home-desk .home-desk-week-day {box-shadow:inset 0 0 0 1px rgb(37 43 38 / .16);}
+.classroom-root .home-desk .home-desk-week-day:hover {text-decoration:none;background:rgb(244 241 232 / .09);}
+html.dark .classroom-root .home-desk .home-desk-week-day:hover {background:rgb(37 43 38 / .08);}
+.classroom-root .home-desk .home-desk-week-weekday {font:600 10.5px/1.2 var(--home-ui);letter-spacing:.08em;text-transform:uppercase;color:var(--hd-dark-muted);}
+.classroom-root .home-desk .home-desk-week-date {font:500 19px/1.1 var(--home-ui);font-variant-numeric:tabular-nums;}
+.classroom-root .home-desk .home-desk-week-day:not([data-busy]) .home-desk-week-date {opacity:.62;}
+.classroom-root .home-desk .home-desk-week-day[data-today] {background:rgb(244 241 232 / .12);box-shadow:inset 0 0 0 1.5px var(--hd-dark-ink);}
+html.dark .classroom-root .home-desk .home-desk-week-day[data-today] {background:rgb(37 43 38 / .1);}
+.classroom-root .home-desk .home-desk-week-day[aria-pressed="true"] {background:var(--hd-dark-ink);color:var(--hd-dark);box-shadow:none;}
+.classroom-root .home-desk .home-desk-week-day[aria-pressed="true"] .home-desk-week-weekday {color:var(--hd-dark);}
+.classroom-root .home-desk .home-desk-week-day[aria-pressed="true"] .home-desk-week-date {opacity:1;}
+.classroom-root .home-desk .home-desk-week-marks {display:flex;flex-direction:column;align-items:stretch;gap:3px;width:100%;padding:0 2px;min-height:20px;}
+.classroom-root .home-desk .home-desk-week-marks i {
+  display:block;font:600 9.5px/1 var(--home-ui);letter-spacing:-.02em;font-style:normal;text-align:center;white-space:nowrap;overflow:hidden;min-width:0;padding:3px 0;border-radius:5px;
+  box-shadow:inset 0 0 0 1px currentColor;color:inherit;
+}
+.classroom-root .home-desk .home-desk-week-marks i[data-session] {background:var(--hd-dark-ink);color:var(--hd-dark);box-shadow:none;}
+.classroom-root .home-desk .home-desk-week-day[aria-pressed="true"] .home-desk-week-marks i[data-session] {background:var(--hd-dark);color:var(--hd-dark-ink);}
+.classroom-root .home-desk .home-desk-week-marks b {font:600 9.5px/1 var(--home-ui);text-align:center;}
+.classroom-root .home-desk .home-desk-week-legend i {display:block;width:9px;height:9px;border-radius:3px;box-sizing:border-box;border:1.5px solid currentColor;background:transparent;}
+.classroom-root .home-desk .home-desk-week-legend i[data-session] {background:currentColor;}
+.classroom-root .home-desk .home-desk-week-legend {display:flex;gap:14px;margin:9px 2px 4px!important;font-size:11.5px!important;color:var(--hd-dark-muted);}
+.classroom-root .home-desk .home-desk-week-legend span {display:inline-flex;align-items:center;gap:6px;}
+.classroom-root .home-desk .home-desk-agenda .home-desk-week+.home-desk-agenda-list {margin-top:6px;}
+
+/* Follow-up tracker: four steps, filled as each is done. */
+.classroom-root .home-desk .home-desk-steps {display:flex;flex-wrap:wrap;gap:6px 14px;margin:10px 0 2px!important;}
+.classroom-root .home-desk .home-desk-steps li {display:inline-flex;align-items:center;gap:6px;font:500 12.5px/1 var(--home-ui);color:var(--hd-muted);}
+.classroom-root .home-desk .home-desk-steps li span {
+  display:grid;place-items:center;width:16px;height:16px;border-radius:50%;box-sizing:border-box;border:1.5px solid var(--hd-muted);color:var(--hd-dark-ink);
+}
+.classroom-root .home-desk .home-desk-steps li[data-done] {color:var(--hd-ink);font-weight:600;}
+.classroom-root .home-desk .home-desk-steps li[data-done] span {background:var(--hd-dark);border-color:var(--hd-dark);}
+.classroom-root .home-desk .classroom-home-session-task .home-desk-task-summary {margin-top:8px;}
+
+/* Students: recency avatars and score bars. */
+.classroom-root .home-desk .home-desk-student-columns li>button:has(.home-desk-avatar) {display:flex;align-items:center;gap:11px;}
+.classroom-root .home-desk .home-desk-person {display:grid;min-width:0;}
+.classroom-root .home-desk .home-desk-person small {margin-top:1px;}
+.classroom-root .home-desk .home-desk-avatar {
+  position:relative;display:grid;place-items:center;flex:none;width:34px;height:34px;border-radius:50%;
+  background:var(--hd-sheet);box-shadow:inset 0 0 0 1px var(--hd-edge);font:600 12px/1 var(--home-ui);letter-spacing:.02em;color:var(--hd-ink);
+}
+.classroom-root .home-desk .home-desk-avatar::after {
+  content:"";position:absolute;right:-1px;bottom:-1px;width:10px;height:10px;border-radius:50%;box-sizing:border-box;
+  border:2px solid var(--hd-panel);background:#8b9086;
+}
+.classroom-root .home-desk .home-desk-avatar[data-recency="today"]::after {background:#3f7d58;}
+.classroom-root .home-desk .home-desk-avatar[data-recency="recent"]::after {background:#b7791f;}
+.classroom-root .home-desk .home-desk-meter {display:block;width:min(100%,170px);height:6px;margin-top:7px;border-radius:999px;background:var(--hd-edge-soft);overflow:hidden;}
+.classroom-root .home-desk .home-desk-meter i {display:block;height:100%;border-radius:999px;background:var(--hd-ink);}
+
+@media (prefers-reduced-motion:no-preference) {
+  .classroom-root .home-desk .home-desk-week-day,
+  .classroom-root .home-desk .home-desk-meter i {transition:background-color 160ms,color 160ms,box-shadow 160ms,width 260ms cubic-bezier(0.23,1,0.32,1);}
+}
+@container classroom-home (max-width:600px) {
+  .classroom-root .home-desk .home-desk-week-days {gap:3px;}
+  .classroom-root .home-desk .home-desk-week-day {min-height:80px;border-radius:10px;}
+  .classroom-root .home-desk .home-desk-week-date {font-size:17px;}
+}
+.classroom-root .home-desk .home-desk-week-days>li {display:flex;}
+.classroom-root .home-desk .home-desk-week-days>li>button {flex:1;}

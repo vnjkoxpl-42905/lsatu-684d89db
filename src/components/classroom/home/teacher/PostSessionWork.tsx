@@ -1,4 +1,5 @@
 import * as React from "react";
+import { Check } from "lucide-react";
 import type { TeacherStudentRow } from "./teacherHomeModel";
 import {
   calendarCheckIsStale,
@@ -54,6 +55,12 @@ export function SessionTask({
   ]
     .filter(Boolean)
     .join(" · ");
+  const steps: [string, boolean][] = [
+    ["Recap", !!task.recap_done],
+    ["Posted", !!task.recap_posted],
+    ["Notes", !!task.notes_done],
+    ["Work", !!task.work_assigned],
+  ];
   return (
     <li
       className={`classroom-home-session-task ${expanded ? "is-expanded" : ""}`}
@@ -81,10 +88,23 @@ export function SessionTask({
         ) : null}
       </div>
       {!expanded ? (
+        <>
+          <ol className="home-desk-steps" aria-hidden="true">
+            {steps.map(([label, done]) => (
+              <li key={label} data-done={done || undefined}>
+                <span>{done ? <Check size={11} strokeWidth={3} /> : null}</span>
+                {label}
+              </li>
+            ))}
+          </ol>
         <p className="home-desk-task-summary">
-          {task.blocker
-            ? `Blocked: ${task.blocker}`
-            : remaining || "Steps complete; ready to handle"}
+          {task.blocker ? (
+            `Blocked: ${task.blocker}`
+          ) : (
+            <span className="classroom-home-sr">
+              {remaining || "Steps complete; ready to handle"}
+            </span>
+          )}
           <span>
             {task.transcript_status === "linked"
               ? "Transcript linked"
@@ -93,6 +113,7 @@ export function SessionTask({
                 : "Waiting for transcript"}
           </span>
         </p>
+        </>
       ) : null}
       <div id={`${id}-detail`} hidden={!expanded}>
         <p className="classroom-home-task-sync">
