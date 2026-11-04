@@ -6,8 +6,12 @@ const maybeSingle = vi.fn();
 const insert = vi.fn((_row?: Record<string, unknown>) => ({
   select: () => ({ maybeSingle }),
 }));
+// The blind-review fold updates the row the section was written to, so the
+// mock has to answer .update().eq() as well as .insert().
+const eq = vi.fn();
+const update = vi.fn((_row?: Record<string, unknown>) => ({ eq }));
 vi.mock('@/integrations/supabase/client', () => ({
-  supabase: { from: () => ({ insert }) },
+  supabase: { from: () => ({ insert, update }) },
 }));
 
 const getQuestion = vi.fn();
@@ -21,6 +25,7 @@ vi.mock('@/lib/wajService', () => ({
 }));
 
 import {
+  applyBlindReviewToSection,
   buildSectionStats,
   buildSectionTotals,
   logSectionWrongAnswers,
@@ -56,6 +61,7 @@ const session = (
 beforeEach(() => {
   vi.clearAllMocks();
   maybeSingle.mockResolvedValue({ data: { id: 'sh-1' }, error: null });
+  eq.mockResolvedValue({ error: null });
   logWrongAnswer.mockResolvedValue(undefined);
   getQuestion.mockImplementation((qid: string) => q(qid));
 });
@@ -330,5 +336,83 @@ describe('the wrong answer journal set', () => {
 
     expect(written).toEqual([]);
     expect(logWrongAnswer).not.toHaveBeenCalled();
+  });
+});
+
+describe('applyBlindReviewToSection', () => {
+  const reviewed = () =>
+    buildSectionStats(
+      session(
+        ['q1', 'q2'],
+        [
+          ['q1', { selectedAnswer: 'B', correct: true, timeMs: 1000 }],
+          ['q2', { selectedAnswer: 'A', correct: false, timeMs: 2000 }],
+        ],
+      ),
+      // A blind review is a pass over the WHOLE section, so every question
+      // carries a result — including the ones that were already right.
+      [
+        { qid: 'q1', brAnswer: 'B', correct: true, brChanged: false },
+        { qid: 'q2', brAnswer: 'B', correct: true, brChanged: true },
+      ] as never,
+    );
+
+  const brResults = () =>
+    [
+      { qid: 'q1', brAnswer: 'B', correct: true },
+      { qid: 'q2', brAnswer: 'B', correct: true },
+    ] as never;
+
+  it('folds the review onto the existing row rather than writing a second one', async () => {
+    await applyBlindReviewToSection({
+      sectionHistoryId: 'sh-1',
+      stats: reviewed(),
+      brResults: brResults(),
+    });
+
+    expect(insert).not.toHaveBeenCalled();
+    expect(eq).toHaveBeenCalledWith('id', 'sh-1');
+    expect(update.mock.calls[0][0]).toMatchObject({
+      br_score: 2,
+      br_total: 2,
+      br_percent: 100,
+      br_delta: 1,
+      br_used: true,
+    });
+  });
+
+  it('rewrites the per-question record, so the table agrees with the totals', async () => {
+    await applyBlindReviewToSection({
+      sectionHistoryId: 'sh-1',
+      stats: reviewed(),
+      brResults: brResults(),
+    });
+
+    const row = update.mock.calls[0][0] as {
+      questions_json: Array<Record<string, unknown>>;
+    };
+    expect(row.questions_json[1]).toMatchObject({ qid: 'q2', brAnswer: 'B', brCorrect: true });
+  });
+
+  it('writes nothing when no review was sat', async () => {
+    await applyBlindReviewToSection({
+      sectionHistoryId: 'sh-1',
+      stats: reviewed(),
+      brResults: [],
+    });
+
+    expect(update).not.toHaveBeenCalled();
+  });
+
+  it('throws when the update fails, so the screen can say so', async () => {
+    eq.mockResolvedValue({ error: { message: 'nope' } });
+
+    await expect(
+      applyBlindReviewToSection({
+        sectionHistoryId: 'sh-1',
+        stats: reviewed(),
+        brResults: brResults(),
+      }),
+    ).rejects.toMatchObject({ message: 'nope' });
   });
 });
