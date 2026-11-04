@@ -1,13 +1,17 @@
 export const MAX_INBOX_ATTACHMENT_SIZE = 20 * 1024 * 1024;
+export const MAX_INBOX_VIDEO_ATTACHMENT_SIZE = 100 * 1024 * 1024;
 
 const ALLOWED_INBOX_ATTACHMENT_TYPES = new Set([
   'application/pdf',
   'image/png',
   'image/jpeg',
   'image/webp',
+  'video/mp4',
+  'video/webm',
+  'video/quicktime',
 ]);
 
-export type InboxAttachmentPreviewKind = 'pdf' | 'image' | 'file';
+export type InboxAttachmentPreviewKind = 'pdf' | 'image' | 'video' | 'file';
 
 export interface InboxAttachmentInput {
   type: string;
@@ -24,10 +28,12 @@ export interface ExternalWorkUploadInsertInput {
 
 export function validateInboxAttachment(file: InboxAttachmentInput): string | null {
   if (!ALLOWED_INBOX_ATTACHMENT_TYPES.has(file.type)) {
-    return 'Only PDF files and screenshots are allowed';
+    return 'Only PDF files, screenshots, and videos are allowed';
   }
-  if (file.size > MAX_INBOX_ATTACHMENT_SIZE) {
-    return 'File must be under 20MB';
+  const isVideo = file.type.startsWith('video/');
+  const maxSize = isVideo ? MAX_INBOX_VIDEO_ATTACHMENT_SIZE : MAX_INBOX_ATTACHMENT_SIZE;
+  if (file.size > maxSize) {
+    return isVideo ? 'Video must be under 100MB' : 'File must be under 20MB';
   }
   return null;
 }
@@ -76,6 +82,7 @@ export function stripHelpContextFromBody(body: string): string {
 export function classifyInboxAttachmentMime(mimeType: string | null | undefined): InboxAttachmentPreviewKind {
   if (mimeType === 'application/pdf') return 'pdf';
   if ((mimeType ?? '').startsWith('image/')) return 'image';
+  if ((mimeType ?? '').startsWith('video/')) return 'video';
   return 'file';
 }
 

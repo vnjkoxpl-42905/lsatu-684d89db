@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { FileText, Download, Cloud, ExternalLink, Eye, Image as ImageIcon } from 'lucide-react';
+import { FileText, Download, Cloud, ExternalLink, Eye, Image as ImageIcon, Video as VideoIcon } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import type { MessageAttachment } from '@/hooks/useInbox';
@@ -15,6 +15,7 @@ function formatSize(bytes: number) {
 function fileKindLabel(mimeType: string) {
   if (mimeType === 'application/pdf') return 'PDF';
   if (mimeType.startsWith('image/')) return 'Image';
+  if (mimeType.startsWith('video/')) return 'Video';
   if (mimeType.startsWith('audio/')) return 'Audio';
   if (mimeType.includes('word') || mimeType.includes('document')) return 'Document';
   if (mimeType.startsWith('text/')) return 'Text';
@@ -124,6 +125,46 @@ function ImageAttachment({
   );
 }
 
+function VideoAttachment({ attachment }: { attachment: MessageAttachment }) {
+  const [url, setUrl] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!attachment.storage_path) return;
+    let cancelled = false;
+    supabase.storage
+      .from('message-attachments')
+      .createSignedUrl(attachment.storage_path, 60 * 60)
+      .then(({ data }) => {
+        if (!cancelled && data?.signedUrl) setUrl(data.signedUrl);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [attachment.storage_path]);
+
+  return (
+    <div
+      className="mt-2 block max-w-sm overflow-hidden rounded-2xl border border-[#decdb7] bg-[#fffaf1] text-left shadow-[0_12px_28px_rgba(86,61,32,0.10)]"
+      title={attachment.file_name}
+    >
+      {url ? (
+        <video controls playsInline preload="metadata" className="block max-h-64 w-full bg-black">
+          <source src={url} type={attachment.mime_type ?? undefined} />
+        </video>
+      ) : (
+        <div className="flex items-center gap-2 px-3 py-3 text-xs font-semibold text-[#7a6b58]">
+          <VideoIcon className="w-4 h-4" /> Loading {attachment.file_name}…
+        </div>
+      )}
+      <div className="flex items-center gap-1.5 border-t border-[#eadfcf] px-3 py-2 text-[11px] font-bold text-[#6f6253]">
+        <VideoIcon className="h-3.5 w-3.5 text-[#8b5b42]" />
+        <span className="truncate">{attachment.file_name}</span>
+        <span className="shrink-0 text-[#a89a88]">· {formatSize(attachment.file_size)}</span>
+      </div>
+    </div>
+  );
+}
+
 export function AttachmentCard({
   attachment,
   onPreview,
@@ -133,8 +174,12 @@ export function AttachmentCard({
 }) {
   const isDrive = attachment.kind === 'drive';
   const isImage = !isDrive && (attachment.mime_type ?? '').startsWith('image/');
+  const isVideo = !isDrive && (attachment.mime_type ?? '').startsWith('video/');
   if (isImage) {
     return <ImageAttachment attachment={attachment} onPreview={onPreview} />;
+  }
+  if (isVideo) {
+    return <VideoAttachment attachment={attachment} />;
   }
 
   const open = async () => {

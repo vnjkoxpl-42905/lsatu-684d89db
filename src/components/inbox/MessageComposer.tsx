@@ -8,6 +8,7 @@ import {
   Send,
   Smile,
   Sparkles,
+  Video as VideoIcon,
   Wand2,
   X,
 } from 'lucide-react';
@@ -515,6 +516,10 @@ export function MessageComposer({
               <div className="flex items-center justify-center h-12 w-12 rounded-lg border border-[var(--msg-line)] bg-[var(--msg-page)] shrink-0">
                 <ImageIcon className="w-4 h-4 text-[var(--msg-meta)]" />
               </div>
+            ) : classifyInboxAttachmentMime(file.type) === 'video' ? (
+              <div className="flex items-center justify-center h-12 w-12 rounded-lg border border-[var(--msg-line)] bg-[var(--msg-page)] shrink-0">
+                <VideoIcon className="w-4 h-4 text-[var(--msg-meta)]" />
+              </div>
             ) : (
               <div className="flex items-center justify-center h-12 w-12 rounded-lg border border-[var(--msg-line)] bg-[var(--msg-page)] shrink-0">
                 <FileText className="w-4 h-4 text-[var(--msg-meta)]" />
@@ -527,6 +532,8 @@ export function MessageComposer({
                   ? 'Uploading…'
                   : classifyInboxAttachmentMime(file.type) === 'image'
                   ? 'Screenshot preview ready. Paste another to replace it.'
+                  : classifyInboxAttachmentMime(file.type) === 'video'
+                  ? 'Video ready to send'
                   : 'PDF ready to send'}
               </div>
             </div>
@@ -610,7 +617,7 @@ export function MessageComposer({
       <input
         ref={fileRef}
         type="file"
-        accept="application/pdf,image/png,image/jpeg,image/webp"
+        accept="application/pdf,image/png,image/jpeg,image/webp,video/mp4,video/webm,video/quicktime"
         className="hidden"
         onChange={(e) => pickFile(e.target.files?.[0] ?? null)}
       />
@@ -638,7 +645,7 @@ export function MessageComposer({
         />
         <div className="flex items-center gap-1.5 border-t border-[var(--msg-line)] px-3 py-2">
           <ToolButton
-            label="Attach a PDF or screenshot"
+            label="Attach a PDF, screenshot, or video"
             onClick={() => fileRef.current?.click()}
             disabled={sending}
           >
