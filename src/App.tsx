@@ -1,3 +1,4 @@
+import { StudentAccessNoticeGate } from "@/components/StudentAccessNoticeGate";
 import { REVIEW_HUB_ROUTES, REVIEW_HUB_ALIASES, REVIEW_HISTORY_ALIAS } from '@/lib/reviewHubRoutes';
 import { preserveRedirectLocation, redirectLegacyHistoryLocation } from "./lib/preserveRedirectLocation";
 import React from "react";
@@ -295,6 +296,7 @@ const App = () => {
               CausationStation, IntroToLr). Nested per-route Suspense boundaries
               still apply for their own fallbacks. COMPREHENSIVEAUDIT Phase 3. */}
           <React.Suspense fallback={<div className="min-h-screen bg-background" />}>
+          <StudentAccessNoticeGate>
           <Routes>
             {/* Auth route - NO question bank needed */}
             <Route path="/auth" element={<Auth />} />
@@ -1056,6 +1058,7 @@ const App = () => {
               </QuestionBankProvider>
             } />
           </Routes>
+          </StudentAccessNoticeGate>
           </React.Suspense>
           <GlobalOverlayMount />
         </BrowserRouter>

@@ -1,3 +1,4 @@
+import { StudentAccessNoticeControls } from "@/components/teacher/StudentAccessNoticeControls";
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import type { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
@@ -680,7 +681,10 @@ function PersonAccessPanel({
   return (
     <div className="space-y-4 border-t border-black/10 px-8 py-4">
       {person.role !== 'admin' && !person.archived_at && (
-        <AccessTierControl person={person} toggleAccess={toggleAccess} setTier={setTier} />
+        <>
+          <AccessTierControl person={person} toggleAccess={toggleAccess} setTier={setTier} />
+          <StudentAccessNoticeControls key={person.class_id} studentId={person.class_id} />
+        </>
       )}
 
       {person.role !== 'admin' && !person.archived_at && (
