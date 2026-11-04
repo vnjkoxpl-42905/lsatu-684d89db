@@ -98,6 +98,19 @@ export interface SectionStageProps {
    * silence has run past one window, and withdrawn as soon as anything is heard.
    */
   onDeadInput?: (dead: boolean) => void;
+  /** The first sound to reach the microphone. The ready beat holds for it. */
+  onHeard?: () => void;
+  /**
+   * Whether the beat has heard her yet. It says "Say something to check your
+   * microphone" until it has, and counts down once it has or once its own
+   * check has run out.
+   */
+  micHeard?: boolean;
+  /**
+   * Whether the beat has stopped waiting, either because it heard her or
+   * because its check ran out. The count is shown only once this is true.
+   */
+  micChecked?: boolean;
   /**
    * The microphone was refused or is missing. The ready beat holds here rather
    * than counting down into a spoken run that has nothing to mark at the end.
@@ -206,6 +219,9 @@ export function SectionStage({
   recording = false,
   getStream,
   onDeadInput,
+  onHeard,
+  micHeard = false,
+  micChecked = false,
   micRefused,
   onRetryMic,
   sectionName,
@@ -494,15 +510,39 @@ export function SectionStage({
                 </>
 
               ) : (
+                /*
+                 * "Microphone on. Starting in 3." and the bar, and nothing else.
+                 *
+                 * It used to be thirty words of instruction under a heading that
+                 * said "Recording now" beside a clock at 0:00, read in three
+                 * seconds. The instruction now sits at the foot of the briefing,
+                 * where she has as long as she likes, and the beat is left with
+                 * the one thing only the beat can do: show her the microphone
+                 * is live before any of it counts. The bar is in the panel
+                 * rather than the footer because it is what she is here to look
+                 * at, and the count does not begin until it has moved.
+                 */
                 <>
-                  <p className="ac-section-ready-title">Recording now</p>
+                  <p className="ac-section-ready-title">Microphone on.</p>
+                  {getStream ? (
+                    <span className="ac-section-ready-level">
+                      <VoiceLevel getStream={getStream} phase={phase} onHeard={onHeard} />
+                    </span>
+                  ) : null}
                   <p className="ac-section-ready-body">
-                    One take, all the way through, out loud. Space twice per stimulus: once when
-                    you have read it all, once when you have given The Recall.
+                    {micHeard
+                      ? "Heard you."
+                      : micChecked
+                        ? "Nothing heard yet. Check it is not muted."
+                        : "Say something to check your microphone."}
                   </p>
-                  <span className="ac-section-ready-count">
-                    {countdown > 0 ? `Starting in ${countdown}` : "Starting"}
-                  </span>
+                  {/* No count while it is still listening for her: a number
+                      ticking beside "say something" would say the opposite. */}
+                  {micChecked ? (
+                    <span className="ac-section-ready-count">
+                      {countdown > 0 ? `Starting in ${countdown}` : "Starting"}
+                    </span>
+                  ) : null}
                 </>
               )}
             </div>
@@ -536,14 +576,18 @@ export function SectionStage({
                 : countdown !== null
                   ? micRefused
                     ? "The section has not started."
-                    : "Say something to check your microphone."
+                    : micHeard
+                      ? "Heard you. The section starts after the count."
+                      : "The section has not started."
                   : INSTRUCTION[phase]}
               {/* No presence bar while she is away. The microphone is still
                   open -- pausing a recorder does not close the input -- so a
                   bar left running would move to an empty room and say the one
                   thing it exists to say when it moves: that this is being
                   heard. */}
-              {getStream && !paused ? (
+              {/* During the beat the bar is in the panel, where she is looking,
+                  not down here beside a status line. One bar at a time. */}
+              {getStream && !paused && countdown === null ? (
                 <VoiceLevel getStream={getStream} phase={phase} onDeadInput={onDeadInput} />
               ) : null}
             </p>

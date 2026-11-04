@@ -109,6 +109,28 @@ function refuseMicrophone() {
   });
 }
 
+/**
+ * An input with a voice on it, for the beat's check.
+ *
+ * jsdom has no AudioContext at all, which is the silent case. This one hands
+ * the analyser samples well above the noise floor, so the bar moves on its
+ * first frame and the beat hears her.
+ */
+class LoudAudioContext {
+  createAnalyser() {
+    return {
+      fftSize: 512,
+      getFloatTimeDomainData: (samples: Float32Array) => samples.fill(0.05),
+    };
+  }
+  createMediaStreamSource() {
+    return { connect: () => {} };
+  }
+  close() {
+    return Promise.resolve();
+  }
+}
+
 /** One stimulus, so a full run is two presses. */
 const ONE = { ...pt105, items: [pt105.items[0]] };
 /** Two, for the rules about what never comes back. */
@@ -203,7 +225,9 @@ describe("what she sees while working", () => {
     // returned early; nothing re-ran it when the beat ended. Every run of the
     // 2026-09-03 audit read 0:00 at minute 46. Real timers here, because the
     // effect and the interval both have to fire on their own.
-    await renderRun({ readySeconds: 1 });
+    // No microphone check here: this test is about the clock after the beat,
+    // and jsdom has no AudioContext for the check to hear anything through.
+    await renderRun({ readySeconds: 1, micCheckSeconds: 0 });
     await vi.waitFor(() => expect(screen.queryByText("0:00")).not.toBeInTheDocument(), { timeout: 4000 });
     await vi.waitFor(() => expect(screen.getByText(/^0:0[1-9]$/)).toBeInTheDocument(), { timeout: 4000 });
   }, 10000);
@@ -744,7 +768,7 @@ describe("a snapshot that is not a section", () => {
 describe("the ready beat", () => {
   it("does not show the first stimulus until the beat has run", async () => {
     await renderRun({ readySeconds: 3 });
-    expect(screen.getByText(/recording now/i)).toBeInTheDocument();
+    expect(screen.getByText(/microphone on/i)).toBeInTheDocument();
     expect(screen.queryByText(CHUNKS[0].text)).not.toBeInTheDocument();
   });
 
@@ -754,7 +778,7 @@ describe("the ready beat", () => {
     space();
     space();
     // Still the beat: the presses went nowhere rather than eating stimulus one.
-    expect(screen.getByText(/recording now/i)).toBeInTheDocument();
+    expect(screen.getByText(/microphone on/i)).toBeInTheDocument();
   });
 
   it("holds the section clock at zero through it", async () => {
@@ -766,8 +790,46 @@ describe("the ready beat", () => {
   it("hands over to the first stimulus when it ends", async () => {
     await renderRun({ readySeconds: 0 });
     expect(await screen.findByText(CHUNKS[0].text)).toBeInTheDocument();
-    expect(screen.queryByText(/recording now/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/microphone on/i)).not.toBeInTheDocument();
   });
+
+  /*
+   * The check. "Say something to check your microphone" used to be printed
+   * over a count that ran whether or not anything was ever heard. The count
+   * now waits for the first sound, or for the check to run out.
+   */
+  it("does not start counting until it has heard her", async () => {
+    // jsdom has no AudioContext, so the bar never attaches and nothing is heard.
+    await renderRun({ readySeconds: 1, micCheckSeconds: 10 });
+    expect(screen.getByText(/say something to check your microphone/i)).toBeInTheDocument();
+    expect(screen.queryByText(/starting/i)).toBeNull();
+    await new Promise((r) => setTimeout(r, 1500));
+    // A one-second beat that had been counting would be over by now.
+    expect(screen.getByText(/say something to check your microphone/i)).toBeInTheDocument();
+    expect(screen.queryByText(CHUNKS[0].text)).toBeNull();
+  }, 10000);
+
+  it("counts anyway once the check has run out, and says nothing was heard", async () => {
+    await renderRun({ readySeconds: 1, micCheckSeconds: 0.3 });
+    expect(await screen.findByText(/nothing heard yet/i, {}, { timeout: 2000 })).toBeInTheDocument();
+    expect(await screen.findByText(CHUNKS[0].text, {}, { timeout: 3000 })).toBeInTheDocument();
+  }, 10000);
+
+  it("counts as soon as it has heard her", async () => {
+    vi.stubGlobal("AudioContext", LoudAudioContext);
+    try {
+      await renderRun({ readySeconds: 1, micCheckSeconds: 10 });
+      // The sound arrives inside an animation frame, outside act, so a polling
+      // query never sees it flushed. A short real wait does; the beat then
+      // holds on "Heard you." for the whole one-second count.
+      await new Promise((r) => setTimeout(r, 300));
+      expect(screen.getByText("Heard you.")).toBeInTheDocument();
+      expect(screen.getByText(/starting in 1/i)).toBeInTheDocument();
+      expect(await screen.findByText(CHUNKS[0].text, {}, { timeout: 3000 })).toBeInTheDocument();
+    } finally {
+      vi.unstubAllGlobals();
+    }
+  }, 10000);
 });
 
 /**
@@ -790,7 +852,7 @@ describe("a refused microphone", () => {
 
   it("does not claim to be recording", async () => {
     await renderRun({ readySeconds: 3 });
-    expect(screen.queryByText(/recording now/i)).toBeNull();
+    expect(screen.queryByText(/microphone on/i)).toBeNull();
     expect(screen.getByText(/no microphone/i)).toBeInTheDocument();
   });
 
@@ -826,7 +888,7 @@ describe("a refused microphone", () => {
       fireEvent.click(again);
     });
     expect(screen.queryByText(/no microphone/i)).toBeNull();
-    await vi.waitFor(() => expect(screen.getByText(/recording now/i)).toBeInTheDocument(), {
+    await vi.waitFor(() => expect(screen.getByText(/microphone on/i)).toBeInTheDocument(), {
       timeout: 4000,
     });
   }, 10000);
