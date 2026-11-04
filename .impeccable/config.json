@@ -197,6 +197,60 @@
         "value": "#06231e",
         "createdAt": "2026-09-04T13:37:12.154Z",
         "reason": "on-accent ink for the .sl- teal ramp (dark theme only); its sibling ramp values in this file are already accepted, and the dark accent cannot carry white"
+      },
+      {
+        "rule": "design-system-color",
+        "value": "*",
+        "files": [
+          "src/features/activity-centre/components/report-card.css"
+        ],
+        "createdAt": "2026-09-09T21:24:18.789Z",
+        "reason": "The Report Card is a sanctioned world scoped to .rc (surface brief, locked 2026-09-08; DESIGN.md Tertiary). Its ramp is its own on purpose: plum console, violet-cast page, four category tones, Fraunces/Lexend/Plex. Text contrast is measured through a canvas, lowest 5.63:1 (RRC audit 2026-09-09). The 19 advisory findings the detector raised against it were all the same finding, the world's palette and type scale being outside DESIGN.md, which is what a sanctioned world is."
+      },
+      {
+        "rule": "design-system-font-size",
+        "value": "*",
+        "files": [
+          "src/features/activity-centre/components/report-card.css"
+        ],
+        "createdAt": "2026-09-09T21:24:18.791Z",
+        "reason": "The Report Card is a sanctioned world scoped to .rc (surface brief, locked 2026-09-08; DESIGN.md Tertiary). Its ramp is its own on purpose: plum console, violet-cast page, four category tones, Fraunces/Lexend/Plex. Text contrast is measured through a canvas, lowest 5.63:1 (RRC audit 2026-09-09). The 19 advisory findings the detector raised against it were all the same finding, the world's palette and type scale being outside DESIGN.md, which is what a sanctioned world is."
+      },
+      {
+        "rule": "design-system-radius",
+        "value": "*",
+        "files": [
+          "src/features/activity-centre/components/report-card.css"
+        ],
+        "createdAt": "2026-09-09T21:24:18.791Z",
+        "reason": "The Report Card is a sanctioned world scoped to .rc (surface brief, locked 2026-09-08; DESIGN.md Tertiary). Its ramp is its own on purpose: plum console, violet-cast page, four category tones, Fraunces/Lexend/Plex. Text contrast is measured through a canvas, lowest 5.63:1 (RRC audit 2026-09-09). The 19 advisory findings the detector raised against it were all the same finding, the world's palette and type scale being outside DESIGN.md, which is what a sanctioned world is."
+      },
+      {
+        "rule": "design-system-font-size",
+        "value": "*",
+        "files": [
+          "src/features/activity-centre/recall/section.css"
+        ],
+        "createdAt": "2026-09-09T21:32:58.519Z",
+        "reason": "LawHub surface mirror (DESIGN.md Tertiary, 2026-09-09): .ac-section copies the official drill screen's scale and shapes rather than the app ramp; section.css documents every value as taken from it, not invented"
+      },
+      {
+        "rule": "design-system-radius",
+        "value": "*",
+        "files": [
+          "src/features/activity-centre/recall/section.css"
+        ],
+        "createdAt": "2026-09-09T21:33:18.336Z",
+        "reason": "LawHub surface mirror (DESIGN.md Tertiary, 2026-09-09): .ac-section copies the official drill screen's scale and shapes rather than the app ramp; section.css documents every value as taken from it, not invented"
+      },
+      {
+        "rule": "design-system-color",
+        "value": "*",
+        "files": [
+          "src/features/activity-centre/recall/section.css"
+        ],
+        "createdAt": "2026-09-09T21:35:03.219Z",
+        "reason": "LawHub surface mirror (DESIGN.md Tertiary, 2026-09-09): the --sec-* tokens are the official drill screen's slate, copied not chosen; the one oklch is the handover ground, a copy of .rc-ground that section.css.test.ts holds to the original"
       }
     ]
   }

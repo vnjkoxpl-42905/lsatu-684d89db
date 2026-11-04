@@ -2328,6 +2328,10 @@ function SectionPanel() {
         confirmingExit={confirming}
         onConfirmExit={() => setConfirming(false)}
         onCancelExit={() => setConfirming(false)}
+        /* The same act as the Space handler above. Without it the stage never
+           draws the on-screen button, so the phone's only way to advance was
+           the one control in the drill nobody could look at. */
+        onAdvance={() => setCursor((at) => advanceCursor(run, at) ?? at)}
       />
       )}
     </div>

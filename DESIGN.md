@@ -186,6 +186,11 @@ Individual rooms carry their own palettes behind a wrapper class and are documen
 
 `.classroom-root` was added to this list on 2026-09-08, after an audit found the classroom running on Outfit and a warm palette while this record still described it as neutral Workroom chrome. It is a sanctioned world, not drift: the warmth and the typeface are deliberate and they are what makes the classroom feel like a study rather than a dashboard. The record was wrong, not the code. Its brief is `.impeccable/surfaces/classroom.md`. Note that this is the one sanctioned world that is also a corridor, so the rule below about corridors never being worlds now has exactly one documented exception.
 
+Two more rulings, recorded 2026-09-09 after the Read, Recall, Colour audit:
+
+- **`.ac-section` is a sanctioned LawHub mirror.** The RRC section runner (`recall/section.css`) wears the official drill screen's clothes: indigo field, white rail, one centred white card, Fraunces at 19px, Helvetica chrome. It is not a world of its own and it is not Workroom chrome; it is the surface she will sit on test day, copied rather than designed, and `OfficialDrillFrame` is the same mirror. Every value in it is named as a `--sec-*` token so the copy cannot drift one hex at a time. The detector is told so in `.impeccable/config.json`.
+- **The RRC door's cream is the owner's exception to his own ruling.** The Report Card brief vetoes cream ("overdone and too AI looking", 2026-09-08). The door (`.sl`, `--rd-cream`) was locked on cream three days earlier, on the same owner's brief, and stays on it: the door is a landing page in a painted evening and the card is a working document, and the two were never asked to share a ground. The contradiction is real and it is deliberate. An audit that flags it has found the record, not a defect.
+
 ### Neutral
 
 - **Workroom Page** (`#f7f4ee`) and **Card** (`#f7f4ee`): the shared open paper ground. Use a restrained border when grouping needs a visible edge.
@@ -231,6 +236,8 @@ Individual rooms carry their own palettes behind a wrapper class and are documen
 ### Named Rules
 
 **The One Face Rule.** The Workroom uses a single family. Hierarchy is built from size, weight and space. A second family inside the Workroom is a defect unless it is the Outfit question lock.
+
+**The Question Lock has one exception, and it is the mirror.** The RRC section runner sets its stimulus in Fraunces at 19px, not Outfit, because that is what the official drill screen does and `.ac-section` is a sanctioned copy of that screen (see Tertiary above). The lock exists so a passage does not reflow when the shell changes face; a mirror of the test-day surface is the one place where matching the test matters more than matching the shell.
 
 **The Question Never Moves Rule.** LSAT question text is font-locked. A change to the shell's typeface must not reflow a passage a student is mid-way through reading.
 

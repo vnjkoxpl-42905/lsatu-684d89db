@@ -51,6 +51,16 @@ The two RRC doors (`SectionLibraryLaunch`, `SectionLaunch`, both drawn by `Secti
 - **Signature moment:** `RecallDemo`, a looping performance of the method on a synthetic stimulus, labelled as such, whose text literally dissolves at the Recall step.
 - **Steps:** four cards, each with a small drawn scene, doubling as the ARIA tablist the tests already contract (`sl-beat`, `sl-beat-tab-N`, `sl-beat-panel`). The full briefing is the second tab of the drawer.
 - **Tokens:** scoped to `.sl` as `--rd-*`. The design detector reports them as outside DESIGN.md; that is the sanctioned-world exception above, not drift.
+- **Cream, and the card's veto (recorded 2026-09-09).** The Report Card below vetoes cream in the owner's words. The door was locked on `--rd-cream` three days earlier, on the same owner's brief, and stays on it. A landing page in a painted evening and a working document were never asked to share a ground. The contradiction is deliberate; DESIGN.md's Tertiary section carries the ruling.
+
+## Read, Recall, Colour runner, section mode (recorded 2026-09-09)
+
+`.ac-section` in `recall/section.css` is not a world and not Workroom chrome. It is a **sanctioned mirror** of the official drill screen (LawHub: indigo field `#1a1635`, white rail, one centred white card, Fraunces at 19px, Helvetica chrome, the slate greys for rules and muted ink), the same mirror `OfficialDrillFrame` is. Mode **Operate**, and nothing in it may read as a verdict before the section ends.
+
+- **Every value is a `--sec-*` token.** Six were; the thirteen raw slate literals beside them are now `--sec-rule-2`, `--sec-fill`, `--sec-paper-2`, `--sec-ink-2`, `--sec-ink-3` and `--sec-mark`. A mirror drifts one hex at a time, so the copy is named.
+- **The Outfit question lock does not apply here.** The stimulus is Fraunces because the test-day screen's stimulus is Fraunces. DESIGN.md's Typography section records this as the lock's one exception.
+- **Detector:** `.impeccable/config.json` waives the mirror's sizes, radii and colours for this file (`impeccable ignores add-value ... --file`, reason "LawHub surface mirror"). Verified 2026-09-09 with `impeccable detect` 4.1.0: 0 anti-patterns, 0 advisory notes.
+- **Handover:** `.ac-section.is-finishing` warms to what `.rc-ground` paints, and `section.css.test.ts` holds the copy to the original.
 
 ## Reading Center LR Recall entry correction (2026-10-16)
 
