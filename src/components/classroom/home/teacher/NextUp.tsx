@@ -601,7 +601,7 @@ export function NextUp({
                       key={m}
                       style={{ "--m": i * 60 } as React.CSSProperties}
                       data-edge={i === 0 ? "first" : i === span / 60 ? "last" : undefined}
-                      data-near={(nowState === "in" && Math.abs(m - nowMinute) < 20) || undefined}
+                      data-near={(nowState === "in" && Math.abs(m - nowMinute) < 35) || undefined}
                     >
                       {hourLabel(m)}
                     </span>
@@ -856,6 +856,7 @@ function DayColumn({
                 key={p.event.id}
                 className="home-desk-cal-cap"
                 data-k={isSession(p.event) ? "s" : "o"}
+                data-multi={p.lanes > 1 || undefined}
                 data-past={past || undefined}
                 data-live={live || undefined}
                 data-next={(spot?.id === p.event.id && !live) || undefined}

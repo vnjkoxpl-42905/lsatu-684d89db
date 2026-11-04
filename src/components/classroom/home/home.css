@@ -2361,3 +2361,81 @@ html.dark .classroom-root .home-desk :is(.home-desk-cal-cap,.home-desk-cal-ev)[d
 @media (prefers-reduced-motion:reduce) {
   .classroom-root .home-desk .home-desk-quick-field {transition:none;}
 }
+
+/* ── Week calendar refinement (2026-11-03) ────────────────────────────────
+   Less crowded, more legible: a taller hour so one-hour sessions get real pills with a visible
+   gap, hour lines only (no half-hour noise), roomier day headers, side-by-side events show the
+   name instead of a clipped time, and the clock tag clears the hour label beside it. */
+.classroom-root .home-desk .home-desk-cal-frame:not([data-compact]) {
+  --cal-hour:clamp(18px,calc(240px / var(--cal-span-h)),22px);
+  --cal-head-h:58px;--cal-colgap:5px;--cal-axis:40px;
+}
+.classroom-root .home-desk .home-desk-cal-frame[data-mode="day"]:not([data-compact]) {--cal-hour:42px;}
+.classroom-root .home-desk .home-desk-cal-frame:not([data-compact]) .home-desk-cal-bar {margin-bottom:12px;}
+.classroom-root .home-desk .home-desk-cal-frame:not([data-compact]) .home-desk-cal-readouts div {padding:0 18px;}
+
+/* Day headers */
+.classroom-root .home-desk .home-desk-cal-frame:not([data-compact]) .home-desk-cal-head {padding:12px 11px 0;row-gap:7px;}
+.classroom-root .home-desk .home-desk-cal-frame:not([data-compact]) .home-desk-cal-wd {font-size:11px;letter-spacing:.09em;}
+.classroom-root .home-desk .home-desk-cal-frame:not([data-compact]) .home-desk-cal-n {font-size:12px;}
+.classroom-root .home-desk .home-desk-cal-frame:not([data-compact]) .home-desk-cal-date {font-size:22px;}
+.classroom-root .home-desk .home-desk-cal-frame:not([data-compact]) .home-desk-cal-head[data-today] .home-desk-cal-date span {
+  width:30px;height:30px;font-size:17px;margin:-3px 0 -3px -3px;box-shadow:0 0 0 3px color-mix(in srgb,var(--cal-ink) 10%,transparent);
+}
+.classroom-root .home-desk .home-desk-cal-frame:not([data-compact]) .home-desk-cal-pips {gap:3px;max-width:84px;}
+.classroom-root .home-desk .home-desk-cal-frame:not([data-compact]) .home-desk-cal-pips i {height:4px;}
+
+/* Grid: hour lines only, quieter axis */
+.classroom-root .home-desk .home-desk-cal-frame:not([data-compact]) .home-desk-cal-hours {
+  background-image:repeating-linear-gradient(to bottom,var(--cal-hair) 0 1px,transparent 1px var(--cal-hour));
+}
+.classroom-root .home-desk .home-desk-cal-frame:not([data-compact]) .home-desk-cal-axis span {right:9px;font-size:11px;color:color-mix(in srgb,var(--cal-ink) 62%,transparent);}
+.classroom-root .home-desk .home-desk-cal-frame:not([data-compact]) .home-desk-cal-nowtag {right:2px;padding:3px 7px;font-size:11px;}
+
+/* Event pills: real height, a 2px gap between back-to-back sessions, centred label */
+.classroom-root .home-desk .home-desk-cal-frame:not([data-compact]) :is(.home-desk-cal-cap,.home-desk-cal-ev) {
+  top:calc(var(--cal-allday-h) + var(--y) * var(--cal-hour) / 60 + 2px);
+  height:max(22px,calc(var(--h) * var(--cal-hour) / 60 - 4px));border-radius:8px;
+}
+.classroom-root .home-desk .home-desk-cal-frame:not([data-compact]) .home-desk-cal-cap {display:flex;align-items:center;padding:0 8px;font:600 11.5px/1 var(--home-ui);}
+.classroom-root .home-desk .home-desk-cal-frame:not([data-compact]) .home-desk-cal-cap-in {gap:5px;min-width:0;width:100%;}
+.classroom-root .home-desk .home-desk-cal-frame:not([data-compact]) .home-desk-cal-cap-in span {opacity:.94;}
+.classroom-root .home-desk .home-desk-cal-frame:not([data-compact]) .home-desk-cal-cap[data-multi] {padding:0 6px;}
+.classroom-root .home-desk .home-desk-cal-frame:not([data-compact]) .home-desk-cal-cap[data-multi] .home-desk-cal-cap-in b {display:none;}
+.classroom-root .home-desk .home-desk-cal-frame:not([data-compact]) .home-desk-cal-cap[data-multi] .home-desk-cal-cap-in span {display:block;opacity:1;}
+.classroom-root .home-desk .home-desk-cal-frame:not([data-compact]) .home-desk-cal-foot {margin-top:14px;}
+
+/* ── Week calendar: compact pass (2026-11-03) ─────────────────────────────
+   The calendar supports the page, it does not lead it. The next session becomes one slim strip
+   above a shorter, full-width grid; headers, pills and type shrink to match. */
+.classroom-root .home-desk .home-desk-cal-frame:not([data-compact]) .home-desk-cal-layout {grid-template-columns:minmax(0,1fr);gap:12px;margin-top:4px;}
+.classroom-root .home-desk .home-desk-cal-frame:not([data-compact]) .home-desk-cal-spot {
+  display:grid;grid-template-columns:44px minmax(0,1fr) auto;grid-template-areas:"dial text act";column-gap:14px;row-gap:0;
+  padding:10px 12px 10px 14px;border-radius:14px;align-items:center;text-align:left;
+}
+.classroom-root .home-desk .home-desk-cal-frame:not([data-compact]) .home-desk-cal-kicker,
+.classroom-root .home-desk .home-desk-cal-frame:not([data-compact]) .home-desk-cal-read {display:none;}
+.classroom-root .home-desk .home-desk-cal-frame:not([data-compact]) .home-desk-cal-dial-wrap {grid-area:dial;width:44px;}
+.classroom-root .home-desk .home-desk-cal-frame:not([data-compact]) .home-desk-cal-spot-text {
+  grid-area:text;display:flex;flex-direction:row;flex-wrap:wrap;align-items:baseline;gap:2px 12px;width:auto;
+}
+.classroom-root .home-desk .home-desk-cal-frame:not([data-compact]) .home-desk-cal-name {order:-1;font-size:18px;line-height:1.2;}
+.classroom-root .home-desk .home-desk-cal-frame:not([data-compact]) :is(.home-desk-cal-countline,.home-desk-cal-when) {font-size:12.5px;line-height:1.3;}
+.classroom-root .home-desk .home-desk-cal-frame:not([data-compact]) .home-desk-cal-act {grid-area:act;width:auto;}
+.classroom-root .home-desk .home-desk-cal-frame:not([data-compact]) .home-desk-cal-go,
+.classroom-root .home-desk .home-desk-cal-frame:not([data-compact]) .home-desk-cal-tag[data-variant="spot"] summary {height:34px;min-height:34px;width:auto;padding:0 16px;font-size:13px;}
+
+.classroom-root .home-desk .home-desk-cal-frame:not([data-compact]) .home-desk-cal-bar {margin-bottom:8px;min-height:24px;}
+.classroom-root .home-desk .home-desk-cal-frame:not([data-compact]) .home-desk-cal-head {padding:8px 9px 0;row-gap:4px;}
+.classroom-root .home-desk .home-desk-cal-frame:not([data-compact]) .home-desk-cal-wd {font-size:10.5px;}
+.classroom-root .home-desk .home-desk-cal-frame:not([data-compact]) .home-desk-cal-date {font-size:20px;}
+.classroom-root .home-desk .home-desk-cal-frame:not([data-compact]) .home-desk-cal-head[data-today] .home-desk-cal-date span {width:26px;height:26px;font-size:15px;margin:-3px 0 -3px -3px;box-shadow:none;}
+.classroom-root .home-desk .home-desk-cal-frame:not([data-compact]) .home-desk-cal-pips i {height:3px;}
+.classroom-root .home-desk .home-desk-cal-frame:not([data-compact]) :is(.home-desk-cal-cap,.home-desk-cal-ev) {
+  top:calc(var(--cal-allday-h) + var(--y) * var(--cal-hour) / 60 + 1.5px);height:max(16px,calc(var(--h) * var(--cal-hour) / 60 - 3px));border-radius:6px;
+}
+.classroom-root .home-desk .home-desk-cal-frame:not([data-compact]) .home-desk-cal-cap {padding:0 6px;font-size:10.5px;}
+.classroom-root .home-desk .home-desk-cal-frame:not([data-compact]) .home-desk-cal-cap-in {gap:4px;}
+.classroom-root .home-desk .home-desk-cal-frame:not([data-compact]) .home-desk-cal-axis span {font-size:10px;right:7px;}
+.classroom-root .home-desk .home-desk-cal-frame:not([data-compact]) .home-desk-cal-nowtag {font-size:10px;padding:2px 6px;}
+.classroom-root .home-desk .home-desk-cal-frame:not([data-compact]) .home-desk-cal-foot {margin-top:8px;}
