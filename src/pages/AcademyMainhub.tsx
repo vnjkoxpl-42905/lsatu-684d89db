@@ -517,7 +517,6 @@ export default function AcademyMainhub({
               <h1 className="text-xl font-semibold">{view === "completed" ? "Completed drills" : "Drills in progress"}</h1>
               <Button type="button" size="sm" variant="outline" onClick={refreshRuns}>Refresh</Button>
             </div>
-            <p data-motion-item className="mt-2 text-sm text-muted-foreground">{section === "rc" ? "Your Reading Comprehension drills." : "Your Smart Drill and Logical Reasoning drills."}</p>
             {section === 'rc' && <div className="dh-toolbar">
               <label className="dh-filter"><span>Timing</span><select aria-label="Filter RC history by timing" value={rcTimingFilter} onChange={event => setRcTimingFilter(event.target.value as typeof rcTimingFilter)}><option value="any">Any timing</option><option value="timed">Timed</option><option value="untimed">Untimed</option><option value="unknown">Timing unknown</option></select></label>
               <label className="dh-filter"><span>Take history</span><select aria-label="Filter RC history by exposure" value={rcTakeFilter} onChange={event => setRcTakeFilter(event.target.value as typeof rcTakeFilter)}><option value="any">Any take history</option><option value="first-recorded">No recorded exposure at start</option><option value="repeat">Repeated passages</option><option value="mixed">Some passages repeated</option><option value="unknown">Exposure before take unknown</option></select></label>
@@ -527,15 +526,15 @@ export default function AcademyMainhub({
               const selected = runs.filter((run) => run.section === section && run.status === (view === "completed" ? "completed" : "in_progress")
                 && (section !== 'rc' || (rcTimingFilter === 'any' || (run.rcTiming ?? 'unknown') === rcTimingFilter)
                   && (rcTakeFilter === 'any' || (run.rcTake ?? 'unknown') === rcTakeFilter)));
-              return selected.length === 0 ? <p className="mt-6 text-sm text-muted-foreground">{view === "completed" ? "No completed drills yet." : "No drills in progress. Start a drill to see it here."}</p> : (
+              return selected.length === 0 ? <p className="mt-6 text-sm text-muted-foreground">{view === "completed" ? "Nothing finished yet. Drills you complete will show up here." : "Nothing open right now. Start a drill and it will wait for you here."}</p> : (
                 <>
-                <p className="dh-count" role="status">{selected.length} {selected.length === 1 ? "drill" : "drills"}</p>
+                <p className="dh-count" role="status">{selected.length} {selected.length === 1 ? "drill" : "drills"} {view === "completed" ? "finished" : "still open"}</p>
                 <ul data-motion-item data-motion-id="drill-history-results" className="dh-list">{selected.map((run) => (
                   <DrillHistoryRow key={run.key} run={run} completed={view === "completed"}>
                     {view === "completed" ? <><Button size="sm" variant="ghost" onClick={() => navigate(run.resultsTo!)}>Results</Button><Button size="sm" onClick={() => navigate(run.reviewTo!)}>Review</Button></> : run.discardId && discardingKey === run.key ? <><span className="text-sm text-muted-foreground">Discard this drill?</span><Button size="sm" variant="destructive" disabled={discardBusy} onClick={() => void discardRun(run.discardId!)}>{discardBusy ? "Discarding…" : "Confirm discard"}</Button><Button size="sm" variant="outline" disabled={discardBusy} onClick={() => { setDiscardingKey(null); setDiscardError(null); }}>Keep it</Button></> : <>{run.discardId && <Button size="sm" variant="ghost" onClick={() => { setDiscardError(null); setDiscardingKey(run.key); }}>Discard</Button>}<Button size="sm" onClick={() => navigate(run.continueTo!)}>Continue</Button></>}
                   </DrillHistoryRow>
                 ))}</ul>
-                {section === 'rc' && <p className="dh-footnote">Earlier previews were not tracked. Missing exposure information stays Unknown; it does not mean fresh.</p>}
+                {section === 'rc' && <p className="dh-footnote">We didn't track earlier previews, so "unknown" means we can't tell whether you'd seen the passages before. It doesn't mean they were new.</p>}
                 </>
               );
             })()}

@@ -5884,7 +5884,78 @@ html:not(.light) .drill-setup-preview {
   color: hsl(var(--muted-foreground));
 }
 .drill-observatory-root .dh-glyph svg { width: 18px; height: 18px; }
-.drill-observatory-root .dh-dot { width: 10px; height: 10px; border-radius: 50%; background: hsl(var(--foreground)); }
+.drill-observatory-root .dh-glyph[data-state="open"] { border-color: hsl(var(--foreground) / 0.55); }
+.drill-observatory-root .dh-glyph[data-state="done"] { color: hsl(var(--foreground)); }
+/* Live pulse: an open drill is still waiting on you. A soft ring grows out of
+   the circle and fades, on a slow loop; the dot itself stays still. */
+.drill-observatory-root .dh-pulse {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 12px;
+  height: 12px;
+}
+.drill-observatory-root .dh-pulse::before {
+  content: "";
+  position: absolute;
+  inset: -16px;
+  border-radius: 50%;
+  border: 2px solid hsl(var(--foreground) / 0.5);
+  opacity: 0;
+  transform: scale(0.35);
+  animation: dh-pulse 2s cubic-bezier(0.2, 0.6, 0.3, 1) infinite;
+}
+.drill-observatory-root .dh-dot { width: 12px; height: 12px; border-radius: 50%; background: hsl(var(--foreground)); }
+@keyframes dh-pulse {
+  0% { opacity: 0.7; transform: scale(0.35); }
+  70% { opacity: 0; transform: scale(1); }
+  100% { opacity: 0; transform: scale(1); }
+}
+.drill-observatory-root .dh-statusrow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 10px;
+  margin-top: 4px;
+}
+.drill-observatory-root .dh-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: hsl(var(--muted-foreground));
+}
+.drill-observatory-root .dh-status[data-state="open"]::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: hsl(var(--foreground));
+  animation: dh-blink 2s ease-in-out infinite;
+}
+@keyframes dh-blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.25; } }
+.drill-observatory-root .dh-review {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 2px 9px 2px 7px;
+  border-radius: 999px;
+  font-size: 12.5px;
+  font-weight: 600;
+  line-height: 1.4;
+  color: hsl(var(--muted-foreground));
+  box-shadow: inset 0 0 0 1px hsl(var(--border));
+}
+.drill-observatory-root .dh-review svg { width: 13px; height: 13px; flex: none; }
+.drill-observatory-root .dh-review[data-need="true"] {
+  background: hsl(var(--foreground));
+  color: hsl(var(--background));
+  box-shadow: none;
+}
+.drill-observatory-root .dh-review[data-need="false"] { color: hsl(var(--foreground) / 0.8); }
 .drill-observatory-root .dh-main { min-width: 0; }
 .drill-observatory-root .dh-title {
   margin: 0;
@@ -5968,6 +6039,8 @@ html:not(.light) .drill-setup-preview {
 }
 @media (prefers-reduced-motion: reduce) {
   .drill-observatory-root .dh-row { transition: none; }
+  .drill-observatory-root .dh-pulse::before { animation: none; opacity: 0.35; transform: scale(0.8); }
+  .drill-observatory-root .dh-status[data-state="open"]::before { animation: none; }
 }
 
 .drill-observatory-root .rc-practice-create {

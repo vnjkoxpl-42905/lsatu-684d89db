@@ -22,6 +22,8 @@ export type StandaloneDrillHistoryItem = {
   continueTo: string;
   resultsTo: string;
   reviewTo: string;
+  /** Right and total answers, when the score may be shown (RC hides it until revealed). */
+  score?: { correct: number; total: number };
   /** RC only: the session an unfinished card can discard. */
   discardId?: string;
   rcTiming?: RcHistoryTiming;
@@ -88,6 +90,9 @@ export function buildStandaloneDrillHistory(
         : `${run.session.attempts.length} of ${run.session.question_queue.length} answered`,
       date: run.updated_at,
       status: run.session.status,
+      ...(run.session.status === 'completed' && run.session.attempts.length > 0
+        ? { score: { correct: run.session.attempts.filter((attempt) => attempt.correct).length, total: run.session.attempts.length } }
+        : {}),
       continueTo: run.source_key === 'drill::adaptive'
         ? `/drill?${launchDrill({ kind: 'smart-drill', options: { returnTo: '/practice/drills' } })}&run=${encodeURIComponent(run.id)}`
         : `/drill?${launchDrill({ kind: 'questions', qids: run.session.question_queue, options: { returnTo: '/practice/drills' } })}&run=${encodeURIComponent(run.id)}`,
@@ -115,6 +120,7 @@ export function buildStandaloneDrillHistory(
             : `${firstAnswers.length} first answer${firstAnswers.length === 1 ? '' : 's'} saved`,
         date: session.completedAt ?? session.config.lastActiveAt ?? session.startedAt,
         status: session.status as 'completed' | 'in_progress',
+        ...(canRevealRcResults(session) && firstAnswers.length > 0 ? { score: { correct: rightCount, total: firstAnswers.length } } : {}),
         continueTo: `/rc/drill?sessionId=${encodeURIComponent(session.id)}`,
         resultsTo: `/rc/results/${encodeURIComponent(session.id)}`,
         reviewTo: `/rc/drill?sessionId=${encodeURIComponent(session.id)}&review=1`,
