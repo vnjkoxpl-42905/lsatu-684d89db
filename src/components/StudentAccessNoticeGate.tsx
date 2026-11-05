@@ -46,7 +46,8 @@ export function StudentAccessNoticeGate({ children }: { children: ReactNode }) {
   const allowed = pathname === "/booking" || pathname === "/schedule" ||
     pathname === "/inbox" || pathname.startsWith("/inbox/");
   if (user && !allowed && noticeQuery.isPending) return <p role="status">Checking access…</p>;
-  if (user && !allowed && noticeQuery.isError) {
+  // Only block when we never got an answer; a failed background refresh keeps the last known state.
+  if (user && !allowed && noticeQuery.isError && !noticeQuery.data) {
     return (
       <main className="mx-auto max-w-lg px-6 py-20 text-center">
         <p role="alert">We couldn’t check your access. Please try again.</p>
