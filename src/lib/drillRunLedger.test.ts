@@ -46,6 +46,7 @@ import {
   createStandaloneDrillRun,
   listStandaloneDrillRuns,
   loadStandaloneDrillRun,
+  markDrillRunReviewed,
   saveStandaloneDrillRun,
   parseOwnedDrillRun,
 } from './drillRunLedger';
@@ -77,6 +78,29 @@ describe('standalone drill run ledger', () => {
     const completed = await completeStandaloneDrillRun(account.userId, run.id, { ...snapshot, attempts: loaded!.session.attempts });
     expect(completed.provenance).toEqual(provenance);
     expect(completed.session.status).toBe('completed');
+  });
+
+  it('saves review progress on a finished sitting without touching its answers or date', async () => {
+    const key = 'drill::type-drill::review';
+    const run = await createStandaloneDrillRun(account.userId, key, snapshot, { mode: 'type-drill' });
+    const done = await completeStandaloneDrillRun(account.userId, run.id, snapshot);
+    const before = JSON.parse(JSON.stringify(account.rows.get(run.id)));
+    await markDrillRunReviewed(account.userId, run.id, ['PT150-S1-Q2']);
+    await markDrillRunReviewed(account.userId, run.id, ['PT150-S1-Q2', 'PT150-S1-Q1']);
+    const after = account.rows.get(run.id) as Record<string, unknown>;
+    expect(after.reviewed_qids).toEqual(['PT150-S1-Q2', 'PT150-S1-Q1']);
+    const { reviewed_qids: _saved, ...rest } = after;
+    expect(rest).toEqual(before);
+    expect((await loadStandaloneDrillRun(account.userId, run.id))?.reviewed_qids).toEqual(['PT150-S1-Q2', 'PT150-S1-Q1']);
+    expect(done.updated_at).toBe((after as { updated_at: string }).updated_at);
+  });
+
+  it('refuses to record review on a drill that is still open, and reports a failed write', async () => {
+    const run = await createStandaloneDrillRun(account.userId, 'drill::type-drill::open', snapshot, { mode: 'type-drill' });
+    await expect(markDrillRunReviewed(account.userId, run.id, ['PT150-S1-Q1'])).rejects.toThrow('Only a finished drill can be reviewed.');
+    await completeStandaloneDrillRun(account.userId, run.id, snapshot);
+    account.failWrite = true;
+    await expect(markDrillRunReviewed(account.userId, run.id, ['PT150-S1-Q1'])).rejects.toThrow('offline');
   });
 
   it('does not infer historical provenance when an old sitting resumes', async () => {

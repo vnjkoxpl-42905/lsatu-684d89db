@@ -5956,6 +5956,8 @@ html:not(.light) .drill-setup-preview {
   box-shadow: none;
 }
 .drill-observatory-root .dh-review[data-need="false"] { color: hsl(var(--foreground) / 0.8); }
+.drill-observatory-root .dh-review[data-need="partial"] { color: hsl(var(--foreground)); box-shadow: inset 0 0 0 1.5px hsl(var(--foreground)); }
+.drill-observatory-root .dh-review[data-need="info"] { color: hsl(var(--foreground) / 0.8); }
 .drill-observatory-root .dh-main { min-width: 0; }
 .drill-observatory-root .dh-title {
   margin: 0;

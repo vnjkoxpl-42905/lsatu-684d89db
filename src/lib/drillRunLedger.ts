@@ -20,6 +20,9 @@ const StandaloneDrillRunSchema = z.object({
   // The answer sent to analytics on closeout. Once acknowledged, a retry must
   // finish with this exact answer even if the final status write fails.
   closeout_attempts: z.array(PracticeSessionAttempt).optional(),
+  // Missed questions the student has opened on the Review page. Optional, so
+  // every sitting saved before this existed stays valid and simply reads as none.
+  reviewed_qids: z.array(z.string()).optional(),
   created_at: z.string().datetime(),
   updated_at: z.string().datetime(),
 }).superRefine((row, context) => {
@@ -235,6 +238,41 @@ export async function beginGuidedDrillCloseout(
       updated_at: time,
     });
     return writeRun(row);
+  });
+}
+
+/**
+ * Record that the student opened these questions on the Review page.
+ *
+ * Only `reviewed_qids` is added. The stored row is read raw and written back
+ * with that one field changed, so the answers, the session and `updated_at`
+ * (which dates the sitting in the history) are left exactly as they were.
+ */
+export async function markDrillRunReviewed(userId: string, runId: string, qids: string[]): Promise<void> {
+  await assertOwner(userId);
+  if (qids.length === 0 || !z.string().uuid().safeParse(runId).success) return;
+  await withRun(runId, async () => {
+    const { data, error } = await supabase.from('bootcamp_kv')
+      .select('record_id,data')
+      .eq('user_id', userId)
+      .eq('table_name', TABLES.drill_runs)
+      .eq('record_id', runId)
+      .maybeSingle();
+    if (error) throw error;
+    const run = data ? parseOwnedDrillRun(userId, data.record_id, data.data) : null;
+    if (!data || !run) throw new Error('This drill run could not be found in your account.');
+    if (run.session.status !== 'completed') throw new Error('Only a finished drill can be reviewed.');
+    const reviewed = [...(run.reviewed_qids ?? [])];
+    const known = new Set(reviewed);
+    for (const qid of qids) if (!known.has(qid)) { known.add(qid); reviewed.push(qid); }
+    if (reviewed.length === (run.reviewed_qids ?? []).length) return;
+    const { error: writeError } = await supabase.from('bootcamp_kv').upsert({
+      user_id: userId,
+      table_name: TABLES.drill_runs,
+      record_id: runId,
+      data: { ...(data.data as Record<string, unknown>), reviewed_qids: reviewed },
+    }, { onConflict: 'user_id,table_name,record_id' });
+    if (writeError) throw writeError;
   });
 }
 

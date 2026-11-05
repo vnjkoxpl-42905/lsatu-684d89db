@@ -1,5 +1,5 @@
 import * as React from "react";
-import { AlertCircle, CheckCircle2, EyeOff, Lock, Repeat2, Timer } from "lucide-react";
+import { AlertCircle, CheckCircle2, CircleDashed, EyeOff, Lock, Repeat2, Timer } from "lucide-react";
 import { RC_TAKE_LABELS, type StandaloneDrillHistoryItem } from "@/lib/standaloneDrillHistory";
 
 /**
@@ -11,9 +11,10 @@ import { RC_TAKE_LABELS, type StandaloneDrillHistoryItem } from "@/lib/standalon
  * when it is finished and scored, a lock when the score is still hidden, and a
  * pulsing dot while it is still open.
  *
- * "Needs review" is worked out from the answers: a finished drill with missed
- * questions needs review, one with none does not. The ledger does not record
- * whether the student actually opened Review, so this never claims they did.
+ * Review state for LR drills is the saved one: the student opens each missed
+ * question on the Review page and that is recorded on the sitting, so this chip,
+ * the Results page and the Review page always agree. RC does not record review
+ * yet, so its rows state only how many answers were missed.
  */
 
 function formatDate(value: string): string {
@@ -32,19 +33,24 @@ export function DrillHistoryRow({ run, completed, children }: {
 }) {
   const score = completed ? run.score ?? null : null;
   const percent = score ? Math.round((score.correct / score.total) * 100) : null;
-  const missed = score ? score.total - score.correct : 0;
+  const missedAnswers = score ? score.total - score.correct : 0;
   const hidden = completed && !score && run.section === "rc";
   const dateLabel = formatDate(run.date);
 
   const detail = score
-    ? `${score.correct} of ${score.total} correct`
+    ? `${score.correct} of ${score.total} correct${run.unanswered ? ` · ${run.unanswered} not answered` : ""}`
     : hidden ? "Results stay hidden until you reveal them"
     : run.detail;
 
-  const review = !completed ? null
-    : score ? (missed > 0
-      ? { need: true, label: `${missed} to review` }
-      : { need: false, label: "Nothing to review" })
+  // LR drills carry saved review progress. RC does not track review yet, so it
+  // only reports how many answers were missed and never claims anything was reviewed.
+  type ReviewState = { need: true | false | "partial" | "info" | null; label: string };
+  const review: ReviewState | null = !completed ? null
+    : run.review ? (run.review.total === 0 ? { need: false, label: "Nothing to review" }
+      : run.review.done === 0 ? { need: true, label: `${run.review.total} to review` }
+      : run.review.done < run.review.total ? { need: "partial", label: `${run.review.done} of ${run.review.total} reviewed` }
+      : { need: false, label: "Reviewed" })
+    : score ? { need: "info", label: missedAnswers > 0 ? `${missedAnswers} missed` : "No misses" }
     : hidden ? { need: null, label: "Reveal results to see what to review" }
     : null;
 
@@ -68,7 +74,7 @@ export function DrillHistoryRow({ run, completed, children }: {
           <span className="dh-status" data-state={completed ? "completed" : "open"}>{completed ? "Completed" : "In progress"}</span>
           {review && (
             <span className="dh-review" data-need={review.need === null ? "unknown" : String(review.need)}>
-              {review.need ? <AlertCircle aria-hidden /> : review.need === false ? <CheckCircle2 aria-hidden /> : null}
+              {review.need === true ? <AlertCircle aria-hidden /> : review.need === "partial" ? <CircleDashed aria-hidden /> : review.need === false ? <CheckCircle2 aria-hidden /> : null}
               {review.label}
             </span>
           )}
