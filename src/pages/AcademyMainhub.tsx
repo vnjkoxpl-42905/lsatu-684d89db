@@ -485,7 +485,8 @@ export default function AcademyMainhub({
           26-30px of internal padding, so the gap between them stays smaller than
           their padding by design — they read as three objects on one field, not
           as one split surface. */}
-      <div className="drill-observatory-canvas relative mx-auto flex w-full max-w-[71.25rem] flex-col gap-5">
+      <div className="drill-observatory-canvas relative mx-auto flex w-full max-w-[71.25rem] flex-col gap-5 px-1 pt-6">
+        <p data-motion-skip className="text-3xl font-semibold">Drilling</p>
         <nav data-motion-skip aria-label="Drills" className="drill-view-tabs flex flex-wrap items-center justify-between gap-3 border-b border-border pb-3">
           <div className="drill-destination-tabs flex flex-wrap gap-2">
           {([ ["create", "Create"], ["in-progress", "In progress"], ["completed", "Completed"], ["saved", "Saved sets"] ] as const).map(([key, label]) => (
