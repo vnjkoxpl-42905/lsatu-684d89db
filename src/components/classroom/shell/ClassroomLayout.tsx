@@ -35,7 +35,7 @@ import { useRailPrefs } from "@/hooks/useRailPrefs";
 import { useClassroomRailMotion } from "@/hooks/useClassroomRailMotion";
 import { useClassroomOverlayMotion } from "@/hooks/useClassroomOverlayMotion";
 import { resolveRailGroups, type RailItem } from "@/lib/railCatalog";
-import { destinationLandingPath, railItemLocked } from "@/lib/destinationAccess";
+import { destinationLandingPath, practiceExamLandingPath, railItemLocked } from "@/lib/destinationAccess";
 import { preloadDrillHub } from "@/lib/routePreload";
 import { flagLabel } from "@/lib/flaggedService";
 import { reviewReturnTo } from "@/components/review/ReviewReturnLink";
@@ -318,6 +318,7 @@ function ClassroomSidebar({
                       key={item.id}
                       pathname={location.pathname}
                       locked={railItemLocked(item.id, destinationPermissions)}
+                      examsLanding={practiceExamLandingPath(destinationPermissions)}
                       go={go}
                       onPrefetch={preloadDrillHub}
                       navClass={navClass}

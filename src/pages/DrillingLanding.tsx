@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
-import { BookOpen, Puzzle } from "lucide-react";
+import { ArrowRight, BookOpen, Puzzle } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import AssignedWorkPanel from "@/components/mainhub/AssignedWorkPanel";
@@ -108,9 +108,15 @@ export default function DrillingLanding() {
 
   return (
     <div className="mx-auto flex w-full max-w-[71.25rem] flex-col gap-8 px-1 py-6 pb-12" data-testid="drilling-landing">
-      <header>
-        <h1 className="text-3xl font-semibold">Drilling</h1>
-        <p className="mt-2 text-sm text-muted-foreground">Improve LSAT performance with practice drills for each section.</p>
+      <header className="flex flex-wrap items-start justify-between gap-4">
+        <div>
+          <h1 className="text-3xl font-semibold">Drilling</h1>
+          <p className="mt-2 text-sm text-muted-foreground">Improve LSAT performance with practice drills for each section.</p>
+        </div>
+        <Button variant="outline" size="sm" onClick={() => navigate("/practice/drills/saved")}>
+          My Drills
+          <ArrowRight className="ml-1 h-4 w-4" aria-hidden="true" />
+        </Button>
       </header>
 
       <section aria-labelledby="new-drill-heading">

@@ -68,12 +68,15 @@ const GROUPS: Group[] = [
 export function PracticeRailGroups({
   pathname,
   locked,
+  examsLanding,
   go,
   onPrefetch,
   navClass,
 }: {
   pathname: string;
   locked: boolean;
+  /** Where the Practice Exams row goes. A student without exam access lands on Attempts, as the old tab did. */
+  examsLanding?: string;
   go: (path: string) => void;
   onPrefetch?: () => void;
   navClass: (active: boolean) => string;
@@ -91,7 +94,7 @@ export function PracticeRailGroups({
             <button
               type="button"
               className={`${navClass(parentActive)}${locked ? " classroom-nav-dimmed" : ""}`}
-              onClick={() => go(group.landing)}
+              onClick={() => go(group.id === "exams" && examsLanding ? examsLanding : group.landing)}
               onMouseEnter={onPrefetch}
               onFocus={onPrefetch}
               aria-current={parentActive ? "page" : undefined}

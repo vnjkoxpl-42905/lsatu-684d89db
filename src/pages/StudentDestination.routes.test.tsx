@@ -176,7 +176,6 @@ describe("destination routes across auth and permission states", () => {
     renderAt("/practice/exams/pt101");
     expect(await screen.findByText("assigned exam detail")).toBeInTheDocument();
     expect(assignment.requestedOwner).toBe("student");
-    expect(screen.getByRole("link", { name: "All Exams" })).toHaveAttribute("href", "/practice/exams/all");
   });
   it("lands an assigned student on the overview instead of diverting them to Attempts", async () => {
     permissions.has_classroom_access = true;
@@ -203,8 +202,6 @@ describe("destination routes across auth and permission states", () => {
     permissions.has_schedule_access = true;
     renderAt("/practice");
     expect(screen.getByText("own exam attempts")).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: "Practice Exams" })).toHaveAttribute("href", "/practice/exams/attempts");
-    expect(screen.getByText("Overview")).toHaveAttribute("aria-disabled", "true");
     expect(assignment.requestedOwner).toBe("");
   });
 

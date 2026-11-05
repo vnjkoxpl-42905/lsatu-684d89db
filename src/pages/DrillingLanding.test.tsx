@@ -69,6 +69,13 @@ describe("Drilling page", () => {
     expect(screen.getByTestId("where")).toHaveTextContent("/practice/drills?section=lr&view=create");
   });
 
+  it("has a My Drills button in the header", async () => {
+    built.items = [];
+    renderAt("/practice/drills");
+    fireEvent.click(await screen.findByRole("button", { name: /My Drills/ }));
+    expect(screen.getByTestId("where")).toHaveTextContent("/practice/drills/saved");
+  });
+
   it("lists the 5 most recent unfinished drills, newest first, and Continue reopens the saved one", async () => {
     built.items = [1, 2, 3, 4, 5, 6, 7].map((n) => run(n));
     built.items.push(run(8, { status: "completed" }));
