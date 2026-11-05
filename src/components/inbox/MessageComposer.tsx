@@ -3,7 +3,6 @@ import {
   Cloud,
   FileText,
   Image as ImageIcon,
-  Link2,
   Paperclip,
   Send,
   Smile,
@@ -14,15 +13,6 @@ import {
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog';
 import {
   Popover,
   PopoverContent,
@@ -141,9 +131,6 @@ export function MessageComposer({
   const fileRef = useRef<HTMLInputElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [filePreviewUrl, setFilePreviewUrl] = useState<string | null>(null);
-  const [linkOpen, setLinkOpen] = useState(false);
-  const [linkUrl, setLinkUrl] = useState('');
-  const [linkText, setLinkText] = useState('');
   const [emojiOpen, setEmojiOpen] = useState(false);
 
   const errorMessage = (error: unknown, fallback: string) =>
@@ -303,28 +290,6 @@ export function MessageComposer({
       const caret = start + (selectInsideOffset ?? snippet.length);
       node.setSelectionRange(caret, caret);
     });
-  };
-
-  const openLinkDialog = () => {
-    const el = textareaRef.current;
-    const selected = el ? body.slice(el.selectionStart, el.selectionEnd) : '';
-    setLinkText(selected);
-    setLinkUrl('');
-    setLinkOpen(true);
-  };
-
-  const applyLink = () => {
-    let url = linkUrl.trim();
-    if (!url) return;
-    if (!/^https?:\/\//i.test(url) && !url.startsWith('mailto:')) {
-      url = `https://${url}`;
-    }
-    const text = linkText.trim();
-    const snippet = text ? `[${text}](${url})` : url;
-    insertAtCursor(snippet);
-    setLinkOpen(false);
-    setLinkUrl('');
-    setLinkText('');
   };
 
   const insertEmoji = (emoji: string) => {
@@ -656,9 +621,6 @@ export function MessageComposer({
               <Sparkles className={`w-4.5 h-4.5 ${polishing ? 'animate-pulse' : ''}`} />
             </ToolButton>
           )}
-          <ToolButton label="Add a link" onClick={openLinkDialog} disabled={sending}>
-            <Link2 className="w-4.5 h-4.5" />
-          </ToolButton>
           <Popover open={emojiOpen} onOpenChange={setEmojiOpen}>
             <Tooltip>
               <TooltipTrigger asChild>
@@ -695,9 +657,6 @@ export function MessageComposer({
             </PopoverContent>
           </Popover>
           <div className="flex-1" />
-          <span className="hidden select-none text-[10px] font-semibold text-[var(--msg-meta-soft)] sm:block" aria-hidden="true">
-            ⏎ to send · ⇧⏎ for a new line
-          </span>
           <Button
             onClick={send}
             disabled={sending || !canSend || (!conversationId && !onResolveConversation)}
@@ -716,59 +675,6 @@ export function MessageComposer({
       </div>
       </div>
 
-      <Dialog open={linkOpen} onOpenChange={setLinkOpen}>
-        <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle className="text-center">Add link</DialogTitle>
-          </DialogHeader>
-          <div className="space-y-4 py-2">
-            <div className="space-y-1.5">
-              <Label htmlFor="composer-link-url" className="text-xs font-bold uppercase tracking-wide text-zinc-500">
-                URL
-              </Label>
-              <Input
-                id="composer-link-url"
-                value={linkUrl}
-                onChange={(e) => setLinkUrl(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter') {
-                    e.preventDefault();
-                    applyLink();
-                  }
-                }}
-                placeholder="https://..."
-                autoFocus
-              />
-            </div>
-            <div className="space-y-1.5">
-              <Label htmlFor="composer-link-text" className="text-xs font-bold uppercase tracking-wide text-zinc-500">
-                Text
-              </Label>
-              <Input
-                id="composer-link-text"
-                value={linkText}
-                onChange={(e) => setLinkText(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter') {
-                    e.preventDefault();
-                    applyLink();
-                  }
-                }}
-                placeholder="Optional link text..."
-              />
-            </div>
-          </div>
-          <DialogFooter className="sm:justify-center">
-            <Button
-              onClick={applyLink}
-              disabled={!linkUrl.trim()}
-              className="bg-[var(--msg-accent)] px-8 text-white hover:brightness-110"
-            >
-              Add Link
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
     </div>
   );
 }
