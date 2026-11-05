@@ -510,7 +510,9 @@ describe("AcademyMainhub — the LR/RC section switch", () => {
   it('filters RC history by configured timing and recorded exposure without exposing scores', async () => {
     renderHub('/practice/drills?section=rc&view=in-progress');
     await screen.findByText('RC active sitting');
-    expect(screen.getByText('Timed · Repeated passages')).toBeInTheDocument();
+    const settings = within(screen.getByRole('list', { name: 'Drill settings' }));
+    expect(settings.getByText('Timed')).toBeInTheDocument();
+    expect(settings.getByText('Repeated passages')).toBeInTheDocument();
     fireEvent.change(screen.getByRole('combobox', { name: 'Filter RC history by timing' }), { target: { value: 'untimed' } });
     expect(screen.queryByText('RC active sitting')).not.toBeInTheDocument();
     fireEvent.change(screen.getByRole('combobox', { name: 'Filter RC history by timing' }), { target: { value: 'timed' } });

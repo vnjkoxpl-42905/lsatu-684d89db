@@ -6,7 +6,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { listStandaloneDrillRuns } from "@/lib/drillRunLedger";
 import { abandonSession, getSessionAttempts, listSessions } from "@/features/rc/api/rcProgress";
 import { loadAllIndexPassages } from "@/features/rc/lib/rcBank";
-import { buildStandaloneDrillHistory, RC_TAKE_LABELS, type StandaloneDrillHistoryItem } from "@/lib/standaloneDrillHistory";
+import { buildStandaloneDrillHistory, type StandaloneDrillHistoryItem } from "@/lib/standaloneDrillHistory";
 import { loadDrillResumeSession } from "@/lib/drillResumeSession";
 import {
   ArrowRight,
@@ -25,6 +25,7 @@ import { QuestionPicker } from "@/components/drill/QuestionPicker";
 import QuestionJump from "@/components/questionfinder/QuestionJump";
 import type { QuestionFinderHandle } from "@/components/questionfinder/QuestionFinder";
 import { SectionToggle } from "@/components/drill/SectionToggle";
+import { DrillHistoryRow } from "@/components/drill/DrillHistoryRow";
 import { RcSavedSetsPanel } from "@/features/rc/components/RcSavedSetsPanel";
 import { RcPracticeLanding, RcPracticeResume } from "@/features/rc/components/RcPracticeLanding";
 import { RcHubSurface } from "@/features/rc/components/RcHubSurface";
@@ -517,10 +518,9 @@ export default function AcademyMainhub({
               <Button type="button" size="sm" variant="outline" onClick={refreshRuns}>Refresh</Button>
             </div>
             <p data-motion-item className="mt-2 text-sm text-muted-foreground">{section === "rc" ? "Your Reading Comprehension drills." : "Your Smart Drill and Logical Reasoning drills."}</p>
-            {section === 'rc' && <div className="mt-4 flex flex-wrap gap-4 text-sm">
-              <label>Timing <select aria-label="Filter RC history by timing" className="ml-2 rounded border bg-background p-2" value={rcTimingFilter} onChange={event => setRcTimingFilter(event.target.value as typeof rcTimingFilter)}><option value="any">Any timing</option><option value="timed">Timed</option><option value="untimed">Untimed</option><option value="unknown">Timing unknown</option></select></label>
-              <label>Take history <select aria-label="Filter RC history by exposure" className="ml-2 rounded border bg-background p-2" value={rcTakeFilter} onChange={event => setRcTakeFilter(event.target.value as typeof rcTakeFilter)}><option value="any">Any take history</option><option value="first-recorded">No recorded exposure at start</option><option value="repeat">Repeated passages</option><option value="mixed">Some passages repeated</option><option value="unknown">Exposure before take unknown</option></select></label>
-              <p className="w-full text-muted-foreground">Earlier previews were not tracked. Missing exposure information stays Unknown; it does not mean fresh.</p>
+            {section === 'rc' && <div className="dh-toolbar">
+              <label className="dh-filter"><span>Timing</span><select aria-label="Filter RC history by timing" value={rcTimingFilter} onChange={event => setRcTimingFilter(event.target.value as typeof rcTimingFilter)}><option value="any">Any timing</option><option value="timed">Timed</option><option value="untimed">Untimed</option><option value="unknown">Timing unknown</option></select></label>
+              <label className="dh-filter"><span>Take history</span><select aria-label="Filter RC history by exposure" value={rcTakeFilter} onChange={event => setRcTakeFilter(event.target.value as typeof rcTakeFilter)}><option value="any">Any take history</option><option value="first-recorded">No recorded exposure at start</option><option value="repeat">Repeated passages</option><option value="mixed">Some passages repeated</option><option value="unknown">Exposure before take unknown</option></select></label>
             </div>}
             {discardError && <p className="mt-3 text-sm text-destructive" role="alert">{discardError}</p>}
             {runsLoading || runsOwner !== user?.id ? <p className="mt-6 text-sm text-muted-foreground" role="status">Loading your drills…</p> : runsError ? <p className="mt-6 text-sm text-destructive" role="alert">{runsError}</p> : (() => {
@@ -528,16 +528,15 @@ export default function AcademyMainhub({
                 && (section !== 'rc' || (rcTimingFilter === 'any' || (run.rcTiming ?? 'unknown') === rcTimingFilter)
                   && (rcTakeFilter === 'any' || (run.rcTake ?? 'unknown') === rcTakeFilter)));
               return selected.length === 0 ? <p className="mt-6 text-sm text-muted-foreground">{view === "completed" ? "No completed drills yet." : "No drills in progress. Start a drill to see it here."}</p> : (
-                <ul data-motion-item data-motion-id="drill-history-results" className="mt-5 space-y-3">{selected.map((run) => (
-                  <li key={run.key} className="flex flex-wrap items-center justify-between gap-4 rounded-lg border border-border p-4">
-                    <div className="min-w-0">
-                      <p className="font-medium">{run.title}</p>
-                      <p className="mt-1 text-sm text-muted-foreground">{run.detail} · {new Date(run.date).toLocaleDateString()}</p>
-                      {run.section === 'rc' && <p className="mt-1 text-sm text-muted-foreground">{run.rcTiming === 'timed' ? 'Timed' : run.rcTiming === 'untimed' ? 'Untimed' : 'Timing unknown'} · {RC_TAKE_LABELS[run.rcTake ?? 'unknown']}{run.rcExcluded ? ' · Excluded from analytics' : ''}</p>}
-                    </div>
-                    {view === "completed" ? <div className="flex gap-2"><Button size="sm" variant="outline" onClick={() => navigate(run.resultsTo!)}>Results</Button><Button size="sm" onClick={() => navigate(run.reviewTo!)}>Review</Button></div> : <div className="flex flex-wrap items-center gap-2">{run.discardId && discardingKey === run.key ? <><span className="text-sm text-muted-foreground">Discard this drill?</span><Button size="sm" variant="destructive" disabled={discardBusy} onClick={() => void discardRun(run.discardId!)}>{discardBusy ? "Discarding…" : "Confirm discard"}</Button><Button size="sm" variant="outline" disabled={discardBusy} onClick={() => { setDiscardingKey(null); setDiscardError(null); }}>Keep it</Button></> : <>{run.discardId && <Button size="sm" variant="outline" onClick={() => { setDiscardError(null); setDiscardingKey(run.key); }}>Discard</Button>}<Button size="sm" onClick={() => navigate(run.continueTo!)}>Continue</Button></>}</div>}
-                  </li>
+                <>
+                <p className="dh-count" role="status">{selected.length} {selected.length === 1 ? "drill" : "drills"}</p>
+                <ul data-motion-item data-motion-id="drill-history-results" className="dh-list">{selected.map((run) => (
+                  <DrillHistoryRow key={run.key} run={run} completed={view === "completed"}>
+                    {view === "completed" ? <><Button size="sm" variant="ghost" onClick={() => navigate(run.resultsTo!)}>Results</Button><Button size="sm" onClick={() => navigate(run.reviewTo!)}>Review</Button></> : run.discardId && discardingKey === run.key ? <><span className="text-sm text-muted-foreground">Discard this drill?</span><Button size="sm" variant="destructive" disabled={discardBusy} onClick={() => void discardRun(run.discardId!)}>{discardBusy ? "Discarding…" : "Confirm discard"}</Button><Button size="sm" variant="outline" disabled={discardBusy} onClick={() => { setDiscardingKey(null); setDiscardError(null); }}>Keep it</Button></> : <>{run.discardId && <Button size="sm" variant="ghost" onClick={() => { setDiscardError(null); setDiscardingKey(run.key); }}>Discard</Button>}<Button size="sm" onClick={() => navigate(run.continueTo!)}>Continue</Button></>}
+                  </DrillHistoryRow>
                 ))}</ul>
+                {section === 'rc' && <p className="dh-footnote">Earlier previews were not tracked. Missing exposure information stays Unknown; it does not mean fresh.</p>}
+                </>
               );
             })()}
           </section>
