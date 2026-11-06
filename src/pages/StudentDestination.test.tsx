@@ -141,14 +141,18 @@ describe("Admissions", () => {
   });
 });
 
-describe("Practice Exams sub-row", () => {
-  it("marks All Exams on an exam detail page and keeps Attempts open without practice access", () => {
-    render(<MemoryRouter initialEntries={["/practice/exams/pt101"]}><StudentDestination destination="practice" /></MemoryRouter>);
-    const sub = screen.getByRole("navigation", { name: "Practice Exams pages" });
-    expect(sub).toHaveTextContent("All Exams");
-    expect(screen.getByText("All Exams")).toHaveAttribute("aria-current", "page");
-    expect(screen.getByRole("link", { name: "Attempts" })).toHaveAttribute("href", "/practice/exams/attempts");
-  });
+describe("Practice has no tab bars of its own", () => {
+  it.each(["/practice/exams", "/practice/exams/pt101", "/practice/drills"])(
+    "draws no heading, tabs, sub-tabs or lock note on %s; the sidebar is the navigation",
+    (path) => {
+      permissions.has_classroom_access = true;
+      render(<MemoryRouter initialEntries={[path]}><StudentDestination destination="practice" /></MemoryRouter>);
+      expect(screen.queryByRole("heading", { name: "Practice" })).toBeNull();
+      expect(screen.queryByRole("navigation", { name: "Practice sections" })).toBeNull();
+      expect(screen.queryByRole("navigation", { name: "Practice Exams pages" })).toBeNull();
+      expect(screen.queryByText(/Sections with a lock aren't available/)).toBeNull();
+    },
+  );
 });
 
 describe("bare destination URLs", () => {
@@ -177,24 +181,6 @@ describe("bare destination URLs", () => {
   });
 });
 
-
-describe("Practice Exams primary landing", () => {
-  it("keeps the assignment-aware exam gate reachable with Classroom access", () => {
-    permissions.has_classroom_access = true;
-    render(<MemoryRouter initialEntries={["/practice/drills"]}><StudentDestination destination="practice" /></MemoryRouter>);
-    expect(screen.getByRole("link", { name: "Practice Exams" })).toHaveAttribute("href", "/practice/exams");
-  });
-  it("keeps Overview for an entitled student", () => {
-    permissions.has_practice_access = true;
-    render(<MemoryRouter initialEntries={["/practice/drills"]}><StudentDestination destination="practice" /></MemoryRouter>);
-    expect(screen.getByRole("link", { name: "Practice Exams" })).toHaveAttribute("href", "/practice/exams");
-  });
-  it("keeps Overview for an administrator", () => {
-    permissions.is_admin = true;
-    render(<MemoryRouter initialEntries={["/practice/drills"]}><StudentDestination destination="practice" /></MemoryRouter>);
-    expect(screen.getByRole("link", { name: "Practice Exams" })).toHaveAttribute("href", "/practice/exams");
-  });
-});
 
 describe('review view URLs', () => {
   it('opens the Progress overview when its actual tab is clicked from legacy question-type mode', () => {

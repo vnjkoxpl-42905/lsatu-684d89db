@@ -172,6 +172,9 @@ vi.mock("@/features/rc/components/RcHubSurface", () => ({
   RcHubSurface: ({ openPickerOnEntry }: { openPickerOnEntry?: boolean }) => <div role="region" aria-label="RC drill builder" data-picker-entry={String(Boolean(openPickerOnEntry))}><button type="button">Reset filters</button></div>,
 }));
 
+vi.mock("@/components/drill/SavedLrSets", () => ({
+  SavedLrSets: () => <div role="region" aria-label="Saved LR sets list">Saved LR work</div>,
+}));
 vi.mock("@/features/rc/components/RcSavedSetsPanel", () => ({
   RcSavedSetsPanel: () => <div role="region" aria-label="Saved RC sets and recipes">Saved RC work</div>,
 }));
@@ -510,7 +513,9 @@ describe("AcademyMainhub — the LR/RC section switch", () => {
   it('filters RC history by configured timing and recorded exposure without exposing scores', async () => {
     renderHub('/practice/drills?section=rc&view=in-progress');
     await screen.findByText('RC active sitting');
-    expect(screen.getByText('Timed · Repeated passages')).toBeInTheDocument();
+    const settings = within(screen.getByRole('list', { name: 'Drill settings' }));
+    expect(settings.getByText('Timed')).toBeInTheDocument();
+    expect(settings.getByText('Repeated passages')).toBeInTheDocument();
     fireEvent.change(screen.getByRole('combobox', { name: 'Filter RC history by timing' }), { target: { value: 'untimed' } });
     expect(screen.queryByText('RC active sitting')).not.toBeInTheDocument();
     fireEvent.change(screen.getByRole('combobox', { name: 'Filter RC history by timing' }), { target: { value: 'timed' } });
@@ -548,13 +553,14 @@ describe("AcademyMainhub — the LR/RC section switch", () => {
     renderHub("/practice/drills?section=rc&view=saved");
     expect(screen.getByRole("heading", { name: "Saved RC drills" })).toBeInTheDocument();
     expect(screen.getByRole("region", { name: "Saved RC sets and recipes" })).toBeInTheDocument();
-    expect(screen.queryByRole("button", { name: "Open saved LR sets" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("region", { name: "Saved LR sets list" })).not.toBeInTheDocument();
   });
 
-  it("keeps the existing saved LR destination", () => {
+  it("shows saved LR sets inside the hub instead of sending the student to another page", () => {
     renderHub("/practice/drills?section=lr&view=saved");
     expect(screen.getByRole("heading", { name: "Saved LR sets" })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Open saved LR sets" })).toBeInTheDocument();
+    expect(screen.getByRole("region", { name: "Saved LR sets list" })).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Open saved LR sets" })).not.toBeInTheDocument();
   });
 
   it("keeps section choice in the LR/RC switch instead of repeating it as a practice tile", () => {

@@ -26,7 +26,6 @@ function PresenceHeartbeatMount() {
 // Heavy student/bootcamp routes are code-split so they stay out of the initial
 // entry chunk (COMPREHENSIVEAUDIT Phase 3). A single top-level Suspense boundary
 // (below, around <Routes>) provides the fallback for all of these.
-import SavedSets from "./pages/SavedSets";
 // Shared with the rail's hover prefetch (src/lib/routePreload.ts) so both
 // resolve the same module id and pull the same chunk.
 import { loadDrillHub } from "@/lib/routePreload";
@@ -645,7 +644,7 @@ const App = () => {
                       <Route index element={<DestinationIndex destination="practice" />} />
                       <Route path="drills" element={<ProtectedRoute flag="has_drill_access"><AcademyMainhub /></ProtectedRoute>} />
                       <Route path="drills/runs/:runId" element={<ProtectedRoute flag="has_drill_access"><DrillRuns /></ProtectedRoute>} />
-                      <Route path="drills/saved" element={<ProtectedRoute flag="has_drill_access"><SavedSets /></ProtectedRoute>} />
+                      <Route path="drills/saved" element={<RedirectWithSearch to="/practice/drills?view=saved" />} />
                       <Route path="exams" element={<TestingCentreGate><TestingCentre /></TestingCentreGate>} />
                       <Route path="exams/all" element={<TestingCentreGate><AllPracticeExams /></TestingCentreGate>} />
                       <Route path="exams/:pt" element={<TestingCentreGate><PracticeExamDetail /></TestingCentreGate>} />

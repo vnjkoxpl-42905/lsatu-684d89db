@@ -29,7 +29,7 @@ describe("seven destination rail", () => {
       "/review/to-review", "/review/progress", "/review/history",
       "/library/lessons", "/library/activities", "/library/bootcamps", "/library/admissions",
     ]) expect(tabs).toContain(path);
-    expect(app).toContain('path="drills/saved" element={<ProtectedRoute flag="has_drill_access"><SavedSets />');
+    expect(app).toContain('path="drills/saved" element={<RedirectWithSearch to="/practice/drills?view=saved" />}');
   });
 
   it("keeps each parent available while locking individual tabs and Admissions", () => {

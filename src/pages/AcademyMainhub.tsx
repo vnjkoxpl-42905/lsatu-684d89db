@@ -6,7 +6,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { listStandaloneDrillRuns } from "@/lib/drillRunLedger";
 import { abandonSession, getSessionAttempts, listSessions } from "@/features/rc/api/rcProgress";
 import { loadAllIndexPassages } from "@/features/rc/lib/rcBank";
-import { buildStandaloneDrillHistory, RC_TAKE_LABELS, type StandaloneDrillHistoryItem } from "@/lib/standaloneDrillHistory";
+import { buildStandaloneDrillHistory, type StandaloneDrillHistoryItem } from "@/lib/standaloneDrillHistory";
 import { loadDrillResumeSession } from "@/lib/drillResumeSession";
 import {
   ArrowRight,
@@ -25,7 +25,9 @@ import { QuestionPicker } from "@/components/drill/QuestionPicker";
 import QuestionJump from "@/components/questionfinder/QuestionJump";
 import type { QuestionFinderHandle } from "@/components/questionfinder/QuestionFinder";
 import { SectionToggle } from "@/components/drill/SectionToggle";
+import { DrillHistoryRow } from "@/components/drill/DrillHistoryRow";
 import { RcSavedSetsPanel } from "@/features/rc/components/RcSavedSetsPanel";
+import { SavedLrSets } from "@/components/drill/SavedLrSets";
 import { RcPracticeLanding, RcPracticeResume } from "@/features/rc/components/RcPracticeLanding";
 import { RcHubSurface } from "@/features/rc/components/RcHubSurface";
 import {
@@ -485,7 +487,8 @@ export default function AcademyMainhub({
           26-30px of internal padding, so the gap between them stays smaller than
           their padding by design — they read as three objects on one field, not
           as one split surface. */}
-      <div className="drill-observatory-canvas relative mx-auto flex w-full max-w-[71.25rem] flex-col gap-5">
+      <div className="drill-observatory-canvas relative mx-auto flex w-full max-w-[71.25rem] flex-col gap-5 px-1 pt-6">
+        <p data-motion-skip className="text-3xl font-semibold text-foreground">Drilling</p>
         <nav data-motion-skip aria-label="Drills" className="drill-view-tabs flex flex-wrap items-center justify-between gap-3 border-b border-border pb-3">
           <div className="drill-destination-tabs flex flex-wrap gap-2">
           {([ ["create", "Create"], ["in-progress", "In progress"], ["completed", "Completed"], ["saved", "Saved sets"] ] as const).map(([key, label]) => (
@@ -498,45 +501,36 @@ export default function AcademyMainhub({
           <QuestionJump hideTrigger={section === "lr" && view === "create" && isLauncherStage} key={user?.id ?? "guest"} ref={questionFinderRef} enabled={finderEnabled} actorId={user?.id} returnTo={lookupReturnTo} tone={theme === "dark" ? "dark" : "light"} bank={section} withSearch={false} triggerLabel="Find a question" onDismiss={finishFinder} onPreviewClose={finishFinder} />
           {searchParams.get("finder") === "open" && !perms.loading && !finderEnabled && <p role="alert">Question finder requires access to Drills.</p>}
         </div>
-        {view === "saved" ? (section === "rc" ? (
-          <section data-motion-enter className="rc-page rc-embedded rc-saved-workspace" aria-label="Saved RC drills">
-            <h1>Saved RC drills</h1>
-            <RcSavedSetsPanel />
+        {view === "saved" ? (
+          <section data-motion-enter className="drill-history-workspace rounded-xl border border-border bg-card p-5 sm:p-7" aria-label={section === "rc" ? "Saved RC drills" : "Saved sets"}>
+            <h1 className="text-xl font-semibold">{section === "rc" ? "Saved RC drills" : "Saved LR sets"}</h1>
+            {section === "rc" ? <RcSavedSetsPanel /> : <SavedLrSets />}
           </section>
-        ) : (
-          <section data-motion-enter className="drill-history-workspace rounded-xl border border-border bg-card p-6" aria-label="Saved sets">
-            <h1 className="text-xl font-semibold">Saved LR sets</h1>
-            <p className="mt-2 text-sm text-muted-foreground">Reusable saved sets support Logical Reasoning. Find your RC drills in In progress or Completed.</p>
-            <Button className="mt-5" onClick={() => navigate("/practice/drills/saved")}>Open saved LR sets <ArrowRight className="ml-2 h-4 w-4" aria-hidden /></Button>
-          </section>
-        )) : view === "in-progress" || view === "completed" ? (
+        ) : view === "in-progress" || view === "completed" ? (
           <section data-motion-enter className="drill-history-workspace rounded-xl border border-border bg-card p-5 sm:p-7" aria-label={view === "completed" ? "Completed drills" : "Drills in progress"}>
             <div data-motion-item className="flex items-center justify-between gap-3">
               <h1 className="text-xl font-semibold">{view === "completed" ? "Completed drills" : "Drills in progress"}</h1>
               <Button type="button" size="sm" variant="outline" onClick={refreshRuns}>Refresh</Button>
             </div>
-            <p data-motion-item className="mt-2 text-sm text-muted-foreground">{section === "rc" ? "Your Reading Comprehension drills." : "Your Smart Drill and Logical Reasoning drills."}</p>
-            {section === 'rc' && <div className="mt-4 flex flex-wrap gap-4 text-sm">
-              <label>Timing <select aria-label="Filter RC history by timing" className="ml-2 rounded border bg-background p-2" value={rcTimingFilter} onChange={event => setRcTimingFilter(event.target.value as typeof rcTimingFilter)}><option value="any">Any timing</option><option value="timed">Timed</option><option value="untimed">Untimed</option><option value="unknown">Timing unknown</option></select></label>
-              <label>Take history <select aria-label="Filter RC history by exposure" className="ml-2 rounded border bg-background p-2" value={rcTakeFilter} onChange={event => setRcTakeFilter(event.target.value as typeof rcTakeFilter)}><option value="any">Any take history</option><option value="first-recorded">No recorded exposure at start</option><option value="repeat">Repeated passages</option><option value="mixed">Some passages repeated</option><option value="unknown">Exposure before take unknown</option></select></label>
-              <p className="w-full text-muted-foreground">Earlier previews were not tracked. Missing exposure information stays Unknown; it does not mean fresh.</p>
+            {section === 'rc' && <div className="dh-toolbar">
+              <label className="dh-filter"><span>Timing</span><select aria-label="Filter RC history by timing" value={rcTimingFilter} onChange={event => setRcTimingFilter(event.target.value as typeof rcTimingFilter)}><option value="any">Any timing</option><option value="timed">Timed</option><option value="untimed">Untimed</option><option value="unknown">Timing unknown</option></select></label>
+              <label className="dh-filter"><span>Take history</span><select aria-label="Filter RC history by exposure" value={rcTakeFilter} onChange={event => setRcTakeFilter(event.target.value as typeof rcTakeFilter)}><option value="any">Any take history</option><option value="first-recorded">No recorded exposure at start</option><option value="repeat">Repeated passages</option><option value="mixed">Some passages repeated</option><option value="unknown">Exposure before take unknown</option></select></label>
             </div>}
             {discardError && <p className="mt-3 text-sm text-destructive" role="alert">{discardError}</p>}
             {runsLoading || runsOwner !== user?.id ? <p className="mt-6 text-sm text-muted-foreground" role="status">Loading your drills…</p> : runsError ? <p className="mt-6 text-sm text-destructive" role="alert">{runsError}</p> : (() => {
               const selected = runs.filter((run) => run.section === section && run.status === (view === "completed" ? "completed" : "in_progress")
                 && (section !== 'rc' || (rcTimingFilter === 'any' || (run.rcTiming ?? 'unknown') === rcTimingFilter)
                   && (rcTakeFilter === 'any' || (run.rcTake ?? 'unknown') === rcTakeFilter)));
-              return selected.length === 0 ? <p className="mt-6 text-sm text-muted-foreground">{view === "completed" ? "No completed drills yet." : "No drills in progress. Start a drill to see it here."}</p> : (
-                <ul data-motion-item data-motion-id="drill-history-results" className="mt-5 space-y-3">{selected.map((run) => (
-                  <li key={run.key} className="flex flex-wrap items-center justify-between gap-4 rounded-lg border border-border p-4">
-                    <div className="min-w-0">
-                      <p className="font-medium">{run.title}</p>
-                      <p className="mt-1 text-sm text-muted-foreground">{run.detail} · {new Date(run.date).toLocaleDateString()}</p>
-                      {run.section === 'rc' && <p className="mt-1 text-sm text-muted-foreground">{run.rcTiming === 'timed' ? 'Timed' : run.rcTiming === 'untimed' ? 'Untimed' : 'Timing unknown'} · {RC_TAKE_LABELS[run.rcTake ?? 'unknown']}{run.rcExcluded ? ' · Excluded from analytics' : ''}</p>}
-                    </div>
-                    {view === "completed" ? <div className="flex gap-2"><Button size="sm" variant="outline" onClick={() => navigate(run.resultsTo!)}>Results</Button><Button size="sm" onClick={() => navigate(run.reviewTo!)}>Review</Button></div> : <div className="flex flex-wrap items-center gap-2">{run.discardId && discardingKey === run.key ? <><span className="text-sm text-muted-foreground">Discard this drill?</span><Button size="sm" variant="destructive" disabled={discardBusy} onClick={() => void discardRun(run.discardId!)}>{discardBusy ? "Discarding…" : "Confirm discard"}</Button><Button size="sm" variant="outline" disabled={discardBusy} onClick={() => { setDiscardingKey(null); setDiscardError(null); }}>Keep it</Button></> : <>{run.discardId && <Button size="sm" variant="outline" onClick={() => { setDiscardError(null); setDiscardingKey(run.key); }}>Discard</Button>}<Button size="sm" onClick={() => navigate(run.continueTo!)}>Continue</Button></>}</div>}
-                  </li>
+              return selected.length === 0 ? <p className="mt-6 text-sm text-muted-foreground">{view === "completed" ? "Nothing finished yet. Drills you complete will show up here." : "Nothing open right now. Start a drill and it will wait for you here."}</p> : (
+                <>
+                <p className="dh-count" role="status">{selected.length} {selected.length === 1 ? "drill" : "drills"} {view === "completed" ? "finished" : "still open"}</p>
+                <ul data-motion-item data-motion-id="drill-history-results" className="dh-list">{selected.map((run) => (
+                  <DrillHistoryRow key={run.key} run={run} completed={view === "completed"}>
+                    {view === "completed" ? <><Button size="sm" variant="ghost" onClick={() => navigate(run.resultsTo!)}>Results</Button><Button size="sm" variant={run.review && run.review.total > 0 && run.review.done >= run.review.total ? "outline" : "default"} onClick={() => navigate(run.reviewTo!)}>{run.review && run.review.total > 0 ? run.review.done >= run.review.total ? "Review again" : run.review.done > 0 ? "Continue review" : "Review" : "Review"}</Button></> : run.discardId && discardingKey === run.key ? <><span className="text-sm text-muted-foreground">Discard this drill?</span><Button size="sm" variant="destructive" disabled={discardBusy} onClick={() => void discardRun(run.discardId!)}>{discardBusy ? "Discarding…" : "Confirm discard"}</Button><Button size="sm" variant="outline" disabled={discardBusy} onClick={() => { setDiscardingKey(null); setDiscardError(null); }}>Keep it</Button></> : <>{run.discardId && <Button size="sm" variant="ghost" onClick={() => { setDiscardError(null); setDiscardingKey(run.key); }}>Discard</Button>}<Button size="sm" onClick={() => navigate(run.continueTo!)}>Continue</Button></>}
+                  </DrillHistoryRow>
                 ))}</ul>
+                {section === 'rc' && <p className="dh-footnote">We didn't track earlier previews, so "unknown" means we can't tell whether you'd seen the passages before. It doesn't mean they were new.</p>}
+                </>
               );
             })()}
           </section>

@@ -5766,6 +5766,339 @@ html:not(.light) .drill-setup-preview {
 .drill-observatory-root .rc-create-workspace {
   color: hsl(var(--foreground));
 }
+/* Drill history (Completed / In progress). One card, a divided list inside it.
+   Surface scale: card (plane) > row (interactive, lifts on hover) > chips
+   (small inset labels). Light comes from above: a 1px top highlight on the
+   card, a soft contact shadow under it, nothing hazy. */
+.drill-observatory-root .drill-history-workspace {
+  box-shadow: 0 1px 0 hsl(0 0% 100% / 0.6) inset, 0 1px 2px hsl(var(--foreground) / 0.05), 0 10px 24px -14px hsl(var(--foreground) / 0.14);
+}
+.drill-observatory-root .dh-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 20px;
+}
+.drill-observatory-root .dh-filter {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 4px 4px 14px;
+  border: 1px solid hsl(var(--border));
+  border-radius: 999px;
+  background: hsl(var(--background));
+  font-size: 13px;
+  color: hsl(var(--muted-foreground));
+}
+.drill-observatory-root .dh-filter:focus-within {
+  outline: 2px solid hsl(var(--foreground));
+  outline-offset: 2px;
+}
+.drill-observatory-root .dh-filter select {
+  appearance: none;
+  min-height: 32px;
+  max-width: 220px;
+  padding: 0 28px 0 12px;
+  border: 0;
+  border-radius: 999px;
+  background: hsl(var(--card)) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' fill='none' stroke='%23666' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m1 1 4 4 4-4'/%3E%3C/svg%3E") no-repeat right 11px center;
+  color: hsl(var(--foreground));
+  font: inherit;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  outline: none;
+  cursor: pointer;
+}
+.drill-observatory-root .dh-count {
+  margin: 22px 0 0;
+  padding-bottom: 10px;
+  border-bottom: 1px solid hsl(var(--border));
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: hsl(var(--muted-foreground));
+}
+.drill-observatory-root .dh-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.drill-observatory-root .dh-row {
+  display: grid;
+  grid-template-columns: 64px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 18px;
+  margin: 0 -12px;
+  padding: 16px 12px;
+  border-radius: 12px;
+  position: relative;
+  transition: background-color 160ms ease;
+}
+.drill-observatory-root .dh-row::after {
+  content: "";
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  bottom: 0;
+  height: 1px;
+  background: hsl(var(--border));
+}
+.drill-observatory-root .dh-row:last-child::after,
+.drill-observatory-root .dh-row:hover::after { background: transparent; }
+.drill-observatory-root .dh-row:hover,
+.drill-observatory-root .dh-row:focus-within { background: hsl(var(--background)); }
+.drill-observatory-root .dh-lead { display: grid; place-items: center; }
+.drill-observatory-root .dh-ring {
+  --dh-size: 56px;
+  display: grid;
+  place-items: center;
+  width: var(--dh-size);
+  height: var(--dh-size);
+  border-radius: 50%;
+  background: conic-gradient(hsl(var(--foreground)) calc(var(--dh-p) * 1%), hsl(var(--border)) 0);
+}
+.drill-observatory-root .dh-ring-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: calc(var(--dh-size) - 8px);
+  height: calc(var(--dh-size) - 8px);
+  border-radius: 50%;
+  background: hsl(var(--card));
+  font-size: 16px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+.drill-observatory-root .dh-row:hover .dh-ring-inner,
+.drill-observatory-root .dh-row:focus-within .dh-ring-inner { background: hsl(var(--background)); }
+.drill-observatory-root .dh-ring-inner small { font-size: 10px; font-weight: 600; margin-left: 1px; align-self: center; color: hsl(var(--muted-foreground)); }
+.drill-observatory-root .dh-glyph {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid hsl(var(--border));
+  border-radius: 50%;
+  color: hsl(var(--muted-foreground));
+}
+.drill-observatory-root .dh-glyph svg { width: 18px; height: 18px; }
+.drill-observatory-root .dh-glyph[data-state="open"] { border-color: hsl(var(--foreground) / 0.55); }
+.drill-observatory-root .dh-glyph[data-state="done"] { color: hsl(var(--foreground)); }
+/* Live pulse: an open drill is still waiting on you. A soft ring grows out of
+   the circle and fades, on a slow loop; the dot itself stays still. */
+.drill-observatory-root .dh-pulse {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 12px;
+  height: 12px;
+}
+.drill-observatory-root .dh-pulse::before {
+  content: "";
+  position: absolute;
+  inset: -16px;
+  border-radius: 50%;
+  border: 2px solid hsl(var(--foreground) / 0.5);
+  opacity: 0;
+  transform: scale(0.35);
+  animation: dh-pulse 2s cubic-bezier(0.2, 0.6, 0.3, 1) infinite;
+}
+.drill-observatory-root .dh-dot { width: 12px; height: 12px; border-radius: 50%; background: hsl(var(--foreground)); }
+@keyframes dh-pulse {
+  0% { opacity: 0.7; transform: scale(0.35); }
+  70% { opacity: 0; transform: scale(1); }
+  100% { opacity: 0; transform: scale(1); }
+}
+.drill-observatory-root .dh-statusrow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 10px;
+  margin-top: 4px;
+}
+.drill-observatory-root .dh-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: hsl(var(--muted-foreground));
+}
+.drill-observatory-root .dh-status[data-state="open"]::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: hsl(var(--foreground));
+  animation: dh-blink 2s ease-in-out infinite;
+}
+@keyframes dh-blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.25; } }
+.drill-observatory-root .dh-review {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 2px 9px 2px 7px;
+  border-radius: 999px;
+  font-size: 12.5px;
+  font-weight: 600;
+  line-height: 1.4;
+  color: hsl(var(--muted-foreground));
+  box-shadow: inset 0 0 0 1px hsl(var(--border));
+}
+.drill-observatory-root .dh-review svg { width: 13px; height: 13px; flex: none; }
+.drill-observatory-root .dh-review[data-need="true"] {
+  background: hsl(var(--foreground));
+  color: hsl(var(--background));
+  box-shadow: none;
+}
+.drill-observatory-root .dh-review[data-need="false"] { color: hsl(var(--foreground) / 0.8); }
+.drill-observatory-root .dh-review[data-need="partial"] { color: hsl(var(--foreground)); box-shadow: inset 0 0 0 1.5px hsl(var(--foreground)); }
+.drill-observatory-root .dh-review[data-need="info"] { color: hsl(var(--foreground) / 0.8); }
+.drill-observatory-root .dh-main { min-width: 0; }
+.drill-observatory-root .dh-title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+  overflow-wrap: anywhere;
+}
+.drill-observatory-root .dh-detail {
+  margin: 3px 0 0;
+  font-size: 14px;
+  color: hsl(var(--muted-foreground));
+}
+.drill-observatory-root .dh-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 10px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.drill-observatory-root .dh-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 9px 3px 7px;
+  border-radius: 999px;
+  background: hsl(var(--muted) / 0.7);
+  box-shadow: inset 0 0 0 1px hsl(var(--border));
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.4;
+  color: hsl(var(--foreground) / 0.82);
+}
+.drill-observatory-root .dh-chip svg { width: 12px; height: 12px; flex: none; }
+.drill-observatory-root .dh-chip-flag { background: transparent; box-shadow: inset 0 0 0 1px hsl(var(--foreground) / 0.35); }
+.drill-observatory-root .dh-side {
+  display: grid;
+  justify-items: end;
+  gap: 10px;
+}
+.drill-observatory-root .dh-date {
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+  color: hsl(var(--muted-foreground));
+}
+.drill-observatory-root .dh-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+}
+/* Saved sets: the same row, plus a small "more" menu and an inline rename. */
+.drill-observatory-root .dh-more { position: relative; }
+.drill-observatory-root .dh-more-menu {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 6px);
+  z-index: 20;
+  display: grid;
+  min-width: 168px;
+  padding: 6px;
+  border: 1px solid hsl(var(--border));
+  border-radius: 12px;
+  background: hsl(var(--card));
+  box-shadow: 0 1px 0 hsl(0 0% 100% / 0.6) inset, 0 12px 28px -12px hsl(var(--foreground) / 0.28);
+}
+.drill-observatory-root .dh-more-item {
+  min-height: 40px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  text-align: left;
+  color: hsl(var(--foreground));
+  cursor: pointer;
+}
+.drill-observatory-root .dh-more-item:hover:not(:disabled),
+.drill-observatory-root .dh-more-item:focus-visible { background: hsl(var(--muted)); outline: none; }
+.drill-observatory-root .dh-more-item:disabled { opacity: 0.45; cursor: not-allowed; }
+.drill-observatory-root .dh-more-item[data-destructive="true"] { color: hsl(var(--destructive)); }
+.drill-observatory-root .dh-main-wide { grid-column: 2 / -1; }
+.drill-observatory-root .dh-rename { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.drill-observatory-root .dh-rename input { flex: 1 1 220px; min-height: 40px; }
+.drill-observatory-root .dh-empty { display: grid; justify-items: center; gap: 6px; margin-top: 24px; padding: 40px 16px; text-align: center; border: 1px dashed hsl(var(--border)); border-radius: 12px; }
+.drill-observatory-root .dh-empty svg { width: 24px; height: 24px; color: hsl(var(--muted-foreground)); }
+.drill-observatory-root .dh-empty-title { margin: 6px 0 0; font-size: 16px; font-weight: 600; }
+.drill-observatory-root .dh-empty-note { margin: 0 0 8px; max-width: 360px; font-size: 14px; color: hsl(var(--muted-foreground)); }
+.drill-observatory-root .drill-history-workspace .rc-saved-panel { margin: 0; padding: 0; border: 0; }
+.drill-observatory-root .drill-history-workspace .rc-saved-panel > h2 { display: none; }
+/* rc.css inks every panel paragraph in the dark RC palette; on the hub's paper
+   surface the row text must use the app tokens instead. */
+.drill-observatory-root .drill-history-workspace .rc-saved-panel > p { margin: 8px 0 0; font-size: 14px; color: hsl(var(--muted-foreground)); }
+.drill-observatory-root .drill-history-workspace .rc-saved-panel .dh-title { margin: 0; font-size: 16px; color: hsl(var(--foreground)); }
+.drill-observatory-root .drill-history-workspace .rc-saved-panel .dh-detail { margin: 3px 0 0; font-size: 14px; color: hsl(var(--muted-foreground)); }
+.drill-observatory-root .drill-history-workspace .rc-saved-panel .dh-count { margin: 22px 0 0; font-size: 12px; color: hsl(var(--muted-foreground)); }
+.drill-observatory-root .drill-history-workspace .rc-saved-panel .dh-empty-note { margin: 18px 0 0; color: hsl(var(--muted-foreground)); }
+.drill-observatory-root .dh-row[data-state="saved"] .dh-actions .dh-more-trigger { min-height: 36px; min-width: 36px; }
+@media (max-width: 640px) {
+  .drill-observatory-root .dh-main-wide { grid-column: 1 / -1; }
+  .drill-observatory-root .dh-actions .dh-more { flex: 0 0 auto; }
+  .drill-observatory-root .dh-actions > button { flex: 1 1 0; }
+}
+.drill-observatory-root .dh-footnote {
+  margin: 14px 0 0;
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: hsl(var(--muted-foreground));
+}
+@media (max-width: 640px) {
+  .drill-observatory-root .dh-row {
+    grid-template-columns: 52px minmax(0, 1fr);
+    align-items: start;
+    gap: 12px 14px;
+  }
+  .drill-observatory-root .dh-ring { --dh-size: 48px; }
+  .drill-observatory-root .dh-ring-inner { font-size: 14px; }
+  .drill-observatory-root .dh-glyph { width: 40px; height: 40px; }
+  .drill-observatory-root .dh-side {
+    grid-column: 1 / -1;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    justify-items: stretch;
+  }
+  .drill-observatory-root .dh-date { order: -1; grid-column: 1 / -1; }
+  .drill-observatory-root .dh-actions { grid-column: 1 / -1; justify-content: stretch; }
+  .drill-observatory-root .dh-actions > button { flex: 1 1 0; min-height: 44px; }
+  .drill-observatory-root .dh-filter { width: 100%; justify-content: space-between; }
+  .drill-observatory-root .dh-filter select { max-width: 62%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .drill-observatory-root .dh-row { transition: none; }
+  .drill-observatory-root .dh-pulse::before { animation: none; opacity: 0.35; transform: scale(0.8); }
+  .drill-observatory-root .dh-status[data-state="open"]::before { animation: none; }
+}
+
 .drill-observatory-root .rc-practice-create {
   display: flex;
   flex-wrap: wrap;

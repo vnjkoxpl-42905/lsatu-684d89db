@@ -26,6 +26,6 @@ const once = (key: string, load: () => Promise<unknown>) => () => {
 
 /** The drill hub's loader. App.tsx passes this to React.lazy so the prefetch
  *  and the route resolve the same module id and share one chunk. */
-export const loadDrillHub = () => import("@/pages/AcademyMainhub");
+export const loadDrillHub = () => import("@/pages/DrillsEntry");
 
 export const preloadDrillHub = once("drill-hub", loadDrillHub);

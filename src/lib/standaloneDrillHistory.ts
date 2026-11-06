@@ -1,6 +1,7 @@
 import { canRevealRcResults } from '@/features/rc/lib/rcResultsReveal';
 import type { StandaloneDrillRun } from '@/lib/drillRunLedger';
 import { launchDrill } from '@/lib/drillLaunch';
+import { drillQuestionIds, drillReviewProgress, questionOutcome } from '@/lib/drillReview';
 import type { RcAttempt, RcDrillSession } from '@/features/rc/lib/rcTypes';
 import { readRcDraftAnswers } from '@/features/rc/lib/rcTypes';
 import type { DrillResumeSession } from '@/lib/drillResumeSession';
@@ -22,6 +23,12 @@ export type StandaloneDrillHistoryItem = {
   continueTo: string;
   resultsTo: string;
   reviewTo: string;
+  /** Right and total answers, when the score may be shown (RC hides it until revealed). */
+  score?: { correct: number; total: number };
+  /** LR: questions the drill asked that were never answered. */
+  unanswered?: number;
+  /** LR: missed questions and how many of them the student has opened in Review (saved on the sitting). */
+  review?: { done: number; total: number };
   /** RC only: the session an unfinished card can discard. */
   discardId?: string;
   rcTiming?: RcHistoryTiming;
@@ -88,6 +95,20 @@ export function buildStandaloneDrillHistory(
         : `${run.session.attempts.length} of ${run.session.question_queue.length} answered`,
       date: run.updated_at,
       status: run.session.status,
+      // The same counts the Results page shows: every question the drill asked,
+      // so a drill ended early reads as "1 of 5 correct", not "1 of 1".
+      ...(run.session.status === 'completed' && drillQuestionIds(run).length > 0
+        ? (() => {
+          const ids = drillQuestionIds(run);
+          return {
+            score: { correct: ids.filter((qid) => questionOutcome(run, qid) === 'correct').length, total: ids.length },
+            unanswered: ids.filter((qid) => questionOutcome(run, qid) === 'unanswered').length,
+          };
+        })()
+        : {}),
+      ...(run.session.status === 'completed'
+        ? (() => { const progress = drillReviewProgress(run); return { review: { done: progress.reviewed, total: progress.missed.length } }; })()
+        : {}),
       continueTo: run.source_key === 'drill::adaptive'
         ? `/drill?${launchDrill({ kind: 'smart-drill', options: { returnTo: '/practice/drills' } })}&run=${encodeURIComponent(run.id)}`
         : `/drill?${launchDrill({ kind: 'questions', qids: run.session.question_queue, options: { returnTo: '/practice/drills' } })}&run=${encodeURIComponent(run.id)}`,
@@ -115,6 +136,7 @@ export function buildStandaloneDrillHistory(
             : `${firstAnswers.length} first answer${firstAnswers.length === 1 ? '' : 's'} saved`,
         date: session.completedAt ?? session.config.lastActiveAt ?? session.startedAt,
         status: session.status as 'completed' | 'in_progress',
+        ...(canRevealRcResults(session) && firstAnswers.length > 0 ? { score: { correct: rightCount, total: firstAnswers.length } } : {}),
         continueTo: `/rc/drill?sessionId=${encodeURIComponent(session.id)}`,
         resultsTo: `/rc/results/${encodeURIComponent(session.id)}`,
         reviewTo: `/rc/drill?sessionId=${encodeURIComponent(session.id)}&review=1`,
