@@ -279,15 +279,21 @@ function DrillContent() {
   // Null for every other drill surface, which is what leaves library, flagged,
   // and Smart Drill runs untouched.
   const guidedSessionKey = React.useMemo(
-    () => guidedSessionKeyForRunner({ guidedAssignmentId, guidedDrillId, returnTo }),
-    [guidedAssignmentId, guidedDrillId, returnTo],
+    () =>
+      guidedSessionKeyForRunner({
+        guidedAssignmentId,
+        guidedDrillId,
+        returnTo,
+        practiceSource: state.practiceSource,
+      }),
+    [guidedAssignmentId, guidedDrillId, returnTo, state.practiceSource],
   );
   const guidedLegacySessionKey = React.useMemo(
     () =>
-      guidedDrillId && !guidedAssignmentId
-        ? guidedSessionKeyForRunner({ returnTo })
+      guidedDrillId && !guidedAssignmentId && !isMcPractice
+        ? guidedSessionKeyForRunner({ returnTo, practiceSource: state.practiceSource })
         : null,
-    [guidedDrillId, guidedAssignmentId, returnTo],
+    [guidedDrillId, guidedAssignmentId, isMcPractice, returnTo, state.practiceSource],
   );
   // Same reason as mcPracticeFinalizedRef: once the drill is finished, a late
   // snapshot write would flip the row back to in_progress and offer a resume on
@@ -1293,7 +1299,7 @@ function DrillContent() {
     if (mcPracticeFinalizedRef.current) return;
     if (session.questionQueue.length === 0) return;
     const snapshot = drillResumeSnapshot(session);
-    if (!snapshot) return;
+    if (!snapshot || (snapshot.attempts.length === 0 && session.currentIndex === 0)) return;
     void savePracticeSessionSnapshot(user.id, mcPracticePool, snapshot).catch((err) => {
       // Non-fatal: the drill still works, they just lose the resume point.
       console.error('[drill:mc-practice:snapshot] resume write failed', {
@@ -3467,7 +3473,7 @@ function DrillContent() {
   // Every way out of a guided drill carries the student's place, not just the
   // breadcrumb. The exit dialog promises "your progress will be saved"; before
   // this, that promise was only kept on one of the four exits.
-  const isGuidedDrillReturn = !!returnTo && returnTo.startsWith('/guided');
+  const isGuidedDrillReturn = !isMcPractice && !!returnTo && returnTo.startsWith('/guided');
   const guidedDrillReturnTo = isGuidedDrillReturn && session
     ? appendGuidedResumeParams(returnTo, session.questionQueue, session.currentIndex)
     : returnTo;
@@ -4433,7 +4439,9 @@ function DrillContent() {
   if (isOfficialLayout && session && currentQuestion) {
     const isFullSection = session.mode === 'full-section';
     const isAdaptiveMode = session.mode === 'adaptive';
-    const isGuidedDrillRunner = !!guidedAssignmentId || !!state.isGuidedDrill || (!!returnTo && returnTo.startsWith('/guided'));
+    const isGuidedDrillRunner =
+      !isMcPractice &&
+      (!!guidedAssignmentId || !!state.isGuidedDrill || (!!returnTo && returnTo.startsWith('/guided')));
     // Student-facing LSAT question screens share the same action chrome: notes,
     // End/Explanation/Skip/Submit footer, and no top "Complete Section" pill.
     // Question semantics still follow `mode`; this flag only changes the chrome.

@@ -7,7 +7,8 @@
  * a bare number. The optional ItemReadout lists each item as OK / MISS.
  */
 
-import { RefreshCcw } from 'lucide-react';
+import { ArrowRight, RefreshCcw } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 import { Button } from '@/bootcamps/main-conclusion/components/primitives/Button';
 import { Card } from '@/bootcamps/main-conclusion/components/primitives/Card';
@@ -37,6 +38,9 @@ export interface DrillVerdictProps {
   items?: DrillVerdictItem[];
   onRerun: () => void;
   rerunLabel?: string;
+  nextActionRoute?: string;
+  nextActionLabel?: string;
+  nextActionState?: unknown;
 }
 
 export function DrillVerdict({
@@ -50,6 +54,9 @@ export function DrillVerdict({
   items,
   onRerun,
   rerunLabel = 'Run it again',
+  nextActionRoute,
+  nextActionLabel,
+  nextActionState,
 }: DrillVerdictProps) {
   const score = total === 0 ? 0 : correct / total;
   const calibrated = score >= calibrationThreshold;
@@ -98,10 +105,20 @@ export function DrillVerdict({
 
         {items && items.length > 0 ? <ItemReadout items={items} /> : null}
 
-        <div className="pt-1">
+        <div className="flex flex-wrap items-center gap-3 pt-1">
           <Button onClick={onRerun} leftIcon={<RefreshCcw className="h-4 w-4" strokeWidth={2.2} />}>
             {rerunLabel}
           </Button>
+          {nextActionRoute ? (
+            <Link
+              to={nextActionRoute}
+              state={nextActionState}
+              className="inline-flex h-9 items-center justify-center gap-2 rounded-[4px] border border-[rgb(var(--border)/0.22)] bg-[rgb(var(--surface))] px-4 font-mc-mono text-body uppercase tracking-[0.16em] text-ink transition-colors hover:bg-[rgb(var(--surface-elev))]"
+            >
+              {nextActionLabel ?? 'Continue'}
+              <ArrowRight className="h-4 w-4 shrink-0" strokeWidth={2} />
+            </Link>
+          ) : null}
         </div>
       </Card>
     </div>

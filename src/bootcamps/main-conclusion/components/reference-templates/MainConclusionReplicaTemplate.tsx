@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 
 import { cn } from '@/bootcamps/main-conclusion/lib/cn';
 import { DrillVerdict } from '@/bootcamps/main-conclusion/components/DrillVerdict';
+import { getNextAction } from '@/bootcamps/main-conclusion/content/introToLrPath';
 import type { CanonicalStructureQuestion } from '@/bootcamps/main-conclusion/data/reference-drills/types';
 import { useNativeLabSave } from '@/bootcamps/main-conclusion/hooks/useNativeLabSave';
 
@@ -190,6 +191,7 @@ export function MainConclusionReplicaTemplate({
       ok: !missedIds.has(q.id),
       prompt: q.chunks[q.correctMainConclusionIndex] ?? q.chunks.join(' '),
     }));
+    const nextAction = getNextAction('/bootcamp/intro-to-lr/drills/main-conclusion-lab');
     return (
       <DrillVerdict
         label={title}
@@ -201,6 +203,9 @@ export function MainConclusionReplicaTemplate({
         nextStep="Next: return to the path and carry this into timed practice."
         items={items}
         onRerun={restart}
+        nextActionRoute={nextAction?.route}
+        nextActionLabel={nextAction ? `Next: ${nextAction.title}` : undefined}
+        nextActionState={nextAction?.linkState}
       />
     );
   }

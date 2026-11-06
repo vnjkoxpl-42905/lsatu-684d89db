@@ -120,6 +120,15 @@ describe('guidedSessionKeyForRunner', () => {
     expect(guidedSessionKeyForRunner({ returnTo: '/flagged' })).toBeNull();
     expect(guidedSessionKeyForRunner({})).toBeNull();
   });
+
+  it('returns null for Intro to LR practice sets even when returnTo starts with /guided-drills/', () => {
+    expect(
+      guidedSessionKeyForRunner({
+        returnTo: '/guided-drills/first-sentence-conclusions?returnTo=%2Fbootcamp%2Fintro-to-lr',
+        practiceSource: 'intro-to-lr-practice-drills',
+      }),
+    ).toBeNull();
+  });
 });
 
 describe('isResumableGuidedSession', () => {

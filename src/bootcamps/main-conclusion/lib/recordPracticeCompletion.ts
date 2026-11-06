@@ -25,6 +25,7 @@ export async function recordPracticeDrillCompletion(
   if (!userId || !completionId) return;
   const progressId = progressIdFor(userId);
   const persist = getPersistence(userId);
+  await persist.ready();
 
   const existing = await persist.get<ModuleProgress>(TABLES.module_progress, progressId);
   const base: ModuleProgress =

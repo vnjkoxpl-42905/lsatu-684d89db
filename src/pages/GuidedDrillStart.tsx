@@ -370,13 +370,14 @@ export default function GuidedDrillStart({
       // slug is also what lets /drill mark this practice set complete in module
       // progress when the student finishes (see runner path-completion), and
       // what its Run Record is keyed by, so a refresh finds the same run.
+      const practiceReturnTo = searchParams.get('returnTo') ? originReturnTo : ov.returnTo;
       navigate(
         `/drill?${launchDrill({
           kind: 'practice-set',
           slug: ov.slug,
           source: ov.source,
           options: {
-            returnTo: launchReturnTo,
+            returnTo: practiceReturnTo,
             label: ov.title,
             initialIndex: resumeIndex ?? undefined,
           },

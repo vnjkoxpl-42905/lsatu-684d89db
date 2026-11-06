@@ -45,11 +45,6 @@ import DrillClusterDecomposition from '@/bootcamps/main-conclusion/modules/hard-
 import { DiagnosticsIndex } from '@/bootcamps/main-conclusion/modules/diagnostics/DiagnosticsIndex';
 import { Philosophy } from '@/bootcamps/main-conclusion/modules/diagnostics/Philosophy';
 import { Dashboard } from '@/bootcamps/main-conclusion/modules/diagnostics/Dashboard';
-import { Recommendations } from '@/bootcamps/main-conclusion/modules/diagnostics/Recommendations';
-import { RrReview } from '@/bootcamps/main-conclusion/modules/diagnostics/RrReview';
-import { TraitProfile } from '@/bootcamps/main-conclusion/modules/diagnostics/TraitProfile';
-import { MistakeProfile } from '@/bootcamps/main-conclusion/modules/diagnostics/MistakeProfile';
-import { SrsQueue } from '@/bootcamps/main-conclusion/modules/diagnostics/SrsQueue';
 import { Journal } from '@/bootcamps/main-conclusion/modules/journal/Journal';
 import { Settings } from '@/bootcamps/main-conclusion/modules/settings/Settings';
 import { NewGuidedIntro } from '@/bootcamps/main-conclusion/modules/lessons/NewGuidedIntro';
@@ -331,11 +326,11 @@ export function BootcampRoutes() {
         <Route path="diagnostics" element={<DiagnosticsIndex />} />
         <Route path="diagnostics/philosophy" element={<Philosophy />} />
         <Route path="diagnostics/dashboard" element={<Dashboard />} />
-        <Route path="diagnostics/recommendations" element={<Recommendations />} />
-        <Route path="diagnostics/rr-review" element={<RrReview />} />
-        <Route path="diagnostics/trait-profile" element={<TraitProfile />} />
-        <Route path="diagnostics/mistake-profile" element={<MistakeProfile />} />
-        <Route path="diagnostics/srs" element={<SrsQueue />} />
+        <Route path="diagnostics/recommendations" element={<Navigate to="/bootcamp/intro-to-lr/diagnostics" replace />} />
+        <Route path="diagnostics/rr-review" element={<Navigate to="/bootcamp/intro-to-lr/diagnostics" replace />} />
+        <Route path="diagnostics/trait-profile" element={<Navigate to="/bootcamp/intro-to-lr/diagnostics" replace />} />
+        <Route path="diagnostics/mistake-profile" element={<Navigate to="/bootcamp/intro-to-lr/diagnostics" replace />} />
+        <Route path="diagnostics/srs" element={<Navigate to="/bootcamp/intro-to-lr/diagnostics" replace />} />
         <Route path="journal" element={<Journal />} />
         <Route path="settings" element={<Settings />} />
         <Route path="*" element={<Navigate to="" replace />} />

@@ -98,7 +98,11 @@ export function guidedSessionKeyForRunner(input: {
   guidedAssignmentId?: string | null;
   guidedDrillId?: string | null;
   returnTo?: string | null;
+  practiceSource?: string | null;
 }): string | null {
+  if (input.practiceSource === 'intro-to-lr-practice-drills') {
+    return null;
+  }
   if (input.guidedAssignmentId?.trim()) {
     return guidedSessionKey({ assignmentId: input.guidedAssignmentId });
   }

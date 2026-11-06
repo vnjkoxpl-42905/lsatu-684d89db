@@ -1,6 +1,7 @@
 import { Fragment, useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ChevronLeft, ChevronRight, Home } from 'lucide-react';
+import { ArrowRight, ChevronLeft, ChevronRight, Home, RotateCcw } from 'lucide-react';
+import { getNextAction } from '@/bootcamps/main-conclusion/content/introToLrPath';
 
 import {
   FIRST_SENTENCE_VS_REBUTTAL_QUESTIONS,
@@ -923,6 +924,7 @@ export function FirstSentenceVsRebuttalLab({ drillId, title }: { drillId: string
       { key: 'support', label: 'Support / opposing view', value: totals.support },
     ].sort((left, right) => left.value - right.value);
     const weakest = strongest[strongest.length - 1];
+    const nextAction = getNextAction('/bootcamp/intro-to-lr/drills/first-sentence-vs-rebuttal-lab');
 
     return (
       <section className="fsvr-lab__review">
@@ -930,6 +932,35 @@ export function FirstSentenceVsRebuttalLab({ drillId, title }: { drillId: string
           <div className="fsvr-lab__eyebrow">Session review</div>
           <h1>How that went</h1>
           <p>Twenty arguments dissected. Here’s what your saved session looked like, step by step.</p>
+        </div>
+
+        <div className="fsvr-lab__cta-row">
+          <button
+            type="button"
+            className="fsvr-lab__cta fsvr-lab__cta--secondary"
+            onClick={() => {
+              setSession(createEmptyFirstSentenceVsRebuttalSessionRecord());
+              setActive(createActiveQuestionState());
+              setFeedback(null);
+              setFeedbackTarget(null);
+              setExpanded([]);
+              setReviewQuestionId(null);
+            }}
+          >
+            <RotateCcw className="fsvr-lab__nav-icon" aria-hidden="true" />
+            Run it again
+          </button>
+          {nextAction ? (
+            <Link
+              to={nextAction.route}
+              state={nextAction.linkState}
+              className="fsvr-lab__cta"
+              style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '10px' }}
+            >
+              Next: {nextAction.title}
+              <ArrowRight className="fsvr-lab__nav-icon" aria-hidden="true" />
+            </Link>
+          ) : null}
         </div>
 
         <div className="fsvr-lab__review-summary-grid">

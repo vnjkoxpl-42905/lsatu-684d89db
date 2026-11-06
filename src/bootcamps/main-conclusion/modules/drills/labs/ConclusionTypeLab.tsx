@@ -5,6 +5,7 @@ import confetti from 'canvas-confetti';
 
 
 import { DrillVerdict } from '@/bootcamps/main-conclusion/components/DrillVerdict';
+import { getNextAction } from '@/bootcamps/main-conclusion/content/introToLrPath';
 import {
   CONCLUSION_TYPE_META,
   conclusionTypeMeta,
@@ -420,6 +421,8 @@ function SessionReview({
     prompt: question.conclusion,
   }));
 
+  const nextAction = getNextAction(DRILL_ROUTE);
+
   return (
     <section className="ctlab__review">
       <DrillVerdict
@@ -432,6 +435,9 @@ function SessionReview({
         nextStep="Next: head back to the path and keep building toward the full Main Conclusion drill."
         items={verdictItems}
         onRerun={onRerun}
+        nextActionRoute={nextAction?.route}
+        nextActionLabel={nextAction ? `Next: ${nextAction.title}` : undefined}
+        nextActionState={nextAction?.linkState}
       />
 
       <div className="ctlab__review-grid">

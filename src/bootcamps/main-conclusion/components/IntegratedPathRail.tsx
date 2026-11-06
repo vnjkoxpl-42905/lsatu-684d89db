@@ -77,6 +77,7 @@ export function IntegratedPathRail() {
 
                   <NavLink
                     to={action.route}
+                    state={action.linkState}
                     aria-current={isCurrent ? 'step' : undefined}
                     className={cn(
                       'group block rounded-4 px-3 py-3 transition-[background-color,border-color,color,box-shadow] duration-150 ease-eased',
