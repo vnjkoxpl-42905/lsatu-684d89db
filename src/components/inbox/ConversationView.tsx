@@ -17,6 +17,8 @@ import { useUserPermissions } from '@/hooks/useUserPermissions';
 import { initialsFromName } from './inboxDisplay';
 import { AttachmentPreviewSheet } from './AttachmentPreviewSheet';
 import { buildDaySections } from './messageClusters';
+import { ReplyQuote } from './ReplyQuote';
+import { replyPreviewText, resolveReplyQuote, type ReplyDraft, type ReplyQuoteData } from './replyUtils';
 import { isParticipantOnline } from './inboxPresence';
 import './inbox-thread.css';
 
@@ -52,6 +54,7 @@ interface PendingMessage {
   body: string;
   createdAtMs: number;
   status: 'sending' | 'failed';
+  replyToId?: string | null;
 }
 
 const STUDENT_PROMPTS = [
@@ -136,8 +139,10 @@ export function ConversationView({
   const [previewAttachment, setPreviewAttachment] = useState<MessageAttachment | null>(null);
   const [pending, setPending] = useState<PendingMessage[]>([]);
   const [composerSeed, setComposerSeed] = useState<ComposerSeed | null>(null);
+  const [replyTo, setReplyTo] = useState<ReplyDraft | null>(null);
 
   useEffect(() => {
+    setReplyTo(null);
     nearBottomRef.current = true;
     prevCountRef.current = 0;
     setReaderAtBottom(true);
@@ -167,6 +172,51 @@ export function ConversationView({
         });
     },
     [deleteMessage, onMessageSent],
+  );
+
+  const messagesById = useMemo(() => new Map(messages.map((m) => [m.id, m])), [messages]);
+
+  const authorOf = useCallback(
+    (senderId: string) => {
+      if (senderId === user?.id) return 'You';
+      const participant = conversation.participants.find((p) => p.user_id === senderId);
+      if (participant?.is_admin) return 'Joshua';
+      return participant?.display_name?.trim() || 'Student';
+    },
+    [conversation.participants, user?.id],
+  );
+
+  const resolveQuote = useCallback(
+    (message: Message): ReplyQuoteData | null =>
+      resolveReplyQuote(message.reply_to_message_id, messagesById, authorOf),
+    [messagesById, authorOf],
+  );
+
+  const handleReply = useCallback(
+    (message: Message) => {
+      setReplyTo({
+        id: message.id,
+        author: authorOf(message.sender_id),
+        text: replyPreviewText(message),
+      });
+    },
+    [authorOf],
+  );
+
+  const cancelReply = useCallback(() => setReplyTo(null), []);
+
+  const jumpToMessage = useCallback(
+    (messageId: string) => {
+      const root = scrollRef.current;
+      const target = root?.querySelector<HTMLElement>(`[data-message-id="${messageId}"]`);
+      if (!target) return;
+      target.scrollIntoView({ block: 'center', behavior: reducedMotion ? 'auto' : 'smooth' });
+      target.classList.remove('msgs-jump-flash');
+      void target.offsetWidth; // restart the animation if it is already running
+      target.classList.add('msgs-jump-flash');
+      window.setTimeout(() => target.classList.remove('msgs-jump-flash'), 1400);
+    },
+    [reducedMotion],
   );
 
   const handleScroll = useCallback(() => {
@@ -224,10 +274,10 @@ export function ConversationView({
 
   const pendingHandlers = useMemo<PendingHandlers>(
     () => ({
-      onPendingStart: ({ localId, body }) => {
+      onPendingStart: ({ localId, body, replyToId }) => {
         setPending((prev) => [
           ...prev,
-          { localId, body, createdAtMs: Date.now(), status: 'sending' },
+          { localId, body, replyToId: replyToId ?? null, createdAtMs: Date.now(), status: 'sending' },
         ]);
       },
       onPendingResolve: (localId, ok) => {
@@ -249,7 +299,12 @@ export function ConversationView({
       );
       const { error } = await supabase
         .from('messages')
-        .insert({ conversation_id: conversation.id, sender_id: user.id, body: item.body });
+        .insert({
+          conversation_id: conversation.id,
+          sender_id: user.id,
+          body: item.body,
+          ...(item.replyToId ? { reply_to_message_id: item.replyToId } : {}),
+        });
       if (error) {
         setPending((prev) =>
           prev.map((p) => (p.localId === localId ? { ...p, status: 'failed' } : p)),
@@ -431,7 +486,9 @@ export function ConversationView({
           ref={scrollRef}
           onScroll={handleScroll}
           className={cn(
-            'flex h-full flex-col overflow-y-auto scrollbar-thin scrollbar-thumb-border',
+            // overflow-x-hidden: a message pulled right for a reply may travel
+            // into the page padding and must never add a sideways scrollbar.
+            'flex h-full flex-col overflow-y-auto overflow-x-hidden scrollbar-thin scrollbar-thumb-border',
             compact ? 'px-4 py-5' : stageLayout ? 'px-4 py-8 sm:px-8' : 'px-6 py-8 lg:px-10',
           )}
         >
@@ -504,6 +561,9 @@ export function ConversationView({
                       onDeleteMessage={handleDeleteMessage}
                       lastSeenOwnMessageId={lastSeenOwnMessageId}
                       otherLastReadAt={otherLastReadAt}
+                      onReply={handleReply}
+                      resolveQuote={resolveQuote}
+                      onJumpToMessage={jumpToMessage}
                     />
                   ))}
                 </div>
@@ -529,6 +589,16 @@ export function ConversationView({
                           p.status === 'sending' && 'opacity-70',
                         )}
                       >
+                        {(() => {
+                          const pendingQuote = resolveReplyQuote(p.replyToId, messagesById, authorOf);
+                          return pendingQuote ? (
+                            <ReplyQuote
+                              quote={pendingQuote}
+                              tone={ownSideIsInstructor ? 'ink' : 'paper'}
+                              onJump={jumpToMessage}
+                            />
+                          ) : null;
+                        })()}
                         {p.body}
                       </div>
                       {p.status === 'sending' ? (
@@ -585,6 +655,8 @@ export function ConversationView({
           pendingHandlers={pendingHandlers}
           onTyping={broadcastTyping}
           onTypingStop={broadcastStopped}
+          replyTo={replyTo}
+          onCancelReply={cancelReply}
         />
       </div>
 

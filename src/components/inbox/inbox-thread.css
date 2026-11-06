@@ -78,10 +78,22 @@ html.dark .msgs-scope {
   animation: msgs-progress 1.1s linear infinite;
 }
 
+/* Brief wash on a message after tapping a quote that points to it. */
+@keyframes msgs-jump-flash {
+  0% { background-color: var(--msg-accent-soft); }
+  100% { background-color: transparent; }
+}
+
+.msgs-jump-flash {
+  border-radius: 22px;
+  animation: msgs-jump-flash 1.3s ease-out;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .msgs-presence-online,
   .msgs-typing-dot,
-  .msgs-progress-bar {
+  .msgs-progress-bar,
+  .msgs-jump-flash {
     animation: none;
   }
 }
