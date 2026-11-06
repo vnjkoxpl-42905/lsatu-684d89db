@@ -27,6 +27,7 @@ import type { QuestionFinderHandle } from "@/components/questionfinder/QuestionF
 import { SectionToggle } from "@/components/drill/SectionToggle";
 import { DrillHistoryRow } from "@/components/drill/DrillHistoryRow";
 import { RcSavedSetsPanel } from "@/features/rc/components/RcSavedSetsPanel";
+import { SavedLrSets } from "@/components/drill/SavedLrSets";
 import { RcPracticeLanding, RcPracticeResume } from "@/features/rc/components/RcPracticeLanding";
 import { RcHubSurface } from "@/features/rc/components/RcHubSurface";
 import {
@@ -500,18 +501,12 @@ export default function AcademyMainhub({
           <QuestionJump hideTrigger={section === "lr" && view === "create" && isLauncherStage} key={user?.id ?? "guest"} ref={questionFinderRef} enabled={finderEnabled} actorId={user?.id} returnTo={lookupReturnTo} tone={theme === "dark" ? "dark" : "light"} bank={section} withSearch={false} triggerLabel="Find a question" onDismiss={finishFinder} onPreviewClose={finishFinder} />
           {searchParams.get("finder") === "open" && !perms.loading && !finderEnabled && <p role="alert">Question finder requires access to Drills.</p>}
         </div>
-        {view === "saved" ? (section === "rc" ? (
-          <section data-motion-enter className="rc-page rc-embedded rc-saved-workspace" aria-label="Saved RC drills">
-            <h1>Saved RC drills</h1>
-            <RcSavedSetsPanel />
+        {view === "saved" ? (
+          <section data-motion-enter className="drill-history-workspace rounded-xl border border-border bg-card p-5 sm:p-7" aria-label={section === "rc" ? "Saved RC drills" : "Saved sets"}>
+            <h1 className="text-xl font-semibold">{section === "rc" ? "Saved RC drills" : "Saved LR sets"}</h1>
+            {section === "rc" ? <RcSavedSetsPanel /> : <SavedLrSets />}
           </section>
-        ) : (
-          <section data-motion-enter className="drill-history-workspace rounded-xl border border-border bg-card p-6" aria-label="Saved sets">
-            <h1 className="text-xl font-semibold">Saved LR sets</h1>
-            <p className="mt-2 text-sm text-muted-foreground">Reusable saved sets support Logical Reasoning. Find your RC drills in In progress or Completed.</p>
-            <Button className="mt-5" onClick={() => navigate("/practice/drills/saved")}>Open saved LR sets <ArrowRight className="ml-2 h-4 w-4" aria-hidden /></Button>
-          </section>
-        )) : view === "in-progress" || view === "completed" ? (
+        ) : view === "in-progress" || view === "completed" ? (
           <section data-motion-enter className="drill-history-workspace rounded-xl border border-border bg-card p-5 sm:p-7" aria-label={view === "completed" ? "Completed drills" : "Drills in progress"}>
             <div data-motion-item className="flex items-center justify-between gap-3">
               <h1 className="text-xl font-semibold">{view === "completed" ? "Completed drills" : "Drills in progress"}</h1>

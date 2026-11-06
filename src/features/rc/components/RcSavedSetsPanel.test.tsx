@@ -90,7 +90,8 @@ describe('saved RC controls', () => {
   });
   it('retains a saved definition when renaming fails', async () => {
     m.list.mockResolvedValue([saved]); m.rename.mockRejectedValue(new Error('Name did not save')); mount();
-    fireEvent.click(await screen.findByRole('button', { name: 'Rename Science practice' }));
+    fireEvent.click(await screen.findByRole('button', { name: 'More actions for Science practice' }));
+    fireEvent.click(screen.getByRole('menuitem', { name: 'Rename Science practice' }));
     fireEvent.change(screen.getByRole('textbox', { name: 'New name for Science practice' }), { target: { value: 'New name' } });
     fireEvent.click(screen.getByRole('button', { name: 'Save RC name' }));
     expect(await screen.findByRole('alert')).toHaveTextContent('Name did not save');
@@ -113,8 +114,9 @@ describe('saved RC controls', () => {
     fireEvent.change(screen.getByRole('textbox', { name: 'Saved RC name' }), { target: { value: saved.name } });
     fireEvent.click(screen.getByRole('button', { name: 'Save these settings' }));
     await screen.findByRole('alert'); view.unmount(); m.list.mockResolvedValue([saved]); mount();
-    const rename = await screen.findByRole('button', { name: 'Rename Science practice' });
-    expect(rename).toBeDisabled(); expect(screen.getByRole('button', { name: 'Duplicate Science practice' })).toBeDisabled();
+    fireEvent.click(await screen.findByRole('button', { name: 'More actions for Science practice' }));
+    const rename = screen.getByRole('menuitem', { name: 'Rename Science practice' });
+    expect(rename).toBeDisabled(); expect(screen.getByRole('menuitem', { name: 'Duplicate Science practice' })).toBeDisabled();
     fireEvent.click(rename); expect(screen.queryByRole('textbox', { name: 'New name for Science practice' })).toBeNull();
     expect(m.rename).not.toHaveBeenCalled();
     expect(screen.getByRole('button', { name: 'Retry original RC save' })).toBeEnabled();

@@ -113,7 +113,7 @@ export default function DrillingLanding() {
           <h1 className="text-3xl font-semibold">Drilling</h1>
           <p className="mt-2 text-sm text-muted-foreground">Improve LSAT performance with practice drills for each section.</p>
         </div>
-        <Button variant="outline" size="sm" onClick={() => navigate("/practice/drills/saved")}>
+        <Button variant="outline" size="sm" onClick={() => navigate("/practice/drills?view=saved")}>
           My Drills
           <ArrowRight className="ml-1 h-4 w-4" aria-hidden="true" />
         </Button>

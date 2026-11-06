@@ -73,7 +73,7 @@ describe("Drilling page", () => {
     built.items = [];
     renderAt("/practice/drills");
     fireEvent.click(await screen.findByRole("button", { name: /My Drills/ }));
-    expect(screen.getByTestId("where")).toHaveTextContent("/practice/drills/saved");
+    expect(screen.getByTestId("where")).toHaveTextContent("/practice/drills?view=saved");
   });
 
   it("lists the 5 most recent unfinished drills, newest first, and Continue reopens the saved one", async () => {

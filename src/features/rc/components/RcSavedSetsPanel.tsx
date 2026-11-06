@@ -3,6 +3,9 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { getRcSavedSet, listRcSavedSets, renameRcSet, saveRcSet, type RcSavedDefinition } from '../api/rcSavedSets';
 import { decodeRcSavedSet, type RcSavedPayload } from '../lib/rcSavedSetCodec';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { SavedSetRow } from '@/components/drill/SavedSetRow';
 
 type SavedPanelProps = { recipe?: RcSavedPayload | null; fixed?: RcSavedPayload | null; variant?: 'management' | 'contextual'; saveSuccessMessage?: string };
 export function RcSavedSetsPanel({ recipe, fixed, variant = 'management', saveSuccessMessage }: SavedPanelProps) {
@@ -80,7 +83,7 @@ function ActorRcSavedSetsPanel({ owner, recipe, fixed, variant, saveSuccessMessa
   });
   return <section className={`rc-saved-panel${variant === 'contextual' ? ' rc-contextual-save' : ''}`} aria-label="Saved RC sets and recipes">
     <h2 className="text-lg font-semibold">{variant === 'contextual' ? 'Save this drill' : 'Saved passages and settings'}</h2>
-    <p className="text-sm">{variant === 'contextual' ? 'Exact passages keep this set. Reusable settings choose passages again next time.' : 'Saved passages keep the exact passages and questions. Saved settings choose passages again using your filters and current progress. Review either before starting.'}</p>
+    <p className="text-sm">{variant === 'contextual' ? 'Exact passages keep this set. Reusable settings choose passages again next time.' : 'Exact passages replay the same passages and questions. Reusable settings choose passages again each time, using your filters and progress.'}</p>
     {!owner && <p>Sign in to save and reopen RC work.</p>}
     {owner && (recipe || fixed || variant === 'contextual') && <div className="rc-saved-form">
       {variant === 'contextual' ? <label className="rc-contextual-save-name block w-full"><span className="rc-field-label">Name</span><input aria-label="Saved RC name" aria-describedby={saveHelpId} maxLength={100} value={name} onChange={e => setName(e.target.value)} placeholder="For example, Science practice" className="w-full rounded border px-3 py-2" /></label> : <input aria-label="Saved RC name" maxLength={100} value={name} onChange={e => setName(e.target.value)} placeholder="Name these passages or settings" className="rounded border px-3 py-2" />}
@@ -100,15 +103,23 @@ function ActorRcSavedSetsPanel({ owner, recipe, fixed, variant, saveSuccessMessa
     {variant !== 'contextual' && loading && <p role="status">Loading saved RC sets…</p>}
     {(error || recoveryError) && <div role="alert"><p>{recoveryError ?? error}</p>{variant !== 'contextual' && <button type="button" className="rc-chip" disabled={busy} onClick={retry}>Retry loading RC sets</button>}</div>}
     {notice && <p role="status">{notice}</p>}
-    {variant !== 'contextual' && !loading && !error && owner && rows.length === 0 && <p>No saved passages or settings yet.</p>}
-    {variant !== 'contextual' && <ul className="rc-saved-list">{rows.map(row => <li key={row.id} className="rc-saved-row">
-      <strong>{row.name}</strong><p className="text-sm">{row.payload ? row.payload.mode === 'fixed' ? `Exact passages · ${row.payload.passageIds.length} passage${row.payload.passageIds.length === 1 ? '' : 's'} · ${row.payload.questionIds.length} question${row.payload.questionIds.length === 1 ? '' : 's'}` : `Reusable settings · ${row.payload.count} passage${row.payload.count === 1 ? '' : 's'} requested` : row.problem}</p>
-      <div className="rc-saved-form">
-        <button type="button" className="rc-chip" disabled={busy || !row.payload} onClick={() => void open(row.id)}>Open {row.name}</button>
-        <button type="button" className="rc-chip" disabled={busy || pendingVisible || !row.payload} onClick={() => { if (pendingVisible) return; setRenaming(row.id); setNewName(row.name); }}>Rename {row.name}</button>
-        <button type="button" className="rc-chip" disabled={busy || pendingVisible || !row.payload} onClick={() => !pendingVisible && row.payload && void save(row.payload, `${row.name.slice(0, 93)} (copy)`)}>Duplicate {row.name}</button>
-      </div>
-      {renaming === row.id && <div className="rc-saved-form"><input aria-label={`New name for ${row.name}`} maxLength={100} value={newName} onChange={e => setNewName(e.target.value)} /><button type="button" className="rc-chip" disabled={busy || pendingVisible || !newName.trim()} onClick={() => void perform(async () => { if (!owner || pendingVisible) return; await renameRcSet(owner, row.id, newName, row.name); if (alive.current) { setRenaming(null); retry(); } })}>Save RC name</button><button type="button" className="rc-chip" onClick={() => setRenaming(null)}>Cancel rename</button></div>}
-    </li>)}</ul>}
+    {variant !== 'contextual' && !loading && !error && owner && rows.length === 0 && <p className="dh-empty-note">No saved passages or settings yet.</p>}
+    {variant !== 'contextual' && !loading && !error && rows.length > 0 && <p className="dh-count" role="status">{rows.length} saved {rows.length === 1 ? 'item' : 'items'}</p>}
+    {variant !== 'contextual' && <ul className="dh-list rc-saved-list">{rows.map(row => {
+      const detail = row.payload ? row.payload.mode === 'fixed' ? `${row.payload.passageIds.length} passage${row.payload.passageIds.length === 1 ? '' : 's'} · ${row.payload.questionIds.length} question${row.payload.questionIds.length === 1 ? '' : 's'}` : `${row.payload.count} passage${row.payload.count === 1 ? '' : 's'} requested each time` : (row.problem ?? 'This saved set could not be verified.');
+      return <SavedSetRow key={row.id} section="rc" title={row.name}
+        kind={row.payload ? row.payload.mode === 'fixed' ? 'Exact passages' : 'Reusable settings' : 'Needs attention'}
+        detail={detail} saved={row.createdAt}
+        startLabel="Open" startAriaLabel={`Open ${row.name}`} startDisabled={busy || !row.payload} onStart={() => void open(row.id)}
+        menu={[
+          { label: 'Rename', ariaLabel: `Rename ${row.name}`, disabled: busy || pendingVisible || !row.payload, onSelect: () => { if (pendingVisible) return; setRenaming(row.id); setNewName(row.name); } },
+          { label: 'Duplicate', ariaLabel: `Duplicate ${row.name}`, disabled: busy || pendingVisible || !row.payload, onSelect: () => { if (!pendingVisible && row.payload) void save(row.payload, `${row.name.slice(0, 93)} (copy)`); } },
+        ]}
+        editing={renaming === row.id ? <div className="dh-rename">
+          <Input aria-label={`New name for ${row.name}`} maxLength={100} value={newName} onChange={e => setNewName(e.target.value)} autoFocus />
+          <Button size="sm" disabled={busy || pendingVisible || !newName.trim()} onClick={() => void perform(async () => { if (!owner || pendingVisible) return; await renameRcSet(owner, row.id, newName, row.name); if (alive.current) { setRenaming(null); retry(); } })}>Save RC name</Button>
+          <Button size="sm" variant="ghost" onClick={() => setRenaming(null)}>Cancel rename</Button>
+        </div> : undefined} />;
+    })}</ul>}
   </section>;
 }

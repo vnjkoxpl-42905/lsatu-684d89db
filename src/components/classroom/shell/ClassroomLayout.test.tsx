@@ -274,7 +274,7 @@ describe("practice rail dropdowns", () => {
     expect(screen.getByTestId("where")).toHaveTextContent("/practice/drills");
     expect(sub(/^Attempts$/)).toBeUndefined();
     fireEvent.click(sub(/^My Drills$/));
-    expect(screen.getByTestId("where")).toHaveTextContent("/practice/drills/saved");
+    expect(screen.getByTestId("where")).toHaveTextContent("/practice/drills?view=saved");
     expect(sub(/^My Drills$/)).toHaveAttribute("aria-current", "page");
     expect(railButton(/^Drilling$/)).not.toHaveAttribute("aria-current");
     fireEvent.click(sub(/^History$/));

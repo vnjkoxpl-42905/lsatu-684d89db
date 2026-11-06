@@ -1,9 +1,10 @@
 import { Lock } from "lucide-react";
+import { useLocation } from "react-router-dom";
 
 type Child = {
   label: string;
   path: string;
-  isActive: (pathname: string) => boolean;
+  isActive: (pathname: string, search: string) => boolean;
 };
 
 type Group = {
@@ -47,8 +48,10 @@ const GROUPS: Group[] = [
     children: [
       {
         label: "My Drills",
-        path: "/practice/drills/saved",
-        isActive: (p) => p.startsWith("/practice/drills/saved"),
+        path: "/practice/drills?view=saved",
+        isActive: (p, search) =>
+          p.startsWith("/practice/drills/saved") ||
+          (p === "/practice/drills" && new URLSearchParams(search).get("view") === "saved"),
       },
       {
         label: "History",
@@ -81,11 +84,12 @@ export function PracticeRailGroups({
   onPrefetch?: () => void;
   navClass: (active: boolean) => string;
 }) {
+  const { search } = useLocation();
   return (
     <>
       {GROUPS.map((group) => {
         const owned = group.owns(pathname);
-        const childActive = group.children.some((child) => child.isActive(pathname));
+        const childActive = group.children.some((child) => child.isActive(pathname, search));
         // The row lights up on its own landing page. Once a sub-item is the
         // current page, the sub-item carries the highlight instead.
         const parentActive = owned && !childActive;
@@ -112,7 +116,7 @@ export function PracticeRailGroups({
             {owned ? (
               <div className="classroom-nav-sub">
                 {group.children.map((child) => {
-                  const active = child.isActive(pathname);
+                  const active = child.isActive(pathname, search);
                   return (
                     <button
                       key={child.path}
