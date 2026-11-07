@@ -38,6 +38,7 @@ import { pickContinueWork } from "./homeModel";
 import { nextActionFor } from "./homeNextAction";
 import { useHomeFeedback } from "./useHomeFeedback";
 import { HomeWeekStrip } from "./HomeWeekStrip";
+import { HomeProgressCard } from "./HomeProgressCard";
 import QuestionFinder, { type QuestionFinderHandle } from "@/components/questionfinder/QuestionFinder";
 
 function WorkRow({
@@ -530,6 +531,8 @@ export function ClassroomHomeView({
               ) : null}
             </nav>
           </section>
+
+          {permissionsResolved && model.access.analytics ? <HomeProgressCard onOpen={handleOpen} /> : null}
 
           {hasContext ? (
             <ul className="classroom-home-context" aria-label="Where you stand" data-home-reveal>

@@ -7,7 +7,7 @@ const ALIASES: Record<string, string> = {
   '/progress/topics': '/review/progress', '/progress/history': '/review/history',
   '/analytics': '/review/progress', '/history': '/review/history',
 };
-const PATHS = new Set(['/review/to-review', '/review/progress', '/review/history', '/review/wrong', '/review/flagged', '/review/imported']);
+const PATHS = new Set(['/review/to-review', '/review/progress', '/review/history', '/review/strengths', '/review/wrong', '/review/flagged', '/review/imported']);
 const QUEUE_KEYS = new Set(['reason','area','source','q','view','show','selected']);
 const PROGRESS_KEYS = new Set(['window','progressArea','progressType','progressAnswer','progressEvidence','mode']);
 const HISTORY_KEYS = new Set(['window','historyArea','historyResult','historyAnswer','historySort','historySource','historyMode','historyTopic','historySearch','historySelected']);

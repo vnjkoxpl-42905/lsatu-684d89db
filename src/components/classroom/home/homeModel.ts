@@ -166,6 +166,8 @@ export interface HomeAccess {
   activities: boolean;
   /** Gates the Question finder. Without it there is nothing to find. */
   drill: boolean;
+  /** Gates the Your progress card on Home. Optional so older fixtures stay valid. */
+  analytics?: boolean;
 }
 
 export interface ClassroomHomeModel {

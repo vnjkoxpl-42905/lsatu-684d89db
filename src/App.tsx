@@ -34,6 +34,7 @@ import { safeLazy } from "@/lib/safeLazy";
 const AcademyMainhub = safeLazy(loadDrillHub);
 const DrillSetupPreview = React.lazy(() => import('./dev/DrillSetupPreview'));
 const PracticeExamsPreview = React.lazy(() => import('./dev/PracticeExamsPreview'));
+const StudentInsightsPreview = import.meta.env.DEV ? React.lazy(() => import('./dev/StudentInsightsPreview')) : null;
 const LrQuestionPage = React.lazy(() => import('./pages/LrQuestionPage'));
 const ConditionalOpeningPreview = import.meta.env.DEV
   ? safeLazy(() => import('./dev/ConditionalOpeningPreview'))
@@ -49,6 +50,7 @@ const IntroLrReviewDetail = safeLazy(() => import("./pages/IntroLrReviewDetail")
 const HardSentencesReviewDetail = safeLazy(() => import("./pages/HardSentencesReviewDetail"));
 const NativeLabReviewDetail = safeLazy(() => import("./pages/NativeLabReviewDetail"));
 const ProgressPage = safeLazy(() => import("./components/analytics/ProgressPage"));
+const StrengthsWeaknessesPage = safeLazy(() => import("./components/analytics/StrengthsWeaknessesPage"));
 const RcRedirect = safeLazy(() => import("./features/rc/pages/RcRedirect"));
 const RcQuestionPreview = safeLazy(() => import("./features/rc/pages/RcQuestionPreview"));
 const RcPlayer = safeLazy(() => import("./features/rc/pages/RcPlayer"));
@@ -305,6 +307,7 @@ const App = () => {
             {/* Dev-only: the Abstract bootcamp without sign-in or assignment, for local QA. Progress writes are skipped with no user. */}
             {import.meta.env.DEV && <Route path="/dev/abstract-preview" element={<AbstractBootcamp />} />}
             {import.meta.env.DEV && <Route path="/dev/practice-exams-preview/*" element={<PracticeExamsPreview />} />}
+            {import.meta.env.DEV && StudentInsightsPreview && <Route path="/dev/student-insights-preview" element={<StudentInsightsPreview />} />}
             <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/trust" element={<React.Suspense fallback={null}><Trust /></React.Suspense>} />
 
@@ -657,6 +660,7 @@ const App = () => {
                       <Route element={<ProtectedRoute flag={REVIEW_HUB_ROUTES.analyticsFlag}><ReviewProgressSnapshotBoundary /></ProtectedRoute>}>
                         <Route path={REVIEW_HUB_ROUTES.progress.path} element={<ProgressPage view="overview" />} />
                         <Route path={REVIEW_HUB_ROUTES.history.path} element={<ProgressPage view="history" />} />
+                        <Route path={REVIEW_HUB_ROUTES.strengths.path} element={<StrengthsWeaknessesPage />} />
                       </Route>
                       <Route path={REVIEW_HUB_ROUTES.imported.path} element={<ProtectedRoute flag={[...REVIEW_HUB_ROUTES.imported.flags]}><ImportedWorkPage /></ProtectedRoute>} />
                       <Route path={REVIEW_HUB_ROUTES.queue.path} element={<ProtectedRoute allowSignedIn={REVIEW_HUB_ROUTES.queue.allowSignedIn}><ReviewQueuePage /></ProtectedRoute>} />

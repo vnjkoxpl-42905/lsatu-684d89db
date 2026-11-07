@@ -26,6 +26,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import ImportedMetricsPanel from "@/components/analytics/ImportedMetricsPanel";
 import type { DimensionStat, PriorityRow } from "@/lib/mainhubAnalytics";
 import { DRILL_SECTION_PARAM, type DrillSection } from "@/lib/drillSection";
+import { launchDrill } from "@/lib/drillLaunch";
 
 const ACTIVE_TABS = ["overview", "drills", "priorities"] as const;
 const LOCKED_TABS = ["sections", "preptests", "questions"] as const;
@@ -116,7 +117,7 @@ function NativeAnalyticsStage({
         </p>
         <button
           type="button"
-          onClick={() => navigate(backTo("full-section"))}
+          onClick={() => navigate(`/drill?${launchDrill({ kind: "smart-drill", options: { returnTo: "/practice/drills" } })}`)}
           className="mt-5 rounded-full bg-slate-900 px-5 py-2 text-sm font-semibold text-white hover:bg-slate-800"
         >
           Start practicing

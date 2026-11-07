@@ -46,7 +46,7 @@ describe("destination route matrix", () => {
     expect(app).toContain(`<Route path="${config.path}" element={<ProtectedRoute allowSignedIn><StudentDestination destination="${destination}" />`);
     expect(app).toContain(`<DestinationIndex destination="${destination}" />`);
     for (const tab of config.tabs) {
-      if (destination === "review" && ["/review/progress", "/review/history"].includes(tab.path)) {
+      if (destination === "review" && ["/review/progress", "/review/history", "/review/strengths"].includes(tab.path)) {
         expect(app).toContain('<Route element={<ProtectedRoute flag="has_analytics_access"><ReviewProgressSnapshotBoundary /></ProtectedRoute>}>');
         continue;
       }
@@ -228,7 +228,7 @@ describe("legacy links", () => {
 
 it('binds canonical Review navigation to the metadata App uses for its actual gates', () => {
   expect(DESTINATIONS.review.path).toBe(REVIEW_HUB_ROUTES.root.path);
-  expect(DESTINATIONS.review.tabs.map(tab => tab.path)).toEqual([REVIEW_HUB_ROUTES.queue,REVIEW_HUB_ROUTES.progress,REVIEW_HUB_ROUTES.history].map(route => `${REVIEW_HUB_ROUTES.root.path}/${route.path}`));
+  expect(DESTINATIONS.review.tabs.map(tab => tab.path)).toEqual([REVIEW_HUB_ROUTES.queue,REVIEW_HUB_ROUTES.progress,REVIEW_HUB_ROUTES.history,REVIEW_HUB_ROUTES.strengths].map(route => `${REVIEW_HUB_ROUTES.root.path}/${route.path}`));
   expect(app).toContain('path={REVIEW_HUB_ROUTES.root.path}');
   expect(app).toContain('flag={REVIEW_HUB_ROUTES.analyticsFlag}');
   expect(app).toContain('REVIEW_HUB_ALIASES.map');
