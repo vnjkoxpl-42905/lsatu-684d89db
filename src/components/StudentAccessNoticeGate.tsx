@@ -43,8 +43,12 @@ export function StudentAccessNoticeGate({ children }: { children: ReactNode }) {
     const timeout = window.setTimeout(() => void refetch(), Math.min(remaining, 2_147_483_647));
     return () => window.clearTimeout(timeout);
   }, [remaining, refetch]);
+  // A paused student can still message and book. Every booking route must stay
+  // open, including /book/session, the link students are emailed, or the paused
+  // screen's own promise ("you can still book a session") is false.
   const allowed = pathname === "/booking" || pathname === "/schedule" ||
-    pathname === "/inbox" || pathname.startsWith("/inbox/");
+    pathname === "/inbox" || pathname.startsWith("/inbox/") ||
+    pathname.startsWith("/book/");
   if (user && !allowed && noticeQuery.isPending) return <p role="status">Checking access…</p>;
   // Only block when we never got an answer; a failed background refresh keeps the last known state.
   if (user && !allowed && noticeQuery.isError && !noticeQuery.data) {
