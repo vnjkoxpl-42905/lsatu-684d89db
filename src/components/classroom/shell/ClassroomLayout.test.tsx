@@ -249,3 +249,36 @@ it('counts unread work without treating incomplete work as unread', async () => 
  try {await renderShell('/my-work/to-do');expect(within(rail()).getByRole('button',{name:/My Work.*1.*unread notes and assignments/})).toBeInTheDocument();}
  finally {unreadFeed.rows=[];}
 });
+
+describe("practice rail dropdowns", () => {
+  const sub = (name: RegExp) => railButton(name);
+  it("shows Practice Exams and Drilling as separate rows with no sub-items until you are inside one", async () => {
+    await renderShell("/classroom");
+    expect(railButton(/^Practice$/)).toBeUndefined();
+    expect(railButton(/^Practice Exams$/)).toBeInTheDocument();
+    expect(railButton(/^Drilling$/)).toBeInTheDocument();
+    expect(sub(/^Attempts$/)).toBeUndefined();
+    expect(sub(/^My Drills$/)).toBeUndefined();
+  });
+  it("opens Practice Exams in one click with Attempts and All Exams, and closes Drilling", async () => {
+    await renderShell("/classroom");
+    fireEvent.click(railButton(/^Practice Exams$/));
+    expect(screen.getByTestId("where")).toHaveTextContent("/practice/exams");
+    expect(sub(/^Attempts$/)).toBeInTheDocument();
+    expect(sub(/^All Exams$/)).toBeInTheDocument();
+    expect(sub(/^My Drills$/)).toBeUndefined();
+  });
+  it("opens Drilling in one click with My Drills and History, and moves between them", async () => {
+    await renderShell("/classroom");
+    fireEvent.click(railButton(/^Drilling$/));
+    expect(screen.getByTestId("where")).toHaveTextContent("/practice/drills");
+    expect(sub(/^Attempts$/)).toBeUndefined();
+    fireEvent.click(sub(/^My Drills$/));
+    expect(screen.getByTestId("where")).toHaveTextContent("/practice/drills/saved");
+    expect(sub(/^My Drills$/)).toHaveAttribute("aria-current", "page");
+    expect(railButton(/^Drilling$/)).not.toHaveAttribute("aria-current");
+    fireEvent.click(sub(/^History$/));
+    expect(screen.getByTestId("where")).toHaveTextContent("/progress/history");
+    expect(sub(/^History$/)).toHaveAttribute("aria-current", "page");
+  });
+});
