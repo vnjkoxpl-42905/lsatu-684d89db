@@ -6,8 +6,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useQuestionBank } from "@/contexts/QuestionBankContext";
 import { loadStandaloneDrillRun, type StandaloneDrillRun } from "@/lib/drillRunLedger";
 import { launchDrill } from "@/lib/drillLaunch";
-import { questionBank } from "@/lib/questionLoader";
-import { LrChoiceNote } from "@/components/drill/shared/LrChoiceNote";
+import { CompletedDrillReview } from "@/components/drill/CompletedDrillReview";
 import { lrRunProvenanceLabel } from "@/lib/lrRunProvenance";
 
 export default function DrillRuns() {
@@ -20,6 +19,8 @@ export default function DrillRuns() {
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState<string | null>(null);
   const view = searchParams.get("view") === "review" ? "review" : "results";
+  const qParam = Number(searchParams.get("q"));
+  const openQuestion = Number.isInteger(qParam) && qParam > 0 ? qParam - 1 : null;
 
   React.useEffect(() => {
     if (!user?.id || !runId) {
@@ -62,7 +63,7 @@ export default function DrillRuns() {
     : `/drill?${launchDrill({ kind: "questions", qids: run.session.question_queue, options: { returnTo: "/practice/drills" } })}&run=${encodeURIComponent(run.id)}`);
 
   return (
-    <div className="mx-auto w-full max-w-4xl px-4 py-8 sm:px-6">
+    <div className={`mx-auto w-full ${view === "review" && openQuestion !== null ? "max-w-6xl" : "max-w-4xl"} px-4 py-8 sm:px-6`}>
       <Button type="button" variant="ghost" className="mb-5" onClick={() => navigate(backTo)}><ArrowLeft className="mr-2 h-4 w-4" aria-hidden />Back to drills</Button>
       {loading ? <p role="status">Loading your drill…</p> : error ? <p role="alert" className="text-destructive">{error}</p> : !run ? <p role="status">This drill was not found in your account.</p> : !completed ? (
         <section className="rounded-xl border border-border bg-card p-6">
@@ -91,27 +92,13 @@ export default function DrillRuns() {
         ) : (
           <section className="mt-5" aria-label="Answer review">
             {bankLoading ? <p role="status">Loading questions…</p> : bankError ? <p role="alert" className="text-destructive">Questions could not be loaded. Try again later.</p> : (
-              <ol className="space-y-3">{reviewQids.map((qid, index) => {
-                const question = questionBank.getQuestion(qid);
-                const attempt = attempts.find((item) => item.qid === qid);
-                return <li key={`${qid}-${index}`} className="rounded-xl border border-border bg-card p-5">
-                  <details>
-                    <summary className="cursor-pointer font-medium">{index + 1}. {question ? `PT${question.pt} · S${question.section} · Q${question.qnum} · ${question.qtype}` : qid} · {attempt ? attempt.correct ? "Correct" : "Incorrect" : "Unanswered"}</summary>
-                    {question ? <div className="mt-5 space-y-4 text-sm leading-relaxed">
-                      {question.stimulus && <p className="whitespace-pre-wrap">{question.stimulus}</p>}
-                      <p className="font-medium whitespace-pre-wrap">{question.questionStem}</p>
-                      <ol className="space-y-2" aria-label={`Answer choices for question ${index + 1}`}>{(["A", "B", "C", "D", "E"] as const).map((letter) => (
-                        <li key={letter} className="rounded-lg border border-border p-3" data-selected={attempt?.selected_answer === letter || undefined} data-correct={question.correctAnswer === letter || undefined}>
-                          <span className="font-semibold">{letter}. </span>{question.answerChoices[letter]}
-                          {attempt?.selected_answer === letter && <span className="ml-2 text-muted-foreground">Your answer</span>}
-                          {question.correctAnswer === letter && <span className="ml-2 font-semibold">Correct answer</span>}
-                          <LrChoiceNote pt={question.pt} section={question.section} qnum={question.qnum} letter={letter} className="mt-2 text-muted-foreground" />
-                        </li>
-                      ))}</ol>
-                    </div> : <p className="mt-3 text-sm text-muted-foreground">This question is no longer available in the question bank.</p>}
-                  </details>
-                </li>;
-              })}</ol>
+              <CompletedDrillReview
+                title={adaptive ? "Smart Drill" : run.label || (guided ? "Guided drill" : "LR drill")}
+                qids={reviewQids}
+                attempts={attempts}
+                openIndex={openQuestion}
+                onOpen={(index) => setSearchParams(index === null ? { view: "review" } : { view: "review", q: String(index + 1) })}
+              />
             )}
           </section>
         )}
