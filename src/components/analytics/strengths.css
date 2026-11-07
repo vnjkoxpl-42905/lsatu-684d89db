@@ -1,0 +1,52 @@
+/* Strengths and weaknesses: sits on the Progress surface, so it borrows its tokens. */
+.progress-lab.pp-sw {
+  display: grid;
+  gap: 20px;
+  max-width: 880px;
+}
+.pp-sw-head p {
+  color: var(--pp-muted);
+  font-size: 13px;
+  line-height: 1.6;
+  margin-top: 8px;
+  max-width: 62ch;
+}
+.pp-sw-overall {
+  font-size: 14px;
+  color: var(--pp-muted);
+}
+.pp-sw-overall strong {
+  color: var(--pp-ink);
+  font-size: 18px;
+}
+.pp-sw-next {
+  max-width: none;
+}
+.pp-sw .pp-topic-stat[data-tone="strength"] > strong:first-child {
+  color: var(--pp-accent-dark);
+}
+.pp-sw .pp-topic-stat[data-tone="weakness"] > strong:first-child {
+  color: var(--pp-amber);
+}
+.pp-sw-building {
+  display: grid;
+  gap: 2px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.pp-sw-building li {
+  align-items: baseline;
+  border-top: 1px solid var(--pp-line);
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+  padding: 10px 0;
+}
+.pp-sw-building li:first-child {
+  border-top: 0;
+}
+.pp-sw-building span {
+  color: var(--pp-muted);
+  font-size: 12px;
+}

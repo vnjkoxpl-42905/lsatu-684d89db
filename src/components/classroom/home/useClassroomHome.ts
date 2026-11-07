@@ -121,6 +121,7 @@ export function useClassroomHome(): {
       schedule: canAccess("has_schedule_access"),
       activities: canAccess("has_classroom_access"),
       drill: canAccess("has_drill_access"),
+      analytics: canAccess("has_analytics_access"),
     }),
     [canAccess],
   );

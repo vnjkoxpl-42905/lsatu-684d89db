@@ -15,6 +15,7 @@ export function ReviewTabs() {
     { label: "To review", path: "/review/to-review", allowed: true },
     { label: "Progress", path: "/review/progress", allowed: permissions.is_admin || permissions.has_analytics_access },
     { label: "History", path: "/review/history", allowed: permissions.is_admin || permissions.has_analytics_access },
+    { label: "Strengths & weaknesses", path: "/review/strengths", allowed: permissions.is_admin || permissions.has_analytics_access },
     { label: "Wrong-answer journal", path: "/review/wrong", allowed: permissions.is_admin || permissions.has_journal_access },
     { label: "Flagged", path: "/review/flagged", allowed: permissions.is_admin || permissions.has_flagged_access },
   ];
