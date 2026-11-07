@@ -53,6 +53,8 @@ export interface Message {
   sender_id: string;
   body: string;
   created_at: string;
+  /** Set when this message quotes an earlier one in the same thread. */
+  reply_to_message_id?: string | null;
   attachments: MessageAttachment[];
 }
 

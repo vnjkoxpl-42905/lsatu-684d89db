@@ -4,6 +4,7 @@ import {
   FileText,
   Image as ImageIcon,
   Paperclip,
+  Reply,
   Send,
   Smile,
   Sparkles,
@@ -36,6 +37,7 @@ import {
   classifyInboxAttachmentMime,
   validateInboxAttachment,
 } from '@/lib/inboxAttachments';
+import type { ReplyDraft } from './replyUtils';
 import './inbox-thread.css';
 import { appendQuestionContext, seedQuestionContext } from '@/lib/inboxQuestionContext';
 
@@ -56,7 +58,7 @@ export interface ComposerSeed {
 /** Optimistic-send hooks: the thread view renders a local bubble the moment
  *  send is pressed, and reconciles or marks it failed from these callbacks. */
 export interface PendingHandlers {
-  onPendingStart: (p: { localId: string; body: string }) => void;
+  onPendingStart: (p: { localId: string; body: string; replyToId?: string | null }) => void;
   onPendingResolve: (localId: string, ok: boolean) => void;
 }
 
@@ -71,6 +73,10 @@ interface MessageComposerProps {
   pendingHandlers?: PendingHandlers;
   onTyping?: () => void;
   onTypingStop?: () => void;
+  /** The message being replied to; shown as a quote chip above the box. */
+  replyTo?: ReplyDraft | null;
+  /** Clear the reply (X on the chip, or Esc). Also called after a send. */
+  onCancelReply?: () => void;
 }
 
 function ToolButton({
@@ -116,6 +122,8 @@ export function MessageComposer({
   pendingHandlers,
   onTyping,
   onTypingStop,
+  replyTo = null,
+  onCancelReply,
 }: MessageComposerProps) {
   const { user } = useAuth();
   const permissions = useUserPermissions();
@@ -132,6 +140,13 @@ export function MessageComposer({
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [filePreviewUrl, setFilePreviewUrl] = useState<string | null>(null);
   const [emojiOpen, setEmojiOpen] = useState(false);
+
+  // Starting a reply puts the caret in the box, like iMessage.
+  useEffect(() => {
+    if (!replyTo?.id) return;
+    const frame = requestAnimationFrame(() => textareaRef.current?.focus());
+    return () => cancelAnimationFrame(frame);
+  }, [replyTo?.id]);
 
   const errorMessage = (error: unknown, fallback: string) =>
     error instanceof Error ? error.message : fallback;
@@ -313,6 +328,7 @@ export function MessageComposer({
     const text = body.trim();
     if (!text && !file && driveAttachments.length === 0) return;
     onTypingStop?.();
+    const replyToId = replyTo?.id ?? null;
 
     // Optimistic path: text-only sends into an existing thread clear the
     // composer immediately and render a local pending bubble. Attachment sends
@@ -324,8 +340,9 @@ export function MessageComposer({
         ? crypto.randomUUID()
         : `${Date.now()}-${Math.random()}`;
     if (optimistic) {
-      pendingHandlers.onPendingStart({ localId, body: text });
+      pendingHandlers.onPendingStart({ localId, body: text, replyToId });
       resetComposer();
+      onCancelReply?.();
     } else {
       setSending(true);
     }
@@ -340,7 +357,14 @@ export function MessageComposer({
 
       const { data: msg, error: msgErr } = await supabase
         .from('messages')
-        .insert({ conversation_id: resolvedConversationId, sender_id: user.id, body: text })
+        .insert({
+          conversation_id: resolvedConversationId,
+          sender_id: user.id,
+          body: text,
+          // Only named when replying, so an ordinary send never depends on the
+          // reply column existing.
+          ...(replyToId ? { reply_to_message_id: replyToId } : {}),
+        })
         .select()
         .single();
       if (msgErr || !msg) throw msgErr ?? new Error('Failed to send');
@@ -413,7 +437,10 @@ export function MessageComposer({
         if (dErr) throw dErr;
       }
 
-      if (!optimistic) resetComposer();
+      if (!optimistic) {
+        resetComposer();
+        onCancelReply?.();
+      }
       onSent?.();
       if (optimistic) pendingHandlers.onPendingResolve(localId, true);
     } catch (e: unknown) {
@@ -452,6 +479,11 @@ export function MessageComposer({
         return;
       }
     }
+    if (e.key === 'Escape' && replyTo) {
+      e.preventDefault();
+      onCancelReply?.();
+      return;
+    }
     // Enter sends; Shift+Enter inserts a newline. Cmd/Ctrl+Enter still sends
     // for muscle memory.
     if (e.key === 'Enter' && !e.shiftKey) {
@@ -467,6 +499,31 @@ export function MessageComposer({
         Your existing draft has been kept. Add the question details when you are ready.
         <Button type="button" variant="outline" size="sm" className="ml-2" onClick={() => setBody(current => appendQuestionContext(current, contextDraft))}>Insert question context</Button>
       </div>}
+      {replyTo ? (
+        <div
+          className="flex items-center gap-3 rounded-2xl border border-[var(--msg-line)] bg-[var(--msg-panel)] py-2 pl-3 pr-2 shadow-[var(--msg-shadow)]"
+          role="group"
+          aria-label={`Replying to ${replyTo.author}`}
+        >
+          <Reply className="h-4 w-4 shrink-0 text-[var(--msg-accent)]" aria-hidden="true" />
+          <div className="min-w-0 flex-1 border-l-[3px] border-[var(--msg-accent)] pl-2.5">
+            <div className="truncate text-[12px] font-bold leading-tight text-[var(--msg-accent)]">
+              Replying to {replyTo.author}
+            </div>
+            <div className="mt-0.5 truncate text-[12.5px] font-medium text-[var(--msg-meta)]">
+              {replyTo.text}
+            </div>
+          </div>
+          <button
+            type="button"
+            onClick={() => onCancelReply?.()}
+            className="shrink-0 rounded-full p-1.5 text-[var(--msg-meta)] transition-colors hover:bg-[var(--msg-hover)] hover:text-[var(--msg-ink)]"
+            aria-label="Cancel reply"
+          >
+            <X className="h-4 w-4" />
+          </button>
+        </div>
+      ) : null}
       {file && (
         <div className="flex flex-col gap-0 overflow-hidden rounded-2xl border border-[var(--msg-line)] bg-[var(--msg-panel)] shadow-[var(--msg-shadow)]">
           <div className="flex items-center gap-3 px-4 py-2.5 text-sm">

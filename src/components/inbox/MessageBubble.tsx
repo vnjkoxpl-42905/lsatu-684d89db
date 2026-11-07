@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { format, isToday } from 'date-fns';
-import { CheckCheck, Trash2 } from 'lucide-react';
+import { CheckCheck, Reply, Trash2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { motion, useReducedMotion } from 'framer-motion';
 import { cn } from '@/lib/utils';
@@ -14,6 +14,9 @@ import {
 } from '@/lib/inboxAttachments';
 import type { Message, MessageAttachment } from '@/hooks/useInbox';
 import type { MessageCluster } from './messageClusters';
+import { SwipeToReply } from './SwipeToReply';
+import { ReplyQuote } from './ReplyQuote';
+import type { ReplyQuoteData } from './replyUtils';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -35,6 +38,25 @@ interface Props {
    *  "Seen · <time>" indicator underneath. */
   lastSeenOwnMessageId?: string | null;
   otherLastReadAt?: string | null;
+  /** Open a reply to this message (swipe right, or the Reply button). */
+  onReply?: (message: Message) => void;
+  /** What a reply shows above its own text; null when it is not a reply. */
+  resolveQuote?: (message: Message) => ReplyQuoteData | null;
+  /** Scroll the thread to the quoted original. */
+  onJumpToMessage?: (messageId: string) => void;
+}
+
+function ReplyButton({ onClick, label }: { onClick: () => void; label: string }) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      aria-label={label}
+      className="shrink-0 rounded-full p-1.5 text-[var(--msg-meta-soft)] opacity-0 transition hover:bg-[var(--msg-hover)] hover:text-[var(--msg-ink)] focus:opacity-100 group-hover/msg:opacity-100 [@media(pointer:coarse)]:hidden"
+    >
+      <Reply className="h-3.5 w-3.5" />
+    </button>
+  );
 }
 
 function shortTime(date: Date) {
@@ -119,7 +141,17 @@ function bubbleCorners(isInstructor: boolean, index: number, count: number) {
   return 'rounded-[18px] rounded-tl-[5px] rounded-bl-[5px]';
 }
 
-export function MessageBubble({ cluster, onPreviewAttachment, canDeleteMessage, onDeleteMessage, lastSeenOwnMessageId, otherLastReadAt }: Props) {
+export function MessageBubble({
+  cluster,
+  onPreviewAttachment,
+  canDeleteMessage,
+  onDeleteMessage,
+  lastSeenOwnMessageId,
+  otherLastReadAt,
+  onReply,
+  resolveQuote,
+  onJumpToMessage,
+}: Props) {
   const navigate = useNavigate();
   const reducedMotion = useReducedMotion();
   const headerTime = shortTime(new Date(cluster.createdAt));
@@ -221,10 +253,15 @@ export function MessageBubble({ cluster, onPreviewAttachment, canDeleteMessage, 
                 hasBody && !isHelpScreenshot ? extractRouteAction(displayBodyText) : null;
               const canDelete = canDeleteMessage?.(message) ?? false;
               const timeRevealed = revealedTimeId === message.id;
+              const quote = resolveQuote?.(message) ?? null;
+              // Help-flow screenshot cards are system-generated, so they are not
+              // something a person replies to.
+              const canReply = !!onReply && !isHelpScreenshot && (hasBody || hasAttachments);
 
               return (
                 <motion.div
                   key={message.id}
+                  data-message-id={message.id}
                   initial={reducedMotion ? false : { opacity: 0, y: 8 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.22, ease: 'easeOut' }}
@@ -233,6 +270,14 @@ export function MessageBubble({ cluster, onPreviewAttachment, canDeleteMessage, 
                     isInstructor ? 'items-end' : 'items-start',
                   )}
                 >
+                  <SwipeToReply
+                    disabled={!canReply}
+                    onReply={() => onReply?.(message)}
+                    className={cn(
+                      'flex min-w-0 flex-col gap-3',
+                      isInstructor ? 'items-end' : 'items-start',
+                    )}
+                  >
                   {hasBody ? (
                     <div
                       className={cn(
@@ -249,6 +294,12 @@ export function MessageBubble({ cluster, onPreviewAttachment, canDeleteMessage, 
                       >
                         {format(new Date(message.created_at), 'h:mm a')}
                       </span>
+                      {canReply ? (
+                        <ReplyButton
+                          onClick={() => onReply?.(message)}
+                          label="Reply to this message"
+                        />
+                      ) : null}
                       {canDelete && onDeleteMessage ? (
                         <button
                           type="button"
@@ -269,6 +320,13 @@ export function MessageBubble({ cluster, onPreviewAttachment, canDeleteMessage, 
                             : 'max-w-[620px] border border-[var(--msg-line)] bg-[var(--msg-bubble-paper)] text-[var(--msg-bubble-paper-text)] shadow-[var(--msg-shadow)]',
                         )}
                       >
+                        {quote ? (
+                          <ReplyQuote
+                            quote={quote}
+                            tone={isInstructor ? 'ink' : 'paper'}
+                            onJump={onJumpToMessage}
+                          />
+                        ) : null}
                         {renderBody(routeAction?.displayBody || displayBodyText, isInstructor)}
                         {routeAction?.route ? (
                           <button
@@ -310,6 +368,21 @@ export function MessageBubble({ cluster, onPreviewAttachment, canDeleteMessage, 
                         isInstructor ? 'items-end' : 'items-start',
                       )}
                     >
+                      {!hasBody && quote ? (
+                        <div className="w-full max-w-[420px]">
+                          <ReplyQuote
+                            quote={quote}
+                            tone="paper"
+                            onJump={onJumpToMessage}
+                          />
+                        </div>
+                      ) : null}
+                      {!hasBody && canReply ? (
+                        <ReplyButton
+                          onClick={() => onReply?.(message)}
+                          label="Reply to this message"
+                        />
+                      ) : null}
                       {visibleAttachments.map((attachment) => (
                         <AttachmentCard
                           key={attachment.id}
@@ -319,6 +392,7 @@ export function MessageBubble({ cluster, onPreviewAttachment, canDeleteMessage, 
                       ))}
                     </div>
                   ) : null}
+                  </SwipeToReply>
                 </motion.div>
               );
             })}
