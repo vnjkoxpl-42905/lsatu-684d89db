@@ -56,9 +56,21 @@ describe("student access notice", () => {
     expect(screen.queryByText("Route content")).toBeNull();
     expect(screen.getByRole("button", { name: "Try again" })).toBeTruthy();
   });
-  it.each(["/inbox/thread", "/booking"])("leaves %s reachable during a pause", async (path) => {
+  it.each([
+    "/inbox/thread", "/booking", "/schedule",
+    "/book/session", "/book/consultation", "/book/x/one-off-slug", "/book/student-bearer-slug",
+  ])("leaves %s reachable during a pause", async (path) => {
     rpc.mockResolvedValue({ data: { paused: true, notice: null } });
     mount(path);
     expect(await screen.findByText("Route content")).toBeTruthy();
   });
+
+  it.each(["/book", "/bookshelf", "/booking-admin", "/classroom"])(
+    "does not widen the pause exemption to %s", async (path) => {
+      rpc.mockResolvedValue({ data: { paused: true, notice: null } });
+      mount(path);
+      expect(await screen.findByText("Your LSAT U access is paused")).toBeTruthy();
+      expect(screen.queryByText("Route content")).toBeNull();
+    },
+  );
 });
