@@ -1,13 +1,14 @@
 import * as React from "react";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, PenTool } from "lucide-react";
+import { QuickAccess } from "./QuickAccess";
 import { useHomeFeedback } from "../useHomeFeedback";
 import { postSessionLede, calendarCheckIsStale } from "./postSessionModel";
 import type { TeacherHomeModel } from "./teacherHomeModel";
-import { filterStudents } from "./teacherHomeModel";
 import { PostSessionWork } from "./PostSessionWork";
 import { MyList, AllTasksSheet, DeskStatus } from "./TeacherTasks";
 import { TeacherScheduleSheet } from "./TeacherScheduleSheet";
 import { AccessSheet, BookingSheet } from "./TeacherAccessBooking";
+import { NextUp } from "./NextUp";
 import {
   EMPTY_DESK,
   deskMoney,
@@ -16,6 +17,26 @@ import {
 } from "./teachingDeskModel";
 import type { ManagedUser } from "@/lib/adminUsers";
 const CALENDAR = "https://calendar.google.com/calendar/u/0/r";
+const initials = (name: string) =>
+  name
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => part[0]!.toUpperCase())
+    .join("");
+/** Recency band read from the activity label the roster already produces. */
+const recency = (label: string) =>
+  /^Active today/i.test(label)
+    ? "today"
+    : /^Active yesterday/i.test(label)
+      ? "recent"
+      : "older";
+/** "9 / 10" or "21 of 26" becomes a 0 to 1 fill; anything else shows no bar. */
+function scoreFill(score: string | number | null | undefined) {
+  const m = String(score ?? "").match(/(\d+(?:\.\d+)?)\s*(?:\/|of)\s*(\d+(?:\.\d+)?)/i);
+  if (!m || Number(m[2]) <= 0) return null;
+  return Math.min(1, Number(m[1]) / Number(m[2]));
+}
 const EMAIL = "https://mail.google.com/mail/u/0/#inbox";
 function when(value: string) {
   if (/^\d{4}-\d{2}-\d{2}$/.test(value))
@@ -64,12 +85,8 @@ function TeacherDeskContent({
     setBooking(true);
   };
   const [access, setAccess] = React.useState<ManagedUser | null>(null);
-  const [search, setSearch] = React.useState("");
   const [classifyError, setClassifyError] = React.useState("");
   const pendingAccess = desk.access.data?.filter((p) => !p.access_tier) ?? [];
-  const matches = search.trim()
-    ? filterStudents(students, search).slice(0, 5)
-    : [];
   const jump = (id: string) => {
     document.getElementById(id)?.scrollIntoView({
       behavior: matchMedia("(prefers-reduced-motion: reduce)").matches
@@ -269,50 +286,63 @@ function TeacherDeskContent({
           </h1>
           <p className="home-desk-summary">{sessionSummary}</p>
         </div>
-        <div className="home-desk-action-stack">
-          <button
-            className="home-desk-launcher"
-            aria-label="Assign work"
+        <div className="home-desk-header-actions">
+          <a
             data-home-feedback
-            onClick={() => onOpen("/teacher/library/assignments")}
+            href={EMAIL}
+            target="_blank"
+            rel="noopener noreferrer"
           >
-            <span className="home-desk-launcher-copy">
-              <span className="home-desk-launcher-title">Assign work</span>
-              <span className="home-desk-launcher-description">
-                Choose a student and their next task.
-              </span>
-            </span>
-            <span className="home-desk-launcher-arrow" aria-hidden="true">
-              <ArrowRight size={20} />
-            </span>
+            Open email ↗
+          </a>
+          <button data-home-feedback onClick={() => onOpen("/teacher/inbox")}>
+            Messages
+            {model.unread.state === "ready" ? ` (${model.unread.total})` : ""}
           </button>
-          <div className="home-desk-header-actions">
-            <a
-              data-home-feedback
-              href={EMAIL}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Open email ↗
-            </a>
-            <button data-home-feedback onClick={() => onOpen("/teacher/inbox")}>
-              Messages
-              {model.unread.state === "ready" ? ` (${model.unread.total})` : ""}
-            </button>
-            <details className="home-desk-more-menu">
-              <summary>More</summary>
-              <div>
-                <button onClick={(event) => openBooking("link", event.currentTarget)}>
-                  Create session link
-                </button>
-                <button onClick={() => onOpen("/teacher/students")}>
-                  All students
-                </button>
-              </div>
-            </details>
-          </div>
+          <details className="home-desk-more-menu">
+            <summary>More</summary>
+            <div>
+              <button onClick={(event) => openBooking("link", event.currentTarget)}>
+                Create session link
+              </button>
+              <button onClick={() => onOpen("/teacher/students")}>
+                All students
+              </button>
+            </div>
+          </details>
         </div>
       </header>
+      <div className="home-desk-command" role="search" aria-label="Go anywhere">
+        <QuickAccess
+          students={students}
+          rosterReady={model.roster.state === "ready"}
+          onOpen={onOpen}
+          onEditAccess={(studentId, trigger) => {
+            const person = desk.access.data?.find((p) => p.class_id === studentId);
+            if (!person) return;
+            accountTrigger.current = trigger;
+            setAccessOpen(true);
+            setAccess(person);
+          }}
+        />
+        <button
+          className="home-desk-whiteboard"
+          data-home-feedback
+          onClick={() => onOpen("/teacher/whiteboard")}
+        >
+          <PenTool size={17} aria-hidden="true" />
+          Whiteboard
+        </button>
+        <button
+          className="home-desk-assign"
+          aria-label="Assign work"
+          data-home-feedback
+          onClick={() => onOpen("/teacher/library/assignments")}
+        >
+          Assign work
+          <ArrowRight size={16} aria-hidden="true" />
+        </button>
+      </div>
       <nav className="home-desk-attention" aria-label="Jump to work">
         <button onClick={() => jump("home-session-work")}>
           <span>After-session</span>
@@ -346,6 +376,35 @@ function TeacherDeskContent({
         </button>
       </nav>
       <div className="home-desk-main">
+        <section
+          className="classroom-home-region home-desk-agenda home-desk-cal"
+          id="home-next-up"
+          aria-labelledby="home-next-up-title"
+        >
+          <header className="classroom-home-region-head">
+            <h2 id="home-next-up-title">Next up</h2>
+            <a href={CALENDAR} target="_blank" rel="noopener noreferrer">
+              Calendar ↗
+            </a>
+          </header>
+          <DeskStatus region={desk.agenda} noun="primary calendar" />
+          {desk.agenda.state === "ready" ? (
+            <NextUp
+              events={desk.agenda.data?.events ?? []}
+              timeZone={desk.agenda.data?.time_zone}
+              partial={!!desk.agenda.data?.next_cursor}
+              onOpen={onOpen}
+              classify={desk.classify}
+              onClassifyError={() => setClassifyError("Could not label this event.")}
+            />
+          ) : null}
+          {classifyError ? <p role="alert">{classifyError}</p> : null}
+          {desk.agenda.data?.fetched_at ? (
+            <p className="home-desk-footnote">
+              Checked {when(desk.agenda.data.fetched_at)} · Primary calendar
+            </p>
+          ) : null}
+        </section>
         <div className="home-desk-work-column">
           <PostSessionWork
             work={model.postSession}
@@ -362,98 +421,8 @@ function TeacherDeskContent({
         </div>
         <aside
           className="home-desk-side-column"
-          aria-label="Agenda and decisions"
+          aria-label="Decisions and payments"
         >
-          <section className="classroom-home-region home-desk-agenda">
-            <header className="classroom-home-region-head">
-              <h2>Next up</h2>
-              <a href={CALENDAR} target="_blank" rel="noopener noreferrer">
-                Calendar ↗
-              </a>
-            </header>
-            <DeskStatus region={desk.agenda} noun="primary calendar" />
-            {desk.agenda.state === "ready" ? (
-              desk.agenda.data?.events?.length ? (
-                <ul className="home-desk-agenda-list">
-                  {desk.agenda.data.events.slice(0, 3).map((event) => (
-                    <li key={event.id}>
-                      <time dateTime={event.starts_at}>
-                        {when(event.starts_at)}
-                      </time>
-                      {safeGoogleLink(event.calendar_url, "calendar") ? (
-                        <a
-                          href={safeGoogleLink(event.calendar_url, "calendar")!}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          {event.title}
-                        </a>
-                      ) : (
-                        <b>{event.title}</b>
-                      )}
-                      {event.student_id ? (
-                        <button
-                          onClick={() =>
-                            onOpen(
-                              `/teacher/students/${encodeURIComponent(event.student_id!)}`,
-                            )
-                          }
-                        >
-                          Prepare for {event.student_name || "student"} ↗
-                        </button>
-                      ) : (
-                        <details>
-                          <summary>Label event</summary>
-                          <p>
-                            Only student sessions and consultations create
-                            follow-up work.
-                          </p>
-                          <button
-                            disabled={!desk.classify}
-                            onClick={() =>
-                              void desk
-                                .classify?.(event.id, "session")
-                                .catch(() =>
-                                  setClassifyError(
-                                    "Could not label this event.",
-                                  ),
-                                )
-                            }
-                          >
-                            Student session
-                          </button>
-                          <button
-                            disabled={!desk.classify}
-                            onClick={() =>
-                              void desk
-                                .classify?.(event.id, "consultation")
-                                .catch(() =>
-                                  setClassifyError(
-                                    "Could not label this event.",
-                                  ),
-                                )
-                            }
-                          >
-                            Consultation
-                          </button>
-                        </details>
-                      )}
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <p className="home-desk-empty">
-                  No events in the next seven days.
-                </p>
-              )
-            ) : null}
-            {classifyError ? <p role="alert">{classifyError}</p> : null}
-            {desk.agenda.data?.fetched_at ? (
-              <p className="home-desk-footnote">
-                Checked {when(desk.agenda.data.fetched_at)} · Primary calendar
-              </p>
-            ) : null}
-          </section>
           <section
             className="classroom-home-region home-desk-decisions"
             id="home-decisions"
@@ -529,7 +498,7 @@ function TeacherDeskContent({
           </button>
         </header>
         <div className="home-desk-account-actions" data-account-controls="student-credits-scheduling-20261028" role="group" aria-label="Student accounts">
-          <div><h3>Student accounts</h3><p>Manage sessions, access and private booking links.</p></div>
+          <span className="home-desk-account-label" aria-hidden="true">Accounts</span>
           <button ref={scheduleTrigger} onClick={() => setScheduleOpen(true)}>Schedule a session</button>
           <button onClick={e => openBooking("credits", e.currentTarget)}>Add session credits</button>
           <button onClick={e => { accountTrigger.current = e.currentTarget; setAccess(null); setAccessOpen(true); }}>Account access</button>
@@ -553,8 +522,17 @@ function TeacherDeskContent({
                 {model.roster.recent.slice(0, 3).map((s) => (
                   <li key={s.id}>
                     <button onClick={() => onOpen(s.route)}>
-                      <b>{s.name}</b>
-                      <small>{s.activityLabel}</small>
+                      <span
+                        className="home-desk-avatar"
+                        data-recency={recency(s.activityLabel)}
+                        aria-hidden="true"
+                      >
+                        {initials(s.name)}
+                      </span>
+                      <span className="home-desk-person">
+                        <b>{s.name}</b>
+                        <small>{s.activityLabel}</small>
+                      </span>
                     </button>
                   </li>
                 ))}
@@ -583,6 +561,19 @@ function TeacherDeskContent({
                         <small>
                           {r.title} · {r.score ?? "Result available"}
                         </small>
+                        {scoreFill(r.score) !== null ? (
+                          <span
+                            className="home-desk-meter"
+                            role="img"
+                            aria-label={`Score ${r.score}`}
+                          >
+                            <i
+                              style={{
+                                width: `${Math.round(scoreFill(r.score)! * 100)}%`,
+                              }}
+                            />
+                          </span>
+                        ) : null}
                       </button>
                     </li>
                   ))}
@@ -591,57 +582,6 @@ function TeacherDeskContent({
                 <p className="home-desk-empty">No recent results recorded.</p>
               )
             ) : null}
-          </div>
-          <div>
-            <label className="home-desk-label" htmlFor="home-student-search">
-              Find a student
-              <input
-                id="home-student-search"
-                type="search"
-                placeholder="Student name"
-                disabled={model.roster.state !== "ready"}
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" && matches[0]) onOpen(matches[0].route);
-                  if (e.key === "Escape") setSearch("");
-                }}
-              />
-            </label>
-            {search.trim() ? (
-              matches.length ? (
-                <ul aria-label="Matching students">
-                  {matches.map((s) => (
-                    <li key={s.id}>
-                      <button onClick={() => onOpen(s.route)}>
-                        {s.name} ↗
-                      </button>
-                      {desk.access.data?.find((p) => p.class_id === s.id) ? (
-                        <button
-                          onClick={(e) => {
-                            accountTrigger.current = e.currentTarget;
-                            setAccessOpen(true);
-                            setAccess(
-                              desk.access.data!.find(
-                                (p) => p.class_id === s.id,
-                              )!,
-                            );
-                          }}
-                        >
-                          Edit access
-                        </button>
-                      ) : null}
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <p>No matching students.</p>
-              )
-            ) : (
-              <p className="home-desk-empty">
-                Open notes, assignments and student details.
-              </p>
-            )}
           </div>
         </div>
       </section>

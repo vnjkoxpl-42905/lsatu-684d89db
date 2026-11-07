@@ -138,7 +138,7 @@ describe("TeacherHomeView", () => {
     const account = { class_id: "s1", display_name: "Lydia Park", email: "lydia@example.invalid", role: "student", access_tier: "tier_2", archived_at: null } as any;
     const save = vi.fn().mockResolvedValue({ ...account, access_tier: "tier_3" });
     render(<TeacherHomeView model={{ ...READY, desk: { ...EMPTY_DESK, access: { state: "ready", data: [account] }, actions: { saveHomeAccess: save } as any } }} onOpen={vi.fn()} />);
-    fireEvent.change(screen.getByLabelText("Find a student"), { target: { value: "Lydia" } });
+    fireEvent.change(screen.getByLabelText(/Find a student/), { target: { value: "Lydia" } });
     const trigger = screen.getByRole("button", { name: "Edit access" });
     fireEvent.click(trigger);
     const dialog = await screen.findByRole("dialog", { name: "Student access" });
@@ -240,7 +240,11 @@ describe("TeacherHomeView", () => {
     );
     expect(screen.getByText("Loading messages…")).toBeInTheDocument();
     expect(screen.queryByText("No unread conversations.")).toBeNull();
-    expect(screen.getByLabelText("Find a student")).toBeDisabled();
+    // Question and tool lookups work before the roster arrives; only students wait.
+    const field = screen.getByLabelText(/Find a student/);
+    expect(field).toBeEnabled();
+    fireEvent.change(field, { target: { value: "zoe" } });
+    expect(screen.getByText("Loading students…")).toBeInTheDocument();
     const retry = vi.fn();
     rerender(
       <TeacherHomeView model={FAILED} onOpen={vi.fn()} onRetryInbox={retry} />,
@@ -282,7 +286,7 @@ describe("TeacherHomeView", () => {
   it("searches beyond recent students, supports accent-insensitive Enter and Escape", () => {
     const onOpen = vi.fn();
     render(<TeacherHomeView model={READY} onOpen={onOpen} />);
-    const input = screen.getByLabelText("Find a student");
+    const input = screen.getByLabelText(/Find a student/);
     fireEvent.change(input, { target: { value: "fern" } });
     fireEvent.click(
       within(screen.getByRole("list", { name: "Matching students" })).getByRole(
@@ -296,6 +300,45 @@ describe("TeacherHomeView", () => {
     expect(onOpen).toHaveBeenCalledWith("/teacher/students/s3");
     fireEvent.keyDown(input, { key: "Escape" });
     expect(input).toHaveValue("");
+  });
+  it("jumps straight to a question from its address, in any common spelling", () => {
+    const onOpen = vi.fn();
+    render(<TeacherHomeView model={READY} onOpen={onOpen} />);
+    const input = screen.getByLabelText(/Find a student/);
+    for (const spelling of ["PT151 S4 Q10", "151.4.10", "pt 151 section 4 question 10"]) {
+      fireEvent.change(input, { target: { value: spelling } });
+      expect(
+        screen.getByRole("button", { name: /PT151 Section 4 Question 10/ }),
+      ).toBeInTheDocument();
+      fireEvent.keyDown(input, { key: "Enter" });
+    }
+    expect(onOpen).toHaveBeenCalledTimes(3);
+    expect(onOpen).toHaveBeenLastCalledWith("/question/lr/151/4/10");
+    fireEvent.change(input, { target: { value: "PT0 S4 Q10" } });
+    expect(screen.queryByRole("button", { name: /Question 10/ })).toBeNull();
+  });
+  it("opens the whiteboard from Home and lists it among the tools", () => {
+    const onOpen = vi.fn();
+    render(<TeacherHomeView model={READY} onOpen={onOpen} />);
+    fireEvent.click(screen.getByRole("button", { name: "Whiteboard" }));
+    expect(onOpen).toHaveBeenCalledWith("/teacher/whiteboard");
+    const input = screen.getByLabelText(/Find a student/);
+    fireEvent.change(input, { target: { value: "board" } });
+    fireEvent.keyDown(input, { key: "Enter" });
+    expect(onOpen).toHaveBeenLastCalledWith("/teacher/whiteboard");
+  });
+  it("focuses the field on slash unless the teacher is already typing", () => {
+    render(<TeacherHomeView model={READY} onOpen={vi.fn()} />);
+    const input = screen.getByLabelText(/Find a student/);
+    fireEvent.keyDown(document.body, { key: "/" });
+    expect(input).toHaveFocus();
+    (input as HTMLInputElement).blur();
+    const other = document.createElement("input");
+    document.body.appendChild(other);
+    other.focus();
+    fireEvent.keyDown(other, { key: "/" });
+    expect(other).toHaveFocus();
+    other.remove();
   });
   it("keeps the recent-visit area small and never labels a heartbeat Online now", () => {
     render(<TeacherHomeView model={READY} onOpen={vi.fn()} />);
