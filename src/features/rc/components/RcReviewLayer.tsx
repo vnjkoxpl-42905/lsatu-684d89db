@@ -20,9 +20,10 @@ interface Props {
   secondPick?: RcLetter | null;
   sourceLabel?: string;
   actorId?: string | null;
+  showTutorPrompt?: boolean;
 }
 
-export function RcReviewLayer({ question, firstPick, secondPick, sourceLabel, actorId }: Props) {
+export function RcReviewLayer({ question, firstPick, secondPick, sourceLabel, actorId, showTutorPrompt = true }: Props) {
   const navigate = useNavigate();
   const location = useLocation();
   const askJoshua = () => {
@@ -74,15 +75,15 @@ export function RcReviewLayer({ question, firstPick, secondPick, sourceLabel, ac
       {hasAnything && missingChoiceLetters.length > 0 && (
         <div className="rc-tutor-fallback">
           <p>Written explanations are not available for choices {missingChoiceLetters.join(', ')} yet.</p>
-          <button type="button" className="rc-button" onClick={askJoshua}>Ask Joshua about this question</button>
+          {showTutorPrompt && <button type="button" className="rc-button" onClick={askJoshua}>Ask Joshua about this question</button>}
         </div>
       )}
       {!hasAnything && (
         <div className="rc-tutor-fallback">
-          <p>No written walkthrough for this one yet. Ask the tutor and we'll work it together.</p>
-          <button type="button" className="rc-button" onClick={askJoshua}>
+          <p>No written walkthrough for this one yet.{showTutorPrompt ? " Ask the tutor and we'll work it together." : ""}</p>
+          {showTutorPrompt && <button type="button" className="rc-button" onClick={askJoshua}>
             Ask Joshua about this question
-          </button>
+          </button>}
         </div>
       )}
       {question.explanationMedia?.length ? <RcExplanationMedia media={question.explanationMedia} /> : null}
