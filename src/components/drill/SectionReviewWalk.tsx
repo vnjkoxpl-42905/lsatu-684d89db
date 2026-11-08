@@ -45,11 +45,23 @@ import { useQuestionHighlights } from '@/hooks/useQuestionHighlights';
 
 export type ReviewTab = 'clean' | 'actual' | 'br';
 
+/** All the walk reads from a sitting: the order, and what was picked. */
+export interface ReviewWalkSession {
+  questionQueue: DrillSession['questionQueue'];
+  attempts: Map<string, { selectedAnswer?: string | null }>;
+}
+
 interface Props {
-  session: DrillSession;
+  session: ReviewWalkSession;
   /** Present only when a blind review was actually sat. Gates the BR tab. */
   brResults?: BlindReviewResult[] | null;
   onBack: () => void;
+  /** Breadcrumb text for onBack. */
+  backLabel?: string;
+  /** Question to open on. Follows later changes, e.g. browser back. */
+  initialIndex?: number;
+  /** Told whenever the open question changes, so a page can keep it in its URL. */
+  onIndexChange?: (index: number) => void;
 }
 
 /** Which tabs this section can offer. BR appears only if a review happened. */
@@ -64,9 +76,17 @@ const TAB_LABELS: Record<ReviewTab, string> = {
   br: 'BR',
 };
 
-export default function SectionReviewWalk({ session, brResults, onBack }: Props) {
+export default function SectionReviewWalk({ session, brResults, onBack, backLabel = 'Section results', initialIndex, onIndexChange }: Props) {
   const qids = session.questionQueue;
-  const [currentIndex, setCurrentIndex] = React.useState(0);
+  const [currentIndex, setCurrentIndex] = React.useState(initialIndex ?? 0);
+  React.useEffect(() => {
+    if (initialIndex !== undefined) setCurrentIndex(initialIndex);
+  }, [initialIndex]);
+  const onIndexChangeRef = React.useRef(onIndexChange);
+  onIndexChangeRef.current = onIndexChange;
+  React.useEffect(() => {
+    onIndexChangeRef.current?.(currentIndex);
+  }, [currentIndex]);
   const [tab, setTab] = React.useState<ReviewTab>('clean');
   const [showAnswers, setShowAnswers] = React.useState(false);
   const [highlightMode, setHighlightMode] = React.useState<HighlightMode>('none');
@@ -145,7 +165,7 @@ export default function SectionReviewWalk({ session, brResults, onBack }: Props)
               onClick={onBack}
               className="font-semibold text-blue-700 transition-colors hover:text-blue-800"
             >
-              Section results
+              {backLabel}
             </button>
             <span aria-hidden className="text-slate-300">
               /

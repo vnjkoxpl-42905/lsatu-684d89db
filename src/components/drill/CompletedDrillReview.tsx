@@ -1,18 +1,17 @@
 import * as React from "react";
-import { ArrowLeft, Check, Lightbulb, Minus } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Switch } from "@/components/ui/switch";
+import { Check, Minus } from "lucide-react";
 import { questionBank } from "@/lib/questionLoader";
-import { useLrExplanation } from "@/hooks/useLrExplanation";
 import { cn } from "@/lib/utils";
+import SectionReviewWalk, { type ReviewWalkSession } from "@/components/drill/SectionReviewWalk";
 
 /**
  * The one review surface for a finished drill: a question table that opens
- * each question in its original two-pane layout with Clean / Actual / BR.
+ * each question in the real exam screen (SectionReviewWalk, the same frame,
+ * question pane and navigator the drill runs in), full screen, read-only.
  *
- * Every completed-drill page renders this. The old review hand-built its own
- * question markup in a stack of <details> rows and drifted away from the
- * drill layout; keeping the review here, and only here, is what stops that.
+ * Never hand-build question markup here. Two earlier versions did (a <details>
+ * stack, then a card on the page background) and both drifted from the drill
+ * layout. Reusing the drill's own components is what stops that.
  */
 
 export interface ReviewAttempt {
@@ -22,8 +21,6 @@ export interface ReviewAttempt {
   time_ms?: number;
 }
 
-type Mode = "clean" | "actual";
-const LETTERS = ["A", "B", "C", "D", "E"] as const;
 
 function formatTime(ms = 0) {
   const total = Math.round(ms / 1000);
@@ -55,7 +52,21 @@ export function CompletedDrillReview({ title, qids, attempts, openIndex, onOpen 
 }) {
   const byQid = React.useMemo(() => new Map(attempts.map((a) => [a.qid, a])), [attempts]);
   if (openIndex !== null && openIndex >= 0 && openIndex < qids.length) {
-    return <QuestionView title={title} qids={qids} byQid={byQid} index={openIndex} onOpen={onOpen} />;
+    const session: ReviewWalkSession = {
+      questionQueue: qids,
+      attempts: new Map(attempts.filter((a) => a.qid).map((a) => [a.qid!, { selectedAnswer: a.selected_answer ?? null }])),
+    };
+    return (
+      <div className="fixed inset-0 z-[200] overflow-auto bg-white" role="dialog" aria-modal="true" aria-label={`${title} review`}>
+        <SectionReviewWalk
+          session={session}
+          backLabel="All questions"
+          initialIndex={openIndex}
+          onIndexChange={(i) => { if (i !== openIndex) onOpen(i); }}
+          onBack={() => onOpen(null)}
+        />
+      </div>
+    );
   }
   return (
     <div>
@@ -98,97 +109,5 @@ export function CompletedDrillReview({ title, qids, attempts, openIndex, onOpen 
         </table>
       </div>
     </div>
-  );
-}
-
-function QuestionView({ title, qids, byQid, index, onOpen }: {
-  title: string; qids: string[]; byQid: Map<string, ReviewAttempt>; index: number; onOpen: (index: number | null) => void;
-}) {
-  const qid = qids[index];
-  const q = questionBank.getQuestion(qid);
-  const attempt = byQid.get(qid);
-  const [mode, setMode] = React.useState<Mode>("clean");
-  const [showCorrect, setShowCorrect] = React.useState(false);
-  const [showAnalysis, setShowAnalysis] = React.useState(false);
-  const [openNotes, setOpenNotes] = React.useState<Set<string>>(new Set());
-  React.useEffect(() => { setOpenNotes(new Set()); setShowAnalysis(false); }, [qid]);
-  const { data } = useLrExplanation({ pt: q?.pt ?? 0, section: q?.section ?? 0, questionNumber: q?.qnum ?? 0 }, !!q);
-  const style = data?.styles[0];
-
-  const toggleNote = (letter: string) => setOpenNotes((prev) => {
-    const next = new Set(prev);
-    if (next.has(letter)) next.delete(letter); else next.add(letter);
-    return next;
-  });
-
-  return (
-    <section aria-label="Question review">
-      <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
-        <Button type="button" variant="ghost" size="sm" onClick={() => onOpen(null)}><ArrowLeft className="mr-2 h-4 w-4" aria-hidden />All questions</Button>
-        <h2 className="text-lg font-semibold">{title}</h2>
-      </div>
-      <div className="overflow-hidden rounded-xl border border-border bg-card">
-        <div className="flex justify-end border-b border-border px-5 py-3 text-sm text-muted-foreground">{index + 1} of {qids.length}</div>
-        {!q ? <p className="p-6 text-sm text-muted-foreground">This question is no longer available in the question bank.</p> : (
-          <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,42fr)_minmax(0,58fr)]">
-            <div className="border-b border-border p-6 lg:border-b-0 lg:border-r">
-              <button type="button" aria-pressed={showAnalysis} onClick={() => setShowAnalysis((v) => !v)} className={cn("mb-5 inline-flex items-center gap-2 rounded-lg border border-border px-3 py-2 text-sm font-medium", showAnalysis && "bg-accent")}>
-                <Lightbulb className="h-4 w-4" aria-hidden />{showAnalysis ? "Hide analysis" : "Show analysis"}
-              </button>
-              {q.stimulus && <p className="max-w-[52ch] whitespace-pre-wrap leading-relaxed">{q.stimulus}</p>}
-              {showAnalysis && (
-                <div className="mt-5 space-y-3 rounded-lg bg-muted/50 p-4 text-sm leading-relaxed">
-                  {style?.steps.length ? style.steps.map((step) => <p key={step.position}>{step.label && <span className="font-semibold">{step.label}: </span>}{step.body}</p>) : <p className="text-muted-foreground">No analysis has been written for this question yet.</p>}
-                </div>
-              )}
-              <p className="mt-8 text-sm text-muted-foreground">{questionLabel(qid)}</p>
-            </div>
-            <div className="p-6">
-              <div className="mb-5 flex flex-wrap items-center justify-between gap-3 border-b border-border">
-                <div className="flex gap-5 text-sm font-medium" role="tablist" aria-label="Answer view">
-                  {(["clean", "actual"] as const).map((m) => (
-                    <button key={m} type="button" role="tab" aria-selected={mode === m} onClick={() => setMode(m)} className={cn("-mb-px border-b-2 pb-2", mode === m ? "border-primary text-primary" : "border-transparent text-muted-foreground hover:text-foreground")}>{m === "clean" ? "Clean" : "Actual"}</button>
-                  ))}
-                  <button type="button" role="tab" aria-selected={false} disabled title="No blind review for this drill" className="-mb-px border-b-2 border-transparent pb-2 text-muted-foreground/60">BR –</button>
-                </div>
-                <label className="mb-2 flex items-center gap-2 text-sm">Show correct<Switch checked={showCorrect} onCheckedChange={setShowCorrect} aria-label="Show correct" /></label>
-              </div>
-              <p className="mb-4 whitespace-pre-wrap font-medium leading-relaxed">{index + 1}. {q.questionStem}</p>
-              <ol className="space-y-2" aria-label={`Answer choices for question ${index + 1}`}>
-                {LETTERS.map((letter) => {
-                  const picked = mode === "actual" && attempt?.selected_answer === letter;
-                  const correct = showCorrect && q.correctAnswer === letter;
-                  const note = style?.notesByLetter[letter];
-                  return (
-                    <li key={letter} data-picked={picked || undefined} data-correct={correct || undefined}
-                      className={cn("overflow-hidden rounded-lg border",
-                        correct ? "border-emerald-500 ring-1 ring-emerald-500" : picked ? (attempt?.correct ? "border-emerald-500" : "border-red-400 ring-1 ring-red-400") : "border-border")}>
-                      <div className="flex items-stretch">
-                        <div className={cn("flex w-14 shrink-0 items-start justify-center pt-3 text-2xl",
-                          picked ? (attempt?.correct ? "bg-emerald-500 text-white" : "bg-red-400 text-white") : correct ? "bg-emerald-500/15 text-emerald-700" : "text-foreground")}>{letter}</div>
-                        <div className="flex-1 bg-muted/40 p-3 text-[15px] leading-relaxed">{q.answerChoices[letter]}</div>
-                        {note && <button type="button" aria-label={`Explanation for ${letter}`} aria-expanded={openNotes.has(letter)} onClick={() => toggleNote(letter)} className="flex w-12 shrink-0 items-start justify-center bg-muted/40 pt-3"><span className={cn("rounded-lg border border-border bg-card p-1.5", openNotes.has(letter) && "bg-accent")}><Lightbulb className="h-4 w-4" aria-hidden /></span></button>}
-                      </div>
-                      {note && openNotes.has(letter) && <p className="border-t border-border p-3 text-sm leading-relaxed text-muted-foreground">{note}</p>}
-                    </li>
-                  );
-                })}
-              </ol>
-            </div>
-          </div>
-        )}
-      </div>
-      <nav className="mt-5 flex flex-wrap items-start justify-center gap-1.5" aria-label="Questions">
-        <Button type="button" size="sm" disabled={index === 0} onClick={() => onOpen(index - 1)}>Prev</Button>
-        {qids.map((id, i) => (
-          <button key={`${id}-${i}`} type="button" aria-current={i === index ? "true" : undefined} aria-label={`Question ${i + 1}`} onClick={() => onOpen(i)}
-            className={cn("relative mb-3 h-9 w-9 rounded-md border text-sm", i === index ? "border-primary bg-primary/10 font-semibold" : "border-border bg-card")}>
-            {i + 1}
-            <span className="absolute -bottom-3 left-1/2 -translate-x-1/2"><ResultMark attempt={byQid.get(id)} small /></span>
-          </button>
-        ))}
-        <Button type="button" size="sm" disabled={index === qids.length - 1} onClick={() => onOpen(index + 1)}>Next</Button>
-      </nav>
-    </section>
   );
 }
