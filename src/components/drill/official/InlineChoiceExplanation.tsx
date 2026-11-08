@@ -125,7 +125,12 @@ export default function InlineChoiceExplanation({
           </span>
         )}
         {studentPercent != null && (
-          <span className="choice-note__percent">{studentPercent}% of students</span>
+          <span className="choice-note__popularity" title="Share of students who picked this choice">
+            <span className="choice-note__bar" aria-hidden="true">
+              <span className="choice-note__bar-fill" style={{ width: `${Math.min(100, Math.max(0, studentPercent))}%` }} />
+            </span>
+            <span className="choice-note__percent">{studentPercent}% of students</span>
+          </span>
         )}
         {isSelected && (
           <span className="choice-note__selection">

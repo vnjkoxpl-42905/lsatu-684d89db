@@ -1,6 +1,7 @@
 import * as React from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { NoteProse } from "./NoteProse";
 import {
   resolveBreakdownSteps,
   type LrExplanationData,
@@ -97,12 +98,13 @@ export default function ArgumentBreakdown({
               >
                 {step.label}
               </p>
-              <p
+              <div
                 className="mt-1 whitespace-pre-line text-slate-800"
                 style={{ fontSize: `${baseSize}px`, lineHeight: 1.6 }}
               >
-                {step.body}
-              </p>
+                {/* Same drawn chains and struck negations as the choice notes. */}
+                <NoteProse note={step.body} />
+              </div>
             </div>
           ))}
         </>
