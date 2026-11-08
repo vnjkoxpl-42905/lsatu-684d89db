@@ -1,9 +1,12 @@
 import * as React from "react";
-import { Check, Minus, Search, X } from "lucide-react";
+import { Bookmark, Check, Minus, MoreHorizontal, NotebookText, Search, X } from "lucide-react";
 import { questionBank } from "@/lib/questionLoader";
 import { cn } from "@/lib/utils";
 import SectionReviewWalk, { type ReviewWalkSession } from "@/components/drill/SectionReviewWalk";
 import { useAnswerPopularity, type PopularityKey } from "@/hooks/useAnswerPopularity";
+import { useQuestionStudyMarks } from "@/hooks/useQuestionStudyMarks";
+import { JournalPanel } from "@/components/drill/review/JournalPanel";
+import { QuestionInfoPanel } from "@/components/drill/review/QuestionInfoPanel";
 
 /**
  * The one results-and-review page for a finished drill, in 7Sage's shape:
@@ -91,6 +94,16 @@ export function CompletedDrillReview({ title, qids, attempts, openIndex, onOpen,
   const [difficulty, setDifficulty] = React.useState("all");
   const [search, setSearch] = React.useState("");
   const [sort, setSort] = React.useState<"question" | "time" | "difficulty">("question");
+  const [onlyNotes, setOnlyNotes] = React.useState(false);
+  const [onlyBookmarked, setOnlyBookmarked] = React.useState(false);
+  const marks = useQuestionStudyMarks();
+  const [journalQid, setJournalQid] = React.useState<string | null>(null);
+  const [infoIndex, setInfoIndex] = React.useState<number | null>(null);
+  const [markError, setMarkError] = React.useState<string | null>(null);
+  const toggleBookmark = (qid: string) => {
+    setMarkError(null);
+    marks.toggleBookmark(qid).catch(() => setMarkError("That bookmark didn't save. Try again."));
+  };
   const lastOpened = React.useRef<number | null>(null);
 
   const keys = React.useMemo<PopularityKey[]>(() => qids.flatMap((qid) => {
@@ -106,6 +119,55 @@ export function CompletedDrillReview({ title, qids, attempts, openIndex, onOpen,
     document.getElementById(`question-row-${lastOpened.current}`)?.scrollIntoView({ block: "center" });
   }, [openIndex]);
 
+  const overlays = (
+    <>
+      {infoIndex !== null && qids[infoIndex] && (() => {
+        const qid = qids[infoIndex];
+        const q = questionBank.getQuestion(qid);
+        const attempt = byQid.get(qid);
+        return (
+          <QuestionInfoPanel
+            label={questionLabel(qid)}
+            result={<ResultMark attempt={attempt} />}
+            difficulty={<DifficultyDots level={q?.difficulty} />}
+            timing={<span className="font-mono">{attempt ? formatTime(attempt.time_ms) : "–"}</span>}
+            tags={q ? [q.qtype, ...(q.questionFeatures ?? [])].filter(Boolean) : []}
+            hasNote={marks.hasNote(qid)}
+            bookmarked={marks.isBookmarked(qid)}
+            onReview={() => { setInfoIndex(null); onOpen(infoIndex); }}
+            onNotes={() => { setInfoIndex(null); setJournalQid(qid); }}
+            onBookmark={() => toggleBookmark(qid)}
+            onClose={() => setInfoIndex(null)}
+          />
+        );
+      })()}
+      {journalQid && (
+        <JournalPanel
+          qid={journalQid}
+          marks={marks}
+          onClose={() => setJournalQid(null)}
+          onOpenQuestion={(qid) => setJournalQid(qid)}
+        />
+      )}
+      {markError && <p role="alert" className="fixed bottom-4 left-1/2 z-[220] -translate-x-1/2 rounded-lg bg-red-600 px-4 py-2 text-sm text-white shadow-lg">{markError}</p>}
+    </>
+  );
+
+  /** Notes and Bookmark buttons for one question, used in the exam screen header. */
+  const markButtons = (qid: string) => (
+    <>
+      <button type="button" onClick={() => setJournalQid(qid)} aria-label={marks.hasNote(qid) ? "Open your note" : "Add a note"} title="Journal"
+        className="relative inline-flex h-8 items-center gap-1.5 rounded-md border border-slate-300 bg-white px-2.5 text-[13px] font-medium text-slate-800 hover:bg-slate-50">
+        <NotebookText className="h-4 w-4" /><span className="hidden sm:inline">Notes</span>
+        {marks.hasNote(qid) && <span aria-hidden className="absolute -right-1 -top-1 h-2.5 w-2.5 rounded-full bg-amber-500 ring-2 ring-white" />}
+      </button>
+      <button type="button" onClick={() => toggleBookmark(qid)} aria-pressed={marks.isBookmarked(qid)} aria-label={marks.isBookmarked(qid) ? "Remove bookmark" : "Add bookmark"} title="Bookmark (saved to your flagged questions)"
+        className="inline-flex h-8 w-8 items-center justify-center rounded-md border border-slate-300 bg-white text-slate-800 hover:bg-slate-50">
+        <Bookmark className={cn("h-4 w-4", marks.isBookmarked(qid) && "fill-[#1f3a5f] text-[#1f3a5f]")} />
+      </button>
+    </>
+  );
+
   if (openIndex !== null && openIndex >= 0 && openIndex < qids.length) {
     const session: ReviewWalkSession = {
       questionQueue: qids,
@@ -120,7 +182,9 @@ export function CompletedDrillReview({ title, qids, attempts, openIndex, onOpen,
           initialIndex={openIndex}
           onIndexChange={(i) => { if (i !== openIndex) onOpen(i); }}
           onBack={() => onOpen(null)}
+          headerExtras={markButtons}
         />
+        {overlays}
       </div>
     );
   }
@@ -131,12 +195,14 @@ export function CompletedDrillReview({ title, qids, attempts, openIndex, onOpen,
   const allTags = [...new Set(qids.flatMap((qid) => { const q = questionBank.getQuestion(qid); return q ? [q.qtype, ...(q.questionFeatures ?? [])].filter(Boolean) : []; }))].sort();
 
   const rows = qids.map((qid, index) => ({ qid, index, q: questionBank.getQuestion(qid), attempt: byQid.get(qid) }))
-    .filter(({ q, attempt }) => {
+    .filter(({ qid, q, attempt }) => {
       if (result === "correct" && !attempt?.correct) return false;
       if (result === "incorrect" && (!attempt || attempt.correct)) return false;
       if (result === "unanswered" && attempt) return false;
       if (tag !== "all" && !(q && [q.qtype, ...(q.questionFeatures ?? [])].includes(tag))) return false;
       if (difficulty !== "all" && q?.difficulty !== Number(difficulty)) return false;
+      if (onlyNotes && !marks.hasNote(qid)) return false;
+      if (onlyBookmarked && !marks.isBookmarked(qid)) return false;
       if (search.trim()) {
         const hay = q ? `${q.stimulus} ${q.questionStem} ${Object.values(q.answerChoices ?? {}).join(" ")}`.toLowerCase() : "";
         if (!hay.includes(search.trim().toLowerCase())) return false;
@@ -190,6 +256,16 @@ export function CompletedDrillReview({ title, qids, attempts, openIndex, onOpen,
           <select aria-label="Tags" className={select} value={tag} onChange={(e) => setTag(e.target.value)}>
             <option value="all">Tags: all</option>{allTags.map((t) => <option key={t} value={t}>{t}</option>)}
           </select>
+          <label className="ml-1 inline-flex cursor-pointer items-center gap-2 rounded-lg px-2 py-2 text-sm">
+            <input type="checkbox" className="peer sr-only" checked={onlyNotes} onChange={(e) => setOnlyNotes(e.target.checked)} />
+            <span aria-hidden className="relative h-5 w-9 rounded-full bg-muted transition-colors after:absolute after:left-0.5 after:top-0.5 after:h-4 after:w-4 after:rounded-full after:bg-white after:shadow after:transition-transform peer-checked:bg-primary peer-checked:after:translate-x-4" />
+            Has notes
+          </label>
+          <label className="inline-flex cursor-pointer items-center gap-2 rounded-lg px-2 py-2 text-sm">
+            <input type="checkbox" className="peer sr-only" checked={onlyBookmarked} onChange={(e) => setOnlyBookmarked(e.target.checked)} />
+            <span aria-hidden className="relative h-5 w-9 rounded-full bg-muted transition-colors after:absolute after:left-0.5 after:top-0.5 after:h-4 after:w-4 after:rounded-full after:bg-white after:shadow after:transition-transform peer-checked:bg-primary peer-checked:after:translate-x-4" />
+            Bookmarked
+          </label>
         </div>
       </section>
 
@@ -209,11 +285,13 @@ export function CompletedDrillReview({ title, qids, attempts, openIndex, onOpen,
               <th className="hidden px-2 py-3 text-center md:table-cell">Answer<br />popularity</th>
               <th className="px-4 py-3 text-left">Timing</th>
               <th className="hidden px-4 py-3 text-left md:table-cell">Difficulty</th>
+              <th className="px-2 py-3 text-center">Notes</th>
+              <th className="px-2 py-3 text-center"><span className="sr-only">Bookmark and details</span></th>
             </tr>
           </thead>
           <tbody>
             {rows.length === 0 ? (
-              <tr><td colSpan={5} className="px-4 py-8 text-center text-muted-foreground">No questions match these filters.</td></tr>
+              <tr><td colSpan={7} className="px-4 py-8 text-center text-muted-foreground">No questions match these filters.</td></tr>
             ) : rows.map(({ qid, index, q, attempt }) => {
               const tags = q ? [q.qtype, ...(q.questionFeatures ?? [])].filter(Boolean) : [];
               return (
@@ -234,6 +312,24 @@ export function CompletedDrillReview({ title, qids, attempts, openIndex, onOpen,
                     {attempt && !attempt.correct && q && <div className="mt-1 font-sans text-xs">Picked <span className="font-semibold text-red-500">{attempt.selected_answer}</span> · answer {q.correctAnswer}</div>}
                   </td>
                   <td className="hidden px-4 py-4 md:table-cell"><DifficultyDots level={q?.difficulty} /></td>
+                  <td className="px-2 py-4 text-center" onClick={(e) => e.stopPropagation()}>
+                    <button type="button" onClick={() => setJournalQid(qid)} aria-label={marks.hasNote(qid) ? `Open your note on ${questionLabel(qid)}` : `Add a note to ${questionLabel(qid)}`}
+                      className="relative inline-flex h-10 w-10 items-center justify-center rounded-xl hover:bg-accent">
+                      <NotebookText className="h-5 w-5" />
+                      {marks.hasNote(qid) && <span aria-hidden className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-amber-500" />}
+                    </button>
+                  </td>
+                  <td className="px-2 py-4" onClick={(e) => e.stopPropagation()}>
+                    <div className="flex items-center justify-center gap-1">
+                      <button type="button" onClick={() => toggleBookmark(qid)} aria-pressed={marks.isBookmarked(qid)} aria-label={marks.isBookmarked(qid) ? `Remove bookmark from ${questionLabel(qid)}` : `Bookmark ${questionLabel(qid)}`}
+                        title="Bookmark (saved to your flagged questions)" className="inline-flex h-10 w-10 items-center justify-center rounded-xl hover:bg-accent">
+                        <Bookmark className={cn("h-5 w-5", marks.isBookmarked(qid) && "fill-primary text-primary")} />
+                      </button>
+                      <button type="button" onClick={() => setInfoIndex(index)} aria-label={`Details for ${questionLabel(qid)}`} className="inline-flex h-10 w-10 items-center justify-center rounded-xl hover:bg-accent">
+                        <MoreHorizontal className="h-5 w-5" />
+                      </button>
+                    </div>
+                  </td>
                 </tr>
               );
             })}
@@ -249,6 +345,7 @@ export function CompletedDrillReview({ title, qids, attempts, openIndex, onOpen,
           </dl>
         </section>
       )}
+      {overlays}
     </div>
   );
 }

@@ -70,6 +70,8 @@ interface Props {
    * the timed-section behaviour, where notes arrive only with Show answers.
    */
   variant?: 'section' | 'drill';
+  /** Extra header controls for the open question, e.g. Notes and Bookmark. */
+  headerExtras?: (qid: string) => React.ReactNode;
 }
 
 /** Which tabs this section can offer. BR appears only if a review happened. */
@@ -84,7 +86,7 @@ const TAB_LABELS: Record<ReviewTab, string> = {
   br: 'BR',
 };
 
-export default function SectionReviewWalk({ session, brResults, onBack, backLabel = 'Section results', initialIndex, onIndexChange, variant = 'section' }: Props) {
+export default function SectionReviewWalk({ session, brResults, onBack, backLabel = 'Section results', initialIndex, onIndexChange, variant = 'section', headerExtras }: Props) {
   const drillVariant = variant === 'drill';
   const [analysisOpen, setAnalysisOpen] = React.useState(false);
   const [analysisStyle, setAnalysisStyle] = React.useState<LrStyleKey | null>(null);
@@ -194,6 +196,7 @@ export default function SectionReviewWalk({ session, brResults, onBack, backLabe
           {/* A switch, not a checkbox. A bare checkbox renders here as a solid
               dark square with no accent colour, so OFF reads as ON — the one
               thing this control must never do. */}
+          {headerExtras && <div className="flex shrink-0 items-center gap-1">{headerExtras(currentQid)}</div>}
           <label className="flex shrink-0 cursor-pointer items-center gap-2 text-[13px] font-medium text-slate-700">
             <Switch
               checked={showAnswers}

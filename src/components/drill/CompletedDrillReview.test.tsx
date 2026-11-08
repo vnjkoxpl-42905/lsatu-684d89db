@@ -11,6 +11,12 @@ vi.mock("@/components/drill/SectionReviewWalk", () => ({
     </div>
   ),
 }));
+const marks = vi.hoisted(() => ({
+  notes: new Map(), ready: true, error: null,
+  note: () => null, hasNote: (qid: string) => qid === "q-1", isBookmarked: () => false,
+  saveNote: vi.fn(), toggleBookmark: vi.fn(() => Promise.resolve()),
+}));
+vi.mock("@/hooks/useQuestionStudyMarks", () => ({ useQuestionStudyMarks: () => marks, noteHasContent: () => true }));
 vi.mock("@/hooks/useAnswerPopularity", () => ({ useAnswerPopularity: () => ({ data: { "q-1": { A: 9, B: 2, C: 80, D: 4, E: 5 } } }) }));
 vi.mock("@/lib/questionLoader", () => ({ questionBank: { getQuestion: () => ({
   pt: 106, section: 2, qnum: 18, difficulty: 3, qtype: "Flaw", questionFeatures: [], stimulus: "Dobson: stones.", questionStem: "Which is an error?",
@@ -46,5 +52,23 @@ describe("completed drill review", () => {
     expect(screen.getByTestId("exam-walk")).toHaveAttribute("data-variant", "drill");
     fireEvent.click(screen.getByText("All questions"));
     expect(onOpen).toHaveBeenCalledWith(null);
+  });
+  it("bookmarks a question from its row and opens its journal and details", () => {
+    render(<CompletedDrillReview title="Flaw" qids={["q-1"]} attempts={attempts} openIndex={null} onOpen={() => {}} />);
+    fireEvent.click(screen.getByRole("button", { name: "Bookmark PT106.S2.Q18" }));
+    expect(marks.toggleBookmark).toHaveBeenCalledWith("q-1");
+    fireEvent.click(screen.getByRole("button", { name: "Open your note on PT106.S2.Q18" }));
+    expect(screen.getByRole("dialog", { name: "Journal" })).toHaveTextContent("PT106.S2.Q18");
+    fireEvent.click(screen.getByRole("button", { name: "Close journal" }));
+    fireEvent.click(screen.getByRole("button", { name: "Details for PT106.S2.Q18" }));
+    expect(screen.getByRole("dialog", { name: "PT106.S2.Q18 details" })).toHaveTextContent("Difficulty");
+  });
+
+  it("filters to questions with notes and to bookmarked questions", () => {
+    render(<CompletedDrillReview title="Flaw" qids={["q-1"]} attempts={attempts} openIndex={null} onOpen={() => {}} />);
+    fireEvent.click(screen.getByLabelText("Has notes"));
+    expect(screen.getByRole("table")).toHaveTextContent("PT106.S2.Q18");
+    fireEvent.click(screen.getByLabelText("Bookmarked"));
+    expect(screen.getByRole("table")).toHaveTextContent("No questions match these filters.");
   });
 });
