@@ -6,6 +6,7 @@ export const REVIEW_HUB_ROUTES = {
   progress: { path: 'progress' },
   history: { path: 'history' },
   strengths: { path: 'strengths' },
+  analytics: { path: 'analytics' },
   imported: { path: 'imported', flags: ['has_analytics_access', 'has_drill_access'] },
   journal: { path: 'wrong', flag: 'has_journal_access' },
   flagged: { path: 'flagged', flag: 'has_flagged_access' },

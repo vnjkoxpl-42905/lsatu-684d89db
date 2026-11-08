@@ -27,6 +27,12 @@ export interface AttemptRow {
   timestamp_iso: string | null;
   br_answer: string | null;
   br_outcome: string | null;
+  /** "rc" for Reading Comprehension. LR rows leave it out. */
+  kind?: "lr" | "rc";
+  /** Set when the question is not in the LR bank (RC): what to show and tag it by. */
+  label?: string;
+  tags?: Array<[string, string]>;
+  correct_answer?: string | null;
 }
 
 export interface SectionRow {
@@ -79,11 +85,14 @@ export async function loadStudentPractice(studentId: string): Promise<StudentPra
       .order("completed_at", { ascending: false }),
     loadStudentDrillRuns(studentId),
   ]);
+  const rc = await loadRcAttempts(studentId);
   if (attempts.error) throw attempts.error;
   if (sections.error) throw sections.error;
   if (practiceTests.error) throw practiceTests.error;
+  const lr = (attempts.data ?? []) as AttemptRow[];
   return {
-    attempts: (attempts.data ?? []) as AttemptRow[],
+    attempts: [...lr, ...drillAnswersMissingFrom(lr, drills), ...rc]
+      .sort((a, b) => (a.timestamp_iso ?? "").localeCompare(b.timestamp_iso ?? "")),
     sections: (sections.data ?? []) as SectionRow[],
     practiceTests: (practiceTests.data ?? []) as PracticeTestRow[],
     drills,
@@ -113,6 +122,65 @@ export async function loadStudentDrillRuns(studentId: string): Promise<Standalon
     if ((data ?? []).length < pageSize) break;
   }
   return runs;
+}
+
+/**
+ * Answers that live only inside a drill run. Most drills also write each
+ * answer to `attempts`, but not every older one did, so a question answered
+ * in a drill could vanish from Questions & explanations. These fill the gap.
+ */
+export function drillAnswersMissingFrom(attempts: AttemptRow[], drills: StandaloneDrillRun[]): AttemptRow[] {
+  const have = new Set(attempts.map((a) => a.qid));
+  const out: AttemptRow[] = [];
+  for (const d of drills) {
+    for (const a of d.session.attempts ?? []) {
+      const qid = (a as { qid?: string }).qid;
+      if (!qid || have.has(qid)) continue;
+      have.add(qid);
+      const at = a as { selected_answer?: string; correct?: boolean; time_ms?: number; answered_at?: string };
+      out.push({
+        qid, pt: null, section: null, qnum: null, qtype: null, level: null, mode: "drill",
+        selected_answer: at.selected_answer ?? null, correct: at.correct ?? null, time_ms: at.time_ms ?? null,
+        timestamp_iso: at.answered_at ?? d.updated_at, br_answer: null, br_outcome: null,
+      });
+    }
+  }
+  return out;
+}
+
+/** The student's Reading Comprehension answers, labelled and tagged from the RC tables. */
+export async function loadRcAttempts(studentId: string): Promise<AttemptRow[]> {
+  const { data: rows, error } = await supabase.from("rc_attempts")
+    .select("question_id,passage_id,selected,is_correct,time_ms,created_at")
+    .eq("user_id", studentId)
+    .order("created_at", { ascending: true })
+    .limit(10000);
+  if (error) throw error;
+  if (!rows?.length) return [];
+  const qIds = [...new Set(rows.map((r) => r.question_id))];
+  const pIds = [...new Set(rows.map((r) => r.passage_id))];
+  const [qs, ps] = await Promise.all([
+    supabase.from("rc_questions").select("question_id,preptest,section,position,question_type,correct_answer,difficulty").in("question_id", qIds),
+    supabase.from("rc_passages").select("passage_id,topic").in("passage_id", pIds),
+  ]);
+  if (qs.error) throw qs.error;
+  const qMeta = new Map((qs.data ?? []).map((q) => [q.question_id, q]));
+  const topic = new Map((ps.data ?? []).map((x) => [x.passage_id, x.topic]));
+  return rows.map((r) => {
+    const q = qMeta.get(r.question_id);
+    const tags: Array<[string, string]> = [];
+    if (q?.question_type) tags.push([q.question_type, "RC Question Stem"]);
+    const t = topic.get(r.passage_id);
+    if (t) tags.push([t, "RC Passage Subject"]);
+    return {
+      qid: `rc:${r.question_id}`, pt: q?.preptest ?? null, section: q?.section ?? null, qnum: q?.position ?? null,
+      qtype: q?.question_type ?? null, level: q?.difficulty ?? null, mode: "rc",
+      selected_answer: r.selected ?? null, correct: r.is_correct ?? null, time_ms: r.time_ms ?? null,
+      timestamp_iso: r.created_at, br_answer: null, br_outcome: null,
+      kind: "rc", label: q ? `PT${q.preptest}.S${q.section}.Q${q.position}` : `RC question ${r.question_id}`,
+      tags, correct_answer: q?.correct_answer ?? null,
+    } satisfies AttemptRow;
+  });
 }
 
 /* ---------------------------------------------------------------- History */
@@ -242,11 +310,15 @@ export function tagAnalytics(attempts: AttemptRow[], goal: number): TagStat[] {
   for (const a of attempts) {
     if (!a.qid || a.correct == null || seen.has(a.qid)) continue; // first answer only
     seen.add(a.qid);
-    const q = questionBank.getQuestion(a.qid);
     const tags: Array<[string, string]> = [];
-    const stem = q?.qtype || a.qtype;
-    if (stem) tags.push([stem, "LR Question Stem"]);
-    for (const f of q?.questionFeatures ?? []) tags.push([f, "LR Reasoning"]);
+    if (a.tags) {
+      tags.push(...a.tags);
+    } else {
+      const q = questionBank.getQuestion(a.qid);
+      const stem = q?.qtype || a.qtype;
+      if (stem) tags.push([stem, "LR Question Stem"]);
+      for (const f of q?.questionFeatures ?? []) tags.push([f, "LR Reasoning"]);
+    }
     for (const [tag, group] of tags) {
       const t = byTag.get(tag) ?? { group, answered: 0, correct: 0, qids: new Set<string>() };
       t.answered += 1;
@@ -284,6 +356,7 @@ export function tagAnalytics(attempts: AttemptRow[], goal: number): TagStat[] {
 
 export interface QuestionRow {
   qid: string;
+  kind: "lr" | "rc";
   label: string;
   tags: string[];
   difficulty: number | null;
@@ -306,13 +379,14 @@ export function questionRows(attempts: AttemptRow[]): QuestionRow[] {
       existing.lastSeen = a.timestamp_iso ?? existing.lastSeen;
       continue;
     }
-    const q = questionBank.getQuestion(a.qid);
+    const q = a.kind === "rc" ? null : questionBank.getQuestion(a.qid);
     map.set(a.qid, {
       qid: a.qid,
-      label: q ? `PT${q.pt}.S${q.section}.Q${q.qnum}` : a.pt ? `PT${a.pt}.S${a.section}.Q${a.qnum}` : a.qid,
-      tags: q ? [q.qtype, ...(q.questionFeatures ?? [])].filter(Boolean) : a.qtype ? [a.qtype] : [],
+      kind: a.kind ?? "lr",
+      label: a.label ?? (q ? `PT${q.pt}.S${q.section}.Q${q.qnum}` : a.pt ? `PT${a.pt}.S${a.section}.Q${a.qnum}` : a.qid),
+      tags: a.tags ? a.tags.map(([t]) => t) : q ? [q.qtype, ...(q.questionFeatures ?? [])].filter(Boolean) : a.qtype ? [a.qtype] : [],
       difficulty: q?.difficulty ?? a.level ?? null,
-      firstCorrect: a.correct, firstAnswer: a.selected_answer, correctAnswer: q?.correctAnswer ?? null,
+      firstCorrect: a.correct, firstAnswer: a.selected_answer, correctAnswer: a.correct_answer ?? q?.correctAnswer ?? null,
       timesSeen: 1, lastSeen: a.timestamp_iso, timeMs: a.time_ms, br: a.br_answer,
     });
   }

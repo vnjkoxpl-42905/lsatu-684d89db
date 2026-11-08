@@ -228,7 +228,7 @@ describe("legacy links", () => {
 
 it('binds canonical Review navigation to the metadata App uses for its actual gates', () => {
   expect(DESTINATIONS.review.path).toBe(REVIEW_HUB_ROUTES.root.path);
-  expect(DESTINATIONS.review.tabs.map(tab => tab.path)).toEqual([REVIEW_HUB_ROUTES.queue,REVIEW_HUB_ROUTES.progress,REVIEW_HUB_ROUTES.history,REVIEW_HUB_ROUTES.strengths].map(route => `${REVIEW_HUB_ROUTES.root.path}/${route.path}`));
+  expect(DESTINATIONS.review.tabs.map(tab => tab.path)).toEqual([REVIEW_HUB_ROUTES.queue,REVIEW_HUB_ROUTES.progress,REVIEW_HUB_ROUTES.history,REVIEW_HUB_ROUTES.strengths,REVIEW_HUB_ROUTES.analytics].map(route => `${REVIEW_HUB_ROUTES.root.path}/${route.path}`));
   expect(app).toContain('path={REVIEW_HUB_ROUTES.root.path}');
   expect(app).toContain('flag={REVIEW_HUB_ROUTES.analyticsFlag}');
   expect(app).toContain('REVIEW_HUB_ALIASES.map');

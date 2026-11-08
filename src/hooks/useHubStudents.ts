@@ -29,6 +29,7 @@ const HUB_STALE_MS = 5 * 60 * 1000; // 5 minutes
 
 export interface HubStudentRow {
   class_id: string;
+  archived_at?: string | null;
   display_name: string | null;
   email: string | null;
   last_seen_at: string | null;
@@ -74,6 +75,8 @@ interface ManagedUserRow {
   has_ta_access: boolean;
   has_journal_access?: boolean;
   has_activity_access?: boolean;
+  /** Set when the student is archived: access off, hidden from lists, records kept. */
+  archived_at?: string | null;
 }
 
 interface AssignmentCountsRow {
