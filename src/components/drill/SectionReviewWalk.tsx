@@ -16,7 +16,7 @@
  *
  * So this is the same exam chrome the section and the blind review already run
  * in — `OfficialDrillFrame` / `OfficialDrillToolbar` / `OfficialQuestionPane` /
- * `OfficialAnswerNavigator` — with every input inert. Nothing here writes.
+ * `OfficialAnswerNavigator` — with temporary study marks. The sitting stays read-only.
  *
  * Three tabs, which is the whole idea:
  *   Clean   the question with no answer marked, the way it looked on test day
@@ -106,6 +106,7 @@ export default function SectionReviewWalk({ session, brResults, onBack, backLabe
   // on this screen only: it is never written, so the record of the sitting
   // can't change.
   const [freshPicks, setFreshPicks] = React.useState<Record<string, string>>({});
+  const [eliminatedByQid, setEliminatedByQid] = React.useState<Map<string, Set<string>>>(new Map());
   const [highlightMode, setHighlightMode] = React.useState<HighlightMode>('none');
   const questionHighlights = useQuestionHighlights();
   const [searchTerm, setSearchTerm] = React.useState('');
@@ -229,7 +230,7 @@ export default function SectionReviewWalk({ session, brResults, onBack, backLabe
         }}
         displayNumber={currentIndex + 1}
         selectedAnswer={shownAnswer}
-        eliminatedAnswers={new Set<string>()}
+        eliminatedAnswers={eliminatedByQid.get(currentQid) ?? new Set<string>()}
         isFlagged={false}
         answerRevealed={showAnswers}
         correctAnswer={question.correctAnswer}
@@ -252,9 +253,8 @@ export default function SectionReviewWalk({ session, brResults, onBack, backLabe
         fontScale={fontScale}
         // Every input that touches the record is inert. This screen reads a
         // sitting that is already over; it must not be able to change what
-        // the record says happened. Highlights are the one exception: they
-        // are the student's own marks, live only on this screen, and are
-        // never written anywhere.
+        // the record says happened. Fresh picks, cross-outs, and highlights
+        // are temporary marks for this review.
         onAnswerSelect={(letter) => {
           if (tab !== 'clean') return;
           setFreshPicks((prev) => {
@@ -264,7 +264,14 @@ export default function SectionReviewWalk({ session, brResults, onBack, backLabe
             return next;
           });
         }}
-        onEliminate={noop}
+        onEliminate={(letter) => {
+          setEliminatedByQid((prev) => {
+            const eliminated = new Set(prev.get(currentQid));
+            if (eliminated.has(letter)) eliminated.delete(letter);
+            else eliminated.add(letter);
+            return new Map(prev).set(currentQid, eliminated);
+          });
+        }}
         onToggleFlag={noop}
         onTextSelection={(regions) =>
           questionHighlights.applySelection(question.qid, highlightMode, regions)
