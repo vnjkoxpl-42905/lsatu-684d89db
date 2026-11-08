@@ -149,6 +149,9 @@ const DossierOverview = safeLazy(() => import("./pages/teacher/students/DossierO
 const DossierWork = safeLazy(() => import("./pages/teacher/students/DossierWork"));
 const DossierReview = safeLazy(() => import("./pages/teacher/students/DossierReview"));
 const DossierProgress = safeLazy(() => import("./pages/teacher/students/DossierProgress"));
+const DossierAnalytics = safeLazy(() => import("./pages/teacher/students/DossierAnalytics"));
+const DossierAnalyticsRun = safeLazy(() => import("./pages/teacher/students/DossierAnalyticsRun"));
+const StudentAnalyticsIndex = safeLazy(() => import("./pages/teacher/StudentAnalyticsIndex"));
 const DossierNotes = safeLazy(() => import("./pages/teacher/students/DossierNotes"));
 const DossierMessages = safeLazy(() => import("./pages/teacher/students/DossierMessages"));
 const DossierSchedule = safeLazy(() => import("./pages/teacher/students/DossierSchedule"));
@@ -781,6 +784,15 @@ const App = () => {
 
                         requireAdmin still guards it; nesting changed the
                         frame, not who can reach it. */}
+                    {/* Student Analytics: its own page in the classroom shell, with a
+                        student rail beside the analytics. Admin-only. */}
+                    {["/student-analytics", "/student-analytics/:studentId", "/student-analytics/:studentId/runs/:runId"].map((path) => (
+                      <Route key={path} path={path} element={
+                        <ProtectedRoute requireAdmin>
+                          <React.Suspense fallback={<div />}><StudentAnalyticsIndex /></React.Suspense>
+                        </ProtectedRoute>
+                      } />
+                    ))}
                     <Route path="/teacher" element={
                       <ProtectedRoute requireAdmin>
                         <React.Suspense fallback={<div className="min-h-screen bg-[#c3cace]" />}>
@@ -824,6 +836,12 @@ const App = () => {
                         } />
                         <Route path="review" element={
                           <React.Suspense fallback={<div />}><DossierReview /></React.Suspense>
+                        } />
+                        <Route path="analytics" element={
+                          <React.Suspense fallback={<div />}><DossierAnalytics /></React.Suspense>
+                        } />
+                        <Route path="analytics/runs/:runId" element={
+                          <React.Suspense fallback={<div />}><DossierAnalyticsRun /></React.Suspense>
                         } />
                         <Route path="progress" element={
                           <React.Suspense fallback={<div />}><DossierProgress /></React.Suspense>
@@ -890,6 +908,7 @@ const App = () => {
                       {/* Teaching Assistant: the full-page action agent room.
                           Runs `ta-agent` (Gemini 3.8 Flash on GEMINI_API_KEY);
                           every platform action is confirmed before it fires. */}
+                      <Route path="analytics" element={<Navigate to="/student-analytics" replace />} />
                       <Route path="assistant" element={
                         <React.Suspense fallback={<div />}>
                           <TeacherAssistant />
