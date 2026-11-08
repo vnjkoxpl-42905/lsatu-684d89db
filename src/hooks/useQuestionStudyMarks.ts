@@ -16,9 +16,9 @@ import { questionBank } from "@/lib/questionLoader";
  * write, so a bookmark shows up everywhere a flag does. Nothing new is stored.
  */
 
-export type NoteFields = Pick<WAJNote, "student_note" | "wrong_reasoning" | "correct_reasoning" | "trap_pattern" | "lesson">;
+export type NoteFields = Pick<WAJNote, "student_note" | "question_summary" | "wrong_reasoning" | "correct_reasoning" | "trap_pattern" | "lesson" | "other_notes">;
 
-const TEXT_FIELDS: Array<keyof NoteFields> = ["student_note", "wrong_reasoning", "correct_reasoning", "trap_pattern", "lesson"];
+const TEXT_FIELDS: Array<keyof NoteFields> = ["student_note", "question_summary", "wrong_reasoning", "correct_reasoning", "trap_pattern", "lesson", "other_notes"];
 
 export function noteHasContent(note?: Partial<NoteFields> | null): boolean {
   return !!note && TEXT_FIELDS.some((f) => (note[f] ?? "").trim().length > 0);
@@ -86,6 +86,9 @@ export function useQuestionStudyMarks() {
 
   return {
     ready: !!classId,
+    classId,
+    /** True when the note carries pen drawings from the full journal entry. */
+    hasDrawing: (qid: string) => (notes.get(qid)?.annotations?.length ?? 0) > 0,
     error,
     notes,
     note: (qid: string) => notes.get(qid) ?? null,

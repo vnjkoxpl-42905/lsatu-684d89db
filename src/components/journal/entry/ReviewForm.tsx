@@ -32,6 +32,10 @@ export interface JournalDraft {
   correct_reasoning: string;
   lesson: string;
   other_notes: string;
+  /** The free note written from the drill review's Journal panel. */
+  student_note?: string;
+  /** The trap that caught the student. */
+  trap_pattern?: string;
 }
 
 const ANSWER_KEYS = ['A', 'B', 'C', 'D', 'E'];
