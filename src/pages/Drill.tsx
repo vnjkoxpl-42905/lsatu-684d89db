@@ -3638,6 +3638,91 @@ function DrillContent() {
 
 
 
+  // Helper function to save BR results. Must be declared BEFORE the early-return
+  // post-section branches below: their onComplete callbacks close over this binding,
+  // and a later `const` is still in its temporal dead zone in those renders.
+  const saveBRResults = async (session: DrillSession, results: DrillBlindReviewResult[]) => {
+    if (!user) return;
+
+    try {
+      const sessionId = crypto.randomUUID();
+
+      // Calculate summary stats
+      const correctedCount = results.filter(r => !session.attempts.get(r.qid)?.correct && r.correct).length;
+      const stuckCount = results.filter(r => !session.attempts.get(r.qid)?.correct && !r.correct).length;
+      const regretCount = results.filter(r => session.attempts.get(r.qid)?.correct && !r.correct).length;
+      const confirmedCount = results.filter(r => session.attempts.get(r.qid)?.correct && r.correct).length;
+      
+      const times = results.map(r => r.brTimeMs).sort((a, b) => a - b);
+      const medianTimeMs = times.length > 0 ? times[Math.floor(times.length / 2)] : 0;
+
+      // Save BR session
+      if (!classId) {
+        console.error('Cannot save BR results: missing class_id');
+        toast.error('Session error: missing class ID.');
+        return;
+      }
+      const { error: brSessionError } = await supabase.from('blind_review_sessions').insert({
+        class_id: classId,
+        session_id: sessionId,
+        br_items_count: results.length,
+        br_corrected_count: correctedCount,
+        br_stuck_count: stuckCount,
+        br_regret_count: regretCount,
+        br_confirmed_count: confirmedCount,
+        br_median_time_ms: medianTimeMs,
+      });
+      if (brSessionError) throw brSessionError;
+
+      // Update attempts with BR data. Build every row first, then insert in a
+      // single round-trip (was one INSERT per question, i.e. an N-query loop).
+      const attemptRows = results.flatMap((result) => {
+        const previousAttempt = session.attempts.get(result.qid);
+        const preCorrect = previousAttempt?.correct || false;
+
+        let brDelta: string;
+        if (!preCorrect && result.correct) brDelta = 'corrected';
+        else if (!preCorrect && !result.correct) brDelta = 'stuck';
+        else if (preCorrect && !result.correct) brDelta = 'regret';
+        else brDelta = 'confirmed';
+
+        const question = questionBank.getQuestion(result.qid);
+        if (!question) return [];
+
+        return [{
+          user_id: user.id,
+          class_id: classId,
+          qid: result.qid,
+          pt: question.pt,
+          section: question.section,
+          qnum: question.qnum,
+          qtype: question.qtype,
+          level: question.difficulty,
+          correct: result.correct,
+          time_ms: result.brTimeMs,
+          mode: session.mode,
+          br_marked: brMarked.has(result.qid),
+          pre_answer: result.preAnswer,
+          br_selected: true,
+          br_answer: result.brAnswer,
+          br_rationale: result.brRationale,
+          br_time_ms: result.brTimeMs,
+          br_changed: result.brChanged,
+          br_outcome: result.correct ? 'correct' : 'incorrect',
+          br_delta: brDelta,
+        }];
+      });
+
+      if (attemptRows.length > 0) {
+        const { error: attemptError } = await supabase.from('attempts').insert(attemptRows);
+        if (attemptError) throw attemptError;
+      }
+    } catch (error) {
+      toast.error('Failed to save blind review results. Please try again.');
+      console.error('Error saving BR results:', error);
+    }
+  };
+
   // Handle session completion and post-section flow
   // Show post-section screens (must be BEFORE the session/currentQuestion check)
   if (postSectionScreen === 'predict' && session) {
@@ -3902,89 +3987,6 @@ function DrillContent() {
       </div>
     );
   }
-
-  // Helper function to save BR results
-  const saveBRResults = async (session: DrillSession, results: DrillBlindReviewResult[]) => {
-    if (!user) return;
-
-    try {
-      const sessionId = crypto.randomUUID();
-
-      // Calculate summary stats
-      const correctedCount = results.filter(r => !session.attempts.get(r.qid)?.correct && r.correct).length;
-      const stuckCount = results.filter(r => !session.attempts.get(r.qid)?.correct && !r.correct).length;
-      const regretCount = results.filter(r => session.attempts.get(r.qid)?.correct && !r.correct).length;
-      const confirmedCount = results.filter(r => session.attempts.get(r.qid)?.correct && r.correct).length;
-      
-      const times = results.map(r => r.brTimeMs).sort((a, b) => a - b);
-      const medianTimeMs = times.length > 0 ? times[Math.floor(times.length / 2)] : 0;
-
-      // Save BR session
-      if (!classId) {
-        console.error('Cannot save BR results: missing class_id');
-        toast.error('Session error: missing class ID.');
-        return;
-      }
-      const { error: brSessionError } = await supabase.from('blind_review_sessions').insert({
-        class_id: classId,
-        session_id: sessionId,
-        br_items_count: results.length,
-        br_corrected_count: correctedCount,
-        br_stuck_count: stuckCount,
-        br_regret_count: regretCount,
-        br_confirmed_count: confirmedCount,
-        br_median_time_ms: medianTimeMs,
-      });
-      if (brSessionError) throw brSessionError;
-
-      // Update attempts with BR data. Build every row first, then insert in a
-      // single round-trip (was one INSERT per question, i.e. an N-query loop).
-      const attemptRows = results.flatMap((result) => {
-        const previousAttempt = session.attempts.get(result.qid);
-        const preCorrect = previousAttempt?.correct || false;
-
-        let brDelta: string;
-        if (!preCorrect && result.correct) brDelta = 'corrected';
-        else if (!preCorrect && !result.correct) brDelta = 'stuck';
-        else if (preCorrect && !result.correct) brDelta = 'regret';
-        else brDelta = 'confirmed';
-
-        const question = questionBank.getQuestion(result.qid);
-        if (!question) return [];
-
-        return [{
-          user_id: user.id,
-          class_id: classId,
-          qid: result.qid,
-          pt: question.pt,
-          section: question.section,
-          qnum: question.qnum,
-          qtype: question.qtype,
-          level: question.difficulty,
-          correct: result.correct,
-          time_ms: result.brTimeMs,
-          mode: session.mode,
-          br_marked: brMarked.has(result.qid),
-          pre_answer: result.preAnswer,
-          br_selected: true,
-          br_answer: result.brAnswer,
-          br_rationale: result.brRationale,
-          br_time_ms: result.brTimeMs,
-          br_changed: result.brChanged,
-          br_outcome: result.correct ? 'correct' : 'incorrect',
-          br_delta: brDelta,
-        }];
-      });
-
-      if (attemptRows.length > 0) {
-        const { error: attemptError } = await supabase.from('attempts').insert(attemptRows);
-        if (attemptError) throw attemptError;
-      }
-    } catch (error) {
-      toast.error('Failed to save blind review results. Please try again.');
-      console.error('Error saving BR results:', error);
-    }
-  };
 
   const progress = session.mode !== 'adaptive'
     ? (session.currentIndex / session.questionQueue.length) * 100
