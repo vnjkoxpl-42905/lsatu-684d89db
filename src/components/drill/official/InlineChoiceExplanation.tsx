@@ -1,7 +1,8 @@
 import * as React from "react";
-import { BookOpen, CheckCircle2, ChevronDown } from "lucide-react";
+import { BookOpen, CheckCircle2, ChevronDown, Lightbulb } from "lucide-react";
 import { cn } from "@/lib/utils";
 import "./InlineChoiceExplanation.css";
+import { NoteProse } from "./NoteProse";
 
 /**
  * The Choice Note: the per-choice half of a Question Explanation, sitting
@@ -70,11 +71,13 @@ export function ChoiceNoteToggle({
   open,
   onToggle,
   disabled,
+  icon = "chevron",
 }: {
   letter: string;
   open: boolean;
   onToggle: () => void;
   disabled?: boolean;
+  icon?: "chevron" | "lightbulb";
 }) {
   const label = open ? `Hide explanation for ${letter}` : `Show explanation for ${letter}`;
   return (
@@ -90,7 +93,7 @@ export function ChoiceNoteToggle({
       title={label}
       className="choice-note-toggle"
     >
-      <ChevronDown size={18} aria-hidden="true" />
+      {icon === "lightbulb" ? <Lightbulb size={18} aria-hidden="true" /> : <ChevronDown size={18} aria-hidden="true" />}
     </button>
   );
 }
@@ -140,9 +143,7 @@ export default function InlineChoiceExplanation({
           </p>
           {/* Reading size, not caption size: this is the sentence the student
               is meant to actually read, and it carries the teaching. */}
-          <p className="choice-note__prose">
-            {note}
-          </p>
+          <NoteProse className="choice-note__prose" note={note ?? ""} />
         </div>
       )}
     </div>

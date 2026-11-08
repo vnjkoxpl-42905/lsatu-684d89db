@@ -4,6 +4,7 @@ import { Check, Eye, EyeOff, Flag, X } from "lucide-react";
 import { HighlightedText } from "@/components/drill/HighlightedText";
 import InlineChoiceExplanation, {
   ChoiceNoteToggle,
+  isInlineChoiceEmpty,
   hasChoiceNoteProse,
   type InlineChoiceNotes,
 } from "@/components/drill/official/InlineChoiceExplanation";
@@ -48,6 +49,12 @@ interface Props {
    * what the review walk and the classroom modal still expect.
    */
   choiceNoteExpanders?: boolean;
+  /**
+   * With choiceNoteExpanders: the whole note (tag, percentage and prose) stays
+   * hidden until its lightbulb is pressed, so nothing gives the answer away.
+   * The finished-drill review uses this, as 7Sage's tester does.
+   */
+  choiceNotesHiddenUntilOpen?: boolean;
   /**
    * Choices stay clickable after the answer is revealed. Off (default), a
    * reveal locks the choices, which is the legacy one-way behaviour.
@@ -123,6 +130,7 @@ export default function OfficialQuestionPane({
   answerRevealed = false,
   correctAnswer,
   inlineNotes,
+  choiceNotesHiddenUntilOpen = false,
   highlights,
   highlightMode,
   searchTerm,
@@ -348,7 +356,7 @@ export default function OfficialQuestionPane({
                 // The inline layer follows Explanation, not Answer.
                 const inline = inlineNotes ? inlineNotes[key] ?? {} : undefined;
                 const noteOpen = !choiceNoteExpanders || openLetters.has(key);
-                const showNoteToggle = choiceNoteExpanders && !!inline && hasChoiceNoteProse(inline);
+                const showNoteToggle = choiceNoteExpanders && !!inline && (choiceNotesHiddenUntilOpen ? !isInlineChoiceEmpty(inline, false) : hasChoiceNoteProse(inline));
                 const revealLocks = answerRevealed && !choicesStayLive;
                 const locked = isEliminated || revealLocks || interactionLocked;
                 const showVerdict = answerRevealed && (showCorrectColour || isWrongPick);
@@ -524,13 +532,14 @@ export default function OfficialQuestionPane({
                             open={openLetters.has(key)}
                             onToggle={() => toggleLetter(key)}
                             disabled={interactionLocked}
+                            icon={choiceNotesHiddenUntilOpen ? "lightbulb" : "chevron"}
                           />
                         )}
                       </div>
                     ) : (
                       <span aria-hidden className="w-0" />
                     )}
-                    {inline && (
+                    {inline && (!choiceNotesHiddenUntilOpen || openLetters.has(key)) && (
                       <div className="col-span-full min-w-0 sm:col-start-2 sm:col-end-5">
                         <InlineChoiceExplanation
                           letter={key}

@@ -35,7 +35,8 @@ import OfficialDrillToolbar from '@/components/drill/official/OfficialDrillToolb
 import OfficialQuestionPane from '@/components/drill/official/OfficialQuestionPane';
 import OfficialAnswerNavigator from '@/components/drill/official/OfficialAnswerNavigator';
 import { type InlineChoiceNotes } from '@/components/drill/official/InlineChoiceExplanation';
-import { useLrExplanation } from '@/hooks/useLrExplanation';
+import { useLrExplanation, type LrStyleKey } from '@/hooks/useLrExplanation';
+import ArgumentBreakdown from '@/components/drill/official/ArgumentBreakdown';
 import { questionBank } from '@/lib/questionLoader';
 import { Switch } from '@/components/ui/switch';
 import { cn } from '@/lib/utils';
@@ -45,11 +46,30 @@ import { useQuestionHighlights } from '@/hooks/useQuestionHighlights';
 
 export type ReviewTab = 'clean' | 'actual' | 'br';
 
+/** All the walk reads from a sitting: the order, and what was picked. */
+export interface ReviewWalkSession {
+  questionQueue: DrillSession['questionQueue'];
+  attempts: Map<string, { selectedAnswer?: string | null }>;
+}
+
 interface Props {
-  session: DrillSession;
+  session: ReviewWalkSession;
   /** Present only when a blind review was actually sat. Gates the BR tab. */
   brResults?: BlindReviewResult[] | null;
   onBack: () => void;
+  /** Breadcrumb text for onBack. */
+  backLabel?: string;
+  /** Question to open on. Follows later changes, e.g. browser back. */
+  initialIndex?: number;
+  /** Told whenever the open question changes, so a page can keep it in its URL. */
+  onIndexChange?: (index: number) => void;
+  /**
+   * 'drill' is the finished-drill review (7Sage's tester shape): every choice
+   * has its own note toggle from the start, Show analysis sits under the
+   * stimulus, and the switch reads "Show correct". 'section' (default) keeps
+   * the timed-section behaviour, where notes arrive only with Show answers.
+   */
+  variant?: 'section' | 'drill';
 }
 
 /** Which tabs this section can offer. BR appears only if a review happened. */
@@ -64,9 +84,20 @@ const TAB_LABELS: Record<ReviewTab, string> = {
   br: 'BR',
 };
 
-export default function SectionReviewWalk({ session, brResults, onBack }: Props) {
+export default function SectionReviewWalk({ session, brResults, onBack, backLabel = 'Section results', initialIndex, onIndexChange, variant = 'section' }: Props) {
+  const drillVariant = variant === 'drill';
+  const [analysisOpen, setAnalysisOpen] = React.useState(false);
+  const [analysisStyle, setAnalysisStyle] = React.useState<LrStyleKey | null>(null);
   const qids = session.questionQueue;
-  const [currentIndex, setCurrentIndex] = React.useState(0);
+  const [currentIndex, setCurrentIndex] = React.useState(initialIndex ?? 0);
+  React.useEffect(() => {
+    if (initialIndex !== undefined) setCurrentIndex(initialIndex);
+  }, [initialIndex]);
+  const onIndexChangeRef = React.useRef(onIndexChange);
+  onIndexChangeRef.current = onIndexChange;
+  React.useEffect(() => {
+    onIndexChangeRef.current?.(currentIndex);
+  }, [currentIndex]);
   const [tab, setTab] = React.useState<ReviewTab>('clean');
   const [showAnswers, setShowAnswers] = React.useState(false);
   const [highlightMode, setHighlightMode] = React.useState<HighlightMode>('none');
@@ -89,8 +120,9 @@ export default function SectionReviewWalk({ session, brResults, onBack }: Props)
     },
     // Only fetched once the student asks to see answers. A review walk taken
     // cold should not be quietly pulling the answer down in the background.
-    showAnswers,
+    showAnswers || drillVariant,
   );
+  React.useEffect(() => { setAnalysisOpen(false); }, [currentQid]);
 
   /**
    * Per-letter tag, percentage and prose. Tags and percentages are real source
@@ -145,7 +177,7 @@ export default function SectionReviewWalk({ session, brResults, onBack }: Props)
               onClick={onBack}
               className="font-semibold text-blue-700 transition-colors hover:text-blue-800"
             >
-              Section results
+              {backLabel}
             </button>
             <span aria-hidden className="text-slate-300">
               /
@@ -162,9 +194,9 @@ export default function SectionReviewWalk({ session, brResults, onBack }: Props)
             <Switch
               checked={showAnswers}
               onCheckedChange={setShowAnswers}
-              aria-label="Show answers"
+              aria-label={drillVariant ? 'Show correct' : 'Show answers'}
             />
-            Show answers
+            {drillVariant ? 'Show correct' : 'Show answers'}
           </label>
         </div>
       }
@@ -194,7 +226,19 @@ export default function SectionReviewWalk({ session, brResults, onBack }: Props)
         isFlagged={false}
         answerRevealed={showAnswers}
         correctAnswer={question.correctAnswer}
-        inlineNotes={showAnswers ? inlineNotes : null}
+        inlineNotes={showAnswers || drillVariant ? inlineNotes : null}
+        choiceNoteExpanders={drillVariant}
+        choiceNotesHiddenUntilOpen={drillVariant}
+        belowStimulus={drillVariant ? (
+          <ArgumentBreakdown
+            data={explanation ?? null}
+            activeStyle={analysisStyle}
+            onStyleChange={setAnalysisStyle}
+            fontScale={fontScale}
+            open={analysisOpen}
+            onToggle={() => setAnalysisOpen((v) => !v)}
+          />
+        ) : undefined}
         highlights={questionHighlights.highlightsFor(question.qid)}
         highlightMode={highlightMode}
         searchTerm={searchTerm}

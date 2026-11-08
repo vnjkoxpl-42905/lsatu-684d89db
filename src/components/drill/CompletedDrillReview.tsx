@@ -1,18 +1,18 @@
 import * as React from "react";
-import { ArrowLeft, Check, Lightbulb, Minus } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Switch } from "@/components/ui/switch";
+import { Check, Minus, Search, X } from "lucide-react";
 import { questionBank } from "@/lib/questionLoader";
-import { useLrExplanation } from "@/hooks/useLrExplanation";
 import { cn } from "@/lib/utils";
+import SectionReviewWalk, { type ReviewWalkSession } from "@/components/drill/SectionReviewWalk";
+import { useAnswerPopularity, type PopularityKey } from "@/hooks/useAnswerPopularity";
 
 /**
- * The one review surface for a finished drill: a question table that opens
- * each question in its original two-pane layout with Clean / Actual / BR.
+ * The one results-and-review page for a finished drill, in 7Sage's shape:
+ * score header, filters, a question table (result, answer popularity, timing,
+ * difficulty), and About this drill. A question opens in the real exam screen
+ * (SectionReviewWalk, the frame the drill itself runs in), full screen.
  *
- * Every completed-drill page renders this. The old review hand-built its own
- * question markup in a stack of <details> rows and drifted away from the
- * drill layout; keeping the review here, and only here, is what stops that.
+ * Never hand-build question markup here. Two earlier versions did and both
+ * drifted from the drill layout. Reusing the drill's own components stops that.
  */
 
 export interface ReviewAttempt {
@@ -22,8 +22,8 @@ export interface ReviewAttempt {
   time_ms?: number;
 }
 
-type Mode = "clean" | "actual";
 const LETTERS = ["A", "B", "C", "D", "E"] as const;
+type ResultFilter = "all" | "correct" | "incorrect" | "unanswered";
 
 function formatTime(ms = 0) {
   const total = Math.round(ms / 1000);
@@ -31,7 +31,7 @@ function formatTime(ms = 0) {
 }
 
 function ResultMark({ attempt, small }: { attempt?: ReviewAttempt; small?: boolean }) {
-  const size = small ? "h-4 w-4" : "h-7 w-7";
+  const size = small ? "h-4 w-4" : "h-8 w-8";
   if (!attempt) return <span className={cn("inline-block rounded-full border-2 border-muted-foreground/40", size)} aria-label="Unanswered"><span className="sr-only">Unanswered</span></span>;
   return attempt.correct ? (
     <span className={cn("inline-flex items-center justify-center rounded-full bg-emerald-500 text-white", size)} aria-label="Correct"><Check className={small ? "h-3 w-3" : "h-4 w-4"} aria-hidden /><span className="sr-only">Correct</span></span>
@@ -45,150 +45,210 @@ function questionLabel(qid: string) {
   return q ? `PT${q.pt}.S${q.section}.Q${q.qnum}` : qid;
 }
 
-export function CompletedDrillReview({ title, qids, attempts, openIndex, onOpen }: {
+/** Five bars, A to E: height is the share of students, green is the right answer. */
+function PopularityBars({ percents, correct, picked }: { percents?: Record<string, number>; correct?: string; picked?: string }) {
+  if (!percents) return <span className="text-muted-foreground">–</span>;
+  return (
+    <div className="inline-flex flex-col items-center" aria-label={LETTERS.map((l) => `${l} ${percents[l] ?? 0}%`).join(", ")}>
+      <div className="flex h-14 items-end gap-1">
+        {LETTERS.map((l) => (
+          <div key={l} className="relative h-full w-4 overflow-hidden rounded-sm bg-muted">
+            <div className={cn("absolute inset-x-0 bottom-0", l === correct ? "bg-emerald-500" : "bg-muted-foreground/30")} style={{ height: `${Math.max(percents[l] ?? 0, 2)}%` }} />
+          </div>
+        ))}
+      </div>
+      <div className="mt-1 flex gap-1 text-[10px] text-muted-foreground">
+        {LETTERS.map((l) => (
+          <span key={l} className={cn("w-4 text-center", l === picked && l !== correct && "rounded-full text-red-500 ring-1 ring-red-400")}>{l}</span>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function DifficultyDots({ level }: { level?: number }) {
+  if (!level) return <span className="text-muted-foreground">–</span>;
+  return (
+    <span className="inline-flex gap-1" aria-label={`Difficulty ${level} of 5`}>
+      {[1, 2, 3, 4, 5].map((i) => <span key={i} className={cn("h-2.5 w-2.5 rounded-sm", i <= level ? "bg-primary" : "bg-muted")} />)}
+    </span>
+  );
+}
+
+export function CompletedDrillReview({ title, qids, attempts, openIndex, onOpen, about }: {
   title: string;
   qids: string[];
   attempts: ReviewAttempt[];
   /** Index of the open question, or null for the table. */
   openIndex: number | null;
   onOpen: (index: number | null) => void;
+  /** Rows for "About this drill", label and value. */
+  about?: Array<[string, React.ReactNode]>;
 }) {
   const byQid = React.useMemo(() => new Map(attempts.map((a) => [a.qid, a])), [attempts]);
+  const [result, setResult] = React.useState<ResultFilter>("all");
+  const [tag, setTag] = React.useState("all");
+  const [difficulty, setDifficulty] = React.useState("all");
+  const [search, setSearch] = React.useState("");
+  const [sort, setSort] = React.useState<"question" | "time" | "difficulty">("question");
+  const lastOpened = React.useRef<number | null>(null);
+
+  const keys = React.useMemo<PopularityKey[]>(() => qids.flatMap((qid) => {
+    const q = questionBank.getQuestion(qid);
+    return q ? [{ qid, pt: Number(q.pt), section: Number(q.section), qnum: Number(q.qnum) }] : [];
+  }), [qids]);
+  const { data: popularity } = useAnswerPopularity(keys);
+
+  // Coming back from a question lands on its row, as 7Sage's return_to does.
+  React.useEffect(() => {
+    if (openIndex !== null) { lastOpened.current = openIndex; return; }
+    if (lastOpened.current === null) return;
+    document.getElementById(`question-row-${lastOpened.current}`)?.scrollIntoView({ block: "center" });
+  }, [openIndex]);
+
   if (openIndex !== null && openIndex >= 0 && openIndex < qids.length) {
-    return <QuestionView title={title} qids={qids} byQid={byQid} index={openIndex} onOpen={onOpen} />;
+    const session: ReviewWalkSession = {
+      questionQueue: qids,
+      attempts: new Map(attempts.filter((a) => a.qid).map((a) => [a.qid!, { selectedAnswer: a.selected_answer ?? null }])),
+    };
+    return (
+      <div className="fixed inset-0 z-[200] overflow-auto bg-white" role="dialog" aria-modal="true" aria-label={`${title} review`}>
+        <SectionReviewWalk
+          session={session}
+          variant="drill"
+          backLabel="All questions"
+          initialIndex={openIndex}
+          onIndexChange={(i) => { if (i !== openIndex) onOpen(i); }}
+          onBack={() => onOpen(null)}
+        />
+      </div>
+    );
   }
+
+  const answered = qids.filter((qid) => byQid.get(qid));
+  const correctCount = qids.filter((qid) => byQid.get(qid)?.correct).length;
+  const pct = qids.length ? Math.round((correctCount / qids.length) * 100) : 0;
+  const allTags = [...new Set(qids.flatMap((qid) => { const q = questionBank.getQuestion(qid); return q ? [q.qtype, ...(q.questionFeatures ?? [])].filter(Boolean) : []; }))].sort();
+
+  const rows = qids.map((qid, index) => ({ qid, index, q: questionBank.getQuestion(qid), attempt: byQid.get(qid) }))
+    .filter(({ q, attempt }) => {
+      if (result === "correct" && !attempt?.correct) return false;
+      if (result === "incorrect" && (!attempt || attempt.correct)) return false;
+      if (result === "unanswered" && attempt) return false;
+      if (tag !== "all" && !(q && [q.qtype, ...(q.questionFeatures ?? [])].includes(tag))) return false;
+      if (difficulty !== "all" && q?.difficulty !== Number(difficulty)) return false;
+      if (search.trim()) {
+        const hay = q ? `${q.stimulus} ${q.questionStem} ${Object.values(q.answerChoices ?? {}).join(" ")}`.toLowerCase() : "";
+        if (!hay.includes(search.trim().toLowerCase())) return false;
+      }
+      return true;
+    })
+    .sort((a, b) => sort === "time" ? (b.attempt?.time_ms ?? 0) - (a.attempt?.time_ms ?? 0)
+      : sort === "difficulty" ? (b.q?.difficulty ?? 0) - (a.q?.difficulty ?? 0) : a.index - b.index);
+
+  const select = "rounded-lg border border-border bg-background px-3 py-2 text-sm";
+
   return (
-    <div>
-      <p className="mb-3 text-sm text-muted-foreground">{qids.length} question{qids.length === 1 ? "" : "s"}</p>
-      <div className="overflow-hidden rounded-xl border border-border bg-card">
+    <div className="space-y-6">
+      <section aria-label="Drill results" className="flex flex-col gap-8 rounded-xl border border-border bg-card p-6 sm:flex-row sm:items-start">
+        <div className="flex gap-10 sm:border-r sm:border-border sm:pr-10">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Your score</p>
+            <p className="mt-1 text-6xl font-bold leading-none">{pct}%</p>
+            <p className="mt-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">{correctCount}/{qids.length} correct</p>
+          </div>
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-wider text-pink-600">Blind review</p>
+            <p className="mt-1 text-2xl font-bold text-pink-600/50" title="No blind review was saved for this drill">–</p>
+          </div>
+        </div>
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Results</p>
+          <div className="mt-2 flex max-w-xs flex-wrap gap-1.5">
+            {qids.map((qid, i) => <button key={`${qid}-${i}`} type="button" onClick={() => onOpen(i)} aria-label={`Open question ${i + 1}`}><ResultMark attempt={byQid.get(qid)} small /></button>)}
+          </div>
+          <p className="mt-2 text-xs text-muted-foreground">{answered.length} of {qids.length} answered</p>
+        </div>
+      </section>
+
+      <section aria-label="Filters" className="rounded-2xl border border-border bg-card p-5">
+        <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <h2 className="font-serif text-xl font-semibold">Filters</h2>
+          <label className="relative block sm:w-80">
+            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" aria-hidden />
+            <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search question text…" aria-label="Search question text" className="w-full rounded-xl border border-border bg-background py-2 pl-9 pr-8 text-sm" />
+            {search && <button type="button" onClick={() => setSearch("")} aria-label="Clear search" className="absolute right-2 top-1/2 -translate-y-1/2"><X className="h-4 w-4" /></button>}
+          </label>
+        </div>
+        <div className="flex flex-wrap gap-2">
+          <select aria-label="Result" className={select} value={result} onChange={(e) => setResult(e.target.value as ResultFilter)}>
+            <option value="all">Result: all</option><option value="correct">Correct</option><option value="incorrect">Incorrect</option><option value="unanswered">Unanswered</option>
+          </select>
+          <select aria-label="Difficulty" className={select} value={difficulty} onChange={(e) => setDifficulty(e.target.value)}>
+            <option value="all">Difficulty: all</option>{[1, 2, 3, 4, 5].map((d) => <option key={d} value={d}>{d} of 5</option>)}
+          </select>
+          <select aria-label="Tags" className={select} value={tag} onChange={(e) => setTag(e.target.value)}>
+            <option value="all">Tags: all</option>{allTags.map((t) => <option key={t} value={t}>{t}</option>)}
+          </select>
+        </div>
+      </section>
+
+      <div className="flex items-center justify-between">
+        <p className="text-muted-foreground">{rows.length} question{rows.length === 1 ? "" : "s"}</p>
+        <select aria-label="Sort" className={select} value={sort} onChange={(e) => setSort(e.target.value as typeof sort)}>
+          <option value="question">Sort by question</option><option value="time">Sort by time</option><option value="difficulty">Sort by difficulty</option>
+        </select>
+      </div>
+
+      <div className="overflow-x-auto rounded-2xl border border-border bg-card">
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-border text-xs font-semibold uppercase tracking-wider text-muted-foreground">
               <th className="px-4 py-3 text-left">Question</th>
               <th className="px-2 py-3 text-center"><div>Result</div><div className="mt-1 flex justify-center gap-4 font-medium normal-case tracking-normal"><span>Actual</span><span>BR</span></div></th>
-              <th className="hidden px-2 py-3 text-center sm:table-cell">Answer</th>
-              <th className="px-4 py-3 text-right">Timing</th>
+              <th className="hidden px-2 py-3 text-center md:table-cell">Answer<br />popularity</th>
+              <th className="px-4 py-3 text-left">Timing</th>
+              <th className="hidden px-4 py-3 text-left md:table-cell">Difficulty</th>
             </tr>
           </thead>
           <tbody>
-            {qids.map((qid, index) => {
-              const q = questionBank.getQuestion(qid);
-              const attempt = byQid.get(qid);
+            {rows.length === 0 ? (
+              <tr><td colSpan={5} className="px-4 py-8 text-center text-muted-foreground">No questions match these filters.</td></tr>
+            ) : rows.map(({ qid, index, q, attempt }) => {
               const tags = q ? [q.qtype, ...(q.questionFeatures ?? [])].filter(Boolean) : [];
               return (
-                <tr key={`${qid}-${index}`} className="cursor-pointer border-b border-border last:border-0 hover:bg-accent/40" onClick={() => onOpen(index)}>
+                <tr id={`question-row-${index}`} key={`${qid}-${index}`} className="cursor-pointer border-b border-border last:border-0 hover:bg-accent/40" onClick={() => onOpen(index)}>
                   <td className="px-4 py-4">
                     <div className="flex items-start gap-3">
                       <span className="w-5 pt-0.5 text-muted-foreground">{index + 1}</span>
                       <div>
                         <button type="button" className="font-semibold text-primary underline-offset-2 hover:underline" onClick={(e) => { e.stopPropagation(); onOpen(index); }}>{questionLabel(qid)}</button>
-                        {tags.length > 0 && <div className="mt-1.5 flex flex-wrap gap-1.5">{tags.map((tag) => <span key={tag} className="rounded-full border border-border px-2 py-0.5 text-xs text-muted-foreground">{tag}</span>)}</div>}
+                        {tags.length > 0 && <div className="mt-1.5 flex flex-wrap gap-1.5">{tags.map((t) => <span key={t} className="rounded-full border border-border px-2 py-0.5 text-xs text-muted-foreground">{t}</span>)}</div>}
                       </div>
                     </div>
                   </td>
-                  <td className="px-2 py-4"><div className="flex items-center justify-center gap-6"><ResultMark attempt={attempt} /><span className="w-7 text-center text-muted-foreground">–</span></div></td>
-                  <td className="hidden px-2 py-4 text-center sm:table-cell">
-                    {attempt ? <span><span className={attempt.correct ? "font-semibold text-emerald-600" : "font-semibold text-red-500"}>{attempt.selected_answer}</span>{!attempt.correct && q && <span className="text-muted-foreground"> → {q.correctAnswer}</span>}</span> : <span className="text-muted-foreground">–</span>}
+                  <td className="px-2 py-4"><div className="flex items-center justify-center gap-5"><ResultMark attempt={attempt} /><span className="w-8 text-center text-muted-foreground">–</span></div></td>
+                  <td className="hidden px-2 py-4 text-center md:table-cell"><PopularityBars percents={popularity?.[qid]} correct={q?.correctAnswer} picked={attempt?.selected_answer} /></td>
+                  <td className="px-4 py-4 font-mono text-muted-foreground">
+                    {attempt ? formatTime(attempt.time_ms) : "–"}
+                    {attempt && !attempt.correct && q && <div className="mt-1 font-sans text-xs">Picked <span className="font-semibold text-red-500">{attempt.selected_answer}</span> · answer {q.correctAnswer}</div>}
                   </td>
-                  <td className="px-4 py-4 text-right font-mono text-muted-foreground">{attempt ? formatTime(attempt.time_ms) : "–"}</td>
+                  <td className="hidden px-4 py-4 md:table-cell"><DifficultyDots level={q?.difficulty} /></td>
                 </tr>
               );
             })}
           </tbody>
         </table>
       </div>
+
+      {about && about.length > 0 && (
+        <section aria-label="About this drill" className="pt-6">
+          <h2 className="font-serif text-2xl font-semibold">About this drill</h2>
+          <dl className="mt-5 grid max-w-xl grid-cols-[10rem_1fr] gap-y-3 text-sm">
+            {about.map(([label, value]) => <React.Fragment key={label}><dt className="text-muted-foreground">{label}</dt><dd>{value}</dd></React.Fragment>)}
+          </dl>
+        </section>
+      )}
     </div>
-  );
-}
-
-function QuestionView({ title, qids, byQid, index, onOpen }: {
-  title: string; qids: string[]; byQid: Map<string, ReviewAttempt>; index: number; onOpen: (index: number | null) => void;
-}) {
-  const qid = qids[index];
-  const q = questionBank.getQuestion(qid);
-  const attempt = byQid.get(qid);
-  const [mode, setMode] = React.useState<Mode>("clean");
-  const [showCorrect, setShowCorrect] = React.useState(false);
-  const [showAnalysis, setShowAnalysis] = React.useState(false);
-  const [openNotes, setOpenNotes] = React.useState<Set<string>>(new Set());
-  React.useEffect(() => { setOpenNotes(new Set()); setShowAnalysis(false); }, [qid]);
-  const { data } = useLrExplanation({ pt: q?.pt ?? 0, section: q?.section ?? 0, questionNumber: q?.qnum ?? 0 }, !!q);
-  const style = data?.styles[0];
-
-  const toggleNote = (letter: string) => setOpenNotes((prev) => {
-    const next = new Set(prev);
-    if (next.has(letter)) next.delete(letter); else next.add(letter);
-    return next;
-  });
-
-  return (
-    <section aria-label="Question review">
-      <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
-        <Button type="button" variant="ghost" size="sm" onClick={() => onOpen(null)}><ArrowLeft className="mr-2 h-4 w-4" aria-hidden />All questions</Button>
-        <h2 className="text-lg font-semibold">{title}</h2>
-      </div>
-      <div className="overflow-hidden rounded-xl border border-border bg-card">
-        <div className="flex justify-end border-b border-border px-5 py-3 text-sm text-muted-foreground">{index + 1} of {qids.length}</div>
-        {!q ? <p className="p-6 text-sm text-muted-foreground">This question is no longer available in the question bank.</p> : (
-          <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,42fr)_minmax(0,58fr)]">
-            <div className="border-b border-border p-6 lg:border-b-0 lg:border-r">
-              <button type="button" aria-pressed={showAnalysis} onClick={() => setShowAnalysis((v) => !v)} className={cn("mb-5 inline-flex items-center gap-2 rounded-lg border border-border px-3 py-2 text-sm font-medium", showAnalysis && "bg-accent")}>
-                <Lightbulb className="h-4 w-4" aria-hidden />{showAnalysis ? "Hide analysis" : "Show analysis"}
-              </button>
-              {q.stimulus && <p className="max-w-[52ch] whitespace-pre-wrap leading-relaxed">{q.stimulus}</p>}
-              {showAnalysis && (
-                <div className="mt-5 space-y-3 rounded-lg bg-muted/50 p-4 text-sm leading-relaxed">
-                  {style?.steps.length ? style.steps.map((step) => <p key={step.position}>{step.label && <span className="font-semibold">{step.label}: </span>}{step.body}</p>) : <p className="text-muted-foreground">No analysis has been written for this question yet.</p>}
-                </div>
-              )}
-              <p className="mt-8 text-sm text-muted-foreground">{questionLabel(qid)}</p>
-            </div>
-            <div className="p-6">
-              <div className="mb-5 flex flex-wrap items-center justify-between gap-3 border-b border-border">
-                <div className="flex gap-5 text-sm font-medium" role="tablist" aria-label="Answer view">
-                  {(["clean", "actual"] as const).map((m) => (
-                    <button key={m} type="button" role="tab" aria-selected={mode === m} onClick={() => setMode(m)} className={cn("-mb-px border-b-2 pb-2", mode === m ? "border-primary text-primary" : "border-transparent text-muted-foreground hover:text-foreground")}>{m === "clean" ? "Clean" : "Actual"}</button>
-                  ))}
-                  <button type="button" role="tab" aria-selected={false} disabled title="No blind review for this drill" className="-mb-px border-b-2 border-transparent pb-2 text-muted-foreground/60">BR –</button>
-                </div>
-                <label className="mb-2 flex items-center gap-2 text-sm">Show correct<Switch checked={showCorrect} onCheckedChange={setShowCorrect} aria-label="Show correct" /></label>
-              </div>
-              <p className="mb-4 whitespace-pre-wrap font-medium leading-relaxed">{index + 1}. {q.questionStem}</p>
-              <ol className="space-y-2" aria-label={`Answer choices for question ${index + 1}`}>
-                {LETTERS.map((letter) => {
-                  const picked = mode === "actual" && attempt?.selected_answer === letter;
-                  const correct = showCorrect && q.correctAnswer === letter;
-                  const note = style?.notesByLetter[letter];
-                  return (
-                    <li key={letter} data-picked={picked || undefined} data-correct={correct || undefined}
-                      className={cn("overflow-hidden rounded-lg border",
-                        correct ? "border-emerald-500 ring-1 ring-emerald-500" : picked ? (attempt?.correct ? "border-emerald-500" : "border-red-400 ring-1 ring-red-400") : "border-border")}>
-                      <div className="flex items-stretch">
-                        <div className={cn("flex w-14 shrink-0 items-start justify-center pt-3 text-2xl",
-                          picked ? (attempt?.correct ? "bg-emerald-500 text-white" : "bg-red-400 text-white") : correct ? "bg-emerald-500/15 text-emerald-700" : "text-foreground")}>{letter}</div>
-                        <div className="flex-1 bg-muted/40 p-3 text-[15px] leading-relaxed">{q.answerChoices[letter]}</div>
-                        {note && <button type="button" aria-label={`Explanation for ${letter}`} aria-expanded={openNotes.has(letter)} onClick={() => toggleNote(letter)} className="flex w-12 shrink-0 items-start justify-center bg-muted/40 pt-3"><span className={cn("rounded-lg border border-border bg-card p-1.5", openNotes.has(letter) && "bg-accent")}><Lightbulb className="h-4 w-4" aria-hidden /></span></button>}
-                      </div>
-                      {note && openNotes.has(letter) && <p className="border-t border-border p-3 text-sm leading-relaxed text-muted-foreground">{note}</p>}
-                    </li>
-                  );
-                })}
-              </ol>
-            </div>
-          </div>
-        )}
-      </div>
-      <nav className="mt-5 flex flex-wrap items-start justify-center gap-1.5" aria-label="Questions">
-        <Button type="button" size="sm" disabled={index === 0} onClick={() => onOpen(index - 1)}>Prev</Button>
-        {qids.map((id, i) => (
-          <button key={`${id}-${i}`} type="button" aria-current={i === index ? "true" : undefined} aria-label={`Question ${i + 1}`} onClick={() => onOpen(i)}
-            className={cn("relative mb-3 h-9 w-9 rounded-md border text-sm", i === index ? "border-primary bg-primary/10 font-semibold" : "border-border bg-card")}>
-            {i + 1}
-            <span className="absolute -bottom-3 left-1/2 -translate-x-1/2"><ResultMark attempt={byQid.get(id)} small /></span>
-          </button>
-        ))}
-        <Button type="button" size="sm" disabled={index === qids.length - 1} onClick={() => onOpen(index + 1)}>Next</Button>
-      </nav>
-    </section>
   );
 }

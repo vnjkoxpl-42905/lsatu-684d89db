@@ -1,0 +1,71 @@
+.note-prose__para { margin: 0 0 0.85em; }
+.note-prose__para:last-child { margin-bottom: 0; }
+
+/* One chain per row: ideas as pills, arrows between them, breathing room around. */
+.note-chain {
+  display: flex;
+  flex-wrap: wrap;
+  white-space: normal;
+  align-items: center;
+  gap: 0.5rem 0.25rem;
+  margin: 0.4rem 0 1.1rem;
+  padding: 0.85rem 1rem;
+  border-radius: 14px;
+  background: linear-gradient(160deg, #fffdf7, #f1f7f5);
+  border: 1px solid rgba(23, 53, 68, 0.1);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.8) inset, 0 1px 3px rgba(23, 53, 68, 0.06);
+  animation: note-chain-in 420ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: var(--chain-delay, 0ms);
+}
+
+.note-chain__term {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.3rem 0.75rem;
+  border-radius: 999px;
+  background: #fff;
+  border: 1px solid rgba(23, 53, 68, 0.16);
+  color: #173544;
+  font-weight: 600;
+  font-size: 0.95em;
+  line-height: 1.35;
+  animation: note-chain-term-in 360ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc(var(--chain-delay, 0ms) + var(--step, 0) * 220ms + 80ms);
+}
+.note-chain__term[data-negated="true"] { background: #fff8f5; border-color: rgba(184, 57, 31, 0.22); }
+.note-chain__term .ct-neg { padding: 0 0.2em; margin: 0; background-color: transparent; }
+
+.note-chain__arrow {
+  width: 2.1rem;
+  height: 0.8rem;
+  flex: none;
+  fill: none;
+  stroke: #2f6f62;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.note-chain__arrow path {
+  stroke-dasharray: 40;
+  stroke-dashoffset: 40;
+  animation: note-chain-draw 320ms ease-out forwards;
+  animation-delay: calc(var(--chain-delay, 0ms) + var(--step, 0) * 220ms);
+}
+
+@keyframes note-chain-in { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+@keyframes note-chain-term-in { from { opacity: 0; transform: scale(0.96); } to { opacity: 1; transform: none; } }
+@keyframes note-chain-draw { to { stroke-dashoffset: 0; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .note-chain, .note-chain__term { animation: none; }
+  .note-chain__arrow path { animation: none; stroke-dashoffset: 0; }
+}
+
+.dark .note-chain { background: linear-gradient(160deg, #1d2624, #172220); border-color: rgba(237, 243, 237, 0.12); }
+.dark .note-chain__term { background: #0f1716; color: #edf3ed; border-color: rgba(237, 243, 237, 0.18); }
+.dark .note-chain__term[data-negated="true"] { background: #23160f; }
+.dark .note-chain__arrow { stroke: #7fd1b9; }
+
+/* An arrow never wraps away from the idea it points to. */
+.note-chain__step { display: inline-flex; align-items: center; gap: 0.25rem; white-space: nowrap; }
+.note-chain__step .note-chain__term { white-space: normal; }
