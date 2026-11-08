@@ -150,6 +150,7 @@ const DossierWork = safeLazy(() => import("./pages/teacher/students/DossierWork"
 const DossierReview = safeLazy(() => import("./pages/teacher/students/DossierReview"));
 const DossierProgress = safeLazy(() => import("./pages/teacher/students/DossierProgress"));
 const DossierAnalytics = safeLazy(() => import("./pages/teacher/students/DossierAnalytics"));
+const MyAnalytics = safeLazy(() => import("./pages/MyAnalytics"));
 const DossierAnalyticsRun = safeLazy(() => import("./pages/teacher/students/DossierAnalyticsRun"));
 const StudentAnalyticsIndex = safeLazy(() => import("./pages/teacher/StudentAnalyticsIndex"));
 const DossierNotes = safeLazy(() => import("./pages/teacher/students/DossierNotes"));
@@ -664,6 +665,7 @@ const App = () => {
                         <Route path={REVIEW_HUB_ROUTES.progress.path} element={<ProgressPage view="overview" />} />
                         <Route path={REVIEW_HUB_ROUTES.history.path} element={<ProgressPage view="history" />} />
                         <Route path={REVIEW_HUB_ROUTES.strengths.path} element={<StrengthsWeaknessesPage />} />
+                        <Route path={REVIEW_HUB_ROUTES.analytics.path} element={<MyAnalytics />} />
                       </Route>
                       <Route path={REVIEW_HUB_ROUTES.imported.path} element={<ProtectedRoute flag={[...REVIEW_HUB_ROUTES.imported.flags]}><ImportedWorkPage /></ProtectedRoute>} />
                       <Route path={REVIEW_HUB_ROUTES.queue.path} element={<ProtectedRoute allowSignedIn={REVIEW_HUB_ROUTES.queue.allowSignedIn}><ReviewQueuePage /></ProtectedRoute>} />

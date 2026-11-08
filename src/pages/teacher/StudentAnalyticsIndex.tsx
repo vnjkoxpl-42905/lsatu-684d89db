@@ -30,7 +30,8 @@ export default function StudentAnalyticsPage() {
   const { rows, loading } = useHubStudents();
   const [search, setSearch] = React.useState("");
   const students = (rows ?? [])
-    .filter((r) => r.role !== "admin")
+    // Active students only: an archived student keeps their records but leaves the list.
+    .filter((r) => r.role !== "admin" && !r.archived_at)
     .sort((a, b) => (b.last_seen_at ?? "").localeCompare(a.last_seen_at ?? ""));
   const shown = students.filter((r) => !search.trim() || `${r.display_name ?? ""} ${r.email ?? ""}`.toLowerCase().includes(search.trim().toLowerCase()));
   const current = students.find((s) => s.class_id === studentId);

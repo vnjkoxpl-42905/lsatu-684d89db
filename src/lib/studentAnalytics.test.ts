@@ -11,7 +11,7 @@ vi.mock("@/lib/questionLoader", () => ({
   },
 }));
 
-import { buildSittings, performanceSeries, questionRows, tagAnalytics, type AttemptRow } from "./studentAnalytics";
+import { buildSittings, drillAnswersMissingFrom, performanceSeries, questionRows, tagAnalytics, type AttemptRow } from "./studentAnalytics";
 
 const at = (qid: string, correct: boolean, ts: string, selected = "D"): AttemptRow => ({
   qid, pt: null, section: null, qnum: null, qtype: null, level: null, mode: null,
@@ -74,5 +74,24 @@ describe("history and performance", () => {
     expect(pts.map((p) => p.title)).toEqual(["PT107.S3", "PT130"]);
     expect(pts[1].score).toBe(152);
     expect(pts[0].br).not.toBeNull();
+  });
+});
+
+describe("coverage", () => {
+  it("adds drill answers that never reached the attempts table, once each", () => {
+    const drills = [{ id: "d", updated_at: "2026-11-05", session: { attempts: [
+      { qid: "q1", correct: true, selected_answer: "A" }, { qid: "q2", correct: false, selected_answer: "C" }, { qid: "q2", correct: true },
+    ] } }] as unknown as Parameters<typeof drillAnswersMissingFrom>[1];
+    const extra = drillAnswersMissingFrom([at("q1", true, "x")], drills);
+    expect(extra.map((a) => [a.qid, a.correct, a.selected_answer])).toEqual([["q2", false, "C"]]);
+  });
+
+  it("shows RC answers with their own label and tags, in their own section", () => {
+    const rc: AttemptRow = { ...at("rc:4787", false, "2026-10-30", "E"), kind: "rc", label: "PT112.S2.Q14",
+      tags: [["Inference", "RC Question Stem"], ["Science", "RC Passage Subject"]], correct_answer: "B" };
+    const [row] = questionRows([rc]);
+    expect(row).toMatchObject({ kind: "rc", label: "PT112.S2.Q14", tags: ["Inference", "Science"], firstAnswer: "E", correctAnswer: "B" });
+    const tags = tagAnalytics([rc], 165);
+    expect(tags.map((t) => [t.tag, t.group])).toEqual(expect.arrayContaining([["Inference", "RC Question Stem"], ["Science", "RC Passage Subject"]]));
   });
 });

@@ -41,9 +41,11 @@ export default function DossierAnalytics() {
 }
 
 /** One student's analytics. Used by the dossier tab and the standalone page. */
-export function StudentAnalyticsView({ studentId, studentName, runHref }: {
+export function StudentAnalyticsView({ studentId, studentName, runHref, audience = "teacher" }: {
   studentId: string;
   studentName: string | null;
+  /** "student" when someone reads their own analytics: the wording turns to "you". */
+  audience?: "teacher" | "student";
   /** Where a drill run opens. */
   runHref: (runId: string) => string;
 }) {
@@ -84,7 +86,7 @@ export function StudentAnalyticsView({ studentId, studentName, runHref }: {
 
       {tab === "overview" && (
         <>
-          <PerformanceCard sittings={sittings} tags={tags} name={name} />
+          <PerformanceCard sittings={sittings} tags={tags} name={name} self={audience === "student"} />
           <TagAnalytics tags={tags} goal={goal} goalDraft={goalDraft} setGoalDraft={setGoalDraft}
             onSaveGoal={() => {
               const g = Math.max(120, Math.min(180, Number(goalDraft) || 165));
@@ -110,7 +112,7 @@ export function StudentAnalyticsView({ studentId, studentName, runHref }: {
 
 /* ------------------------------------------------------------ Performance */
 
-function PerformanceCard({ sittings, tags, name }: { sittings: Sitting[]; tags: TagStat[]; name: string }) {
+function PerformanceCard({ sittings, tags, name, self }: { sittings: Sitting[]; tags: TagStat[]; name: string; self?: boolean }) {
   const [include, setInclude] = React.useState<Record<SittingKind, boolean>>({ preptest: true, section: true, drill: true });
   const [range, setRange] = React.useState<number | null>(null);
   const [advice, setAdvice] = React.useState(false);
@@ -125,7 +127,7 @@ function PerformanceCard({ sittings, tags, name }: { sittings: Sitting[]; tags: 
         <div className="flex gap-2">
           <button type="button" onClick={() => setAdvice((v) => !v)} aria-expanded={advice}
             className="inline-flex items-center gap-2 rounded-xl border-2 border-violet-500 px-4 py-2 text-sm font-semibold text-violet-700 hover:bg-violet-50">
-            <Sparkles className="h-4 w-4" />What should they do?
+            <Sparkles className="h-4 w-4" />{self ? "What should I do?" : "What should they do?"}
           </button>
           <select aria-label="Time range" value={range ?? ""} onChange={(e) => setRange(e.target.value ? Number(e.target.value) : null)}
             className="rounded-xl border-2 border-black/10 bg-white px-3 py-2 text-sm">
@@ -137,7 +139,7 @@ function PerformanceCard({ sittings, tags, name }: { sittings: Sitting[]; tags: 
         <div className="mb-4 rounded-2xl border border-violet-200 bg-violet-50/60 p-5 text-sm leading-relaxed text-slate-800">
           {top.length === 0 ? <p>Not enough answered questions yet to point anywhere specific.</p> : (
             <>
-              <p className="font-semibold">Where {name} loses the most points</p>
+              <p className="font-semibold">{self ? "Where you lose the most points" : `Where ${name} loses the most points`}</p>
               <ol className="mt-2 list-decimal space-y-1 pl-5">
                 {top.map((t) => <li key={t.tag}><b>{t.tag}</b>: {t.correct} of {t.answered} right, about {t.tagScore} ({t.vsGoal > 0 ? "+" : ""}{t.vsGoal} vs goal).</li>)}
               </ol>
@@ -223,14 +225,16 @@ function TagAnalytics({ tags, goal, goalDraft, setGoalDraft, onSaveGoal, onRevie
           <span id="goal-help" className="sr-only">Goal score from 120 to 180. Saved on this device.</span>
         </form>
       </div>
-      <h4 className="mb-3 font-serif text-xl font-semibold text-slate-800">Logical Reasoning</h4>
+      {[["Logical Reasoning", tags.filter((t) => !t.group.startsWith("RC"))], ["Reading Comprehension", tags.filter((t) => t.group.startsWith("RC"))]].map(([title, list]) => (
+        <React.Fragment key={title as string}>{((title: string, list: TagStat[]) => (<>
+      <h4 className="mb-3 mt-6 font-serif text-xl font-semibold text-slate-800">{title}</h4>
       <div className="overflow-hidden rounded-[20px] border-2 border-black/10 bg-white">
         <div className="grid grid-cols-[1fr_140px_170px] border-b-2 border-black/10 px-6 py-4 text-sm font-semibold text-slate-700">
           <span>Tag</span><span>Priority</span>
           <span className="inline-flex items-center gap-1">Tag score (vs goal)<span title="Estimated LSAT score if every question were this tag, from first answers."><Info className="h-4 w-4 text-slate-400" /></span></span>
         </div>
         <div className={cn(compact && "max-h-[430px] overflow-y-auto")}>
-          {tags.length === 0 ? <p className="px-6 py-10 text-center text-sm text-slate-500">No answered questions yet.</p> : tags.map((t) => (
+          {list.length === 0 ? <p className="px-6 py-10 text-center text-sm text-slate-500">No answered questions yet.</p> : list.map((t) => (
             <div key={t.tag} className="border-b border-black/10 last:border-0">
               <button type="button" onClick={() => setOpen(open === t.tag ? null : t.tag)} aria-expanded={open === t.tag}
                 className="grid w-full grid-cols-[1fr_140px_170px] items-center px-6 py-5 text-left hover:bg-slate-50">
@@ -255,7 +259,9 @@ function TagAnalytics({ tags, goal, goalDraft, setGoalDraft, onSaveGoal, onRevie
           ))}
         </div>
       </div>
-      <p className="mt-2 text-xs text-slate-500">Goal {goal}. Reading Comprehension tags are not shown: RC answers are not tagged by question type yet.</p>
+        </>))(title as string, list as TagStat[])}</React.Fragment>
+      ))}
+      <p className="mt-2 text-xs text-slate-500">Goal {goal}. Tag scores use first answers only.</p>
     </section>
   );
 }
@@ -314,10 +320,11 @@ function PracticeHistory({ sittings, onOpen, only }: { sittings: Sitting[]; onOp
 function QuestionsTable({ attempts }: { attempts: Parameters<typeof questionRows>[0] }) {
   const all = React.useMemo(() => questionRows(attempts), [attempts]);
   const [result, setResult] = React.useState<"all" | "correct" | "incorrect">("all");
+  const [section, setSection] = React.useState<"all" | "lr" | "rc">("all");
   const [tag, setTag] = React.useState("all");
   const [search, setSearch] = React.useState("");
   const tagsList = React.useMemo(() => [...new Set(all.flatMap((r) => r.tags))].sort(), [all]);
-  const rows = all.filter((r) => (result === "all" || (result === "correct" ? r.firstCorrect : r.firstCorrect === false))
+  const rows = all.filter((r) => (section === "all" || r.kind === section) && (result === "all" || (result === "correct" ? r.firstCorrect : r.firstCorrect === false))
     && (tag === "all" || r.tags.includes(tag))
     && (!search.trim() || r.label.toLowerCase().includes(search.trim().toLowerCase())));
   const sel = "rounded-xl border-2 border-black/10 bg-white px-3 py-2 text-sm";
@@ -328,6 +335,9 @@ function QuestionsTable({ attempts }: { attempts: Parameters<typeof questionRows
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" aria-hidden />
           <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Find a question, e.g. PT124.S1" aria-label="Find a question" className="w-64 rounded-xl border-2 border-black/10 py-2 pl-9 pr-3 text-sm" />
         </label>
+        <select aria-label="Section" className={sel} value={section} onChange={(e) => setSection(e.target.value as typeof section)}>
+          <option value="all">LR and RC</option><option value="lr">Logical Reasoning</option><option value="rc">Reading Comprehension</option>
+        </select>
         <select aria-label="Result" className={sel} value={result} onChange={(e) => setResult(e.target.value as typeof result)}>
           <option value="all">Result: all</option><option value="correct">Correct first time</option><option value="incorrect">Missed first time</option>
         </select>

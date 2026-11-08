@@ -61,6 +61,7 @@ export const DESTINATIONS: Record<Destination, DestinationConfig> = {
       { label: "Progress", path: "/review/progress", flags: ["has_analytics_access"] },
       { label: "History", path: "/review/history", flags: ["has_analytics_access"] },
       { label: "Strengths & weaknesses", path: "/review/strengths", flags: ["has_analytics_access"] },
+      { label: "Analytics", path: "/review/analytics", flags: ["has_analytics_access"] },
     ],
   },
   progress: {
@@ -71,6 +72,7 @@ export const DESTINATIONS: Record<Destination, DestinationConfig> = {
       { label: "Progress", path: "/review/progress", flags: ["has_analytics_access"] },
       { label: "History", path: "/review/history", flags: ["has_analytics_access"] },
       { label: "Strengths & weaknesses", path: "/review/strengths", flags: ["has_analytics_access"] },
+      { label: "Analytics", path: "/review/analytics", flags: ["has_analytics_access"] },
     ],
   },
   library: {
