@@ -186,8 +186,7 @@ function ClassroomSidebar({
     });
   };
 
-  // Students opens the standalone student page (rail + each student's
-  // activity and analytics). The workspace roster is still one link away.
+  // Students opens the roster and full-stage student analytics.
   const openStudents = () => {
     go("/student-analytics");
   };
@@ -1012,8 +1011,10 @@ export default function ClassroomLayout() {
   // no reading column, no section list.
   const workspaceStage =
     location.pathname === "/teacher" || location.pathname.startsWith("/teacher/");
+  const studentsStage =
+    location.pathname === "/student-analytics" || location.pathname.startsWith("/student-analytics/");
   const requestedSection =
-    drillHub || destinationName || messagesStage || workspaceStage ? null : pathSection ?? selectedSection;
+    drillHub || destinationName || messagesStage || workspaceStage || studentsStage ? null : pathSection ?? selectedSection;
   const activeSection = requestedSection &&
     (requestedSection !== 'work' && requestedSection !== 'notes' ||
       (!permissions.loading && (permissions.is_admin || permissions.has_classroom_access)))
@@ -1104,7 +1105,7 @@ export default function ClassroomLayout() {
   // set" on the drill hub. It now lives in a sticky bar that takes its own
   // space in the flow, with the name of the room beside it so the button is
   // not a lone glyph floating on the page.
-  const mobileBarLabel = activeSection
+  const mobileBarLabel = studentsStage ? "Students" : activeSection
     ? activeSection === "journal" || activeSection === "flagged"
       ? "Review"
       : SECTION_TITLES[activeSection]
@@ -1122,8 +1123,8 @@ export default function ClassroomLayout() {
               ? "Home"
               : "Classroom";
 
-  const rootClass =
-    activeSection === "journal"
+  const rootClass = studentsStage ? "classroom-root classroom-root-students"
+    : activeSection === "journal"
       ? `classroom-root classroom-root-journal${
           journalDetail ? " classroom-root-journal-detail" : ""
         }`

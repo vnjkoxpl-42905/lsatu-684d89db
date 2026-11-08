@@ -41,11 +41,12 @@ export default function DossierAnalytics() {
 }
 
 /** One student's analytics. Used by the dossier tab and the standalone page. */
-export function StudentAnalyticsView({ studentId, studentName, runHref, audience = "teacher" }: {
+export function StudentAnalyticsView({ studentId, studentName, runHref, audience = "teacher", className }: {
   studentId: string;
   studentName: string | null;
   /** "student" when someone reads their own analytics: the wording turns to "you". */
   audience?: "teacher" | "student";
+  className?: string;
   /** Where a drill run opens. */
   runHref: (runId: string) => string;
 }) {
@@ -70,10 +71,10 @@ export function StudentAnalyticsView({ studentId, studentName, runHref, audience
   if (error || !data) return <p role="alert" className="p-6 text-sm text-red-700">Analytics could not be loaded. Try again.</p>;
 
   return (
-    <div className="mx-auto w-full max-w-6xl space-y-8 p-5" aria-label="Student analytics">
+    <div className={cn("mx-auto w-full max-w-6xl space-y-6 px-1 py-5 sm:space-y-8 sm:px-5", className)} aria-label="Student analytics">
       <header>
         <h2 className="font-serif text-4xl font-semibold text-slate-800">Analytics</h2>
-        <nav className="mt-4 flex flex-wrap gap-x-8 gap-y-2 border-b border-black/10" aria-label="Analytics sections">
+        <nav className="mt-4 flex flex-wrap gap-x-4 gap-y-2 border-b sm:gap-x-6 border-black/10" aria-label="Analytics sections">
           {TABS.map(([t, label]) => (
             <button key={t} type="button" onClick={() => setTab(t)} aria-current={tab === t ? "page" : undefined}
               className={cn("-mb-px border-b-2 pb-3 text-[15px] font-medium transition-colors",
@@ -124,7 +125,7 @@ function PerformanceCard({ sittings, tags, name, self }: { sittings: Sitting[]; 
     <section aria-label="Performance">
       <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
         <h3 className="font-serif text-3xl font-semibold text-slate-800">Performance</h3>
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
           <button type="button" onClick={() => setAdvice((v) => !v)} aria-expanded={advice}
             className="inline-flex items-center gap-2 rounded-xl border-2 border-violet-500 px-4 py-2 text-sm font-semibold text-violet-700 hover:bg-violet-50">
             <Sparkles className="h-4 w-4" />{self ? "What should I do?" : "What should they do?"}
@@ -229,7 +230,7 @@ function TagAnalytics({ tags, goal, goalDraft, setGoalDraft, onSaveGoal, onRevie
         <React.Fragment key={title as string}>{((title: string, list: TagStat[]) => (<>
       <h4 className="mb-3 mt-6 font-serif text-xl font-semibold text-slate-800">{title}</h4>
       <div className="overflow-hidden rounded-[20px] border-2 border-black/10 bg-white">
-        <div className="grid grid-cols-[1fr_140px_170px] border-b-2 border-black/10 px-6 py-4 text-sm font-semibold text-slate-700">
+        <div className="grid grid-cols-[minmax(0,1fr)_5rem_5rem] gap-2 border-b-2 border-black/10 px-3 py-3 text-xs font-semibold text-slate-700 sm:grid-cols-[minmax(0,1fr)_140px_170px] sm:px-6 sm:py-4 sm:text-sm">
           <span>Tag</span><span>Priority</span>
           <span className="inline-flex items-center gap-1">Tag score (vs goal)<span title="Estimated LSAT score if every question were this tag, from first answers."><Info className="h-4 w-4 text-slate-400" /></span></span>
         </div>
@@ -237,10 +238,10 @@ function TagAnalytics({ tags, goal, goalDraft, setGoalDraft, onSaveGoal, onRevie
           {list.length === 0 ? <p className="px-6 py-10 text-center text-sm text-slate-500">No answered questions yet.</p> : list.map((t) => (
             <div key={t.tag} className="border-b border-black/10 last:border-0">
               <button type="button" onClick={() => setOpen(open === t.tag ? null : t.tag)} aria-expanded={open === t.tag}
-                className="grid w-full grid-cols-[1fr_140px_170px] items-center px-6 py-5 text-left hover:bg-slate-50">
-                <span className="flex items-center gap-3">
-                  {open === t.tag ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
-                  <span><b className="text-slate-800">{t.tag}</b><span className="text-sm text-slate-500"> · {t.group}</span></span>
+                className="grid w-full grid-cols-[minmax(0,1fr)_5rem_5rem] items-center gap-2 px-3 py-4 text-left text-sm hover:bg-slate-50 sm:grid-cols-[minmax(0,1fr)_140px_170px] sm:px-6 sm:py-5 sm:text-base">
+                <span className="flex min-w-0 items-center gap-1.5 break-words sm:gap-3">
+                  {open === t.tag ? <ChevronDown className="h-4 w-4 shrink-0" /> : <ChevronRight className="h-4 w-4 shrink-0" />}
+                  <span className="min-w-0"><b className="text-slate-800">{t.tag}</b><span className="text-sm text-slate-500"> · {t.group}</span></span>
                 </span>
                 <PriorityBars p={t.priority} />
                 <span>
@@ -272,7 +273,7 @@ function PracticeHistory({ sittings, onOpen, only }: { sittings: Sitting[]; onOp
   const [filter, setFilter] = React.useState<"all" | SittingKind>(only ?? "all");
   const rows = sittings.filter((s) => (filter === "all" ? true : s.kind === filter));
   const bar = (v: number | null) => (
-    <span className="relative inline-block h-2 w-40 overflow-hidden rounded-full bg-slate-100 align-middle">
+    <span className="relative inline-block h-2 w-full overflow-hidden rounded-full bg-slate-100 align-middle">
       {v != null && <span className="absolute inset-y-0 left-0 rounded-full bg-sky-700" style={{ width: `${Math.max(0, Math.min(100, v))}%` }} />}
     </span>
   );
@@ -281,11 +282,11 @@ function PracticeHistory({ sittings, onOpen, only }: { sittings: Sitting[]; onOp
       {!only && <h3 className="mb-4 font-serif text-3xl font-semibold text-slate-800">Practice history</h3>}
       <div className="overflow-hidden rounded-[20px] border-2 border-black/10 bg-white">
         {!only && (
-          <div className="flex flex-wrap items-center gap-4 border-b-2 border-black/10 p-5">
+          <div className="flex flex-wrap items-center gap-4 border-b-2 border-black/10 p-3 sm:p-5">
             <div className="inline-flex overflow-hidden rounded-xl border-2 border-black/10" role="tablist">
               {(["all", "preptest", "section", "drill"] as const).map((k) => (
                 <button key={k} type="button" role="tab" aria-selected={filter === k} onClick={() => setFilter(k)}
-                  className={cn("border-r-2 border-black/10 px-5 py-2 text-sm font-semibold last:border-0", filter === k ? "bg-amber-200" : "bg-white text-slate-700 hover:bg-slate-50")}>
+                  className={cn("border-r-2 border-black/10 px-2.5 py-2 text-sm font-semibold last:border-0 sm:px-5", filter === k ? "bg-amber-200" : "bg-white text-slate-700 hover:bg-slate-50")}>
                   {k === "all" ? "All" : k === "preptest" ? "PrepTests" : k === "section" ? "Sections" : "Drills"}
                 </button>
               ))}
@@ -301,7 +302,7 @@ function PracticeHistory({ sittings, onOpen, only }: { sittings: Sitting[]; onOp
               {!s.completed && <span className="ml-2 rounded-full bg-amber-100 px-2 py-0.5 text-xs font-semibold text-amber-800">In progress</span>}
               <span className="block text-sm text-slate-500">{fmtLong(s.date)}</span>
             </span>
-            <span className="grid grid-cols-[3rem_10rem_3.5rem] items-center gap-x-3 gap-y-1 text-sm">
+            <span className="grid grid-cols-[3rem_minmax(0,1fr)_3.5rem] sm:grid-cols-[3rem_10rem_3.5rem] items-center gap-x-3 gap-y-1 text-sm">
               <span className="font-semibold text-slate-700">Score</span>{bar(s.score?.kind === "percent" ? s.score.value : s.score ? ((s.score.value - 120) / 60) * 100 : null)}
               <span className="text-right">{s.score ? (s.score.kind === "scaled" ? s.score.value : `${s.score.value}%`) : "—"}</span>
               <span className="font-semibold text-slate-500">BR</span>{bar(s.br?.value ?? null)}

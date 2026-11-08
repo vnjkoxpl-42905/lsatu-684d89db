@@ -826,6 +826,17 @@ html.dark .classroom-root .classroom-panel-wash-dark {
   padding: 48px 0 96px;
 }
 
+/* The roster and analytics share the workspace, so give both room beside the classroom rail. */
+.classroom-root.classroom-root-students .classroom-stage {
+  padding-inline: clamp(12px, 2vw, 32px);
+}
+
+.classroom-root.classroom-root-students .classroom-column {
+  max-width: 1480px;
+  min-width: 0;
+  padding: 24px 0 64px;
+}
+
 /* Reserves the stage while a code-split route resolves, so the rail never sits
    beside a collapsed column. See StageFallback in ClassroomLayout.tsx. */
 .classroom-root .classroom-stage-pending {
