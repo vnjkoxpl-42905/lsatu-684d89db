@@ -99,6 +99,16 @@ No Prettier. Formatting is ESLint-only.
 - When creating a Claude agent that Codex should spawn, also create a matching `.codex/agents/<name>.toml` and place the converted instructions in `developer_instructions`.
 - When adding shared knowledge, put it in `docs/`, `references/`, or `templates/` so every tool can read the same source.
 
+## Publish after every merge to main
+
+Standing rule (Joshua, 2026-10-17), for Claude, Codex and Gemini alike. When an authorized change lands on `main`, the same agent publishes the frontend with the free Lovable `deploy_project` (project `53b9a6f2-aba7-4ae4-8dd1-fa5b8aab4d76`) without asking, then proves it live:
+
+1. Before deploying, call `get_project` and check `latest_commit_sha` equals the merged HEAD. If it does not, wait and re-check; a deploy fired early ships the previous commit with no error.
+2. After deploying, fetch `https://lsatprep.study/`, confirm the `index-*` bundle hash changed, and confirm a string only your commit adds is present. Lovable's Publish button will then show nothing to publish; that is expected.
+3. Report the merge commit, the old and new bundle hash, and what you checked live.
+
+This rule does not authorize pushing or merging to `main` (use a branch and PR, merge only when Joshua says so). It does not cover edge functions or anything that spends Lovable credits; those still need his confirmation right before they run.
+
 ## Verification (must not skip)
 
 Any change to `src/components/` or `src/pages/` is not "done" until it has been viewed running in the app (dev server + browser tool, e.g. Playwright or chrome devtools MCP), with a screenshot or DOM check as evidence. Do not report a UI change complete on the strength of the diff alone. This has been the single biggest recurring failure across past sessions (repeated "it's not working" / "i dont see it" corrections) — treat it as a hard gate, not a suggestion.
