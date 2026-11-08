@@ -437,6 +437,17 @@ function ClassroomSidebar({
               >
                 Whiteboard
               </button>
+              <button
+                type="button"
+                className={`classroom-nav${
+                  location.pathname.startsWith("/teacher/analytics") || /^\/teacher\/students\/[^/]+\/analytics/.test(location.pathname)
+                    ? " classroom-nav-active-white"
+                    : ""
+                }`}
+                onClick={() => go("/teacher/analytics")}
+              >
+                Student Analytics
+              </button>
             </div>
           ) : null}
         </nav>

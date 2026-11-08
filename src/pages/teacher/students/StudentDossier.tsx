@@ -33,6 +33,7 @@ const TABS = [
   { to: 'overview', label: 'Overview' },
   { to: 'work', label: 'Work' },
   { to: 'review', label: 'Review' },
+  { to: 'analytics', label: 'Analytics' },
   { to: 'progress', label: 'Progress' },
   { to: 'notes', label: 'Notes' },
   { to: 'messages', label: 'Messages' },

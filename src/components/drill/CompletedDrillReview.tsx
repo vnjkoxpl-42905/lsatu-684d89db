@@ -78,7 +78,7 @@ function DifficultyDots({ level }: { level?: number }) {
   );
 }
 
-export function CompletedDrillReview({ title, qids, attempts, openIndex, onOpen, about, onOpenJournalEntry }: {
+export function CompletedDrillReview({ title, qids, attempts, openIndex, onOpen, about, onOpenJournalEntry, viewerIsOwner = true }: {
   title: string;
   qids: string[];
   attempts: ReviewAttempt[];
@@ -89,6 +89,12 @@ export function CompletedDrillReview({ title, qids, attempts, openIndex, onOpen,
   about?: Array<[string, React.ReactNode]>;
   /** Open a question's full Wrong Answer Journal entry (the annotated screen). */
   onOpenJournalEntry?: (qid: string, index: number) => void;
+  /**
+   * False when a teacher reads a student's run. Notes and bookmarks belong to
+   * whoever is signed in, so they are hidden rather than showing the
+   * teacher's own marks against the student's answers.
+   */
+  viewerIsOwner?: boolean;
 }) {
   const byQid = React.useMemo(() => new Map(attempts.map((a) => [a.qid, a])), [attempts]);
   const [result, setResult] = React.useState<ResultFilter>("all");
@@ -186,7 +192,7 @@ export function CompletedDrillReview({ title, qids, attempts, openIndex, onOpen,
           initialIndex={openIndex}
           onIndexChange={(i) => { if (i !== openIndex) onOpen(i); }}
           onBack={() => onOpen(null)}
-          headerExtras={markButtons}
+          headerExtras={viewerIsOwner ? markButtons : undefined}
         />
         {overlays}
       </div>
@@ -260,6 +266,7 @@ export function CompletedDrillReview({ title, qids, attempts, openIndex, onOpen,
           <select aria-label="Tags" className={select} value={tag} onChange={(e) => setTag(e.target.value)}>
             <option value="all">Tags: all</option>{allTags.map((t) => <option key={t} value={t}>{t}</option>)}
           </select>
+          {viewerIsOwner && (<>
           <label className="ml-1 inline-flex cursor-pointer items-center gap-2 rounded-lg px-2 py-2 text-sm">
             <input type="checkbox" className="peer sr-only" checked={onlyNotes} onChange={(e) => setOnlyNotes(e.target.checked)} />
             <span aria-hidden className="relative h-5 w-9 rounded-full bg-muted transition-colors after:absolute after:left-0.5 after:top-0.5 after:h-4 after:w-4 after:rounded-full after:bg-white after:shadow after:transition-transform peer-checked:bg-primary peer-checked:after:translate-x-4" />
@@ -270,6 +277,7 @@ export function CompletedDrillReview({ title, qids, attempts, openIndex, onOpen,
             <span aria-hidden className="relative h-5 w-9 rounded-full bg-muted transition-colors after:absolute after:left-0.5 after:top-0.5 after:h-4 after:w-4 after:rounded-full after:bg-white after:shadow after:transition-transform peer-checked:bg-primary peer-checked:after:translate-x-4" />
             Bookmarked
           </label>
+          </>)}
         </div>
       </section>
 
@@ -289,8 +297,8 @@ export function CompletedDrillReview({ title, qids, attempts, openIndex, onOpen,
               <th className="hidden px-2 py-3 text-center md:table-cell">Answer<br />popularity</th>
               <th className="px-4 py-3 text-left">Timing</th>
               <th className="hidden px-4 py-3 text-left md:table-cell">Difficulty</th>
-              <th className="px-2 py-3 text-center">Notes</th>
-              <th className="px-2 py-3 text-center"><span className="sr-only">Bookmark and details</span></th>
+              {viewerIsOwner && <th className="px-2 py-3 text-center">Notes</th>}
+              {viewerIsOwner && <th className="px-2 py-3 text-center"><span className="sr-only">Bookmark and details</span></th>}
             </tr>
           </thead>
           <tbody>
@@ -316,6 +324,7 @@ export function CompletedDrillReview({ title, qids, attempts, openIndex, onOpen,
                     {attempt && !attempt.correct && q && <div className="mt-1 font-sans text-xs">Picked <span className="font-semibold text-red-500">{attempt.selected_answer}</span> · answer {q.correctAnswer}</div>}
                   </td>
                   <td className="hidden px-4 py-4 md:table-cell"><DifficultyDots level={q?.difficulty} /></td>
+                  {viewerIsOwner && (<>
                   <td className="px-2 py-4 text-center" onClick={(e) => e.stopPropagation()}>
                     <button type="button" onClick={() => setJournalQid(qid)} aria-label={marks.hasNote(qid) ? `Open your note on ${questionLabel(qid)}` : `Add a note to ${questionLabel(qid)}`}
                       className="relative inline-flex h-10 w-10 items-center justify-center rounded-xl hover:bg-accent">
@@ -334,6 +343,7 @@ export function CompletedDrillReview({ title, qids, attempts, openIndex, onOpen,
                       </button>
                     </div>
                   </td>
+                  </>)}
                 </tr>
               );
             })}
