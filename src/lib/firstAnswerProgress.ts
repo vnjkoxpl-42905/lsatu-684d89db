@@ -27,6 +27,8 @@ export interface GradedQuestionAnswer {
   answeredAt?: string;
   /** Persisted LR question type. RC has no comparable topic in these rows. */
   topic?: string;
+  selectedAnswer?: string;
+  timeMs?: number | null;
 }
 
 export interface ProgressCoverage {
@@ -61,6 +63,7 @@ export interface LrAttemptSourceRow {
   selected_answer: string | null;
   timestamp_iso: string | null;
   qtype?: string | null;
+  time_ms?: number | null;
 }
 
 export interface LrSectionSourceRow {
@@ -82,6 +85,7 @@ export interface RcAttemptSourceRow {
   selected: string | null;
   is_correct: boolean | null;
   created_at: string;
+  time_ms?: number | null;
 }
 
 export interface RcSessionSourceRow {
@@ -126,6 +130,8 @@ export function adaptLrAttempts(rows: LrAttemptSourceRow[], studentId: string): 
       correct: row.correct,
       gradedAt: row.timestamp_iso,
       answeredAt: row.timestamp_iso,
+      selectedAnswer: row.selected_answer,
+      timeMs: row.time_ms,
       topic: row.qtype?.trim() || undefined,
       provenance: { kind: 'lr-attempt' as const, ownerId: studentId, attemptId: row.id, qid: row.qid },
     }];
@@ -157,6 +163,8 @@ export function adaptLrSections(
         mode: row.practice_test_run_id ? 'practice-test' : 'timed-section',
         correct: question.initialCorrect,
         gradedAt: row.completed_at,
+        selectedAnswer: question.initialAnswer,
+        timeMs: typeof question.timeMs === 'number' ? question.timeMs : undefined,
         topic: typeof question.qtype === 'string' ? question.qtype.trim() || undefined : undefined,
         provenance: { kind: 'lr-section', ownerId: studentId, historyId: row.id, qid: question.qid,
           ...(row.practice_test_run_id ? { runId: row.practice_test_run_id } : {}),
@@ -263,6 +271,7 @@ export function adaptRcAttempts(
       resultVisibility: released ? 'released' as const : 'withheld' as const,
       gradedAt,
       answeredAt: saved ?? gradedAt,
+      ...(released ? { selectedAnswer: attempt.selected, timeMs: attempt.time_ms } : {}),
       provenance: { kind: 'rc-session' as const, ownerId: studentId, sessionId: session.id,
         questionId: attempt.question_id, passageId: attempt.passage_id,
         ...(parent.kind === 'run' ? { runId: parent.id } : {}),

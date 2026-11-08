@@ -1,11 +1,12 @@
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
 import { Brush, CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
-import { ChevronDown, ChevronRight, Info, Search, Sparkles } from "lucide-react";
+import { ChevronDown, ChevronRight, Info, Search, Lightbulb } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { cn } from "@/lib/utils";
 import { useQuestionBank } from "@/contexts/QuestionBankContext";
 import { useDossier } from "./StudentDossier";
+import AnalyticsInsights from "./AnalyticsInsights";
 import {
   buildSittings, loadStudentPractice, performanceSeries, questionRows, tagAnalytics,
   type Priority, type Sitting, type SittingKind, type TagStat,
@@ -87,7 +88,7 @@ export function StudentAnalyticsView({ studentId, studentName, runHref, audience
 
       {tab === "overview" && (
         <>
-          <PerformanceCard sittings={sittings} tags={tags} name={name} self={audience === "student"} />
+          <PerformanceCard key={studentId} sittings={sittings} studentId={studentId} self={audience === "student"} />
           <TagAnalytics tags={tags} goal={goal} goalDraft={goalDraft} setGoalDraft={setGoalDraft}
             onSaveGoal={() => {
               const g = Math.max(120, Math.min(180, Number(goalDraft) || 165));
@@ -113,22 +114,25 @@ export function StudentAnalyticsView({ studentId, studentName, runHref, audience
 
 /* ------------------------------------------------------------ Performance */
 
-function PerformanceCard({ sittings, tags, name, self }: { sittings: Sitting[]; tags: TagStat[]; name: string; self?: boolean }) {
+function PerformanceCard({ sittings, studentId, self }: { sittings: Sitting[]; studentId: string; self: boolean }) {
   const [include, setInclude] = React.useState<Record<SittingKind, boolean>>({ preptest: true, section: true, drill: true });
   const [range, setRange] = React.useState<number | null>(null);
-  const [advice, setAdvice] = React.useState(false);
-  const since = range ? new Date(Date.now() - range * 86400000).toISOString() : null;
-  const points = performanceSeries(sittings, include, since).map((p) => ({ ...p, day: fmtDay(p.date) }));
-  const top = tags.filter((t) => !t.limitedData).slice(0, 3);
+  const [insightsOpen, setInsightsOpen] = React.useState(false);
+  const insightsId = React.useId();
+  const asOf = React.useMemo(() => new Date().toISOString(), [range, include, insightsOpen]);
+  const since = range ? new Date(Date.parse(asOf) - range * 86400000).toISOString() : null;
+  const rangeLabel = RANGES.find(([, days]) => days === range)?.[0] ?? "All time";
+  const points = performanceSeries(sittings.filter((sitting) => Date.parse(sitting.date) <= Date.parse(asOf)), include, since).map((p) => ({ ...p, day: fmtDay(p.date) }));
 
   return (
     <section aria-label="Performance">
       <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
         <h3 className="font-serif text-3xl font-semibold text-slate-800">Performance</h3>
         <div className="flex flex-wrap gap-2">
-          <button type="button" onClick={() => setAdvice((v) => !v)} aria-expanded={advice}
-            className="inline-flex items-center gap-2 rounded-xl border-2 border-violet-500 px-4 py-2 text-sm font-semibold text-violet-700 hover:bg-violet-50">
-            <Sparkles className="h-4 w-4" />{self ? "What should I do?" : "What should they do?"}
+          <button type="button" onClick={() => setInsightsOpen(!insightsOpen)} aria-expanded={insightsOpen} aria-controls={insightsOpen ? insightsId : undefined}
+            className={cn("inline-flex min-h-11 items-center gap-2 rounded-xl border px-4 py-2 text-sm font-semibold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2",
+              insightsOpen ? "border-slate-900 bg-slate-900 text-white" : "border-slate-400 bg-white text-slate-800 hover:bg-slate-50")}>
+            <Lightbulb className="h-4 w-4" aria-hidden />Insights
           </button>
           <select aria-label="Time range" value={range ?? ""} onChange={(e) => setRange(e.target.value ? Number(e.target.value) : null)}
             className="rounded-xl border-2 border-black/10 bg-white px-3 py-2 text-sm">
@@ -136,19 +140,8 @@ function PerformanceCard({ sittings, tags, name, self }: { sittings: Sitting[]; 
           </select>
         </div>
       </div>
-      {advice && (
-        <div className="mb-4 rounded-2xl border border-violet-200 bg-violet-50/60 p-5 text-sm leading-relaxed text-slate-800">
-          {top.length === 0 ? <p>Not enough answered questions yet to point anywhere specific.</p> : (
-            <>
-              <p className="font-semibold">{self ? "Where you lose the most points" : `Where ${name} loses the most points`}</p>
-              <ol className="mt-2 list-decimal space-y-1 pl-5">
-                {top.map((t) => <li key={t.tag}><b>{t.tag}</b>: {t.correct} of {t.answered} right, about {t.tagScore} ({t.vsGoal > 0 ? "+" : ""}{t.vsGoal} vs goal).</li>)}
-              </ol>
-              <p className="mt-2 text-slate-600">Ranked by distance from the goal, weighted by how often the tag came up.</p>
-            </>
-          )}
-        </div>
-      )}
+      {insightsOpen && <AnalyticsInsights key={`${studentId}:${since}:${Object.values(include).join(",")}`} id={insightsId}
+        studentId={studentId} self={self} rangeLabel={rangeLabel} since={since} asOf={asOf} include={include} />}
       <div className="rounded-[20px] border-2 border-black/10 bg-white p-5">
         <div className="mb-3 flex flex-wrap items-center gap-2 text-sm text-slate-600">
           Include

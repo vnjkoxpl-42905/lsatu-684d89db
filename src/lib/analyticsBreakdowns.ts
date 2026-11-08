@@ -110,7 +110,7 @@ function emptyBucket(label: string, group: string): Bucket {
 }
 
 /** The tag values a question contributes to, for a given breakdown. */
-function keysFor(kind: BreakdownKind, q: LRQuestion): string[] {
+export function breakdownKeysFor(kind: BreakdownKind, q: LRQuestion): string[] {
   switch (kind) {
     case 'qtype':
     case 'wrongByQtype':
@@ -181,7 +181,7 @@ export function buildBreakdown(kind: BreakdownKind, attempts: AttemptLike[]): Br
   // Pass 1 — the pool, which gives every row its frequency.
   let poolTotal = 0;
   for (const q of pool) {
-    const keys = keysFor(kind, q);
+    const keys = breakdownKeysFor(kind, q);
     if (keys.length > 0) poolTotal++;
     for (const key of keys) touch(key).pool++;
   }
@@ -192,7 +192,7 @@ export function buildBreakdown(kind: BreakdownKind, attempts: AttemptLike[]): Br
     if (!q) continue;
     // Wrong-answer breakdowns only count misses.
     if (kind === 'wrongByQtype' && a.correct) continue;
-    for (const key of keysFor(kind, q)) {
+    for (const key of breakdownKeysFor(kind, q)) {
       const b = touch(key);
       b.attempted++;
       if (a.correct) b.correct++;

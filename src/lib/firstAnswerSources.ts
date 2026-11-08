@@ -33,7 +33,7 @@ async function allPages<T>(read: (from: number, to: number) => Promise<{ data: T
 
 const readLrAttempts = (studentId: string) => allPages<LrAttemptSourceRow>(async (from, to) => {
   const result = await supabase.from('attempts')
-    .select('id,user_id,qid,qtype,mode,correct,selected_answer,timestamp_iso')
+    .select('id,user_id,qid,qtype,mode,correct,selected_answer,timestamp_iso,time_ms')
     .eq('user_id', studentId).order('id').range(from, to);
   return result as unknown as { data: LrAttemptSourceRow[] | null; error: { message: string } | null };
 });
@@ -47,7 +47,7 @@ const readLrSections = (studentId: string) => allPages<LrSectionSourceRow>(async
 
 const readRcAttempts = (studentId: string) => allPages<RcAttemptSourceRow>(async (from, to) => {
   const result = await supabase.from('rc_attempts')
-    .select('id,user_id,session_id,passage_id,question_id,selected,is_correct,created_at')
+    .select('id,user_id,session_id,passage_id,question_id,selected,is_correct,created_at,time_ms')
     .eq('user_id', studentId).order('id').range(from, to);
   return result as unknown as { data: RcAttemptSourceRow[] | null; error: { message: string } | null };
 });
