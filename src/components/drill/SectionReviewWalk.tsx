@@ -61,6 +61,8 @@ interface Props {
   backLabel?: string;
   /** Question to open on. Follows later changes, e.g. browser back. */
   initialIndex?: number;
+  initialTab?: ReviewTab;
+  notepadEnabled?: boolean;
   /** Told whenever the open question changes, so a page can keep it in its URL. */
   onIndexChange?: (index: number) => void;
   /**
@@ -86,7 +88,7 @@ const TAB_LABELS: Record<ReviewTab, string> = {
   br: 'BR',
 };
 
-export default function SectionReviewWalk({ session, brResults, onBack, backLabel = 'Section results', initialIndex, onIndexChange, variant = 'section', headerExtras }: Props) {
+export default function SectionReviewWalk({ session, brResults, onBack, backLabel = 'Section results', initialIndex, initialTab = 'clean', notepadEnabled, onIndexChange, variant = 'section', headerExtras }: Props) {
   const drillVariant = variant === 'drill';
   const [analysisOpen, setAnalysisOpen] = React.useState(false);
   const [analysisStyle, setAnalysisStyle] = React.useState<LrStyleKey | null>(null);
@@ -100,7 +102,7 @@ export default function SectionReviewWalk({ session, brResults, onBack, backLabe
   React.useEffect(() => {
     onIndexChangeRef.current?.(currentIndex);
   }, [currentIndex]);
-  const [tab, setTab] = React.useState<ReviewTab>('clean');
+  const [tab, setTab] = React.useState<ReviewTab>(initialTab);
   const [showAnswers, setShowAnswers] = React.useState(false);
   // Clean is for re-trying a question cold. A click marks a fresh pick here,
   // on this screen only: it is never written, so the record of the sitting
@@ -173,6 +175,7 @@ export default function SectionReviewWalk({ session, brResults, onBack, backLabe
 
   return (
     <OfficialDrillFrame
+      notepadEnabled={notepadEnabled}
       header={
         <div className="flex w-full flex-wrap items-center justify-between gap-x-4 gap-y-2 text-[14px]">
           <nav
@@ -305,7 +308,7 @@ export default function SectionReviewWalk({ session, brResults, onBack, backLabe
                   : 'Pick an answer to re-try it cold'
                 : tab === 'actual'
                   ? attempt?.selectedAnswer
-                    ? `You chose ${attempt.selectedAnswer} under the clock`
+                    ? `First answer: ${attempt.selectedAnswer}`
                     : 'You left this one blank'
                   : brResult?.brAnswer
                     ? `Blind review: ${brResult.brAnswer}`

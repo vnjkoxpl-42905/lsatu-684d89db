@@ -358,6 +358,7 @@ export interface QuestionRow {
   qid: string;
   kind: "lr" | "rc";
   label: string;
+  questionType?: string | null;
   tags: string[];
   difficulty: number | null;
   firstCorrect: boolean | null;
@@ -384,6 +385,7 @@ export function questionRows(attempts: AttemptRow[]): QuestionRow[] {
       qid: a.qid,
       kind: a.kind ?? "lr",
       label: a.label ?? (q ? `PT${q.pt}.S${q.section}.Q${q.qnum}` : a.pt ? `PT${a.pt}.S${a.section}.Q${a.qnum}` : a.qid),
+      questionType: q?.qtype ?? a.qtype,
       tags: a.tags ? a.tags.map(([t]) => t) : q ? [q.qtype, ...(q.questionFeatures ?? [])].filter(Boolean) : a.qtype ? [a.qtype] : [],
       difficulty: q?.difficulty ?? a.level ?? null,
       firstCorrect: a.correct, firstAnswer: a.selected_answer, correctAnswer: a.correct_answer ?? q?.correctAnswer ?? null,

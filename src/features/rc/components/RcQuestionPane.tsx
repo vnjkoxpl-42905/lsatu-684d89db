@@ -23,6 +23,7 @@ import {
 
 interface Props {
   actorId?: string | null;
+  showTutorPrompt?: boolean;
   choicesHidden?: boolean;
   choicesHiddenMessage?: string;
   trainingControls?: React.ReactNode;
@@ -70,6 +71,7 @@ interface Popover {
 
 export function RcQuestionPane({
   actorId,
+  showTutorPrompt,
   choicesHidden = false,
   choicesHiddenMessage = 'Choices are hidden while you make a prediction. Open Training options to continue.',
   trainingControls,
@@ -222,6 +224,7 @@ export function RcQuestionPane({
           secondPick={reattemptPick ?? undefined}
           sourceLabel={`PrepTest ${item.passage.preptest} · Section ${item.passage.section} · Passage ${item.passage.setNumber} · Question ${question.position}`}
           actorId={actorId}
+          showTutorPrompt={showTutorPrompt}
         />
       )}
 

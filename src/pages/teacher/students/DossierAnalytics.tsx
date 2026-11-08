@@ -1,16 +1,22 @@
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
 import { Brush, CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
-import { ChevronDown, ChevronRight, Info, Search, Lightbulb } from "lucide-react";
+import { ArrowUpRight, ChevronDown, ChevronRight, Info, Search, Lightbulb } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { cn } from "@/lib/utils";
 import { useQuestionBank } from "@/contexts/QuestionBankContext";
+import { useFirstAnswerProgress } from "@/hooks/useFirstAnswerProgress";
+import { isReleasedAnswer, orderedDistinctAnswers } from "@/lib/firstAnswerProgress";
+import { questionBank } from "@/lib/questionLoader";
+import type { AnalyticsReviewTarget } from "./AnalyticsQuestionReview";
+
+const AnalyticsQuestionReview = React.lazy(() => import("./AnalyticsQuestionReview"));
 import { useDossier } from "./StudentDossier";
 import AnalyticsInsights from "./AnalyticsInsights";
 import PracticeRatingCard from "./PracticeRatingCard";
 import {
   buildSittings, loadStudentPractice, performanceSeries, questionRows, tagAnalytics,
-  type Priority, type Sitting, type SittingKind, type TagStat,
+  type Priority, type Sitting, type SittingKind, type TagStat, type StudentPractice, type QuestionRow,
 } from "@/lib/studentAnalytics";
 
 /**
@@ -55,6 +61,8 @@ export function StudentAnalyticsView({ studentId, studentName, runHref, audience
   const navigate = useNavigate();
   const { isLoading: bankLoading } = useQuestionBank();
   const [tab, setTab] = React.useState<Tab>("overview");
+  const [questionTag, setQuestionTag] = React.useState("all");
+  const reviewTag = (tag: string) => { setQuestionTag(tag); setTab("questions"); };
   const { data, isLoading, error } = useQuery({
     queryKey: ["student-analytics", studentId],
     queryFn: () => loadStudentPractice(studentId),
@@ -97,7 +105,7 @@ export function StudentAnalyticsView({ studentId, studentName, runHref, audience
               setGoal(g); setGoalDraft(String(g));
               try { localStorage.setItem(goalKey(studentId), String(g)); } catch { /* per-device only */ }
             }}
-            onReview={() => setTab("questions")} compact />
+            onReview={reviewTag} compact />
           <PracticeHistory sittings={sittings} onOpen={openSitting} />
         </>
       )}
@@ -107,9 +115,9 @@ export function StudentAnalyticsView({ studentId, studentName, runHref, audience
       {tab === "tags" && (
         <TagAnalytics tags={tags} goal={goal} goalDraft={goalDraft} setGoalDraft={setGoalDraft}
           onSaveGoal={() => { const g = Math.max(120, Math.min(180, Number(goalDraft) || 165)); setGoal(g); try { localStorage.setItem(goalKey(studentId), String(g)); } catch { /* */ } }}
-          onReview={() => setTab("questions")} />
+          onReview={reviewTag} />
       )}
-      {tab === "questions" && <QuestionsTable attempts={data.attempts} />}
+      {tab === "questions" && <QuestionsTable key={studentId} studentId={audience === "student" ? undefined : studentId} practice={data} tag={questionTag} setTag={setQuestionTag} />}
     </div>
   );
 }
@@ -203,7 +211,7 @@ function PriorityBars({ p }: { p: Priority }) {
 }
 
 function TagAnalytics({ tags, goal, goalDraft, setGoalDraft, onSaveGoal, onReview, compact }: {
-  tags: TagStat[]; goal: number; goalDraft: string; setGoalDraft: (v: string) => void; onSaveGoal: () => void; onReview: () => void; compact?: boolean;
+  tags: TagStat[]; goal: number; goalDraft: string; setGoalDraft: (v: string) => void; onSaveGoal: () => void; onReview: (tag: string) => void; compact?: boolean;
 }) {
   const [open, setOpen] = React.useState<string | null>(null);
   return (
@@ -248,7 +256,7 @@ function TagAnalytics({ tags, goal, goalDraft, setGoalDraft, onSaveGoal, onRevie
               {open === t.tag && (
                 <div className="flex flex-wrap items-center gap-4 bg-slate-50/70 px-14 pb-5 text-sm text-slate-700">
                   <span>{t.correct} of {t.answered} right on first answer ({Math.round(t.accuracy * 100)}%)</span>
-                  <button type="button" onClick={onReview} className="font-semibold text-sky-800 hover:underline">Review questions</button>
+                  <button type="button" onClick={() => onReview(t.tag)} className="font-semibold text-sky-800 hover:underline">Review questions</button>
                 </div>
               )}
             </div>
@@ -313,23 +321,78 @@ function PracticeHistory({ sittings, onOpen, only }: { sittings: Sitting[]; onOp
 
 /* ------------------------------------------------------------- Questions */
 
-function QuestionsTable({ attempts }: { attempts: Parameters<typeof questionRows>[0] }) {
-  const all = React.useMemo(() => questionRows(attempts), [attempts]);
+function QuestionsTable({ practice, studentId, tag, setTag }: {
+  practice: StudentPractice;
+  studentId?: string;
+  tag: string;
+  setTag: (tag: string) => void;
+}) {
+  const { ledger, loading } = useFirstAnswerProgress("all", studentId);
+  const rawRows = React.useMemo(() => questionRows(practice.attempts), [practice.attempts]);
+  const [selected, setSelected] = React.useState<AnalyticsReviewTarget | null>(null);
+  const opener = React.useRef<HTMLButtonElement>(null);
+  const firstByQuestion = React.useMemo(() => {
+    const first = new Map<string, NonNullable<typeof ledger>["answers"][number]>();
+    for (const answer of orderedDistinctAnswers(ledger?.answers ?? [])) {
+      const key = answer.provenance?.kind === "rc-session" ? `rc:${answer.provenance.questionId}` : answer.questionKey.slice(3);
+      if (!first.has(key)) first.set(key, answer);
+    }
+    return first;
+  }, [ledger]);
+  const all = React.useMemo(() => rawRows.map((row) => {
+    const first = firstByQuestion.get(row.qid);
+    if (first && isReleasedAnswer(first)) {
+      return { ...row, firstAnswer: first.selectedAnswer ?? null, firstCorrect: first.correct, timeMs: first.timeMs ?? null };
+    }
+    // The historical RC list includes work with results still hidden.
+    return row.kind === "rc" || first?.resultVisibility === "withheld"
+      ? { ...row, firstAnswer: null, firstCorrect: null, correctAnswer: null, timeMs: null }
+      : row;
+  }), [rawRows, firstByQuestion]);
+  const completedDrillAnswers = React.useMemo(() => {
+    const saved = new Set<string>();
+    for (const drill of practice.drills ?? []) {
+      if (drill.session.status !== "completed") continue;
+      for (const answer of drill.session.attempts ?? []) {
+        if (answer.selected_answer && typeof answer.correct === "boolean") {
+          saved.add(JSON.stringify([answer.qid, answer.selected_answer, answer.correct]));
+        }
+      }
+    }
+    return saved;
+  }, [practice.drills]);
+
+  function reviewTarget(row: QuestionRow): AnalyticsReviewTarget | null {
+    const first = firstByQuestion.get(row.qid);
+    if (row.kind === "rc") {
+      const source = first?.provenance;
+      return first && isReleasedAnswer(first) && source?.kind === "rc-session"
+        ? { kind: "rc", label: row.label, questionId: source.questionId, passageId: source.passageId, selectedAnswer: first.selectedAnswer ?? null }
+        : null;
+    }
+    if (!questionBank.getQuestion(row.qid)) return null;
+    if (first) return isReleasedAnswer(first)
+      ? { kind: "lr", label: row.label, qid: row.qid, selectedAnswer: first.selectedAnswer ?? null }
+      : null;
+    return completedDrillAnswers.has(JSON.stringify([row.qid, row.firstAnswer, row.firstCorrect]))
+      ? { kind: "lr", label: row.label, qid: row.qid, selectedAnswer: row.firstAnswer } : null;
+  }
   const [result, setResult] = React.useState<"all" | "correct" | "incorrect">("all");
   const [section, setSection] = React.useState<"all" | "lr" | "rc">("all");
-  const [tag, setTag] = React.useState("all");
   const [search, setSearch] = React.useState("");
-  const tagsList = React.useMemo(() => [...new Set(all.flatMap((r) => r.tags))].sort(), [all]);
+  const tagsList = React.useMemo(() => [...new Set(all.flatMap((r) => [r.questionType, ...r.tags].filter(Boolean) as string[]))].sort(), [all]);
+  const selectedTag = tagsList.includes(tag) ? tag : "all";
+  const toggleTag = (name: string) => setTag(selectedTag === name ? "all" : name);
   const rows = all.filter((r) => (section === "all" || r.kind === section) && (result === "all" || (result === "correct" ? r.firstCorrect : r.firstCorrect === false))
-    && (tag === "all" || r.tags.includes(tag))
+    && (selectedTag === "all" || r.questionType === selectedTag || r.tags.includes(selectedTag))
     && (!search.trim() || r.label.toLowerCase().includes(search.trim().toLowerCase())));
-  const sel = "rounded-xl border-2 border-black/10 bg-white px-3 py-2 text-sm";
+  const sel = "max-w-full rounded-xl border-2 border-black/10 bg-white px-3 py-2 text-sm";
   return (
     <section aria-label="Questions and explanations" className="space-y-4">
       <div className="flex flex-wrap items-center gap-2">
-        <label className="relative">
+        <label className="relative max-w-full">
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" aria-hidden />
-          <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Find a question, e.g. PT124.S1" aria-label="Find a question" className="w-64 rounded-xl border-2 border-black/10 py-2 pl-9 pr-3 text-sm" />
+          <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Find a question, e.g. PT124.S1" aria-label="Find a question" className="w-64 max-w-full rounded-xl border-2 border-black/10 py-2 pl-9 pr-3 text-sm" />
         </label>
         <select aria-label="Section" className={sel} value={section} onChange={(e) => setSection(e.target.value as typeof section)}>
           <option value="all">LR and RC</option><option value="lr">Logical Reasoning</option><option value="rc">Reading Comprehension</option>
@@ -337,21 +400,41 @@ function QuestionsTable({ attempts }: { attempts: Parameters<typeof questionRows
         <select aria-label="Result" className={sel} value={result} onChange={(e) => setResult(e.target.value as typeof result)}>
           <option value="all">Result: all</option><option value="correct">Correct first time</option><option value="incorrect">Missed first time</option>
         </select>
-        <select aria-label="Tag" className={sel} value={tag} onChange={(e) => setTag(e.target.value)}>
+        <select aria-label="Tag" className={sel} value={selectedTag} onChange={(e) => setTag(e.target.value)}>
           <option value="all">Tags: all</option>{tagsList.map((t) => <option key={t} value={t}>{t}</option>)}
         </select>
         <span className="ml-auto text-sm text-slate-500">{rows.length} questions</span>
       </div>
+      {selectedTag !== "all" && <button type="button" onClick={() => setTag("all")} className="min-h-10 rounded-lg border border-slate-300 bg-white px-3 text-sm font-medium text-slate-700 hover:bg-slate-50">Clear tag · {selectedTag}</button>}
       <div className="overflow-x-auto rounded-[20px] border-2 border-black/10 bg-white">
         <table className="w-full text-sm">
           <thead><tr className="border-b-2 border-black/10 text-left text-xs font-semibold uppercase tracking-wider text-slate-600">
             <th className="px-5 py-3">Question</th><th className="px-3 py-3">First answer</th><th className="px-3 py-3">Time</th><th className="px-3 py-3">Difficulty</th><th className="px-3 py-3">Seen</th><th className="px-3 py-3">Last seen</th>
           </tr></thead>
           <tbody>
-            {rows.map((r) => (
+            {rows.map((r) => {
+              const target = reviewTarget(r);
+              const tags = [...new Set([r.questionType, ...r.tags].filter(Boolean) as string[])];
+              return (
               <tr key={r.qid} className="border-b border-black/10 last:border-0">
-                <td className="px-5 py-3"><b className="text-sky-800">{r.label}</b>
-                  <div className="mt-1 flex flex-wrap gap-1">{r.tags.map((t) => <span key={t} className="rounded-full border border-black/10 px-2 py-0.5 text-xs text-slate-500">{t}</span>)}</div></td>
+                <td className="px-4 py-3 sm:px-5">
+                  {target ? <button type="button" aria-label={`Review ${r.label}`} className="inline-flex min-h-9 items-center gap-1.5 rounded font-semibold text-sky-800 underline-offset-4 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+                    onClick={(event) => { opener.current = event.currentTarget; setSelected(target); }}>
+                    {r.label}<ArrowUpRight className="h-3.5 w-3.5" aria-hidden />
+                  </button> : <span className="font-semibold text-slate-700" title={loading ? "Checking saved review" : "Saved review unavailable"}>{r.label}</span>}
+                  <div className="mt-1 flex flex-wrap items-center gap-1.5">
+                    {tags.map((name) => (
+                      <button key={name} type="button" aria-pressed={selectedTag === name} onClick={() => toggleTag(name)}
+                        className={cn("min-h-7 rounded-full border px-2.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2",
+                          name === r.questionType ? "min-h-8 text-sm font-semibold" : "text-xs font-medium",
+                          selectedTag === name ? "border-slate-800 bg-slate-800 text-white"
+                            : name === r.questionType ? "border-slate-300 bg-[var(--lsatu-canvas)] text-slate-900 hover:border-slate-500"
+                              : "border-slate-200 text-slate-700 hover:border-slate-500 hover:bg-slate-50")}>
+                        {name}
+                      </button>
+                    ))}
+                  </div>
+                </td>
                 <td className="px-3 py-3">{r.firstCorrect == null ? "–" : r.firstCorrect
                   ? <span className="font-semibold text-emerald-700">{r.firstAnswer} ✓</span>
                   : <span><span className="font-semibold text-red-600">{r.firstAnswer ?? "blank"}</span>{r.correctAnswer && <span className="text-slate-500"> → {r.correctAnswer}</span>}</span>}</td>
@@ -360,10 +443,15 @@ function QuestionsTable({ attempts }: { attempts: Parameters<typeof questionRows
                 <td className="px-3 py-3">{r.timesSeen}×</td>
                 <td className="px-3 py-3 text-slate-500">{r.lastSeen ? fmtDay(r.lastSeen) : "–"}</td>
               </tr>
-            ))}
+              );
+            })}
+            {!rows.length && <tr><td colSpan={6} className="px-5 py-8 text-center text-slate-600">No questions match these filters.</td></tr>}
           </tbody>
         </table>
       </div>
+      {selected && <React.Suspense fallback={<p role="status">Opening review…</p>}>
+        <AnalyticsQuestionReview target={selected} onClose={() => setSelected(null)} returnFocus={() => opener.current?.focus()} />
+      </React.Suspense>}
     </section>
   );
 }

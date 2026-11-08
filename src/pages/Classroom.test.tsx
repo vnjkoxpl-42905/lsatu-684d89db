@@ -34,6 +34,9 @@ vi.mock("@/components/LockedModule", () => ({
 vi.mock("@/hooks/useUserPermissions", () => ({
   useUserPermissions: () => permissions,
 }));
+vi.mock("@/hooks/useReadingCenterAccess", () => ({
+  useReadingCenterAccess: () => ({ allowed: false, isPending: false }),
+}));
 
 describe("Classroom", () => {
   it("gives the whole stage to the intake until it is finished", () => {
