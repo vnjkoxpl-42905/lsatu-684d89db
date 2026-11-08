@@ -100,6 +100,10 @@ export default function SectionReviewWalk({ session, brResults, onBack, backLabe
   }, [currentIndex]);
   const [tab, setTab] = React.useState<ReviewTab>('clean');
   const [showAnswers, setShowAnswers] = React.useState(false);
+  // Clean is for re-trying a question cold. A click marks a fresh pick here,
+  // on this screen only: it is never written, so the record of the sitting
+  // can't change.
+  const [freshPicks, setFreshPicks] = React.useState<Record<string, string>>({});
   const [highlightMode, setHighlightMode] = React.useState<HighlightMode>('none');
   const questionHighlights = useQuestionHighlights();
   const [searchTerm, setSearchTerm] = React.useState('');
@@ -150,7 +154,7 @@ export default function SectionReviewWalk({ session, brResults, onBack, backLabe
       ? attempt?.selectedAnswer || ''
       : tab === 'br'
         ? brResult?.brAnswer || ''
-        : '';
+        : freshPicks[currentQid] ?? '';
 
   const answeredQids = React.useMemo(() => {
     const set = new Set<string>();
@@ -248,7 +252,15 @@ export default function SectionReviewWalk({ session, brResults, onBack, backLabe
         // the record says happened. Highlights are the one exception: they
         // are the student's own marks, live only on this screen, and are
         // never written anywhere.
-        onAnswerSelect={noop}
+        onAnswerSelect={(letter) => {
+          if (tab !== 'clean') return;
+          setFreshPicks((prev) => {
+            const next = { ...prev };
+            if (next[currentQid] === letter) delete next[currentQid];
+            else next[currentQid] = letter;
+            return next;
+          });
+        }}
         onEliminate={noop}
         onToggleFlag={noop}
         onTextSelection={(regions) =>
@@ -278,7 +290,9 @@ export default function SectionReviewWalk({ session, brResults, onBack, backLabe
             ))}
             <span className="ml-auto text-[13px] text-slate-500">
               {tab === 'clean'
-                ? 'No answer marked'
+                ? freshPicks[currentQid]
+                  ? `Fresh pick: ${freshPicks[currentQid]} · not saved`
+                  : 'Pick an answer to re-try it cold'
                 : tab === 'actual'
                   ? attempt?.selectedAnswer
                     ? `You chose ${attempt.selectedAnswer} under the clock`

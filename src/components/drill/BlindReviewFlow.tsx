@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { PICKED_BADGE, PICKED_ROW } from "@/lib/answerChoiceStyles";
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -266,25 +267,34 @@ export function BlindReviewFlow({ session, selectedQids, onComplete }: BlindRevi
 
             {/* Answer Choices */}
             <RadioGroup value={brAnswer} onValueChange={setBrAnswer}>
-              {Object.entries(currentQuestion.answerChoices).map(([key, text]) => (
-                <div
-                  key={key}
-                  className={cn(
-                    "flex items-start gap-4 py-3 px-4 rounded-lg border",
-                    "hover:bg-accent/50 cursor-pointer transition-colors"
-                  )}
-                  onClick={() => setBrAnswer(key)}
-                >
-                  <RadioGroupItem value={key} id={`br-answer-${key}`} />
-                  <Label
-                    htmlFor={`br-answer-${key}`}
-                    className="flex-1 cursor-pointer"
+              {Object.entries(currentQuestion.answerChoices).map(([key, text]) => {
+                const picked = brAnswer === key;
+                return (
+                  <div
+                    key={key}
+                    data-picked={picked || undefined}
+                    className={cn(
+                      "flex items-start gap-4 py-3 px-4 rounded-lg border cursor-pointer transition-all duration-200",
+                      picked ? PICKED_ROW : "border-slate-200 hover:border-slate-300 hover:bg-slate-50",
+                    )}
+                    onClick={() => setBrAnswer(key)}
                   >
-                    <span className="font-semibold mr-2">({key})</span>
-                    {text}
-                  </Label>
-                </div>
-              ))}
+                    <RadioGroupItem value={key} id={`br-answer-${key}`} className="sr-only" />
+                    <span
+                      aria-hidden
+                      className={cn(
+                        "mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full border font-semibold transition-colors",
+                        picked ? PICKED_BADGE : "border-slate-300 text-slate-800",
+                      )}
+                    >
+                      {key}
+                    </span>
+                    <Label htmlFor={`br-answer-${key}`} className="flex-1 cursor-pointer leading-relaxed">
+                      {text}
+                    </Label>
+                  </div>
+                );
+              })}
             </RadioGroup>
 
             {/* Rationale */}
