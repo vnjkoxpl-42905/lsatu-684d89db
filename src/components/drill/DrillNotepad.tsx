@@ -8,7 +8,8 @@ import {
 import { readDrillNotes, writeDrillNotes } from "@/lib/drillNotesStorage";
 
 /**
- * Mini notepad pinned to the bottom-left of the drill page.
+ * Mini notepad in the exam header, top right. It used to float at the
+ * bottom-left, where it sat on top of the question-number strip.
  * - Notes are stored per-question (keyed by active qid) and auto-load on
  *   question change. Falls back to a shared "global" pad outside questions.
  * - Persists to localStorage.
@@ -34,15 +35,13 @@ export default function DrillNotepad() {
   const hasNotes = value.trim().length > 0;
 
   return (
-    <div
-      className="fixed bottom-4 left-4 z-40 flex flex-col items-start gap-2"
-      style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
-    >
+    <div className="relative flex items-center">
       {open && (
         <div
           role="dialog"
           aria-label="Notepad"
           className={cn(
+            "absolute right-0 top-full z-50 mt-2",
             "bg-white border border-slate-300 rounded-lg shadow-xl",
             "flex flex-col overflow-hidden",
             // Desktop: fixed-size panel. Mobile: bottom-sheet width.
@@ -105,18 +104,20 @@ export default function DrillNotepad() {
         onClick={() => setOpen((o) => !o)}
         aria-label={open ? "Hide notepad" : "Open notepad"}
         title="Notepad"
+        aria-expanded={open}
         className={cn(
-          "relative h-11 w-11 rounded-full bg-white border border-slate-300",
-          "shadow-md flex items-center justify-center",
-          "text-slate-800 hover:bg-slate-50 transition-colors",
+          "relative inline-flex h-8 items-center gap-1.5 rounded-md border px-2.5 text-[13px] font-medium",
+          open ? "border-slate-800 bg-slate-800 text-white" : "border-slate-300 bg-white text-slate-800 hover:bg-slate-50",
+          "transition-colors",
           "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-700",
         )}
       >
-        <NotebookPen className="h-5 w-5" />
+        <NotebookPen className="h-4 w-4" />
+        <span className="hidden sm:inline">Notepad</span>
         {hasNotes && !open && (
           <span
             aria-hidden
-            className="absolute top-1 right-1 h-2 w-2 rounded-full bg-amber-500 ring-2 ring-white"
+            className="absolute -top-1 -right-1 h-2.5 w-2.5 rounded-full bg-amber-500 ring-2 ring-white"
           />
         )}
       </button>
