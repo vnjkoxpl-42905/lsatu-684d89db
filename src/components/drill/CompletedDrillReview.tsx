@@ -7,6 +7,9 @@ import { useAnswerPopularity, type PopularityKey } from "@/hooks/useAnswerPopula
 import { useQuestionStudyMarks } from "@/hooks/useQuestionStudyMarks";
 import { JournalPanel } from "@/components/drill/review/JournalPanel";
 import { QuestionInfoPanel } from "@/components/drill/review/QuestionInfoPanel";
+import { ResultPopover, TagPopover } from "@/components/drill/review/ReviewPopovers";
+import { useTagStats } from "@/hooks/useTagStats";
+import { familyForFeature, FEATURE_FAMILY_BY_ID } from "@/lib/questionFeatureFamilies";
 
 /**
  * The one results-and-review page for a finished drill, in 7Sage's shape:
@@ -99,6 +102,17 @@ export function CompletedDrillReview({ title, qids, attempts, openIndex, onOpen,
   const [onlyNotes, setOnlyNotes] = React.useState(false);
   const [onlyBookmarked, setOnlyBookmarked] = React.useState(false);
   const marks = useQuestionStudyMarks();
+  const tagStats = useTagStats(qids.some((qid) => !!questionBank.getQuestion(qid)));
+  const tagChip = (t: string) => {
+    const stats = tagStats.get(t);
+    const familyId = familyForFeature(t);
+    const family = stats?.group || (familyId ? FEATURE_FAMILY_BY_ID[familyId]?.label : undefined);
+    return (
+      <TagPopover key={t} tag={t} stats={stats} family={family}>
+        <button type="button" onClick={(e) => e.stopPropagation()} className="rounded-full border border-border px-2 py-0.5 text-xs text-muted-foreground transition-colors hover:border-[#1f6f8b]/50 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1f6f8b]/40">{t}</button>
+      </TagPopover>
+    );
+  };
   const [journalQid, setJournalQid] = React.useState<string | null>(null);
   const [infoIndex, setInfoIndex] = React.useState<number | null>(null);
   const [markError, setMarkError] = React.useState<string | null>(null);
@@ -305,11 +319,15 @@ export function CompletedDrillReview({ title, qids, attempts, openIndex, onOpen,
                       <span className="w-5 pt-0.5 text-muted-foreground">{index + 1}</span>
                       <div>
                         <button type="button" className="font-semibold text-primary underline-offset-2 hover:underline" onClick={(e) => { e.stopPropagation(); onOpen(index); }}>{questionLabel(qid)}</button>
-                        {tags.length > 0 && <div className="mt-1.5 flex flex-wrap gap-1.5">{tags.map((t) => <span key={t} className="rounded-full border border-border px-2 py-0.5 text-xs text-muted-foreground">{t}</span>)}</div>}
+                        {tags.length > 0 && <div className="mt-1.5 flex flex-wrap gap-1.5">{tags.map(tagChip)}</div>}
                       </div>
                     </div>
                   </td>
-                  <td className="px-2 py-4"><div className="flex items-center justify-center gap-5"><ResultMark attempt={attempt} /><span className="w-8 text-center text-muted-foreground">–</span></div></td>
+                  <td className="px-2 py-4"><div className="flex items-center justify-center gap-5">
+                    <ResultPopover result={!attempt ? "unanswered" : attempt.correct ? "correct" : "incorrect"}>
+                      <button type="button" onClick={(e) => e.stopPropagation()} aria-label={`Result for ${questionLabel(qid)}`} className="rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1f6f8b]/40"><ResultMark attempt={attempt} /></button>
+                    </ResultPopover>
+                    <span className="w-8 text-center text-muted-foreground">–</span></div></td>
                   <td className="hidden px-2 py-4 text-center md:table-cell"><PopularityBars percents={popularity?.[qid]} correct={q?.correctAnswer} picked={attempt?.selected_answer} /></td>
                   <td className="px-4 py-4 font-mono text-muted-foreground">
                     {attempt ? formatTime(attempt.time_ms) : "–"}

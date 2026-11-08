@@ -7,6 +7,7 @@ vi.mock("@/contexts/AuthContext", () => ({ useAuth: () => ({ user: { id: "studen
 vi.mock("@/contexts/QuestionBankContext", () => ({ useQuestionBank: () => ({ isLoading: false, error: null }) }));
 vi.mock("@/hooks/useClassId", () => ({ useClassId: () => ({ classId: "c-1", loading: false, error: null }) }));
 vi.mock("@/hooks/useQuestionStudyMarks", () => ({ useQuestionStudyMarks: () => ({ notes: new Map(), note: () => null, hasNote: () => false, isBookmarked: () => false, hasDrawing: () => false, classId: "c-1", saveNote: vi.fn(), toggleBookmark: vi.fn() }), noteHasContent: () => false }));
+vi.mock("@/hooks/useTagStats", () => ({ useTagStats: () => new Map() }));
 vi.mock("@/hooks/useAnswerPopularity", () => ({ useAnswerPopularity: () => ({ data: {} }) }));
 vi.mock("@/lib/questionLoader", () => ({ questionBank: { getQuestion: () => null } }));
 const load = vi.hoisted(() => vi.fn());
