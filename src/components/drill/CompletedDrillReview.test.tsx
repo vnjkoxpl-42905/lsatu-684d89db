@@ -1,6 +1,8 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { CompletedDrillReview } from "./CompletedDrillReview";
+import { MemoryRouter } from "react-router-dom";
+import { TagPopover, ResultPopover, frequencyLabel } from "./review/ReviewPopovers";
 
 // The walk itself is the drill's exam screen and has its own tests; here we
 // only prove the review hands the open question to it rather than drawing one.
@@ -17,6 +19,7 @@ const marks = vi.hoisted(() => ({
   saveNote: vi.fn(), toggleBookmark: vi.fn(() => Promise.resolve()),
 }));
 vi.mock("@/hooks/useQuestionStudyMarks", () => ({ useQuestionStudyMarks: () => marks, noteHasContent: () => true }));
+vi.mock("@/hooks/useTagStats", () => ({ useTagStats: () => new Map([["Flaw", { key: "Flaw", label: "Flaw", group: "Assumption", poolCount: 300, frequency: 0.1, attempted: 20, correct: 15, accuracy: 0.75, avgTimeMs: null, avgDifficulty: null }]]) }));
 vi.mock("@/hooks/useAnswerPopularity", () => ({ useAnswerPopularity: () => ({ data: { "q-1": { A: 9, B: 2, C: 80, D: 4, E: 5 } } }) }));
 vi.mock("@/lib/questionLoader", () => ({ questionBank: { getQuestion: () => ({
   pt: 106, section: 2, qnum: 18, difficulty: 3, qtype: "Flaw", questionFeatures: [], stimulus: "Dobson: stones.", questionStem: "Which is an error?",
@@ -27,7 +30,7 @@ const attempts = [{ qid: "q-1", selected_answer: "C", correct: false, time_ms: 6
 
 describe("completed drill review", () => {
   it("lists questions as a table with result and timing, not a details stack", () => {
-    const { container } = render(<CompletedDrillReview title="Flaw" qids={["q-1"]} attempts={attempts} openIndex={null} onOpen={() => {}} />);
+    const { container } = render(<MemoryRouter><CompletedDrillReview title="Flaw" qids={["q-1"]} attempts={attempts} openIndex={null} onOpen={() => {}} /></MemoryRouter>);
     expect(container.querySelector("details")).toBeNull();
     expect(screen.getByRole("table")).toHaveTextContent("PT106.S2.Q18");
     expect(screen.getByRole("table")).toHaveTextContent("01:05");
@@ -37,14 +40,14 @@ describe("completed drill review", () => {
   });
 
   it("filters the table by result", () => {
-    render(<CompletedDrillReview title="Flaw" qids={["q-1"]} attempts={attempts} openIndex={null} onOpen={() => {}} />);
+    render(<MemoryRouter><CompletedDrillReview title="Flaw" qids={["q-1"]} attempts={attempts} openIndex={null} onOpen={() => {}} /></MemoryRouter>);
     fireEvent.change(screen.getByLabelText("Result"), { target: { value: "correct" } });
     expect(screen.getByRole("table")).toHaveTextContent("No questions match these filters.");
   });
 
   it("opens the question in the drill's own exam screen, full screen, with Clean and Actual", () => {
     const onOpen = vi.fn();
-    render(<CompletedDrillReview title="Flaw" qids={["q-1"]} attempts={attempts} openIndex={0} onOpen={onOpen} />);
+    render(<MemoryRouter><CompletedDrillReview title="Flaw" qids={["q-1"]} attempts={attempts} openIndex={0} onOpen={onOpen} /></MemoryRouter>);
     const dialog = screen.getByRole("dialog");
     expect(dialog.className).toContain("fixed");
     expect(screen.getByTestId("exam-walk")).toHaveAttribute("data-start", "0");
@@ -54,7 +57,7 @@ describe("completed drill review", () => {
     expect(onOpen).toHaveBeenCalledWith(null);
   });
   it("bookmarks a question from its row and opens its journal and details", () => {
-    render(<CompletedDrillReview title="Flaw" qids={["q-1"]} attempts={attempts} openIndex={null} onOpen={() => {}} />);
+    render(<MemoryRouter><CompletedDrillReview title="Flaw" qids={["q-1"]} attempts={attempts} openIndex={null} onOpen={() => {}} /></MemoryRouter>);
     fireEvent.click(screen.getByRole("button", { name: "Bookmark PT106.S2.Q18" }));
     expect(marks.toggleBookmark).toHaveBeenCalledWith("q-1");
     fireEvent.click(screen.getByRole("button", { name: "Open your note on PT106.S2.Q18" }));
@@ -65,10 +68,22 @@ describe("completed drill review", () => {
   });
 
   it("filters to questions with notes and to bookmarked questions", () => {
-    render(<CompletedDrillReview title="Flaw" qids={["q-1"]} attempts={attempts} openIndex={null} onOpen={() => {}} />);
+    render(<MemoryRouter><CompletedDrillReview title="Flaw" qids={["q-1"]} attempts={attempts} openIndex={null} onOpen={() => {}} /></MemoryRouter>);
     fireEvent.click(screen.getByLabelText("Has notes"));
     expect(screen.getByRole("table")).toHaveTextContent("PT106.S2.Q18");
     fireEvent.click(screen.getByLabelText("Bookmarked"));
     expect(screen.getByRole("table")).toHaveTextContent("No questions match these filters.");
+  });
+  it("tag card shows the student's real accuracy and how common the tag is", () => {
+    render(<TagPopover tag="Flaw" family="Assumption" stats={{ key: "Flaw", label: "Flaw", group: "Assumption", poolCount: 300, frequency: 0.1, attempted: 20, correct: 15, accuracy: 0.75, avgTimeMs: null, avgDifficulty: null }}><button>Flaw</button></TagPopover>);
+    expect(frequencyLabel(0.1).label).toBe("Very common on the test");
+    expect(frequencyLabel(0.01).label).toBe("Less common");
+  });
+
+  it("wraps each tag and result mark in a hover card trigger", () => {
+    render(<MemoryRouter><CompletedDrillReview title="Flaw" qids={["q-1"]} attempts={attempts} openIndex={null} onOpen={() => {}} /></MemoryRouter>);
+    expect(screen.getByRole("button", { name: "Flaw" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Result for PT106.S2.Q18" })).toBeInTheDocument();
+    void ResultPopover;
   });
 });
