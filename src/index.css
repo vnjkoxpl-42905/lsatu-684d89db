@@ -287,3 +287,8 @@ Semantic Tailwind channels use HSL. Exact shared palette aliases use hex.
 .preserve-3d { transform-style: preserve-3d; }
 .backface-hidden { -webkit-backface-visibility: hidden; backface-visibility: hidden; }
 .rotate-y-180 { transform: rotateY(180deg); }
+
+/* A pick lands with a short settle, so the click is felt. See lib/answerChoiceStyles.ts. */
+@keyframes answer-pick-settle { 0% { transform: scale(0.985); } 60% { transform: scale(1.006); } 100% { transform: scale(1); } }
+.answer-picked { animation: answer-pick-settle 220ms cubic-bezier(0.22, 1, 0.36, 1); }
+@media (prefers-reduced-motion: reduce) { .answer-picked { animation: none; } }

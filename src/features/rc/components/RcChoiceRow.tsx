@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { PICKED_BADGE, PICKED_ROW } from "@/lib/answerChoiceStyles";
 import { Eye, EyeOff } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { RcMarkdown } from './RcMarkdown';
@@ -180,7 +181,7 @@ export function RcChoiceRow({
         isCorrect
           ? 'rc-choice-correct'
           : selected
-            ? 'border-slate-500 bg-slate-100 shadow-sm'
+            ? PICKED_ROW
             : effectiveEliminated
               ? 'border-transparent opacity-55 grayscale-[0.5]'
               : 'border-transparent hover:border-slate-200 hover:bg-slate-50',
@@ -197,7 +198,7 @@ export function RcChoiceRow({
           isCorrect
             ? ''
             : selected
-              ? 'rc-choice-badge-selected border-slate-900 bg-slate-900 text-white'
+              ? `rc-choice-badge-selected ${PICKED_BADGE}`
               : 'border-slate-300 group-hover:border-slate-400',
         )}
         style={badgeStyle}

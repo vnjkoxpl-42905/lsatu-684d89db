@@ -383,7 +383,7 @@ describe('Drill review controls — guided drill (fixed + list)', () => {
     // Answer off: colour gone, pick stays.
     fireEvent.click(screen.getByRole('button', { name: 'Hide Answer' }));
     expect(choiceBlock('B', 18)).not.toHaveClass('text-green-900');
-    expect(choiceButton('A')).toHaveClass('bg-slate-900');
+    expect(choiceButton('A')).toHaveClass('bg-[#1f3a5f]');
 
     // Explanation: expanders only, drawer stays closed, no dialog.
     fireEvent.click(screen.getByRole('button', { name: 'Explanation' }));
@@ -410,7 +410,7 @@ describe('Drill review controls — guided drill (fixed + list)', () => {
 
     // Reset Response clears the pick and leaves the pills alone.
     fireEvent.click(screen.getByRole('button', { name: 'Reset Response' }));
-    expect(choiceButton('A')).not.toHaveClass('bg-slate-900');
+    expect(choiceButton('A')).not.toHaveClass('bg-[#1f3a5f]');
     expect(screen.getByRole('button', { name: 'Reset Response' })).toBeDisabled();
 
     // Nothing was persisted per question: a list drill saves at the end.
@@ -490,7 +490,7 @@ describe('Drill review controls — filter drill (fixed + commit)', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Next' }));
     await waitFor(() => expect(console.error).toHaveBeenCalledWith('[drill:run] account save failed', expect.any(Error)));
     expect(screen.getByText(/Stimulus 1[89]:/).textContent).toBe(before);
-    expect(choiceButton('C')).toHaveClass('bg-slate-900');
+    expect(choiceButton('C')).toHaveClass('bg-[#1f3a5f]');
     expect(ledgerSave.created).toBe(0);
   });
 
@@ -542,7 +542,7 @@ describe('Drill review controls — filter drill (fixed + commit)', () => {
       await new Promise((r) => setTimeout(r, 50));
     });
     expect(screen.getByText(/Stimulus 1[89]:/).textContent).toBe(before);
-    expect(choiceButton('C')).toHaveClass('bg-slate-900');
+    expect(choiceButton('C')).toHaveClass('bg-[#1f3a5f]');
     expect(insertCalls.attempts).toHaveLength(0);
     const failures = (console.error as unknown as { mock: { calls: unknown[][] } }).mock.calls.filter(
       (c) => c[0] === '[drill:commit-failed]',

@@ -1,4 +1,5 @@
 import * as React from "react";
+import { PICKED_BADGE, PICKED_ROW } from "@/lib/answerChoiceStyles";
 import { DrillSplit } from '@/components/drill/DrillSplit';
 import { Check, Eye, EyeOff, Flag, X } from "lucide-react";
 import { HighlightedText } from "@/components/drill/HighlightedText";
@@ -381,7 +382,7 @@ export default function OfficialQuestionPane({
                         : isWrongPick
                         ? "border-red-500 bg-red-50"
                         : isSelected
-                        ? "border-slate-500 bg-slate-100 shadow-sm"
+                        ? PICKED_ROW
                         : isEliminated
                         ? "border-transparent bg-white opacity-55 grayscale-[0.5]"
                         : "border-transparent bg-white hover:border-slate-200 hover:bg-slate-50",
@@ -399,7 +400,7 @@ export default function OfficialQuestionPane({
                           : isWrongPick
                           ? "border-red-600 bg-red-500 text-white"
                           : isSelected
-                          ? "border-slate-900 bg-slate-900 text-white"
+                          ? PICKED_BADGE
                           : "border-transparent text-slate-950 group-hover:border-slate-300",
                       )}
                       style={choiceBadgeStyle}
