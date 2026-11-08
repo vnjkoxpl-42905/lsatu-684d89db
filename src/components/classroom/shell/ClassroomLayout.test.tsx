@@ -177,6 +177,23 @@ describe("classroom rail access", () => {
     expect(railButton(/^Students/)).toBeInTheDocument();
   });
 
+  it("opens personal Analytics from the student rail and keeps the teacher roster separate", async () => {
+    permissions.has_analytics_access = true;
+    await renderShell("/classroom");
+    fireEvent.click(railButton(/^Analytics$/));
+    expect(screen.getByTestId("where")).toHaveTextContent("/review/analytics");
+    expect(railButton(/^Analytics$/)).toHaveAttribute("aria-current", "page");
+    expect(railButton(/^Review$/)).not.toHaveAttribute("aria-current");
+    expect(railButton(/^Students/)).toBeUndefined();
+
+    cleanup();
+    permissions.is_admin = true;
+    await renderShell("/classroom");
+    expect(railButton(/^Analytics$/)).toBeUndefined();
+    fireEvent.click(railButton(/^Students/));
+    expect(screen.getByTestId("where")).toHaveTextContent("/student-analytics");
+  });
+
   it("keeps Schedule in the student rail", async () => {
     await renderShell("/classroom");
     fireEvent.click(railButton(/^Schedule/));

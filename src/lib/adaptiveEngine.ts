@@ -881,7 +881,7 @@ export class AdaptiveEngine {
         buckets: { progression: shuffled.slice(0, count).length, redemption: 0, maintenance: 0 },
         explanation: practiceRating && practiceRating.LR.count >= MIN_RATED_ANSWERS
           ? 'Question difficulty is matched to your practice rating.'
-          : 'Not enough history yet. Drilling a calibration set to learn your baseline.',
+          : 'This set helps Smart Drill learn which questions fit you.',
         coldStart: true,
       };
     }

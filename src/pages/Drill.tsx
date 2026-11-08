@@ -5121,13 +5121,14 @@ function DrillContent() {
           />
           {session.mode === 'adaptive' && ratingMatch?.qid === currentQuestion.qid && ratingMatch.actorId === user?.id && (
             <details className="border-b border-slate-200 bg-white px-4 py-1 text-sm text-slate-800">
-              <summary className="min-h-11 w-fit cursor-pointer py-3 font-semibold tabular-nums">
-                Your LR rating {Math.round(ratingMatch.student)} · Question {ratingMatch.item}
+              <summary className="flex min-h-11 w-fit cursor-pointer list-none items-center gap-3 py-2 tabular-nums [&::-webkit-details-marker]:hidden">
+                <span className="grid"><span className="text-xs text-slate-600">You</span><strong>{Math.round(ratingMatch.student)}</strong></span>
+                <span aria-hidden className="text-xs text-slate-500">vs</span>
+                <span className="grid"><span className="text-xs text-slate-600">Question</span><strong>{ratingMatch.item}</strong></span>
+                <span aria-hidden className="text-slate-600">ⓘ</span>
               </summary>
               <p className="mb-3 max-w-prose text-slate-600">
-                Estimated chance of a correct answer is {Math.round(100 * expectedPracticeAccuracy(ratingMatch.student, ratingMatch.item))}%.
-                A hard question answered correctly raises your rating more than an easy one.
-                A miss on an easy question lowers it more.
+                {Math.round(100 * expectedPracticeAccuracy(ratingMatch.student, ratingMatch.item))}% estimated chance of getting it right.
               </p>
             </details>
           )}

@@ -235,6 +235,15 @@ function ClassroomSidebar({
   const displayedRailPrefs = readingCenterAssigned
     ? { ...railPrefs, hidden: railPrefs.hidden.filter((id) => id !== 'my-work') }
     : railPrefs;
+  const personalAnalyticsPath = "/review/analytics";
+  const showPersonalAnalytics = !permissions.loading && !permissions.is_admin && permissions.has_analytics_access;
+  const personalAnalyticsActive = location.pathname === personalAnalyticsPath;
+  const personalAnalyticsLink = showPersonalAnalytics ? (
+    <button type="button" className={navClass(personalAnalyticsActive)}
+      aria-current={personalAnalyticsActive ? "page" : undefined} onClick={() => go(personalAnalyticsPath)}>
+      Analytics
+    </button>
+  ) : null;
   const railGroups = resolveRailGroups(displayedRailPrefs).map((group) => ({
     ...group,
     items: group.items.filter((item) => (item.id !== "schedule" && item.id !== "my-work") || !permissions.is_admin),
@@ -267,7 +276,7 @@ function ClassroomSidebar({
         };
       case "review":
         return {
-          active: location.pathname.startsWith("/review") || location.pathname.startsWith("/progress") || location.pathname === "/analytics" || location.pathname === "/history" || activeSection === "journal" || activeSection === "flagged",
+          active: (location.pathname.startsWith("/review") && !(showPersonalAnalytics && personalAnalyticsActive)) || location.pathname.startsWith("/progress") || location.pathname === "/analytics" || location.pathname === "/history" || activeSection === "journal" || activeSection === "flagged",
           onClick: () => go(permissions.loading ? "/review" : reviewRailLanding(railPrefs, permissions.is_admin || permissions.has_analytics_access)),
         };
       case "progress":
@@ -338,10 +347,12 @@ function ClassroomSidebar({
                       </>
                     ) : null}
                   </button>
+                  {item.id === "review" ? personalAnalyticsLink : null}
                   {item.id === 'my-work' && readingCenterAssigned ? <AssignedReadingCenterLink onNavigate={onNavigate} /> : null}
                   </React.Fragment>
                 );
               })}
+              {!group.items.some((item) => item.id === "review") ? personalAnalyticsLink : null}
             </div>
           ))}
 
@@ -1105,7 +1116,7 @@ export default function ClassroomLayout() {
   // set" on the drill hub. It now lives in a sticky bar that takes its own
   // space in the flow, with the name of the room beside it so the button is
   // not a lone glyph floating on the page.
-  const mobileBarLabel = studentsStage ? "Students" : activeSection
+  const mobileBarLabel = studentsStage ? "Students" : location.pathname === "/review/analytics" ? "Analytics" : activeSection
     ? activeSection === "journal" || activeSection === "flagged"
       ? "Review"
       : SECTION_TITLES[activeSection]
