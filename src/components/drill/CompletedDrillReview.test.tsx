@@ -13,7 +13,7 @@ vi.mock("@/components/drill/SectionReviewWalk", () => ({
 }));
 const marks = vi.hoisted(() => ({
   notes: new Map(), ready: true, error: null,
-  note: () => null, hasNote: (qid: string) => qid === "q-1", isBookmarked: () => false,
+  note: () => null, hasNote: (qid: string) => qid === "q-1", isBookmarked: () => false, hasDrawing: () => false, classId: "c-1",
   saveNote: vi.fn(), toggleBookmark: vi.fn(() => Promise.resolve()),
 }));
 vi.mock("@/hooks/useQuestionStudyMarks", () => ({ useQuestionStudyMarks: () => marks, noteHasContent: () => true }));

@@ -8,6 +8,9 @@ import { loadStandaloneDrillRun, type StandaloneDrillRun } from "@/lib/drillRunL
 import { launchDrill } from "@/lib/drillLaunch";
 import { CompletedDrillReview } from "@/components/drill/CompletedDrillReview";
 import { lrRunProvenanceLabel } from "@/lib/lrRunProvenance";
+import { ensureJournalEntry } from "@/lib/wajService";
+import { questionBank } from "@/lib/questionLoader";
+import { useClassId } from "@/hooks/useClassId";
 
 function formatDuration(ms: number) {
   const total = Math.round(ms / 1000);
@@ -21,6 +24,30 @@ export default function DrillRuns() {
   const navigate = useNavigate();
   const { user } = useAuth();
   const { isLoading: bankLoading, error: bankError } = useQuestionBank();
+  const { classId } = useClassId();
+  const [journalError, setJournalError] = React.useState<string | null>(null);
+
+  /**
+   * The full journal entry only opens for questions already in the journal.
+   * ensureJournalEntry adds one when missing and never touches an existing
+   * entry's history, then the student goes straight to it.
+   */
+  const openJournalEntry = async (qid: string, index: number) => {
+    const q = questionBank.getQuestion(qid);
+    if (!q || !classId || !run) { setJournalError("This question can't be opened in the journal."); return; }
+    const attempt = run.session.attempts.find((a) => a.qid === qid);
+    try {
+      await ensureJournalEntry({
+        class_id: classId, qid, pt: Number(q.pt), section: Number(q.section), qnum: Number(q.qnum),
+        qtype: q.qtype, level: q.difficulty,
+        chosen_answer: attempt?.selected_answer ?? null, correct_answer: q.correctAnswer ?? null,
+        time_ms: attempt?.time_ms ?? null,
+      });
+      navigate(`/journal/${encodeURIComponent(qid)}?fromRun=${encodeURIComponent(run.id)}&fromQ=${index + 1}`);
+    } catch {
+      setJournalError("The journal entry couldn't be opened. Try again.");
+    }
+  };
   const [run, setRun] = React.useState<StandaloneDrillRun | null>(null);
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState<string | null>(null);
@@ -77,6 +104,7 @@ export default function DrillRuns() {
           <Button className="mt-5" onClick={() => navigate(continueTo!)}>Continue drill</Button>
         </section>
       ) : <>
+        {journalError && <p role="alert" className="mb-4 rounded-lg border border-red-200 bg-red-50 px-4 py-2 text-sm text-red-700">{journalError}</p>}
         <header className="mb-6">
           <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Completed drill</p>
           <h1 className="mt-2 font-serif text-3xl font-semibold">{adaptive ? "Smart Drill" : run.label || (guided ? "Guided drill" : "LR drill")}</h1>
@@ -89,6 +117,7 @@ export default function DrillRuns() {
             attempts={attempts}
             openIndex={openQuestion}
             onOpen={(index) => setSearchParams(index === null ? {} : { q: String(index + 1) })}
+            onOpenJournalEntry={openJournalEntry}
             about={[
               ["Questions", reviewQids.length],
               ["Answered", attempts.length],

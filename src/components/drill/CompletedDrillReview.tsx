@@ -78,7 +78,7 @@ function DifficultyDots({ level }: { level?: number }) {
   );
 }
 
-export function CompletedDrillReview({ title, qids, attempts, openIndex, onOpen, about }: {
+export function CompletedDrillReview({ title, qids, attempts, openIndex, onOpen, about, onOpenJournalEntry }: {
   title: string;
   qids: string[];
   attempts: ReviewAttempt[];
@@ -87,6 +87,8 @@ export function CompletedDrillReview({ title, qids, attempts, openIndex, onOpen,
   onOpen: (index: number | null) => void;
   /** Rows for "About this drill", label and value. */
   about?: Array<[string, React.ReactNode]>;
+  /** Open a question's full Wrong Answer Journal entry (the annotated screen). */
+  onOpenJournalEntry?: (qid: string, index: number) => void;
 }) {
   const byQid = React.useMemo(() => new Map(attempts.map((a) => [a.qid, a])), [attempts]);
   const [result, setResult] = React.useState<ResultFilter>("all");
@@ -138,6 +140,7 @@ export function CompletedDrillReview({ title, qids, attempts, openIndex, onOpen,
             onNotes={() => { setInfoIndex(null); setJournalQid(qid); }}
             onBookmark={() => toggleBookmark(qid)}
             onClose={() => setInfoIndex(null)}
+            onOpenEntry={onOpenJournalEntry ? () => { const i = infoIndex; setInfoIndex(null); onOpenJournalEntry(qid, i); } : undefined}
           />
         );
       })()}
@@ -147,6 +150,7 @@ export function CompletedDrillReview({ title, qids, attempts, openIndex, onOpen,
           marks={marks}
           onClose={() => setJournalQid(null)}
           onOpenQuestion={(qid) => setJournalQid(qid)}
+          onOpenFullEntry={onOpenJournalEntry ? (qid) => onOpenJournalEntry(qid, qids.indexOf(qid)) : undefined}
         />
       )}
       {markError && <p role="alert" className="fixed bottom-4 left-1/2 z-[220] -translate-x-1/2 rounded-lg bg-red-600 px-4 py-2 text-sm text-white shadow-lg">{markError}</p>}

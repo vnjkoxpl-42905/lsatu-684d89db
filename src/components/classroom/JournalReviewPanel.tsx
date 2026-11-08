@@ -134,6 +134,16 @@ export function JournalReviewPanel({
         />
       </Field>
 
+      <Field label="The Trap">
+        <textarea
+          className="classroom-textarea"
+          rows={2}
+          placeholder="Name the pattern that caught you."
+          value={draft.trap_pattern ?? ""}
+          onChange={(event) => onPatch({ trap_pattern: event.target.value })}
+        />
+      </Field>
+
       <Field label="Lesson">
         <textarea
           className="classroom-textarea"
@@ -141,6 +151,16 @@ export function JournalReviewPanel({
           placeholder="What will you remember for next time?"
           value={draft.lesson}
           onChange={(event) => onPatch({ lesson: event.target.value })}
+        />
+      </Field>
+
+      <Field label="Note">
+        <textarea
+          className="classroom-textarea"
+          rows={3}
+          placeholder="Your note on this question"
+          value={draft.student_note ?? ""}
+          onChange={(event) => onPatch({ student_note: event.target.value })}
         />
       </Field>
 

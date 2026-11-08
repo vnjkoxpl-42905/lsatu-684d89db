@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Check, Loader2, NotebookText, X } from "lucide-react";
+import { Check, ExternalLink, Loader2, NotebookText, PenLine, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { questionBank } from "@/lib/questionLoader";
 import { noteHasContent, type NoteFields, type StudyMarks } from "@/hooks/useQuestionStudyMarks";
@@ -10,10 +10,12 @@ import { noteHasContent, type NoteFields, type StudyMarks } from "@/hooks/useQue
  */
 
 const TEMPLATE: Array<{ field: keyof NoteFields; label: string; placeholder: string }> = [
+  { field: "question_summary", label: "Question summary", placeholder: "What is the question asking you to do?" },
   { field: "wrong_reasoning", label: "Why I picked my answer", placeholder: "What made the wrong answer look right?" },
   { field: "correct_reasoning", label: "Why the right answer is right", placeholder: "What does the correct answer actually do?" },
   { field: "trap_pattern", label: "The trap", placeholder: "Name the pattern that caught you." },
   { field: "lesson", label: "Next time", placeholder: "What will you do differently?" },
+  { field: "other_notes", label: "Other notes", placeholder: "Anything else worth remembering." },
 ];
 
 function label(qid: string) {
@@ -23,12 +25,14 @@ function label(qid: string) {
 
 type SaveState = "idle" | "saving" | "saved" | "error";
 
-export function JournalPanel({ qid, marks, onClose, onOpenQuestion }: {
+export function JournalPanel({ qid, marks, onClose, onOpenQuestion, onOpenFullEntry }: {
   qid: string;
   marks: StudyMarks;
   onClose: () => void;
   /** Jump to another question from All notes. */
   onOpenQuestion?: (qid: string) => void;
+  /** Open this question's full Wrong Answer Journal entry, where it can be drawn on. */
+  onOpenFullEntry?: (qid: string) => void;
 }) {
   const [tab, setTab] = React.useState<"this" | "all">("this");
   const saved = marks.note(qid);
@@ -42,6 +46,8 @@ export function JournalPanel({ qid, marks, onClose, onOpenQuestion }: {
     const n = marks.note(qid);
     setDraft({
       student_note: n?.student_note ?? "",
+      question_summary: n?.question_summary ?? "",
+      other_notes: n?.other_notes ?? "",
       wrong_reasoning: n?.wrong_reasoning ?? "",
       correct_reasoning: n?.correct_reasoning ?? "",
       trap_pattern: n?.trap_pattern ?? "",
@@ -118,6 +124,17 @@ export function JournalPanel({ qid, marks, onClose, onOpenQuestion }: {
                 </button>
               )}
             </div>
+            {onOpenFullEntry && (
+              <button type="button" onClick={() => onOpenFullEntry(qid)}
+                className="mt-4 flex w-full items-center gap-3 rounded-2xl border border-slate-200 bg-white px-4 py-3 text-left shadow-sm transition-colors hover:border-slate-400">
+                <PenLine className="h-5 w-5 shrink-0 text-slate-700" />
+                <span className="flex-1">
+                  <span className="block text-sm font-semibold text-slate-900">Open full journal entry</span>
+                  <span className="block text-xs text-slate-500">{marks.hasDrawing(qid) ? "Your drawings on this question are there." : "Draw on the question and work through every field."}</span>
+                </span>
+                <ExternalLink className="h-4 w-4 text-slate-400" />
+              </button>
+            )}
           </>
         ) : allNotes.length === 0 ? (
           <div className="mt-10 flex flex-col items-center text-center text-slate-500"><NotebookText className="mb-3 h-8 w-8" />No notes yet. Notes you write on any question show up here.</div>

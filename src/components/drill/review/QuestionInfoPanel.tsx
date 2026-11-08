@@ -1,12 +1,12 @@
 import * as React from "react";
-import { Bookmark, ChevronRight, NotebookText, X } from "lucide-react";
+import { Bookmark, ChevronRight, NotebookText, PenLine, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 /**
  * The "…" panel on a results row: everything about one question in one place,
  * with Notes and Bookmark live, and a way into the question itself.
  */
-export function QuestionInfoPanel({ label, result, difficulty, timing, tags, hasNote, bookmarked, onReview, onNotes, onBookmark, onClose }: {
+export function QuestionInfoPanel({ label, result, difficulty, timing, tags, hasNote, bookmarked, onReview, onNotes, onBookmark, onClose, onOpenEntry }: {
   label: string;
   result: React.ReactNode;
   difficulty: React.ReactNode;
@@ -18,6 +18,8 @@ export function QuestionInfoPanel({ label, result, difficulty, timing, tags, has
   onNotes: () => void;
   onBookmark: () => void;
   onClose: () => void;
+  /** Open the full Wrong Answer Journal entry, where the question can be drawn on. */
+  onOpenEntry?: () => void;
 }) {
   React.useEffect(() => {
     const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
@@ -50,6 +52,11 @@ export function QuestionInfoPanel({ label, result, difficulty, timing, tags, has
             <button type="button" onClick={onNotes} aria-label={hasNote ? "Open your note" : "Add a note"} className="relative rounded-xl p-2 hover:bg-accent">
               <NotebookText className="h-5 w-5" />
               {hasNote && <span aria-hidden className="absolute right-1 top-1 h-2 w-2 rounded-full bg-amber-500" />}
+            </button>
+          ))}
+          {onOpenEntry && row("Journal entry", (
+            <button type="button" onClick={onOpenEntry} className="inline-flex items-center gap-2 rounded-xl px-2 py-1.5 text-sm font-semibold text-primary hover:bg-accent">
+              <PenLine className="h-4 w-4" />Open full entry
             </button>
           ))}
           {row("Bookmark", (

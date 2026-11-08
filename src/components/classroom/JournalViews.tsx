@@ -46,6 +46,8 @@ const EMPTY_DRAFT: JournalDraft = {
   correct_reasoning: "",
   lesson: "",
   other_notes: "",
+  student_note: "",
+  trap_pattern: "",
 };
 
 function isoDate(value: string | null | undefined) {
@@ -64,7 +66,10 @@ function seedDraft(row: WrongAnswerSmartRow): JournalDraft {
     wrong_reasoning: n?.wrong_reasoning ?? n?.root_cause ?? "",
     correct_reasoning: n?.correct_reasoning ?? "",
     lesson: n?.lesson ?? "",
-    other_notes: n?.other_notes ?? n?.student_note ?? "",
+    // The free note now has its own box, so Other Notes no longer borrows it.
+    other_notes: n?.other_notes ?? "",
+    student_note: n?.student_note ?? "",
+    trap_pattern: n?.trap_pattern ?? "",
   };
 }
 
@@ -276,6 +281,8 @@ export function JournalEntryView() {
             correct_reasoning: payload.draft.correct_reasoning || null,
             lesson: payload.draft.lesson || null,
             other_notes: payload.draft.other_notes || null,
+            student_note: payload.draft.student_note || null,
+            trap_pattern: payload.draft.trap_pattern || null,
             annotations: payload.annotations,
           });
           await queryClient.invalidateQueries({
