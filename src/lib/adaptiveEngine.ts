@@ -2,6 +2,7 @@
 
 import { LRQuestion, questionBank } from './questionLoader';
 import { supabase } from '@/integrations/supabase/client';
+import { MIN_RATED_ANSWERS, ratingDifficultyFit, type RatingProfile } from './practiceRating';
 
 const ADAPTIVE_CONFIG = {
   weakAccuracyThreshold: 0.60,
@@ -73,6 +74,7 @@ export interface SmartDrillSelectionContext {
   recentExposureQids: Set<string>;
   /** Injectable so equal-score sampling stays deterministic in tests. */
   random?: () => number;
+  practiceRating?: RatingProfile;
 }
 
 export interface SmartDrillSelectionReason {
@@ -511,7 +513,9 @@ export class AdaptiveEngine {
         ? weaknessScores.reduce((sum, score) => sum + score, 0) / weaknessScores.length
         : profile.attemptCount === 0 ? 0.5 : 0.2;
       const target = targetDifficulty(q);
-      const difficultyFit = Math.max(0, 1 - Math.abs(q.difficulty - target) / 4);
+      const legacyFit = Math.max(0, 1 - Math.abs(q.difficulty - target) / 4);
+      const ratedFit = context.practiceRating ? ratingDifficultyFit(context.practiceRating, q.difficulty, q.qtype) : null;
+      const difficultyFit = ratedFit === null ? legacyFit : 0.25 * legacyFit + 0.75 * ratedFit;
       const freshness = context.recentExposureQids.has(q.qid) ? 0.1 : 1;
       const metadataQuality =
         (q.reasoningType?.length ? 0.5 : 0) +
@@ -850,7 +854,8 @@ export class AdaptiveEngine {
   async generateSmartDrill(
     classId: string,
     pool: LRQuestion[],
-    count: number
+    count: number,
+    practiceRating?: RatingProfile,
   ): Promise<SmartDrillResult> {
     // ── 1. Pull recent attempt history ──────────────────────────────────────
     const { data: rawAttempts, error } = await supabase
@@ -860,15 +865,23 @@ export class AdaptiveEngine {
       .order('timestamp_iso', { ascending: false })
       .limit(ADAPTIVE_CONFIG.generateLimit);
 
+    const orderForPractice = (questions: LRQuestion[]) => {
+      const shuffled = questions.sort(() => Math.random() - 0.5);
+      if (!practiceRating) return shuffled;
+      const fit = (q: LRQuestion) => ratingDifficultyFit(practiceRating, q.difficulty, q.qtype) ?? 0.5;
+      return shuffled.sort((a, b) => fit(b) - fit(a));
+    };
     const attemptCount = !error && rawAttempts ? rawAttempts.length : 0;
     if (error || !rawAttempts || attemptCount < ADAPTIVE_CONFIG.minAttemptsForAnalysis) {
       // Cold start — too little history to compose a real adaptive drill.
-      const shuffled = [...pool].sort(() => Math.random() - 0.5);
+      const shuffled = orderForPractice([...pool]);
       return {
         questions: shuffled.slice(0, count),
         masteryMap: {},
         buckets: { progression: shuffled.slice(0, count).length, redemption: 0, maintenance: 0 },
-        explanation: 'Not enough history yet. Drilling a calibration set to learn your baseline.',
+        explanation: practiceRating && practiceRating.LR.count >= MIN_RATED_ANSWERS
+          ? 'Question difficulty is matched to your practice rating.'
+          : 'Not enough history yet. Drilling a calibration set to learn your baseline.',
         coldStart: true,
       };
     }
@@ -944,7 +957,7 @@ export class AdaptiveEngine {
 
     const pick = (src: LRQuestion[], n: number, used: Set<string>): LRQuestion[] => {
       const eligible = src.filter(q => !used.has(q.qid));
-      const shuffled = eligible.sort(() => Math.random() - 0.5);
+      const shuffled = orderForPractice(eligible);
       const picked = shuffled.slice(0, n);
       picked.forEach(q => used.add(q.qid));
       return picked;

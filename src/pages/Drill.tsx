@@ -2,6 +2,9 @@ import { validateHubOriginOrOrdinary } from '@/lib/reviewHubReturn';
 import * as React from "react";
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
+import { loadLrRatingAnswers, lrRatingQuestion, ratingAnswersWithinDeadline } from '@/lib/practiceRatingSources';
+import type { GradedQuestionAnswer } from '@/lib/firstAnswerProgress';
+import { MIN_RATED_ANSWERS, expectedPracticeAccuracy, questionRating, replayPracticeRating, type RatingProfile } from '@/lib/practiceRating';
 import { useUserPermissions } from '@/hooks/useUserPermissions';
 import { AdminQuestionNotes } from '@/components/drill/AdminQuestionNotes';
 import { useUserSettings } from '@/contexts/UserSettingsContext';
@@ -376,6 +379,8 @@ function DrillContent() {
   }, []);
 
   const [session, setSession] = React.useState<DrillSession | null>(null);
+  const ratingLedger = React.useRef<{ actorId: string; answers: Promise<GradedQuestionAnswer[] | null> } | null>(null);
+  const [ratingMatch, setRatingMatch] = React.useState<{ qid: string; actorId: string; student: number; item: number } | null>(null);
   const [currentQuestion, setCurrentQuestion] = React.useState<LRQuestion | null>(null);
   const [selectedAnswer, setSelectedAnswer] = React.useState<string>('');
   const [showSolution, setShowSolution] = React.useState(false);
@@ -1504,6 +1509,18 @@ function DrillContent() {
     })();
   }, [user?.id, session?.mode, session?.currentIndex, session?.attempts.size, currentQuestion?.qid, currentQuestion?.pt, currentQuestion?.section, currentQuestion?.qnum, assignmentId]);
 
+  React.useEffect(() => {
+    if (!user?.id || session?.mode !== 'adaptive') {
+      ratingLedger.current = null;
+      return;
+    }
+    const actorId = user.id;
+    ratingLedger.current = {
+      actorId,
+      answers: loadLrRatingAnswers(actorId).catch(() => null),
+    };
+  }, [user?.id, session?.mode]);
+
   // Adaptive mode: select next question only when advanceToken changes.
   // SELECTOR LAYER ONLY — no rendering changes. Pre-filters the question
   // pool against the user's most-recent-500 exposures (Wave 3A), then writes
@@ -1556,7 +1573,27 @@ function DrillContent() {
       );
       const combinedAttempts = [...historicalAttempts, ...sessionOnlyAttempts];
       const profile = adaptiveEngine.buildStudentProfile(combinedAttempts);
+      const snapshot = ratingLedger.current;
+      let rating: RatingProfile | undefined;
+      if (snapshot && snapshot.actorId === user?.id) {
+        // Selection stays available when history is slow or unavailable.
+        const ledger = await ratingAnswersWithinDeadline(snapshot.answers);
+        if (cancelled) return;
+        if (ledger) {
+          const known = new Set(ledger.map((answer) => answer.questionKey));
+          const fresh: GradedQuestionAnswer[] = sessionAttemptRecords.flatMap((attempt) => {
+            const questionKey = `LR:${attempt.qid}`;
+            if (known.has(questionKey) || !Number.isFinite(attempt.timestamp.getTime())) return [];
+            return [{
+              attemptId: `live:${attempt.qid}`, questionKey, area: 'LR', source: 'lr_attempts',
+              mode: 'adaptive', correct: attempt.correct, gradedAt: attempt.timestamp.toISOString(),
+            }];
+          });
+          rating = replayPracticeRating([...ledger, ...fresh], lrRatingQuestion);
+        }
+      }
       const selection = adaptiveEngine.selectSmartDrillQuestion(eligibleQuestions, profile, {
+        practiceRating: rating,
         attempts: combinedAttempts,
         currentSessionUsedQids: new Set([...session.attempts.keys(), ...skippedQids]),
         recentExposureQids: excludedQids,
@@ -1573,6 +1610,10 @@ function DrillContent() {
         return;
       }
 
+      const item = questionRating(nextQuestion.difficulty);
+      setRatingMatch(rating && rating.LR.count >= MIN_RATED_ANSWERS && item !== null && user?.id
+        ? { qid: nextQuestion.qid, actorId: user.id, student: rating.LR.rating, item }
+        : null);
       setCurrentQuestion(nextQuestion);
       resetPerQuestionState();
 
@@ -5078,6 +5119,18 @@ function DrillContent() {
               ) : undefined
             }
           />
+          {session.mode === 'adaptive' && ratingMatch?.qid === currentQuestion.qid && ratingMatch.actorId === user?.id && (
+            <details className="border-b border-slate-200 bg-white px-4 py-1 text-sm text-slate-800">
+              <summary className="min-h-11 w-fit cursor-pointer py-3 font-semibold tabular-nums">
+                Your LR rating {Math.round(ratingMatch.student)} · Question {ratingMatch.item}
+              </summary>
+              <p className="mb-3 max-w-prose text-slate-600">
+                Estimated chance of a correct answer is {Math.round(100 * expectedPracticeAccuracy(ratingMatch.student, ratingMatch.item))}%.
+                A hard question answered correctly raises your rating more than an easy one.
+                A miss on an easy question lowers it more.
+              </p>
+            </details>
+          )}
           <OfficialQuestionPane
             question={{
               qid: currentQuestion.qid,

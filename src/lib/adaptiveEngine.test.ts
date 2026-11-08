@@ -296,6 +296,23 @@ describe('AdaptiveEngine.buildStudentProfile', () => {
 // ─── Smart Drill selector ───────────────────────────────────────────────────
 
 describe('AdaptiveEngine.selectSmartDrillQuestion', () => {
+  it('matches a high practice rating to harder questions without relaxing exposure rules', () => {
+    const engine = new AdaptiveEngine();
+    const profile = engine.buildStudentProfile([]);
+    const base = { rating: 1850, count: 100 };
+    const pool = [makeQuestion({ qid: 'medium', difficulty: 3 }), makeQuestion({ qid: 'hard', difficulty: 5 })];
+    const context = {
+      attempts: [],
+      currentSessionUsedQids: new Set<string>(),
+      recentExposureQids: new Set<string>(),
+      practiceRating: { overall: base, LR: base, RC: { rating: 1500, count: 0 }, bySkill: new Map(), eligibleCount: 100, calibration: { count: 0, expectedCorrect: 0, actualCorrect: 0 } },
+    };
+    expect(engine.selectSmartDrillQuestion(pool, profile, context)?.question.qid).toBe('hard');
+    expect(engine.selectSmartDrillQuestion(pool, profile, {
+      ...context, recentExposureQids: new Set(['hard']),
+    })?.question.qid).toBe('medium');
+  });
+
   it('keeps selector weights stable and centralized', () => {
     expect(SMART_DRILL_SELECTOR_WEIGHTS).toEqual({
       weaknessFit: 0.4,

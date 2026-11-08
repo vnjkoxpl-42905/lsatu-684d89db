@@ -1,5 +1,7 @@
 import { useState, useEffect, useRef, useMemo } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
+import { loadLrRatingAnswers, lrRatingQuestion, ratingAnswersWithinDeadline } from '@/lib/practiceRatingSources';
+import { replayPracticeRating } from '@/lib/practiceRating';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
@@ -187,6 +189,7 @@ export function TypeDrillPicker({ manifest, onStartDrill, onCancel }: TypeDrillP
     setIsAnalyzing(true);
 
     try {
+      const historyRead = ratingAnswersWithinDeadline(loadLrRatingAnswers(user.id));
       // Resolve class_id for the user
       const { data: student } = await supabase
         .from('students')
@@ -196,7 +199,9 @@ export function TypeDrillPicker({ manifest, onStartDrill, onCancel }: TypeDrillP
       const resolvedClassId = student?.class_id || user.id;
 
       const allQuestions = questionBank.getAllQuestions();
-      const result = await adaptiveEngine.generateSmartDrill(resolvedClassId, allQuestions, 20);
+      const history = await historyRead;
+      const rating = history ? replayPracticeRating(history, lrRatingQuestion) : undefined;
+      const result = await adaptiveEngine.generateSmartDrill(resolvedClassId, allQuestions, 20, rating);
 
       if (result.questions.length === 0) {
         toast({

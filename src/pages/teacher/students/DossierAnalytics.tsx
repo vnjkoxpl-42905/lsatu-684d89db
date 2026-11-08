@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 import { useQuestionBank } from "@/contexts/QuestionBankContext";
 import { useDossier } from "./StudentDossier";
 import AnalyticsInsights from "./AnalyticsInsights";
+import PracticeRatingCard from "./PracticeRatingCard";
 import {
   buildSittings, loadStudentPractice, performanceSeries, questionRows, tagAnalytics,
   type Priority, type Sitting, type SittingKind, type TagStat,
@@ -88,6 +89,7 @@ export function StudentAnalyticsView({ studentId, studentName, runHref, audience
 
       {tab === "overview" && (
         <>
+          <PracticeRatingCard key={"rating-" + studentId} studentId={audience === "student" ? undefined : studentId} />
           <PerformanceCard key={studentId} sittings={sittings} studentId={studentId} self={audience === "student"} />
           <TagAnalytics tags={tags} goal={goal} goalDraft={goalDraft} setGoalDraft={setGoalDraft}
             onSaveGoal={() => {
