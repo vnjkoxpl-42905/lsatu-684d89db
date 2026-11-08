@@ -186,13 +186,15 @@ function ClassroomSidebar({
     });
   };
 
+  // Students opens the standalone student page (rail + each student's
+  // activity and analytics). The workspace roster is still one link away.
   const openStudents = () => {
-    go("/teacher/students");
+    go("/student-analytics");
   };
 
   React.useEffect(() => {
     if (
-      location.pathname.startsWith("/teacher/students") &&
+      (location.pathname.startsWith("/teacher/students") || location.pathname.startsWith("/student-analytics")) &&
       unreadStudentSignups > 0
     ) {
       void markSignupNotificationsRead();
@@ -400,7 +402,6 @@ function ClassroomSidebar({
                 type="button"
                 className={`classroom-nav${
                   location.pathname.startsWith("/teacher/") &&
-                  !location.pathname.startsWith("/teacher/students") &&
                   !location.pathname.startsWith("/teacher/whiteboard")
                     ? " classroom-nav-active-white"
                     : ""
@@ -412,7 +413,7 @@ function ClassroomSidebar({
               <button
                 type="button"
                 className={`classroom-nav${
-                  location.pathname.startsWith("/teacher/students")
+                  location.pathname.startsWith("/student-analytics")
                     ? " classroom-nav-active-white"
                     : ""
                 }`}
@@ -436,17 +437,6 @@ function ClassroomSidebar({
                 onClick={() => go("/teacher/whiteboard")}
               >
                 Whiteboard
-              </button>
-              <button
-                type="button"
-                className={`classroom-nav${
-                  location.pathname.startsWith("/teacher/analytics") || /^\/teacher\/students\/[^/]+\/analytics/.test(location.pathname)
-                    ? " classroom-nav-active-white"
-                    : ""
-                }`}
-                onClick={() => go("/teacher/analytics")}
-              >
-                Student Analytics
               </button>
             </div>
           ) : null}

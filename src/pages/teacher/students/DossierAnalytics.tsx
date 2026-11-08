@@ -34,8 +34,19 @@ function readGoal(studentId: string) {
   try { const v = Number(localStorage.getItem(goalKey(studentId))); return v >= 120 && v <= 180 ? v : 165; } catch { return 165; }
 }
 
+/** The dossier's Analytics tab. */
 export default function DossierAnalytics() {
   const { studentId, studentName } = useDossier();
+  return <StudentAnalyticsView studentId={studentId} studentName={studentName} runHref={(id) => `../analytics/runs/${id}`} />;
+}
+
+/** One student's analytics. Used by the dossier tab and the standalone page. */
+export function StudentAnalyticsView({ studentId, studentName, runHref }: {
+  studentId: string;
+  studentName: string | null;
+  /** Where a drill run opens. */
+  runHref: (runId: string) => string;
+}) {
   const navigate = useNavigate();
   const { isLoading: bankLoading } = useQuestionBank();
   const [tab, setTab] = React.useState<Tab>("overview");
@@ -50,7 +61,7 @@ export default function DossierAnalytics() {
 
   const sittings = React.useMemo(() => (data ? buildSittings(data) : []), [data]);
   const tags = React.useMemo(() => (data && !bankLoading ? tagAnalytics(data.attempts, goal) : []), [data, goal, bankLoading]);
-  const openSitting = (s: Sitting) => { if (s.drillRunId) navigate(`../analytics/runs/${s.drillRunId}`); };
+  const openSitting = (s: Sitting) => { if (s.drillRunId) navigate(runHref(s.drillRunId)); };
   const name = studentName || "This student";
 
   if (isLoading || bankLoading) return <p role="status" className="p-6 text-sm text-black/60">Loading {name}'s analytics…</p>;

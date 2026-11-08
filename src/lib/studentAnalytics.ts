@@ -234,7 +234,7 @@ export const LIMITED_DATA_BELOW = 8;
  * Question Stem" tag; its features (Causal, Conditional, ...) are "LR
  * Reasoning" tags. Priority weighs how far the tag sits below the goal by how
  * often it was seen, then ranks: top 15% Highest, next 25% High, next 40%
- * Medium, the rest Low.
+ * Medium, the rest Low. Tags with limited data are capped at Medium.
  */
 export function tagAnalytics(attempts: AttemptRow[], goal: number): TagStat[] {
   const byTag = new Map<string, { group: string; answered: number; correct: number; qids: Set<string> }>();
@@ -271,7 +271,12 @@ export function tagAnalytics(attempts: AttemptRow[], goal: number): TagStat[] {
   ranked.forEach((s, i) => {
     const r = ranked.length ? i / ranked.length : 1;
     s.priority = weight(s) === 0 ? "Low" : r < 0.15 ? "Highest" : r < 0.4 ? "High" : r < 0.8 ? "Medium" : "Low";
+    // A handful of answers is not evidence: thin tags never outrank Medium.
+    if (s.limitedData && (s.priority === "Highest" || s.priority === "High")) s.priority = "Medium";
   });
+  // Show the strongest evidence first within a priority.
+  const order: Record<Priority, number> = { Highest: 0, High: 1, Medium: 2, Low: 3 };
+  ranked.sort((a, b) => order[a.priority] - order[b.priority] || weight(b) - weight(a));
   return ranked;
 }
 

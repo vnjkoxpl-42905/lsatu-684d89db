@@ -15,6 +15,12 @@ import { useDossier } from "./StudentDossier";
 export default function DossierAnalyticsRun() {
   const { studentId, studentName } = useDossier();
   const { runId } = useParams<{ runId: string }>();
+  return <StudentRunView studentId={studentId} studentName={studentName} runId={runId ?? ""} backHref="../analytics" />;
+}
+
+export function StudentRunView({ studentId, studentName, runId, backHref }: {
+  studentId: string; studentName: string | null; runId: string; backHref: string;
+}) {
   const [params, setParams] = useSearchParams();
   const navigate = useNavigate();
   const { isLoading: bankLoading } = useQuestionBank();
@@ -39,7 +45,7 @@ export default function DossierAnalyticsRun() {
 
   return (
     <div className="mx-auto w-full max-w-6xl p-5">
-      <Button type="button" variant="ghost" className="mb-4" onClick={() => navigate("../analytics")}><ArrowLeft className="mr-2 h-4 w-4" />Back to analytics</Button>
+      <Button type="button" variant="ghost" className="mb-4" onClick={() => navigate(backHref)}><ArrowLeft className="mr-2 h-4 w-4" />Back to analytics</Button>
       <header className="mb-6">
         <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{studentName || "Student"} · {run.session.status === "completed" ? "Completed drill" : "Drill in progress"}</p>
         <h2 className="mt-2 font-serif text-3xl font-semibold">{title}</h2>

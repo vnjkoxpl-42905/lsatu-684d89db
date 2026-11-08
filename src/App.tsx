@@ -784,6 +784,15 @@ const App = () => {
 
                         requireAdmin still guards it; nesting changed the
                         frame, not who can reach it. */}
+                    {/* Student Analytics: its own page in the classroom shell, with a
+                        student rail beside the analytics. Admin-only. */}
+                    {["/student-analytics", "/student-analytics/:studentId", "/student-analytics/:studentId/runs/:runId"].map((path) => (
+                      <Route key={path} path={path} element={
+                        <ProtectedRoute requireAdmin>
+                          <React.Suspense fallback={<div />}><StudentAnalyticsIndex /></React.Suspense>
+                        </ProtectedRoute>
+                      } />
+                    ))}
                     <Route path="/teacher" element={
                       <ProtectedRoute requireAdmin>
                         <React.Suspense fallback={<div className="min-h-screen bg-[#c3cace]" />}>
@@ -899,9 +908,7 @@ const App = () => {
                       {/* Teaching Assistant: the full-page action agent room.
                           Runs `ta-agent` (Gemini 3.8 Flash on GEMINI_API_KEY);
                           every platform action is confirmed before it fires. */}
-                      <Route path="analytics" element={
-                        <React.Suspense fallback={<div />}><StudentAnalyticsIndex /></React.Suspense>
-                      } />
+                      <Route path="analytics" element={<Navigate to="/student-analytics" replace />} />
                       <Route path="assistant" element={
                         <React.Suspense fallback={<div />}>
                           <TeacherAssistant />

@@ -34,7 +34,9 @@ describe("tagAnalytics", () => {
   it("puts the weakest, most-seen tag first and calls it Highest", () => {
     const tags = tagAnalytics([at("q1", false, "a"), at("q3", false, "b"), at("q2", true, "c")], 170);
     expect(tags[0].tag).toBe("Causal");
-    expect(tags[0].priority).toBe("Highest");
+    // Two answers is limited data, so even the weakest tag stops at Medium.
+    expect(tags[0].priority).toBe("Medium");
+    expect(tags.every((t) => t.priority !== "Highest" && t.priority !== "High")).toBe(true);
   });
 });
 
