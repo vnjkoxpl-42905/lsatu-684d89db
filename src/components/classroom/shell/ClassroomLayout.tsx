@@ -1,6 +1,7 @@
 import { reviewRailLanding } from '@/lib/railCatalog';
 import { notesArchiveOrigin, notesDetailRoute, validateNotesReturnTo } from "@/lib/myWorkNotesNavigation";
 import * as React from "react";
+import { PracticeRailGroups } from "./PracticeRailGroups";
 import { useMotionValue } from "framer-motion";
 import NotificationBell from "@/components/notifications/NotificationBell";
 import {
@@ -312,6 +313,18 @@ function ClassroomSidebar({
             <div className="classroom-nav-group" key={group.id}>
               <b>{group.title}</b>
               {group.items.map((item) => {
+                if (item.id === "practice") {
+                  return (
+                    <PracticeRailGroups
+                      key={item.id}
+                      pathname={location.pathname}
+                      locked={railItemLocked(item.id, destinationPermissions)}
+                      go={go}
+                      onPrefetch={preloadDrillHub}
+                      navClass={navClass}
+                    />
+                  );
+                }
                 const { active, onClick, onPrefetch } = railBehavior(item);
                 // Every destination route admits a signed-in account and
                 // explains its own locked sections, so the rail never disables

@@ -371,6 +371,39 @@ html.dark .classroom-root .classroom-panel-wash-dark {
   margin-left: auto;
 }
 
+/* Practice Exams and Drilling: sub-items sit under the row while inside it. */
+.classroom-root .classroom-nav-sub {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  margin: 2px 0 4px;
+}
+
+.classroom-root .classroom-nav-subitem {
+  background: transparent;
+  border: 0;
+  border-radius: var(--classroom-radius);
+  color: var(--classroom-meta-text);
+  cursor: pointer;
+  font-size: 13.5px;
+  line-height: 1.45;
+  padding: 6px 8px 6px 20px;
+  text-align: left;
+  transition:
+    background-color var(--classroom-transition) ease,
+    color var(--classroom-transition) ease;
+  width: 100%;
+}
+
+.classroom-root .classroom-nav-subitem:hover {
+  background: var(--classroom-hover);
+}
+
+.classroom-root .classroom-nav-subitem-active {
+  background: var(--classroom-active);
+  color: var(--classroom-active-ink);
+}
+
 .classroom-root .classroom-nav-active em {
   color: var(--classroom-active-ink);
   opacity: 0.6;
