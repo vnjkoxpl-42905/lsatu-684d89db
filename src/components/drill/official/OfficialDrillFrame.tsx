@@ -134,6 +134,12 @@ export default function OfficialDrillFrame({
               <span aria-hidden className="w-px h-5 bg-slate-300" />
             </>
           )}
+          {!isPaused && !notesPanelEnabled && notepadEnabled && (
+            <>
+              <DrillNotepad />
+              <span aria-hidden className="w-px h-5 bg-slate-300" />
+            </>
+          )}
           <span className="font-medium whitespace-nowrap">Welcome, {welcomeName}</span>
         </div>
       </header>
@@ -225,7 +231,6 @@ export default function OfficialDrillFrame({
           </div>
         )}
       </main>
-      {!isPaused && !notesPanelEnabled && notepadEnabled && <DrillNotepad />}
     </div>
   );
 }

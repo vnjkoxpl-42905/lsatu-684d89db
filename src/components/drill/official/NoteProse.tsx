@@ -14,7 +14,8 @@ import "./note-prose.css";
  */
 
 export type Term = { text: string; negated: boolean };
-export type Block = { kind: "text"; text: string } | { kind: "chain"; terms: Term[] };
+/** A paragraph's chains stay together: a rule and its contrapositive share one card. */
+export type Block = { kind: "text"; text: string } | { kind: "chains"; chains: Term[][] };
 
 const ARROW = /\s*(?:→|->|⟶)\s*/;
 
@@ -60,7 +61,7 @@ export function parseNote(note: string): Block[] {
     const chains = parseChains(chainText);
     if (chains.length === 0) { blocks.push({ kind: "text", text: para }); continue; }
     if (lead) blocks.push({ kind: "text", text: lead });
-    for (const terms of chains) blocks.push({ kind: "chain", terms });
+    blocks.push({ kind: "chains", chains });
   }
   return blocks;
 }
@@ -68,7 +69,7 @@ export function parseNote(note: string): Block[] {
 function Chain({ terms, index }: { terms: Term[]; index: number }) {
   const label = terms.map((t) => (t.negated ? `not ${t.text}` : t.text)).join(" leads to ");
   return (
-    <div className="note-chain" role="img" aria-label={label} style={{ "--chain-delay": `${index * 180}ms` } as React.CSSProperties}>
+    <div className="note-chain__row" role="img" aria-label={label} style={{ "--chain-delay": `${index * 260}ms` } as React.CSSProperties}>
       {terms.map((t, i) => (
         <span key={i} className="note-chain__step">
           {i > 0 && (
@@ -93,7 +94,11 @@ export function NoteProse({ note, className }: { note: string; className?: strin
     <div className={className}>
       {blocks.map((b, i) => b.kind === "text"
         ? <p key={i} className="note-prose__para">{b.text}</p>
-        : <Chain key={i} terms={b.terms} index={chainIndex++} />)}
+        : (
+          <div key={i} className="note-chain">
+            {b.chains.map((terms, j) => <Chain key={j} terms={terms} index={chainIndex++} />)}
+          </div>
+        ))}
     </div>
   );
 }

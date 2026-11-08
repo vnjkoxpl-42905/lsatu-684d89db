@@ -1,4 +1,5 @@
 import * as React from "react";
+import { NoteProse } from "./NoteProse";
 import { cn } from "@/lib/utils";
 import { resolveBreakdownSteps, type LrExplanationData, type LrStyleKey } from "@/hooks/useLrExplanation";
 
@@ -153,7 +154,7 @@ export default function DrillExplanationTab({
           {steps.map((step) => (
             <div key={step.position} className="text-[13px] leading-relaxed">
               <span className="font-semibold text-slate-900">{step.label}: </span>
-              <span className="whitespace-pre-line text-slate-600">{step.body}</span>
+              <NoteProse className="whitespace-pre-line text-slate-600" note={step.body} />
             </div>
           ))}
         </div>
