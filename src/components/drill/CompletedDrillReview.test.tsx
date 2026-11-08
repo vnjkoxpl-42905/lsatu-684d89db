@@ -5,14 +5,15 @@ import { CompletedDrillReview } from "./CompletedDrillReview";
 // The walk itself is the drill's exam screen and has its own tests; here we
 // only prove the review hands the open question to it rather than drawing one.
 vi.mock("@/components/drill/SectionReviewWalk", () => ({
-  default: ({ session, initialIndex, backLabel, onBack }: any) => (
-    <div data-testid="exam-walk" data-start={initialIndex} data-pick={session.attempts.get(session.questionQueue[initialIndex])?.selectedAnswer}>
+  default: ({ session, initialIndex, backLabel, onBack, variant }: any) => (
+    <div data-testid="exam-walk" data-start={initialIndex} data-variant={variant} data-pick={session.attempts.get(session.questionQueue[initialIndex])?.selectedAnswer}>
       <button type="button" onClick={onBack}>{backLabel}</button>
     </div>
   ),
 }));
+vi.mock("@/hooks/useAnswerPopularity", () => ({ useAnswerPopularity: () => ({ data: { "q-1": { A: 9, B: 2, C: 80, D: 4, E: 5 } } }) }));
 vi.mock("@/lib/questionLoader", () => ({ questionBank: { getQuestion: () => ({
-  pt: 106, section: 2, qnum: 18, qtype: "Flaw", questionFeatures: [], stimulus: "Dobson: stones.", questionStem: "Which is an error?",
+  pt: 106, section: 2, qnum: 18, difficulty: 3, qtype: "Flaw", questionFeatures: [], stimulus: "Dobson: stones.", questionStem: "Which is an error?",
   answerChoices: { A: "choice a", B: "choice b", C: "choice c", D: "choice d", E: "choice e" }, correctAnswer: "A",
 }) } }));
 
@@ -24,7 +25,15 @@ describe("completed drill review", () => {
     expect(container.querySelector("details")).toBeNull();
     expect(screen.getByRole("table")).toHaveTextContent("PT106.S2.Q18");
     expect(screen.getByRole("table")).toHaveTextContent("01:05");
-    expect(screen.getByLabelText("Incorrect")).toBeInTheDocument();
+    expect(screen.getAllByLabelText("Incorrect").length).toBeGreaterThan(0);
+    expect(screen.getByLabelText("A 9%, B 2%, C 80%, D 4%, E 5%")).toBeInTheDocument();
+    expect(screen.getByLabelText("Drill results")).toHaveTextContent("0/1 correct");
+  });
+
+  it("filters the table by result", () => {
+    render(<CompletedDrillReview title="Flaw" qids={["q-1"]} attempts={attempts} openIndex={null} onOpen={() => {}} />);
+    fireEvent.change(screen.getByLabelText("Result"), { target: { value: "correct" } });
+    expect(screen.getByRole("table")).toHaveTextContent("No questions match these filters.");
   });
 
   it("opens the question in the drill's own exam screen, full screen, with Clean and Actual", () => {
@@ -34,6 +43,7 @@ describe("completed drill review", () => {
     expect(dialog.className).toContain("fixed");
     expect(screen.getByTestId("exam-walk")).toHaveAttribute("data-start", "0");
     expect(screen.getByTestId("exam-walk")).toHaveAttribute("data-pick", "C");
+    expect(screen.getByTestId("exam-walk")).toHaveAttribute("data-variant", "drill");
     fireEvent.click(screen.getByText("All questions"));
     expect(onOpen).toHaveBeenCalledWith(null);
   });
