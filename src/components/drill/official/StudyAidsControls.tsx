@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Bookmark, BookmarkCheck, ChevronDown, ExternalLink, X } from "lucide-react";
+import { Bookmark, ChevronDown, ExternalLink, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 
@@ -60,7 +60,7 @@ export default function StudyAidsControls({
             : "border border-transparent text-slate-800 hover:bg-slate-200",
         )}
       >
-        {bookmarked ? <BookmarkCheck className="w-5 h-5" /> : <Bookmark className="w-5 h-5" />}
+        <Bookmark className={cn("w-5 h-5", bookmarked && "fill-current")} />
       </button>
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>

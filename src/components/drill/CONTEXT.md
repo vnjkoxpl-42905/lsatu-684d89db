@@ -4,6 +4,14 @@ The practice domain: how LSAT U presents drills, the questions inside them, and 
 
 ## Language
 
+**Bookmark**:
+A question a student saves for quick navigation, kept on their own device only. It lives in the player toolbar's list and opens that question again. It is not part of review.
+_Avoid_: flag, save, star.
+
+**Flag**:
+A question a student marks mid-question as one to come back to. It is saved to their account and shows up in Review → Flagged. See the Classroom glossary for how a flag differs from a wrong answer.
+_Avoid_: bookmark, mark.
+
 **Question Explanation**:
 The question-level teaching shown *after* a student answers one specific question. In the schema this is the `breakdown` (conclusion, conclusionSimple, evidence, justification, objection, prediction, crucialInsight) plus `answerChoiceExplanations` (per-choice verdict + whyCorrect/whyIncorrect) on an `LRQuestion`. One per question. How far each question has one is its Coverage State.
 _Avoid_: explanation (ambiguous), breakdown (that's only one half), answer key, rationale.
