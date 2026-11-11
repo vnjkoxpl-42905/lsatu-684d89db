@@ -124,6 +124,12 @@ Any change to `src/components/` or `src/pages/` is not "done" until it has been 
 
 The full skill/agent/command vault lives in the brain root at `~/ai-os/skills/`, `~/ai-os/agents/`, `~/ai-os/commands/` (split into `claude/` and `codex/` subtrees, indexed by `~/ai-os/skills/INDEX.md`). It is inert storage — nothing here auto-loads. To use a vault skill in this project, symlink it into `.claude/skills/` (Codex: `.agents/skills/`). When you create a new skill/agent/command, save it to BOTH this project's `.claude/<kind>/` and the vault, so the vault stays the complete catalog.
 
+## Component library and 21st.dev
+
+Before hand-writing a new visual component, check Joshua's personal component library: `C:\Users\Joshu\dev\component-library` (Windows machine only, not in this repo, not on the Mac). It holds collected components as markdown plus a local gallery (`node serve.mjs`, then http://localhost:4321). It is inspiration and working code, not a design system: `DESIGN.md` and the tokens stay the authority, the Product rules below still apply, and do not add dependencies (e.g. `gsap`) without approval.
+
+21st.dev is wired in as an MCP server (`21st`), a plugin (`21st@21st`) and eight `21st-*` skills in `.claude/skills/`. The API key is never kept in the repo. Full contents, setup state and the key-handling caveat: `docs/agents/component-library.md`.
+
 ## Agent skills
 
 ### Issue tracker

@@ -100,6 +100,12 @@ This checkout currently has Claude settings and hooks under `.claude/`, but no `
 - No Prettier config and no CI workflows.
 - `README.md` is still minimal.
 
+## Component library and 21st.dev
+
+- Joshua's personal component library lives at `C:\Users\Joshu\dev\component-library` (Windows only, outside this repo). Check it before hand-writing a visual component. It is inspiration, not a design system: `DESIGN.md` tokens and the Product Constraints above still win, and do not add dependencies such as `gsap` without approval.
+- 21st.dev skills are in `.agents/skills/21st-*`. The API key must never be written into the repo.
+- Contents, MCP/plugin state and caveats: `docs/agents/component-library.md`.
+
 ## Agent skills
 
 ### Issue tracker
