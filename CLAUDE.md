@@ -118,6 +118,7 @@ Any change to `src/components/` or `src/pages/` is not "done" until it has been 
 - Vitest specs exist (80 `src/**/*.test.ts(x)` files as of 2026-07-16); run them with `npm run test`. Playwright is wired with one e2e spec (`e2e/smoke.spec.ts`), run via `npm run test:e2e`.
 - No Prettier config and no CI workflows. Nothing runs `typecheck`, `lint`, or the tests automatically — `.claude/safe-push.sh` is the only gate, and only for typecheck.
 - `README.md` is a stub.
+- Windows dev-machine setup, the CRLF/credential/Playwright pitfalls, and the known failing-test baseline (19 files as of 2026-11-11, not environment-caused): `docs/agents/windows-dev-setup.md`.
 - `.claude/settings.json` is set up with a permission allowlist for safe dev work (npm scripts, git reads, MCP GitHub reads) and a denylist for destructive ops. No custom `.claude/agents/`. A `SessionStart` auto-pull hook is wired in `.claude/settings.local.json` (runs `.claude/auto-pull-hook.sh`); Codex mirrors it in `.codex/hooks.json`.
 
 ## Skill / agent / command vault

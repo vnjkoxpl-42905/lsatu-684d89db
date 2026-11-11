@@ -99,6 +99,7 @@ This checkout currently has Claude settings and hooks under `.claude/`, but no `
 - Vitest specs exist (80 `src/**/*.test.ts(x)` files as of 2026-07-16); run with `npm run test`. Playwright is wired with one e2e spec (`e2e/smoke.spec.ts`), run via `npm run test:e2e`.
 - No Prettier config and no CI workflows.
 - `README.md` is still minimal.
+- Windows dev-machine setup, line-ending/credential/Playwright pitfalls, and the known failing-test baseline (19 files as of 2026-11-11): `docs/agents/windows-dev-setup.md`.
 
 ## Component library and 21st.dev
 
