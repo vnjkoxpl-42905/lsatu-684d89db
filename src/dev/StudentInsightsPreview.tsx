@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
 import { HomeProgressCardView } from '@/components/classroom/home/HomeProgressCard';
+import { HomeRatingCardView } from '@/components/classroom/home/HomeRatingCard';
 import { StrengthsWeaknessesView } from '@/components/analytics/StrengthsWeaknessesPage';
 import '@/components/classroom/home/home.css';
 import { classifyTypes } from '@/lib/strengthsWeaknesses';
@@ -61,6 +62,8 @@ export default function StudentInsightsPreview() {
           <div className="classroom-root">
             <div className="classroom-home" style={{ padding: 0 }}>
               <div className="classroom-home-rail">
+                <HomeRatingCardView result={{ profile: { LR: { rating: 1424, count: 48 } } as never, loading: false, error: null, refresh: async () => {} }} onOpen={setLast} />
+                <HomeRatingCardView result={{ profile: { LR: { rating: 1200, count: 6 } } as never, loading: false, error: null, refresh: async () => {} }} onOpen={setLast} />
                 <HomeProgressCardView result={result} onOpen={setLast} />
               </div>
             </div>

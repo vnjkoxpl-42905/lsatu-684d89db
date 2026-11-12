@@ -4,7 +4,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { loadLrRatingAnswers, lrRatingQuestion, ratingAnswersWithinDeadline } from '@/lib/practiceRatingSources';
 import type { GradedQuestionAnswer } from '@/lib/firstAnswerProgress';
-import { MIN_RATED_ANSWERS, expectedPracticeAccuracy, questionRating, replayPracticeRating, type RatingProfile } from '@/lib/practiceRating';
+import { replayPracticeRating, type RatingProfile } from '@/lib/practiceRating';
 import { useUserPermissions } from '@/hooks/useUserPermissions';
 import { AdminQuestionNotes } from '@/components/drill/AdminQuestionNotes';
 import { useUserSettings } from '@/contexts/UserSettingsContext';
@@ -380,7 +380,6 @@ function DrillContent() {
 
   const [session, setSession] = React.useState<DrillSession | null>(null);
   const ratingLedger = React.useRef<{ actorId: string; answers: Promise<GradedQuestionAnswer[] | null> } | null>(null);
-  const [ratingMatch, setRatingMatch] = React.useState<{ qid: string; actorId: string; student: number; item: number } | null>(null);
   const [currentQuestion, setCurrentQuestion] = React.useState<LRQuestion | null>(null);
   const [selectedAnswer, setSelectedAnswer] = React.useState<string>('');
   const [showSolution, setShowSolution] = React.useState(false);
@@ -1610,10 +1609,6 @@ function DrillContent() {
         return;
       }
 
-      const item = questionRating(nextQuestion.difficulty);
-      setRatingMatch(rating && rating.LR.count >= MIN_RATED_ANSWERS && item !== null && user?.id
-        ? { qid: nextQuestion.qid, actorId: user.id, student: rating.LR.rating, item }
-        : null);
       setCurrentQuestion(nextQuestion);
       resetPerQuestionState();
 
@@ -5119,19 +5114,6 @@ function DrillContent() {
               ) : undefined
             }
           />
-          {session.mode === 'adaptive' && ratingMatch?.qid === currentQuestion.qid && ratingMatch.actorId === user?.id && (
-            <details className="border-b border-slate-200 bg-white px-4 py-1 text-sm text-slate-800">
-              <summary className="flex min-h-11 w-fit cursor-pointer list-none items-center gap-3 py-2 tabular-nums [&::-webkit-details-marker]:hidden">
-                <span className="grid"><span className="text-xs text-slate-600">You</span><strong>{Math.round(ratingMatch.student)}</strong></span>
-                <span aria-hidden className="text-xs text-slate-500">vs</span>
-                <span className="grid"><span className="text-xs text-slate-600">Question</span><strong>{ratingMatch.item}</strong></span>
-                <span aria-hidden className="text-slate-600">ⓘ</span>
-              </summary>
-              <p className="mb-3 max-w-prose text-slate-600">
-                {Math.round(100 * expectedPracticeAccuracy(ratingMatch.student, ratingMatch.item))}% estimated chance of getting it right.
-              </p>
-            </details>
-          )}
           <OfficialQuestionPane
             question={{
               qid: currentQuestion.qid,

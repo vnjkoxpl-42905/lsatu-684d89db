@@ -11,6 +11,7 @@ const perms = vi.hoisted(() => ({
 const studentHook = vi.hoisted(() => vi.fn());
 const teacherHook = vi.hoisted(() => vi.fn());
 
+vi.mock("@/hooks/usePracticeRating", () => ({ usePracticeRating: () => ({ profile: null, loading: true, error: null, refresh: () => {}, partial: false }) }));
 vi.mock("@/hooks/useUserPermissions", () => ({ useUserPermissions: () => perms.current }));
 vi.mock("@/contexts/AuthContext", () => ({ useAuth: () => ({ user: { id: "actor-1" } }) }));
 vi.mock("@/components/classroom/shell/classroomLayoutContext", () => ({

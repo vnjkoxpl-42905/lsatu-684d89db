@@ -1781,3 +1781,16 @@ html.dark .classroom-root .classroom-home-bar[data-band="strength"] .classroom-h
     background: var(--home-hover);
   }
 }
+
+/* Home LR rating card: the student's practice rating plus a Smart Drill launch. */
+.classroom-root .classroom-home-rating-value { align-items: baseline; display: flex; flex-wrap: wrap; gap: 4px 10px; }
+.classroom-root .classroom-home-rating-value strong { color: var(--home-ink); font: 400 44px/1 var(--home-display); font-variant-numeric: tabular-nums; letter-spacing: -0.02em; }
+.classroom-root .classroom-home-rating-value span,
+.classroom-root .classroom-home-rating-explain { color: var(--home-muted); font-size: 13px; line-height: 1.5; }
+.classroom-root .classroom-home-rating-pending { color: var(--home-ink); font-size: 14px; }
+.classroom-root .classroom-home-rating-pending strong { font-weight: 600; }
+.classroom-root .classroom-home-rating-bar { background: var(--home-plane); border-radius: 9999px; height: 6px; max-width: 160px; overflow: hidden; }
+.classroom-root .classroom-home-rating-bar span { background: var(--home-ink); border-radius: inherit; display: block; height: 100%; }
+.classroom-root .classroom-home-rating-cta { align-items: center; align-self: flex-start; background: var(--home-focus-bg); border: 0; border-radius: 6px; color: var(--home-focus-ink); cursor: pointer; display: inline-flex; font: 500 14px/1 var(--home-ui); gap: 8px; margin-top: 4px; min-height: 44px; padding: 0 16px; transition: opacity 160ms var(--home-ease); }
+.classroom-root .classroom-home-rating-cta:hover { opacity: 0.88; }
+.classroom-root .classroom-home-rating-cta:focus-visible { outline: 2px solid var(--home-ink); outline-offset: 2px; }

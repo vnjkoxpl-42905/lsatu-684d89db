@@ -39,6 +39,7 @@ import { nextActionFor } from "./homeNextAction";
 import { useHomeFeedback } from "./useHomeFeedback";
 import { HomeWeekStrip } from "./HomeWeekStrip";
 import { HomeProgressCard } from "./HomeProgressCard";
+import { HomeRatingCard } from "./HomeRatingCard";
 import QuestionFinder, { type QuestionFinderHandle } from "@/components/questionfinder/QuestionFinder";
 
 function WorkRow({
@@ -531,6 +532,8 @@ export function ClassroomHomeView({
               ) : null}
             </nav>
           </section>
+
+          {permissionsResolved && model.access.drill ? <HomeRatingCard onOpen={handleOpen} /> : null}
 
           {permissionsResolved && model.access.analytics ? <HomeProgressCard onOpen={handleOpen} /> : null}
 

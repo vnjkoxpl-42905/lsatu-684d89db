@@ -15,6 +15,7 @@ import {
   type ClassroomHomeModel,
 } from "./homeModel";
 
+vi.mock("@/hooks/usePracticeRating", () => ({ usePracticeRating: () => ({ profile: null, loading: true, error: null, refresh: () => {}, partial: false }) }));
 vi.mock("@/components/questionfinder/useQuestionFinderBanks", () => ({
   useQuestionFinderBanks: () => ({ lr: [], rcPassages: [], rcQuestions: [], loading: false, error: null, lrFailed: false, rcFailed: false }),
 }));
