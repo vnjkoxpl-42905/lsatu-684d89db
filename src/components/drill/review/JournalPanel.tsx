@@ -40,9 +40,18 @@ export function JournalPanel({ qid, marks, onClose, onOpenQuestion, onOpenFullEn
   const [showTemplate, setShowTemplate] = React.useState(false);
   const [state, setState] = React.useState<SaveState>("idle");
   const timer = React.useRef<number>();
+  // Which question the draft was loaded for, and whether the student has typed
+  // since. Once they type, a save coming back (or the note arriving late) must
+  // never overwrite what is in the box.
+  const loadedFor = React.useRef<string | null>(null);
+  const dirty = React.useRef(false);
 
-  // Load the saved note whenever the question changes.
+  // Load the saved note when the question changes, or when it arrives before
+  // the student has typed anything.
   React.useEffect(() => {
+    if (loadedFor.current === qid && dirty.current) return;
+    loadedFor.current = qid;
+    dirty.current = false;
     const n = marks.note(qid);
     setDraft({
       student_note: n?.student_note ?? "",
@@ -60,6 +69,7 @@ export function JournalPanel({ qid, marks, onClose, onOpenQuestion, onOpenFullEn
 
   const update = (field: keyof NoteFields, value: string) => {
     const next = { ...draft, [field]: value };
+    dirty.current = true;
     setDraft(next);
     window.clearTimeout(timer.current);
     timer.current = window.setTimeout(async () => {
