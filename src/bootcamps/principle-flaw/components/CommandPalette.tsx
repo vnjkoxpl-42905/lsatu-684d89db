@@ -109,7 +109,6 @@ export default function CommandPalette({ isOpen, onClose, onNavigate }: Props) {
                 placeholder="Search flaws, principles, flashcards, questions…"
                 className="flex-1 bg-transparent text-sm text-zinc-100 placeholder:text-zinc-600 focus:outline-none"
               />
-              <kbd className="text-[10px] font-bold uppercase tracking-widest text-zinc-600 border border-zinc-800 rounded px-1.5 py-0.5">Esc</kbd>
             </div>
             <div className="max-h-[60vh] overflow-y-auto custom-scrollbar">
               {results.length === 0 ? (

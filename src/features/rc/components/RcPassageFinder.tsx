@@ -456,7 +456,6 @@ export function RcPassageFinder({ passages, status, onRetry, address, onAddressC
       {!loading && !failed && view.message && <p id={ids.message} className="rc-finder-message">{view.message}</p>}
       {status === 'failed' && hasIndex && <p className="rc-finder-message rc-finder-message-quiet">The latest index refresh failed. You are browsing the list loaded earlier.</p>}
       <div className="rc-finder-panel-foot">
-        <span className="rc-finder-keys" aria-hidden="true"><kbd>↑↓</kbd> move <kbd>⏎</kbd> choose <kbd>⌫</kbd> back <kbd>esc</kbd> close</span>
         <span className="rc-finder-source">Titles and topics only</span>
       </div>
     </>

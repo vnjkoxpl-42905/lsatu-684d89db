@@ -205,10 +205,9 @@ export function DraftEditor({
                   onClick={() => { if (canUseAi) { setMode('ai'); setField(''); } }}
                   disabled={!canUseAi}
                   className="inline-flex h-7 items-center gap-1.5 rounded-md px-2 text-[12px] font-medium text-zinc-200 transition hover:bg-white/15 disabled:opacity-40"
-                  title={canUseAi ? 'Ask Gemini (⌘K)' : 'Connects on the live teacher desk'}
+                  title={canUseAi ? 'Ask Gemini' : 'Connects on the live teacher desk'}
                 >
                   <Sparkles className="h-3.5 w-3.5" strokeWidth={1.5} /> Ask Gemini
-                  <kbd className="ml-0.5 hidden rounded bg-white/15 px-1 text-[9px] sm:inline">⌘K</kbd>
                 </button>
               </>
             ) : (

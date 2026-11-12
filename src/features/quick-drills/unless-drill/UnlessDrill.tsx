@@ -358,7 +358,7 @@ function UnlessRun({ actor, edition }: { actor: string; edition: string }) {
         {options.map((o, i) => (
           <button key={o} type="button" className="cir-token ud-token" disabled={!live || (!!placed.left && !!placed.right)}
             onClick={() => place(o)}>
-            <Tok text={o} /><kbd>{i + 1}</kbd>
+            <Tok text={o} />
           </button>
         ))}
       </div>

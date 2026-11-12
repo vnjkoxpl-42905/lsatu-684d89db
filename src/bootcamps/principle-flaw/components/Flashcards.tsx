@@ -312,14 +312,14 @@ export default function FlashcardsView() {
                 onClick={() => grade(true)}
                 className="h-11 px-6 bg-emerald-500 text-zinc-950 hover:bg-emerald-400 rounded-xl text-[10px] font-bold uppercase tracking-widest gap-2"
               >
-                <ThumbsUp size={14} /> Got it <kbd className="text-[10.5px] font-bold opacity-60 ml-1">1</kbd>
+                <ThumbsUp size={14} /> Got it
               </Button>
               <Button
                 onClick={() => grade(false)}
                 variant="outline"
                 className="h-11 px-6 border-rose-500/40 text-rose-300 hover:bg-rose-500/10 rounded-xl text-[10px] font-bold uppercase tracking-widest gap-2"
               >
-                <RefreshCw size={14} /> Review again <kbd className="text-[10.5px] font-bold opacity-60 ml-1">2</kbd>
+                <RefreshCw size={14} /> Review again
               </Button>
             </motion.div>
           )}

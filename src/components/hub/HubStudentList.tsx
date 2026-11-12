@@ -125,7 +125,7 @@ export default function HubStudentList({ selectedId, onSelect }: Props) {
                 setQuery("");
               }
             }}
-            placeholder="Search students (⌘K)"
+            placeholder="Search students"
             className="pl-9"
           />
         </div>

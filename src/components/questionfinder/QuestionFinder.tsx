@@ -5,7 +5,6 @@ import { createPortal } from "react-dom";
 import { useNavigate } from "react-router-dom";
 import {
   ArrowRight,
-  CornerDownLeft,
   Loader2,
   Search,
   X,
@@ -131,11 +130,9 @@ const QuestionFinder = React.forwardRef<QuestionFinderHandle, QuestionFinderProp
         aria-haspopup="dialog"
         aria-expanded={open}
         aria-label={triggerLabel}
-        /* The shortcuts are declared, not drawn. Joshua removed the visible
-           badge on 2026-09-08; assistive tech and a hover tooltip can still
-           carry them. */
+        /* Shortcuts are declared for assistive tech only, never drawn or put in
+           a tooltip (DESIGN.md: no keyboard-shortcut hints, 2026-11-11). */
         aria-keyshortcuts="Meta+K Control+K /"
-        title="Find a question (Ctrl K, or /)"
       >
         <Search className="qf-trigger-icon" size={15} strokeWidth={1.9} aria-hidden />
         <span className="qf-trigger-label" aria-hidden>
@@ -528,23 +525,6 @@ function FinderPanel({
             {!banks.loading && !banks.error && banks.rcFailed && (
               <p className="qf-warn" role="alert">Reading Comprehension passages could not be loaded. <button type="button" onClick={banks.retry}>Retry</button></p>
             )}
-          </div>
-
-
-          <div className="qf-legend" aria-hidden>
-            <span>
-              <kbd>↑</kbd>
-              <kbd>↓</kbd> move
-            </span>
-            <span>
-              <kbd>
-                <CornerDownLeft size={9} strokeWidth={2.4} />
-              </kbd>{" "}
-              select
-            </span>
-            <span>
-              <kbd>esc</kbd> {query ? "clear" : "close"}
-            </span>
           </div>
         </div>
       </div>

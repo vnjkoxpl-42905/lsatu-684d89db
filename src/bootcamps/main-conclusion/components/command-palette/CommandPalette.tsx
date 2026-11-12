@@ -164,7 +164,6 @@ export function CommandPalette({ open, onClose }: Props) {
                   'focus:outline-none',
                 )}
               />
-              <KeyHint>esc</KeyHint>
             </div>
             <ul className="max-h-[60vh] overflow-y-auto py-1.5">
               {filtered.length === 0 ? (
@@ -204,21 +203,7 @@ export function CommandPalette({ open, onClose }: Props) {
               )}
             </ul>
             <div className="px-4 py-2.5 border-t border-[rgb(var(--border)/0.08)] flex items-center justify-between bg-[rgb(var(--surface)/0.4)] backdrop-blur-md">
-              <div className="flex items-center gap-3 font-mc-mono text-mono text-ink-faint">
-                <span className="inline-flex items-center gap-1.5">
-                  <KeyHint>↑</KeyHint>
-                  <KeyHint>↓</KeyHint>
-                  <span>navigate</span>
-                </span>
-                <span className="inline-flex items-center gap-1.5">
-                  <KeyHint>⏎</KeyHint>
-                  <span>open</span>
-                </span>
-                <span className="inline-flex items-center gap-1.5">
-                  <KeyHint>esc</KeyHint>
-                  <span>close</span>
-                </span>
-              </div>
+              <span />
               <span className="font-mc-mono text-mono text-ink-faint">
                 {filtered.length} result{filtered.length === 1 ? '' : 's'}
               </span>
@@ -230,17 +215,3 @@ export function CommandPalette({ open, onClose }: Props) {
   );
 }
 
-function KeyHint({ children }: { children: React.ReactNode }) {
-  return (
-    <kbd
-      className={cn(
-        'inline-flex h-5 min-w-[20px] items-center justify-center rounded-[5px] px-1',
-        'bg-[rgb(var(--surface-elev))] border border-[rgb(var(--border)/0.14)]',
-        'shadow-[inset_0_-1px_0_rgb(0_0_0/0.4),0_1px_0_rgb(255_255_255/0.04)]',
-        'font-mc-mono text-[10px] font-semibold text-ink-soft',
-      )}
-    >
-      {children}
-    </kbd>
-  );
-}

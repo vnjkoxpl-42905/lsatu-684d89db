@@ -124,15 +124,6 @@ export default function MentionStudentPalette({
           )}
 
           <div className="px-3 py-1.5 border-t border-zinc-800 text-[10px] text-zinc-500 flex items-center gap-3">
-            <span>
-              <kbd className="text-zinc-300">↑↓</kbd> nav
-            </span>
-            <span>
-              <kbd className="text-zinc-300">Tab</kbd>/<kbd className="text-zinc-300">Enter</kbd> select
-            </span>
-            <span>
-              <kbd className="text-zinc-300">Esc</kbd> close
-            </span>
             <button
               type="button"
               onMouseDown={(e) => {

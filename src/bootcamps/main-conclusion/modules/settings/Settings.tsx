@@ -12,15 +12,9 @@ import { Modal } from '@/bootcamps/main-conclusion/components/primitives/Modal';
 import { Badge } from '@/bootcamps/main-conclusion/components/primitives/Badge';
 import { Toggle } from '@/bootcamps/main-conclusion/components/primitives/Toggle';
 import { PageHeader } from '@/bootcamps/main-conclusion/components/primitives/PageHeader';
-import { Download, Trash2, Palette, Activity, Keyboard, Database } from 'lucide-react';
+import { Download, Trash2, Palette, Activity, Database } from 'lucide-react';
 import { cn } from '@/bootcamps/main-conclusion/lib/cn';
 
-const KBD = cn(
-  'inline-flex h-5 min-w-[20px] items-center justify-center rounded-[5px] px-1',
-  'bg-[rgb(var(--surface-elev))] border border-[rgb(var(--border)/0.14)]',
-  'shadow-[inset_0_-1px_0_rgb(0_0_0/0.4),0_1px_0_rgb(255_255_255/0.04)]',
-  'font-mc-mono text-[10px] font-semibold text-ink-soft',
-);
 
 function SectionHeading({ icon, label }: { icon: React.ReactNode; label: string }) {
   return (
@@ -94,20 +88,6 @@ export function Settings() {
               label="Reduce motion (override)"
             />
           </div>
-        </Card>
-
-        <Card variant="surface">
-          <SectionHeading
-            icon={<Keyboard className="h-3 w-3" strokeWidth={2.4} aria-hidden="true" />}
-            label="Keyboard shortcuts"
-          />
-          <ul className="mt-3 space-y-1.5 font-mc-mono text-mono text-ink">
-            <li className="flex items-center gap-2"><kbd className={KBD}>⌘K</kbd> <span className="text-ink-faint">/</span> <kbd className={KBD}>Ctrl+K</kbd> — Command palette</li>
-            <li className="flex items-center gap-2"><kbd className={KBD}>⌘J</kbd> <span className="text-ink-faint">/</span> <kbd className={KBD}>Ctrl+J</kbd> — AI Tutor</li>
-            <li className="flex items-center gap-2"><kbd className={KBD}>Esc</kbd> — Close drawer / palette / modal</li>
-            <li className="flex items-center gap-2"><kbd className={KBD}>↑</kbd> <kbd className={KBD}>↓</kbd> — Navigate palette results</li>
-            <li className="flex items-center gap-2"><kbd className={KBD}>⏎</kbd> — Open selected result</li>
-          </ul>
         </Card>
 
         <Card variant="surface">

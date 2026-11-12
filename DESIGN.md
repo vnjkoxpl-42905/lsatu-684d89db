@@ -378,6 +378,7 @@ These principles follow the independent 48-question audit and host arbitration. 
 - **Don't** put a second typeface into the Workroom chrome, and don't let a serif cross in from the Hall.
 - **Don't** animate layout properties. Animate `opacity`, `transform` and `color`. No bounce, no elastic, no lift on hover.
 - **Don't** write a hex value into a component. If a room needs its own colour, promote it to named tokens behind that room's wrapper.
+- **Don't** show keyboard-shortcut hints anywhere in the UI: no "Ctrl K", "⌘K", "Ctrl+K", "/", "Esc", "↑↓ move" or "↵ open" badges, `<kbd>` chips, placeholder suffixes, tooltips or legend rows. Shortcuts may still work, but the interface never advertises them. A search field says what it finds ("Find a question, student or action") and nothing else. (Joshua, 2026-11-11.)
 
 <!--
 Known gaps between this record and the code, as of 2026-09-05. Recorded rather

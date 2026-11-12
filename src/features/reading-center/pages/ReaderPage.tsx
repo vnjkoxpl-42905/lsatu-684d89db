@@ -30,7 +30,6 @@ import {
   BookmarksDialog,
   FinishAlert,
   PreferencesDialog,
-  ShortcutsPopover,
   SpeedToast,
   WordActionSheet,
   WpmDialog,
@@ -452,11 +451,6 @@ function Reader({ userId, passage, initialPrefs, saved }: { userId: string; pass
       ) : (
         <footer className="rc-reader-footer flex h-10 shrink-0 items-center px-5" style={{ background: "var(--rc-bottombar)", borderTop: "0.8px solid var(--rc-bottombar-border)" }}>
           {/* Spreeder at 1180px and below: keyboard button hidden, time left, speed + View right. */}
-          <div className="rc-reader-keyboard hidden justify-center">
-            <button ref={kbdBtn} type="button" aria-label="Keyboard shortcuts" onClick={() => setKbdOpen((o) => !o)} className="flex h-8 w-10 items-center justify-center" style={{ color: "var(--rc-text)" }}>
-              <MIcon name="keyboard" size={24} />
-            </button>
-          </div>
           <div className="rc-reader-controls order-2 ml-auto mr-[5px] flex items-center gap-[19px]">
             <BarButton onClick={() => { engine.pause(); setWpmOpen(true); }} icon="speedometer">{prefs.wpm}</BarButton>
             <BarButton onClick={() => { engine.pause(); setViewOpen(true); }} icon="list">View</BarButton>
@@ -466,8 +460,6 @@ function Reader({ userId, passage, initialPrefs, saved }: { userId: string; pass
           </div>
         </footer>
       )}
-
-      <ShortcutsPopover open={kbdOpen} anchorX={kbdBtn.current?.getBoundingClientRect().left ?? 230} onClose={() => setKbdOpen(false)} />
       <PreferencesDialog open={prefsOpen} onClose={() => setPrefsOpen(false)} prefs={prefs} onChange={updatePrefs} name={name} />
       <WpmDialog open={wpmOpen} onClose={() => setWpmOpen(false)} value={prefs.wpm} onSave={changeSpeed} />
       <ViewPanel

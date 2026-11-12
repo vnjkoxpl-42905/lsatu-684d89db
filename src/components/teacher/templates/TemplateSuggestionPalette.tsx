@@ -86,8 +86,6 @@ export function TemplateSuggestionPalette({
         })}
       </ul>
       <div className="flex items-center gap-3 border-t border-zinc-800 px-3 py-1.5 text-[10px] text-zinc-500">
-        <span><kbd className="text-zinc-300">↑↓</kbd> nav</span>
-        <span><kbd className="text-zinc-300">Tab</kbd>/<kbd className="text-zinc-300">Enter</kbd> insert</span>
         <button type="button" onMouseDown={onClose} className="ml-auto text-zinc-400 hover:text-zinc-200">
           Dismiss
         </button>

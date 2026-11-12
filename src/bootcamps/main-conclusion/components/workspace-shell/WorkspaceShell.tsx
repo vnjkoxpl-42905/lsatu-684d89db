@@ -164,7 +164,7 @@ function FloatingActions({
     <div className="print-hide fixed bottom-6 right-6 flex flex-col gap-2.5 z-30">
       {/* AI Tutor button removed — admins use the consolidated chat hub.
           ⌘J keyboard shortcut still toggles the in-lesson tutor. */}
-      <Tooltip content="Command palette (⌘K)" side="left">
+      <Tooltip content="Command palette" side="left">
         <button
           onClick={onOpenPalette}
           aria-label="Open command palette"
