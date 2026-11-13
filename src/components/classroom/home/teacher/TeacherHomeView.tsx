@@ -7,11 +7,11 @@ import { filterStudents } from "./teacherHomeModel";
 import { PostSessionWork } from "./PostSessionWork";
 import { MyList, AllTasksSheet, DeskStatus } from "./TeacherTasks";
 import { TeacherScheduleSheet } from "./TeacherScheduleSheet";
+import { EclipseStage } from "./EclipseStage";
+import "./eclipse.css";
 import { AccessSheet, BookingSheet } from "./TeacherAccessBooking";
 import {
   EMPTY_DESK,
-  deskMoney,
-  paymentLabel,
   safeGoogleLink,
 } from "./teachingDeskModel";
 import type { ManagedUser } from "@/lib/adminUsers";
@@ -106,43 +106,6 @@ function TeacherDeskContent({
     desk.manual.state === "ready" &&
     !desk.manual.stale &&
     desk.manual.data?.total === 0;
-  const paymentActivity = (
-    <section
-      className="classroom-home-region home-desk-payments"
-      id="home-payments"
-    >
-      <header className="classroom-home-region-head">
-        <h2>Payment activity</h2>
-        <span className="home-desk-period">Last 90 days</span>
-        <button
-          className="classroom-home-more"
-          onClick={() => onOpen("/teacher/today")}
-        >
-          History ↗
-        </button>
-      </header>
-      <DeskStatus region={desk.payments} noun="payment activity" />
-      {desk.payments.state === "ready" ? (
-        desk.payments.data?.recent?.length ? (
-          <ul className="home-desk-payment-list">
-            {desk.payments.data.recent.slice(0, 3).map((p) => (
-              <li key={p.id}>
-                <span>
-                  <b>{p.payer_name || p.email || "Payer not linked"}</b>
-                  <small>
-                    {paymentLabel(p)} · {when(p.paid_at)}
-                  </small>
-                </span>
-                <strong>{deskMoney(p)}</strong>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p className="home-desk-empty">No payment activity recorded.</p>
-        )
-      ) : null}
-    </section>
-  );
   const correspondence = (
     <section
       className="classroom-home-region home-desk-correspondence-region"
@@ -243,65 +206,105 @@ function TeacherDeskContent({
       </div>
     </section>
   );
+  const recapNames = (model.postSession?.data?.tasks ?? [])
+    .map((t) => t.student_name?.split(" ")[0])
+    .filter(Boolean)
+    .slice(0, 2)
+    .join(", ");
+  const newNames = pendingAccess
+    .map((p) => (p.display_name || p.email).split(" ")[0])
+    .slice(0, 2)
+    .join(", ");
+  const unreadNames = model.unread.rows
+    .map((r) => r.name.split(" ")[0])
+    .slice(0, 2)
+    .join(", ");
+  const tiles = [
+    {
+      key: "recaps",
+      target: "home-session-work",
+      label: "Recaps to finish",
+      value: count(
+        model.postSession?.state ?? "setup",
+        model.postSession?.data?.total ?? model.postSession?.data?.tasks?.length,
+      ),
+      detail: recapNames || (sessionTotal ? "" : "All caught up"),
+      icon: (
+        <svg viewBox="0 0 24 24"><path d="M6 3h9l3 3v15H6z" /><path d="m9 13 2 2 4-4" /></svg>
+      ),
+    },
+    {
+      key: "new",
+      target: "home-new-students",
+      label: "New students",
+      value: count(desk.access.state, pendingAccess.length),
+      detail: newNames || (desk.access.state === "ready" ? "No one waiting" : ""),
+      icon: (
+        <svg viewBox="0 0 24 24"><circle cx="10" cy="8" r="3.5" /><path d="M3.5 20c.8-3.6 3.4-5.5 6.5-5.5 1.4 0 2.7.4 3.8 1.1" /><path d="M18 14v6M15 17h6" /></svg>
+      ),
+    },
+    {
+      key: "unread",
+      target: "home-correspondence",
+      label: "Unread",
+      value: model.unread.state === "ready" ? (model.unread.total ?? 0) : "—",
+      detail: unreadNames || (model.unread.state === "ready" ? "Inbox clear" : ""),
+      icon: (
+        <svg viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z" /><path d="M8 10h8" /></svg>
+      ),
+    },
+  ];
+  const hotTile = tiles.find((t) => typeof t.value === "number" && t.value > 0)?.key;
   return (
     <div
       ref={rootRef}
-      className="classroom-home classroom-home-teacher home-desk"
+      className="classroom-home classroom-home-teacher home-desk home-eclipse"
       data-motion-skip
       data-role-home="teacher"
-      data-home-treatment="paper"
+      data-home-treatment="eclipse"
       data-work-state={quietWork ? "quiet" : "active"}
     >
-      <header className="home-desk-masthead">
-        <div className="home-desk-greeting">
-          <p className="home-desk-dateline">
-            {model.dateline} <span>Teaching desk</span>
-          </p>
+      <section className="eclipse-hero">
+        <header className="home-desk-masthead eclipse-card eclipse-greet">
+          <p className="eclipse-date">{model.dateline}</p>
           <h1>
             {model.greeting}
             {model.displayName ? (
               <>
-                , <span className="home-desk-name">{model.displayName}.</span>
+                ,{" "}<br />
+                <em className="home-desk-name">{model.displayName}.</em>
               </>
             ) : (
               "."
             )}
           </h1>
           <p className="home-desk-summary">{sessionSummary}</p>
-        </div>
-        <div className="home-desk-action-stack">
-          <button
-            className="home-desk-launcher"
-            aria-label="Assign work"
-            data-home-feedback
-            onClick={() => onOpen("/teacher/library/assignments")}
-          >
-            <span className="home-desk-launcher-copy">
-              <span className="home-desk-launcher-title">Assign work</span>
-              <span className="home-desk-launcher-description">
-                Choose a student and their next task.
-              </span>
-            </span>
-            <span className="home-desk-launcher-arrow" aria-hidden="true">
-              <ArrowRight size={20} />
-            </span>
-          </button>
-          <div className="home-desk-header-actions">
-            <a
+          <div className="eclipse-acts">
+            <button
+              className="eclipse-btn-dark"
+              aria-label="Assign work"
               data-home-feedback
-              href={EMAIL}
-              target="_blank"
-              rel="noopener noreferrer"
+              onClick={() => onOpen("/teacher/library/assignments")}
             >
-              Open email ↗
-            </a>
-            <button data-home-feedback onClick={() => onOpen("/teacher/inbox")}>
+              Assign work
+              <span aria-hidden="true">
+                <ArrowRight size={16} />
+              </span>
+            </button>
+            <button
+              className="eclipse-btn-line"
+              data-home-feedback
+              onClick={() => onOpen("/teacher/inbox")}
+            >
               Messages
               {model.unread.state === "ready" ? ` (${model.unread.total})` : ""}
             </button>
-            <details className="home-desk-more-menu">
+            <details className="home-desk-more-menu eclipse-more">
               <summary>More</summary>
               <div>
+                <a href={EMAIL} target="_blank" rel="noopener noreferrer">
+                  Open email ↗
+                </a>
                 <button onClick={(event) => openBooking("link", event.currentTarget)}>
                   Create session link
                 </button>
@@ -311,191 +314,179 @@ function TeacherDeskContent({
               </div>
             </details>
           </div>
-        </div>
-      </header>
-      <nav className="home-desk-attention" aria-label="Jump to work">
-        <button onClick={() => jump("home-session-work")}>
-          <span>After-session</span>
-          <b>
-            {count(
-              model.postSession?.state ?? "setup",
-              model.postSession?.data?.total ??
-                model.postSession?.data?.tasks?.length,
-            )}
-          </b>
-        </button>
-        <button onClick={() => jump("home-decisions")}>
-          <span>Payment decisions</span>
-          <b>
-            {count(desk.payments.state, desk.payments.data?.attention_total)}
-          </b>
-        </button>
-        <button onClick={() => jump("home-decisions")}>
-          <span>Access decisions</span>
-          <b>{count(desk.access.state, pendingAccess.length)}</b>
-        </button>
-        <button onClick={() => jump("home-correspondence")}>
-          <span>Email</span>
-          <b>
-            {count(desk.email.state, desk.email.data?.count)}
-            {desk.email.state === "ready" &&
-            desk.email.data?.count_is_lower_bound
-              ? "+"
-              : ""}
-          </b>
-        </button>
+        </header>
+        <EclipseStage agenda={desk.agenda} onOpen={onOpen} />
+      </section>
+      <nav className="eclipse-brief" aria-label="Today at a glance">
+        {tiles.map((t) => (
+          <button
+            key={t.key}
+            className={t.key === hotTile ? "eclipse-tile is-hot" : "eclipse-tile"}
+            onClick={() => jump(t.target)}
+          >
+            <span className="eclipse-ico" aria-hidden="true">{t.icon}</span>
+            <span className="eclipse-num">{t.value}</span>
+            <span className="eclipse-lab">
+              <b>{t.label}</b>
+              {t.detail ? <small>{t.detail}</small> : null}
+            </span>
+            <span className="eclipse-go" aria-hidden="true">→</span>
+          </button>
+        ))}
       </nav>
-      <div className="home-desk-main">
-        <div className="home-desk-work-column">
-          <PostSessionWork
-            work={model.postSession}
-            students={students}
-            onOpen={onOpen}
-            onAll={() => setAllTasks(true)}
-          />
-          <MyList
-            desk={desk}
-            students={students}
-            onAll={() => setAllTasks(true)}
-          />
-          {correspondence}
-        </div>
-        <aside
-          className="home-desk-side-column"
-          aria-label="Agenda and decisions"
-        >
-          <section className="classroom-home-region home-desk-agenda">
-            <header className="classroom-home-region-head">
-              <h2>Next up</h2>
-              <a href={CALENDAR} target="_blank" rel="noopener noreferrer">
-                Calendar ↗
-              </a>
-            </header>
-            <DeskStatus region={desk.agenda} noun="primary calendar" />
-            {desk.agenda.state === "ready" ? (
-              desk.agenda.data?.events?.length ? (
-                <ul className="home-desk-agenda-list">
-                  {desk.agenda.data.events.slice(0, 3).map((event) => (
-                    <li key={event.id}>
-                      <time dateTime={event.starts_at}>
-                        {when(event.starts_at)}
-                      </time>
-                      {safeGoogleLink(event.calendar_url, "calendar") ? (
-                        <a
-                          href={safeGoogleLink(event.calendar_url, "calendar")!}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          {event.title}
-                        </a>
-                      ) : (
-                        <b>{event.title}</b>
-                      )}
-                      {event.student_id ? (
-                        <button
-                          onClick={() =>
-                            onOpen(
-                              `/teacher/students/${encodeURIComponent(event.student_id!)}`,
-                            )
-                          }
-                        >
-                          Prepare for {event.student_name || "student"} ↗
-                        </button>
-                      ) : (
-                        <details>
-                          <summary>Label event</summary>
-                          <p>
-                            Only student sessions and consultations create
-                            follow-up work.
-                          </p>
+
+      <div className="eclipse-zone">
+        <div className="eclipse-zl" aria-hidden="true">01 · Follow up</div>
+        <div className="eclipse-grid">
+          <div className="eclipse-col">
+            <PostSessionWork
+              work={model.postSession}
+              students={students}
+              onOpen={onOpen}
+              onAll={() => setAllTasks(true)}
+            />
+          </div>
+          <div className="eclipse-col">
+            <section className="classroom-home-region home-desk-agenda">
+              <header className="classroom-home-region-head">
+                <h2>Next up</h2>
+                <a href={CALENDAR} target="_blank" rel="noopener noreferrer">
+                  Calendar ↗
+                </a>
+              </header>
+              <DeskStatus region={desk.agenda} noun="primary calendar" />
+              {desk.agenda.state === "ready" ? (
+                desk.agenda.data?.events?.length ? (
+                  <ul className="home-desk-agenda-list">
+                    {desk.agenda.data.events.slice(0, 3).map((event) => (
+                      <li key={event.id}>
+                        <time dateTime={event.starts_at}>
+                          {when(event.starts_at)}
+                        </time>
+                        {safeGoogleLink(event.calendar_url, "calendar") ? (
+                          <a
+                            href={safeGoogleLink(event.calendar_url, "calendar")!}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            {event.title}
+                          </a>
+                        ) : (
+                          <b>{event.title}</b>
+                        )}
+                        {event.student_id ? (
                           <button
-                            disabled={!desk.classify}
                             onClick={() =>
-                              void desk
-                                .classify?.(event.id, "session")
-                                .catch(() =>
-                                  setClassifyError(
-                                    "Could not label this event.",
-                                  ),
-                                )
+                              onOpen(
+                                `/teacher/students/${encodeURIComponent(event.student_id!)}`,
+                              )
                             }
                           >
-                            Student session
+                            Prepare for {event.student_name || "student"} ↗
                           </button>
-                          <button
-                            disabled={!desk.classify}
-                            onClick={() =>
-                              void desk
-                                .classify?.(event.id, "consultation")
-                                .catch(() =>
-                                  setClassifyError(
-                                    "Could not label this event.",
-                                  ),
-                                )
-                            }
-                          >
-                            Consultation
-                          </button>
-                        </details>
-                      )}
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <p className="home-desk-empty">
-                  No events in the next seven days.
+                        ) : (
+                          <details>
+                            <summary>Label event</summary>
+                            <p>
+                              Only student sessions and consultations create
+                              follow-up work.
+                            </p>
+                            <button
+                              disabled={!desk.classify}
+                              onClick={() =>
+                                void desk
+                                  .classify?.(event.id, "session")
+                                  .catch(() =>
+                                    setClassifyError("Could not label this event."),
+                                  )
+                              }
+                            >
+                              Student session
+                            </button>
+                            <button
+                              disabled={!desk.classify}
+                              onClick={() =>
+                                void desk
+                                  .classify?.(event.id, "consultation")
+                                  .catch(() =>
+                                    setClassifyError("Could not label this event."),
+                                  )
+                              }
+                            >
+                              Consultation
+                            </button>
+                          </details>
+                        )}
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p className="home-desk-empty">No events in the next seven days.</p>
+                )
+              ) : null}
+              {classifyError ? <p role="alert">{classifyError}</p> : null}
+              {desk.agenda.data?.fetched_at ? (
+                <p className="home-desk-footnote">
+                  Checked {when(desk.agenda.data.fetched_at)} · Primary calendar
                 </p>
-              )
-            ) : null}
-            {classifyError ? <p role="alert">{classifyError}</p> : null}
-            {desk.agenda.data?.fetched_at ? (
-              <p className="home-desk-footnote">
-                Checked {when(desk.agenda.data.fetched_at)} · Primary calendar
-              </p>
-            ) : null}
-          </section>
+              ) : null}
+            </section>
+          </div>
+        </div>
+      </div>
+
+      <div className="eclipse-zone">
+        <div className="eclipse-zl" aria-hidden="true">02 · Inbox and new students</div>
+        <div className="eclipse-three">
+          {correspondence}
           <section
-            className="classroom-home-region home-desk-decisions"
-            id="home-decisions"
+            className="classroom-home-region eclipse-new-students"
+            id="home-new-students"
             tabIndex={-1}
           >
             <header className="classroom-home-region-head">
-              <h2>Needs a decision</h2>
+              <h2>
+                New students{" "}
+                {desk.access.state === "ready" ? (
+                  <span className="classroom-home-count">{pendingAccess.length}</span>
+                ) : null}
+              </h2>
+              <button
+                className="classroom-home-more"
+                onClick={() => onOpen("/teacher/students")}
+              >
+                All students ↗
+              </button>
             </header>
-            <DeskStatus region={desk.payments} noun="payment decisions" />
-            {desk.payments.state === "ready" ? (
-              desk.payments.data?.attention?.length ? (
-                <ul>
-                  {desk.payments.data.attention.slice(0, 2).map((p) => (
-                    <li key={p.id}>
-                      <button onClick={() => onOpen("/teacher/today")}>
-                        <span>
-                          <b>{p.payer_name || p.email || "Unmatched payer"}</b>
-                          <small>
-                            {paymentLabel(p)} · {deskMoney(p)}
-                          </small>
-                        </span>
-                        <span aria-hidden="true">↗</span>
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <p className="home-desk-empty">No payment decisions waiting.</p>
-              )
-            ) : null}
-            <DeskStatus region={desk.access} noun="access decisions" />
+            <DeskStatus region={desk.access} noun="new students" />
             {desk.access.state === "ready" ? (
               pendingAccess.length ? (
-                <ul>
-                  {pendingAccess.slice(0, 2).map((person) => (
-                    <li key={person.class_id}>
-                      <button onClick={e => { accountTrigger.current = e.currentTarget; setAccessOpen(true); setAccess(person); }}>
+                <ul aria-label="Students waiting for access">
+                  {pendingAccess.slice(0, 4).map((person) => (
+                    <li key={person.class_id} className="eclipse-li">
+                      <span className="eclipse-who">
+                        <span className="eclipse-av" aria-hidden="true">
+                          {(person.display_name || person.email).charAt(0).toUpperCase()}
+                        </span>
                         <span>
                           <b>{person.display_name || person.email}</b>
-                          <small>Choose student access</small>
+                          <small>
+                            {person.created_at
+                              ? `Signed up ${when(person.created_at)}`
+                              : "Waiting for access"}
+                          </small>
                         </span>
-                        <span aria-hidden="true">↗</span>
+                      </span>
+                      <button
+                        className="eclipse-letin"
+                        aria-label={`Let in ${person.display_name || person.email}`}
+                        onClick={(e) => {
+                          accountTrigger.current = e.currentTarget;
+                          setAccessOpen(true);
+                          setAccess(person);
+                        }}
+                      >
+                        Let in
                       </button>
                     </li>
                   ))}
@@ -506,145 +497,168 @@ function TeacherDeskContent({
                 </p>
               )
             ) : null}
-            <div className="home-desk-decision-actions">
-              <button onClick={() => onOpen("/teacher/today")}>
-                Payments and history ↗
-              </button>
-              <button onClick={() => onOpen("/teacher/students")}>
-                Student access ↗
-              </button>
-            </div>
           </section>
-          {paymentActivity}
-        </aside>
-      </div>
-      <section className="classroom-home-region home-desk-students">
-        <header className="classroom-home-region-head">
-          <h2>Students at a glance</h2>
-          <button
-            className="classroom-home-more"
-            onClick={() => onOpen("/teacher/students")}
-          >
-            All students ↗
-          </button>
-        </header>
-        <div className="home-desk-account-actions" data-account-controls="student-credits-scheduling-20261028" role="group" aria-label="Student accounts">
-          <div><h3>Student accounts</h3><p>Manage sessions, access and private booking links.</p></div>
-          <button ref={scheduleTrigger} onClick={() => setScheduleOpen(true)}>Schedule a session</button>
-          <button onClick={e => openBooking("credits", e.currentTarget)}>Add session credits</button>
-          <button onClick={e => { accountTrigger.current = e.currentTarget; setAccess(null); setAccessOpen(true); }}>Account access</button>
-          <button onClick={e => openBooking("link", e.currentTarget)}>Individual booking links</button>
+          <MyList desk={desk} students={students} onAll={() => setAllTasks(true)} />
         </div>
-        <div className="home-desk-student-columns">
-          <div>
-            <h3>Recent activity</h3>
-            {model.roster.refreshFailed ? (
-              <p role="status">Could not refresh student activity.</p>
-            ) : null}
-            {model.roster.state === "error" ? (
-              <p role="alert">
-                Activity unavailable.{" "}
-                <button onClick={onRetryRoster}>Retry</button>
-              </p>
-            ) : model.roster.state === "loading" ? (
-              <p>Loading activity…</p>
-            ) : (
-              <ul aria-label="Recently active students">
-                {model.roster.recent.slice(0, 3).map((s) => (
-                  <li key={s.id}>
-                    <button onClick={() => onOpen(s.route)}>
-                      <b>{s.name}</b>
-                      <small>{s.activityLabel}</small>
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            )}
-            <p className="home-desk-footnote">
-              Recent activity is based on the last recorded visit.
-            </p>
-          </div>
-          <div>
-            <h3>Recent results</h3>
-            <DeskStatus region={desk.results} noun="test results" />
-            {desk.results.state === "ready" ? (
-              desk.results.data?.length ? (
-                <ul>
-                  {desk.results.data.slice(0, 3).map((r) => (
-                    <li key={r.id}>
-                      <button
-                        onClick={() =>
-                          onOpen(
-                            `/teacher/students/${encodeURIComponent(r.student_id)}/work`,
-                          )
-                        }
-                      >
-                        <b>{r.student_name}</b>
-                        <small>
-                          {r.title} · {r.score ?? "Result available"}
-                        </small>
-                      </button>
-                    </li>
-                  ))}
-                </ul>
+      </div>
+
+      <div className="eclipse-zone">
+        <div className="eclipse-zl" aria-hidden="true">03 · Students</div>
+        <section className="classroom-home-region home-desk-students">
+          <header className="classroom-home-region-head">
+            <h2>Students at a glance</h2>
+            <button
+              className="classroom-home-more"
+              onClick={() => onOpen("/teacher/students")}
+            >
+              All students ↗
+            </button>
+          </header>
+          <div className="home-desk-student-columns">
+            <div>
+              <h3>Recent activity</h3>
+              {model.roster.refreshFailed ? (
+                <p role="status">Could not refresh student activity.</p>
+              ) : null}
+              {model.roster.state === "error" ? (
+                <p role="alert">
+                  Activity unavailable.{" "}
+                  <button onClick={onRetryRoster}>Retry</button>
+                </p>
+              ) : model.roster.state === "loading" ? (
+                <p>Loading activity…</p>
               ) : (
-                <p className="home-desk-empty">No recent results recorded.</p>
-              )
-            ) : null}
-          </div>
-          <div>
-            <label className="home-desk-label" htmlFor="home-student-search">
-              Find a student
-              <input
-                id="home-student-search"
-                type="search"
-                placeholder="Student name"
-                disabled={model.roster.state !== "ready"}
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" && matches[0]) onOpen(matches[0].route);
-                  if (e.key === "Escape") setSearch("");
-                }}
-              />
-            </label>
-            {search.trim() ? (
-              matches.length ? (
-                <ul aria-label="Matching students">
-                  {matches.map((s) => (
+                <ul aria-label="Recently active students">
+                  {model.roster.recent.slice(0, 3).map((s) => (
                     <li key={s.id}>
                       <button onClick={() => onOpen(s.route)}>
-                        {s.name} ↗
+                        <b>{s.name}</b>
+                        <small>{s.activityLabel}</small>
                       </button>
-                      {desk.access.data?.find((p) => p.class_id === s.id) ? (
-                        <button
-                          onClick={(e) => {
-                            accountTrigger.current = e.currentTarget;
-                            setAccessOpen(true);
-                            setAccess(
-                              desk.access.data!.find(
-                                (p) => p.class_id === s.id,
-                              )!,
-                            );
-                          }}
-                        >
-                          Edit access
-                        </button>
-                      ) : null}
                     </li>
                   ))}
                 </ul>
-              ) : (
-                <p>No matching students.</p>
-              )
-            ) : (
-              <p className="home-desk-empty">
-                Open notes, assignments and student details.
-              </p>
-            )}
+              )}
+              <label className="home-desk-label" htmlFor="home-student-search">
+                Find a student
+                <input
+                  id="home-student-search"
+                  type="search"
+                  placeholder="Student name"
+                  disabled={model.roster.state !== "ready"}
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" && matches[0]) onOpen(matches[0].route);
+                    if (e.key === "Escape") setSearch("");
+                  }}
+                />
+              </label>
+              {search.trim() ? (
+                matches.length ? (
+                  <ul aria-label="Matching students">
+                    {matches.map((s) => (
+                      <li key={s.id}>
+                        <button onClick={() => onOpen(s.route)}>{s.name} ↗</button>
+                        {desk.access.data?.find((p) => p.class_id === s.id) ? (
+                          <button
+                            onClick={(e) => {
+                              accountTrigger.current = e.currentTarget;
+                              setAccessOpen(true);
+                              setAccess(
+                                desk.access.data!.find((p) => p.class_id === s.id)!,
+                              );
+                            }}
+                          >
+                            Edit access
+                          </button>
+                        ) : null}
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p>No matching students.</p>
+                )
+              ) : null}
+            </div>
+            <div className="eclipse-results">
+              <h3>Recent results</h3>
+              <DeskStatus region={desk.results} noun="test results" />
+              {desk.results.state === "ready" ? (
+                desk.results.data?.length ? (
+                  <ul>
+                    {desk.results.data.slice(0, 3).map((r) => {
+                      const parsed =
+                        typeof r.score === "string"
+                          ? /^(\d+)\s*\/\s*(\d+)$/.exec(r.score.trim())
+                          : null;
+                      const got = parsed ? Number(parsed[1]) : null;
+                      const of = parsed ? Number(parsed[2]) : null;
+                      return (
+                        <li key={r.id}>
+                          <button
+                            onClick={() =>
+                              onOpen(
+                                `/teacher/students/${encodeURIComponent(r.student_id)}/work`,
+                              )
+                            }
+                          >
+                            <span className="eclipse-res-head">
+                              <b>
+                                {r.student_name}
+                                <small>{r.title}</small>
+                              </b>
+                              <span>{r.score ?? "Result available"}</span>
+                            </span>
+                            {got !== null && of && of <= 60 && got <= of ? (
+                              <span className="eclipse-ticks" aria-hidden="true">
+                                {Array.from({ length: of }, (_, i) => (
+                                  <i key={i} className={i < got ? "on" : undefined} />
+                                ))}
+                              </span>
+                            ) : null}
+                          </button>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                ) : (
+                  <p className="home-desk-empty">No recent results recorded.</p>
+                )
+              ) : null}
+            </div>
+            <div
+              className="home-desk-account-actions"
+              data-account-controls="student-credits-scheduling-20261028"
+              role="group"
+              aria-label="Student accounts"
+            >
+              <h3>Student accounts</h3>
+              <button ref={scheduleTrigger} onClick={() => setScheduleOpen(true)}>
+                Schedule a session <span aria-hidden="true">↗</span>
+              </button>
+              <button onClick={(e) => openBooking("credits", e.currentTarget)}>
+                Add session credits <span aria-hidden="true">↗</span>
+              </button>
+              <button
+                onClick={(e) => {
+                  accountTrigger.current = e.currentTarget;
+                  setAccess(null);
+                  setAccessOpen(true);
+                }}
+              >
+                Account access <span aria-hidden="true">↗</span>
+              </button>
+              <button onClick={(e) => openBooking("link", e.currentTarget)}>
+                Individual booking links <span aria-hidden="true">↗</span>
+              </button>
+            </div>
           </div>
-        </div>
-      </section>
+          <p className="home-desk-footnote">
+            Recent activity is based on the last recorded visit.
+          </p>
+        </section>
+      </div>
       <AllTasksSheet
         open={allTasks}
         onClose={() => setAllTasks(false)}

@@ -1,0 +1,595 @@
+/* Teacher Home: Eclipse treatment (approved 2026-11-13).
+   Near-monochrome: paper, ink, night and marble with no hue. The only light
+   in the room is the white corona around the black planet.
+   Per DESIGN.md: surfaces are flat. Cards and tiles carry a hairline edge,
+   never a drop shadow, and nothing lifts on hover. Scoped under .home-eclipse
+   so the student Home and the older desk rules are untouched. */
+
+.classroom-root .home-desk.home-eclipse {
+  --ec-night: var(--lsatu-surface-dark, #131718);
+  --ec-marble: var(--lsatu-text-on-dark, #efede6);
+  --ec-marble-2: #a3a59c;
+  --ec-hair: #d5d4ca;
+  --ec-mono: "IBM Plex Mono", ui-monospace, monospace;
+  --ec-radius: 22px;
+  gap: 18px;
+  padding-top: 18px;
+}
+html.dark .classroom-root .home-desk.home-eclipse { --ec-hair: #3d443e; }
+
+/* Shared card language: hairline, no shadow */
+.classroom-root .home-desk.home-eclipse .eclipse-card,
+.classroom-root .home-desk.home-eclipse .classroom-home-region {
+  background: var(--home-surface);
+  border: 1px solid var(--home-edge);
+  border-radius: var(--ec-radius);
+  box-shadow: none;
+}
+.classroom-root .home-desk.home-eclipse .classroom-home-region { padding: 22px; }
+
+/* ---------- Hero ---------- */
+.classroom-root .home-eclipse .eclipse-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: 18px;
+}
+.classroom-root .home-eclipse .eclipse-greet {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+  padding: 28px 28px 24px;
+}
+.classroom-root .home-eclipse .eclipse-date {
+  font: 500 10.5px/1 var(--home-ui);
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--home-muted);
+  margin: 0;
+}
+.classroom-root .home-desk.home-eclipse .home-desk-masthead h1 {
+  font: 300 clamp(34px, 3.4vw, 44px)/1.04 var(--home-display);
+  letter-spacing: -.02em;
+  margin: 18px 0 14px;
+}
+.classroom-root .home-eclipse .eclipse-greet h1 em { font-style: italic; }
+.classroom-root .home-desk.home-eclipse .home-desk-masthead .home-desk-summary {
+  color: var(--home-muted);
+  font-size: 15px;
+  line-height: 1.45;
+  max-width: 36ch;
+  margin: 0;
+}
+.classroom-root .home-eclipse .eclipse-acts {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-top: auto;
+  padding-top: 24px;
+}
+.classroom-root .home-desk.home-eclipse .eclipse-btn-dark {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  height: 46px;
+  padding: 0 7px 0 20px;
+  border-radius: 999px;
+  background: var(--ec-night);
+  color: var(--ec-marble);
+  font-weight: 500;
+  font-size: 14.5px;
+  text-decoration: none;
+}
+.classroom-root .home-eclipse .eclipse-btn-dark > span {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--ec-marble);
+  color: var(--ec-night);
+  transition: transform .3s var(--home-ease);
+}
+.classroom-root .home-eclipse .eclipse-btn-dark:hover > span { transform: translateX(3px); }
+.classroom-root .home-desk.home-eclipse .eclipse-btn-line {
+  height: 46px;
+  padding: 0 18px;
+  border-radius: 999px;
+  border: 1px solid var(--ec-hair);
+  font-weight: 500;
+  font-size: 14.5px;
+  text-decoration: none;
+}
+.classroom-root .home-desk.home-eclipse .eclipse-btn-line:hover { background: var(--home-plane); }
+.classroom-root .home-eclipse .eclipse-more summary { font-size: 14px; color: var(--home-muted); }
+.classroom-root .home-eclipse .eclipse-more > div {
+  left: 0;
+  right: auto;
+  box-shadow: none;
+  border: 1px solid var(--home-edge);
+}
+.classroom-root .home-eclipse .eclipse-more a {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 10px;
+}
+
+/* ---------- Eclipse stage (decorative orbit + real agenda) ---------- */
+.classroom-root .home-eclipse .eclipse-stage {
+  position: relative;
+  min-height: 360px;
+  border-radius: var(--ec-radius);
+  overflow: hidden;
+  isolation: isolate;
+  color: var(--ec-marble);
+  background: radial-gradient(60% 70% at 70% 38%, #20272a 0%, #0c0f10 72%), #0c0f10;
+}
+.classroom-root .home-eclipse .eclipse-stars {
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(1px 1px at 8% 18%, #fff9 50%, transparent),
+    radial-gradient(1px 1px at 24% 64%, #fff5 50%, transparent),
+    radial-gradient(1px 1px at 46% 10%, #fff6 50%, transparent),
+    radial-gradient(1px 1px at 92% 78%, #fff4 50%, transparent),
+    radial-gradient(1px 1px at 63% 88%, #fff3 50%, transparent),
+    radial-gradient(1.5px 1.5px at 86% 14%, #fff8 50%, transparent);
+}
+.classroom-root .home-eclipse .eclipse-sky {
+  position: absolute;
+  inset: 0;
+  -webkit-mask-image: linear-gradient(100deg, transparent 0 30%, #000 52%);
+  mask-image: linear-gradient(100deg, transparent 0 30%, #000 52%);
+}
+.classroom-root .home-eclipse .eclipse-orb {
+  position: absolute;
+  border-radius: 50%;
+  left: 50%;
+  top: 50%;
+  transform: rotate(-8deg);
+}
+.classroom-root .home-eclipse .eclipse-orb-1,
+.classroom-root .home-eclipse .eclipse-orb-arc { width: 560px; height: 170px; margin: -60px 0 0 -170px; }
+.classroom-root .home-eclipse .eclipse-orb-1 { border: 1.2px solid rgb(239 237 230 / .24); }
+.classroom-root .home-eclipse .eclipse-orb-2 { width: 400px; height: 118px; margin: -34px 0 0 -90px; border: 1px dashed rgb(239 237 230 / .2); }
+.classroom-root .home-eclipse .eclipse-orb-arc {
+  border: 1.6px solid transparent;
+  border-top-color: var(--ec-marble);
+  border-left-color: var(--ec-marble);
+  filter: drop-shadow(0 0 7px #fff);
+}
+.classroom-root .home-eclipse .eclipse-planet {
+  position: absolute;
+  width: 150px;
+  height: 150px;
+  left: calc(50% + 40px);
+  top: 46px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 50%, #07090a 62%, #0d1011 100%);
+  box-shadow:
+    0 0 0 1.5px rgb(255 255 255 / .9),
+    0 0 26px 5px rgb(239 237 230 / .55),
+    0 0 110px 24px rgb(239 237 230 / .16),
+    inset 10px 0 22px -6px rgb(239 237 230 / .35);
+}
+.classroom-root .home-eclipse .eclipse-planet::after {
+  content: "";
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  left: 10px;
+  top: 20px;
+  background: #fff;
+  filter: blur(3px);
+  box-shadow: 0 0 22px 8px rgb(255 255 255 / .7);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .classroom-root .home-eclipse .eclipse-planet { animation: eclipse-breathe 6s ease-in-out infinite alternate; }
+}
+@keyframes eclipse-breathe {
+  to {
+    box-shadow:
+      0 0 0 1.5px #fff,
+      0 0 32px 7px rgb(239 237 230 / .62),
+      0 0 130px 30px rgb(239 237 230 / .2),
+      inset 10px 0 22px -6px rgb(239 237 230 / .4);
+  }
+}
+.classroom-root .home-eclipse .eclipse-stage-top {
+  position: absolute;
+  left: 26px;
+  right: 22px;
+  top: 22px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 2;
+}
+.classroom-root .home-eclipse .eclipse-eyebrow {
+  font: 400 10px/1 var(--ec-mono);
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--ec-marble-2);
+  margin: 0;
+}
+.classroom-root .home-desk.home-eclipse .eclipse-ghost-btn {
+  height: 34px;
+  padding: 0 14px;
+  border-radius: 999px;
+  font-size: 13px;
+  display: inline-flex;
+  align-items: center;
+  color: var(--ec-marble);
+  border: 1px solid rgb(239 237 230 / .28);
+  text-decoration: none;
+}
+.classroom-root .home-eclipse .eclipse-chip {
+  position: absolute;
+  left: calc(50% - 20px);
+  top: 62px;
+  z-index: 2;
+  font: 500 10.5px/1 var(--ec-mono);
+  letter-spacing: .08em;
+  padding: 7px 10px;
+  border-radius: 999px;
+  background: var(--ec-marble);
+  color: var(--ec-night);
+}
+.classroom-root .home-eclipse .eclipse-pin {
+  position: absolute;
+  right: 26px;
+  top: 150px;
+  z-index: 2;
+  font: 500 12px/1 var(--home-ui);
+  background: rgb(239 237 230 / .92);
+  color: #161d18;
+  padding: 7px 10px;
+  border-radius: 999px;
+  max-width: 44%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.classroom-root .home-eclipse .eclipse-pin b { font: 400 10.5px/1 var(--ec-mono); color: #64645b; margin-right: 6px; }
+.classroom-root .home-eclipse .eclipse-pin-ghost {
+  right: 26px;
+  top: 196px;
+  background: rgb(255 255 255 / .06);
+  color: var(--ec-marble-2);
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / .14);
+}
+.classroom-root .home-eclipse .eclipse-pin-ghost b { color: var(--ec-marble-2); }
+.classroom-root .home-eclipse .eclipse-next {
+  position: absolute;
+  left: 26px;
+  bottom: 24px;
+  width: max-content;
+  max-width: min(46%, 420px);
+  z-index: 2;
+}
+.classroom-root .home-eclipse .eclipse-count {
+  font-weight: 200;
+  font-size: 72px;
+  line-height: .95;
+  letter-spacing: -.045em;
+  margin: 10px 0 8px;
+  font-variant-numeric: tabular-nums;
+}
+.classroom-root .home-eclipse .eclipse-count sub {
+  font: 400 10px var(--ec-mono);
+  letter-spacing: .08em;
+  vertical-align: baseline;
+  margin: 0 12px 0 3px;
+  color: var(--ec-marble-2);
+}
+.classroom-root .home-eclipse .eclipse-next p { font-size: 17px; margin: 0; }
+.classroom-root .home-eclipse .eclipse-next em { font: italic 400 1.14em var(--home-display); }
+.classroom-root .home-eclipse .eclipse-next small { display: block; color: var(--ec-marble-2); font-size: 13.5px; margin-top: 2px; }
+.classroom-root .home-eclipse .eclipse-inline { color: var(--ec-marble); text-decoration: underline; }
+.classroom-root .home-desk.home-eclipse .eclipse-prep {
+  position: absolute;
+  right: 22px;
+  bottom: 22px;
+  z-index: 2;
+  height: 42px;
+  padding: 0 6px 0 16px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--ec-marble);
+  font-weight: 500;
+  font-size: 14px;
+  border: 1px solid rgb(239 237 230 / .55);
+  text-decoration: none;
+}
+.classroom-root .home-eclipse .eclipse-prep > span {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--ec-marble);
+  color: var(--ec-night);
+}
+
+/* ---------- Brief tiles: flat, pressable ---------- */
+.classroom-root .home-eclipse .eclipse-brief {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+.classroom-root .home-desk.home-eclipse .eclipse-tile {
+  display: grid;
+  grid-template-columns: auto auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 14px;
+  padding: 14px;
+  border-radius: 20px;
+  text-align: left;
+  background: var(--home-surface);
+  border: 1px solid var(--home-edge);
+  box-shadow: none;
+  transition: border-color .2s var(--home-ease), background-color .2s var(--home-ease);
+  text-decoration: none;
+}
+.classroom-root .home-desk.home-eclipse .eclipse-tile:hover { border-color: var(--ec-hair); text-decoration: none; }
+.classroom-root .home-desk.home-eclipse .eclipse-tile:active { transform: none; background: var(--home-plane); }
+.classroom-root .home-eclipse .eclipse-ico {
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  background: var(--home-plane);
+  border: 1px solid var(--home-edge);
+}
+.classroom-root .home-eclipse .eclipse-ico svg,
+.classroom-root .home-eclipse .eclipse-ico svg * {
+  width: 21px;
+  height: 21px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.classroom-root .home-eclipse .eclipse-num {
+  font-weight: 200;
+  font-size: 38px;
+  line-height: 1;
+  letter-spacing: -.04em;
+  min-width: 26px;
+  font-variant-numeric: tabular-nums;
+}
+.classroom-root .home-eclipse .eclipse-lab { min-width: 0; }
+.classroom-root .home-eclipse .eclipse-lab b { display: block; font-weight: 500; font-size: 14.5px; }
+.classroom-root .home-eclipse .eclipse-lab small {
+  display: block;
+  color: var(--home-muted);
+  font-size: 12.5px;
+  margin-top: 1px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.classroom-root .home-eclipse .eclipse-go {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--ec-hair);
+  color: var(--home-muted);
+  font-size: 13px;
+  transition: background-color .2s var(--home-ease), color .2s var(--home-ease);
+}
+.classroom-root .home-eclipse .eclipse-tile:hover .eclipse-go { background: var(--ec-night); color: var(--ec-marble); border-color: var(--ec-night); }
+.classroom-root .home-desk.home-eclipse .eclipse-tile.is-hot { background: var(--ec-night); color: var(--ec-marble); border-color: var(--ec-night); }
+.classroom-root .home-desk.home-eclipse .eclipse-tile.is-hot:active { background: #1a1f20; }
+.classroom-root .home-eclipse .eclipse-tile.is-hot .eclipse-ico { background: rgb(239 237 230 / .08); border-color: rgb(239 237 230 / .14); }
+.classroom-root .home-eclipse .eclipse-tile.is-hot .eclipse-lab small { color: var(--ec-marble-2); }
+.classroom-root .home-eclipse .eclipse-tile.is-hot .eclipse-go { background: var(--ec-marble); color: var(--ec-night); border-color: var(--ec-marble); }
+
+html.dark .classroom-root .home-desk.home-eclipse .eclipse-tile.is-hot { background: var(--ec-marble); color: var(--ec-night); border-color: var(--ec-marble); }
+html.dark .classroom-root .home-desk.home-eclipse .eclipse-tile.is-hot:active { background: #dcd9d0; }
+html.dark .classroom-root .home-eclipse .eclipse-tile.is-hot .eclipse-ico { background: rgb(19 23 24 / .06); border-color: rgb(19 23 24 / .14); }
+html.dark .classroom-root .home-eclipse .eclipse-tile.is-hot .eclipse-lab small { color: #64645b; }
+html.dark .classroom-root .home-eclipse .eclipse-tile.is-hot .eclipse-go { background: var(--ec-night); color: var(--ec-marble); border-color: var(--ec-night); }
+
+/* ---------- Zones ---------- */
+.classroom-root .home-eclipse .eclipse-zone { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.classroom-root .home-eclipse .eclipse-zl {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font: 400 10.5px/1 var(--ec-mono);
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--home-muted);
+  padding: 6px 2px 0;
+}
+.classroom-root .home-eclipse .eclipse-zl::after { content: ""; flex: 1; height: 1px; background: var(--home-line); }
+.classroom-root .home-eclipse .eclipse-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 7.4fr) minmax(0, 4.6fr);
+  gap: 18px;
+  align-items: start;
+}
+.classroom-root .home-eclipse .eclipse-col { display: flex; flex-direction: column; gap: 18px; min-width: 0; }
+.classroom-root .home-eclipse .eclipse-three {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  align-items: start;
+}
+.classroom-root .home-eclipse .eclipse-three .home-desk-correspondence { display: grid; gap: 16px; grid-template-columns: 1fr; }
+
+/* The follow-up focus card: night with a line of light on its edge */
+.classroom-root .home-desk.home-eclipse .classroom-home-post-session .classroom-home-session-task:first-of-type {
+  position: relative;
+  background: radial-gradient(60% 90% at 85% 0%, rgb(239 237 230 / .08), transparent 70%), var(--ec-night);
+  color: var(--ec-marble);
+  border: 0;
+  border-radius: 20px;
+  padding: 22px;
+  isolation: isolate;
+  --home-ink: var(--ec-marble);
+  --home-muted: var(--ec-marble-2);
+  --home-plane: rgb(255 255 255 / .06);
+  --home-line: rgb(255 255 255 / .1);
+}
+.classroom-root .home-desk.home-eclipse .classroom-home-post-session .classroom-home-session-task:first-of-type::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: conic-gradient(from 200deg, transparent 0 58%, rgb(239 237 230 / .7) 74%, transparent 90%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+.classroom-root .home-desk.home-eclipse .classroom-home-post-session .classroom-home-session-task:first-of-type :is(h3, p, span, a, button, summary, small, label) { color: inherit; }
+.classroom-root .home-desk.home-eclipse .classroom-home-post-session .classroom-home-session-task:first-of-type :is(button, a, summary) {
+  border-color: rgb(239 237 230 / .28);
+}
+.classroom-root .home-desk.home-eclipse .classroom-home-post-session .classroom-home-session-task:first-of-type .classroom-home-quiet-button,
+.classroom-root .home-desk.home-eclipse .classroom-home-post-session .classroom-home-session-task:first-of-type .classroom-home-task-heading button {
+  background: rgb(255 255 255 / .04);
+  color: var(--ec-marble);
+  border: 1px solid rgb(255 255 255 / .16);
+  border-radius: 999px;
+  padding: 0 14px;
+}
+.classroom-root .home-desk.home-eclipse .classroom-home-post-session .classroom-home-session-task:first-of-type .home-desk-primary {
+  background: transparent;
+  color: var(--ec-marble);
+  border: 1px solid rgb(239 237 230 / .6);
+  border-radius: 999px;
+}
+.classroom-root .home-desk.home-eclipse .classroom-home-post-session .classroom-home-session-task:first-of-type .home-desk-primary:hover {
+  background: var(--ec-marble);
+  color: var(--ec-night);
+  text-decoration: none;
+}
+.classroom-root .home-desk.home-eclipse .classroom-home-post-session .classroom-home-session-task:first-of-type :is(input, textarea, select) {
+  background: var(--lsatu-field-dark, #282b2c);
+  color: var(--ec-marble);
+  border-color: rgb(239 237 230 / .2);
+}
+.classroom-root .home-desk.home-eclipse .classroom-home-post-session .classroom-home-session-task:first-of-type :is(button, a, input, summary):focus-visible { outline-color: var(--ec-marble); }
+.classroom-root .home-desk.home-eclipse .classroom-home-post-session .classroom-home-session-task:first-of-type .classroom-home-task-heading h3 {
+  font-weight: 300;
+  font-size: clamp(26px, 2.6vw, 34px);
+  letter-spacing: -.03em;
+}
+
+/* New students */
+.classroom-root .home-eclipse .eclipse-new-students ul { list-style: none; margin: 0; padding: 0; }
+.classroom-root .home-eclipse .eclipse-li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 0;
+  border-top: 1px solid var(--home-line);
+}
+.classroom-root .home-eclipse .eclipse-li:first-child { border-top: 0; }
+.classroom-root .home-eclipse .eclipse-who { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.classroom-root .home-eclipse .eclipse-who > span:last-child { min-width: 0; }
+.classroom-root .home-eclipse .eclipse-who b { font-weight: 500; display: block; overflow-wrap: anywhere; }
+.classroom-root .home-eclipse .eclipse-who small { display: block; color: var(--home-muted); font-size: 12.5px; }
+.classroom-root .home-eclipse .eclipse-av {
+  width: 36px;
+  height: 36px;
+  flex: none;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--home-plane);
+  font: italic 400 16px var(--home-display);
+}
+.classroom-root .home-desk.home-eclipse .eclipse-letin {
+  flex: none;
+  min-height: 36px;
+  padding: 0 16px;
+  border-radius: 999px;
+  background: var(--ec-night);
+  color: var(--ec-marble);
+  font-weight: 500;
+  font-size: 13px;
+  text-decoration: none;
+}
+.classroom-root .home-desk.home-eclipse .eclipse-letin:active { background: #1a1f20; }
+
+/* Students: engraved result ticks */
+.classroom-root .home-eclipse .eclipse-results ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.classroom-root .home-desk.home-eclipse .eclipse-results button { width: 100%; text-align: left; display: block; text-decoration: none; }
+.classroom-root .home-eclipse .eclipse-res-head { display: flex; justify-content: space-between; gap: 10px; font-size: 14px; margin-bottom: 8px; }
+.classroom-root .home-eclipse .eclipse-res-head b { font-weight: 500; }
+.classroom-root .home-eclipse .eclipse-res-head small { font: 400 11px var(--ec-mono); color: var(--home-muted); margin-left: 6px; }
+.classroom-root .home-eclipse .eclipse-res-head > span { font-variant-numeric: tabular-nums; }
+.classroom-root .home-eclipse .eclipse-ticks { display: flex; justify-content: space-between; align-items: flex-end; gap: 2px; }
+.classroom-root .home-eclipse .eclipse-ticks i { width: 2px; height: 16px; background: var(--ec-hair); }
+.classroom-root .home-eclipse .eclipse-ticks i.on { background: var(--home-ink); }
+.classroom-root .home-desk.home-eclipse .home-desk-student-columns {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+}
+.classroom-root .home-desk.home-eclipse .home-desk-account-actions {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  align-items: stretch;
+  gap: 0;
+  padding: 0;
+  margin: 0;
+  background: none;
+  border: 0;
+}
+.classroom-root .home-desk.home-eclipse .home-desk-account-actions button {
+  text-align: left;
+  min-height: 44px;
+  border: 0;
+  border-top: 1px solid var(--home-line);
+  border-radius: 0;
+  background: none;
+  padding: 0;
+  font-size: 14.5px;
+  flex: none;
+  box-shadow: none;
+}
+.classroom-root .home-desk.home-eclipse .home-desk-account-actions h3 + button { border-top: 0; }
+
+/* ---------- Responsive (container-based, so a docked sidecar counts) ---------- */
+@container classroom-home (max-width: 1100px) {
+  .classroom-root .home-eclipse .eclipse-hero,
+  .classroom-root .home-eclipse .eclipse-grid { grid-template-columns: minmax(0, 1fr); }
+  .classroom-root .home-eclipse .eclipse-three,
+  .classroom-root .home-desk.home-eclipse .home-desk-student-columns { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@container classroom-home (max-width: 760px) {
+  .classroom-root .home-eclipse .eclipse-brief,
+  .classroom-root .home-eclipse .eclipse-three,
+  .classroom-root .home-desk.home-eclipse .home-desk-student-columns { grid-template-columns: minmax(0, 1fr); }
+  .classroom-root .home-eclipse .eclipse-orb-1,
+  .classroom-root .home-eclipse .eclipse-orb-arc { width: 420px; margin-left: -150px; }
+}
+@container classroom-home (max-width: 520px) {
+  .classroom-root .home-eclipse .eclipse-brief { gap: 8px; }
+  .classroom-root .home-eclipse .eclipse-greet { padding: 22px 20px 20px; }
+  .classroom-root .home-eclipse .eclipse-stage { min-height: 400px; }
+  .classroom-root .home-eclipse .eclipse-planet { width: 90px; height: 90px; left: auto; right: 30px; top: 66px; }
+  .classroom-root .home-eclipse .eclipse-chip { left: 26px; top: 62px; }
+  /* The next-session text already names who is coming; pins would collide. */
+  .classroom-root .home-eclipse .eclipse-pin { display: none; }
+  .classroom-root .home-eclipse .eclipse-next { right: 26px; bottom: 80px; width: auto; max-width: none; }
+  .classroom-root .home-eclipse .eclipse-count { font-size: 56px; }
+  .classroom-root .home-desk.home-eclipse .eclipse-prep { left: 26px; right: auto; }
+}
