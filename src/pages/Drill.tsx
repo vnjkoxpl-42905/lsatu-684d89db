@@ -66,6 +66,7 @@ import {
   logSectionWrongAnswers,
   emailSectionReport,
   persistSectionResults,
+  unansweredWajQids,
   wajQidsForSection,
 } from '@/lib/sectionHistorySave';
 import {
@@ -534,6 +535,22 @@ function DrillContent() {
    * as history.
    */
   const [predictedScore, setPredictedScore] = React.useState<number | null>(null);
+  /**
+   * The `section_history` row for the section just finished.
+   *
+   * Written when the section ENDS, not when its score is looked at. This used
+   * to be the results screen's job, in a mount effect, which meant a student
+   * who closed the tab at the score-prediction or Section Complete screen left
+   * no record of the section at all: the attempts were on disk, the assigned
+   * card was closed, and their score, blind review and analytics had nothing to
+   * read. An assigned sealed section makes that the likely path rather than the
+   * unlucky one, because there is nothing on the results screen the student was
+   * told to go and look at.
+   *
+   * The results screen still owns the blind review, which cannot exist yet at
+   * finish time, and folds it onto this row.
+   */
+  const [sectionHistoryId, setSectionHistoryId] = React.useState<string | null>(null);
   /**
    * Which questions blind review walks. Null means the whole section, which is
    * what a section's blind review always is. Practice sets set it explicitly,
@@ -3207,7 +3224,10 @@ function DrillContent() {
       }
 
       if (!progress.historySaved) {
-        const sectionHistoryId = await persistSectionResults({
+        // Named for the leg, not shadowing the standalone path's state: a
+        // sitting never renders a score screen, so this row is closed the
+        // moment it is written and has no blind review to come back for.
+        const legHistoryId = await persistSectionResults({
           session: finishedSession,
           stats,
           classId,
@@ -3217,7 +3237,7 @@ function DrillContent() {
         // Every leg of a practice test is a section, and each one gets its own
         // report. Not awaited: the leg is saved, and the sitting has to be able
         // to move on to the next section whatever the mail server is doing.
-        void emailSectionReport(sectionHistoryId);
+        void emailSectionReport(legHistoryId);
         progress = recordCloseoutProgress(key!, { historySaved: true });
       }
 
@@ -3335,6 +3355,42 @@ function DrillContent() {
       } catch (error) {
         toast.error("Your drill results could not be saved to your account. Retry Finish.");
         throw error;
+      }
+    }
+
+    // The section is on disk before any screen after it renders. Everything
+    // below — the assigned card, the prediction, the score — is what happens
+    // AFTER a section that is already recorded, and none of it may be what
+    // decides whether it was recorded.
+    //
+    // Not fatal: a student who has finished a section must still be shown their
+    // score, and their attempts are already saved either way. The toast is what
+    // makes the loss visible instead of silent, which is what it was.
+    if (session.mode === 'full-section' && user) {
+      const stats = buildSectionStats(updatedSession);
+      try {
+        const newId = await persistSectionResults({
+          session: updatedSession,
+          stats,
+          classId,
+          userId: user.id,
+        });
+        setSectionHistoryId(newId);
+        void emailSectionReport(newId);
+
+        // commitSessionAttempts above journals only ANSWERED misses; it has no
+        // attempt row to read for the rest. These are the questions the clock
+        // took, and they are misses too.
+        await logSectionWrongAnswers({
+          stats,
+          qids: unansweredWajQids(stats),
+          classId,
+        });
+      } catch (error) {
+        console.error('[drill] failed to save section history', error);
+        toast.error(
+          "Your answers are saved, but this section's score report didn't save. Tell Joshua.",
+        );
       }
     }
 
@@ -3859,6 +3915,7 @@ function DrillContent() {
               : 'Back to Home'
           }
           predictedScore={predictedScore}
+          sectionHistoryId={sectionHistoryId}
         />
       );
     }

@@ -436,3 +436,43 @@ export async function logSectionWrongAnswers(args: {
 
   return written;
 }
+
+/**
+ * Folds a blind review into an already-written section row.
+ *
+ * The section is persisted the moment it is finished, which is before a blind
+ * review can have happened. When one does happen afterwards, its numbers belong
+ * on the same row rather than on a second one: a section sat once is one row in
+ * `section_history`, whether or not the student went on to review it.
+ *
+ * Throws on failure, like `persistSectionResults` — the results screen catches
+ * and toasts. The initial score is already safe on disk either way, which is
+ * the whole point of writing it at finish.
+ */
+export async function applyBlindReviewToSection(args: {
+  sectionHistoryId: string;
+  stats: SectionQuestionStat[];
+  brResults: BlindReviewResult[];
+}): Promise<void> {
+  const { sectionHistoryId, stats, brResults } = args;
+  if (!hasBlindReview(brResults)) return;
+
+  const totals = buildSectionTotals(stats, brResults);
+
+  const { error } = await supabase
+    .from('section_history')
+    .update({
+      br_score: totals.brScore,
+      br_total: totals.brScore !== null ? totals.initialTotal : null,
+      br_percent: totals.brPercent,
+      br_delta: totals.delta,
+      br_used: true,
+      // The per-question record carries each question's review outcome, so it
+      // has to be rewritten too or the table shows a review that the totals say
+      // happened and the rows do not.
+      questions_json: stats as unknown as Json,
+    } as unknown as never)
+    .eq('id', sectionHistoryId);
+
+  if (error) throw error;
+}
