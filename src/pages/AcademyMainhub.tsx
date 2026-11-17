@@ -558,7 +558,7 @@ export default function AcademyMainhub({
                 })()}
               <button type="button" className="rc-practice-link" onClick={() => changeView('completed')}>View completed RC drills <span aria-hidden="true">→</span></button>
             </>}
-            assigned={<AssignedWorkPanel drillReturnTo={drillReturnTo} scope="rc" />}
+            assigned={<AssignedWorkPanel drillReturnTo={drillReturnTo} />}
           />}
         </> : <>
         {/* The address row rides above the hero rather than inside it: the

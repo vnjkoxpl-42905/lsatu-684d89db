@@ -26,84 +26,50 @@
 
 .classroom-root .testing-doors {
   display: grid;
-  gap: 16px;
-  /* Close enough to the panel below for the open door's notch to bridge them. */
-  margin-bottom: 20px;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-
-@media (max-width: 900px) {
-  .classroom-root .testing-doors {
-    grid-template-columns: minmax(0, 1fr);
-  }
+  gap: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+  margin-bottom: 24px;
 }
 
 .classroom-root .testing-door {
-  background: var(--classroom-panel);
-  /* The whole card is the control, so its border is the only thing saying where
-     the click lands. That makes it 1.4.11 information, not decoration. */
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: clamp(12px, 2vw, 20px);
+  min-height: 86px;
+  padding: 16px clamp(14px, 2vw, 22px);
   border: 1px solid var(--classroom-line-strong);
   border-radius: var(--classroom-radius);
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  padding: 24px;
-  position: relative;
-  text-align: left;
-  transition:
-    background-color var(--classroom-transition) ease,
-    border-color var(--classroom-transition) ease,
-    transform var(--classroom-transition) ease;
-}
-
-.classroom-root .testing-door:hover {
-  background: var(--classroom-hover);
-  transform: translateY(-1px);
-}
-
-.classroom-root .testing-door[aria-expanded='true'] {
-  border-color: var(--classroom-ink);
-}
-
-/* Which door opened the panel. The panel spans both doors and sits below them,
-   so without this the click reads as having produced a box from nowhere — and
-   on a narrow window the doors stack and the distance doubles. A notch is the
-   cheapest honest tether: it points from the open door at the panel's top edge,
-   and it costs nothing when no door is open. */
-.classroom-root .testing-door[aria-expanded='true']::after {
   background: var(--classroom-panel);
-  border-left: 1px solid var(--classroom-line);
-  border-top: 1px solid var(--classroom-line);
-  bottom: -20px;
-  content: '';
-  height: 12px;
-  left: 50%;
-  position: absolute;
-  transform: translate(-50%, 50%) rotate(45deg);
-  width: 12px;
+  color: var(--classroom-ink);
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 160ms ease, border-color 160ms ease;
+}
+
+.classroom-root .testing-door:is(:hover, [aria-expanded='true']) {
+  background: var(--classroom-hover);
+  border-color: var(--classroom-meta-text);
+}
+
+.classroom-root .testing-door:focus-visible {
+  outline: 2px solid var(--classroom-ink);
+  outline-offset: 3px;
 }
 
 .classroom-root .testing-door-title {
-  font-size: 18px;
+  font-size: 17px;
   font-weight: 700;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.015em;
 }
 
-.classroom-root .testing-door-body {
+.classroom-root .testing-door-arrow {
   color: var(--classroom-meta-text);
-  font-size: 13.5px;
-  line-height: 1.55;
+  opacity: 0;
+  transition: opacity 160ms ease;
 }
 
-.classroom-root .testing-door-meta {
-  color: var(--classroom-meta-text);
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  margin-top: 6px;
-  text-transform: uppercase;
-}
+.classroom-root .testing-door:is(:hover, :focus-visible) .testing-door-arrow { opacity: 1; }
 
 .classroom-root .testing-panel {
   background: var(--classroom-panel);
@@ -582,12 +548,35 @@ html.dark .testing-menu {
   .classroom-root .practice-exams-preview-main { padding: 24px 16px; }
 }
 
+.classroom-root .testing-door-icon {
+  width: 32px;
+  height: 32px;
+  color: var(--classroom-meta-text);
+}
+
 .classroom-root .testing-resume h2 {
-  font-size: 12px;
+  font-size: 18px;
   font-weight: 700;
-  letter-spacing: 0.08em;
-  margin: 0 0 10px;
-  text-transform: uppercase;
+  margin: 0 0 12px;
+}
+
+.classroom-root .testing-resume .testing-shape-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 16px;
+}
+
+.classroom-root .testing-resume-description {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+
+.classroom-root .testing-resume-description small {
+  color: var(--classroom-meta-text);
+  font-size: 12px;
 }
 
 /* The line beside "Begin practice test" that names what is still missing. It
@@ -599,3 +588,88 @@ html.dark .testing-menu {
   align-self: center;
   margin: 0;
 }
+
+.classroom-root .testing-resume-description {
+  flex: 1 1 200px;
+}
+
+.classroom-root .testing-resume-description progress {
+  --progress-track: #e4dbcf;
+  --progress-fill: #5b4a40;
+  appearance: none;
+  display: block;
+  width: min(100%, 260px);
+  height: 7px;
+  margin-top: 4px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--progress-track);
+  overflow: hidden;
+}
+
+html.dark .classroom-root .testing-resume-description progress {
+  --progress-track: #494139;
+  --progress-fill: #d6c3af;
+}
+
+.classroom-root .testing-resume-description progress::-webkit-progress-bar {
+  background: var(--progress-track);
+  border-radius: inherit;
+}
+
+.classroom-root .testing-resume-description progress::-webkit-progress-value {
+  background: var(--progress-fill);
+  border-radius: inherit;
+}
+
+.classroom-root .testing-resume-description progress::-moz-progress-bar {
+  background: var(--progress-fill);
+  border-radius: inherit;
+}
+
+.testing-setup-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: rgb(0 0 0 / 45%);
+  backdrop-filter: blur(4px);
+}
+.testing-setup-dialog {
+  position: fixed;
+  z-index: 101;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(480px, calc(100% - 32px));
+  max-height: calc(100dvh - 32px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 20px;
+  border: 1px solid var(--classroom-line);
+  border-radius: 14px;
+  background: var(--classroom-panel);
+  color: var(--classroom-ink);
+  box-shadow: 0 20px 65px rgb(0 0 0 / 20%);
+}
+.testing-setup-dialog:has(.testing-panel) { width: min(720px, calc(100% - 32px)); }
+.testing-setup-dialog > h2 {
+  padding: 4px 28px 16px 0;
+  border-bottom: 1px solid var(--classroom-line);
+  font-weight: 700;
+}
+.testing-setup-close { position: absolute; right: 12px; top: 12px; padding: 8px; }
+.testing-setup-preference { margin: 16px 0; font-size: 14px; }
+.testing-setup-choices { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.testing-setup-choices button {
+  display: grid;
+  align-content: start;
+  gap: 8px;
+  padding: 14px;
+  border: 1px solid var(--classroom-line);
+  border-radius: 10px;
+  background: var(--classroom-page);
+  text-align: left;
+}
+.testing-setup-choices button:hover:not(:disabled) { background: var(--classroom-hover); }
+.testing-setup-choices button:disabled { opacity: .55; }
+.testing-setup-choices span { font-size: 13px; color: var(--classroom-meta-text); }

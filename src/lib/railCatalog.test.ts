@@ -12,11 +12,11 @@ import {
 const app = readFileSync(resolve(process.cwd(), "src/App.tsx"), "utf8");
 
 describe("seven destination rail", () => {
-  it("has exactly six top-level destinations with canonical routes", () => {
+  it("has exactly seven top-level destinations with canonical routes", () => {
     expect(RAIL_CATALOG.map((item) => item.id)).toEqual([
-      "home", "my-work", "practice", "review", "library", "schedule",
+      "home", "my-work", "practice", "testing", "review", "library", "schedule",
     ]);
-    for (const path of ["/classroom", "/my-work", "/practice", "/library", "/schedule"]) {
+    for (const path of ["/classroom", "/my-work", "/practice", "/testing", "/library", "/schedule"]) {
       expect(app).toContain(`path="${path}"`);
     }
   });
@@ -50,12 +50,12 @@ describe("versioned rail preference migration", () => {
       order: { classroom: ["work", "drill", "home"], study: ["activities", "notes"], review: ["history", "review"] },
       hidden: [],
     });
-    expect(migrated.order.classroom?.slice(0, 5)).toEqual(["my-work", "practice", "home", "library", "progress"]);
+    expect(migrated.order.classroom?.slice(0, 5)).toEqual(["my-work", "practice", "home", "testing", "library"]);
   });
 
-  it("hides a merged destination only when all former members were hidden", () => {
-    expect(migrateLegacyRailPrefs({ hidden: ["drill"] }).hidden).not.toContain("practice");
-    expect(migrateLegacyRailPrefs({ hidden: ["drill", "testing"] }).hidden).toContain("practice");
+  it("migrates visibility of drills and tests independently", () => {
+    expect(migrateLegacyRailPrefs({ hidden: ["drill"] }).hidden).toEqual(["practice"]);
+    expect(migrateLegacyRailPrefs({ hidden: ["drill", "testing"] }).hidden).toEqual(["practice", "testing"]);
     expect(migrateLegacyRailPrefs({ hidden: ["home"] }).hidden).not.toContain("home");
   });
 

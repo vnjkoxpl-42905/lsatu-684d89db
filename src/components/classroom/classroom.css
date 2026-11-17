@@ -5808,3 +5808,53 @@ html:not(.light) .drill-setup-preview {
  .classroom-root .student-destination:has(.review-hub-utilities)>.student-destination-tabs{margin-block:12px 6px;gap:4px 20px}
  .classroom-root .student-destination:has(.review-hub-utilities)>.review-hub-utilities{margin-bottom:8px;gap:2px 14px;font-size:12px}
 }
+
+
+@media (max-width: 1023px) {
+  .classroom-root.classroom-root-nav-open .classroom-sidebar {
+    display: block;
+    position: static;
+    width: auto;
+    height: auto;
+    min-height: 0;
+  }
+
+  .classroom-root.classroom-root-nav-open .classroom-sidebar-card {
+    height: auto;
+    max-height: calc(100dvh - 56px);
+    overflow-y: auto;
+  }
+}
+
+@media (min-width: 640px) and (max-width: 1023px) {
+  .classroom-root.classroom-root-nav-open {
+    display: grid;
+    grid-template-columns: minmax(180px, 25%) minmax(0, 1fr);
+    align-items: start;
+  }
+
+  .classroom-root.classroom-root-nav-open > .classroom-mobile-bar {
+    grid-column: 1 / -1;
+    grid-row: 1;
+  }
+
+  .classroom-root.classroom-root-nav-open > .classroom-sidebar {
+    grid-column: 1;
+    grid-row: 2 / span 2;
+    position: sticky;
+    top: 56px;
+  }
+
+  .classroom-root.classroom-root-nav-open > :not(.classroom-mobile-bar, .classroom-sidebar) {
+    grid-column: 2;
+    min-width: 0;
+  }
+
+  .classroom-root.classroom-root-nav-open.classroom-root-journal-detail .classroom-journal-stage {
+    grid-row: 2;
+  }
+
+  .classroom-root.classroom-root-nav-open.classroom-root-journal-detail .classroom-aside {
+    grid-row: 3;
+  }
+}

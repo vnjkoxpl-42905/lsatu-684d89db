@@ -27,7 +27,7 @@ it('names uncertain saved progress, keeps the next assignment available, and cle
   view.rerender(<MemoryRouter><AssignedWorkPanel /></MemoryRouter>);
   expect(screen.queryByRole('alert')).toBeNull();
   expect(screen.queryByText('Progress unverified')).toBeNull();
-  expect(screen.getByText('Next')).toBeTruthy();
+  expect(screen.getByText('Ready')).toBeTruthy();
 });
 
 it('shows only verified RC assignments and uses their status without inventing a Next priority', () => {
@@ -54,7 +54,8 @@ it('shows only verified RC assignments and uses their status without inventing a
   expect(screen.getByText('Conditional Indicators Refresher')).toBeTruthy();
   expect(screen.getByText('RC in the title')).toBeTruthy();
   expect(screen.getByText('Mixed practice')).toBeTruthy();
-  expect(screen.getByText('Next')).toBeTruthy();
+  expect(screen.getByText('Finished passages')).toBeTruthy();
+  expect(screen.getByText('Completed')).toBeTruthy();
 });
 
 it('explains RC-scoped emptiness without claiming the general assigned list is empty', () => {

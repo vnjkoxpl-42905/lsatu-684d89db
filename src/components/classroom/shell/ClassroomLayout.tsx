@@ -6,6 +6,7 @@ import NotificationBell from "@/components/notifications/NotificationBell";
 import {
   ChevronsUpDown,
   Lock,
+  CornerDownRight,
   LogOut,
   Menu,
   Moon,
@@ -244,6 +245,14 @@ function ClassroomSidebar({
       Analytics
     </button>
   ) : null;
+  const testingActive = location.pathname.startsWith("/practice/exams") || location.pathname.startsWith("/testing");
+  const testingOverview = location.pathname === "/practice/exams";
+  const [testingOverride, setTestingOverride] = React.useState<boolean | null>(null);
+  const testingOpen = testingOverride ?? testingActive;
+  React.useEffect(() => {
+    if (!testingActive) setTestingOverride(null);
+  }, [testingActive]);
+  const testingMenuId = React.useId();
   const railGroups = resolveRailGroups(displayedRailPrefs).map((group) => ({
     ...group,
     items: group.items.filter((item) => (item.id !== "schedule" && item.id !== "my-work") || !permissions.is_admin),
@@ -270,9 +279,17 @@ function ClassroomSidebar({
         };
       case "practice":
         return {
-          active: location.pathname.startsWith("/practice") || location.pathname === "/classroom/drill" || location.pathname.startsWith("/testing") || location.pathname === "/sets",
-          onClick: () => go(permissions.loading ? "/practice" : destinationLandingPath("practice", permissions)),
+          active: (location.pathname.startsWith("/practice") && !location.pathname.startsWith("/practice/exams")) || location.pathname === "/classroom/drill" || location.pathname === "/sets",
+          onClick: () => go("/practice/drills"),
           onPrefetch: preloadDrillHub,
+        };
+      case "testing":
+        return {
+          active: testingOverview,
+          onClick: () => {
+            setTestingOverride(!testingOpen);
+            if (!testingOpen && !testingOverview) navigate("/practice/exams");
+          },
         };
       case "review":
         return {
@@ -336,6 +353,8 @@ function ClassroomSidebar({
                     onMouseEnter={onPrefetch}
                     onFocus={onPrefetch}
                     aria-current={active ? "page" : undefined}
+                    aria-expanded={item.id === "testing" ? testingOpen : undefined}
+                    aria-controls={item.id === "testing" ? testingMenuId : undefined}
                     title={locked ? `${item.label} is locked for your account` : undefined}
                   >
                     {item.label}
@@ -347,6 +366,32 @@ function ClassroomSidebar({
                       </>
                     ) : null}
                   </button>
+                  {item.id === "testing" && (
+                    <div id={testingMenuId} aria-hidden={!testingOpen}
+                      className={`grid transition-[grid-template-rows,opacity] duration-150 ease-out motion-reduce:transition-none ${testingOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"}`}>
+                      <div className="min-h-0 overflow-hidden">
+                        {[
+                          { path: "/practice/exams/attempts", label: "Attempts" },
+                          { path: "/practice/exams/all", label: "All Exams" },
+                        ].map(({ path, label }) => {
+                          const current = location.pathname === path
+                            || (label === "All Exams" && /^\/practice\/exams\/\d+$/.test(location.pathname));
+                          return (
+                            <button key={path} type="button"
+                              className={`${navClass(current)} group`}
+                              aria-current={current ? "page" : undefined}
+                              tabIndex={testingOpen ? undefined : -1}
+                              onClick={() => go(path)}>
+                              <span className="flex items-center gap-2 text-xs">
+                                <CornerDownRight aria-hidden="true" className={`size-4 shrink-0 ${current ? "" : "opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100"}`} />
+                                {label}
+                              </span>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
                   {item.id === "review" ? personalAnalyticsLink : null}
                   {item.id === 'my-work' && readingCenterAssigned ? <AssignedReadingCenterLink onNavigate={onNavigate} /> : null}
                   </React.Fragment>
@@ -1031,18 +1076,10 @@ export default function ClassroomLayout() {
       (!permissions.loading && (permissions.is_admin || permissions.has_classroom_access)))
     ? requestedSection : null;
 
-  // Modal semantics for the two overlays. Declared after `activeSection`
-  // because the section drawer takes its accessible name from it.
   const closeMobileMenu = React.useCallback(() => setMobileMenuOpen(false), []);
   const closeSectionOverlay = React.useCallback(() => setSectionOverlayOpen(false), []);
-  const mobileMenuMotion = useClassroomOverlayMotion(mobileMenuOpen, "left");
   const sectionOverlayMotion = useClassroomOverlayMotion(Boolean(activeSection) && sectionOverlayOpen, "right");
   const overlaySection = useRetainedValue(activeSection, Boolean(activeSection));
-  const mobileMenuDialog = useDialogOverlay({
-    open: mobileMenuMotion.present,
-    onClose: closeMobileMenu,
-    label: "Classroom menu",
-  });
   const sectionOverlayDialog = useDialogOverlay({
     open: sectionOverlayMotion.present,
     onClose: closeSectionOverlay,
@@ -1155,14 +1192,14 @@ export default function ClassroomLayout() {
 
   return (
     <ClassroomLayoutContext.Provider value={contextValue}>
-      <div ref={transitionRoot} data-note-transition-mode={location.pathname.startsWith('/classroom/item/') ? 'reader' : location.pathname === '/my-work/notes' ? 'archive' : undefined} className={`${rootClass}${reviewFromQueue ? " classroom-root-review-return" : ""}`}>
+      <div ref={transitionRoot} data-note-transition-mode={location.pathname.startsWith('/classroom/item/') ? 'reader' : location.pathname === '/my-work/notes' ? 'archive' : undefined} className={`${rootClass}${mobileMenuOpen ? " classroom-root-nav-open" : ""}${reviewFromQueue ? " classroom-root-review-return" : ""}`}>
         <div className="classroom-mobile-bar">
           <button
             type="button"
             className="classroom-mobile-menu-button"
-            onClick={() => setMobileMenuOpen(true)}
-            aria-label="Open classroom menu"
-            aria-haspopup="dialog"
+            onClick={() => setMobileMenuOpen((open) => !open)}
+            aria-label={mobileMenuOpen ? "Close classroom menu" : "Open classroom menu"}
+            aria-controls="classroom-navigation-rail"
             aria-expanded={mobileMenuOpen}
           >
             <Menu size={19} />
@@ -1194,41 +1231,14 @@ export default function ClassroomLayout() {
           )}
         </div>
 
-        <aside className="classroom-sidebar">
+        <aside id="classroom-navigation-rail" className="classroom-sidebar">
           <ClassroomSidebar
             displayName={sidebarName}
             activeSection={activeSection}
             onHome={goHome}
+            onNavigate={mobileMenuOpen ? closeMobileMenu : undefined}
           />
         </aside>
-
-        {mobileMenuMotion.present ? (
-          <div className="classroom-mobile-menu" ref={mobileMenuMotion.ref} style={{ overflow: "hidden" }}>
-            <button
-              type="button"
-              className="classroom-overlay-backdrop"
-              onClick={() => setMobileMenuOpen(false)}
-              aria-label="Close classroom menu"
-              tabIndex={-1}
-            />
-            <aside {...mobileMenuDialog}>
-              <button
-                type="button"
-                className="classroom-overlay-close"
-                onClick={() => setMobileMenuOpen(false)}
-                aria-label="Close classroom menu"
-              >
-                <X size={18} />
-              </button>
-              <ClassroomSidebar
-                displayName={sidebarName}
-                activeSection={activeSection}
-                onHome={goHome}
-                onNavigate={() => setMobileMenuOpen(false)}
-              />
-            </aside>
-          </div>
-        ) : null}
 
         {activeSection && !reviewFromQueue ? (
           <aside data-note-transition-rail className="classroom-section-list">

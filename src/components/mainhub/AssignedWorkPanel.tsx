@@ -9,6 +9,7 @@ import {
 const STATUS_LABEL = {
   assigned: "Ready",
   in_progress: "In progress",
+  completed: "Completed",
 } as const;
 
 export default function AssignedWorkPanel({
@@ -21,8 +22,7 @@ export default function AssignedWorkPanel({
   const navigate = useNavigate();
   const classroom = useOptionalClassroomLayout();
   const { rows, loading, failed, retry, evidenceWarnings = [] } = useAssignedTodoFeed();
-  const openRows = rows.filter((row) => row.status !== "completed" && (scope !== 'rc' || row.workSection === 'rc'));
-  const shownRows = openRows.slice(0, 3);
+  const shownRows = scope === "rc" ? rows.filter((row) => row.status !== "completed" && row.workSection === "rc") : rows;
 
   return (
     <section data-motion-item data-motion-ready={loading ? "false" : "true"} aria-label={scope === 'rc' ? 'Assigned RC work' : 'Assigned work'} className="drill-observatory-today">
@@ -31,7 +31,7 @@ export default function AssignedWorkPanel({
           <h2 className="drill-observatory-label drill-observatory-ink-60">
             {scope === 'rc' ? 'Assigned RC work' : 'Assigned work'}
           </h2>
-          {(scope === 'rc' || openRows.length > 3) && (
+          {(scope === "rc" || shownRows.length > 0) && (
             <button
               type="button"
               className="drill-observatory-insight-link"
@@ -59,7 +59,7 @@ export default function AssignedWorkPanel({
           </div>
         ) : shownRows.length > 0 ? (
           <ol className="mt-3 grid grid-cols-[minmax(0,1fr)] gap-3">
-            {shownRows.map((row, index) => (
+            {shownRows.map((row) => (
               <li key={row.key}>
                 <button
                   type="button"
@@ -80,7 +80,7 @@ export default function AssignedWorkPanel({
                     </span>
                   </span>
                   <span className="drill-observatory-ink-55 shrink-0 text-[11.5px]">
-                    {row.progressUnverified ? "Progress unverified" : scope !== 'rc' && index === 0 ? "Next" : STATUS_LABEL[row.status]}
+                    {row.progressUnverified ? "Progress unverified" : STATUS_LABEL[row.status]}
                   </span>
                 </button>
               </li>

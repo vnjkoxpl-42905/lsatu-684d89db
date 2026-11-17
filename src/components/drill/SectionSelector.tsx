@@ -53,6 +53,8 @@ interface SectionSelectorProps {
    * question twice. Uncontrolled after mount: the selector's own tab strip
    * still switches it.
    */
+  hideStatus?: boolean;
+  randomizeOnOpen?: boolean;
   initialKind?: SectionKind;
   /** Optional initial timing state for testing or pre-selected pace. */
   initialTiming?: SectionTiming;
@@ -63,6 +65,8 @@ export function SectionSelector({
   manifest,
   onStartSection,
   onStartRcSection,
+  hideStatus = false,
+  randomizeOnOpen = false,
   initialKind = 'lr',
   initialTiming,
   onCancel,
@@ -83,7 +87,8 @@ export function SectionSelector({
   // A PrepTest is a consumable, so the first question is which sections are
   // still unspent. Defaults to Fresh, which is what a student wants nine times
   // in ten and the only state that gives a clean read on where they stand.
-  const [freshnessFilter, setFreshnessFilter] = useState<FreshnessFilter>('fresh');
+  const [selectedFreshness, setFreshnessFilter] = useState<FreshnessFilter>('fresh');
+  const freshnessFilter = hideStatus ? 'any' : selectedFreshness;
   const [freshness, setFreshness] = useState<Map<string, SectionFreshness> | null>(null);
   const [freshnessLoading, setFreshnessLoading] = useState(true);
   const [freshnessError, setFreshnessError] = useState<string | null>(null);
@@ -270,6 +275,15 @@ export function SectionSelector({
         : lrSectionsInFilter.map((s) => ({ pt: s.pt, section: s.section }));
     return rows.sort((a, b) => b.pt - a.pt || a.section - b.section);
   }, [kind, rcSectionsInFilter, lrSectionsInFilter]);
+
+  const randomized = useRef(false);
+  useEffect(() => {
+    if (!randomizeOnOpen || randomized.current || !pickableSections.length) return;
+    const picked = pickableSections[Math.floor(Math.random() * pickableSections.length)];
+    randomized.current = true;
+    setSelectedPT(picked.pt);
+    setSelectedSection(picked.section);
+  }, [pickableSections, randomizeOnOpen]);
 
   /**
    * The PrepTest step. A student thinks in PrepTests first and a section
@@ -459,63 +473,62 @@ export function SectionSelector({
 
       {/* PrepTest & Section Selectors */}
       <div className="space-y-8 mb-12">
-        {/* Status comes before the PrepTest because it decides which
-            PrepTests are even offered. Both LR and RC sections are consumables,
-            so "have I already spent this one" is the first question. */}
-        <div className="space-y-3">
-          <label
-            className="text-xs font-semibold uppercase tracking-wider"
-            htmlFor="status-select"
-            id="status-select-label"
-          >
-            Status
-          </label>
-          <Select
-            value={freshnessFilter}
-            onValueChange={(val) => setFreshnessFilter(val as FreshnessFilter)}
-          >
-            <SelectTrigger
-              aria-labelledby="status-select-label status-select"
-              className="text-sm"
-              id="status-select"
+        {!hideStatus && (
+          <div className="space-y-3">
+            <label
+              className="text-xs font-semibold uppercase tracking-wider"
+              htmlFor="status-select"
+              id="status-select-label"
             >
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent className="testing-menu">
-              {/* "Fresh" on its own is our word, not the student's, so it
-                  says what it filters to. Single-line, because the
-                  trigger renders the chosen item's children and has to
-                  keep reading straight once the menu closes. "Any" needs
-                  no gloss: it is the absence of the filter, and spelling
-                  that out only makes the pair harder to scan. */}
-              <SelectItem value="fresh" className="text-sm focus:bg-foreground/5">
-                {kind === 'rc' ? 'No recorded attempt or exposure' : 'Fresh · never attempted'}
-              </SelectItem>
-              <SelectItem value="any" className="text-sm focus:bg-foreground/5">
-                Any
-              </SelectItem>
-            </SelectContent>
-          </Select>
-          {/* One live region, always present, for the three things the
-              filter can report: still checking, could not check, nothing
-              left. Sighted students watch this line change under the
-              control; a screen reader only hears it if the region was
-              already there when the text arrived. Polite, because none of
-              the three blocks the form: every section stays reachable
-              through Any. */}
-          <p className="text-sm text-muted-foreground empty:!mt-0" role="status" aria-live="polite">
-            {(kind === 'rc' ? rcFreshnessLoading : freshnessLoading)
-              ? 'Checking what you have worked…'
-              : (kind === 'rc' ? rcFreshnessError : freshnessError)
-                ? `${kind === 'rc' ? rcFreshnessError : freshnessError} Every section is listed until it can.`
-                : pickableSections.length === 0 && (kind === 'lr' || rcSections !== null)
-                  ? kind === 'rc'
-                    ? 'No untouched RC sections left. Switch to Any to sit one again.'
-                    : 'No untouched LR sections left. Switch to Any to sit one again.'
-                  : null}
-          </p>
-          {kind === 'rc' && <p className="text-xs text-muted-foreground">Exposure tracking covers recorded previews and practice. Earlier untracked reading cannot be ruled out.</p>}
-        </div>
+              Status
+            </label>
+            <Select
+              value={freshnessFilter}
+              onValueChange={(val) => setFreshnessFilter(val as FreshnessFilter)}
+            >
+              <SelectTrigger
+                aria-labelledby="status-select-label status-select"
+                className="text-sm"
+                id="status-select"
+              >
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent className="testing-menu">
+                {/* "Fresh" on its own is our word, not the student's, so it
+                    says what it filters to. Single-line, because the
+                    trigger renders the chosen item's children and has to
+                    keep reading straight once the menu closes. "Any" needs
+                    no gloss: it is the absence of the filter, and spelling
+                    that out only makes the pair harder to scan. */}
+                <SelectItem value="fresh" className="text-sm focus:bg-foreground/5">
+                  {kind === 'rc' ? 'No recorded attempt or exposure' : 'Fresh · never attempted'}
+                </SelectItem>
+                <SelectItem value="any" className="text-sm focus:bg-foreground/5">
+                  Any
+                </SelectItem>
+              </SelectContent>
+            </Select>
+            {/* One live region, always present, for the three things the
+                filter can report: still checking, could not check, nothing
+                left. Sighted students watch this line change under the
+                control; a screen reader only hears it if the region was
+                already there when the text arrived. Polite, because none of
+                the three blocks the form: every section stays reachable
+                through Any. */}
+            <p className="text-sm text-muted-foreground empty:!mt-0" role="status" aria-live="polite">
+              {(kind === 'rc' ? rcFreshnessLoading : freshnessLoading)
+                ? 'Checking what you have worked…'
+                : (kind === 'rc' ? rcFreshnessError : freshnessError)
+                  ? `${kind === 'rc' ? rcFreshnessError : freshnessError} Every section is listed until it can.`
+                  : pickableSections.length === 0 && (kind === 'lr' || rcSections !== null)
+                    ? kind === 'rc'
+                      ? 'No untouched RC sections left. Switch to Any to sit one again.'
+                      : 'No untouched LR sections left. Switch to Any to sit one again.'
+                    : null}
+            </p>
+            {kind === 'rc' && <p className="text-xs text-muted-foreground">Exposure tracking covers recorded previews and practice. Earlier untracked reading cannot be ruled out.</p>}
+          </div>
+        )}
 
         {/* PrepTest, then section. Two steps rather than one flat list of
             `PT130.S3` rows: a student picks the test first and the section
@@ -534,7 +547,7 @@ export function SectionSelector({
               until an audit put the two side by side: 54 rows of scroll here,
               type-to-filter there, for the identical decision. */}
           <PrepTestCombobox
-            emptyMessage="No PrepTest by that number, under this filter."
+            emptyMessage={hideStatus ? "No PrepTest by that number." : "No PrepTest by that number, under this filter."}
             id="preptest-select"
             labelId="preptest-select-label"
             onChange={(pt) => {

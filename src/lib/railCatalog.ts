@@ -1,7 +1,7 @@
 import type { PermissionFlag } from "@/hooks/useUserPermissions";
 
 export type RailGroupId = "classroom";
-export type RailItemId = "home" | "my-work" | "practice" | "review" | "progress" | "library" | "schedule";
+export type RailItemId = "home" | "my-work" | "practice" | "testing" | "review" | "progress" | "library" | "schedule";
 
 export interface RailItem {
   id: RailItemId;
@@ -24,6 +24,7 @@ export const RAIL_CATALOG: RailItem[] = [
   { id: "home", label: "Home", group: "classroom", flags: ["has_classroom_access"], allowSignedIn: true, required: true },
   { id: "my-work", label: "My Work", group: "classroom", flags: ["has_classroom_access"] },
   { id: "practice", label: "Practice", group: "classroom", flags: ["has_drill_access", "has_practice_access"], allowSignedIn: true },
+  { id: "testing", label: "Testing Centre", group: "classroom", flags: ["has_practice_access"], allowSignedIn: true },
   { id: "review", label: "Review", group: "classroom", flags: ["has_journal_access", "has_flagged_access"], allowSignedIn: true },
   { id: "library", label: "Library", group: "classroom", flags: ["has_activity_access", "has_bootcamp_access"], allowSignedIn: true },
   { id: "schedule", label: "Schedule", group: "classroom", flags: ["has_schedule_access"], allowSignedIn: true },
@@ -46,7 +47,7 @@ const LEGACY_DESTINATION: Record<string, RailItemId> = {
   notes: "my-work",
   drill: "practice",
   practice: "practice",
-  testing: "practice",
+  testing: "testing",
   journal: "review",
   flagged: "review",
   review: "review",
@@ -81,7 +82,8 @@ const LEGACY_ORDER: Record<string, string[]> = {
 };
 const OLD_MEMBERS: Partial<Record<RailItemId, string[]>> = {
   "my-work": ["work", "notes"],
-  practice: ["drill", "testing"],
+  practice: ["drill"],
+  testing: ["testing"],
   review: ["review"],
   progress: ["analytics", "history"],
   library: ["bootcamps", "activities", "admissions"],
@@ -120,7 +122,10 @@ export function resolveRailGroups(prefs: RailPrefs, _opts?: { includeHidden?: bo
     if (item && !ordered.includes(item)) ordered.push(item);
   }
   for (const item of RAIL_CATALOG) {
-    if (!ordered.includes(item)) ordered.push(item);
+    if (ordered.includes(item)) continue;
+    const practiceIndex = ordered.findIndex((candidate) => candidate.id === "practice");
+    if (item.id === "testing" && practiceIndex >= 0) ordered.splice(practiceIndex + 1, 0, item);
+    else ordered.push(item);
   }
   const hidden = new Set(_opts?.includeHidden ? [] : prefs.hidden);
   return [{ ...RAIL_GROUPS[0], items: ordered.filter((item) => item.required || !hidden.has(item.id)) }];

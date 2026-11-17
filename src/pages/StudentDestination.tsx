@@ -55,7 +55,7 @@ export function StudentDestination({ destination }: { destination: Destination }
   const permissions = useDestinationPermissions(destination);
   const config = DESTINATIONS[destination];
   const showExamTabs = destination === "practice" && pathname.startsWith("/practice/exams");
-  const visibleTabs = showExamTabs ? [...config.tabs, ...EXAM_TABS] : config.tabs;
+  const visibleTabs = showExamTabs ? EXAM_TABS : config.tabs;
   // Admissions is staff-only by design; its padlock needs no plan explanation.
   const hasPlanLock = visibleTabs.some((tab) => !tab.admin && tabAccess(tab, permissions) === "locked");
   const noteId = `${destination}-locked-note`;
@@ -96,15 +96,15 @@ export function StudentDestination({ destination }: { destination: Destination }
 
   return (
     <div className="student-destination">
-      <header ref={headingRef} data-motion-enter data-motion-group className="student-destination-heading classroom-motion-local">
+      {!showExamTabs && <header ref={headingRef} data-motion-enter data-motion-group className="student-destination-heading classroom-motion-local">
         <div>
           <h1 data-motion-item>{config.title}</h1>
-          <p data-motion-item>{config.introduction}</p>
+          <p data-motion-item>{destination === "practice" ? "Build a drill or continue your assigned work." : config.introduction}</p>
         </div>
-      </header>
-      <nav data-motion-skip className={destination === 'my-work' ? "student-destination-tabs student-destination-tabs-segmented" : "student-destination-tabs"} aria-label={`${config.title} sections`} aria-busy={permissions.loading || (permissions.readingCenterChecking && !permissions.has_classroom_access)}>
+      </header>}
+      {destination !== "practice" && <nav data-motion-skip className={destination === 'my-work' ? "student-destination-tabs student-destination-tabs-segmented" : "student-destination-tabs"} aria-label={`${config.title} sections`} aria-busy={permissions.loading || (permissions.readingCenterChecking && !permissions.has_classroom_access)}>
         {renderTabs(config.tabs, "primary")}
-      </nav>
+      </nav>}
       {destination === 'review' ? <nav className="review-hub-utilities" aria-label="Review tools">
         {[
           { label: 'Wrong-answer journal', path: '/review/wrong', flags: ['has_journal_access'] },
@@ -116,11 +116,6 @@ export function StudentDestination({ destination }: { destination: Destination }
             : <span key={utility.path} aria-disabled="true" title={access === 'checking' ? 'Checking access' : `${utility.label} is locked for your account`}>{utility.label} <span className="sr-only">{access === 'checking' ? '(checking access)' : '(locked)'}</span>{access === 'locked' ? <Lock size={12} aria-hidden="true" /> : null}</span>;
         })}
       </nav> : null}
-      {showExamTabs ? (
-        <nav data-motion-skip className="student-destination-subtabs" aria-label="Practice Exams pages" aria-busy={permissions.loading}>
-          {renderTabs(EXAM_TABS, "exams")}
-        </nav>
-      ) : null}
       {hasPlanLock ? (
         <p id={noteId} className="student-destination-locked-note">
           <Lock size={13} aria-hidden="true" />

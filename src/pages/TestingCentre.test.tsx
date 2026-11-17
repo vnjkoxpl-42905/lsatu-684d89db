@@ -177,6 +177,7 @@ describe("Testing Centre", () => {
     it("stays reachable, says it is unavailable, and names what is missing", async () => {
       renderPage();
       fireEvent.click(screen.getByRole("button", { name: /Take a practice test/ }));
+      fireEvent.click(screen.getByRole("button", { name: /Choose specific/i }));
       const begin = await screen.findByRole("button", { name: /Begin practice test/ });
 
       expect(begin.hasAttribute("disabled")).toBe(false);
@@ -189,6 +190,7 @@ describe("Testing Centre", () => {
     it("sends a press to the PrepTest field instead of starting nothing", async () => {
       renderPage();
       fireEvent.click(screen.getByRole("button", { name: /Take a practice test/ }));
+      fireEvent.click(screen.getByRole("button", { name: /Choose specific/i }));
       fireEvent.click(await screen.findByRole("button", { name: /Begin practice test/ }));
 
       expect(document.activeElement).toBe(screen.getByRole("combobox", { name: /PREPTEST/i }));
@@ -199,6 +201,7 @@ describe("Testing Centre", () => {
     it("clears the hint once a PrepTest is chosen", async () => {
       renderPage();
       fireEvent.click(screen.getByRole("button", { name: /Take a practice test/ }));
+      fireEvent.click(screen.getByRole("button", { name: /Choose specific/i }));
       const begin = await screen.findByRole("button", { name: /Begin practice test/ });
       openPrepTests();
       fireEvent.click(await screen.findByRole("option", { name: /PrepTest 131/ }));
@@ -218,12 +221,14 @@ describe("Testing Centre", () => {
   it("opens the section launcher behind the first door", () => {
     renderPage();
     fireEvent.click(screen.getByRole("button", { name: /Take a section/ }));
+    fireEvent.click(screen.getByRole("button", { name: /Choose specific/i }));
     expect(screen.getByTestId("section-selector")).toBeTruthy();
   });
 
   it("offers a PrepTest whose RC section is short, and says so", async () => {
     renderPage();
     fireEvent.click(screen.getByRole("button", { name: /Take a practice test/ }));
+    fireEvent.click(screen.getByRole("button", { name: /Choose specific/i }));
 
     await waitFor(() => screen.getByRole("combobox", { name: /PREPTEST/i }));
     openPrepTests();
@@ -244,6 +249,7 @@ describe("Testing Centre", () => {
   it("puts the newest PrepTest first", async () => {
     renderPage();
     fireEvent.click(screen.getByRole("button", { name: /Take a practice test/ }));
+    fireEvent.click(screen.getByRole("button", { name: /Choose specific/i }));
 
     await waitFor(() => screen.getByRole("combobox", { name: /PREPTEST/i }));
     openPrepTests();
@@ -258,6 +264,7 @@ describe("Testing Centre", () => {
   it("finds a PrepTest by number instead of by scrolling", async () => {
     renderPage();
     fireEvent.click(screen.getByRole("button", { name: /Take a practice test/ }));
+    fireEvent.click(screen.getByRole("button", { name: /Choose specific/i }));
 
     await waitFor(() => screen.getByRole("combobox", { name: /PREPTEST/i }));
     openPrepTests();
@@ -291,6 +298,7 @@ describe("Testing Centre", () => {
   it("stays quiet about length when the RC section is a real one", async () => {
     renderPage();
     fireEvent.click(screen.getByRole("button", { name: /Take a practice test/ }));
+    fireEvent.click(screen.getByRole("button", { name: /Choose specific/i }));
 
     await waitFor(() => screen.getByRole("combobox", { name: /PREPTEST/i }));
     openPrepTests();
@@ -302,64 +310,6 @@ describe("Testing Centre", () => {
     expect(
       screen.queryByText((_, el) => el?.tagName === "P" && /runs a few questions short/.test(el.textContent ?? "")),
     ).toBeNull();
-  });
-
-  /**
-   * Opening a door used to scroll the panel itself to the top of the viewport.
-   * The panel is taller than the viewport, so the page ran to its own scroll
-   * maximum and took the room's name and the door that was just pressed with
-   * it: measured at 1280x900, the title landed at -234px and 78% of the door
-   * row was gone. The anchor is the door row now.
-   *
-   * jsdom has no layout, so every rect is zero and the effect's "already
-   * visible" guard would always win. The panel's rect is stubbed off screen so
-   * the branch that actually moves the page is the one under test.
-   */
-  /**
-   * Stubs go on the element instances, not on Element.prototype. An own
-   * property always shadows the prototype, which a prototype patch does not
-   * reliably do here, and there is nothing to restore afterwards.
-   */
-  const stubScrollTargets = () => {
-    const panel = document.getElementById("testing-door-panel") as HTMLElement;
-    const doors = document.querySelector(".testing-doors") as HTMLElement;
-    const onPanel = vi.fn();
-    const onDoors = vi.fn();
-    panel.scrollIntoView = onPanel;
-    doors.scrollIntoView = onDoors;
-    return { panel, doors, onPanel, onDoors };
-  };
-
-  it("scrolls the door row, not the panel, when it brings an opened panel into view", async () => {
-    renderPage();
-    const { panel, onPanel, onDoors } = stubScrollTargets();
-    // jsdom has no layout, so every rect is zero and the effect's "already
-    // visible" guard would always win. Put the panel off screen so the branch
-    // that actually moves the page is the one under test.
-    panel.getBoundingClientRect = () => ({ top: 5000, bottom: 6000, height: 1000 }) as DOMRect;
-
-    fireEvent.click(screen.getByRole("button", { name: /Take a section/ }));
-
-    // The effect lands after this tick, so the assertion has to wait for it.
-    await waitFor(() => expect(onDoors).toHaveBeenCalledTimes(1));
-    expect(onPanel).not.toHaveBeenCalled();
-    expect(onDoors.mock.calls[0][0]).toMatchObject({ block: "start" });
-  });
-
-  /** The other half: a panel already on screen must not move the page at all. */
-  it("leaves the page alone when the panel is already in view", async () => {
-    renderPage();
-    // jsdom's zero rects put the panel at top 0, which is "already visible", so
-    // the real rect is left in place here on purpose.
-    const { onPanel, onDoors } = stubScrollTargets();
-
-    fireEvent.click(screen.getByRole("button", { name: /Take a section/ }));
-
-    // Wait for the panel so the effect has certainly run, then assert it chose
-    // to do nothing.
-    await waitFor(() => expect(screen.getByTestId("section-selector")).toBeTruthy());
-    expect(onDoors).not.toHaveBeenCalled();
-    expect(onPanel).not.toHaveBeenCalled();
   });
 
   /**
@@ -402,19 +352,23 @@ describe("Testing Centre", () => {
 
   it("keeps saved data and ends the sitting only on a confirmed Discard", async () => {
     seedSitting();
+    const saved = localStorage.getItem(RUN_KEY);
     renderPage();
 
     fireEvent.click(await screen.findByRole("button", { name: /Discard the unfinished PrepTest 159 exam/ }));
     fireEvent.click(screen.getByRole("button", { name: /Keep the unfinished PrepTest 159 exam/ }));
 
-    expect(localStorage.getItem(RUN_KEY)).toBeTruthy();
+    expect(localStorage.getItem(RUN_KEY)).toBe(saved);
     expect(screen.getByRole("button", { name: /Resume PrepTest 159/ })).toBeTruthy();
 
-    fireEvent.click(await screen.findByRole("button", { name: /Discard the unfinished PrepTest 159 exam/ }));
+    fireEvent.click(screen.getByRole("button", { name: /Discard the unfinished PrepTest 159 exam/ }));
     fireEvent.click(screen.getByRole("button", { name: /Yes, discard the unfinished PrepTest 159 exam/ }));
 
     await waitFor(() => expect(JSON.parse(localStorage.getItem(RUN_KEY)!).status).toBe("abandoned"));
-    expect(localStorage.getItem(RUN_KEY)).toBeTruthy();
+    const abandoned = JSON.parse(localStorage.getItem(RUN_KEY)!);
+    const original = JSON.parse(saved!);
+    expect(abandoned.legs).toEqual(original.legs);
+    expect(abandoned.currentLeg).toEqual(original.currentLeg);
   });
   /**
    * The practice-test door's paces are percentages of the student's own clock.
@@ -435,6 +389,7 @@ describe("Testing Centre", () => {
     const beginPracticeTest = async () => {
       renderPage();
       fireEvent.click(screen.getByRole("button", { name: /Take a practice test/ }));
+      fireEvent.click(screen.getByRole("button", { name: /Choose specific/i }));
       await waitFor(() => screen.getByRole("combobox", { name: /PREPTEST/i }));
       openPrepTests();
       fireEvent.click(await screen.findByRole("option", { name: /PrepTest 131/ }));
@@ -477,6 +432,7 @@ describe("Testing Centre", () => {
       profileTimingMock.status = 'loading';
       renderPage();
       fireEvent.click(screen.getByRole("button", { name: /Take a practice test/ }));
+      fireEvent.click(screen.getByRole("button", { name: /Choose specific/i }));
       await waitFor(() => screen.getByRole("combobox", { name: /PREPTEST/i }));
       openPrepTests();
       fireEvent.click(await screen.findByRole("option", { name: /PrepTest 131/ }));
@@ -493,6 +449,7 @@ describe("Testing Centre", () => {
       profileTimingMock.status = 'loading';
       const view = renderPage();
       fireEvent.click(screen.getByRole("button", { name: /Take a practice test/ }));
+      fireEvent.click(screen.getByRole("button", { name: /Choose specific/i }));
       await waitFor(() => screen.getByRole("combobox", { name: /PREPTEST/i }));
       openPrepTests();
       fireEvent.click(await screen.findByRole("option", { name: /PrepTest 131/ }));
@@ -520,6 +477,7 @@ describe("Testing Centre", () => {
       settingsMock.defaultTimingMode = "52.5";
       renderPage();
       fireEvent.click(screen.getByRole("button", { name: /Take a practice test/ }));
+      fireEvent.click(screen.getByRole("button", { name: /Choose specific/i }));
       await waitFor(() => screen.getByRole("combobox", { name: /PREPTEST/i }));
       openPrepTests();
       // PT 130 is the mocked PrepTest whose RC section is short.
@@ -535,6 +493,7 @@ describe("Testing Centre", () => {
     it("drops the clock clause entirely when the sitting is untimed", async () => {
       renderPage();
       fireEvent.click(screen.getByRole("button", { name: /Take a practice test/ }));
+      fireEvent.click(screen.getByRole("button", { name: /Choose specific/i }));
       await waitFor(() => screen.getByRole("combobox", { name: /PREPTEST/i }));
       openPrepTests();
       fireEvent.click(await screen.findByRole("option", { name: /PrepTest 130/ }));
@@ -554,6 +513,7 @@ describe("Testing Centre", () => {
       settingsMock.defaultTimingMode = "70";
       renderPage();
       fireEvent.click(screen.getByRole("button", { name: /Take a practice test/ }));
+      fireEvent.click(screen.getByRole("button", { name: /Choose specific/i }));
       await waitFor(() => screen.getByRole("combobox", { name: /PREPTEST/i }));
       // The note that tells them the standing setting is in play at all.
       expect(screen.getByText(/You have double time\./)).toBeTruthy();

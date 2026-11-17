@@ -430,10 +430,10 @@ describe("AcademyMainhub — the LR/RC section switch", () => {
     expect(screen.getByRole("region", { name: "Practice and insight workspace" })).toBeInTheDocument();
   });
 
-  it("shows RC-scoped assigned work alongside RC practice", () => {
+  it("keeps the full assigned work list available alongside RC practice", () => {
     renderHub("/classroom/drill");
     fireEvent.click(rcSwitch());
-    expect(screen.getByRole("region", { name: "Assigned RC work" })).toBeInTheDocument();
+    expect(screen.getByRole("region", { name: "Assigned work" })).toBeInTheDocument();
   });
 
   it("switches LR and RC in place without remounting or animating the surfaces", () => {

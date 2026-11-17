@@ -1,3 +1,6 @@
+import { SectionProgressStepper } from "@/components/ui/section-progress-stepper";
+import { TimedWorkClient, type TimedObject } from "@/lib/timedWorkClient";
+import * as DialogPrimitive from "@radix-ui/react-dialog";
 /**
  * The Testing Centre.
  *
@@ -14,8 +17,8 @@
  */
 import * as React from "react";
 import { parseWorkIdentity, withWorkIdentity } from '@/lib/studentWorkIdentity';
-import { useNavigate, useSearchParams } from "react-router-dom";
-import { Loader2 } from "lucide-react";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { ArrowUpRight, Dice5, Loader2, MousePointer2, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Select,
@@ -41,6 +44,8 @@ import {
   legLabel,
   practiceTestPaces,
   practiceTestSectionSeconds,
+  practiceTestRaw,
+  practiceTestScaled,
   type PracticeTestBlueprint,
   type PracticeTestPaceId,
   type PracticeTestRun,
@@ -65,7 +70,6 @@ const PANEL_ID = "testing-door-panel";
  * move the page. Below this the panel is a sliver at the bottom edge and the
  * click reads as a no-op; above it the student can already see what happened.
  */
-const PANEL_VISIBLE_MARGIN = 120;
 
 /**
  * RC sections, loaded only once something needs them.
@@ -359,11 +363,19 @@ export function ResumeList({
         {runs.map((run) => {
           return (
             <div className="testing-shape-row" key={run.id}>
-              <b>PT {run.pt}</b>
-              <span>
-                Section {Math.min(run.currentLeg + 1, run.legs.length)} of{" "}
-                {run.legs.length}
-              </span>
+              <div className="testing-resume-description">
+                <strong>PrepTest {run.pt} &middot; Full exam</strong>
+                <small>Section {Math.min(run.currentLeg + 1, run.legs.length)} of {run.legs.length}</small>
+                <SectionProgressStepper currentIndex={run.currentLeg} steps={run.legs.map((leg, index) => ({
+                  label: `Section ${index + 1}`,
+                  answered: leg.answered,
+                  total: leg.questionCount,
+                  submitted: Boolean(leg.completedAt),
+                }))} />
+                {run.legs[run.currentLeg]?.answered != null && !run.legs[run.currentLeg].completedAt && (
+                  <small>{run.legs[run.currentLeg].answered} of {run.legs[run.currentLeg].questionCount} answered in this section</small>
+                )}
+              </div>
               {/* min-h-[44px] because Button's own sm size stops at 40px, and
                   the 44px floor is a defect gate here, not a preference. Both
                   carry a name saying which sitting they act on: two rows of
@@ -386,7 +398,7 @@ export function ResumeList({
                     }}
                     aria-label={`Yes, discard the unfinished PrepTest ${run.pt} exam`}
                   >
-                    {run.timedContractVersion != null ? 'Manage' : 'Discard'}
+                    Discard
                   </Button>
                   <Button
                     ref={keepRef}
@@ -410,15 +422,17 @@ export function ResumeList({
                   >
                     Resume
                   </Button>
-                  <Button
-                    size="sm"
-                    variant="ghost"
-                    className="min-h-[44px]"
-                    onClick={() => run.timedContractVersion != null ? onResume(run) : setConfirming(run.id)}
-                    aria-label={run.timedContractVersion != null ? `Manage PrepTest ${run.pt}` : `Discard the unfinished PrepTest ${run.pt} exam`}
-                  >
-                    {run.timedContractVersion != null ? 'Manage' : 'Discard'}
-                  </Button>
+                  {run.timedContractVersion == null && (
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      className="min-h-[44px]"
+                      onClick={() => setConfirming(run.id)}
+                      aria-label={`Discard the unfinished PrepTest ${run.pt} exam`}
+                    >
+                      Discard
+                    </Button>
+                  )}
                 </div>
               )}
             </div>
@@ -426,12 +440,12 @@ export function ResumeList({
         })}
         {sections.map((section) => (
           <div className="testing-shape-row" key={`${section.kind}-${section.id}`}>
-            <b>PT {section.preptest}</b>
-            <span>
-              {section.kind === "lr-section" ? "Logical Reasoning" : "Reading Comprehension"}
-              {` · Section ${section.section}`}
-            </span>
-            <em>{section.answered} of {section.total} answered</em>
+            <div className="testing-resume-description">
+              <strong>Section {section.section} &middot; {section.kind === "lr-section" ? "Logical Reasoning" : "Reading Comprehension"}</strong>
+              <small>PrepTest {section.preptest} &middot; {section.answered} of {section.total} answered</small>
+              {section.total > 0 && <progress aria-label={`PrepTest ${section.preptest} section ${section.section} questions answered`}
+                value={section.answered} max={section.total} />}
+            </div>
             <div className="testing-shape-actions">
               <Button
                 size="sm"
@@ -482,16 +496,41 @@ export default function TestingCentre() {
   const { data: assignedPts } = useAssignedPrepTests(assignedOnly, user?.id);
   // An assigned-only student has one door: the sittings they were given. The
   // section door runs through Drill, which is a switch they do not have.
-  const [door, setDoor] = React.useState<Door>(selectedPt ? "test" : searchParams.get("view") === "section" ? "section" : null);
+  const view = searchParams.get("view");
+  const requestedDoor: Door = assignedOnly || selectedPt || view === "test" ? "test" : view === "section" ? "section" : null;
+  const [door, setDoor] = React.useState<Door>(requestedDoor);
   React.useEffect(() => {
-    if (assignedOnly) setDoor("test");
-  }, [assignedOnly]);
+    setDoor(requestedDoor);
+  }, [requestedDoor, selectedPt, view]);
   const { sections: rcSections, error: rcError } = useRcSections(door === "test");
   const [actionError, setActionError] = React.useState<string | null>(null);
   const runsQuery = useQuery({
     queryKey: ["practice-exam-runs", user?.id],
     enabled: !!user?.id,
-    queryFn: () => listAccountPracticeTestRuns(user!.id),
+    queryFn: async () => {
+      const ownerId = user!.id;
+      const savedRuns = await listAccountPracticeTestRuns(ownerId);
+      return Promise.all(savedRuns.map(async (run) => {
+        if (run.status !== "in-progress" || run.timedContractVersion == null) return run;
+        try {
+          const { parent, checkpoint } = await new TimedWorkClient(ownerId, run.id).refresh();
+          if (!checkpoint || parent.current_leg !== run.currentLeg) return run;
+          const record = checkpoint.record as TimedObject | undefined;
+          const attempts = checkpoint.kind === "lr" ? record?.attempts : checkpoint.attempts;
+          if (!Array.isArray(attempts)) return run;
+          const answers = attempts.filter((attempt: TimedObject) => /^[A-E]$/.test(String(attempt.selected_answer ?? attempt.selected)));
+          return {
+            ...run,
+            legs: run.legs.map((leg, index) => index === run.currentLeg && !leg.completedAt
+              ? { ...leg, answered: Math.min(answers.length, leg.questionCount) }
+              : leg),
+          };
+        } catch {
+          // Saved runs remain resumable even if their checkpoint cannot be read.
+          return run;
+        }
+      }));
+    },
   });
   const sectionsQuery = useQuery({
     queryKey: ["practice-section-attempts", user?.id],
@@ -512,6 +551,25 @@ export default function TestingCentre() {
     const allowed = new Set(assignedPts ?? []);
     return all.filter((t) => allowed.has(t.pt));
   }, [manifest, rcSections, assignedOnly, assignedPts]);
+
+  const completed = [
+    ...(runsQuery.data ?? []).filter((run) => run.status === "complete" && (!assignedOnly || assignedPts?.includes(run.pt))).map((run) => {
+      const { correct, total } = practiceTestRaw(run);
+      const raw = `${correct} of ${total} correct`;
+      return {
+        title: `PrepTest ${run.pt} | Full exam`,
+        score: run.legs.every((leg) => leg.correct != null) ? `${practiceTestScaled(run)} estimated | ${raw}` : "Score unavailable",
+        at: run.createdAt,
+        href: practiceTestPath(run.id),
+      };
+    }),
+    ...(sectionsQuery.data ?? []).filter((section) => section.status === "completed" && canResumeSection).map((section) => ({
+      title: `PrepTest ${section.preptest} | ${section.kind === "lr-section" ? "LR" : "RC"} section ${section.section}`,
+      score: section.correct == null ? "Score unavailable" : `${section.correct} of ${section.total} correct`,
+      at: section.startedAt,
+      href: section.href,
+    })),
+  ].sort((a, b) => b.at.localeCompare(a.at));
 
   const beginTest = async (
     blueprint: PracticeTestBlueprint,
@@ -542,46 +600,24 @@ export default function TestingCentre() {
     }
   };
 
-  // A door's panel renders below the two door buttons, which on a laptop puts it
-  // under the fold: the click looks like it did nothing, and the section type
-  // picker (Logical Reasoning / Reading Comprehension) is never seen, so the door
-  // reads as LR-only. Bring the panel to the student when it opens.
-  //
-  // Anchored on the doors rather than the panel. Scrolling the panel itself to
-  // the top of the viewport over-corrected into the opposite failure: the panel
-  // is taller than the viewport, so the page ran to its own scroll maximum and
-  // took the room's name and the door that was just pressed with it. Measured at
-  // 1280x900, .classroom-title landed at -234px and 78% of the door row was off
-  // screen, at the moment a student commits to a timed section. Putting the door
-  // row at the top keeps the choice that was just made on screen, and the panel
-  // begins directly beneath it.
-  const panelRef = React.useRef<HTMLDivElement | null>(null);
-  const doorsRef = React.useRef<HTMLDivElement | null>(null);
-  React.useEffect(() => {
-    if (!door) return;
-    const panel = panelRef.current;
-    if (!panel) return;
-    // Leave the page alone when the panel already starts on screen. The click
-    // did not read as a no-op, and moving the page under a student who can
-    // already see the result is its own small betrayal.
-    const top = panel.getBoundingClientRect().top;
-    if (top >= 0 && top <= window.innerHeight - PANEL_VISIBLE_MARGIN) return;
-    const prefersReducedMotion = window.matchMedia?.(
-      "(prefers-reduced-motion: reduce)",
-    ).matches;
-    (doorsRef.current ?? panel).scrollIntoView({
-      behavior: prefersReducedMotion ? "auto" : "smooth",
-      block: "start",
-    });
-  }, [door]);
+  const [selection, setSelection] = React.useState<"specific" | "random" | null>(null);
+  const [randomPt, setRandomPt] = React.useState<number | null>(null);
+  const [dialogHost, setDialogHost] = React.useState<HTMLDivElement | null>(null);
+  const launchButton = React.useRef<HTMLButtonElement | null>(null);
+  const openSetup = (next: Door, button: HTMLButtonElement) => {
+    launchButton.current = button;
+    setActionError(null);
+    setSelection(null);
+    setRandomPt(null);
+    setDoor(next);
+  };
+  const setupSelected = Boolean(selection || selectedPt || assignedOnly);
+  const eligibleTests = tests;
 
   return (
     <>
       <PracticeExamsNav />
       <h1 className="classroom-title">Practice Exams</h1>
-      <p className="testing-lede">
-        Official LSAT material, timed like test day.
-      </p>
 
       {/* The doors carry a title and two supporting lines, and those used to be
           an h2 and a p. Neither is legal inside a button — its content model is
@@ -590,78 +626,122 @@ export default function TestingCentre() {
 
           aria-expanded, not aria-pressed: these are not toggle buttons, they
           disclose a panel, and aria-controls is what says which panel. */}
-      <div className="testing-doors" ref={doorsRef}>
+      <div className="testing-doors" data-motion-group>
         {!assignedOnly && (
         <button
           type="button"
           className="testing-door"
+          data-motion-item
           aria-expanded={door === "section"}
           aria-controls={PANEL_ID}
-          onClick={() => setDoor(door === "section" ? null : "section")}
+          aria-haspopup="dialog"
+          onClick={(event) => openSetup("section", event.currentTarget)}
         >
+          <svg aria-hidden="true" className="testing-door-icon" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M12 6 4 10l8 4 8-4-8-4M4 14l8 4 8-4" />
+          </svg>
           <span className="testing-door-title">Take a section</span>
-          {/* No clock here: the meta line below already carries it. */}
-          <span className="testing-door-body">
-            One real LR or RC section from an official PrepTest.
-          </span>
-          <span className="testing-door-meta">One section · 35 minutes</span>
+          <ArrowUpRight className="testing-door-arrow" size={18} aria-hidden="true" />
         </button>
         )}
 
         <button
           type="button"
           className="testing-door"
+          data-motion-item
           aria-expanded={door === "test"}
           aria-controls={PANEL_ID}
-          onClick={() => setDoor(door === "test" ? null : "test")}
+          aria-haspopup="dialog"
+          onClick={(event) => openSetup("test", event.currentTarget)}
         >
+          <svg aria-hidden="true" className="testing-door-icon" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M12 4 4 8l8 4 8-4-8-4M4 12l8 4 8-4M4 16l8 4 8-4" />
+          </svg>
           <span className="testing-door-title">Take a practice test</span>
-          <span className="testing-door-body">
-            Three scored sections from one PrepTest, in order, with a break.
-          </span>
-          <span className="testing-door-meta">Three sections · about 2 hours</span>
+          <ArrowUpRight className="testing-door-arrow" size={18} aria-hidden="true" />
         </button>
       </div>
 
-      <div id={PANEL_ID} ref={panelRef}>
-        {door === "section" && (
-          <div className="testing-panel">
-            {isLoading && <Working>Loading questions…</Working>}
-            {!isLoading && error && <p className="testing-note">{error}</p>}
-            {!isLoading && !error && manifest && (
-              <SectionSelector
-                manifest={manifest}
-                onStartSection={(config) =>
-                  navigate("/drill", {
-                    state: { mode: "full-section", config, returnTo: "/practice/exams" },
-                  })
-                }
-                onStartRcSection={(href) => navigate(href)}
-                onCancel={() => setDoor(null)}
-              />
+      <div ref={setDialogHost} />
+      <DialogPrimitive.Root open={Boolean(door)} onOpenChange={(open) => { if (!open) setDoor(null); }}>
+        {dialogHost && <DialogPrimitive.Portal container={dialogHost}>
+          <DialogPrimitive.Overlay className="testing-setup-overlay" />
+          <DialogPrimitive.Content id={PANEL_ID} className="testing-setup-dialog"
+            onCloseAutoFocus={(event) => {
+              if (!launchButton.current) return;
+              event.preventDefault();
+              launchButton.current.focus();
+            }}>
+            <DialogPrimitive.Title>{door === "section" ? "Single section attempt" : "Full exam attempt"}</DialogPrimitive.Title>
+            <DialogPrimitive.Close aria-label="Close setup" className="testing-setup-close"><X size={18} /></DialogPrimitive.Close>
+            <DialogPrimitive.Description className={setupSelected ? "sr-only" : "testing-setup-preference"}>
+              {setupSelected ? "Review your selection and timing before starting." : "Selection preference"}
+            </DialogPrimitive.Description>
+            {!setupSelected && (
+              <div className="testing-setup-choices">
+                <button type="button" onClick={() => setSelection("specific")}>
+                  <MousePointer2 size={20} aria-hidden="true" />
+                  <strong>Choose specific</strong>
+                  <span>Pick a {door === "section" ? "section" : "PrepTest"}.</span>
+                </button>
+                <button type="button" disabled={door === "test" && !eligibleTests.length}
+                  onClick={() => {
+                    if (door === "test") setRandomPt(eligibleTests[Math.floor(Math.random() * eligibleTests.length)].pt);
+                    setSelection("random");
+                  }}>
+                  <Dice5 size={20} aria-hidden="true" />
+                  <strong>Random</strong>
+                  <span>Randomly select a {door === "section" ? "section" : "PrepTest"}.</span>
+                </button>
+              </div>
             )}
-          </div>
-        )}
+            {setupSelected && <div>
+              {door === "section" && (
+                <div className="testing-panel">
+                  {isLoading && <Working>Loading questions…</Working>}
+                  {!isLoading && error && <p className="testing-note">{error}</p>}
+                  {!isLoading && !error && manifest && (
+                    <SectionSelector
+                      manifest={manifest}
+                      hideStatus
+                      randomizeOnOpen={selection === "random"}
+                      onStartSection={(config) =>
+                        navigate("/drill", {
+                          state: { mode: "full-section", config, returnTo: "/practice/exams" },
+                        })
+                      }
+                      onStartRcSection={(href) => navigate(href)}
+                      onCancel={() => setDoor(null)}
+                    />
+                  )}
+                </div>
+              )}
 
-        {door === "test" && (
-          <>
-            {(isLoading || (!rcSections && !rcError)) && (
-              <div className="testing-panel">
-                <Working>Working out which PrepTests can be sat end to end…</Working>
-              </div>
-            )}
-            {!isLoading && (error || rcError) && (
-              <div className="testing-panel">
-                <p className="testing-note">{error || rcError}</p>
-              </div>
-            )}
-            {!isLoading && !error && !rcError && manifest && rcSections && (
-              <PracticeTestSelector tests={tests} onBegin={beginTest} assignedOnly={assignedOnly} initialPt={selectedPt} />
-            )}
-          </>
-        )}
-      </div>
-      {actionError && <p className="testing-note" role="alert">{actionError}</p>}
+              {door === "test" && (
+                <>
+                  {(isLoading || (!rcSections && !rcError)) && (
+                    <div className="testing-panel">
+                      <Working>Working out which PrepTests can be sat end to end…</Working>
+                    </div>
+                  )}
+                  {!isLoading && (error || rcError) && (
+                    <div className="testing-panel">
+                      <p className="testing-note">{error || rcError}</p>
+                    </div>
+                  )}
+                  {!isLoading && !error && !rcError && manifest && rcSections && (
+                    <PracticeTestSelector tests={tests} onBegin={beginTest} assignedOnly={assignedOnly} initialPt={randomPt ?? selectedPt} />
+                  )}
+                </>
+              )}
+            </div>}
+            {actionError && <p className="testing-note" role="alert">{actionError}</p>}
+          </DialogPrimitive.Content>
+        </DialogPrimitive.Portal>}
+      </DialogPrimitive.Root>
+
       {(runsQuery.isLoading || sectionsQuery.isLoading) && <Working>Loading your unfinished work…</Working>}
       {runsQuery.isError && <p className="testing-note" role="alert">Your saved exams could not be loaded. Refresh to try again.</p>}
       {sectionsQuery.isError && <p className="testing-note" role="alert">Your saved sections could not be loaded. Refresh to try again.</p>}
@@ -672,6 +752,23 @@ export default function TestingCentre() {
         onResumeSection={(href) => navigate(href)}
         onDiscard={discard}
       />
+      {completed.length > 0 && (
+        <section className="testing-resume" aria-label="Completed attempts">
+          <h2>Completed attempts</h2>
+          <div className="testing-shape">
+            {completed.slice(0, 3).map((entry) => (
+              <div className="testing-shape-row" key={entry.href}>
+                <div className="testing-resume-description">
+                  <strong>{entry.title}</strong>
+                  <small>{entry.score}</small>
+                </div>
+                <Link className="practice-exams-nav-link" to={entry.href}>View results</Link>
+              </div>
+            ))}
+          </div>
+          <Link className="practice-exams-nav-link" to="/practice/exams/attempts?status=completed">All completed attempts</Link>
+        </section>
+      )}
     </>
   );
 }
