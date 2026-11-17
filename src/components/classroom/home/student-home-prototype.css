@@ -32,7 +32,7 @@
 .classroom-root .classroom-home[data-student-variant] .classroom-home-title { font: 400 clamp(32px, 4.3cqi, 54px)/1.08 var(--home-ui); letter-spacing: -.055em; }
 .classroom-root .classroom-home[data-student-variant] .classroom-home-title span { display: block; font-family: var(--home-display); font-style: italic; letter-spacing: -.035em; }
 .classroom-root .classroom-home[data-student-variant] .classroom-home-subtitle { color: var(--home-muted); max-width: 36ch; font-size: 14px; }
-.student-home-scene { position: relative; height: 240px; isolation: isolate; border-radius: 22px; overflow: hidden; background: radial-gradient(ellipse at 60% 35%, #2b3031, #131718 75%); box-shadow: inset 0 0 0 1px #ffffff18, 0 0 0 5px #252b2607; }
+.student-home-scene { position: relative; height: 240px; isolation: isolate; border-radius: 22px; overflow: hidden; background: radial-gradient(ellipse at 65% 38%, #20272a, #0c0f10 72%); box-shadow: inset 0 0 0 1px #ffffff18, 0 0 0 5px #252b2607; }
 .student-home-scene-label, .student-home-scene-caption { position: absolute; left: 22px; z-index: 1; pointer-events: none; color: #babcb5; font: 10px var(--home-ui); letter-spacing: .12em; text-transform: uppercase; }
 .student-home-scene-label { top: 20px; }
 .student-home-scene-caption { bottom: 17px; font-size: 9px; opacity: .7; }

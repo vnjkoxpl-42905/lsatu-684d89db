@@ -46,34 +46,34 @@ export function StudentOrbit() {
       root.add(new T.LineSegments(new T.BufferGeometry().setFromPoints(vertices), new T.LineBasicMaterial({ color: 0xefede6, transparent: true, opacity: .25 })));
       const vertexShader = `varying vec3 n; varying vec3 v;
         void main(){ n=normalize(normalMatrix*normal); vec4 p=modelViewMatrix*vec4(position,1.); v=normalize(-p.xyz); gl_Position=projectionMatrix*p; }`;
-      const moon = new T.Mesh(new T.SphereGeometry(1.12, 64, 64), new T.ShaderMaterial({
+      const moon = new T.Mesh(new T.SphereGeometry(1.35, 64, 64), new T.ShaderMaterial({
         vertexShader,
         fragmentShader: `varying vec3 n; varying vec3 v;
-          void main(){ vec3 N=normalize(n); float rim=pow(1.-max(dot(N,normalize(v)),0.),5.);
+          void main(){ vec3 N=normalize(n); float rim=pow(1.-max(dot(N,normalize(v)),0.),12.);
           float light=dot(N,normalize(vec3(-.7,.7,.4)))*.5+.5;
-          vec3 c=vec3(.024,.028,.03)+vec3(.74)*rim*(.25+.75*light);
+          vec3 c=vec3(.008,.010,.011)+vec3(.95)*rim*(.65+.35*light);
           gl_FragColor=vec4(c,1.); }`,
       }));
       root.add(moon);
       // A camera-facing corona behind the opaque sphere avoids a plastic hotspot.
-      const corona = new T.Mesh(new T.PlaneGeometry(3.3, 3.3), new T.ShaderMaterial({
+      const corona = new T.Mesh(new T.PlaneGeometry(4.2, 4.2), new T.ShaderMaterial({
         transparent: true, depthWrite: false,
         vertexShader: `varying vec2 uvv; void main(){uvv=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}`,
-        fragmentShader: `varying vec2 uvv; void main(){float r=length(uvv-.5)*3.3;
-          float a=exp(-abs(r-1.12)*19.)*.68+exp(-abs(r-1.12)*6.)*.1;
-          gl_FragColor=vec4(vec3(.95),a*smoothstep(1.04,1.12,r));}`,
+        fragmentShader: `varying vec2 uvv; void main(){float r=length(uvv-.5)*4.2;
+          float a=exp(-abs(r-1.35)*22.)*.9+exp(-abs(r-1.35)*5.)*.18;
+          gl_FragColor=vec4(vec3(.95),a*smoothstep(1.28,1.35,r));}`,
       }));
       corona.quaternion.copy(camera.quaternion);
       root.add(corona);
       const fineRing = ring(1.62, .005, .3);
       fineRing.rotation.set(1.1, .3, 0);
-      root.add(fineRing);
+      // Keep the globe face uninterrupted, as in the approved black Eclipse.
       const belt = new T.Group();
       belt.rotation.set(.16, 0, -.1);
       belt.add(ring(2.12, .005, .22));
       const beadGeometry = new T.SphereGeometry(.043, 12, 12);
       for (let i = 0; i < 25; i++) {
-        const bead = new T.Mesh(beadGeometry, material(i % 4 === 0 ? .4 : .9));
+        const bead = new T.Mesh(beadGeometry, material(i % 4 === 0 ? .08 : .22));
         const a = i / 25 * Math.PI * 2;
         bead.position.set(2.12 * Math.cos(a), 0, 2.12 * Math.sin(a));
         belt.add(bead);
