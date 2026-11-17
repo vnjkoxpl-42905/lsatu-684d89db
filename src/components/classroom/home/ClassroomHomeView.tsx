@@ -1,3 +1,5 @@
+import { useSearchParams } from "react-router-dom";
+import { HomePrototypeSwitcher, StudentEclipse, SavedExamScore, StudentPreviewDock } from "./StudentHomePrototype";
 /**
  * Classroom Home for a student, presentational half.
  *
@@ -208,8 +210,10 @@ export function ClassroomHomeView({
   refreshing,
   actorId,
   permissionsResolved = !loading,
+  previewMetrics,
 }: {
   model: ClassroomHomeModel;
+  previewMetrics?: React.ReactNode;
   loading: boolean;
   actorId?: string | null;
   permissionsResolved?: boolean;
@@ -225,6 +229,9 @@ export function ClassroomHomeView({
   /** Kept for callers; the hero no longer duplicates the sidebar's Assigned work link. */
   onSeeAllWork?: () => void;
 }) {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const preview = import.meta.env.DEV ? searchParams.get("variant") : null;
+  const variant = preview === "focus" || preview === "score" || preview === "agenda" ? preview : null;
   const rootRef = React.useRef<HTMLDivElement>(null);
   useHomeFeedback(rootRef);
   const finderRef = React.useRef<QuestionFinderHandle>(null);
@@ -294,8 +301,75 @@ export function ClassroomHomeView({
   const showSummary = !model.workFailed && !!model.workSummary && model.workSummary.open > 0;
   const hasContext = showSummary || !!booked || testDate !== null;
 
+  const questionFinder = (
+    permissionsResolved && model.access.drill ? <div className="classroom-home-finderbar">
+              <QuestionFinder key={actorId ?? "guest"} ref={finderRef} enabled={permissionsResolved && model.access.drill} actorId={actorId} returnTo="/classroom" />
+            </div> : null
+  );
+  const weekStrip = (
+    <HomeWeekStrip
+        days={model.week}
+        range={model.weekLabel}
+        onDayOpen={model.access.schedule ? () => handleOpen("/schedule") : undefined}
+        emptyLabel={loading ? "Loading…" : model.workFailed ? "Unavailable" : "No items shown"}
+      />
+  );
+
+  const contextPanel = (hasContext ? (
+            <ul className="classroom-home-context" aria-label="Where you stand" data-home-reveal>
+              {showSummary ? (
+                <li className="classroom-home-work-summary">
+                  {model.workSummary!.open} open {model.workSummary!.open === 1 ? 'assignment' : 'assignments'}
+                  {' · '}{model.workSummary!.inProgress} with saved work
+                </li>
+              ) : null}
+              {booked ? (
+                <li>
+                  <button
+                    type="button"
+                    className="classroom-home-next-session-line"
+                    onClick={() => handleOpen("/booking")}
+                  >
+                    <CalendarIcon aria-hidden="true" />
+                    Next session: {nextSessionLabel(booked.startsAt)}
+                  </button>
+                </li>
+              ) : null}
+              {testDate !== null ? (
+                <li className="classroom-home-test-days" aria-label={`${testDate} ${testDateLabel}`}>
+                  <strong>{testDate}</strong>
+                  <span>{testDateLabel}</span>
+                </li>
+              ) : null}
+            </ul>
+          ) : null);
+  const messagePanel = (model.access.messages && model.message ? (
+            <section className="classroom-home-region classroom-home-message-card" aria-label="From Joshua" data-home-reveal>
+              <header className="classroom-home-region-head">
+                <h2>{`From ${model.message.from}`}</h2>
+                {model.unreadMessages > 0 ? (
+                  <span className="classroom-home-badge">{model.unreadMessages} unread</span>
+                ) : null}
+              </header>
+              {onClearMessage ? (
+                <SwipeableDeleteRow
+                  key={model.message.id}
+                  label={`message from ${model.message.from}`}
+                  rounded="rounded-lg"
+                  actionLabel="Clear"
+                  actionGerund="clearing"
+                  onDelete={() => onClearMessage(model.message!.id)}
+                >
+                  <MessagePreviewButton message={model.message} onOpen={handleOpen} />
+                </SwipeableDeleteRow>
+              ) : (
+                <MessagePreviewButton message={model.message} onOpen={handleOpen} />
+              )}
+            </section>
+          ) : null);
+
   return (
-    <div ref={rootRef} data-motion-skip data-role-home="student" className="classroom-home classroom-home-student">
+    <div ref={rootRef} data-motion-skip data-role-home="student" className="classroom-home classroom-home-student" data-student-variant={variant ?? undefined}>
       {briefing ? (
         <SectionBriefing
           briefing={briefing}
@@ -304,6 +378,12 @@ export function ClassroomHomeView({
         />
       ) : null}
 
+      {variant && <div className="student-preview-glassbar">
+        <span className="student-home-brand"><span aria-hidden="true">LS</span><strong>Study desk</strong></span>
+        {questionFinder}
+        {model.access.messages && <button type="button" onClick={() => handleOpen("/inbox")} aria-label={`Messages, ${model.unreadMessages} unread`}><BellIcon />{model.unreadMessages > 0 && <span className="classroom-home-count">{model.unreadMessages}</span>}</button>}
+      </div>}
+
       <section className="classroom-home-top" aria-label="Today" data-home-reveal>
         <header className="classroom-home-masthead">
           <p className="classroom-home-dateline">
@@ -311,7 +391,7 @@ export function ClassroomHomeView({
           </p>
           <h1 className="classroom-home-title">
             {model.greeting}
-            {model.displayName ? <>, <span>{model.displayName}</span>.</> : "."}
+            {model.displayName ? <>, <span>{model.displayName}.</span></> : "."}
           </h1>
           <p className="classroom-home-subtitle" role={model.workFailed ? "alert" : undefined}>{model.subtitle}</p>
           {model.workFailed && onRetryWork ? (
@@ -321,7 +401,11 @@ export function ClassroomHomeView({
             </button>
           ) : null}
         </header>
+        {variant && <div className="student-home-scene"><span className="student-home-scene-label">Your next chapter</span><StudentEclipse /><span className="student-home-scene-caption">LSAT U / Study desk</span></div>}
       </section>
+
+      {variant && contextPanel}
+      {variant === "agenda" && weekStrip}
 
       <div className="classroom-home-grid">
         <section className="classroom-home-work" aria-label="Assigned to you" data-home-reveal>
@@ -454,13 +538,12 @@ export function ClassroomHomeView({
               </section>
             </>
           )}
+          {variant && messagePanel}
         </section>
 
         <aside className="classroom-home-rail" aria-label="Practice and your week">
           <section className="classroom-home-tools" aria-label="Practice tools" data-home-reveal>
-            {permissionsResolved && model.access.drill ? <div className="classroom-home-finderbar">
-              <QuestionFinder key={actorId ?? "guest"} ref={finderRef} enabled={permissionsResolved && model.access.drill} actorId={actorId} returnTo="/classroom" />
-            </div> : null}
+            {!variant && questionFinder}
             <nav className="classroom-home-actions" aria-label="Practice actions">
               {model.access.drill ? (
                 <>
@@ -533,73 +616,33 @@ export function ClassroomHomeView({
             </nav>
           </section>
 
-          {permissionsResolved && model.access.drill ? <HomeRatingCard onOpen={handleOpen} /> : null}
+          {permissionsResolved && model.access.drill ? (
+            <>
+              {previewMetrics ?? <>
+                {variant && <SavedExamScore actorId={actorId} />}
+                <HomeRatingCard onOpen={handleOpen} />
+              </>}
+            </>
+          ) : null}
 
           {permissionsResolved && model.access.analytics ? <HomeProgressCard onOpen={handleOpen} /> : null}
 
-          {hasContext ? (
-            <ul className="classroom-home-context" aria-label="Where you stand" data-home-reveal>
-              {showSummary ? (
-                <li className="classroom-home-work-summary">
-                  {model.workSummary!.open} open {model.workSummary!.open === 1 ? 'assignment' : 'assignments'}
-                  {' · '}{model.workSummary!.inProgress} with saved work
-                </li>
-              ) : null}
-              {booked ? (
-                <li>
-                  <button
-                    type="button"
-                    className="classroom-home-next-session-line"
-                    onClick={() => handleOpen("/booking")}
-                  >
-                    <CalendarIcon aria-hidden="true" />
-                    Next session: {nextSessionLabel(booked.startsAt)}
-                  </button>
-                </li>
-              ) : null}
-              {testDate !== null ? (
-                <li className="classroom-home-test-days" aria-label={`${testDate} ${testDateLabel}`}>
-                  <strong>{testDate}</strong>
-                  <span>{testDateLabel}</span>
-                </li>
-              ) : null}
-            </ul>
-          ) : null}
+          {!variant && contextPanel}
 
-          {model.access.messages && model.message ? (
-            <section className="classroom-home-region classroom-home-message-card" aria-label="From Joshua" data-home-reveal>
-              <header className="classroom-home-region-head">
-                <h2>{`From ${model.message.from}`}</h2>
-                {model.unreadMessages > 0 ? (
-                  <span className="classroom-home-badge">{model.unreadMessages} unread</span>
-                ) : null}
-              </header>
-              {onClearMessage ? (
-                <SwipeableDeleteRow
-                  key={model.message.id}
-                  label={`message from ${model.message.from}`}
-                  rounded="rounded-lg"
-                  actionLabel="Clear"
-                  actionGerund="clearing"
-                  onDelete={() => onClearMessage(model.message!.id)}
-                >
-                  <MessagePreviewButton message={model.message} onOpen={handleOpen} />
-                </SwipeableDeleteRow>
-              ) : (
-                <MessagePreviewButton message={model.message} onOpen={handleOpen} />
-              )}
-            </section>
-          ) : null}
+          {!variant && messagePanel}
 
 
         </aside>
       </div>
-      <HomeWeekStrip
-        days={model.week}
-        range={model.weekLabel}
-        onDayOpen={model.access.schedule ? () => handleOpen("/schedule") : undefined}
-        emptyLabel={loading ? "Loading…" : model.workFailed ? "Unavailable" : "No items shown"}
-      />
+      {variant !== "agenda" && weekStrip}
+      {variant && <StudentPreviewDock onOpen={handleOpen} drill={Boolean(model.access.drill)} schedule={Boolean(model.access.schedule)}
+        onSearch={() => finderRef.current?.open()} />}
+      {variant && <HomePrototypeSwitcher current={variant} onChange={(next) => {
+        const params = new URLSearchParams(searchParams);
+        params.set("variant", next);
+        setSearchParams(params, { replace: true, preventScrollReset: true });
+        window.scrollTo({ top: 0 });
+      }} />}
     </div>
   );
 }
