@@ -36,7 +36,7 @@ import { useClassroomRailMotion } from "@/hooks/useClassroomRailMotion";
 import { useClassroomOverlayMotion } from "@/hooks/useClassroomOverlayMotion";
 import { resolveRailGroups, type RailItem } from "@/lib/railCatalog";
 import { destinationLandingPath, railItemLocked } from "@/lib/destinationAccess";
-import { preloadDrillHub } from "@/lib/routePreload";
+import { preloadDrillHub, preloadTestingCentre } from "@/lib/routePreload";
 import { flagLabel } from "@/lib/flaggedService";
 import { reviewReturnTo } from "@/components/review/ReviewReturnLink";
 import {
@@ -177,7 +177,7 @@ function ClassroomSidebar({
 
   const go = (path: string) => {
     onNavigate?.();
-    navigate(path);
+    React.startTransition(() => navigate(path));
   };
 
   const handleSignOut = () => {
@@ -286,9 +286,10 @@ function ClassroomSidebar({
       case "testing":
         return {
           active: testingOverview,
+          onPrefetch: preloadTestingCentre,
           onClick: () => {
             setTestingOverride(!testingOpen);
-            if (!testingOpen && !testingOverview) navigate("/practice/exams");
+            if (!testingOpen && !testingOverview) React.startTransition(() => navigate("/practice/exams"));
           },
         };
       case "review":
@@ -977,21 +978,16 @@ export function ReviewIndexList({ section }: { section: "journal" | "flagged" })
   return <div className="student-destination-review-list"><SectionList section={section} activeId={undefined} /></div>;
 }
 
-/**
- * Holds the stage open while a code-split route resolves.
- *
- * The boundary this belongs to sits INSIDE the shell, so the rail, brand, nav
- * and section list all stay mounted while the chunk lands. Before this, the
- * only Suspense boundary was the one above <Routes> in App.tsx, which meant
- * clicking a lazy rail item (Drill) blanked the entire page and then remounted
- * the whole shell — the choppiness that Home, a static import, never had.
- *
- * Deliberately empty: it reserves the stage's height so nothing collapses, and
- * a hovered rail item has usually already prefetched the chunk, so this renders
- * for a frame or not at all. A skeleton here would flash more than it soothes.
- */
+/** Keep slow route loads inside the classroom shell. */
 function StageFallback() {
-  return <div className="classroom-stage-pending" aria-hidden />;
+  const [showStatus, setShowStatus] = React.useState(false);
+  React.useEffect(() => {
+    const timer = window.setTimeout(() => setShowStatus(true), 280);
+    return () => window.clearTimeout(timer);
+  }, []);
+  return <div className="classroom-stage-pending">
+    {showStatus && <span className="classroom-stage-loading" role="status">Loading page</span>}
+  </div>;
 }
 
 export default function ClassroomLayout() {
@@ -1077,6 +1073,17 @@ export default function ClassroomLayout() {
     ? requestedSection : null;
 
   const closeMobileMenu = React.useCallback(() => setMobileMenuOpen(false), []);
+  const mobileMenuTrigger = React.useRef<HTMLButtonElement>(null);
+  React.useEffect(() => {
+    if (!mobileMenuOpen) return;
+    const dismiss = (event: KeyboardEvent) => {
+      if (event.key !== "Escape" || event.defaultPrevented || sectionOverlayOpen) return;
+      closeMobileMenu();
+      mobileMenuTrigger.current?.focus();
+    };
+    document.addEventListener("keydown", dismiss);
+    return () => document.removeEventListener("keydown", dismiss);
+  }, [closeMobileMenu, mobileMenuOpen, sectionOverlayOpen]);
   const closeSectionOverlay = React.useCallback(() => setSectionOverlayOpen(false), []);
   const sectionOverlayMotion = useClassroomOverlayMotion(Boolean(activeSection) && sectionOverlayOpen, "right");
   const overlaySection = useRetainedValue(activeSection, Boolean(activeSection));
@@ -1196,6 +1203,7 @@ export default function ClassroomLayout() {
         <div className="classroom-mobile-bar">
           <button
             type="button"
+            ref={mobileMenuTrigger}
             className="classroom-mobile-menu-button"
             onClick={() => setMobileMenuOpen((open) => !open)}
             aria-label={mobileMenuOpen ? "Close classroom menu" : "Open classroom menu"}

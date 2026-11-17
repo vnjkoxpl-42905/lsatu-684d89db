@@ -844,6 +844,13 @@ html.dark .classroom-root .classroom-panel-wash-dark {
   width: 100%;
 }
 
+.classroom-root .classroom-stage-loading {
+  display: inline-block;
+  margin: 24px 16px;
+  color: var(--classroom-meta-text);
+  font-size: 13px;
+}
+
 /* Route changes move the stage's geometry: Home is a 1260px dashboard with no
    stage padding, Drill is full-bleed at 8px, everything else is a 720px reading
    column. Untransitioned, that swap lands as a jump the moment the new route

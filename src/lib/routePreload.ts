@@ -29,3 +29,6 @@ const once = (key: string, load: () => Promise<unknown>) => () => {
 export const loadDrillHub = () => import("@/pages/AcademyMainhub");
 
 export const preloadDrillHub = once("drill-hub", loadDrillHub);
+
+export const loadTestingCentre = () => import("@/pages/TestingCentre");
+export const preloadTestingCentre = once("testing-centre", loadTestingCentre);

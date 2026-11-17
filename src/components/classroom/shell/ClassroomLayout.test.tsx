@@ -26,7 +26,7 @@ vi.mock("@/hooks/useFlagged", () => ({ useFlagged: () => ({ flagged: [], loading
 vi.mock("@/hooks/useJournalEntries", () => ({ useJournalEntries: () => ({ entries: [], loading: false }) }));
 vi.mock("@/hooks/useStudentAssignments", () => ({ useStudentAssignments: () => ({ data: [] }), useStudentTAAssignments: () => ({ data: [] }) }));
 vi.mock("@/hooks/useAssignedTodoFeed", () => ({ useAssignedTodoFeed: () => unreadFeed, routeWithReturnTo: (route: string) => route }));
-vi.mock("@/lib/routePreload", () => ({ preloadDrillHub: vi.fn() }));
+vi.mock("@/lib/routePreload", () => ({ preloadDrillHub: vi.fn(), preloadTestingCentre: vi.fn() }));
 
 import ClassroomLayout from "./ClassroomLayout";
 import { useClassroomLayout, useOptionalClassroomLayout } from "./classroomLayoutContext";
@@ -243,19 +243,18 @@ describe("mobile menu", () => {
     const trigger = screen.getByRole("button", { name: "Open classroom menu" });
     trigger.focus();
     fireEvent.click(trigger);
-    expect(await screen.findByRole("dialog", { name: "Classroom menu" })).toBeInTheDocument();
+    expect(trigger).toHaveAttribute("aria-expanded", "true");
     await act(async () => { fireEvent.keyDown(document, { key: "Escape" }); });
-    await waitFor(() => expect(screen.queryByRole("dialog", { name: "Classroom menu" })).toBeNull());
+    await waitFor(() => expect(screen.getByRole("button", { name: "Open classroom menu" })).toHaveAttribute("aria-expanded", "false"));
     expect(trigger).toHaveFocus();
   });
 
   it("closes after a rail navigation", async () => {
     await renderShell("/classroom");
     fireEvent.click(screen.getByRole("button", { name: "Open classroom menu" }));
-    const dialog = await screen.findByRole("dialog", { name: "Classroom menu" });
-    const review = Array.from(dialog.querySelectorAll("button")).find((b) => /^Review/.test(b.textContent ?? ""))!;
+    const review = within(rail()).getByRole("button", { name: /^Review/ });
     fireEvent.click(review);
-    await waitFor(() => expect(screen.queryByRole("dialog", { name: "Classroom menu" })).toBeNull());
+    await waitFor(() => expect(screen.getByRole("button", { name: "Open classroom menu" })).toHaveAttribute("aria-expanded", "false"));
     expect(screen.getByTestId("where")).toHaveTextContent("/review/to-review");
   });
 });

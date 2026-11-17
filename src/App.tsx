@@ -29,7 +29,7 @@ function PresenceHeartbeatMount() {
 import SavedSets from "./pages/SavedSets";
 // Shared with the rail's hover prefetch (src/lib/routePreload.ts) so both
 // resolve the same module id and pull the same chunk.
-import { loadDrillHub } from "@/lib/routePreload";
+import { loadDrillHub, loadTestingCentre } from "@/lib/routePreload";
 import { safeLazy } from "@/lib/safeLazy";
 const AcademyMainhub = safeLazy(loadDrillHub);
 const DrillSetupPreview = React.lazy(() => import('./dev/DrillSetupPreview'));
@@ -56,7 +56,7 @@ const RcQuestionPreview = safeLazy(() => import("./features/rc/pages/RcQuestionP
 const RcPlayer = safeLazy(() => import("./features/rc/pages/RcPlayer"));
 const RcResults = safeLazy(() => import("./features/rc/pages/RcResults"));
 const RcSearch = safeLazy(() => import("./features/rc/pages/RcSearch"));
-const TestingCentre = safeLazy(() => import("./pages/TestingCentre"));
+const TestingCentre = safeLazy(loadTestingCentre);
 const AllPracticeExams = safeLazy(() => import("./pages/PracticeExamPages").then((module) => ({ default: module.AllPracticeExams })));
 const PracticeExamDetail = safeLazy(() => import("./pages/PracticeExamPages").then((module) => ({ default: module.PracticeExamDetail })));
 const PracticeExamAttempts = safeLazy(() => import("./pages/PracticeExamPages").then((module) => ({ default: module.PracticeExamAttempts })));
