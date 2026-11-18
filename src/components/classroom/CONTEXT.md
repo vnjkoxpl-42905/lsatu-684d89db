@@ -13,6 +13,9 @@ The student's own room: the first surface a 1:1 student lands on. It is a readin
 **Home** — the student's dashboard at `/classroom`, the first item in the Classroom rail. It greets the student, shows what is due, their latest message and the next seven days, and offers the Question finder and quick starts. When Joshua says "home", "homepage" or "dashboard", he means this page.
 _Avoid_: Mainhub, Classroom home page (say Home)
 
+**Home dock** — the floating strip of shortcuts at the bottom of Home.
+_Avoid_: Floating toolbar, shortcuts bar
+
 **Drill page** — the page at `/classroom/drill`, the Drill item directly under Home in the Classroom rail. It is where a student chooses what to practise: the Question finder, the Drill hero, the Drill console, their practice insights and their assigned work. It is not where questions are answered. Always said with "page": "Drill page". A plain "drill" is a set of questions a student works through, never this page.
 _Avoid_: Drill landing workspace, Mainhub, and using "drill page" for the screen where a question is answered
 

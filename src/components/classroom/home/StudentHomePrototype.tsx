@@ -1,4 +1,5 @@
-import { CalendarDays, Layers, Search, Zap } from "lucide-react";
+import type { HomeBooking } from "./homeModel";
+import { CalendarDays, Search, Zap } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { listSavedAccountPracticeTestRuns } from "@/lib/practiceTestStore";
@@ -25,16 +26,31 @@ export function HomePrototypeSwitcher({ current, onChange }: {
 
 export { StudentOrbit as StudentEclipse } from "./StudentOrbit";
 
-export function StudentPreviewDock({ onOpen, onSearch, drill, schedule }: {
+export function StudentPreviewDock({ onOpen, onSearch, drill, schedule, booking, messages }: {
   onOpen: (route: string) => void;
   onSearch: () => void;
   drill: boolean;
   schedule: boolean;
+  booking?: HomeBooking;
+  messages?: React.ReactNode;
 }) {
-  return <nav className="student-preview-dock" aria-label="Student shortcuts">
+  const canBook = booking?.state === "credits" || booking?.state === "payPerSession" || booking?.state === "booked";
+  const openBooking = () => {
+    if (booking?.state === "credits" || booking?.state === "booked") onOpen("/booking");
+    if (booking?.state === "payPerSession") {
+      if (booking.external) window.open(booking.href, "_blank", "noopener,noreferrer");
+      else onOpen(booking.href);
+    }
+  };
+
+  return <nav className="student-preview-dock" aria-label="Home dock">
     {drill && <button className="student-preview-dock-primary" type="button" onClick={() => onOpen("/practice/drills")}><Zap size={17} /> Practice</button>}
-    {drill && <button type="button" aria-label="Testing Centre" title="Testing Centre" onClick={() => onOpen("/practice/exams")}><Layers size={19} /><span>Testing Centre</span></button>}
-    {schedule && <button type="button" aria-label="Schedule" title="Schedule" onClick={() => onOpen("/schedule")}><CalendarDays size={19} /><span>Schedule</span></button>}
+    {canBook ? (
+      <button type="button" aria-label="Booking" title="Booking" onClick={openBooking}><CalendarDays size={19} /><span>Booking</span></button>
+    ) : schedule && (
+      <button type="button" aria-label="Schedule" title="Schedule" onClick={() => onOpen("/schedule")}><CalendarDays size={19} /><span>Schedule</span></button>
+    )}
+    {messages}
     {drill && <button type="button" aria-label="Search questions" title="Find a question" onClick={onSearch}><Search size={19} /></button>}
   </nav>;
 }

@@ -6,8 +6,12 @@ export function StudentOrbit() {
   useEffect(() => {
     const element = host.current;
     if (!element) return;
+    let visible = false;
+    let updateVisibility = () => {};
     const intersection = new IntersectionObserver(([entry]) => {
-      element.toggleAttribute("data-in-view", entry.isIntersecting);
+      visible = entry.isIntersecting;
+      element.toggleAttribute("data-in-view", visible);
+      updateVisibility();
     });
     intersection.observe(element);
     let disposed = false;
@@ -56,17 +60,16 @@ export function StudentOrbit() {
       }));
       root.add(moon);
       // A camera-facing corona behind the opaque sphere avoids a plastic hotspot.
+      const glow = { value: 1 };
       const corona = new T.Mesh(new T.PlaneGeometry(4.2, 4.2), new T.ShaderMaterial({
-        transparent: true, depthWrite: false,
+        transparent: true, depthWrite: false, uniforms: { glow },
         vertexShader: `varying vec2 uvv; void main(){uvv=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}`,
-        fragmentShader: `varying vec2 uvv; void main(){float r=length(uvv-.5)*4.2;
+        fragmentShader: `uniform float glow; varying vec2 uvv; void main(){float r=length(uvv-.5)*4.2;
           float a=exp(-abs(r-1.35)*22.)*.9+exp(-abs(r-1.35)*5.)*.18;
-          gl_FragColor=vec4(vec3(.95),a*smoothstep(1.28,1.35,r));}`,
+          gl_FragColor=vec4(vec3(.95),a*glow*smoothstep(1.28,1.35,r));}`,
       }));
       corona.quaternion.copy(camera.quaternion);
       root.add(corona);
-      const fineRing = ring(1.62, .005, .3);
-      fineRing.rotation.set(1.1, .3, 0);
       const belt = new T.Group();
       belt.rotation.set(.16, 0, -.1);
       belt.add(ring(2.12, .005, .22));
@@ -78,15 +81,31 @@ export function StudentOrbit() {
         belt.add(bead);
       }
       root.add(belt);
+      const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
       let frame = 0;
+      let previous = 0;
+      let elapsed = 0;
+      const render = (now: number) => {
+        if (disposed || document.hidden || !visible) return;
+        if (!motion.matches) {
+          elapsed += previous ? Math.min(now - previous, 50) : 0;
+          belt.rotation.y = -elapsed * .000045;
+          glow.value = 1 + .16 * (1 - Math.cos(elapsed * Math.PI / 2400)) / 2;
+        } else {
+          glow.value = 1;
+        }
+        renderer.render(scene, camera);
+        element.dataset.rendered = "true";
+        previous = now;
+        if (!motion.matches) frame = requestAnimationFrame(render);
+      };
       const kick = () => {
         cancelAnimationFrame(frame);
-        frame = requestAnimationFrame(() => {
-          if (disposed || document.hidden) return;
-          renderer.render(scene, camera);
-          element.dataset.rendered = "true";
-        });
+        previous = 0;
+        if (visible && !document.hidden) frame = requestAnimationFrame(render);
       };
+      updateVisibility = kick;
+      motion.addEventListener("change", kick);
       const resize = () => {
         const { width, height } = element.getBoundingClientRect();
         if (!width || !height) return;
@@ -101,6 +120,7 @@ export function StudentOrbit() {
       cleanup = () => {
         cancelAnimationFrame(frame); observer.disconnect();
         document.removeEventListener("visibilitychange", kick);
+        motion.removeEventListener("change", kick);
         const geometries = new Set<InstanceType<typeof T.BufferGeometry>>();
         const materials = new Set<InstanceType<typeof T.Material>>();
         scene.traverse((object) => {

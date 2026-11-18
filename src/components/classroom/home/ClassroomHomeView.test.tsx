@@ -146,22 +146,21 @@ describe("ClassroomHomeView", () => {
     expect(retry).toHaveBeenCalledOnce();
   });
 
-  it("opens the assigned work and adaptive Smart Drill from the action cards", () => {
+  it("opens the assigned work and adaptive Smart Drill from Home", () => {
     const onOpen = vi.fn();
     render(<ClassroomHomeView model={FULL} loading={false} onOpen={onOpen} />);
     fireEvent.click(screen.getByRole("button", { name: "Start assigned work" }));
     expect(onOpen).toHaveBeenLastCalledWith("/activities/a");
-    fireEvent.click(screen.getByRole("button", { name: "Smart Drill" }));
+    fireEvent.click(screen.getByRole("button", { name: "Start LR Smart Drill" }));
     expect(onOpen).toHaveBeenLastCalledWith("/drill?drill=smart-drill&returnTo=%2Fclassroom");
     expect(screen.getByLabelText("Next seven days")).toBeInTheDocument();
   });
 
-  it("keeps one finder and sends Timed section to Testing", () => {
+  it("keeps one finder and removes the duplicate timed-section shortcut", () => {
     const onOpen = vi.fn();
     render(<ClassroomHomeView model={FULL} loading={false} onOpen={onOpen} />);
     expect(screen.getAllByRole("button", { name: "Find a question" })).toHaveLength(1);
-    fireEvent.click(screen.getByRole("button", { name: "Timed section" }));
-    expect(onOpen).toHaveBeenCalledWith("/testing");
+    expect(screen.queryByRole("button", { name: "Timed section" })).not.toBeInTheDocument();
     const trigger = screen.getByRole("button", { name: "Find a question" });
     trigger.focus();
     fireEvent.click(trigger);
@@ -175,18 +174,11 @@ describe("ClassroomHomeView", () => {
     expect(screen.queryByRole("dialog")).toBeNull();
   });
 
-  // Since 2026-10-22 the booked session is supporting context, not a header
-  // block: it sits in the compact context list after the work.
-  it("shows a slim booked-session line in the context list and opens booking management", () => {
+  it("opens booking management from the Home dock for a booked student", () => {
     const onOpen = vi.fn();
     render(<ClassroomHomeView model={FULL} loading={false} onOpen={onOpen} />);
-    const nextSession = screen.getByRole("button", { name: /Next session: Friday/ });
-    expect(nextSession).toBeInTheDocument();
-    expect(nextSession.closest(".classroom-home-context")).toBeInTheDocument();
-    expect(nextSession.closest(".classroom-home-top")).toBeNull();
-    fireEvent.click(nextSession);
+    fireEvent.click(screen.getByRole("button", { name: "Booking" }));
     expect(onOpen).toHaveBeenCalledWith("/booking");
-    expect(screen.queryByLabelText("Next session card")).not.toBeInTheDocument();
   });
 
   it("shows the remaining credits as a booking pill", () => {
@@ -196,7 +188,7 @@ describe("ClassroomHomeView", () => {
       homeBooking: { state: "credits", creditsRemaining: 3 } as const,
     };
     render(<ClassroomHomeView model={model} loading={false} onOpen={onOpen} />);
-    fireEvent.click(screen.getByRole("button", { name: "Book · 3 left" }));
+    fireEvent.click(screen.getByRole("button", { name: "Booking" }));
     expect(onOpen).toHaveBeenCalledWith("/booking");
   });
 
@@ -220,7 +212,7 @@ describe("ClassroomHomeView", () => {
     });
     const model = { ...EMPTY, homeBooking };
     render(<ClassroomHomeView model={model} loading={false} onOpen={onOpen} />);
-    fireEvent.click(screen.getByRole("button", { name: "Book a session" }));
+    fireEvent.click(screen.getByRole("button", { name: "Booking" }));
     expect(onOpen).toHaveBeenCalledWith("/single-session");
     expect(onOpen).not.toHaveBeenCalledWith("/renew");
   });
@@ -242,7 +234,7 @@ describe("ClassroomHomeView", () => {
         onOpen={vi.fn()}
       />,
     );
-    fireEvent.click(screen.getByRole("button", { name: "Book a session" }));
+    fireEvent.click(screen.getByRole("button", { name: "Booking" }));
     expect(open).toHaveBeenCalledWith(
       "https://booking.example/session",
       "_blank",
@@ -263,8 +255,7 @@ describe("ClassroomHomeView", () => {
     for (const state of ["none", "loading", "error"] as const) {
       const model = { ...EMPTY, homeBooking: { state } };
       rerender(<ClassroomHomeView model={model} loading={false} onOpen={vi.fn()} />);
-      expect(screen.queryByRole("button", { name: "Book a session" })).not.toBeInTheDocument();
-      expect(screen.queryByRole("button", { name: /Book ·/ })).not.toBeInTheDocument();
+      expect(screen.queryByRole("button", { name: "Booking" })).not.toBeInTheDocument();
       expect(screen.queryByRole("button", { name: /Next session:/ })).not.toBeInTheDocument();
     }
     rerender(
@@ -274,7 +265,7 @@ describe("ClassroomHomeView", () => {
         onOpen={vi.fn()}
       />,
     );
-    expect(screen.queryByRole("button", { name: "Book a session" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Booking" })).not.toBeInTheDocument();
   });
 
   it("does not show a default RRC tile, while assigned RRC work keeps its action", () => {
@@ -308,7 +299,7 @@ describe("ClassroomHomeView", () => {
     expect(screen.queryByLabelText("From Joshua")).not.toBeInTheDocument();
   });
 
-  it("shows days to test day only for a future date", () => {
+  it("keeps the practice rail off Home even with a future test date", () => {
     const { rerender } = render(
       <ClassroomHomeView
         model={{ ...FULL, daysToTest: 38 }}
@@ -316,7 +307,7 @@ describe("ClassroomHomeView", () => {
         onOpen={vi.fn()}
       />,
     );
-    expect(screen.getByLabelText("38 days to test day")).toBeInTheDocument();
+    expect(screen.queryByRole("complementary", { name: "Practice and your week" })).not.toBeInTheDocument();
     rerender(
       <ClassroomHomeView
         model={{ ...FULL, daysToTest: null }}
@@ -347,7 +338,7 @@ describe("ClassroomHomeView", () => {
       />,
     );
     expect(screen.queryByRole("button", { name: /assigned work$/ })).toBeNull();
-    expect(screen.getByRole("button", { name: "Smart Drill" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Start LR Smart Drill" })).toBeInTheDocument();
   });
 
   it("keeps hidden practice and messages features hidden", () => {
@@ -361,12 +352,12 @@ describe("ClassroomHomeView", () => {
         onOpen={vi.fn()}
       />,
     );
-    for (const name of ["Start assigned work", "Smart Drill", "Timed section"]) {
+    for (const name of ["Start assigned work", "Start LR Smart Drill", "Timed section"]) {
       expect(screen.queryByRole("button", { name })).toBeNull();
     }
     // Home lookup follows the same drill permission as Practice.
     expect(screen.queryByRole("button", { name: "Find a question" })).not.toBeInTheDocument();
-    expect(screen.queryByRole("button", { name: /Inbox,/ })).toBeNull();
+    expect(screen.queryByRole("button", { name: /Messages,/ })).toBeNull();
     expect(screen.getByLabelText("Next seven days")).toBeInTheDocument();
   });
 
@@ -384,7 +375,8 @@ describe("ClassroomHomeView", () => {
   it("uses the existing unread count and inbox route", () => {
     const onOpen = vi.fn();
     render(<ClassroomHomeView model={FULL} loading={false} onOpen={onOpen} />);
-    fireEvent.click(screen.getByRole("button", { name: "Inbox, 1 unread" }));
+    fireEvent.click(screen.getByRole("button", { name: "Messages, 1 unread" }));
+    fireEvent.click(screen.getByRole("button", { name: "Open inbox" }));
     expect(onOpen).toHaveBeenCalledWith("/inbox");
   });
 
@@ -574,10 +566,11 @@ describe("ClassroomHomeView", () => {
     expect(container.querySelectorAll(".classroom-home-day-today")).toHaveLength(1);
   });
 
-  it("routes the Inbox pill to the inbox and uses the existing unread count", () => {
+  it("opens the inbox from the Messages dropdown", () => {
     const onOpen = vi.fn();
     render(<ClassroomHomeView model={FULL} loading={false} onOpen={onOpen} />);
-    fireEvent.click(screen.getByRole("button", { name: "Inbox, 1 unread" }));
+    fireEvent.click(screen.getByRole("button", { name: "Messages, 1 unread" }));
+    fireEvent.click(screen.getByRole("button", { name: "Open inbox" }));
     expect(onOpen).toHaveBeenCalledWith("/inbox");
   });
 
@@ -624,55 +617,15 @@ describe("ClassroomHomeView", () => {
     expect(screen.queryByText("FROM JOSHUA")).not.toBeInTheDocument();
   });
 
-  it("lets a student reveal, cancel, and confirm clearing the message card", async () => {
-    const onClearMessage = vi.fn();
-    const model: ClassroomHomeModel = {
-      ...FULL,
-      message: { ...FULL.message!, from: "Celia", initial: "C" },
-    };
-    render(
-      <ClassroomHomeView
-        model={model}
-        loading={false}
-        onOpen={vi.fn()}
-        onSeeAllWork={vi.fn()}
-        onClearMessage={onClearMessage}
-      />,
-    );
-
-    fireEvent.click(
-      screen.getByRole("button", {
-        name: "Show clear actions for message from Celia",
-      }),
-    );
-    fireEvent.click(
-      screen.getByRole("button", {
-        name: "Cancel clearing message from Celia",
-      }),
-    );
-    expect(onClearMessage).not.toHaveBeenCalled();
-
-    fireEvent.click(
-      screen.getByRole("button", {
-        name: "Show clear actions for message from Celia",
-      }),
-    );
-    fireEvent.click(
-      screen.getByRole("button", { name: "Clear message from Celia" }),
-    );
-    await waitFor(() => expect(onClearMessage).toHaveBeenCalledWith("m"));
-  });
-
-  it("leaves the card unswipeable when the page cannot clear a message", () => {
-    render(
-      <ClassroomHomeView
-        model={FULL}
-        loading={false}
-        onOpen={vi.fn()}
-        onSeeAllWork={vi.fn()}
-      />,
-    );
-    expect(screen.queryByRole("button", { name: /clear actions/i })).toBeNull();
+  it("opens a dock chat without navigating and closes it with Escape", () => {
+    const onOpen = vi.fn();
+    render(<ClassroomHomeView model={FULL} loading={false} onOpen={onOpen} previewChat={<input aria-label="Message Joshua" />} />);
+    fireEvent.click(screen.getByRole("button", { name: "Messages, 1 unread" }));
+    expect(screen.getByRole("dialog", { name: "Chat with Joshua" })).toBeInTheDocument();
+    expect(screen.getByRole("textbox", { name: "Message Joshua" })).toBeInTheDocument();
+    expect(onOpen).not.toHaveBeenCalled();
+    fireEvent.keyDown(screen.getByRole("dialog"), { key: "Escape" });
+    expect(screen.queryByRole("dialog", { name: "Chat with Joshua" })).toBeNull();
   });
 
   /* Home used to guard against exactly this: the question picker rode onto the
@@ -983,12 +936,12 @@ describe("featured work and Up next", () => {
     const greeting = order(screen.getByRole("heading", { level: 1 }));
     const featured = order(screen.getByRole("button", { name: "Start assigned work" }));
     const finder = order(screen.getByRole("button", { name: "Find a question" }));
-    const drill = order(screen.getByRole("button", { name: "Smart Drill" }));
-    const session = order(screen.getByRole("button", { name: /Next session/ }));
-    const testDay = order(screen.getByLabelText("12 days to test day"));
+    const drill = order(screen.getByRole("button", { name: "Start LR Smart Drill" }));
+    const dock = order(screen.getByRole("navigation", { name: "Home dock" }));
     expect(greeting).toBeLessThan(featured);
     expect(finder).toBeLessThan(featured);
-    for (const later of [drill, session, testDay]) expect(featured).toBeLessThan(later);
+    expect(drill).toBeLessThan(featured);
+    expect(featured).toBeLessThan(dock);
     // The utility bar comes first; assigned work still leads its own region.
     const buttons = screen.getAllByRole("button");
     expect(buttons[0]).toHaveAccessibleName("Find a question");

@@ -1,5 +1,4 @@
 import type { ReactNode } from "react";
-import { LightningBoltIcon } from "@radix-ui/react-icons";
 import { usePracticeRating } from "@/hooks/usePracticeRating";
 import { MIN_RATED_ANSWERS } from "@/lib/practiceRating";
 import { launchDrill } from "@/lib/drillLaunch";
@@ -33,9 +32,12 @@ export function HomeOrbitRating({ result, onOpen, children }: OrbitProps & { res
           aria-label="Start LR Smart Drill"
           onClick={() => onOpen(`/drill?${launchDrill({ kind: "smart-drill", options: { returnTo: "/classroom" } })}`)}
         >
-          <LightningBoltIcon aria-hidden="true" />
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round" aria-hidden="true">
+            <path d="M13.5 3 5 13h6l-1 8 9-11h-6l.5-7Z" />
+          </svg>
         </button>
       </div>
+      <span className="student-orbit-title" aria-hidden="true">LR Smart Drill</span>
     </>
   );
 }

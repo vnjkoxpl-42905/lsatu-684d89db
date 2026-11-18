@@ -1,6 +1,6 @@
-import * as Popover from "@radix-ui/react-popover";
+import { HomeDockChat } from "./HomeDockChat";
 import { useSearchParams } from "react-router-dom";
-import { HomePrototypeSwitcher, StudentEclipse, SavedExamScore, StudentPreviewDock } from "./StudentHomePrototype";
+import { HomePrototypeSwitcher, StudentEclipse, StudentPreviewDock } from "./StudentHomePrototype";
 /**
  * Classroom Home for a student, presentational half.
  *
@@ -20,28 +20,20 @@ import { HomePrototypeSwitcher, StudentEclipse, SavedExamScore, StudentPreviewDo
 import * as React from "react";
 import {
   ArrowRightIcon,
-  BellIcon,
-  CalendarIcon,
-  LightningBoltIcon,
   ReloadIcon,
-  TimerIcon,
 } from "@radix-ui/react-icons";
-import { SwipeableDeleteRow } from "@/components/inbox/SwipeableDeleteRow";
 import type {
   ClassroomHomeModel,
   HomeHero,
-  HomeMessage,
   HomeRow,
 } from "./homeModel";
 import type { SectionBriefing as SectionBriefingData } from "@/lib/sectionBriefing";
 import { SectionBriefing } from "./SectionBriefing";
 import { markReportCardSeen } from "./reportCardSeen";
-import { launchDrill } from "@/lib/drillLaunch";
 import { pickContinueWork } from "./homeModel";
 import { nextActionFor } from "./homeNextAction";
 import { useHomeFeedback } from "./useHomeFeedback";
 import { HomeWeekStrip } from "./HomeWeekStrip";
-import { HomeProgressCard } from "./HomeProgressCard";
 import { HomeOrbitRating, HomeRatingCard, type RatingResult } from "./HomeRatingCard";
 import QuestionFinder, { type QuestionFinderHandle } from "@/components/questionfinder/QuestionFinder";
 
@@ -105,46 +97,6 @@ function WorkRow({
   );
 }
 
-function MessagePreviewButton({
-  message,
-  onOpen,
-}: {
-  message: HomeMessage;
-  onOpen: (route: string) => void;
-}) {
-  return (
-    <button
-      type="button"
-      className="classroom-home-message"
-      onClick={() => onOpen(message.route)}
-    >
-      <span className="classroom-home-avatar" aria-hidden="true">
-        {message.initial}
-      </span>
-      <span className="classroom-home-message-body">
-        <span className="classroom-home-message-head">
-          <b>{message.from}</b>
-          <time>{message.timeLabel}</time>
-        </span>
-        <span className="classroom-home-message-text">{message.body}</span>
-      </span>
-    </button>
-  );
-}
-
-/** "Thursday 7:15 pm" inside the coming week, "Thursday, Oct 9, 7:15 pm" after it. */
-function nextSessionLabel(iso: string) {
-  const start = new Date(iso);
-  const withinWeek = start.getTime() - Date.now() < 6 * 86_400_000;
-  const day = new Intl.DateTimeFormat("en-US", withinWeek
-    ? { weekday: "long" }
-    : { weekday: "long", month: "short", day: "numeric" }).format(start);
-  const time = new Intl.DateTimeFormat("en-US", { hour: "numeric", minute: "2-digit" })
-    .format(start)
-    .replace(/\s?AM$/, " am")
-    .replace(/\s?PM$/, " pm");
-  return withinWeek ? `${day} ${time}` : `${day}, ${time}`;
-}
 
 function HeroProgress({ progress }: { progress: NonNullable<HomeHero["progress"]> }) {
   return (
@@ -204,25 +156,23 @@ export function ClassroomHomeView({
   loading,
   onOpen,
   onMarkDone,
-  onClearMessage,
+  previewChat,
   completingKey,
   onRetryWork,
   onRefresh,
   refreshing,
   actorId,
   permissionsResolved = !loading,
-  previewMetrics,
   previewRating,
 }: {
   model: ClassroomHomeModel;
-  previewMetrics?: React.ReactNode;
   previewRating?: RatingResult;
   loading: boolean;
   actorId?: string | null;
   permissionsResolved?: boolean;
   onOpen: (route: string) => void;
   onMarkDone?: (key: string) => void;
-  onClearMessage?: (conversationId: string) => void;
+  previewChat?: React.ReactNode;
   completingKey?: string | null;
   onRetryWork?: () => void;
   /** Re-read the student's own assignments; Home has no push for them. */
@@ -295,14 +245,9 @@ export function ClassroomHomeView({
     [handleOpen],
   );
 
-  const testDate = model.daysToTest;
-  const testDateLabel = testDate === 1 ? "day to test day" : "days to test day";
   const nextAction = featuredContinue ? nextActionFor(featuredContinue) : null;
   const featuredRow = featuredContinue ?? featuredHero?.row ?? null;
   const featuredHeroData = heroForContinue ?? featuredHero;
-  const booked = !model.isAdmin && model.homeBooking.state === "booked" ? model.homeBooking : null;
-  const showSummary = !model.workFailed && !!model.workSummary && model.workSummary.open > 0;
-  const hasContext = showSummary || !!booked || testDate !== null;
 
   const questionFinder = (
     permissionsResolved && model.access.drill ? <div className="classroom-home-finderbar">
@@ -318,59 +263,6 @@ export function ClassroomHomeView({
       />
   );
 
-  const contextPanel = (hasContext ? (
-            <ul className="classroom-home-context" aria-label="Where you stand" data-home-reveal>
-              {showSummary ? (
-                <li className="classroom-home-work-summary">
-                  {model.workSummary!.open} open {model.workSummary!.open === 1 ? 'assignment' : 'assignments'}
-                  {' · '}{model.workSummary!.inProgress} with saved work
-                </li>
-              ) : null}
-              {booked ? (
-                <li>
-                  <button
-                    type="button"
-                    className="classroom-home-next-session-line"
-                    onClick={() => handleOpen("/booking")}
-                  >
-                    <CalendarIcon aria-hidden="true" />
-                    Next session: {nextSessionLabel(booked.startsAt)}
-                  </button>
-                </li>
-              ) : null}
-              {testDate !== null ? (
-                <li className="classroom-home-test-days" aria-label={`${testDate} ${testDateLabel}`}>
-                  <strong>{testDate}</strong>
-                  <span>{testDateLabel}</span>
-                </li>
-              ) : null}
-            </ul>
-          ) : null);
-  const messagePanel = (model.access.messages && model.message ? (
-            <section className="classroom-home-region classroom-home-message-card" aria-label="From Joshua" data-home-reveal>
-              <header className="classroom-home-region-head">
-                <h2>{`From ${model.message.from}`}</h2>
-                {model.unreadMessages > 0 ? (
-                  <span className="classroom-home-badge">{model.unreadMessages} unread</span>
-                ) : null}
-              </header>
-              {onClearMessage ? (
-                <SwipeableDeleteRow
-                  key={model.message.id}
-                  label={`message from ${model.message.from}`}
-                  rounded="rounded-lg"
-                  actionLabel="Clear"
-                  actionGerund="clearing"
-                  onDelete={() => onClearMessage(model.message!.id)}
-                >
-                  <MessagePreviewButton message={model.message} onOpen={handleOpen} />
-                </SwipeableDeleteRow>
-              ) : (
-                <MessagePreviewButton message={model.message} onOpen={handleOpen} />
-              )}
-            </section>
-          ) : null);
-
   return (
     <div ref={rootRef} data-motion-skip data-role-home="student" className="classroom-home classroom-home-student" data-student-variant={variant ?? undefined}>
       {briefing ? (
@@ -381,29 +273,7 @@ export function ClassroomHomeView({
         />
       ) : null}
 
-      <div className="student-home-toolbar">
-        {questionFinder}
-        {model.access.messages && (
-          <Popover.Root>
-            <Popover.Trigger className="student-home-messages" aria-label={`Messages, ${model.unreadMessages} unread`}>
-              <BellIcon aria-hidden="true" />
-              {model.unreadMessages > 0 && <span className="classroom-home-count">{model.unreadMessages}</span>}
-            </Popover.Trigger>
-            <Popover.Content align="end" sideOffset={10} className="student-home-popover student-home-message-popover" aria-label="Messages">
-              <div className="student-home-message-heading">
-                <h2>Messages</h2>
-                <span>{model.unreadMessages} unread</span>
-              </div>
-              {model.message ? (
-                <MessagePreviewButton message={model.message} onOpen={handleOpen} />
-              ) : <p>No recent messages.</p>}
-              <Popover.Close asChild>
-                <button type="button" className="classroom-home-link" onClick={() => handleOpen("/inbox")}>Open inbox</button>
-              </Popover.Close>
-            </Popover.Content>
-          </Popover.Root>
-        )}
-      </div>
+      {questionFinder && <div className="student-home-toolbar">{questionFinder}</div>}
 
       <section className="classroom-home-top" aria-label="Today" data-home-reveal>
         <header className="classroom-home-masthead">
@@ -565,100 +435,28 @@ export function ClassroomHomeView({
               </section>
             </>
           )}
-          {variant && messagePanel}
+          {!model.workFailed && model.workSummary?.open > 0 && (
+            <p className="classroom-home-work-summary">
+              {model.workSummary.open} open {model.workSummary.open === 1 ? "assignment" : "assignments"}
+              {" · "}{model.workSummary.inProgress} with saved work
+            </p>
+          )}
         </section>
-
-        <aside className="classroom-home-rail" aria-label="Practice and your week">
-          <section className="classroom-home-tools" aria-label="Practice tools" data-home-reveal>
-            {!variant && questionFinder}
-            <nav className="classroom-home-actions" aria-label="Practice actions">
-              {model.access.drill ? (
-                <>
-                  <button
-                    type="button"
-                    className="classroom-home-action"
-                    aria-label="Smart Drill"
-                    onClick={() =>
-                      handleOpen(
-                        `/drill?${launchDrill({
-                          kind: "smart-drill",
-                          options: { returnTo: "/classroom" },
-                        })}`,
-                      )
-                    }
-                  >
-                    <LightningBoltIcon aria-hidden="true" />
-                    Smart Drill
-                  </button>
-                  <button
-                    type="button"
-                    className="classroom-home-action"
-                    aria-label="Timed section"
-                    onClick={() => handleOpen("/testing")}
-                  >
-                    <TimerIcon aria-hidden="true" />
-                    Timed section
-                  </button>
-                </>
-              ) : null}
-              {model.access.messages ? (
-                <button
-                  type="button"
-                  className="classroom-home-action classroom-home-inbox-pill"
-                  aria-label={`Inbox, ${model.unreadMessages} unread`}
-                  onClick={() => handleOpen("/inbox")}
-                >
-                  <BellIcon aria-hidden="true" />
-                  Inbox
-                  {model.unreadMessages > 0 ? <span className="classroom-home-count">{model.unreadMessages}</span> : null}
-                </button>
-              ) : null}
-              {!model.isAdmin && model.homeBooking.state === "credits" ? (
-                <button
-                  type="button"
-                  className="classroom-home-action"
-                  onClick={() => handleOpen("/booking")}
-                >
-                  <CalendarIcon aria-hidden="true" />
-                  Book · {model.homeBooking.creditsRemaining} left
-                </button>
-              ) : null}
-              {!model.isAdmin && model.homeBooking.state === "payPerSession" ? (
-                <button
-                  type="button"
-                  className="classroom-home-action"
-                  onClick={() => {
-                    if (model.homeBooking.state !== "payPerSession") return;
-                    if (model.homeBooking.external) {
-                      window.open(model.homeBooking.href, "_blank", "noopener,noreferrer");
-                    } else {
-                      handleOpen(model.homeBooking.href);
-                    }
-                  }}
-                >
-                  <CalendarIcon aria-hidden="true" />
-                  Book a session
-                </button>
-              ) : null}
-            </nav>
-          </section>
-
-          {permissionsResolved && model.access.drill ? (
-            previewMetrics ?? <SavedExamScore actorId={actorId} />
-          ) : null}
-
-          {permissionsResolved && model.access.analytics ? <HomeProgressCard onOpen={handleOpen} /> : null}
-
-          {contextPanel}
-
-          {!variant && messagePanel}
-
-
-        </aside>
       </div>
       {variant !== "agenda" && weekStrip}
-      {variant && <StudentPreviewDock onOpen={handleOpen} drill={permissionsResolved && Boolean(model.access.drill)} schedule={Boolean(model.access.schedule)}
-        onSearch={() => finderRef.current?.open()} />}
+      {variant && (
+        <StudentPreviewDock
+          onOpen={handleOpen}
+          drill={permissionsResolved && Boolean(model.access.drill)}
+          schedule={Boolean(model.access.schedule)}
+          booking={model.isAdmin ? undefined : model.homeBooking}
+          messages={model.access.messages && (
+            <HomeDockChat key={actorId ?? "guest"} actorId={actorId} unread={model.unreadMessages}
+              onOpen={handleOpen} preview={import.meta.env.DEV ? previewChat : undefined} />
+          )}
+          onSearch={() => finderRef.current?.open()}
+        />
+      )}
       {import.meta.env.DEV && preview && <HomePrototypeSwitcher current={variant} onChange={(next) => {
         const params = new URLSearchParams(searchParams);
         params.set("variant", next);

@@ -1,5 +1,4 @@
 import { useNavigate } from "react-router-dom";
-import { toast } from "sonner";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { useAuth } from "@/contexts/AuthContext";
 import { useUserPermissions } from "@/hooks/useUserPermissions";
@@ -46,7 +45,7 @@ function StudentHome({permissionsResolved}: {permissionsResolved:boolean}) {
   const navigate = useNavigate();
   const { user } = useAuth();
   const { openSection } = useClassroomLayout();
-  const { model, loading, markDone, clearMessage, completingKey, retryWork } = useClassroomHome();
+  const { model, loading, markDone, completingKey, retryWork } = useClassroomHome();
   const { refresh, refreshing } = useHomeFreshness(user?.id);
 
   return (
@@ -58,13 +57,6 @@ function StudentHome({permissionsResolved}: {permissionsResolved:boolean}) {
       onOpen={(route) => navigate(route)}
       onSeeAllWork={() => openSection("work")}
       onMarkDone={markDone}
-      onClearMessage={async (conversationId) => {
-        try {
-          await clearMessage(conversationId);
-        } catch {
-          toast.error("Could not clear that message. Try again.");
-        }
-      }}
       completingKey={completingKey}
       onRetryWork={retryWork}
       onRefresh={() => void refresh()}
