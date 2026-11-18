@@ -89,9 +89,6 @@
 .classroom-root .classroom-home[data-student-variant] .student-preview-score { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
 .student-preview-score strong { font: 400 48px/1.1 var(--home-display); color: var(--home-ink); letter-spacing: -.04em; }
 .student-preview-exam a { font-size: 12px; text-decoration: underline; text-underline-offset: 4px; width: fit-content; padding-block: 5px; }
-.classroom-root .classroom-home[data-student-variant] .classroom-home-rating-value strong { font-size: 40px; }
-.classroom-root .classroom-home[data-student-variant] .classroom-home-rating-explain { font-size: 12px; line-height: 1.6; }
-.classroom-root .classroom-home[data-student-variant] .classroom-home-rating-cta { width: fit-content; font-size: 12px; min-height: 38px; background: transparent; color: var(--home-ink); border: 1px solid var(--home-line); border-radius: 30px; }
 .classroom-root .classroom-home[data-student-variant] .classroom-home-context { border-top: 1px solid var(--home-line); padding-top: 18px; }
 .classroom-root .classroom-home[data-student-variant] .classroom-home-test-days strong { font-size: 30px; }
 .classroom-root .classroom-home[data-student-variant] .classroom-home-week {
@@ -165,30 +162,39 @@ html.dark .classroom-root .classroom-home[data-student-variant] { --home-ink: #e
 }
 
 
-.classroom-root .student-orbit-rating {
+.student-orbit-stage { position: absolute; inset: 44px 0 5px; }
+.student-orbit-rating {
   position: absolute;
-  top: 50%;
-  left: 50%;
+  inset: 15px 8px auto;
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  gap: 7px;
+  color: #babcb5;
+  font: 500 11px/1 var(--home-ui);
+}
+.student-orbit-rating strong { color: #efede6; font: 400 25px/1 var(--home-display); }
+.classroom-root .classroom-home .student-orbit-drill {
+  position: absolute;
+  inset: 50% auto auto 50%;
   transform: translate(-50%, -50%);
-  width: 68px;
-  min-height: 48px;
   display: grid;
-  place-content: center;
+  place-items: center;
+  width: clamp(46px, 8cqi, 76px);
+  aspect-ratio: 1;
+  border-radius: 50%;
   color: #efede6;
-  border-radius: 12px;
-  text-align: center;
 }
-.student-orbit-rating-readout { display: grid; gap: 3px; }
-.student-orbit-rating-readout > span { font: 500 10px/1 var(--home-ui); color: #babcb5; }
-.student-orbit-rating strong { font: 400 clamp(23px, 3.4cqi, 32px)/1 var(--home-display); }
-.classroom-root .student-orbit-rating:hover .student-orbit-rating-readout > span { color: #fff; text-decoration: underline; text-underline-offset: 3px; }
-.classroom-root .student-orbit-rating:focus-visible { outline: 2px solid #efede6; outline-offset: 2px; }
-.classroom-root .student-home-popover .classroom-home-rating { padding: 16px; background: transparent; box-shadow: none; }
-
+.classroom-root .classroom-home .student-orbit-drill svg { width: 24px; height: 24px; }
+.student-orbit-drill svg { opacity: .46; }
+.student-orbit-drill:hover svg,
+.student-orbit-drill:focus-visible svg { opacity: 1; }
+.classroom-root .classroom-home .student-orbit-drill:focus-visible { outline: 2px solid #efede6; outline-offset: 2px; }
 @media (prefers-reduced-motion: no-preference) {
-  .student-orbit-rating-readout { animation: student-rating-pulse 2.4s ease-in-out 2; }
+  .student-orbit-drill svg { transition: opacity 180ms ease; }
+  .student-orbit-stage .student-orbit[data-in-view] { animation: student-globe-pulse 4.8s ease-in-out infinite; }
 }
-@keyframes student-rating-pulse {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: .84; transform: scale(1.05); }
+@keyframes student-globe-pulse {
+  0%, 100% { transform: scale(1); filter: brightness(1); }
+  50% { transform: scale(1.025); filter: brightness(1.14); }
 }

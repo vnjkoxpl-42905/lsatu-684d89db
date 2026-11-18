@@ -423,12 +423,11 @@ export function ClassroomHomeView({
           ) : null}
         </header>
         <div className="student-home-scene">
-          <StudentEclipse />
-          {permissionsResolved && model.access.drill && (
+          {permissionsResolved && model.access.drill ? (
             previewRating
-              ? <HomeOrbitRating result={previewRating} onOpen={handleOpen} />
-              : <HomeRatingCard onOpen={handleOpen} />
-          )}
+              ? <HomeOrbitRating result={previewRating} onOpen={handleOpen}><StudentEclipse /></HomeOrbitRating>
+              : <HomeRatingCard onOpen={handleOpen}><StudentEclipse /></HomeRatingCard>
+          ) : <StudentEclipse />}
         </div>
       </section>
 

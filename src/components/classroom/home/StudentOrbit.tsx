@@ -6,6 +6,10 @@ export function StudentOrbit() {
   useEffect(() => {
     const element = host.current;
     if (!element) return;
+    const intersection = new IntersectionObserver(([entry]) => {
+      element.toggleAttribute("data-in-view", entry.isIntersecting);
+    });
+    intersection.observe(element);
     let disposed = false;
     let cleanup = () => {};
     void import("three").then((T) => {
@@ -75,11 +79,10 @@ export function StudentOrbit() {
       }
       root.add(belt);
       let frame = 0;
-      let visible = true;
       const kick = () => {
         cancelAnimationFrame(frame);
         frame = requestAnimationFrame(() => {
-          if (disposed || document.hidden || !visible) return;
+          if (disposed || document.hidden) return;
           renderer.render(scene, camera);
           element.dataset.rendered = "true";
         });
@@ -93,12 +96,10 @@ export function StudentOrbit() {
         camera.updateProjectionMatrix(); kick();
       };
       const observer = new ResizeObserver(resize); observer.observe(element);
-      const intersection = new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; kick(); });
-      intersection.observe(element);
       document.addEventListener("visibilitychange", kick);
       resize();
       cleanup = () => {
-        cancelAnimationFrame(frame); observer.disconnect(); intersection.disconnect();
+        cancelAnimationFrame(frame); observer.disconnect();
         document.removeEventListener("visibilitychange", kick);
         const geometries = new Set<InstanceType<typeof T.BufferGeometry>>();
         const materials = new Set<InstanceType<typeof T.Material>>();
@@ -112,7 +113,7 @@ export function StudentOrbit() {
         renderer.dispose(); renderer.domElement.remove(); delete element.dataset.rendered;
       };
     }).catch(() => { /* Keep the static fallback if the optional scene cannot load. */ });
-    return () => { disposed = true; cleanup(); };
+    return () => { disposed = true; intersection.disconnect(); cleanup(); };
   }, []);
   return <div ref={host} className="student-orbit" aria-hidden="true"><span className="student-orbit-fallback" /></div>;
 }
