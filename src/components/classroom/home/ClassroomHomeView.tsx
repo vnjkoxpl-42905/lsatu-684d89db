@@ -37,13 +37,74 @@ import { HomeWeekStrip } from "./HomeWeekStrip";
 import { HomeOrbitRating, HomeRatingCard, type RatingResult } from "./HomeRatingCard";
 import QuestionFinder, { type QuestionFinderHandle } from "@/components/questionfinder/QuestionFinder";
 
+/** One small line drawing per kind of work, so the list scans by shape. */
+function KindGlyph({ kind }: { kind: HomeRow["kind"] }) {
+  const common = {
+    width: 18,
+    height: 18,
+    viewBox: "0 0 18 18",
+    fill: "none",
+    stroke: "currentColor",
+    strokeWidth: 1.5,
+    strokeLinecap: "round" as const,
+    strokeLinejoin: "round" as const,
+  };
+  switch (kind) {
+    case "guided":
+    case "ta":
+      // a target: a drill aims at one skill
+      return (
+        <svg {...common}>
+          <circle cx="9" cy="9" r="6.25" />
+          <circle cx="9" cy="9" r="2.75" />
+        </svg>
+      );
+    case "homework":
+    case "practice_test":
+      // a clock face: timed sections and homework sets
+      return (
+        <svg {...common}>
+          <circle cx="9" cy="9.5" r="6" />
+          <path d="M9 6.5v3l2 1.5M7.5 2h3" />
+        </svg>
+      );
+    case "recap":
+    case "note":
+    case "link":
+      // a page of lines: something to read
+      return (
+        <svg {...common}>
+          <path d="M4.5 2.75h6l3 3v9.5h-9z" />
+          <path d="M7 9h4.5M7 11.75h4.5" />
+        </svg>
+      );
+    case "bootcamp":
+    case "plan":
+      // stacked steps: a sequence of lessons
+      return (
+        <svg {...common}>
+          <path d="M3 14.5h4v-4h4v-4h4" />
+        </svg>
+      );
+    default:
+      // an activity: a spoken, active exercise
+      return (
+        <svg {...common}>
+          <path d="M2.5 9h2l2-4.5 3 9 2-4.5h4" />
+        </svg>
+      );
+  }
+}
+
 function WorkRow({
   row,
+  index,
   onOpen,
   onMarkDone,
   completing,
 }: {
   row: HomeRow;
+  index?: number;
   onOpen: (route: string) => void;
   onMarkDone?: (key: string) => void;
   completing?: boolean;
@@ -60,27 +121,49 @@ function WorkRow({
         : row.isNew
           ? "New"
           : null;
+  // The model's meta reads "Kind · detail · assigned Sep 2". The docket sets
+  // the kind as a small label over the title and keeps the rest as quiet
+  // metadata, so the eye lands on the title first.
+  const metaParts = row.meta.split(" · ");
+  const kindLabel = metaParts.length > 1 ? metaParts[0] : null;
+  const metaRest = metaParts.length > 1 ? metaParts.slice(1) : metaParts;
+  const statusTone = row.overdue || row.dueToday
+    ? "urgent"
+    : row.workStatus === "in_progress"
+      ? "progress"
+      : "new";
   return (
-    <li className="classroom-home-row-wrap">
+    <li className="classroom-home-row-wrap" data-kind={row.kind}>
       <button
         type="button"
         className="classroom-home-row"
         onClick={() => onOpen(row.route)}
       >
-        <span
-          className={`classroom-home-dot classroom-home-dot-${row.tone}`}
-          aria-hidden="true"
-        />
+        {index !== undefined ? (
+          <span className="classroom-home-row-index" aria-hidden="true">
+            {String(index + 1).padStart(2, "0")}
+          </span>
+        ) : null}
+        <span className={`classroom-home-row-glyph classroom-home-row-glyph-${row.tone}`} aria-hidden="true">
+          <KindGlyph kind={row.kind} />
+        </span>
         <span className="classroom-home-row-text">
+          {kindLabel ? <span className="classroom-home-row-kind">{kindLabel}</span> : null}
           <span className="classroom-home-row-title">{row.title}</span>
-          <span className="classroom-home-row-meta">{row.meta}</span>
+          <span className="classroom-home-row-meta">{metaRest.join(" · ")}</span>
         </span>
         {status ? (
-          <span className={`classroom-home-status${row.overdue || row.dueToday ? " classroom-home-status-urgent" : ""}`}>
+          <span
+            className={`classroom-home-status classroom-home-status-${statusTone}${statusTone === "urgent" ? " classroom-home-status-urgent" : ""}`}
+          >
+            <span className="classroom-home-status-mark" aria-hidden="true" />
             {status}
           </span>
         ) : null}
-        <span className="classroom-home-pill">{row.actionLabel}</span>
+        <span className="classroom-home-pill">
+          <span className="classroom-home-pill-label">{row.actionLabel}</span>
+          <ArrowRightIcon aria-hidden="true" />
+        </span>
       </button>
       {row.canComplete && onMarkDone ? (
         <button
@@ -400,10 +483,11 @@ export function ClassroomHomeView({
                 </header>
                 {upNext.length ? (
                   <ul className="classroom-home-rows">
-                    {upNext.map((row) => (
+                    {upNext.map((row, index) => (
                       <WorkRow
                         key={row.key}
                         row={row}
+                        index={index}
                         onOpen={() => handleOpenRow(row)}
                         onMarkDone={onMarkDone}
                         completing={completingKey === row.key}

@@ -1794,3 +1794,230 @@ html.dark .classroom-root .classroom-home-bar[data-band="strength"] .classroom-h
 .classroom-root .classroom-home-rating-cta { align-items: center; align-self: flex-start; background: var(--home-focus-bg); border: 0; border-radius: 6px; color: var(--home-focus-ink); cursor: pointer; display: inline-flex; font: 500 14px/1 var(--home-ui); gap: 8px; margin-top: 4px; min-height: 44px; padding: 0 16px; transition: opacity 160ms var(--home-ease); }
 .classroom-root .classroom-home-rating-cta:hover { opacity: 0.88; }
 .classroom-root .classroom-home-rating-cta:focus-visible { outline: 2px solid var(--home-ink); outline-offset: 2px; }
+
+/* ── student: Up next as a numbered docket (2026-11-18) ──────────────────
+   A syllabus-style list: a serif index, a kind glyph on a paper tile, the
+   kind as a small label over the title, a status mark that differs by shape
+   (not colour alone), and an action puck that fills on hover. One plane, no
+   card per row: rows separate by hairlines and lift only under the pointer. */
+
+.classroom-root .classroom-home-upnext .classroom-home-region-head h2 {
+  font: 400 26px/1.15 var(--home-display);
+  letter-spacing: -0.02em;
+}
+
+.classroom-root .classroom-home-upnext .classroom-home-rows {
+  counter-reset: none;
+  margin: 10px -12px 0;
+}
+
+.classroom-root .classroom-home-upnext .classroom-home-rows > li + li {
+  border-top: 0;
+}
+
+.classroom-root .classroom-home-upnext .classroom-home-row-wrap {
+  border-radius: 14px;
+  gap: 8px;
+  position: relative;
+  transition: background-color 180ms var(--home-ease);
+}
+
+.classroom-root .classroom-home-upnext .classroom-home-row-wrap + .classroom-home-row-wrap::before {
+  background: var(--home-edge);
+  content: "";
+  height: 1px;
+  left: 64px;
+  position: absolute;
+  right: 12px;
+  top: 0;
+}
+
+.classroom-root .classroom-home-upnext .classroom-home-row-wrap:hover,
+.classroom-root .classroom-home-upnext .classroom-home-row-wrap:focus-within {
+  background: var(--home-plane);
+}
+
+.classroom-root .classroom-home-upnext .classroom-home-row-wrap:hover::before,
+.classroom-root .classroom-home-upnext .classroom-home-row-wrap:hover + .classroom-home-row-wrap::before,
+.classroom-root .classroom-home-upnext .classroom-home-row-wrap:focus-within::before,
+.classroom-root .classroom-home-upnext .classroom-home-row-wrap:focus-within + .classroom-home-row-wrap::before {
+  opacity: 0;
+}
+
+.classroom-root .classroom-home-upnext .classroom-home-row {
+  align-items: center;
+  background: none;
+  border: 0;
+  border-radius: 14px;
+  color: var(--home-ink);
+  cursor: pointer;
+  display: grid;
+  gap: 14px;
+  grid-template-columns: 22px 38px minmax(0, 1fr) 112px 84px;
+  min-height: 76px;
+  padding: 14px 12px;
+  text-align: left;
+}
+
+.classroom-root .classroom-home-upnext .classroom-home-row-index {
+  color: var(--home-muted);
+  font: 400 15px/1 var(--home-display);
+  font-variant-numeric: tabular-nums lining-nums;
+  opacity: 0.7;
+}
+
+.classroom-root .classroom-home-upnext .classroom-home-row-glyph {
+  align-items: center;
+  background: var(--home-surface);
+  border: 1px solid var(--home-edge);
+  border-radius: 11px;
+  box-shadow: 0 1px 0 rgb(255 255 255 / 0.7) inset, 0 1px 2px rgb(37 43 38 / 0.06);
+  color: var(--home-ink);
+  display: inline-flex;
+  height: 38px;
+  justify-content: center;
+  width: 38px;
+}
+
+.classroom-root .classroom-home-upnext .classroom-home-row-kind {
+  color: var(--home-muted);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.classroom-root .classroom-home-upnext .classroom-home-row-title {
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.25;
+}
+
+.classroom-root .classroom-home-upnext .classroom-home-row-meta {
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Status: a shape per state so it never rests on colour alone. */
+.classroom-root .classroom-home-upnext .classroom-home-status {
+  align-items: center;
+  grid-column: 4;
+  justify-self: end;
+  border: 1px solid var(--home-edge);
+  border-radius: 999px;
+  color: var(--home-ink);
+  display: inline-flex;
+  font-size: 12px;
+  font-weight: 600;
+  gap: 6px;
+  padding: 4px 10px 4px 8px;
+}
+
+.classroom-root .classroom-home-upnext .classroom-home-status-mark {
+  border-radius: 999px;
+  display: inline-block;
+  flex: none;
+  height: 7px;
+  width: 7px;
+}
+
+.classroom-root .classroom-home-upnext .classroom-home-status-new .classroom-home-status-mark {
+  background: var(--home-ink);
+}
+
+.classroom-root .classroom-home-upnext .classroom-home-status-progress .classroom-home-status-mark {
+  background: linear-gradient(90deg, var(--home-ink) 50%, transparent 50%);
+  box-shadow: 0 0 0 1.25px var(--home-ink) inset;
+}
+
+.classroom-root .classroom-home-upnext .classroom-home-status-urgent {
+  border-color: color-mix(in srgb, var(--home-urgent) 30%, transparent);
+  color: var(--home-urgent);
+}
+
+.classroom-root .classroom-home-upnext .classroom-home-status-urgent .classroom-home-status-mark {
+  background: none;
+  border-bottom: 7px solid var(--home-urgent);
+  border-left: 4px solid transparent;
+  border-radius: 0;
+  border-right: 4px solid transparent;
+  height: 0;
+  width: 0;
+}
+
+/* Action puck: the label rests, the puck fills when the row is pointed at. */
+.classroom-root .classroom-home-upnext .classroom-home-pill {
+  align-items: center;
+  grid-column: 5;
+  justify-content: center;
+  justify-self: stretch;
+  background: var(--home-surface);
+  border: 1px solid var(--home-line);
+  box-shadow: var(--home-contact);
+  display: inline-flex;
+  gap: 6px;
+  min-height: 36px;
+  padding: 0 12px 0 16px;
+  transition: background-color 180ms var(--home-ease), color 180ms var(--home-ease), border-color 180ms var(--home-ease);
+}
+
+.classroom-root .classroom-home-upnext .classroom-home-pill svg {
+  transition: transform 220ms var(--home-ease);
+}
+
+.classroom-root .classroom-home-upnext .classroom-home-row:hover .classroom-home-pill,
+.classroom-root .classroom-home-upnext .classroom-home-row:focus-visible .classroom-home-pill {
+  background: var(--home-focus-bg);
+  border-color: var(--home-focus-bg);
+  color: var(--home-focus-ink);
+}
+
+.classroom-root .classroom-home-upnext .classroom-home-row:hover .classroom-home-pill svg,
+.classroom-root .classroom-home-upnext .classroom-home-row:focus-visible .classroom-home-pill svg {
+  transform: translateX(2px);
+}
+
+.classroom-root .classroom-home-upnext .classroom-home-row:active .classroom-home-pill {
+  box-shadow: none;
+  transform: translateY(1px);
+}
+
+.classroom-root .classroom-home-upnext .classroom-home-region-foot {
+  border-top: 1px solid var(--home-edge);
+  margin-top: 6px;
+  padding-top: 14px;
+}
+
+.classroom-root .classroom-home-work-summary {
+  color: var(--home-muted);
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.01em;
+  padding: 0 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .classroom-root .classroom-home-upnext .classroom-home-row-wrap,
+  .classroom-root .classroom-home-upnext .classroom-home-pill,
+  .classroom-root .classroom-home-upnext .classroom-home-pill svg {
+    transition: none;
+  }
+}
+
+@container classroom-home (max-width: 520px) {
+  .classroom-root .classroom-home-upnext .classroom-home-row {
+    align-items: start;
+    gap: 6px 12px;
+    grid-template-columns: 36px minmax(0, 1fr) auto;
+  }
+  .classroom-root .classroom-home-upnext .classroom-home-row-index { display: none; }
+  .classroom-root .classroom-home-upnext .classroom-home-row-glyph { height: 36px; width: 36px; }
+  .classroom-root .classroom-home-upnext .classroom-home-status { grid-column: 2; grid-row: 2; justify-self: start; }
+  .classroom-root .classroom-home-upnext .classroom-home-pill { grid-column: 3; grid-row: 1; }
+  .classroom-root .classroom-home-upnext .classroom-home-pill-label { display: none; }
+  .classroom-root .classroom-home-upnext .classroom-home-pill { padding: 0; justify-content: center; width: 36px; }
+  .classroom-root .classroom-home-upnext .classroom-home-row-wrap + .classroom-home-row-wrap::before { left: 12px; }
+}
+
+html.dark .classroom-root .classroom-home-upnext .classroom-home-row-glyph { box-shadow: none; }
