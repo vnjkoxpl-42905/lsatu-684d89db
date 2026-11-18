@@ -231,7 +231,7 @@ export function ClassroomHomeView({
 }) {
   const [searchParams, setSearchParams] = useSearchParams();
   const preview = import.meta.env.DEV ? searchParams.get("variant") : null;
-  const variant = preview === "focus" || preview === "score" || preview === "agenda" ? preview : null;
+  const variant = preview === "focus" || preview === "score" || preview === "agenda" ? preview : "focus";
   const rootRef = React.useRef<HTMLDivElement>(null);
   useHomeFeedback(rootRef);
   const finderRef = React.useRef<QuestionFinderHandle>(null);
@@ -404,7 +404,7 @@ export function ClassroomHomeView({
         {variant && <div className="student-home-scene"><span className="student-home-scene-label">Your next chapter</span><StudentEclipse /><span className="student-home-scene-caption">LSAT U / Study desk</span></div>}
       </section>
 
-      {variant && contextPanel}
+
       {variant === "agenda" && weekStrip}
 
       <div className="classroom-home-grid">
@@ -627,7 +627,7 @@ export function ClassroomHomeView({
 
           {permissionsResolved && model.access.analytics ? <HomeProgressCard onOpen={handleOpen} /> : null}
 
-          {!variant && contextPanel}
+          {contextPanel}
 
           {!variant && messagePanel}
 
@@ -635,9 +635,9 @@ export function ClassroomHomeView({
         </aside>
       </div>
       {variant !== "agenda" && weekStrip}
-      {variant && <StudentPreviewDock onOpen={handleOpen} drill={Boolean(model.access.drill)} schedule={Boolean(model.access.schedule)}
+      {variant && <StudentPreviewDock onOpen={handleOpen} drill={permissionsResolved && Boolean(model.access.drill)} schedule={Boolean(model.access.schedule)}
         onSearch={() => finderRef.current?.open()} />}
-      {variant && <HomePrototypeSwitcher current={variant} onChange={(next) => {
+      {import.meta.env.DEV && preview && <HomePrototypeSwitcher current={variant} onChange={(next) => {
         const params = new URLSearchParams(searchParams);
         params.set("variant", next);
         setSearchParams(params, { replace: true, preventScrollReset: true });

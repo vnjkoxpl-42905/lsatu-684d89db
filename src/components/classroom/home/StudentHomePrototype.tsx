@@ -35,11 +35,16 @@ export function StudentPreviewDock({ onOpen, onSearch, drill, schedule }: {
     {drill && <button className="student-preview-dock-primary" type="button" onClick={() => onOpen("/practice/drills")}><Zap size={17} /> Practice</button>}
     {drill && <button type="button" aria-label="Testing Centre" title="Testing Centre" onClick={() => onOpen("/practice/exams")}><Layers size={19} /><span>Testing Centre</span></button>}
     {schedule && <button type="button" aria-label="Schedule" title="Schedule" onClick={() => onOpen("/schedule")}><CalendarDays size={19} /><span>Schedule</span></button>}
-    {drill && <button type="button" aria-label="Find a question" title="Find a question" onClick={onSearch}><Search size={19} /></button>}
+    {drill && <button type="button" aria-label="Search questions" title="Find a question" onClick={onSearch}><Search size={19} /></button>}
   </nav>;
 }
 
 export function SavedExamScore({ actorId }: { actorId?: string | null }) {
+  if (!actorId) return null;
+  return <AccountExamScore actorId={actorId} />;
+}
+
+function AccountExamScore({ actorId }: { actorId: string }) {
   const exam = useQuery({
     queryKey: ["home-preview", "saved-exam-score", actorId],
     enabled: Boolean(actorId),

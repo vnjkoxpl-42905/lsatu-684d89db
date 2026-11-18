@@ -15,6 +15,12 @@ import {
   type ClassroomHomeModel,
 } from "./homeModel";
 
+vi.mock("./StudentHomePrototype", async (importOriginal) => ({
+  ...await importOriginal<typeof import("./StudentHomePrototype")>(),
+  SavedExamScore: () => null,
+  StudentEclipse: () => null,
+}));
+
 vi.mock("@/hooks/usePracticeRating", () => ({ usePracticeRating: () => ({ profile: null, loading: true, error: null, refresh: () => {}, partial: false }) }));
 vi.mock("@/components/questionfinder/useQuestionFinderBanks", () => ({
   useQuestionFinderBanks: () => ({ lr: [], rcPassages: [], rcQuestions: [], loading: false, error: null, lrFailed: false, rcFailed: false }),
@@ -981,10 +987,12 @@ describe("featured work and Up next", () => {
     const session = order(screen.getByRole("button", { name: /Next session/ }));
     const testDay = order(screen.getByLabelText("12 days to test day"));
     expect(greeting).toBeLessThan(featured);
-    for (const later of [finder, drill, session, testDay]) expect(featured).toBeLessThan(later);
-    // Tab order follows: the featured action is the first control after the greeting.
+    expect(finder).toBeLessThan(featured);
+    for (const later of [drill, session, testDay]) expect(featured).toBeLessThan(later);
+    // The utility bar comes first; assigned work still leads its own region.
     const buttons = screen.getAllByRole("button");
-    expect(buttons[0]).toHaveAccessibleName("Start assigned work");
+    expect(buttons[0]).toHaveAccessibleName("Find a question");
+    expect(screen.getByRole("region", { name: "Assigned to you" }).querySelector("button")).toHaveAccessibleName("Start assigned work");
   });
 
   it("does not show a New count over work that failed to load", () => {
