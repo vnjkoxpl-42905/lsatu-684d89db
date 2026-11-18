@@ -1,6 +1,8 @@
 import { useMemo, useState } from 'react';
 import { HomeProgressCardView } from '@/components/classroom/home/HomeProgressCard';
-import { HomeRatingCardView } from '@/components/classroom/home/HomeRatingCard';
+import { HomeOrbitRating } from '@/components/classroom/home/HomeRatingCard';
+import { StudentOrbit } from '@/components/classroom/home/StudentOrbit';
+import '@/components/classroom/home/student-home-prototype.css';
 import { StrengthsWeaknessesView } from '@/components/analytics/StrengthsWeaknessesPage';
 import '@/components/classroom/home/home.css';
 import { classifyTypes } from '@/lib/strengthsWeaknesses';
@@ -62,8 +64,13 @@ export default function StudentInsightsPreview() {
           <div className="classroom-root">
             <div className="classroom-home" style={{ padding: 0 }}>
               <div className="classroom-home-rail">
-                <HomeRatingCardView result={{ profile: { LR: { rating: 1424, count: 48 } } as never, loading: false, error: null, refresh: async () => {} }} onOpen={setLast} />
-                <HomeRatingCardView result={{ profile: { LR: { rating: 1200, count: 6 } } as never, loading: false, error: null, refresh: async () => {} }} onOpen={setLast} />
+                {[{ rating: 1424, count: 48 }, { rating: 1200, count: 6 }].map((LR) => (
+                  <div key={LR.count} className="student-home-scene">
+                    <HomeOrbitRating result={{ profile: { LR } as never, loading: false, error: null, refresh: async () => {} }} onOpen={setLast}>
+                      <StudentOrbit />
+                    </HomeOrbitRating>
+                  </div>
+                ))}
                 <HomeProgressCardView result={result} onOpen={setLast} />
               </div>
             </div>
