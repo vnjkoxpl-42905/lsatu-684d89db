@@ -9,6 +9,8 @@ import { MyList, AllTasksSheet, DeskStatus } from "./TeacherTasks";
 import { TeacherScheduleSheet } from "./TeacherScheduleSheet";
 import { EclipseStage } from "./EclipseStage";
 import "./eclipse.css";
+import "./observatory.css";
+import { FollowUpGauge, SevenDayStrip, WeekLoad } from "./ObservatoryWidgets";
 import { AccessSheet, BookingSheet } from "./TeacherAccessBooking";
 import {
   EMPTY_DESK,
@@ -79,8 +81,6 @@ function TeacherDeskContent({
     });
     document.getElementById(id)?.focus({ preventScroll: true });
   };
-  const count = (state: string, count: number | undefined) =>
-    state === "ready" ? (count ?? 0) : "—";
   const sessionTotal =
     model.postSession?.data?.total ??
     model.postSession?.data?.tasks?.length ??
@@ -206,134 +206,74 @@ function TeacherDeskContent({
       </div>
     </section>
   );
-  const recapNames = (model.postSession?.data?.tasks ?? [])
-    .map((t) => t.student_name?.split(" ")[0])
-    .filter(Boolean)
-    .slice(0, 2)
-    .join(", ");
-  const newNames = pendingAccess
-    .map((p) => (p.display_name || p.email).split(" ")[0])
-    .slice(0, 2)
-    .join(", ");
-  const unreadNames = model.unread.rows
-    .map((r) => r.name.split(" ")[0])
-    .slice(0, 2)
-    .join(", ");
-  const tiles = [
-    {
-      key: "recaps",
-      target: "home-session-work",
-      label: "Recaps to finish",
-      value: count(
-        model.postSession?.state ?? "setup",
-        model.postSession?.data?.total ?? model.postSession?.data?.tasks?.length,
-      ),
-      detail: recapNames || (sessionTotal ? "" : "All caught up"),
-      icon: (
-        <svg viewBox="0 0 24 24"><path d="M6 3h9l3 3v15H6z" /><path d="m9 13 2 2 4-4" /></svg>
-      ),
-    },
-    {
-      key: "new",
-      target: "home-new-students",
-      label: "New students",
-      value: count(desk.access.state, pendingAccess.length),
-      detail: newNames || (desk.access.state === "ready" ? "No one waiting" : ""),
-      icon: (
-        <svg viewBox="0 0 24 24"><circle cx="10" cy="8" r="3.5" /><path d="M3.5 20c.8-3.6 3.4-5.5 6.5-5.5 1.4 0 2.7.4 3.8 1.1" /><path d="M18 14v6M15 17h6" /></svg>
-      ),
-    },
-    {
-      key: "unread",
-      target: "home-correspondence",
-      label: "Unread",
-      value: model.unread.state === "ready" ? (model.unread.total ?? 0) : "—",
-      detail: unreadNames || (model.unread.state === "ready" ? "Inbox clear" : ""),
-      icon: (
-        <svg viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z" /><path d="M8 10h8" /></svg>
-      ),
-    },
-  ];
-  const hotTile = tiles.find((t) => typeof t.value === "number" && t.value > 0)?.key;
+  const [obsTick, setObsTick] = React.useState(() => Date.now());
+  React.useEffect(() => {
+    const id = window.setInterval(() => setObsTick(Date.now()), 60_000);
+    return () => window.clearInterval(id);
+  }, []);
+  const obsNow = React.useMemo(() => new Date(obsTick), [obsTick]);
   return (
     <div
       ref={rootRef}
-      className="classroom-home classroom-home-teacher home-desk home-eclipse"
+      className="classroom-home classroom-home-teacher home-desk home-eclipse home-obs"
       data-motion-skip
       data-role-home="teacher"
       data-home-treatment="eclipse"
       data-work-state={quietWork ? "quiet" : "active"}
     >
-      <section className="eclipse-hero">
-        <header className="home-desk-masthead eclipse-card eclipse-greet">
-          <p className="eclipse-date">{model.dateline}</p>
+      <header className="home-desk-masthead obs-greet">
+        <div>
           <h1>
             {model.greeting}
-            {model.displayName ? (
-              <>
-                ,{" "}<br />
-                <em className="home-desk-name">{model.displayName}.</em>
-              </>
-            ) : (
-              "."
-            )}
+            {model.displayName ? `, ${model.displayName}.` : "."}
           </h1>
-          <p className="home-desk-summary">{sessionSummary}</p>
-          <div className="eclipse-acts">
-            <button
-              className="eclipse-btn-dark"
-              aria-label="Assign work"
-              data-home-feedback
-              onClick={() => onOpen("/teacher/library/assignments")}
-            >
-              Assign work
-              <span aria-hidden="true">
-                <ArrowRight size={16} />
-              </span>
-            </button>
-            <button
-              className="eclipse-btn-line"
-              data-home-feedback
-              onClick={() => onOpen("/teacher/inbox")}
-            >
-              Messages
-              {model.unread.state === "ready" ? ` (${model.unread.total})` : ""}
-            </button>
-            <details className="home-desk-more-menu eclipse-more">
-              <summary>More</summary>
-              <div>
-                <a href={EMAIL} target="_blank" rel="noopener noreferrer">
-                  Open email ↗
-                </a>
-                <button onClick={(event) => openBooking("link", event.currentTarget)}>
-                  Create session link
-                </button>
-                <button onClick={() => onOpen("/teacher/students")}>
-                  All students
-                </button>
-              </div>
-            </details>
-          </div>
-        </header>
-        <EclipseStage agenda={desk.agenda} onOpen={onOpen} />
-      </section>
-      <nav className="eclipse-brief" aria-label="Today at a glance">
-        {tiles.map((t) => (
+          <p className="obs-date">{model.dateline}</p>
+        </div>
+        <p className="home-desk-summary obs-sum">{sessionSummary}</p>
+        <div className="obs-acts">
           <button
-            key={t.key}
-            className={t.key === hotTile ? "eclipse-tile is-hot" : "eclipse-tile"}
-            onClick={() => jump(t.target)}
+            className="obs-btn-ink"
+            aria-label="Assign work"
+            data-home-feedback
+            onClick={() => onOpen("/teacher/library/assignments")}
           >
-            <span className="eclipse-ico" aria-hidden="true">{t.icon}</span>
-            <span className="eclipse-num">{t.value}</span>
-            <span className="eclipse-lab">
-              <b>{t.label}</b>
-              {t.detail ? <small>{t.detail}</small> : null}
+            Assign work
+            <span aria-hidden="true">
+              <ArrowRight size={16} />
             </span>
-            <span className="eclipse-go" aria-hidden="true">→</span>
           </button>
-        ))}
-      </nav>
+          <button
+            className="obs-btn-line"
+            data-home-feedback
+            onClick={() => onOpen("/teacher/inbox")}
+          >
+            Messages
+            {model.unread.state === "ready" ? ` (${model.unread.total})` : ""}
+          </button>
+          <details className="home-desk-more-menu obs-more">
+            <summary>More</summary>
+            <div>
+              <a href={EMAIL} target="_blank" rel="noopener noreferrer">
+                Open email ↗
+              </a>
+              <button onClick={(event) => openBooking("link", event.currentTarget)}>
+                Create session link
+              </button>
+              <button onClick={() => onOpen("/teacher/students")}>
+                All students
+              </button>
+            </div>
+          </details>
+        </div>
+      </header>
+      <div className="obs-top">
+        <EclipseStage agenda={desk.agenda} onOpen={onOpen} />
+        <div className="obs-inst">
+          <FollowUpGauge work={model.postSession} onJump={() => jump("home-session-work")} />
+          <WeekLoad agenda={desk.agenda} now={obsNow} />
+        </div>
+      </div>
+      <SevenDayStrip agenda={desk.agenda} now={obsNow} onOpen={onOpen} />
 
       <div className="eclipse-zone">
         <div className="eclipse-zl" aria-hidden="true">01 · Follow up</div>

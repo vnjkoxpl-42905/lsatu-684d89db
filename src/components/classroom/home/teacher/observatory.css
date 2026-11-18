@@ -1,0 +1,613 @@
+/* Teacher Home v2, "the observatory". Reference design:
+   ai-os design/prototypes/teacher-home/home-v2/index.html (approved 2026-11-18).
+   The eclipse is the page's light source: a night hero and dark-glass
+   instruments above near-white paper. Status reads by shape and weight in one
+   ink tone, never by hue. */
+
+.classroom-root .home-obs {
+  --obs-sheet: #fff;
+  --obs-ink: #15181a;
+  --obs-ink-2: #3b4246;
+  --obs-mute: #6b7378;
+  --obs-faint: #8d9497;
+  --obs-rule: #e2e4e1;
+  --obs-rule-2: #c9ccc6;
+  --obs-night-0: #0e1112;
+  --obs-night-1: #15191b;
+  --obs-night-2: #1f2427;
+  --obs-on: #e9ecea;
+  --obs-on-2: #a9b1b3;
+  --obs-on-3: #7d868a;
+  --obs-lamp: #f4efe4;
+  --obs-streak: #e6dcc8;
+  --obs-serif: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+  --obs-lift: 0 1px 0 rgba(255, 255, 255, 0.9) inset, 0 1px 2px rgba(16, 20, 22, 0.05),
+    0 10px 24px -14px rgba(16, 20, 22, 0.18);
+  --obs-press: inset 0 1px 3px rgba(0, 0, 0, 0.12);
+}
+html.dark .classroom-root .home-obs {
+  --obs-sheet: #15191b;
+  --obs-ink: #e9ecea;
+  --obs-ink-2: #c4cacc;
+  --obs-mute: #9aa1a4;
+  --obs-faint: #7d868a;
+  --obs-rule: #2a3033;
+  --obs-rule-2: #3a4246;
+  --obs-lift: 0 1px 0 rgba(255, 255, 255, 0.04) inset, 0 10px 24px -14px rgba(0, 0, 0, 0.6);
+}
+
+/* greeting */
+.classroom-root .home-obs .obs-greet {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px 32px;
+  margin-bottom: 24px;
+}
+.classroom-root .home-obs .obs-greet h1 {
+  margin: 0;
+  font: 400 44px/1.05 var(--obs-serif);
+  letter-spacing: -0.015em;
+  color: var(--obs-ink);
+}
+.classroom-root .home-obs .obs-date {
+  margin: 8px 0 0;
+  color: var(--obs-mute);
+  font-size: 14px;
+}
+.classroom-root .home-obs .obs-sum {
+  margin: 0;
+  max-width: 440px;
+  font: 400 19px/1.4 var(--obs-serif);
+  color: var(--obs-ink-2);
+}
+.classroom-root .home-obs .obs-acts {
+  flex-basis: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+.classroom-root .home-obs .obs-btn-ink,
+.classroom-root .home-obs .obs-btn-line {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 999px;
+  padding: 10px 18px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.12s, box-shadow 0.12s;
+}
+.classroom-root .home-obs .obs-btn-ink {
+  border: 0;
+  background: var(--obs-night-1);
+  color: #fff;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.08) inset, 0 6px 14px -8px rgba(0, 0, 0, 0.5);
+}
+html.dark .classroom-root .home-obs .obs-btn-ink {
+  background: var(--obs-lamp);
+  color: var(--obs-night-1);
+}
+.classroom-root .home-obs .obs-btn-line {
+  border: 1px solid var(--obs-rule-2);
+  background: var(--obs-sheet);
+  color: var(--obs-ink);
+  box-shadow: var(--obs-lift);
+}
+.classroom-root .home-obs .obs-btn-ink:hover,
+.classroom-root .home-obs .obs-btn-line:hover {
+  transform: translateY(-1px);
+}
+.classroom-root .home-obs .obs-btn-ink:active,
+.classroom-root .home-obs .obs-btn-line:active {
+  transform: translateY(1px);
+  box-shadow: var(--obs-press);
+}
+
+/* top: hero + instruments */
+.classroom-root .home-obs .obs-top {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  gap: 18px;
+  margin-bottom: 18px;
+}
+.classroom-root .home-obs .obs-hero {
+  position: relative;
+  overflow: hidden;
+  border-radius: 24px;
+  padding: 32px;
+  min-height: 380px;
+  color: var(--obs-on);
+  background: radial-gradient(90% 120% at 78% 50%, #1d2326 0%, var(--obs-night-1) 55%, var(--obs-night-0) 100%);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.06) inset, 0 2px 4px rgba(0, 0, 0, 0.2),
+    0 30px 60px -30px rgba(0, 0, 0, 0.55);
+}
+.classroom-root .home-obs .obs-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(1px 1px at 12% 22%, rgba(255, 255, 255, 0.5), transparent 60%),
+    radial-gradient(1px 1px at 33% 78%, rgba(255, 255, 255, 0.35), transparent 60%),
+    radial-gradient(1px 1px at 48% 12%, rgba(255, 255, 255, 0.3), transparent 60%),
+    radial-gradient(1px 1px at 58% 88%, rgba(255, 255, 255, 0.3), transparent 60%);
+}
+.classroom-root .home-obs .obs-hero-text {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  max-width: 330px;
+}
+.classroom-root .home-obs .obs-state {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--obs-on-2);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.classroom-root .home-obs .obs-state i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--obs-lamp);
+  box-shadow: 0 0 0 4px rgba(244, 239, 228, 0.12);
+}
+.classroom-root .home-obs .obs-count {
+  margin: 18px 0 6px;
+  font: 400 72px/0.95 var(--obs-serif);
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+  color: #fff;
+}
+.classroom-root .home-obs .obs-count small {
+  font-size: 0.36em;
+  letter-spacing: 0;
+  color: var(--obs-on-2);
+  margin: 0 0.45em 0 0.12em;
+}
+.classroom-root .home-obs .obs-who {
+  margin: 0;
+  font: 400 20px/1.35 var(--obs-serif);
+  color: var(--obs-on);
+}
+.classroom-root .home-obs .obs-who span {
+  color: var(--obs-on-2);
+}
+.classroom-root .home-obs .obs-spacer {
+  flex: 1;
+  min-height: 28px;
+}
+.classroom-root .home-obs .obs-hero-acts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+.classroom-root .home-obs .obs-btn-light {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  border: 0;
+  cursor: pointer;
+  text-decoration: none;
+  background: linear-gradient(#fff, #eceeed);
+  color: #15181a;
+  border-radius: 999px;
+  padding: 12px 20px;
+  font-weight: 600;
+  font-size: 14px;
+  box-shadow: 0 1px 0 #fff inset, 0 2px 4px rgba(0, 0, 0, 0.35), 0 10px 20px -10px rgba(0, 0, 0, 0.6);
+  transition: transform 0.12s, box-shadow 0.12s;
+}
+.classroom-root .home-obs .obs-btn-light:hover {
+  transform: translateY(-1px);
+}
+.classroom-root .home-obs .obs-btn-light:active {
+  transform: translateY(1px);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.25);
+}
+.classroom-root .home-obs .obs-ghost,
+.classroom-root .home-obs .obs-inline {
+  color: var(--obs-on-2);
+  font-size: 13px;
+  font-weight: 600;
+  background: none;
+  border: 0;
+  padding: 8px 6px;
+  cursor: pointer;
+  text-decoration: none;
+}
+.classroom-root .home-obs .obs-ghost:hover,
+.classroom-root .home-obs .obs-inline:hover {
+  color: #fff;
+}
+.classroom-root .home-obs .obs-hero :focus-visible,
+.classroom-root .home-obs .obs-dark :focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+.classroom-root .home-obs .obs-orrery {
+  position: absolute;
+  z-index: 1;
+  right: 16px;
+  top: 12px;
+  height: calc(100% - 24px);
+  max-width: 56%;
+  aspect-ratio: 1 / 1;
+}
+.classroom-root .home-obs .obs-orrery svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  overflow: visible;
+}
+.classroom-root .home-obs .obs-corona {
+  transform-origin: 50% 50%;
+  animation: obs-breathe 12s ease-in-out infinite;
+}
+@keyframes obs-breathe {
+  0%, 100% { opacity: 0.85; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.04); }
+}
+.classroom-root .home-obs .obs-pl {
+  font: 400 14px var(--obs-serif);
+  fill: var(--obs-on-2);
+}
+.classroom-root .home-obs .obs-pl.on {
+  fill: #fff;
+}
+.classroom-root .home-obs .obs-hour {
+  font: 600 13px system-ui, sans-serif;
+  fill: var(--obs-on-3);
+}
+
+/* instruments */
+.classroom-root .home-obs .obs-inst {
+  display: grid;
+  gap: 18px;
+  min-width: 0;
+}
+.classroom-root .home-obs .obs-card {
+  border-radius: 20px;
+  padding: 24px;
+  min-width: 0;
+  background: var(--obs-sheet);
+  border: 1px solid var(--obs-rule);
+  box-shadow: var(--obs-lift);
+  color: var(--obs-ink);
+}
+.classroom-root .home-obs .obs-dark {
+  background: linear-gradient(160deg, #1c2124 0%, #121517 70%);
+  border-color: #23292c;
+  color: var(--obs-on);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.05) inset, 0 2px 4px rgba(0, 0, 0, 0.15),
+    0 20px 40px -24px rgba(0, 0, 0, 0.5);
+}
+.classroom-root .home-obs .obs-lbl {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  margin: 0 0 16px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--obs-on-3);
+}
+.classroom-root .home-obs .obs-lbl h2 {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--obs-on);
+}
+.classroom-root .home-obs .obs-muted {
+  margin: 0;
+  font-size: 14px;
+  color: var(--obs-on-2);
+}
+.classroom-root .home-obs .obs-gauge-wrap {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.classroom-root .home-obs .obs-gauge {
+  width: 132px;
+  flex: none;
+}
+.classroom-root .home-obs .obs-gnum {
+  font: 400 44px/1 var(--obs-serif);
+  fill: #fff;
+}
+.classroom-root .home-obs .obs-gof {
+  font: 400 13px system-ui, sans-serif;
+  fill: var(--obs-on-2);
+}
+.classroom-root .home-obs .obs-gauge-wrap p {
+  margin: 0;
+  font-size: 14px;
+  color: var(--obs-on-2);
+}
+.classroom-root .home-obs .obs-gauge-wrap p b {
+  display: block;
+  font: 400 18px/1.3 var(--obs-serif);
+  color: var(--obs-on);
+}
+.classroom-root .home-obs .obs-load {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+  align-items: end;
+  height: 118px;
+}
+.classroom-root .home-obs .obs-bar {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 6px;
+  height: 100%;
+}
+.classroom-root .home-obs .obs-v {
+  font: 400 14px/1 var(--obs-serif);
+  color: var(--obs-on-2);
+}
+.classroom-root .home-obs .obs-b {
+  width: 100%;
+  max-width: 26px;
+  border-radius: 5px 5px 2px 2px;
+  background: linear-gradient(#3a4246, #2a3033);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.06) inset;
+}
+.classroom-root .home-obs .obs-bar.is-today .obs-b {
+  background: linear-gradient(var(--obs-lamp), #d9d3c6);
+  box-shadow: 0 0 18px rgba(244, 239, 228, 0.25);
+}
+.classroom-root .home-obs .obs-bar.is-today .obs-v {
+  color: #fff;
+}
+.classroom-root .home-obs .obs-days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+  margin-top: 8px;
+  font-size: 12px;
+  color: var(--obs-on-3);
+  text-align: center;
+}
+.classroom-root .home-obs .obs-days .t {
+  color: var(--obs-lamp);
+  font-weight: 600;
+}
+
+/* strip A */
+.classroom-root .home-obs .obs-strip {
+  margin-bottom: 28px;
+}
+.classroom-root .home-obs .obs-strip .obs-muted {
+  color: var(--obs-mute);
+}
+.classroom-root .home-obs .obs-sh {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+.classroom-root .home-obs .obs-sh h2 {
+  margin: 0;
+  font: 400 30px/1.1 var(--obs-serif);
+  letter-spacing: -0.01em;
+}
+.classroom-root .home-obs .obs-sh h2:focus {
+  outline: none;
+}
+.classroom-root .home-obs .obs-sh span {
+  color: var(--obs-mute);
+  font-size: 14px;
+}
+.classroom-root .home-obs .obs-cols {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+}
+.classroom-root .home-obs .obs-col {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 8px 14px 16px;
+  border-left: 1px solid var(--obs-rule);
+  min-height: 160px;
+}
+.classroom-root .home-obs .obs-col:first-child {
+  border-left: 0;
+}
+.classroom-root .home-obs .obs-dn {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--obs-mute);
+}
+.classroom-root .home-obs .obs-dd {
+  font: 400 36px/1 var(--obs-serif);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+.classroom-root .home-obs .obs-free {
+  margin-top: auto;
+  font-size: 13px;
+  color: var(--obs-faint);
+}
+.classroom-root .home-obs .obs-sess {
+  display: grid;
+  gap: 4px;
+  padding: 11px 12px;
+  border: 1px solid var(--obs-rule);
+  border-radius: 12px;
+  background: var(--obs-sheet);
+  color: var(--obs-ink);
+  box-shadow: var(--obs-lift);
+  text-align: left;
+  cursor: pointer;
+  transition: transform 0.12s, box-shadow 0.12s, border-color 0.12s;
+}
+.classroom-root .home-obs .obs-sess:hover {
+  border-color: var(--obs-rule-2);
+}
+.classroom-root .home-obs .obs-sess:active {
+  transform: translateY(1px);
+  box-shadow: var(--obs-press);
+}
+.classroom-root .home-obs .obs-nm {
+  font-weight: 600;
+  font-size: 14px;
+}
+.classroom-root .home-obs .obs-tm {
+  font: 400 15px/1 var(--obs-serif);
+  color: var(--obs-mute);
+}
+.classroom-root .home-obs .obs-tick {
+  position: relative;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--obs-rule);
+  margin: 4px 0 2px;
+}
+.classroom-root .home-obs .obs-tick i {
+  position: absolute;
+  top: -2px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--obs-ink);
+  transform: translateX(-50%);
+}
+.classroom-root .home-obs .obs-col.is-today {
+  background: var(--obs-night-1);
+  border-radius: 16px;
+  border-left-color: transparent;
+  margin: -12px 4px;
+  padding-top: 20px;
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.18), 0 16px 30px -14px rgba(0, 0, 0, 0.5);
+}
+.classroom-root .home-obs .obs-col.is-today + .obs-col {
+  border-left-color: transparent;
+}
+.classroom-root .home-obs .obs-col.is-today::before {
+  content: "";
+  position: absolute;
+  left: 14px;
+  right: 14px;
+  top: 9px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--obs-streak);
+  opacity: 0.6;
+}
+.classroom-root .home-obs .obs-col.is-today .obs-dn { color: var(--obs-on-2); }
+.classroom-root .home-obs .obs-col.is-today .obs-dd { color: #fff; }
+.classroom-root .home-obs .obs-col.is-today .obs-free { color: var(--obs-on-3); }
+.classroom-root .home-obs .obs-col.is-today .obs-sess {
+  background: var(--obs-night-2);
+  border-color: #30373a;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+.classroom-root .home-obs .obs-col.is-today .obs-nm { color: var(--obs-lamp); }
+.classroom-root .home-obs .obs-col.is-today .obs-tm { color: var(--obs-on-2); }
+.classroom-root .home-obs .obs-col.is-today .obs-tick { background: #30373a; }
+.classroom-root .home-obs .obs-col.is-today .obs-tick i { background: var(--obs-lamp); }
+.classroom-root .home-obs .obs-col.is-today :focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+
+@media (max-width: 1020px) {
+  .classroom-root .home-obs .obs-top { grid-template-columns: 1fr; }
+  .classroom-root .home-obs .obs-inst { grid-template-columns: 1fr 1fr; }
+  .classroom-root .home-obs .obs-cols { grid-template-columns: 1fr; }
+  .classroom-root .home-obs .obs-col {
+    display: grid;
+    grid-template-columns: 3.4rem 2.8rem 1fr;
+    align-items: center;
+    min-height: 56px;
+    border-left: 0;
+    border-top: 1px solid var(--obs-rule);
+    padding: 10px 12px;
+  }
+  .classroom-root .home-obs .obs-col:first-child { border-top: 0; }
+  .classroom-root .home-obs .obs-col .obs-sess,
+  .classroom-root .home-obs .obs-col .obs-free { grid-column: 3; margin: 0; }
+  .classroom-root .home-obs .obs-col.is-today { margin: 6px 0; }
+  .classroom-root .home-obs .obs-col.is-today::before { display: none; }
+  .classroom-root .home-obs .obs-col.is-today + .obs-col { border-top-color: transparent; }
+  .classroom-root .home-obs .obs-dd { font-size: 28px; }
+}
+@media (max-width: 820px) {
+  .classroom-root .home-obs .obs-greet h1 { font-size: 34px; }
+  .classroom-root .home-obs .obs-sum { font-size: 17px; }
+  .classroom-root .home-obs .obs-inst { grid-template-columns: 1fr; }
+  .classroom-root .home-obs .obs-hero {
+    min-height: 0;
+    padding: 24px;
+    display: flex;
+    flex-direction: column-reverse;
+  }
+  .classroom-root .home-obs .obs-orrery {
+    position: relative;
+    right: auto;
+    top: auto;
+    height: auto;
+    width: 100%;
+    max-width: 320px;
+    margin: 0 auto 8px;
+  }
+  .classroom-root .home-obs .obs-hero-text { max-width: none; }
+  .classroom-root .home-obs .obs-count { font-size: 56px; }
+  .classroom-root .home-obs .obs-card { padding: 20px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .classroom-root .home-obs .obs-corona { animation: none; }
+}
+
+/* Overrides for inherited desk and eclipse rules */
+.classroom-root .home-desk.home-obs .obs-greet {
+  background: none;
+  border: 0;
+  padding: 0;
+  box-shadow: none;
+}
+.classroom-root .home-desk.home-obs .obs-more { flex: none; }
+.classroom-root .home-desk.home-obs .obs-count small {
+  display: inline;
+  font-family: inherit;
+}
+.classroom-root .home-desk.home-obs .obs-gauge {
+  width: 132px;
+  height: 86px;
+  flex: none;
+}
+.classroom-root .home-desk.home-obs .obs-gauge-wrap p b,
+.classroom-root .home-desk.home-obs .obs-gauge-wrap p { display: block; }
+.classroom-root .home-desk.home-obs .eclipse-zl { font-size: 12px; }
+@media (max-width: 820px) {
+  /* The orrery renders at ~80% of its 400-unit viewBox here; keep labels >= 12px on screen. */
+  .classroom-root .home-obs .obs-pl { font-size: 17.5px; }
+  .classroom-root .home-obs .obs-hour { font-size: 17px; }
+}
+.classroom-root .home-obs .obs-gof { font-size: 14px; }

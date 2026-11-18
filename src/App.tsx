@@ -35,6 +35,7 @@ const AcademyMainhub = safeLazy(loadDrillHub);
 const DrillSetupPreview = React.lazy(() => import('./dev/DrillSetupPreview'));
 const PracticeExamsPreview = React.lazy(() => import('./dev/PracticeExamsPreview'));
 const StudentHomePreview = import.meta.env.DEV ? React.lazy(() => import("./dev/StudentHomePreview")) : null;
+const TeacherHomePreview = import.meta.env.DEV ? React.lazy(() => import('./dev/TeacherHomePreview')) : null;
 const StudentInsightsPreview = import.meta.env.DEV ? React.lazy(() => import('./dev/StudentInsightsPreview')) : null;
 const LrQuestionPage = React.lazy(() => import('./pages/LrQuestionPage'));
 const ConditionalOpeningPreview = import.meta.env.DEV
@@ -313,6 +314,7 @@ const App = () => {
             {import.meta.env.DEV && <Route path="/dev/abstract-preview" element={<AbstractBootcamp />} />}
             {import.meta.env.DEV && <Route path="/dev/practice-exams-preview/*" element={<PracticeExamsPreview />} />}
             {import.meta.env.DEV && StudentHomePreview && <Route path="/dev/student-home-preview" element={<StudentHomePreview />} />}
+            {import.meta.env.DEV && TeacherHomePreview && <Route path="/dev/teacher-home-preview" element={<TeacherHomePreview />} />}
             {import.meta.env.DEV && StudentInsightsPreview && <Route path="/dev/student-insights-preview" element={<StudentInsightsPreview />} />}
             <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/trust" element={<React.Suspense fallback={null}><Trust /></React.Suspense>} />
