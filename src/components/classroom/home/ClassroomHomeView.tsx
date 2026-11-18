@@ -1,3 +1,4 @@
+import * as Popover from "@radix-ui/react-popover";
 import { useSearchParams } from "react-router-dom";
 import { HomePrototypeSwitcher, StudentEclipse, SavedExamScore, StudentPreviewDock } from "./StudentHomePrototype";
 /**
@@ -41,7 +42,7 @@ import { nextActionFor } from "./homeNextAction";
 import { useHomeFeedback } from "./useHomeFeedback";
 import { HomeWeekStrip } from "./HomeWeekStrip";
 import { HomeProgressCard } from "./HomeProgressCard";
-import { HomeRatingCard } from "./HomeRatingCard";
+import { HomeOrbitRating, HomeRatingCard, type RatingResult } from "./HomeRatingCard";
 import QuestionFinder, { type QuestionFinderHandle } from "@/components/questionfinder/QuestionFinder";
 
 function WorkRow({
@@ -211,9 +212,11 @@ export function ClassroomHomeView({
   actorId,
   permissionsResolved = !loading,
   previewMetrics,
+  previewRating,
 }: {
   model: ClassroomHomeModel;
   previewMetrics?: React.ReactNode;
+  previewRating?: RatingResult;
   loading: boolean;
   actorId?: string | null;
   permissionsResolved?: boolean;
@@ -378,11 +381,29 @@ export function ClassroomHomeView({
         />
       ) : null}
 
-      {variant && <div className="student-preview-glassbar">
-        <span className="student-home-brand"><span aria-hidden="true">LS</span><strong>Study desk</strong></span>
+      <div className="student-home-toolbar">
         {questionFinder}
-        {model.access.messages && <button type="button" onClick={() => handleOpen("/inbox")} aria-label={`Messages, ${model.unreadMessages} unread`}><BellIcon />{model.unreadMessages > 0 && <span className="classroom-home-count">{model.unreadMessages}</span>}</button>}
-      </div>}
+        {model.access.messages && (
+          <Popover.Root>
+            <Popover.Trigger className="student-home-messages" aria-label={`Messages, ${model.unreadMessages} unread`}>
+              <BellIcon aria-hidden="true" />
+              {model.unreadMessages > 0 && <span className="classroom-home-count">{model.unreadMessages}</span>}
+            </Popover.Trigger>
+            <Popover.Content align="end" sideOffset={10} className="student-home-popover student-home-message-popover" aria-label="Messages">
+              <div className="student-home-message-heading">
+                <h2>Messages</h2>
+                <span>{model.unreadMessages} unread</span>
+              </div>
+              {model.message ? (
+                <MessagePreviewButton message={model.message} onOpen={handleOpen} />
+              ) : <p>No recent messages.</p>}
+              <Popover.Close asChild>
+                <button type="button" className="classroom-home-link" onClick={() => handleOpen("/inbox")}>Open inbox</button>
+              </Popover.Close>
+            </Popover.Content>
+          </Popover.Root>
+        )}
+      </div>
 
       <section className="classroom-home-top" aria-label="Today" data-home-reveal>
         <header className="classroom-home-masthead">
@@ -401,7 +422,14 @@ export function ClassroomHomeView({
             </button>
           ) : null}
         </header>
-        {variant && <div className="student-home-scene"><span className="student-home-scene-label">Your next chapter</span><StudentEclipse /><span className="student-home-scene-caption">LSAT U / Study desk</span></div>}
+        <div className="student-home-scene">
+          <StudentEclipse />
+          {permissionsResolved && model.access.drill && (
+            previewRating
+              ? <HomeOrbitRating result={previewRating} onOpen={handleOpen} />
+              : <HomeRatingCard onOpen={handleOpen} />
+          )}
+        </div>
       </section>
 
 
@@ -617,12 +645,7 @@ export function ClassroomHomeView({
           </section>
 
           {permissionsResolved && model.access.drill ? (
-            <>
-              {previewMetrics ?? <>
-                {variant && <SavedExamScore actorId={actorId} />}
-                <HomeRatingCard onOpen={handleOpen} />
-              </>}
-            </>
+            previewMetrics ?? <SavedExamScore actorId={actorId} />
           ) : null}
 
           {permissionsResolved && model.access.analytics ? <HomeProgressCard onOpen={handleOpen} /> : null}

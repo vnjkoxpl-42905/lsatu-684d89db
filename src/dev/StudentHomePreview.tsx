@@ -1,6 +1,5 @@
 import { useSearchParams } from "react-router-dom";
 import { ClassroomHomeView } from "@/components/classroom/home/ClassroomHomeView";
-import { HomeRatingCardView } from "@/components/classroom/home/HomeRatingCard";
 import { buildWeek, weekDates, type ClassroomHomeModel } from "@/components/classroom/home/homeModel";
 import "@/components/classroom/home/home.css";
 import "@/components/classroom/classroom.css";
@@ -33,6 +32,13 @@ export default function StudentHomePreview() {
   const open = (route: string) => window.location.assign(route);
   const rating = { rating: 1463, count: 48 };
   const state = params.get("state");
+  const previewRating = {
+    profile: {
+      overall: rating, LR: rating, RC: rating, bySkill: new Map(), eligibleCount: 48,
+      calibration: { count: 48, expectedCorrect: 30, actualCorrect: 32 },
+    },
+    loading: state === "loading", error: null, refresh: () => undefined,
+  };
   const previewModel = state === "empty" ? { ...model, hero: null, rows: [], message: null, unreadMessages: 0, newCount: 0, subtitle: "Your next step is up to you.", homeBooking: { state: "none" as const }, daysToTest: null, week: buildWeek(weekDates(today), [], today) }
     : state === "error" ? { ...model, hero: null, rows: [], workFailed: true, subtitle: "Your assigned work could not load." } : model;
   return <div className="classroom-root classroom-root-home">
@@ -49,15 +55,12 @@ export default function StudentHomePreview() {
     <main className="classroom-stage">
       <div className="classroom-column">
         <p className="student-home-preview-notice">Design preview · Sample student data · <a href="?variant=focus">Focus</a> / <a href="?variant=score">Scoreboard</a> / <a href="?variant=agenda">Agenda</a></p>
-        <ClassroomHomeView model={previewModel} loading={state === "loading"} onRetryWork={() => window.location.assign("?variant=focus")} onOpen={open} previewMetrics={state === "empty" || state === "loading" ? undefined : <>
+        <ClassroomHomeView model={previewModel} loading={state === "loading"} onRetryWork={() => window.location.assign("?variant=focus")} onOpen={open} previewRating={previewRating} previewMetrics={state === "empty" || state === "loading" ? undefined : <>
           <section className="classroom-home-region student-preview-exam">
             <h2>Practice exam score</h2>
             <p className="student-preview-score"><strong>158</strong> <span>estimated LSAT score</span></p>
             <p>PrepTest 148 &middot; 56 of 77 correct</p>
           </section>
-          <HomeRatingCardView onOpen={open} result={{ profile: { overall: rating, LR: rating, RC: rating,
-            bySkill: new Map(), eligibleCount: 48, calibration: { count: 48, expectedCorrect: 30, actualCorrect: 32 } },
-            loading: false, error: null, refresh: () => undefined }} />
         </>} />
         { !params.has("variant") && <a href="?variant=focus">Open Home design previews</a> }
       </div>

@@ -1,12 +1,8 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 
 /** Desk geometry, monochrome Eclipse lighting. Decorative: dots are not student data. */
 export function StudentOrbit() {
-  const [paused, setPaused] = useState(false);
   const host = useRef<HTMLDivElement>(null);
-  const pause = useRef(false);
-  const wake = useRef<() => void>(() => {});
-  useEffect(() => { pause.current = paused; wake.current(); }, [paused]);
   useEffect(() => {
     const element = host.current;
     if (!element) return;
@@ -67,7 +63,6 @@ export function StudentOrbit() {
       root.add(corona);
       const fineRing = ring(1.62, .005, .3);
       fineRing.rotation.set(1.1, .3, 0);
-      // Keep the globe face uninterrupted, as in the approved black Eclipse.
       const belt = new T.Group();
       belt.rotation.set(.16, 0, -.1);
       belt.add(ring(2.12, .005, .22));
@@ -79,24 +74,16 @@ export function StudentOrbit() {
         belt.add(bead);
       }
       root.add(belt);
-      const reduced = matchMedia("(prefers-reduced-motion: reduce)");
-      let frame = 0, visible = true, mx = 0, my = 0, tx = 0, ty = 0, elapsed = 0, previous = 0;
-      const render = (ms: number) => {
-        frame = 0;
-        if (disposed || document.hidden || !visible) return;
-        if (!reduced.matches && !pause.current) {
-          elapsed += previous ? Math.min(ms - previous, 50) : 0;
-          mx += (tx - mx) * .05; my += (ty - my) * .05;
-          root.rotation.set(my * .16, mx * .34, 0);
-          belt.rotation.y = -elapsed * .000045; fineRing.rotation.z = elapsed * .0001;
-        }
-        previous = ms;
-        renderer.render(scene, camera);
-        element.dataset.rendered = "true";
-        if (!reduced.matches && !pause.current) frame = requestAnimationFrame(render);
+      let frame = 0;
+      let visible = true;
+      const kick = () => {
+        cancelAnimationFrame(frame);
+        frame = requestAnimationFrame(() => {
+          if (disposed || document.hidden || !visible) return;
+          renderer.render(scene, camera);
+          element.dataset.rendered = "true";
+        });
       };
-      const kick = () => { cancelAnimationFrame(frame); frame = requestAnimationFrame(render); };
-      wake.current = kick;
       const resize = () => {
         const { width, height } = element.getBoundingClientRect();
         if (!width || !height) return;
@@ -105,25 +92,14 @@ export function StudentOrbit() {
         root.scale.setScalar(Math.min(.88, camera.aspect * .72));
         camera.updateProjectionMatrix(); kick();
       };
-      const move = (e: PointerEvent) => {
-        if (e.pointerType !== "mouse" || reduced.matches || pause.current) return;
-        const r = element.getBoundingClientRect();
-        tx = (e.clientX - r.left) / r.width - .5; ty = (e.clientY - r.top) / r.height - .5;
-      };
-      const leave = () => { tx = ty = 0; };
       const observer = new ResizeObserver(resize); observer.observe(element);
       const intersection = new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; kick(); });
       intersection.observe(element);
-      element.addEventListener("pointermove", move);
-      element.addEventListener("pointerleave", leave);
       document.addEventListener("visibilitychange", kick);
-      reduced.addEventListener("change", kick);
       resize();
       cleanup = () => {
-        wake.current = () => {};
         cancelAnimationFrame(frame); observer.disconnect(); intersection.disconnect();
-        element.removeEventListener("pointermove", move); element.removeEventListener("pointerleave", leave);
-        document.removeEventListener("visibilitychange", kick); reduced.removeEventListener("change", kick);
+        document.removeEventListener("visibilitychange", kick);
         const geometries = new Set<InstanceType<typeof T.BufferGeometry>>();
         const materials = new Set<InstanceType<typeof T.Material>>();
         scene.traverse((object) => {
@@ -138,5 +114,5 @@ export function StudentOrbit() {
     }).catch(() => { /* Keep the static fallback if the optional scene cannot load. */ });
     return () => { disposed = true; cleanup(); };
   }, []);
-  return <><div ref={host} className="student-orbit" aria-hidden="true"><span className="student-orbit-fallback" /></div><button type="button" className="student-orbit-motion" aria-pressed={paused} onClick={() => setPaused(!paused)}>{paused ? "Play motion" : "Pause motion"}</button></>;
+  return <div ref={host} className="student-orbit" aria-hidden="true"><span className="student-orbit-fallback" /></div>;
 }

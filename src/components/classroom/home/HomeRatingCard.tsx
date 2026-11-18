@@ -1,9 +1,10 @@
+import * as Popover from "@radix-ui/react-popover";
 import { LightningBoltIcon } from "@radix-ui/react-icons";
 import { usePracticeRating } from "@/hooks/usePracticeRating";
 import { MIN_RATED_ANSWERS, type RatingProfile } from "@/lib/practiceRating";
 import { launchDrill } from "@/lib/drillLaunch";
 
-type RatingResult = Pick<ReturnType<typeof usePracticeRating>, "profile" | "loading" | "error"> & { refresh: () => unknown };
+export type RatingResult = Pick<ReturnType<typeof usePracticeRating>, "profile" | "loading" | "error"> & { refresh: () => unknown };
 
 /**
  * Home's Logical Reasoning practice rating, with Smart Drill one click away.
@@ -11,7 +12,28 @@ type RatingResult = Pick<ReturnType<typeof usePracticeRating>, "profile" | "load
  * Mounted only for students with drill access.
  */
 export function HomeRatingCard({ onOpen }: { onOpen: (route: string) => void }) {
-  return <HomeRatingCardView result={usePracticeRating()} onOpen={onOpen} />;
+  return <HomeOrbitRating result={usePracticeRating()} onOpen={onOpen} />;
+}
+
+export function HomeOrbitRating({ result, onOpen }: { result: RatingResult; onOpen: (route: string) => void }) {
+  const track = result.profile?.LR;
+  const rating = !result.loading && track && track.count >= MIN_RATED_ANSWERS
+    ? Math.round(track.rating)
+    : "—";
+
+  return (
+    <Popover.Root>
+      <Popover.Trigger className="student-orbit-rating">
+        <span className="student-orbit-rating-readout">
+          <span>LR rating</span>
+          <strong>{rating}</strong>
+        </span>
+      </Popover.Trigger>
+      <Popover.Content sideOffset={12} className="student-home-popover" aria-label="LR rating details">
+        <HomeRatingCardView result={result} onOpen={onOpen} />
+      </Popover.Content>
+    </Popover.Root>
+  );
 }
 
 export function HomeRatingCardView({ result, onOpen }: { result: RatingResult; onOpen: (route: string) => void }) {
@@ -22,7 +44,7 @@ export function HomeRatingCardView({ result, onOpen }: { result: RatingResult; o
     onOpen(`/drill?${launchDrill({ kind: "smart-drill", options: { returnTo: "/classroom" } })}`);
 
   return (
-    <section className="classroom-home-region classroom-home-rating" aria-label="Your LR rating" data-home-reveal>
+    <section className="classroom-home-region classroom-home-rating" aria-label="Your LR rating">
       <header className="classroom-home-region-head">
         <h2>Your LR rating</h2>
       </header>
