@@ -1,5 +1,4 @@
 import * as React from "react";
-import { ArrowRight } from "lucide-react";
 import { useHomeFeedback } from "../useHomeFeedback";
 import { postSessionLede, calendarCheckIsStale } from "./postSessionModel";
 import type { TeacherHomeModel } from "./teacherHomeModel";
@@ -10,7 +9,8 @@ import { TeacherScheduleSheet } from "./TeacherScheduleSheet";
 import { EclipseStage } from "./EclipseStage";
 import "./eclipse.css";
 import "./observatory.css";
-import { FollowUpGauge, SevenDayStrip, WeekLoad } from "./ObservatoryWidgets";
+import { FollowUpGauge, MessageFaces, SevenDayStrip, WeekLoad } from "./ObservatoryWidgets";
+import { TeacherDock } from "./TeacherDock";
 import { AccessSheet, BookingSheet } from "./TeacherAccessBooking";
 import {
   EMPTY_DESK,
@@ -231,25 +231,6 @@ function TeacherDeskContent({
         </div>
         <p className="home-desk-summary obs-sum">{sessionSummary}</p>
         <div className="obs-acts">
-          <button
-            className="obs-btn-ink"
-            aria-label="Assign work"
-            data-home-feedback
-            onClick={() => onOpen("/teacher/library/assignments")}
-          >
-            Assign work
-            <span aria-hidden="true">
-              <ArrowRight size={16} />
-            </span>
-          </button>
-          <button
-            className="obs-btn-line"
-            data-home-feedback
-            onClick={() => onOpen("/teacher/inbox")}
-          >
-            Messages
-            {model.unread.state === "ready" ? ` (${model.unread.total})` : ""}
-          </button>
           <details className="home-desk-more-menu obs-more">
             <summary>More</summary>
             <div>
@@ -274,6 +255,7 @@ function TeacherDeskContent({
         </div>
       </div>
       <SevenDayStrip agenda={desk.agenda} now={obsNow} onOpen={onOpen} />
+      <MessageFaces unread={model.unread} onOpen={onOpen} onRetry={onRetryInbox} />
 
       <div className="eclipse-zone">
         <div className="eclipse-zl" aria-hidden="true">01 · Follow up</div>
@@ -599,6 +581,14 @@ function TeacherDeskContent({
           </p>
         </section>
       </div>
+      <TeacherDock
+        students={students}
+        rosterReady={model.roster.state === "ready"}
+        unread={model.unread.rows}
+        unreadTotal={model.unread.state === "ready" ? model.unread.total : null}
+        events={desk.agenda.state === "ready" ? (desk.agenda.data?.events ?? []) : undefined}
+        onOpen={onOpen}
+      />
       <AllTasksSheet
         open={allTasks}
         onClose={() => setAllTasks(false)}
