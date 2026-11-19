@@ -3,6 +3,9 @@
  * Events are placed relative to the real clock, so the orrery and countdown
  * behave as they will live.
  */
+import { useState } from "react";
+import { tierFlags, type ManagedUser } from "@/lib/adminUsers";
+import type { DeskActions } from "@/components/classroom/home/teacher/teachingDeskModel";
 import { TeacherHomeView } from "@/components/classroom/home/teacher/TeacherHomeView";
 import type { TeacherHomeModel } from "@/components/classroom/home/teacher/teacherHomeModel";
 import { EMPTY_DESK, type AgendaEvent } from "@/components/classroom/home/teacher/teachingDeskModel";
@@ -73,12 +76,35 @@ const MODEL: TeacherHomeModel = {
   desk: { ...EMPTY_DESK, actorId: "preview", agenda: { state: "ready", data: { events: EVENTS } } } as TeacherHomeModel["desk"],
 };
 
+const sampleAccounts = [
+  { class_id: "sample-hana", display_name: "Hana Ito", email: "hana@example.test", created_at: at(0, "08:15").toISOString(), access_tier: null },
+  { class_id: "sample-celia", display_name: "Celia Moreno", email: "celia@example.test", created_at: at(-1, "13:00").toISOString(), access_tier: null },
+  { class_id: "sample-lydia", display_name: "Lydia Park", email: "lydia@example.test", access_tier: "tier_1" },
+].map((account) => ({ role: "student", archived_at: null, archived_reason: null, last_seen_at: null,
+  ...tierFlags(account.access_tier === "tier_1" ? "tier_1" : "tier_3"), ...account,
+})) as ManagedUser[];
+
+const saveSampleAccess: DeskActions["saveHomeAccess"] = async (person, tier, draft) =>
+  ({ ...person, ...tierFlags(tier), ...draft, access_tier: tier });
+
 export default function TeacherHomePreview() {
+  const [accounts, setAccounts] = useState(sampleAccounts);
+  const model: TeacherHomeModel = {
+    ...MODEL,
+    desk: {
+      ...MODEL.desk!,
+      access: { state: "ready", data: accounts },
+      actions: { ...MODEL.desk?.actions, saveHomeAccess: saveSampleAccess } as DeskActions,
+      refreshAccess: (person) => {
+        if (person) setAccounts((rows) => rows.map((row) => row.class_id === person.class_id ? person : row));
+      },
+    },
+  };
   return (
     <div className="classroom-root classroom-root-home">
       <main className="classroom-stage">
         <div className="classroom-column">
-          <TeacherHomeView model={MODEL} onOpen={(r) => console.info("open", r)} />
+          <TeacherHomeView model={model} onOpen={(r) => console.info("open", r)} />
         </div>
       </main>
     </div>

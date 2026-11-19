@@ -58,7 +58,7 @@ export function AccessSheet({
   save?: typeof saveHomeAccess;
   person: ManagedUser | null;
   onClose: () => void;
-  onSaved: () => void;
+  onSaved: (person: ManagedUser) => void;
 }) {
   const [tier, setTier] = React.useState<AccessTier>("tier_2");
   const [draft, setDraft] = React.useState<Record<string, boolean>>({});
@@ -69,7 +69,7 @@ export function AccessSheet({
   React.useEffect(() => {
     if (person) {
       setBaseline(person);
-      setTier("tier_2");
+      setTier(person.access_tier ?? "tier_2");
       setDraft(
         Object.fromEntries(CONFIGURABLE_FLAG_KEYS.map((k) => [k, !!person[k]])),
       );
@@ -161,7 +161,7 @@ export function AccessSheet({
                   );
                   setBaseline(verified);
                   setSaved(true);
-                  onSaved();
+                  onSaved(verified);
                 } catch {
                   setError(
                     "Access was not confirmed. Refresh the account before trying again.",

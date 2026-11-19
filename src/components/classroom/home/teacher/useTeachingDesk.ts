@@ -1,3 +1,5 @@
+import { withAccessTiers } from "@/lib/accessTierClient";
+import { SIGNUP_QUEUE_KEY } from "@/components/teacher/SignupQueue";
 import * as React from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
@@ -165,9 +167,9 @@ export function useTeachingDesk(
     );
     if (error) throw error;
     if (!Array.isArray(data)) throw new Error("Invalid roster");
-    return data.filter(
+    return withAccessTiers(data.filter(
       (p: ManagedUser) => p.role !== "admin" && !p.archived_at,
-    );
+    ));
   });
   const region = <T>(
     q: any,
@@ -325,8 +327,13 @@ export function useTeachingDesk(
       void client.invalidateQueries({ queryKey: deskKey(actorId, "access") });
       void client.invalidateQueries({ queryKey: ["student-booking", "info"] });
     },
-    refreshAccess: () => {
-      void client.invalidateQueries({ queryKey: deskKey(actorId, "access") });
+    refreshAccess: (person) => {
+      const queryKey = deskKey(actorId, "access");
+      if (person) client.setQueryData<ManagedUser[]>(queryKey, (rows) =>
+        rows?.map((row) => row.class_id === person.class_id ? person : row),
+      );
+      void client.invalidateQueries({ queryKey });
+      if (person) void client.invalidateQueries({ queryKey: SIGNUP_QUEUE_KEY });
     },
     classify: async (eventId, kind) => {
       guard();

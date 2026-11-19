@@ -9,7 +9,8 @@ import { TeacherScheduleSheet } from "./TeacherScheduleSheet";
 import { EclipseStage } from "./EclipseStage";
 import "./eclipse.css";
 import "./observatory.css";
-import { FollowUpGauge, MessageFaces, SevenDayStrip, WeekLoad } from "./ObservatoryWidgets";
+import { MessageFaces, SevenDayStrip } from "./ObservatoryWidgets";
+import { StudentAccessTable } from "./StudentAccessTable";
 import { TeacherDock } from "./TeacherDock";
 import { AccessSheet, BookingSheet } from "./TeacherAccessBooking";
 import {
@@ -68,19 +69,9 @@ function TeacherDeskContent({
   const [access, setAccess] = React.useState<ManagedUser | null>(null);
   const [search, setSearch] = React.useState("");
   const [classifyError, setClassifyError] = React.useState("");
-  const pendingAccess = desk.access.data?.filter((p) => !p.access_tier) ?? [];
   const matches = search.trim()
     ? filterStudents(students, search).slice(0, 5)
     : [];
-  const jump = (id: string) => {
-    document.getElementById(id)?.scrollIntoView({
-      behavior: matchMedia("(prefers-reduced-motion: reduce)").matches
-        ? "instant"
-        : "smooth",
-      block: "start",
-    });
-    document.getElementById(id)?.focus({ preventScroll: true });
-  };
   const sessionTotal =
     model.postSession?.data?.total ??
     model.postSession?.data?.tasks?.length ??
@@ -249,10 +240,11 @@ function TeacherDeskContent({
       </header>
       <div className="obs-top">
         <EclipseStage agenda={desk.agenda} onOpen={onOpen} />
-        <div className="obs-inst">
-          <FollowUpGauge work={model.postSession} onJump={() => jump("home-session-work")} />
-          <WeekLoad agenda={desk.agenda} now={obsNow} />
-        </div>
+        <StudentAccessTable region={desk.access} onEdit={(person, trigger) => {
+          accountTrigger.current = trigger;
+          setAccess(person);
+          setAccessOpen(true);
+        }} />
       </div>
       <SevenDayStrip agenda={desk.agenda} now={obsNow} onOpen={onOpen} />
       <MessageFaces unread={model.unread} onOpen={onOpen} onRetry={onRetryInbox} />
@@ -358,68 +350,9 @@ function TeacherDeskContent({
       </div>
 
       <div className="eclipse-zone">
-        <div className="eclipse-zl" aria-hidden="true">02 · Inbox and new students</div>
+        <div className="eclipse-zl" aria-hidden="true">02 · Inbox and tasks</div>
         <div className="eclipse-three">
           {correspondence}
-          <section
-            className="classroom-home-region eclipse-new-students"
-            id="home-new-students"
-            tabIndex={-1}
-          >
-            <header className="classroom-home-region-head">
-              <h2>
-                New students{" "}
-                {desk.access.state === "ready" ? (
-                  <span className="classroom-home-count">{pendingAccess.length}</span>
-                ) : null}
-              </h2>
-              <button
-                className="classroom-home-more"
-                onClick={() => onOpen("/teacher/students")}
-              >
-                All students ↗
-              </button>
-            </header>
-            <DeskStatus region={desk.access} noun="new students" />
-            {desk.access.state === "ready" ? (
-              pendingAccess.length ? (
-                <ul aria-label="Students waiting for access">
-                  {pendingAccess.slice(0, 4).map((person) => (
-                    <li key={person.class_id} className="eclipse-li">
-                      <span className="eclipse-who">
-                        <span className="eclipse-av" aria-hidden="true">
-                          {(person.display_name || person.email).charAt(0).toUpperCase()}
-                        </span>
-                        <span>
-                          <b>{person.display_name || person.email}</b>
-                          <small>
-                            {person.created_at
-                              ? `Signed up ${when(person.created_at)}`
-                              : "Waiting for access"}
-                          </small>
-                        </span>
-                      </span>
-                      <button
-                        className="eclipse-letin"
-                        aria-label={`Let in ${person.display_name || person.email}`}
-                        onClick={(e) => {
-                          accountTrigger.current = e.currentTarget;
-                          setAccessOpen(true);
-                          setAccess(person);
-                        }}
-                      >
-                        Let in
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <p className="home-desk-empty">
-                  Every active account has an access choice.
-                </p>
-              )
-            ) : null}
-          </section>
           <MyList desk={desk} students={students} onAll={() => setAllTasks(true)} />
         </div>
       </div>
@@ -605,8 +538,15 @@ function TeacherDeskContent({
         onSelect={setAccess}
         save={desk.actions?.saveHomeAccess}
         person={access}
-        onClose={() => { setAccess(null); setAccessOpen(false); requestAnimationFrame(() => accountTrigger.current?.focus()); }}
-        onSaved={() => desk.refreshAccess?.()}
+        onClose={() => {
+          setAccess(null);
+          setAccessOpen(false);
+          requestAnimationFrame(() => {
+            const trigger = accountTrigger.current;
+            (trigger?.isConnected ? trigger : rootRef.current?.querySelector<HTMLElement>("#home-student-access"))?.focus();
+          });
+        }}
+        onSaved={(person) => desk.refreshAccess?.(person)}
       />
       <TeacherScheduleSheet open={scheduleOpen} actorId={desk.actorId} students={desk.access.data ?? []} rosterState={desk.access.state} onRetryRoster={desk.access.retry} load={desk.actions?.loadHomeBooking} services={desk.schedulingServices} onCommitted={() => { if (desk.refreshBooking) desk.refreshBooking(); else { desk.agenda.retry?.(); desk.refreshAccess?.(); desk.access.retry?.(); } }} onClose={() => { setScheduleOpen(false); requestAnimationFrame(() => scheduleTrigger.current?.focus()); }} />
       <BookingSheet

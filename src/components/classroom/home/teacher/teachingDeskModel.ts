@@ -139,7 +139,7 @@ export interface TeachingDesk {
     cursor: string | null,
     studentId: string | null,
   ) => Promise<DeskPage<PostSessionTask>>;
-  refreshAccess?: () => void;
+  refreshAccess?: (person?: ManagedUser) => void;
   refreshBooking?: () => void;
   classify?: (
     eventId: string,

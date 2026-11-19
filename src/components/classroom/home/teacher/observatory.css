@@ -846,3 +846,48 @@ html.dark .classroom-root .home-obs .obs-dock .obs-lit { background: var(--obs-l
   .classroom-root .home-obs .obs-dock button,
   .classroom-root .home-obs .obs-mrow { transition: none; }
 }
+
+
+.classroom-root .home-obs .obs-student-access > header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+.classroom-root .home-obs .obs-student-access h2 { margin: 0; font: 400 clamp(23px, 3cqi, 30px)/1.15 var(--obs-serif, Georgia, serif); }
+.classroom-root .home-obs .obs-access-views {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+  padding: 3px;
+  border: 1px solid #ffffff21;
+  background: #090b0d42;
+  border-radius: 14px;
+}
+.classroom-root .home-obs .obs-student-access button {
+  min-height: 40px;
+  padding: 0 10px;
+  border-radius: 10px;
+  font-size: 13px;
+  color: #efede6;
+}
+.classroom-root .home-obs .obs-access-views button[aria-pressed="true"] { background: #efede6; color: #181c1d; }
+.classroom-root .home-obs .obs-student-access button:hover:not([aria-pressed="true"]) { background: #ffffff16; }
+.classroom-root .home-obs .obs-student-access button:focus-visible,
+.classroom-root .home-obs .obs-student-access input:focus-visible { outline: 2px solid #efede6; outline-offset: 2px; }
+.classroom-root .home-obs .obs-student-access table { width: 100%; border-collapse: collapse; font-size: 14px; table-layout: fixed; }
+.classroom-root .home-obs .obs-student-access :is(th, td) { text-align: left; padding: 10px 4px; border-bottom: 1px solid #ffffff20; }
+.classroom-root .home-obs .obs-student-access :is(th, td):last-child { text-align: right; width: 116px; }
+.classroom-root .home-obs .obs-student-access thead { color: #b4bdc1; font-size: 12px; }
+.classroom-root .home-obs .obs-student-access tbody th { font-weight: 500; overflow-wrap: anywhere; }
+.classroom-root .home-obs .obs-student-access small { display: block; color: #b4bdc1; font-size: 12px; margin-top: 3px; }
+.classroom-root .home-obs .obs-student-access td button { background: #ffffff0e; border: 1px solid #ffffff23; }
+.classroom-root .home-obs .obs-student-access input { width: min(100%, 320px); padding: 8px 10px; min-height: 40px; border-radius: 9px; border: 1px solid #ffffff35; background: #ffffff09; color: #efede6; }
+.classroom-root .home-obs .obs-student-access input::placeholder { color: #b4bdc1; }
+.classroom-root .home-obs .obs-access-empty { color: #bec6c8; padding-block: 12px; }
+.classroom-root .home-obs .obs-access-more { margin-top: 10px; }
+@container classroom-home (max-width: 480px) {
+  .classroom-root .home-obs .obs-student-access { padding: 16px; }
+}
