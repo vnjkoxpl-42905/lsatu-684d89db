@@ -1,6 +1,7 @@
 import * as React from "react";
 import type { AgendaEvent, DeskRegion } from "./teachingDeskModel";
 import type { PostSessionHomeState } from "./postSessionModel";
+import type { TeacherHomeModel } from "./teacherHomeModel";
 import {
   clockLabel,
   dayFraction,
@@ -189,6 +190,70 @@ export function SevenDayStrip({
           {agenda.state === "loading" ? "Checking your calendar…" : "Calendar not loaded."}
         </p>
       )}
+    </section>
+  );
+}
+
+/**
+ * Message faces (home-v2): each unread conversation as a face with its
+ * initial, the newest waiting message as a one-line preview, and the time.
+ * Built from the same unread rows the inbox badge counts.
+ */
+export function MessageFaces({
+  unread,
+  onOpen,
+  onRetry,
+}: {
+  unread: TeacherHomeModel["unread"];
+  onOpen: (route: string) => void;
+  onRetry?: () => void;
+}) {
+  return (
+    <section className="obs-card obs-msgs" aria-labelledby="obs-msgs-h">
+      <div className="obs-lbl obs-lbl-paper">
+        <h2 id="obs-msgs-h">Messages</h2>
+        <span>
+          {unread.state === "ready" ? `${unread.total ?? 0} unread` : ""}
+        </span>
+      </div>
+      {unread.state === "loading" ? (
+        <p className="obs-note">Checking messages…</p>
+      ) : unread.state === "error" ? (
+        <p className="obs-note" role="alert">
+          Messages could not be checked.{" "}
+          {onRetry ? <button className="obs-textbtn" onClick={onRetry}>Retry</button> : null}
+        </p>
+      ) : unread.rows.length ? (
+        <ul className="obs-mlist" aria-label="Unread message previews">
+          {unread.rows.slice(0, 4).map((t) => (
+            <li key={t.id}>
+              <button className="obs-mrow" onClick={() => onOpen(t.route)}>
+                <span className="obs-face" aria-hidden="true">
+                  {t.initial}
+                </span>
+                <span className="obs-mtext">
+                  <b>{t.name}</b>
+                  <span className="obs-mprev">
+                    {t.hasAttachments ? "Attachment · " : ""}
+                    {t.snippet}
+                  </span>
+                </span>
+                <span className="obs-mtime">{t.timeLabel}</span>
+              </button>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p className="obs-note">
+          {unread.refreshFailed ? "Nothing was unread at the last check." : "No unread conversations."}
+        </p>
+      )}
+      {unread.refreshFailed && unread.rows.length ? (
+        <p className="obs-note">Could not refresh. These are the last loaded messages.</p>
+      ) : null}
+      <button className="obs-textbtn" onClick={() => onOpen("/teacher/inbox")}>
+        Open inbox
+      </button>
     </section>
   );
 }
