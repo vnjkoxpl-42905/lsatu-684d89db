@@ -64,7 +64,7 @@ export function StudentAnalyticsView({ studentId, studentName, runHref, audience
   const [questionTag, setQuestionTag] = React.useState("all");
   const reviewTag = (tag: string) => { setQuestionTag(tag); setTab("questions"); };
   const { data, isLoading, error } = useQuery({
-    queryKey: ["student-analytics", studentId],
+    queryKey: ["dossier-analytics", studentId],
     queryFn: () => loadStudentPractice(studentId),
     enabled: !!studentId,
   });

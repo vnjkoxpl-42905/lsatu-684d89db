@@ -280,7 +280,8 @@ function ClassroomSidebar({
       case "practice":
         return {
           active: (location.pathname.startsWith("/practice") && !location.pathname.startsWith("/practice/exams")) || location.pathname === "/classroom/drill" || location.pathname === "/sets",
-          onClick: () => go("/practice/drills"),
+          // Drills first when the account has them; practice-only accounts land on their exams.
+          onClick: () => go(permissions.loading ? "/practice" : destinationLandingPath("practice", permissions)),
           onPrefetch: preloadDrillHub,
         };
       case "testing":

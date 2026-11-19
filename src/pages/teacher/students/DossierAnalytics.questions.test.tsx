@@ -127,3 +127,19 @@ describe("Analytics question review", () => {
     expect(screen.getByText("5 questions")).toBeInTheDocument();
   });
 });
+
+describe("cache isolation from the student dashboard", () => {
+  it("renders when the student's own dashboard analytics are already cached for the same account", async () => {
+    const client = new QueryClient({ defaultOptions: { queries: { retry: false } } });
+    // useStudentAnalytics caches { analytics, streak } under this key; it has no practiceTests.
+    client.setQueryData(["student-analytics", "s1"], { analytics: {}, streak: {} });
+    render(
+      <QueryClientProvider client={client}>
+        <MemoryRouter>
+          <StudentAnalyticsView studentId="s1" studentName="Alex" runHref={() => "/x"} audience="student" />
+        </MemoryRouter>
+      </QueryClientProvider>,
+    );
+    expect(await screen.findByLabelText("Student analytics")).toBeInTheDocument();
+  });
+});

@@ -157,6 +157,18 @@ describe("classroom rail access", () => {
     expect(screen.getByTestId("where")).toHaveTextContent("/library/activities");
   });
 
+  it("opens Drills from Practice for drill accounts and exams for practice-only accounts", async () => {
+    permissions.has_drill_access = true;
+    await renderShell("/classroom");
+    fireEvent.click(railButton(/^Practice/));
+    expect(screen.getByTestId("where")).toHaveTextContent("/practice/drills");
+    cleanup(); Object.assign(permissions, NONE, { has_practice_access: true });
+    await renderShell("/classroom");
+    fireEvent.click(railButton(/^Practice/));
+    expect(screen.getByTestId("where")).toHaveTextContent("/practice/exams");
+    expect(screen.getByTestId("where")).not.toHaveTextContent("/practice/drills");
+  });
+
   it("draws no padlock while permissions are still loading", async () => {
     Object.assign(permissions, { loading: true });
     await renderShell("/classroom");
