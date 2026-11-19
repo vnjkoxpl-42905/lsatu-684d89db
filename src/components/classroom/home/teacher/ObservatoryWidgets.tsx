@@ -1,3 +1,4 @@
+import { useId } from "react";
 import * as React from "react";
 import type { AgendaEvent, DeskRegion } from "./teachingDeskModel";
 import type { PostSessionHomeState } from "./postSessionModel";
@@ -208,10 +209,11 @@ export function MessageFaces({
   onOpen: (route: string) => void;
   onRetry?: () => void;
 }) {
+  const headingId = useId();
   return (
-    <section className="obs-card obs-msgs" aria-labelledby="obs-msgs-h">
+    <section className="obs-card obs-msgs" aria-labelledby={headingId}>
       <div className="obs-lbl obs-lbl-paper">
-        <h2 id="obs-msgs-h">Messages</h2>
+        <h2 id={headingId}>Messages</h2>
         <span>
           {unread.state === "ready" ? `${unread.total ?? 0} unread` : ""}
         </span>

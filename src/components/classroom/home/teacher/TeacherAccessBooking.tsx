@@ -48,9 +48,11 @@ export function AccessSheet({
   onClose,
   onSaved,
   save = saveHomeAccess,
-  open, students = [], onSelect, rosterState, onRetryRoster,
+  open, students = [], onSelect, rosterState, onRetryRoster, browse, browseEditTrigger,
 }: {
   open?: boolean;
+  browse?: React.ReactNode;
+  browseEditTrigger?: React.RefObject<HTMLButtonElement>;
   students?: ManagedUser[];
   onSelect?: (person: ManagedUser | null) => void;
   rosterState?: string;
@@ -66,6 +68,23 @@ export function AccessSheet({
   const [error, setError] = React.useState("");
   const [saved, setSaved] = React.useState(false);
   const [baseline, setBaseline] = React.useState<ManagedUser | null>(person);
+  const editorHeading = React.useRef<HTMLHeadingElement>(null);
+  const browseList = React.useRef<HTMLDivElement>(null);
+  const wasEditing = React.useRef(false);
+  React.useLayoutEffect(() => {
+    if (!browse) {
+      wasEditing.current = false;
+      return;
+    }
+    if (person) {
+      editorHeading.current?.focus();
+    } else if (wasEditing.current) {
+      const trigger = browseEditTrigger?.current;
+      if (trigger?.isConnected) trigger.focus();
+      else browseList.current?.querySelector<HTMLElement>('[aria-pressed="true"]')?.focus();
+    }
+    wasEditing.current = Boolean(person);
+  }, [Boolean(browse), person?.class_id]);
   React.useEffect(() => {
     if (person) {
       setBaseline(person);
@@ -85,17 +104,24 @@ export function AccessSheet({
       }}
     >
       <SheetContent
-        className="home-desk-sheet"
+        className={browse ? "home-desk-sheet home-access-sheet" : "home-desk-sheet"}
         overlayClassName="home-desk-overlay"
+        onEscapeKeyDown={(event) => {
+          if (browse && person && !busy) {
+            event.preventDefault();
+            onSelect?.(null);
+          }
+        }}
       >
-        <SheetTitle>Student access</SheetTitle>
+        <SheetTitle>{browse && !person ? "Teacher tools" : "Student access"}</SheetTitle>
         <SheetDescription>
-          Review the named account and features before saving.
+          {browse && !person ? "Review student access and catch up on messages." : "Review the named account and features before saving."}
         </SheetDescription>
-        {onSelect ? <AccountPicker students={students} value={person?.class_id ?? ""} disabled={busy} state={rosterState} onRetry={onRetryRoster} onChange={id => onSelect(eligibleAccounts(students).find(s => s.class_id === id) ?? null)} /> : null}
+        {browse && <div ref={browseList} hidden={Boolean(person)}>{browse}</div>}
+        {!browse && onSelect ? <AccountPicker students={students} value={person?.class_id ?? ""} disabled={busy} state={rosterState} onRetry={onRetryRoster} onChange={id => onSelect(eligibleAccounts(students).find(s => s.class_id === id) ?? null)} /> : null}
         {person ? (
           <>
-            <h3>{person.display_name || person.email}</h3>
+            <h3 ref={editorHeading} tabIndex={browse ? -1 : undefined}>{person.display_name || person.email}</h3>
             <p>{person.email}</p>
             <label className="home-desk-label">
               Access choice
@@ -180,9 +206,9 @@ export function AccessSheet({
             <button
               className="home-desk-text-button"
               disabled={busy}
-              onClick={onClose}
+              onClick={browse ? () => onSelect?.(null) : onClose}
             >
-              {saved ? "Close" : "Cancel"}
+              {browse ? "Back to students" : saved ? "Close" : "Cancel"}
             </button>
           </>
         ) : null}

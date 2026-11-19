@@ -1,3 +1,5 @@
+import { createPortal } from "react-dom";
+import { PanelRightOpen } from "lucide-react";
 import * as React from "react";
 import { useHomeFeedback } from "../useHomeFeedback";
 import { postSessionLede, calendarCheckIsStale } from "./postSessionModel";
@@ -60,6 +62,8 @@ function TeacherDeskContent({
   const [booking, setBooking] = React.useState(false);
   const [bookingMode, setBookingMode] = React.useState<"credits" | "link">("link");
   const [accessOpen, setAccessOpen] = React.useState(false);
+  const [accessRail, setAccessRail] = React.useState(false);
+  const [railSection, setRailSection] = React.useState<"access" | "messages">("access");
   const accountTrigger = React.useRef<HTMLButtonElement | null>(null);
   const openBooking = (mode: "credits" | "link", trigger?: HTMLButtonElement) => {
     accountTrigger.current = trigger ?? null;
@@ -67,6 +71,26 @@ function TeacherDeskContent({
     setBooking(true);
   };
   const [access, setAccess] = React.useState<ManagedUser | null>(null);
+  const railEditTrigger = React.useRef<HTMLButtonElement>(null);
+  const railPullStart = React.useRef<number | null>(null);
+  const railPullHandled = React.useRef(false);
+  const openAccessRail = (trigger: HTMLButtonElement) => {
+    accountTrigger.current = trigger;
+    setAccess(null);
+    railEditTrigger.current = null;
+    setRailSection("access");
+    setAccessRail(true);
+    setAccessOpen(true);
+  };
+  const closeAccess = () => {
+    setAccess(null);
+    setAccessOpen(false);
+    setAccessRail(false);
+    const trigger = accountTrigger.current;
+    requestAnimationFrame(() => {
+      (trigger?.isConnected ? trigger : rootRef.current?.querySelector<HTMLElement>("#home-student-access"))?.focus();
+    });
+  };
   const [search, setSearch] = React.useState("");
   const [classifyError, setClassifyError] = React.useState("");
   const matches = search.trim()
@@ -240,7 +264,7 @@ function TeacherDeskContent({
       </header>
       <div className="obs-top">
         <EclipseStage agenda={desk.agenda} onOpen={onOpen} />
-        <StudentAccessTable region={desk.access} onEdit={(person, trigger) => {
+        <StudentAccessTable region={desk.access} onOpenRail={openAccessRail} onEdit={(person, trigger) => {
           accountTrigger.current = trigger;
           setAccess(person);
           setAccessOpen(true);
@@ -514,6 +538,44 @@ function TeacherDeskContent({
           </p>
         </section>
       </div>
+      {createPortal(
+        <button
+          type="button"
+          className="obs-access-edge-tab"
+          aria-label="Open Teacher tools"
+          aria-haspopup="dialog"
+          title="Teacher tools"
+          onClick={(event) => {
+            if (event.detail !== 0 && railPullHandled.current) {
+              railPullHandled.current = false;
+              return;
+            }
+            openAccessRail(event.currentTarget);
+          }}
+          onPointerDown={(event) => {
+            if (!event.isPrimary || event.button !== 0) return;
+            railPullHandled.current = false;
+            railPullStart.current = event.clientX;
+            event.currentTarget.setPointerCapture(event.pointerId);
+          }}
+          onPointerUp={(event) => {
+            if (!event.isPrimary) return;
+            const start = railPullStart.current;
+            railPullStart.current = null;
+            if (start !== null && start - event.clientX >= 32) {
+              railPullHandled.current = true;
+              openAccessRail(event.currentTarget);
+            } else if (start !== null && Math.abs(start - event.clientX) >= 32) {
+              railPullHandled.current = true;
+            }
+          }}
+          onPointerCancel={() => { railPullStart.current = null; }}
+        >
+          <PanelRightOpen size={17} aria-hidden="true" />
+          <span>Tools</span>
+        </button>,
+        document.body,
+      )}
       <TeacherDock
         students={students}
         rosterReady={model.roster.state === "ready"}
@@ -532,20 +594,38 @@ function TeacherDeskContent({
       />
       <AccessSheet
         open={accessOpen || !!access}
+        browseEditTrigger={railEditTrigger}
+        browse={accessRail ? (
+          <div className="home-access-rail">
+            <div className="teacher-rail-nav" role="group" aria-label="Teacher tools">
+              <button type="button" aria-pressed={railSection === "access"} onClick={() => setRailSection("access")}>Student access</button>
+              <button type="button" aria-label={model.unread.state === "ready" && model.unread.total > 0 ? `Messages, ${model.unread.total} unread` : "Messages"} aria-pressed={railSection === "messages"} onClick={() => setRailSection("messages")}>
+                Messages{model.unread.state === "ready" && model.unread.total > 0 && <span>{model.unread.total}</span>}
+              </button>
+            </div>
+            <div hidden={railSection !== "access"}>
+              <StudentAccessTable inRail region={desk.access} onEdit={(person, trigger) => {
+                railEditTrigger.current = trigger;
+                setAccess(person);
+              }} />
+            </div>
+            {railSection === "messages" && (
+              <div className="teacher-rail-messages">
+                <MessageFaces unread={model.unread} onRetry={onRetryInbox} onOpen={(route) => {
+                  closeAccess();
+                  onOpen(route);
+                }} />
+              </div>
+            )}
+          </div>
+        ) : undefined}
         students={desk.access.data ?? []}
         rosterState={desk.access.state}
         onRetryRoster={desk.access.retry}
         onSelect={setAccess}
         save={desk.actions?.saveHomeAccess}
         person={access}
-        onClose={() => {
-          setAccess(null);
-          setAccessOpen(false);
-          requestAnimationFrame(() => {
-            const trigger = accountTrigger.current;
-            (trigger?.isConnected ? trigger : rootRef.current?.querySelector<HTMLElement>("#home-student-access"))?.focus();
-          });
-        }}
+        onClose={closeAccess}
         onSaved={(person) => desk.refreshAccess?.(person)}
       />
       <TeacherScheduleSheet open={scheduleOpen} actorId={desk.actorId} students={desk.access.data ?? []} rosterState={desk.access.state} onRetryRoster={desk.access.retry} load={desk.actions?.loadHomeBooking} services={desk.schedulingServices} onCommitted={() => { if (desk.refreshBooking) desk.refreshBooking(); else { desk.agenda.retry?.(); desk.refreshAccess?.(); desk.access.retry?.(); } }} onClose={() => { setScheduleOpen(false); requestAnimationFrame(() => scheduleTrigger.current?.focus()); }} />

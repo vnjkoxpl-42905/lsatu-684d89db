@@ -134,6 +134,23 @@ function expectNoStudentContent() {
 }
 
 describe("TeacherHomeView", () => {
+  it("opens the Teacher tools rail and restores focus when browsing and editing", async () => {
+    const account = { class_id: "signup", display_name: "New Student", email: "new@example.invalid", role: "student", access_tier: null, archived_at: null } as any;
+    render(<TeacherHomeView model={{ ...READY, desk: { ...EMPTY_DESK, access: { state: "ready", data: [account] } } }} onOpen={vi.fn()} />);
+    const trigger = screen.getByRole("button", { name: "Open Teacher tools" });
+    fireEvent.click(trigger);
+    expect(screen.getByRole("dialog", { name: "Teacher tools" })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: /^Messages/ }));
+    expect(screen.getByRole("button", { name: "Open inbox" })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Student access" }));
+    fireEvent.click(screen.getByRole("button", { name: "Edit access for New Student" }));
+    expect(screen.getByRole("heading", { name: "New Student" })).toHaveFocus();
+    fireEvent.click(screen.getByRole("button", { name: "Back to students" }));
+    expect(screen.getByRole("button", { name: "Edit access for New Student" })).toHaveFocus();
+    fireEvent.keyDown(screen.getByRole("dialog", { name: "Teacher tools" }), { key: "Escape" });
+    await waitFor(() => expect(trigger).toHaveFocus());
+  });
+
   it("keeps direct access editing open after a blank selection and returns focus to its own row", async () => {
     const account = { class_id: "s1", display_name: "Lydia Park", email: "lydia@example.invalid", role: "student", access_tier: "tier_2", archived_at: null } as any;
     const save = vi.fn().mockResolvedValue({ ...account, access_tier: "tier_3" });
