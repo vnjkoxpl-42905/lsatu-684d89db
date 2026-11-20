@@ -99,6 +99,20 @@ const DEFAULT_PERMISSIONS: PermissionFlags = {
 // queryFn, which may run detached from a render.
 class SessionExpiredError extends Error {}
 
+// A 401 / "JWT expired" from a data read usually means the one-hour access
+// token lapsed before the background refresh ran (laptop wake, long-idle tab).
+// That is not a dead session: the refresh token is still good. Signing out
+// here revoked the refresh token and logged people out for no reason. So:
+// refresh first; only a refresh the server rejects means the session is gone.
+// A network failure during refresh is retried, never treated as a sign-out.
+async function sessionErrorAfterRefresh(): Promise<Error> {
+  const { data, error } = await supabase.auth.refreshSession();
+  if (data?.session) return new Error("Access token refreshed; retrying");
+  const status = (error as { status?: unknown } | null)?.status;
+  if (status === 400 || status === 401 || status === 403) return new SessionExpiredError();
+  return new Error("Session refresh failed transiently; retrying");
+}
+
 // Thrown when the signed-in student's profile is stamped archived. An archived
 // account keeps every record, but it may not be inside the app: the session is
 // ended immediately rather than left running with all doors shut.
@@ -194,7 +208,7 @@ export function useUserPermissions(): UserPermissions {
     // Retry transient failures a couple times, but never retry a dead session
     // (that path signs the user out).
     retry: (count, err) =>
-      !(err instanceof SessionExpiredError) && !(err instanceof AccountArchivedError) && count < 2,
+      !(err instanceof SessionExpiredError) && !(err instanceof AccountArchivedError) && count < 3,
     queryFn: async () => {
       const userId = user!.id;
 
@@ -208,7 +222,7 @@ export function useUserPermissions(): UserPermissions {
         .select([...ACCESS_FLAGS, "archived_at"].join(", "))
         .eq("class_id", userId)
         .maybeSingle();
-      if (isSessionDeadError(profileErr)) throw new SessionExpiredError();
+      if (isSessionDeadError(profileErr)) throw await sessionErrorAfterRefresh();
       // A non-session read failure (transient network / 5xx) must NOT be
       // silently converted to all-false permissions; throw so TanStack Query
       // records the error and retries instead of caching bogus denied flags.
@@ -221,7 +235,7 @@ export function useUserPermissions(): UserPermissions {
         .eq("user_id", userId)
         .eq("role", "admin")
         .maybeSingle();
-      if (isSessionDeadError(roleErr)) throw new SessionExpiredError();
+      if (isSessionDeadError(roleErr)) throw await sessionErrorAfterRefresh();
       if (roleErr) throw roleErr;
 
       const profileRow = (profile ?? null) as unknown as Record<string, unknown> | null;
