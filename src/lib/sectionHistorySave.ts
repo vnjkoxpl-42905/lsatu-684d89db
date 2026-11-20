@@ -162,7 +162,7 @@ export interface SectionTotals {
  * the persisted row, so the score on screen and the row in section_history can
  * never disagree about whether a review happened.
  */
-const hasBlindReview = (brResults?: BlindReviewResult[]): boolean =>
+export const hasBlindReview = (brResults?: BlindReviewResult[]): boolean =>
   Array.isArray(brResults) && brResults.length > 0;
 
 export function buildSectionTotals(
@@ -206,7 +206,7 @@ export function buildSectionTotals(
 }
 
 /** A `{ correct, total }` tally keyed however the caller groups the stats. */
-function tally<K extends string | number>(
+export function tally<K extends string | number>(
   stats: SectionQuestionStat[],
   key: (s: SectionQuestionStat) => K,
 ): Record<K, { correct: number; total: number }> {

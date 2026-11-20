@@ -68,6 +68,8 @@ import {
   persistSectionResults,
   wajQidsForSection,
 } from '@/lib/sectionHistorySave';
+import { isStandalonePoolKey, runStandaloneCloseout } from '@/lib/sectionCloseout';
+import { saveSectionBlindReview, saveSectionPrediction } from '@/lib/sectionReviewRecord';
 import {
   clearCloseoutProgress,
   closeoutKey,
@@ -528,6 +530,10 @@ function DrillContent() {
   
   // New post-section flow states
   const [postSectionScreen, setPostSectionScreen] = React.useState<'predict' | 'complete' | 'review' | 'review-walk' | 'score-report' | null>(null);
+  // The saved section_history row for a standalone section closed out
+  // atomically. Null on every other path (results screen saves as before).
+  const [sectionHistoryId, setSectionHistoryId] = React.useState<string | null>(null);
+  const [sectionCreatedNow, setSectionCreatedNow] = React.useState(false);
   /**
    * What the student guessed before seeing anything. Held for this sitting only
    * and shown beside the real score; nothing persists it, so nothing claims it
@@ -3287,11 +3293,41 @@ function DrillContent() {
       return;
     }
 
+    // A standalone or assigned full section closes out atomically on the
+    // server (sections rebuild Phase 1): the history row, attempts and
+    // journal in one transaction, before any post-section screen. A failure
+    // throws, which leaves the student on the section with Finish available,
+    // and a retry is safe because the server returns the saved row.
+    const atomicCloseout = session.mode === 'full-section' && !guidedSessionKey && !!user
+      && isStandalonePoolKey(genericResumeKey);
+    if (atomicCloseout) {
+      try {
+        const reply = await runStandaloneCloseout({
+          userId: user!.id,
+          poolKey: genericResumeKey!,
+          session: updatedSession,
+          assignmentId,
+        });
+        if (reply.status === 'stale' || !reply.historyId) {
+          toast.error('This section was restarted in another tab. Reload to continue there.');
+          return;
+        }
+        if (reply.conflict) {
+          toast.info('This section was already submitted from another tab. Showing the saved result.');
+        }
+        setSectionHistoryId(reply.historyId);
+        setSectionCreatedNow(reply.createdNow);
+      } catch (e) {
+        toast.error("Your section didn't save. Check your connection and press Finish again.");
+        throw e;
+      }
+    }
+
     // Persist per-question attempts to DB (F2.15). commitSessionAttempts throws
     // if any attempt write fails — per the don't-swallow-errors policy, we
     // surface the failure to the user AND rethrow so the section closeout is
     // not silently completed with incomplete data.
-    try {
+    if (!atomicCloseout) try {
       const { wajFailed, timeMsZero } = await commitSessionAttempts(updatedAttempts, 'full-section');
       if (timeMsZero > 0) {
         toast.warning(
@@ -3768,6 +3804,13 @@ function DrillContent() {
         onPredict={(score) => {
           setPredictedScore(score);
           setPostSectionScreen(assignmentId ? 'review' : 'complete');
+          // Saved to its own record; a failure never blocks the student.
+          if (sectionHistoryId) {
+            saveSectionPrediction(sectionHistoryId, score).catch((error) => {
+              console.error('[drill:prediction] save failed', error);
+              toast.error("Your prediction didn't save. Your section is safe.");
+            });
+          }
         }}
         onSkip={() => setPostSectionScreen(assignmentId ? 'review' : 'complete')}
       />
@@ -3798,6 +3841,21 @@ function DrillContent() {
         // which ones they missed, which is the one thing it must not do.
         reviewQids={brPassQids ?? session.questionQueue}
         onComplete={async (results: DrillBlindReviewResult[]) => {
+          if (sectionHistoryId) {
+            // Its own record, graded on the server from the saved answer key.
+            // No attempts rows (audit F4). A failure keeps the student here
+            // with their answers so the save can be retried.
+            try {
+              await saveSectionBlindReview(sectionHistoryId, results, session);
+            } catch (error) {
+              console.error('[drill:br] save failed', error);
+              toast.error("Your blind review didn't save. Press Finish review again.");
+              throw error;
+            }
+            setBrResults(results);
+            setPostSectionScreen('score-report');
+            return;
+          }
           setBrResults(results);
           setPostSectionScreen('score-report');
           await saveBRResults(session, results);
@@ -3859,6 +3917,8 @@ function DrillContent() {
               : 'Back to Home'
           }
           predictedScore={predictedScore}
+          savedHistoryId={sectionHistoryId}
+          savedHistoryCreatedNow={sectionCreatedNow}
         />
       );
     }

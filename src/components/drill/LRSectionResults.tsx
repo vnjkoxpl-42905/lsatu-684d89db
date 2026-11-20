@@ -47,6 +47,13 @@ interface LRSectionResultsProps {
    */
   predictedScore?: number | null;
   /**
+   * The row already saved by the atomic close-out. When present this screen
+   * writes nothing: no second history row, no second journal pass (audit F2, F3).
+   */
+  savedHistoryId?: string | null;
+  /** The close-out call that just ran created the row (not a replay). */
+  savedHistoryCreatedNow?: boolean;
+  /**
    * Opens the read-only walk over the whole section. Omit it and the control
    * is not rendered — a surface with no review walk should not offer one.
    */
@@ -160,7 +167,7 @@ function AnswerTimeline({
   );
 }
 
-export function LRSectionResults({ session, brResults, classId, onBack, backLabel = 'Back to Home', predictedScore, onReviewSection }: LRSectionResultsProps) {
+export function LRSectionResults({ session, brResults, classId, onBack, backLabel = 'Back to Home', predictedScore, onReviewSection, savedHistoryId, savedHistoryCreatedNow }: LRSectionResultsProps) {
   const { user } = useAuth();
   const navigate = useNavigate();
   const [expandedRows, setExpandedRows] = React.useState<Set<string>>(new Set());
@@ -234,6 +241,14 @@ export function LRSectionResults({ session, brResults, classId, onBack, backLabe
     const saveHistory = async () => {
       if (!user || savedRef.current) return;
       savedRef.current = true;
+
+      if (savedHistoryId) {
+        // Saved before this screen. Only the teacher's email is owed, and only
+        // from the call that created the row; the function itself refuses a
+        // second send for a row it already mailed.
+        if (savedHistoryCreatedNow) void emailSectionReport(savedHistoryId);
+        return;
+      }
 
       try {
         const sectionHistoryId = await persistSectionResults({
