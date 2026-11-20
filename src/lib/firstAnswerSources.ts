@@ -1,4 +1,5 @@
 import { supabase } from '@/integrations/supabase/client';
+import { withoutBrSealedRows } from '@/lib/sectionRelease';
 import {
   adaptLrAttempts,
   adaptLrSections,
@@ -42,7 +43,10 @@ const readLrSections = (studentId: string) => allPages<LrSectionSourceRow>(async
   const result = await supabase.from('section_history')
     .select('id,user_id,mode,completed_at,practice_test_run_id,practice_test_leg,questions_json')
     .eq('user_id', studentId).order('id').range(from, to);
-  return result as unknown as { data: LrSectionSourceRow[] | null; error: { message: string } | null };
+  const typed = result as unknown as { data: Array<LrSectionSourceRow & { release_requires_br?: boolean | null }> | null; error: { message: string } | null };
+  // Assigned sections sealed behind blind review contribute no first answers yet.
+  if (typed.data) typed.data = await withoutBrSealedRows(typed.data);
+  return typed as { data: LrSectionSourceRow[] | null; error: { message: string } | null };
 });
 
 const readRcAttempts = (studentId: string) => allPages<RcAttemptSourceRow>(async (from, to) => {

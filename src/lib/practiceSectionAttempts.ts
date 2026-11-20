@@ -1,4 +1,5 @@
 import { supabase } from '@/integrations/supabase/client';
+import { withoutBrSealedRows } from '@/lib/sectionRelease';
 import { PracticeSession, TABLES } from '@/bootcamps/main-conclusion/persistence/records';
 import { getPersistence } from '@/bootcamps/main-conclusion/persistence/factory';
 import { loadRcIndex } from '@/features/rc/lib/rcBank';
@@ -103,7 +104,9 @@ export async function listPracticeSectionAttempts(userId: string): Promise<Pract
     .is('practice_test_run_id', null)
     .order('completed_at', { ascending: false });
   if (historyError) throw historyError;
-  const completedLr: PracticeSectionAttempt[] = (completedRows ?? [])
+  // An assigned section stays hidden until its blind review is done.
+  const releasedRows = await withoutBrSealedRows((completedRows ?? []) as Array<NonNullable<typeof completedRows>[number] & { release_requires_br?: boolean | null }>);
+  const completedLr: PracticeSectionAttempt[] = releasedRows
     .filter((row) => row.pt > 0 && row.section > 0 && !!row.completed_at && !(protectedRows ?? []).some(sitting => (sitting.result as { historyId?: string } | null)?.historyId === row.id))
     .map((row) => {
       const total = row.initial_total ?? 0;

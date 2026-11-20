@@ -7,7 +7,7 @@ vi.mock('@/integrations/supabase/client', () => ({ supabase: {
     const call = { table, filters: [] as [string, unknown][] }; mock.calls.push(call);
     const query = { select: () => query, eq: (k: string, v: unknown) => { call.filters.push([k, v]); return query; },
       neq: (k: string, v: unknown) => { call.filters.push([`not:${k}`, v]); return query; },
-      or: () => query, in: (k: string, v: unknown) => { call.filters.push([k, v]); return query; }, order: () => query,
+      or: () => query, not: () => query, in: (k: string, v: unknown) => { call.filters.push([k, v]); return query; }, order: () => query,
       range: async () => mock.tables[table] ?? { data: [], error: null } };
     return query;
   },

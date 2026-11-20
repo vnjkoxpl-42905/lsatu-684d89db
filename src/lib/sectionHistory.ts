@@ -20,6 +20,8 @@
 import { supabase } from '@/integrations/supabase/client';
 import type { SectionQuestionStat } from '@/lib/sectionHistorySave';
 import type { SectionAnalysis } from '@/lib/sectionAnalysis';
+import { fetchSectionReviewRecords, hasCompletedBlindReview, type SectionReviewRecord } from '@/lib/sectionReviewRecord';
+import { sectionReleaseState } from '@/lib/sectionRelease';
 
 export interface SectionHistoryRow {
   id: string;
@@ -48,6 +50,14 @@ export interface SectionHistoryRow {
    * one — an empty report reads as "nothing was wrong".
    */
   analysis: SectionAnalysis | null;
+  /** Which diagnosis `analysis` is: the one written at close-out, or the one updated after blind review. */
+  analysisSource?: 'first-pass' | 'blind-review';
+  /** Assigned section: sealed until blind review is complete. */
+  releaseRequiresBr?: boolean;
+  /** Saved score guess, from the review record. Null when none was saved. */
+  predictedScore?: number | null;
+  /** Blind review answers from the review record, when one was completed. */
+  brResults?: SectionReviewRecord['brResults'];
   completedAt: string;
 }
 
@@ -115,7 +125,43 @@ export async function fetchOwnedSectionHistoryItem(
   if (!data || data.id !== historyId || data.user_id !== userId || data.mode !== 'full-section'
     || data.practice_test_run_id != null || typeof data.completed_at !== 'string'
     || !Number.isFinite(Date.parse(data.completed_at))) return null;
-  return toHistoryRow(data as Record<string, any>);
+  const [merged] = await mergeReviewRecords([toHistoryRow(data as Record<string, any>)]);
+  return merged ?? null;
+}
+
+/**
+ * Lays the review record over each row: blind review and its diagnosis only
+ * when the record is complete, the prediction on its own. Sealed rows are
+ * dropped. Older rows keep their historical br_* columns.
+ */
+export async function mergeReviewRecords(rows: SectionHistoryRow[]): Promise<SectionHistoryRow[]> {
+  if (rows.length === 0) return rows;
+  let records = new Map<string, SectionReviewRecord>();
+  try {
+    records = await fetchSectionReviewRecords(rows.map((r) => r.id));
+  } catch (error) {
+    // Without records, flagged rows stay sealed and the rest show as before.
+    console.error('[sectionHistory] review records unavailable', error);
+  }
+  const out: SectionHistoryRow[] = [];
+  for (const row of rows) {
+    const record = records.get(row.id);
+    if (sectionReleaseState(row, record) === 'sealed') continue;
+    const next: SectionHistoryRow = { ...row, predictedScore: record?.predictedScore ?? null };
+    if (hasCompletedBlindReview(record)) {
+      next.brUsed = true;
+      next.brScore = record.brScore;
+      next.brPercent = record.brPercent;
+      next.brDelta = record.brDelta;
+      next.brResults = record.brResults;
+      if (record.brAnalysis) {
+        next.analysis = record.brAnalysis as SectionAnalysis;
+        next.analysisSource = 'blind-review';
+      }
+    }
+    out.push(next);
+  }
+  return out;
 }
 
 function toHistoryRow(r: Record<string, any>): SectionHistoryRow {
@@ -139,6 +185,10 @@ function toHistoryRow(r: Record<string, any>): SectionHistoryRow {
     byDifficulty: asTally(r.by_difficulty_json),
     questions: asQuestions(r.questions_json),
     analysis: (r.analysis_json as SectionAnalysis) ?? null,
+    analysisSource: 'first-pass',
+    releaseRequiresBr: Boolean(r.release_requires_br),
+    predictedScore: null,
+    brResults: null,
     completedAt: r.completed_at ?? r.created_at ?? new Date().toISOString(),
   };
 }
@@ -160,7 +210,7 @@ async function fetchSectionHistoryBy(
 
   if (error) throw error;
 
-  return ((data ?? []) as unknown as Array<Record<string, any>>).map(toHistoryRow);
+  return mergeReviewRecords(((data ?? []) as unknown as Array<Record<string, any>>).map(toHistoryRow));
 }
 
 export interface SectionSummary {

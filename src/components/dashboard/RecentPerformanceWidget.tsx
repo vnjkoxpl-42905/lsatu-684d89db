@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { withoutBrSealedRows } from '@/lib/sectionRelease';
 import { Badge } from '@/components/ui/badge';
 import { Trophy, TrendingUp, Clock } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
@@ -37,13 +38,24 @@ export function RecentPerformanceWidget() {
     try {
       const { data, error } = await supabase
         .from('section_history')
-        .select('id, pt, section, initial_score, initial_total, initial_percent, br_score, br_percent, created_at, total_time_ms')
+        .select('id, pt, section, initial_score, initial_total, initial_percent, br_score, br_percent, created_at, total_time_ms, practice_test_run_id')
         .eq('class_id', classId)
         .order('created_at', { ascending: false })
-        .limit(5);
+        .limit(20);
 
       if (error) throw error;
-      setRecords(data || []);
+      const rows = (data || []) as unknown as Array<{ id: string; practice_test_run_id: string | null; release_requires_br?: boolean | null }>;
+      // A practice-test leg stays sealed until its whole run is complete, and an
+      // assigned section until its blind review is done.
+      const runIds = [...new Set(rows.map((r) => r.practice_test_run_id).filter((v): v is string => !!v))];
+      let completedRuns = new Set<string>();
+      if (runIds.length) {
+        const runs = await supabase.from('practice_test_runs').select('id').in('id', runIds).eq('status', 'completed');
+        if (runs.error) throw runs.error;
+        completedRuns = new Set((runs.data ?? []).map((r) => r.id as string));
+      }
+      const released = await withoutBrSealedRows(rows.filter((r) => !r.practice_test_run_id || completedRuns.has(r.practice_test_run_id)));
+      setRecords((released as unknown as typeof data || []).slice(0, 5));
     } catch (error) {
       console.error('Error fetching recent performance:', error);
     } finally {

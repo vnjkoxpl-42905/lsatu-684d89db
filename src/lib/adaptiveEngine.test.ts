@@ -26,6 +26,7 @@ vi.mock('@/integrations/supabase/client', () => ({
       mockQueryCount += 1;
       const builder = {
         select: () => builder,
+        not: () => builder,
         eq: () => builder,
         order: () => builder,
         limit: () => Promise.resolve({ data: mockAttemptsRows, error: mockAttemptsError }),
