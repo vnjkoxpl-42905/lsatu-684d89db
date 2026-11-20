@@ -160,6 +160,7 @@ export class AdaptiveEngine {
       const { data, error } = await supabase
         .from('attempts')
         .select('qid, correct, time_ms, qtype, level, timestamp_iso')
+        .not('br_selected', 'is', true) // blind review rows are not attempts (sections rebuild 2.7)
         .eq('class_id', classId)
         .order('timestamp_iso', { ascending: false })
         .limit(ADAPTIVE_CONFIG.hydrateLimit);
@@ -608,6 +609,7 @@ export class AdaptiveEngine {
       const { data: attempts, error } = await supabase
         .from('attempts')
         .select('qtype, level, correct, timestamp_iso, time_ms')
+        .not('br_selected', 'is', true) // blind review rows are not attempts (sections rebuild 2.7)
         .eq('class_id', classId)
         .order('timestamp_iso', { ascending: false })
         .limit(ADAPTIVE_CONFIG.analyzeLimit);
@@ -861,6 +863,7 @@ export class AdaptiveEngine {
     const { data: rawAttempts, error } = await supabase
       .from('attempts')
       .select('qid, qtype, level, correct, timestamp_iso')
+      .not('br_selected', 'is', true) // blind review rows are not attempts (sections rebuild 2.7)
       .eq('class_id', classId)
       .order('timestamp_iso', { ascending: false })
       .limit(ADAPTIVE_CONFIG.generateLimit);

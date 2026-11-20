@@ -39,6 +39,7 @@ export class DrillIntelligence {
     const { data: attempts, error } = await supabase
       .from('attempts')
       .select('*')
+      .not('br_selected', 'is', true) // blind review rows are not attempts (sections rebuild 2.7)
       .eq('user_id', userId)
       .order('timestamp_iso', { ascending: true })
       .limit(200);
@@ -75,6 +76,7 @@ export class DrillIntelligence {
     const { data: attempts, error } = await supabase
       .from('attempts')
       .select('*')
+      .not('br_selected', 'is', true) // blind review rows are not attempts (sections rebuild 2.7)
       .eq('user_id', userId)
       .order('timestamp_iso', { ascending: false })
       .limit(100);
@@ -140,6 +142,7 @@ export class DrillIntelligence {
     const { data: attempts, error } = await supabase
       .from('attempts')
       .select('*')
+      .not('br_selected', 'is', true) // blind review rows are not attempts (sections rebuild 2.7)
       .eq('user_id', userId)
       .order('timestamp_iso', { ascending: true });
 

@@ -72,6 +72,7 @@ export async function loadStudentPractice(studentId: string): Promise<StudentPra
   const [attempts, sections, practiceTests, drills] = await Promise.all([
     supabase.from("attempts")
       .select("qid,pt,section,qnum,qtype,level,mode,selected_answer,correct,time_ms,timestamp_iso,br_answer,br_outcome")
+      .not('br_selected', 'is', true) // blind review rows are not attempts (sections rebuild 2.7)
       .eq("class_id", studentId)
       .order("timestamp_iso", { ascending: true })
       .limit(10000),

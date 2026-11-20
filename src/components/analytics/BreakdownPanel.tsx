@@ -44,6 +44,7 @@ function useAttempts() {
       const { data, error } = await supabase
         .from('attempts')
         .select('qid, qtype, correct, time_ms')
+        .not('br_selected', 'is', true) // blind review rows are not attempts (sections rebuild 2.7)
         .eq('user_id', user!.id);
       if (error) throw error;
       return (data ?? []) as AttemptLike[];

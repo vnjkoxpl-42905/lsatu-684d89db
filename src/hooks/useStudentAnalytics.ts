@@ -42,6 +42,7 @@ export function useStudentAnalytics(): StudentAnalyticsResult {
         supabase
           .from("attempts")
           .select("qid, qtype, level, correct, mode, time_ms, timestamp_iso")
+          .not('br_selected', 'is', true) // blind review rows are not attempts (sections rebuild 2.7)
           .eq("class_id", classId)
           .order("timestamp_iso", { ascending: true }),
         supabase

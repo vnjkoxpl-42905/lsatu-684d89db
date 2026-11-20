@@ -118,6 +118,7 @@ export async function fetchDrillHistory(userId: string): Promise<DrillHistoryRow
   type LrAttempt = { user_id: string | null; class_id: string; qid: string; pt: number; section: number; qnum: number; qtype: string; correct: boolean | null; time_ms: number | null; selected_answer: string | null; mode: string; timestamp_iso: string; timed_pt_run_id: string | null; timed_section_sitting_id: string | null };
   const lr = await readHistoryPages<LrAttempt>(userId, (from) => supabase.from('attempts')
     .select('user_id,class_id,qid,pt,section,qnum,qtype,correct,time_ms,selected_answer,mode,timestamp_iso,timed_pt_run_id,timed_section_sitting_id')
+    .not('br_selected', 'is', true) // blind review rows are not attempts (sections rebuild 2.7)
     .or(`user_id.eq.${userId},and(user_id.is.null,class_id.eq.${userId})`)
     .order('timestamp_iso', { ascending: false }).range(from, from + PAGE_SIZE - 1));
   for (const a of lr) {
