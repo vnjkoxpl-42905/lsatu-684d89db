@@ -467,7 +467,7 @@ describe('Drill review controls — filter drill (fixed + commit)', () => {
     } as unknown as import('@/lib/drillRunLedger').StandaloneDrillRun;
     renderDrill({ ...filterSpec, savedStandaloneRun: saved }, '?run=aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa&layout=classic');
     await waitForQuestion(19);
-    expect(screen.getByRole('note')).toHaveTextContent('Training · Answers and explanations appear when you choose to reveal them.');
+    expect(screen.queryByRole('note')).not.toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Answer' })).toBeInTheDocument();
     expect(screen.queryByRole('button', { name: /^Submit$/ })).not.toBeInTheDocument();
     fireEvent.click(choiceButton('C'));
