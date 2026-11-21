@@ -39,7 +39,7 @@ import { TutorChatModal } from '@/components/drill/TutorChatModal';
 import { resolveTutorLaunch, resolveTutorMode, type TutorMode } from '@/components/drill/tutorBehavior';
 import { AI_TUTOR_ENABLED } from '@/components/drill/aiTutorFlag';
 import { reviewPolicyForRun } from '@/lib/drillReviewPolicy';
-import { lrRunProvenanceForSpec, lrRunProvenanceLabel } from '@/lib/lrRunProvenance';
+import { lrRunProvenanceForSpec } from '@/lib/lrRunProvenance';
 import ArgumentBreakdown from '@/components/drill/official/ArgumentBreakdown';
 import { ReviewModal } from '@/components/drill/ReviewModal';
 import { VoiceCoachChip } from '@/components/drill/VoiceCoachChip';
@@ -4992,7 +4992,6 @@ function DrillContent() {
             }
           }}
           header={<>
-            {standaloneSourceKey && <p className="px-4 py-2 text-xs text-slate-600" role="note">{lrRunProvenanceLabel(legacyStandaloneResumeRef.current ? undefined : standaloneProvenance)}</p>}
             <OfficialSessionStrip
               breadcrumbs={officialBreadcrumbs}
               isPaused={officialIsPaused}
@@ -5318,7 +5317,6 @@ function DrillContent() {
         "min-h-screen flex flex-col relative bg-white",
         session.mode === 'full-section' && "pb-20"
       )}>
-        {standaloneSourceKey && <p className="px-4 py-2 text-xs text-slate-600" role="note">{lrRunProvenanceLabel(legacyStandaloneResumeRef.current ? undefined : standaloneProvenance)}</p>}
         {/* Pause Overlay */}
         {timer?.isPaused && (
           <div className="absolute inset-0 bg-zinc-900/90 backdrop-blur-md z-50 flex items-center justify-center animate-fade-in">
