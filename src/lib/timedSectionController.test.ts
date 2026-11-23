@@ -93,7 +93,7 @@ describe('parentless standalone section controller', () => {
   });
   it('builds the LR report from close receipt history UUID and RC report from native child UUID', async () => {
     const lr = setup('lr'); const lrState = await lr.controller.load(); lrState.snapshot.sitting.phase = 'complete'; lrState.snapshot.sitting.result = { historyId: 'history-uuid' };
-    expect(lr.controller.reportHref(lrState)).toBe('/testing/attempts/section/lr/history-uuid');
+    expect(lr.controller.reportHref(lrState)).toBe('/review/section/history-uuid');
     const rc = setup('rc'); const rcState = await rc.controller.load(); rcState.snapshot.sitting.phase = 'complete';
     expect(rc.controller.reportHref(rcState)).toBe('/rc/results/30000000-0000-4000-8000-000000000001');
   });

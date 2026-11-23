@@ -142,7 +142,7 @@ export class TimedSectionController {
   reportHref(state: TimedSectionState): string | null {
     if (state.snapshot.sitting.phase !== 'complete') return null;
     if (state.snapshot.sitting.kind === 'lr') return typeof state.snapshot.sitting.result?.historyId === 'string'
-      ? `/testing/attempts/section/lr/${encodeURIComponent(state.snapshot.sitting.result.historyId)}` : invalid('Completed section has no acknowledged report.');
+      ? `/review/section/${encodeURIComponent(state.snapshot.sitting.result.historyId)}` : invalid('Completed section has no acknowledged report.');
     return state.snapshot.child?.kind === 'rc' && typeof state.snapshot.child.session.id === 'string'
       ? `/rc/results/${encodeURIComponent(state.snapshot.child.session.id)}` : invalid('Completed section has no acknowledged RC report.');
   }

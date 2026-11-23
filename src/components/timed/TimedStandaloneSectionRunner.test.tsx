@@ -35,7 +35,7 @@ beforeEach(() => {
   controller = { load: vi.fn().mockResolvedValue(state()), clock: vi.fn().mockReturnValue({ writer: 'active', remainingMs: 2100000 }),
     pending: vi.fn().mockReturnValue(null), rejection: vi.fn().mockReturnValue(null), create: vi.fn().mockResolvedValue(state('ready')),
     control: vi.fn().mockResolvedValue(state('paused')), checkpoint: vi.fn().mockResolvedValue(state()), close: vi.fn().mockResolvedValue(state('complete')),
-    retry: vi.fn().mockResolvedValue(state()), recoverRejected: vi.fn().mockResolvedValue(state('paused')), reportHref: vi.fn().mockReturnValue('/testing/attempts/section/lr/history') };
+    retry: vi.fn().mockResolvedValue(state()), recoverRejected: vi.fn().mockResolvedValue(state('paused')), reportHref: vi.fn().mockReturnValue('/review/section/history') };
 });
 const factory = () => controller as unknown as TimedSectionController;
 function tree(query = '') { return <MemoryRouter initialEntries={[`/testing/sections/${work}${query}`]} future={{ v7_startTransition: true, v7_relativeSplatPath: true }}><Routes><Route path="/testing/sections/:sittingId" element={<Runner controllerFactory={factory} />} /><Route path="/testing" element={<div>Testing destination</div>} /></Routes></MemoryRouter>; }

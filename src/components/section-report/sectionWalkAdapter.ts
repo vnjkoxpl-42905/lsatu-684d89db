@@ -51,9 +51,11 @@ export function sectionHistoryToWalkSession(
       fallbackBr.push({
         qid: stat.qid,
         preAnswer: stat.initialAnswer,
+        preCorrect: stat.initialCorrect,
         brAnswer: stat.brAnswer,
         brRationale: '',
         brTimeMs: stat.brTimeMs ?? 0,
+        brTouched: true,
         brChanged: Boolean(stat.brChanged),
         correct: stat.brAnswer === stat.correctAnswer,
       });

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom";
+import { Link, Navigate, useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "@/contexts/AuthContext";
 import { useQuestionBank } from "@/contexts/QuestionBankContext";
@@ -15,6 +15,7 @@ import {
 } from "@/lib/practiceTest";
 import { listAccountPracticeTestRuns } from "@/lib/practiceTestStore";
 import { listPracticeSectionAttempts } from "@/lib/practiceSectionAttempts";
+import { ownsSectionHistoryRow } from "@/lib/sectionHistory";
 import { practiceTestPath } from "@/lib/practiceTestRunner";
 import { PracticeExamsNav } from "./PracticeExamsNav";
 import "./testing-centre.css";
@@ -243,22 +244,36 @@ export function PracticeExamAttempts() {
 export function PracticeSectionResult() {
   const { sessionId } = useParams<{ sessionId: string }>();
   const { user } = useAuth();
+  const historyMatch = useQuery({
+    queryKey: ["section-history-resolve", user?.id, sessionId],
+    enabled: !!user?.id && !!sessionId,
+    queryFn: () => ownsSectionHistoryRow(user!.id, sessionId!),
+  });
   const sections = useQuery({
     queryKey: ["practice-section-attempts", user?.id],
-    enabled: !!user?.id,
+    enabled: !!user?.id && historyMatch.isSuccess && historyMatch.data === false,
     queryFn: () => listPracticeSectionAttempts(user!.id),
   });
+
+  if (sessionId && historyMatch.data === true) {
+    return <Navigate to={`/review/section/${encodeURIComponent(sessionId)}`} replace />;
+  }
+
   const attempt = sections.data?.find((section) =>
     section.kind === "lr-section" && section.id === sessionId && section.status === "completed",
   );
+  const loading = historyMatch.isLoading || (historyMatch.data === false && sections.isLoading);
+  const hasError = historyMatch.isError || sections.isError;
+
   return <ExamLayout>
     <Link className="practice-exams-back" to="/practice/exams/attempts">← Attempts</Link>
     <h1 className="classroom-title">Logical Reasoning result</h1>
-    {sections.isLoading && <p className="testing-note" role="status">Loading your result…</p>}
-    {sections.isError && <p className="testing-note" role="alert">This result could not be loaded. Refresh to try again.</p>}
-    {!sections.isLoading && !sections.isError && !attempt && <p className="testing-note">This result was not found in your account.</p>}
+    {loading && <p className="testing-note" role="status">Loading your result…</p>}
+    {hasError && <p className="testing-note" role="alert">This result could not be loaded. Refresh to try again.</p>}
+    {!loading && !hasError && !attempt && <p className="testing-note">This result was not found in your account.</p>}
     {attempt && <div className="testing-panel">
       <h2 className="testing-heading">PrepTest {attempt.preptest} · Section {attempt.section}</h2>
+      <p className="testing-note">Saved summary. Question detail was not kept.</p>
       <p className="testing-note">Completed {new Date(attempt.updatedAt).toLocaleDateString()}</p>
       <div className="testing-score"><strong>{attempt.correct === null ? "Score unavailable" : `${attempt.correct} / ${attempt.total}`}</strong><span>{attempt.correct === null ? "This older result has no saved score." : "correct on first attempt"}</span></div>
       <p className="testing-note">{attempt.answered} of {attempt.total} questions answered.</p>
