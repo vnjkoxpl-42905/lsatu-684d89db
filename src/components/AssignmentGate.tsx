@@ -226,7 +226,7 @@ export function OwnedWorkReviewGate({ kind, children }: {
     authorize={async (uid) => {
       if (!id) return false;
       switch (kind) {
-        case 'section': return !!await (await import('@/lib/sectionHistory')).fetchOwnedSectionHistoryItem(uid, id);
+        case 'section': return await (await import('@/lib/sectionHistory')).ownsSectionHistoryRow(uid, id);
         case 'intro-lr': return !!await (await import('@/components/review/introLrReviewSource')).fetchOwnedIntroLrAttempt(uid, id);
         case 'hard-sentences': return !!await (await import('@/components/review/hardSentencesReviewSource')).fetchOwnedHardSentencesAttempt(uid, params.sourceKind ?? '', id);
         case 'native-lab': return !!await (await import('@/components/review/nativeLabReviewSource')).fetchOwnedNativeLabAttempt(uid, id);

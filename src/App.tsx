@@ -48,6 +48,7 @@ const Analytics = safeLazy(() => import("./pages/Analytics"));
 const DrillRuns = safeLazy(() => import("./pages/DrillRuns"));
 const ActivityReviewDetail = safeLazy(() => import("./pages/ActivityReviewDetail"));
 const SectionReviewDetail = safeLazy(() => import("./pages/SectionReviewDetail"));
+const SectionReportPage = safeLazy(() => import("./pages/SectionReportPage"));
 const IntroLrReviewDetail = safeLazy(() => import("./pages/IntroLrReviewDetail"));
 const HardSentencesReviewDetail = safeLazy(() => import("./pages/HardSentencesReviewDetail"));
 const NativeLabReviewDetail = safeLazy(() => import("./pages/NativeLabReviewDetail"));
@@ -674,6 +675,7 @@ const App = () => {
                       <Route path={REVIEW_HUB_ROUTES.imported.path} element={<ProtectedRoute flag={[...REVIEW_HUB_ROUTES.imported.flags]}><ImportedWorkPage /></ProtectedRoute>} />
                       <Route path={REVIEW_HUB_ROUTES.queue.path} element={<ProtectedRoute allowSignedIn={REVIEW_HUB_ROUTES.queue.allowSignedIn}><ReviewQueuePage /></ProtectedRoute>} />
                       <Route path="activity/:assignmentId/:itemOrder" element={<ActivityAssignmentGate><ActivityReviewDetail /></ActivityAssignmentGate>} />
+                      <Route path="section/:historyId" element={<OwnedWorkReviewGate kind="section"><SectionReportPage /></OwnedWorkReviewGate>} />
                       <Route path="section/:historyId/:qid" element={<OwnedWorkReviewGate kind="section"><SectionReviewDetail /></OwnedWorkReviewGate>} />
                       <Route path="intro-lr/:attemptId" element={<OwnedWorkReviewGate kind="intro-lr"><IntroLrReviewDetail /></OwnedWorkReviewGate>} />
                       <Route path="hard-sentences/:sourceKind/:attemptKey" element={<OwnedWorkReviewGate kind="hard-sentences"><HardSentencesReviewDetail /></OwnedWorkReviewGate>} />
