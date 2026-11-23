@@ -4,7 +4,12 @@ import type { WrongAnswerSmartRow } from "@/lib/journalService";
 import type { ActivityAssignment, ActivityItemResponse } from "@/features/activity-centre/api/types";
 import type { SectionHistoryRow } from "@/lib/sectionHistory";
 import { UNANSWERED } from "@/lib/sectionAnswer";
-import { buildActivityReviewQueue, buildReviewQueue, buildSectionReviewQueue } from "./reviewQueueModel";
+import {
+  buildActivityReviewQueue,
+  buildReviewQueue,
+  buildSectionReviewQueue,
+  mergeSectionIntoJournal,
+} from "./reviewQueueModel";
 
 function journalRow(overrides: Partial<WrongAnswerSmartRow> = {}): WrongAnswerSmartRow {
   return {
@@ -147,10 +152,10 @@ function sectionRow(id: string, overrides: Partial<SectionHistoryRow> = {}): Sec
 }
 
 describe("buildSectionReviewQueue", () => {
-  it("includes only opened blanks from completed standalone sections with exact sitting links", () => {
+  it("includes only opened blanks from legacy completed standalone sections with report walk links", () => {
     const [item] = buildSectionReviewQueue([sectionRow("sitting-1")]);
     expect(item.key).toBe("section:sitting-1:80-2-1");
-    expect(item.href).toBe("/review/section/sitting-1/80-2-1");
+    expect(item.href).toBe("/review/section/sitting-1?walk=1&qid=80-2-1");
     expect(item.reasons).toEqual(["skipped"]);
     expect(item.sources).toEqual(["section_history"]);
     expect(item.firstAnswer).toBeNull();
@@ -165,5 +170,170 @@ describe("buildSectionReviewQueue", () => {
     const answered = { ...sectionRow("x").questions[0], initialAnswer: "A" };
     const unknown = { ...sectionRow("x").questions[0], qid: "80-2-3", everVisited: undefined };
     expect(buildSectionReviewQueue([sectionRow("x", { questions: [answered, unknown] })])).toEqual([]);
+  });
+
+  it("excludes sealed assigned sections from the review queue", () => {
+    const sealed = sectionRow("sealed-1", {
+      releaseRequiresBr: true,
+      brUsed: false,
+      clientSittingId: "sit-sealed",
+    });
+    expect(buildSectionReviewQueue([sealed])).toEqual([]);
+  });
+});
+
+describe("mergeSectionIntoJournal (Phase 4)", () => {
+  it("shows an answered miss from the new close-out once, linked to the section report", () => {
+    const jRow = journalRow({
+      qid: "80-2-14",
+      entry: {
+        ...journalRow().entry,
+        history_json: [
+          {
+            attempt_at_iso: "2026-11-20T10:00:00Z",
+            result: 0,
+            chosen_answer: "C",
+            correct_answer: "B",
+            time_ms: 70000,
+            confidence_1_5: null,
+            sitting_id: "sit-1",
+          } as never,
+        ],
+      },
+    });
+    const secRow = sectionRow("hist-1", {
+      clientSittingId: "sit-1",
+      brUsed: true,
+      questions: [
+        {
+          qid: "80-2-14",
+          qnum: 14,
+          qtype: "Flaw",
+          difficulty: 3,
+          initialAnswer: "C",
+          correctAnswer: "B",
+          initialCorrect: false,
+          brAnswer: "B",
+          brCorrect: true,
+          brChanged: true,
+          flagged: false,
+          timeMs: 70000,
+          switchCount: 0,
+        },
+      ],
+    });
+    const journalItems = buildReviewQueue([jRow], [flagRow()]);
+    const sectionItems = buildSectionReviewQueue([secRow]);
+    const merged = mergeSectionIntoJournal(journalItems, sectionItems, [secRow]);
+
+    expect(merged).toHaveLength(1);
+    expect(merged[0].qid).toBe("80-2-14");
+    expect(merged[0].reasons).toEqual(["missed", "flagged", "br_changed"]);
+    expect(merged[0].sources).toEqual(["wrong_answer_journal", "flagged_questions", "section_history"]);
+    expect(merged[0].flaggedNote).toBe("Look at choice C");
+    expect(merged[0].href).toBe("/review/section/hist-1?walk=1&qid=80-2-14");
+  });
+
+  it("keeps one journal episode plus separate regret items across two sittings", () => {
+    const jRow = journalRow({
+      qid: "80-2-14",
+      entry: {
+        ...journalRow().entry,
+        history_json: [
+          {
+            attempt_at_iso: "2026-11-18T10:00:00Z",
+            result: 0,
+            chosen_answer: "C",
+            correct_answer: "B",
+            time_ms: 70000,
+            confidence_1_5: null,
+            sitting_id: "sit-miss",
+          } as never,
+        ],
+      },
+    });
+    const regretSitting1 = sectionRow("hist-r1", {
+      clientSittingId: "sit-regret-1",
+      brUsed: true,
+      completedAt: "2026-11-19T10:00:00Z",
+      questions: [
+        {
+          qid: "80-2-14",
+          qnum: 14,
+          qtype: "Flaw",
+          difficulty: 3,
+          initialAnswer: "B",
+          correctAnswer: "B",
+          initialCorrect: true,
+          brAnswer: "D",
+          brCorrect: false,
+          brChanged: true,
+          flagged: false,
+          timeMs: 60000,
+          switchCount: 0,
+        },
+      ],
+    });
+    const regretSitting2 = sectionRow("hist-r2", {
+      clientSittingId: "sit-regret-2",
+      brUsed: true,
+      completedAt: "2026-11-20T10:00:00Z",
+      questions: [
+        {
+          qid: "80-2-14",
+          qnum: 14,
+          qtype: "Flaw",
+          difficulty: 3,
+          initialAnswer: "B",
+          correctAnswer: "B",
+          initialCorrect: true,
+          brAnswer: "E",
+          brCorrect: false,
+          brChanged: true,
+          flagged: false,
+          timeMs: 60000,
+          switchCount: 0,
+        },
+      ],
+    });
+
+    const journalItems = buildReviewQueue([jRow], []);
+    const sectionItems = buildSectionReviewQueue([regretSitting1, regretSitting2]);
+    const merged = mergeSectionIntoJournal(journalItems, sectionItems, [regretSitting1, regretSitting2]);
+
+    // 1 journal episode + 2 separate regret section items (different sitting ids)
+    expect(merged).toHaveLength(3);
+    expect(merged.filter((i) => i.reasons.includes("regret"))).toHaveLength(2);
+  });
+
+  it("never merges a historical journal event without a sitting id by question alone", () => {
+    const legacyJournal = buildReviewQueue([journalRow()], []); // no sitting_id
+    const secRow = sectionRow("hist-br", {
+      clientSittingId: "sit-new",
+      brUsed: true,
+      questions: [
+        {
+          qid: "80-2-14",
+          qnum: 14,
+          qtype: "Flaw",
+          difficulty: 3,
+          initialAnswer: "C",
+          correctAnswer: "B",
+          initialCorrect: false,
+          brAnswer: "B",
+          brCorrect: true,
+          brChanged: true,
+          flagged: false,
+          timeMs: 70000,
+          switchCount: 0,
+        },
+      ],
+    });
+    const sectionItems = buildSectionReviewQueue([secRow]);
+    const merged = mergeSectionIntoJournal(legacyJournal, sectionItems, [secRow]);
+
+    expect(merged).toHaveLength(2);
+    expect(merged.find((i) => i.key === "lr:80-2-14")?.href).toBe("/journal/80-2-14");
+    expect(merged.find((i) => i.key === "section:hist-br:80-2-14")?.reasons).toEqual(["br_changed"]);
   });
 });

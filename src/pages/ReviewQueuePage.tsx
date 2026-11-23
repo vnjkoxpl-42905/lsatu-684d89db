@@ -11,6 +11,7 @@ import {
   buildActivityReviewQueue,
   buildReviewQueue,
   buildSectionReviewQueue,
+  mergeSectionIntoJournal,
   type ReviewReason,
   type ReviewSource,
 } from "@/components/review/reviewQueueModel";
@@ -60,7 +61,11 @@ function reasonLabel(reason: ReviewReason): string {
       ? "Opened and left blank"
       : reason === "teacher_selected"
         ? "Teacher-selected"
-        : "Flagged";
+        : reason === "regret"
+          ? "Changed to wrong in blind review"
+          : reason === "br_changed"
+            ? "Changed in blind review"
+            : "Flagged";
 }
 
 function sourceLabel(source: ReviewSource): string {
@@ -136,8 +141,10 @@ export default function ReviewQueuePage() {
     queryKey: ["review", "sections", user?.id],
     enabled: canSection && !!user,
     staleTime: 60_000,
-    queryFn: async () =>
-      buildSectionReviewQueue(await fetchSectionHistory(user!.id)),
+    queryFn: async () => {
+      const rows = await fetchSectionHistory(user!.id);
+      return { rows, items: buildSectionReviewQueue(rows) };
+    },
   });
   const practiceTestReview = useQuery({
     queryKey: ["review", "practice-test", user?.id],
@@ -174,7 +181,9 @@ export default function ReviewQueuePage() {
     reasonParam === "missed" ||
     reasonParam === "flagged" ||
     reasonParam === "skipped" ||
-    reasonParam === "teacher_selected"
+    reasonParam === "teacher_selected" ||
+    reasonParam === "regret" ||
+    reasonParam === "br_changed"
       ? reasonParam
       : "all";
   const search = searchParams.get("q") ?? "";
@@ -193,13 +202,16 @@ export default function ReviewQueuePage() {
     () =>
       projectReviewEpisodes(
         [
-          ...buildReviewQueue(
-            canJournal ? (journal.data ?? []) : [],
-            canFlag ? (flagged.data ?? []) : [],
+          ...mergeSectionIntoJournal(
+            buildReviewQueue(
+              canJournal ? (journal.data ?? []) : [],
+              canFlag ? (flagged.data ?? []) : [],
+            ),
+            canSection ? (sectionReview.data?.items ?? []) : [],
+            canSection ? (sectionReview.data?.rows ?? []) : [],
           ),
           ...(canRc ? (rcReview.data ?? []) : []),
           ...(canActivity ? (activityReview.data ?? []) : []),
-          ...(canSection ? (sectionReview.data ?? []) : []),
           ...(canPracticeTest ? (practiceTestReview.data ?? []) : []),
           ...(canIntroLr ? (introLrReview.data ?? []) : []),
           ...(canIntroLr ? (hardSentencesReview.data?.items ?? []) : []),

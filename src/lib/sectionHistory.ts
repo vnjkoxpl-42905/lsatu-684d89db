@@ -54,6 +54,8 @@ export interface SectionHistoryRow {
   analysisSource?: 'first-pass' | 'blind-review';
   /** Assigned section: sealed until blind review is complete. */
   releaseRequiresBr?: boolean;
+  /** Server-owned sitting id for legacy standalone close-outs (used to link journal items). */
+  clientSittingId?: string | null;
   /** Saved score guess, from the review record. Null when none was saved. */
   predictedScore?: number | null;
   /** Blind review answers from the review record, when one was completed. */
@@ -338,6 +340,7 @@ function toHistoryRow(r: Record<string, any>): SectionHistoryRow {
     analysis: (r.analysis_json as SectionAnalysis) ?? null,
     analysisSource: 'first-pass',
     releaseRequiresBr: Boolean(r.release_requires_br),
+    clientSittingId: (r.client_sitting_id as string | null) ?? null,
     predictedScore: null,
     brResults: null,
     completedAt: r.completed_at ?? r.created_at ?? new Date().toISOString(),
