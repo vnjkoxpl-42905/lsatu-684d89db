@@ -8,8 +8,12 @@
  * into `attempts`.
  */
 import { supabase } from '@/integrations/supabase/client';
-import { analyseSection } from '@/lib/sectionAnalysis';
-import { buildAnalysisInput, buildSectionStats } from '@/lib/sectionHistorySave';
+import { analyseSection, type SectionAnalysis } from '@/lib/sectionAnalysis';
+import {
+  buildAnalysisInput,
+  buildSectionStats,
+  type SectionQuestionStat,
+} from '@/lib/sectionHistorySave';
 import type { BlindReviewResult, DrillSession } from '@/types/drill';
 
 type Rpc = (fn: string, args: Record<string, unknown>) => Promise<{ data: unknown; error: { message: string } | null }>;
@@ -40,21 +44,111 @@ export interface SavedBlindReview {
   results: BlindReviewResult[] | null;
 }
 
+export interface SaveBlindReviewOptions {
+  savedQuestions?: SectionQuestionStat[];
+  paceMsPerQuestion?: number | null;
+  session?: DrillSession;
+}
+
 /**
- * Saves a finished blind review. `session` supplies the diagnosis input only;
- * correctness comes back from the server.
+ * Filter blind-review answers strictly to questions the student actually answered
+ * in blind review. Untouched questions MUST be omitted from `p_answers` so the
+ * server preserves their first-pass result (F4).
+ */
+export function touchedBlindReviewResults(results: BlindReviewResult[]): BlindReviewResult[] {
+  return results.filter(
+    (r) => r.brTouched !== false && typeof r.brAnswer === 'string' && r.brAnswer.trim().length > 0,
+  );
+}
+
+/**
+ * Builds the blind review diagnosis strictly from the saved first-pass
+ * `questions_json` stats and saved credited answers, never reading live
+ * `questionBank` keys (F4). Untouched questions retain their first-pass result.
+ */
+export function buildBlindReviewAnalysisFromSaved(
+  savedQuestions: SectionQuestionStat[],
+  results: BlindReviewResult[],
+  paceMsPerQuestion: number | null = null,
+): SectionAnalysis {
+  const touched = touchedBlindReviewResults(results);
+  const byQid = new Map(touched.map((r) => [r.qid, r]));
+
+  const mergedQuestions: SectionQuestionStat[] = savedQuestions.map((q) => {
+    const br = byQid.get(q.qid);
+    if (!br) {
+      return {
+        ...q,
+        brAnswer: undefined,
+        brCorrect: q.initialCorrect,
+        brChanged: false,
+      };
+    }
+    const brCorrect = br.brAnswer === q.correctAnswer;
+    return {
+      ...q,
+      brAnswer: br.brAnswer,
+      brCorrect,
+      brTimeMs: br.brTimeMs,
+      brChanged: br.brAnswer !== q.initialAnswer,
+    };
+  });
+
+  return analyseSection({
+    questions: mergedQuestions,
+    paceMsPerQuestion,
+    blindReviewDone: true,
+  });
+}
+
+function paceFromSession(session: DrillSession | undefined, questionCount: number): number | null {
+  const timer = session?.fullSectionConfig?.timer;
+  if (!timer || timer.mode === 'unlimited' || questionCount === 0) return null;
+  const minutes =
+    timer.mode === 'custom'
+      ? (timer.customMinutes ?? null)
+      : Number(timer.mode);
+  return minutes && Number.isFinite(minutes) ? (minutes * 60_000) / questionCount : null;
+}
+
+function isDrillSessionArg(
+  arg: DrillSession | SaveBlindReviewOptions | undefined,
+): arg is DrillSession {
+  return Boolean(arg && 'questionQueue' in arg && Array.isArray(arg.questionQueue));
+}
+
+/**
+ * Saves a finished blind review. Untouched questions are omitted from
+ * `p_answers` so the server preserves first-pass outcomes. When saved stats
+ * are provided, the diagnosis is graded strictly against saved credited
+ * answers rather than the live question bank.
  */
 export async function saveSectionBlindReview(
   historyId: string,
   results: BlindReviewResult[],
-  session?: DrillSession,
+  sessionOrOptions?: DrillSession | SaveBlindReviewOptions,
 ): Promise<SavedBlindReview> {
-  const analysis = session
-    ? analyseSection(buildAnalysisInput(session, buildSectionStats(session, results), results))
-    : null;
+  const touched = touchedBlindReviewResults(results);
+  const options: SaveBlindReviewOptions = isDrillSessionArg(sessionOrOptions)
+    ? { session: sessionOrOptions }
+    : (sessionOrOptions ?? {});
+
+  let analysis: SectionAnalysis | null = null;
+  if (options.savedQuestions && options.savedQuestions.length > 0) {
+    const pace =
+      options.paceMsPerQuestion !== undefined
+        ? options.paceMsPerQuestion
+        : paceFromSession(options.session, options.savedQuestions.length);
+    analysis = buildBlindReviewAnalysisFromSaved(options.savedQuestions, touched, pace);
+  } else if (options.session) {
+    analysis = analyseSection(
+      buildAnalysisInput(options.session, buildSectionStats(options.session, touched), touched),
+    );
+  }
+
   const { data, error } = await rpc('save_section_blind_review_v1', {
     p_history_id: historyId,
-    p_answers: results.map((r) => ({
+    p_answers: touched.map((r) => ({
       qid: r.qid,
       brAnswer: r.brAnswer,
       brTimeMs: Math.max(0, Math.round(r.brTimeMs || 0)),

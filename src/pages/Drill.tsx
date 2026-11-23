@@ -563,6 +563,7 @@ function DrillContent() {
   // atomically. Null on every other path (results screen saves as before).
   const [sectionHistoryId, setSectionHistoryId] = React.useState<string | null>(null);
   const [sectionCreatedNow, setSectionCreatedNow] = React.useState(false);
+  const savedCloseoutStatsRef = React.useRef<import('@/lib/sectionHistorySave').SectionQuestionStat[] | null>(null);
   /**
    * What the student guessed before seeing anything. Held for this sitting only
    * and shown beside the real score; nothing persists it, so nothing claims it
@@ -3388,6 +3389,7 @@ function DrillContent() {
         }
         setSectionHistoryId(reply.historyId);
         setSectionCreatedNow(reply.createdNow);
+        savedCloseoutStatsRef.current = reply.questions ?? null;
       } catch (e) {
         toast.error("Your section didn't save. Check your connection and press Finish again.");
         throw e;
@@ -3920,7 +3922,10 @@ function DrillContent() {
             // No attempts rows (audit F4). A failure keeps the student here
             // with their answers so the save can be retried.
             try {
-              await saveSectionBlindReview(sectionHistoryId, results, session);
+              await saveSectionBlindReview(sectionHistoryId, results, {
+                savedQuestions: savedCloseoutStatsRef.current ?? undefined,
+                session,
+              });
             } catch (error) {
               console.error('[drill:br] save failed', error);
               toast.error("Your blind review didn't save. Press Finish review again.");

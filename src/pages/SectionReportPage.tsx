@@ -70,7 +70,9 @@ export default function SectionReportPage() {
         await saveSectionBlindReview(
           ctx.historyId,
           results,
-          ctx.row ? ctx.session : undefined,
+          ctx.row
+            ? { savedQuestions: ctx.row.questions, session: ctx.session }
+            : undefined,
         );
         setPendingBrResults(null);
         setBrContext(null);

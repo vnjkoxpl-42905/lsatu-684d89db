@@ -267,11 +267,15 @@ export async function runStandaloneCloseout(args: {
   assignmentId?: string | null;
   /** Sitting id already opened at section start (Phase 1.3). */
   sittingId?: string | null;
-}): Promise<CloseoutReply & { createdNow: boolean }> {
+}): Promise<CloseoutReply & { createdNow: boolean; questions?: SectionQuestionStat[] }> {
   if (args.sittingId) {
     const payload = buildCloseoutPayload(args.session, { assignmentId: args.assignmentId });
     const reply = await closeStandaloneSection(args.sittingId, payload);
-    return { ...reply, createdNow: reply.status === 'created' };
+    return {
+      ...reply,
+      createdNow: reply.status === 'created',
+      questions: reply.conflict ? undefined : payload.questions,
+    };
   }
 
   const cached = readCachedSitting(args.userId, args.poolKey);
@@ -293,5 +297,9 @@ export async function runStandaloneCloseout(args: {
 
   const payload = buildCloseoutPayload(args.session, { assignmentId: args.assignmentId });
   const reply = await closeStandaloneSection(sitting.sittingId, payload);
-  return { ...reply, createdNow: reply.status === 'created' };
+  return {
+    ...reply,
+    createdNow: reply.status === 'created',
+    questions: reply.conflict ? undefined : payload.questions,
+  };
 }
