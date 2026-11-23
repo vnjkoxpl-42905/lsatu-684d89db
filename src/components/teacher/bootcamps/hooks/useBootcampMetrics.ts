@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
+import { excludeBlindReviewAttempts } from "@/lib/attemptsFilter";
 import type { BootcampTopicDef } from "../topicRegistry";
 import { isUngradedAttempt } from "@/topics/abstract/lib/grading-status";
 
@@ -54,10 +55,11 @@ async function fetchTopicAttempts(
     }));
   }
 
-  let q = supabase
-    .from("attempts")
-    .select("user_id, correct, mode, timestamp_iso")
-    .in("mode", modes);
+  let q = excludeBlindReviewAttempts(
+    supabase
+      .from("attempts")
+      .select("user_id, correct, mode, timestamp_iso"),
+  ).in("mode", modes);
   if (opts?.userId) q = q.eq("user_id", opts.userId);
   const { data, error } = await q;
   if (error) throw error;

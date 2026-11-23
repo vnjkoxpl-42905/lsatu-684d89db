@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { supabase } from "@/integrations/supabase/client";
+import { excludeBlindReviewAttempts } from "@/lib/attemptsFilter";
 import { formatLastActiveLabel, isUserOnline } from "@/lib/presence";
 import { formatRelativeShort } from "@/lib/time";
 import {
@@ -70,11 +71,11 @@ export default function StudentOverview({ studentId }: Props) {
     queryKey: ["hub-overview-attempts", studentId],
     enabled: !!studentId,
     queryFn: async () => {
-      const { count, error } = await supabase
-        .from("attempts")
-        .select("*", { count: "exact", head: true })
-        .not('br_selected', 'is', true) // blind review rows are not attempts (sections rebuild 2.7)
-        .eq("class_id", studentId as string);
+      const { count, error } = await excludeBlindReviewAttempts(
+        supabase
+          .from("attempts")
+          .select("*", { count: "exact", head: true }),
+      ).eq("class_id", studentId as string);
       if (error) throw error;
       return count ?? 0;
     },

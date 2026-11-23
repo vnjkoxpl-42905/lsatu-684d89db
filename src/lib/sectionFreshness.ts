@@ -1,4 +1,5 @@
 import { supabase } from '@/integrations/supabase/client';
+import { excludeBlindReviewAttempts } from '@/lib/attemptsFilter';
 
 /**
  * How much of a section a student has never seen.
@@ -110,7 +111,9 @@ export function freshnessLabel(freshness: SectionFreshness | undefined): string 
  * and the reason it is this table — travels with the definition of freshness.
  */
 export async function fetchAnsweredQids(classId: string): Promise<Set<string>> {
-  const { data, error } = await supabase.from('attempts').select('qid').eq('class_id', classId);
+  const { data, error } = await excludeBlindReviewAttempts(
+    supabase.from('attempts').select('qid'),
+  ).eq('class_id', classId);
   if (error) throw new Error(`fetchAnsweredQids failed: ${error.message}`);
   return new Set((data ?? []).map((row) => row.qid));
 }

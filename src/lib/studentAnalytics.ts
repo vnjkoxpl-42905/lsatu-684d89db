@@ -1,4 +1,5 @@
 import { supabase } from "@/integrations/supabase/client";
+import { excludeBlindReviewAttempts } from '@/lib/attemptsFilter';
 import { isPracticeTestRunComplete, withoutBrSealedRows } from '@/lib/sectionRelease';
 import { fetchSectionReviewRecords, hasCompletedBlindReview, type SectionReviewRecord } from '@/lib/sectionReviewRecord';
 import { parseOwnedDrillRun, type StandaloneDrillRun } from "@/lib/drillRunLedger";
@@ -72,9 +73,10 @@ export interface StudentPractice {
 /** A student's id in LSAT U is profiles.class_id, which is their auth user id. */
 export async function loadStudentPractice(studentId: string): Promise<StudentPractice> {
   const [attempts, sections, practiceTests, drills] = await Promise.all([
-    supabase.from("attempts")
-      .select("qid,pt,section,qnum,qtype,level,mode,selected_answer,correct,time_ms,timestamp_iso,br_answer,br_outcome")
-      .not('br_selected', 'is', true) // blind review rows are not attempts (sections rebuild 2.7)
+    excludeBlindReviewAttempts(
+      supabase.from("attempts")
+        .select("qid,pt,section,qnum,qtype,level,mode,selected_answer,correct,time_ms,timestamp_iso,br_answer,br_outcome"),
+    )
       .eq("class_id", studentId)
       .order("timestamp_iso", { ascending: true })
       .limit(10000),

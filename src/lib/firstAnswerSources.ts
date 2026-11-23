@@ -1,4 +1,5 @@
 import { supabase } from '@/integrations/supabase/client';
+import { excludeBlindReviewAttempts } from '@/lib/attemptsFilter';
 import { withoutBrSealedRows } from '@/lib/sectionRelease';
 import {
   adaptLrAttempts,
@@ -33,9 +34,10 @@ async function allPages<T>(read: (from: number, to: number) => Promise<{ data: T
 }
 
 const readLrAttempts = (studentId: string) => allPages<LrAttemptSourceRow>(async (from, to) => {
-  const result = await supabase.from('attempts')
-    .select('id,user_id,qid,qtype,mode,correct,selected_answer,timestamp_iso,time_ms')
-    .eq('user_id', studentId).order('id').range(from, to);
+  const result = await excludeBlindReviewAttempts(
+    supabase.from('attempts')
+      .select('id,user_id,qid,qtype,mode,correct,selected_answer,timestamp_iso,time_ms'),
+  ).eq('user_id', studentId).order('id').range(from, to);
   return result as unknown as { data: LrAttemptSourceRow[] | null; error: { message: string } | null };
 });
 

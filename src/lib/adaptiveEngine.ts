@@ -2,6 +2,7 @@
 
 import { LRQuestion, questionBank } from './questionLoader';
 import { supabase } from '@/integrations/supabase/client';
+import { excludeBlindReviewAttempts } from '@/lib/attemptsFilter';
 import { MIN_RATED_ANSWERS, ratingDifficultyFit, type RatingProfile } from './practiceRating';
 
 const ADAPTIVE_CONFIG = {
@@ -157,10 +158,11 @@ export class AdaptiveEngine {
 
   private async loadHydrationFromDB(classId: string): Promise<void> {
     try {
-      const { data, error } = await supabase
-        .from('attempts')
-        .select('qid, correct, time_ms, qtype, level, timestamp_iso')
-        .not('br_selected', 'is', true) // blind review rows are not attempts (sections rebuild 2.7)
+      const { data, error } = await excludeBlindReviewAttempts(
+        supabase
+          .from('attempts')
+          .select('qid, correct, time_ms, qtype, level, timestamp_iso'),
+      )
         .eq('class_id', classId)
         .order('timestamp_iso', { ascending: false })
         .limit(ADAPTIVE_CONFIG.hydrateLimit);
@@ -606,10 +608,11 @@ export class AdaptiveEngine {
 
   async analyzeWeakAreas(classId: string): Promise<WeakAreaAnalysis | null> {
     try {
-      const { data: attempts, error } = await supabase
-        .from('attempts')
-        .select('qtype, level, correct, timestamp_iso, time_ms')
-        .not('br_selected', 'is', true) // blind review rows are not attempts (sections rebuild 2.7)
+      const { data: attempts, error } = await excludeBlindReviewAttempts(
+        supabase
+          .from('attempts')
+          .select('qtype, level, correct, timestamp_iso, time_ms'),
+      )
         .eq('class_id', classId)
         .order('timestamp_iso', { ascending: false })
         .limit(ADAPTIVE_CONFIG.analyzeLimit);
@@ -860,10 +863,11 @@ export class AdaptiveEngine {
     practiceRating?: RatingProfile,
   ): Promise<SmartDrillResult> {
     // ── 1. Pull recent attempt history ──────────────────────────────────────
-    const { data: rawAttempts, error } = await supabase
-      .from('attempts')
-      .select('qid, qtype, level, correct, timestamp_iso')
-      .not('br_selected', 'is', true) // blind review rows are not attempts (sections rebuild 2.7)
+    const { data: rawAttempts, error } = await excludeBlindReviewAttempts(
+      supabase
+        .from('attempts')
+        .select('qid, qtype, level, correct, timestamp_iso'),
+    )
       .eq('class_id', classId)
       .order('timestamp_iso', { ascending: false })
       .limit(ADAPTIVE_CONFIG.generateLimit);

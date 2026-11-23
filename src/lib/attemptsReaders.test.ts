@@ -3,15 +3,10 @@ import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 
 // Historic blind review rows sit in `attempts` with br_selected = true (audit
-// F4). They are kept, not deleted, so every reader must exclude them. This
-// fails when a new reader of `attempts` forgets to.
-const WRITERS = new Set(['src/pages/Drill.tsx', 'src/components/drill/LRQuestionModal.tsx']);
-// Readers that only list question ids or already exclude full-section rows.
-const EXEMPT = new Set([
-  'src/lib/sectionFreshness.ts',
-  'src/lib/firstAnswerSources.ts',
-  'src/components/teacher/bootcamps/hooks/useBootcampMetrics.ts',
-]);
+// F4). Every reader query in `src/` must wrap its query with the shared
+// `excludeBlindReviewAttempts` helper from `@/lib/attemptsFilter` rather than
+// exempting files wholesale (F9). Only explicit `.insert(` writes are exempt on
+// a per-query basis.
 
 function walk(dir: string, out: string[] = []): string[] {
   for (const name of readdirSync(dir)) {
@@ -22,19 +17,35 @@ function walk(dir: string, out: string[] = []): string[] {
   return out;
 }
 
+function isCommentLine(line: string): boolean {
+  const trimmed = line.trim();
+  return trimmed.startsWith('//') || trimmed.startsWith('*') || trimmed.startsWith('/*');
+}
+
 describe('attempts readers', () => {
-  it('exclude blind review rows', () => {
-    const missing: string[] = [];
+  it('exclude blind review rows via the shared attemptsFilter helper on every non-insert query', () => {
+    const violations: string[] = [];
     for (const file of walk('src')) {
-      if (WRITERS.has(file) || EXEMPT.has(file)) continue;
-      const lines = readFileSync(file, 'utf8').split(/\r?\n/);
+      const text = readFileSync(file, 'utf8');
+      const lines = text.split(/\r?\n/);
+      const importsHelper = /from\s+['"]@\/lib\/attemptsFilter['"]/.test(text)
+        || /from\s+['"]\.\/attemptsFilter['"]/.test(text);
+
       lines.forEach((line, i) => {
-        if (!/from\(\s*['"]attempts['"]\s*\)/.test(line)) return;
-        const block = lines.slice(i, i + 4).join('\n');
-        if (/\.insert\(/.test(block)) return;
-        if (!block.includes(".not('br_selected', 'is', true)")) missing.push(`${file}:${i + 1}`);
+        if (isCommentLine(line)) return;
+        if (!/\.from\(\s*['"]attempts['"]\s*\)/.test(line)) return;
+
+        // Check if this specific query chain is an .insert( write.
+        const forward = lines.slice(i, i + 4).join('\n');
+        if (/\.insert\(/.test(forward)) return;
+
+        // Otherwise this specific read query must use excludeBlindReviewAttempts(...).
+        const around = lines.slice(Math.max(0, i - 3), i + 7).join('\n');
+        if (!importsHelper || !around.includes('excludeBlindReviewAttempts(')) {
+          violations.push(`${file}:${i + 1}`);
+        }
       });
     }
-    expect(missing).toEqual([]);
+    expect(violations).toEqual([]);
   });
 });

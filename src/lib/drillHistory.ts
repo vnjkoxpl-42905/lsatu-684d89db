@@ -16,6 +16,7 @@
 import { nativeLabQuestion } from '@/components/review/nativeLabReviewSource';
 import type { NativeLabKind } from '@/bootcamps/main-conclusion/lib/nativeLabAttempt';
 import { supabase } from '@/integrations/supabase/client';
+import { excludeBlindReviewAttempts } from '@/lib/attemptsFilter';
 
 export type DrillHistorySource = 'lr' | 'intro-lr' | 'rc' | 'abstract' | 'causation';
 
@@ -116,10 +117,10 @@ export async function fetchDrillHistory(userId: string): Promise<DrillHistoryRow
     .eq('phase', 'complete').order('id').range(from, from + PAGE_SIZE - 1));
   const completedSittings = new Set(sittings.filter((r) => r.owner_id === userId && r.phase === 'complete').map((r) => r.id));
   type LrAttempt = { user_id: string | null; class_id: string; qid: string; pt: number; section: number; qnum: number; qtype: string; correct: boolean | null; time_ms: number | null; selected_answer: string | null; mode: string; timestamp_iso: string; timed_pt_run_id: string | null; timed_section_sitting_id: string | null };
-  const lr = await readHistoryPages<LrAttempt>(userId, (from) => supabase.from('attempts')
-    .select('user_id,class_id,qid,pt,section,qnum,qtype,correct,time_ms,selected_answer,mode,timestamp_iso,timed_pt_run_id,timed_section_sitting_id')
-    .not('br_selected', 'is', true) // blind review rows are not attempts (sections rebuild 2.7)
-    .or(`user_id.eq.${userId},and(user_id.is.null,class_id.eq.${userId})`)
+  const lr = await readHistoryPages<LrAttempt>(userId, (from) => excludeBlindReviewAttempts(
+    supabase.from('attempts')
+      .select('user_id,class_id,qid,pt,section,qnum,qtype,correct,time_ms,selected_answer,mode,timestamp_iso,timed_pt_run_id,timed_section_sitting_id'),
+  ).or(`user_id.eq.${userId},and(user_id.is.null,class_id.eq.${userId})`)
     .order('timestamp_iso', { ascending: false }).range(from, from + PAGE_SIZE - 1));
   for (const a of lr) {
     if ((a.user_id ?? a.class_id) !== userId || (a.timed_pt_run_id && !completedParents.has(a.timed_pt_run_id)) ||

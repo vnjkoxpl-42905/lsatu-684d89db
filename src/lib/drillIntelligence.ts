@@ -1,6 +1,7 @@
 // Advanced drill intelligence and pattern detection
 
 import { supabase } from '@/integrations/supabase/client';
+import { excludeBlindReviewAttempts } from '@/lib/attemptsFilter';
 
 export interface DrillRecommendation {
   title: string;
@@ -36,10 +37,11 @@ export class DrillIntelligence {
    * Detect patterns in user performance
    */
   async detectPatterns(userId: string): Promise<LearningPattern[]> {
-    const { data: attempts, error } = await supabase
-      .from('attempts')
-      .select('*')
-      .not('br_selected', 'is', true) // blind review rows are not attempts (sections rebuild 2.7)
+    const { data: attempts, error } = await excludeBlindReviewAttempts(
+      supabase
+        .from('attempts')
+        .select('*'),
+    )
       .eq('user_id', userId)
       .order('timestamp_iso', { ascending: true })
       .limit(200);
@@ -73,10 +75,11 @@ export class DrillIntelligence {
    * Generate personalized drill recommendations
    */
   async generateRecommendations(userId: string): Promise<DrillRecommendation[]> {
-    const { data: attempts, error } = await supabase
-      .from('attempts')
-      .select('*')
-      .not('br_selected', 'is', true) // blind review rows are not attempts (sections rebuild 2.7)
+    const { data: attempts, error } = await excludeBlindReviewAttempts(
+      supabase
+        .from('attempts')
+        .select('*'),
+    )
       .eq('user_id', userId)
       .order('timestamp_iso', { ascending: false })
       .limit(100);
@@ -139,10 +142,11 @@ export class DrillIntelligence {
    * Track learning velocity per question type
    */
   async trackLearningVelocity(userId: string): Promise<LearningVelocity[]> {
-    const { data: attempts, error } = await supabase
-      .from('attempts')
-      .select('*')
-      .not('br_selected', 'is', true) // blind review rows are not attempts (sections rebuild 2.7)
+    const { data: attempts, error } = await excludeBlindReviewAttempts(
+      supabase
+        .from('attempts')
+        .select('*'),
+    )
       .eq('user_id', userId)
       .order('timestamp_iso', { ascending: true });
 

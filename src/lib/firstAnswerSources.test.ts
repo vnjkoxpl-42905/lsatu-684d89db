@@ -2,9 +2,9 @@ import { beforeEach, expect, it, vi } from 'vitest';
 const state = vi.hoisted(() => ({ identity: null as string | null, denied: false, lateSwitch: false, reads: [] as { table: string; owner: string; columns: string }[], rows: {} as Record<string, unknown[]>, assertScope: vi.fn(), rpc: vi.fn() }));
 vi.mock('@/lib/studentScopedWork', () => ({ assertActiveStudentScope: state.assertScope }));
 vi.mock('@/integrations/supabase/client', () => ({ supabase: { rpc: state.rpc, from: (table: string) => {
-  let owner = '', columns = '';
-  const chain = { select: vi.fn((value: string) => { columns = value; return chain; }), eq: vi.fn((key: string, value: string) => { if (key === 'user_id') owner = value; return chain; }), order: vi.fn().mockReturnThis(),
-    range: vi.fn(async () => { state.reads.push({ table, owner, columns }); return { data: state.rows[table] ?? (table === 'attempts' ? [{ id: 'a', user_id: owner, qid: 'PT101.S2.Q1', mode: 'adaptive', correct: false, selected_answer: 'B', timestamp_iso: '2026-09-30T12:00:00Z' }] : []), error: null }; }) };
+  let owner = '', columns = '', excludeBr = false;
+  const chain = { select: vi.fn((value: string) => { columns = value; return chain; }), not: vi.fn((col: string, op: string, val: unknown) => { if (col === 'br_selected' && op === 'is' && val === true) excludeBr = true; return chain; }), eq: vi.fn((key: string, value: string) => { if (key === 'user_id') owner = value; return chain; }), order: vi.fn().mockReturnThis(),
+    range: vi.fn(async () => { state.reads.push({ table, owner, columns }); const raw = state.rows[table] ?? (table === 'attempts' ? [{ id: 'a', user_id: owner, qid: 'PT101.S2.Q1', mode: 'adaptive', correct: false, selected_answer: 'B', timestamp_iso: '2026-09-30T12:00:00Z' }] : []); const filtered = table === 'attempts' && excludeBr ? (raw as Array<{ br_selected?: boolean | null }>).filter((r) => r.br_selected !== true) : raw; return { data: filtered, error: null }; }) };
   return chain;
 } } }));
 import { loadFirstAnswerLedger } from './firstAnswerSources';

@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { excludeBlindReviewAttempts } from "@/lib/attemptsFilter";
 import { useClassId } from "@/hooks/useClassId";
 import { questionBank } from "@/lib/questionLoader";
 import { localDayISO } from "@/lib/localDate";
@@ -39,10 +40,11 @@ export function useStudentAnalytics(): StudentAnalyticsResult {
     enabled: !!classId,
     queryFn: async () => {
       const [attemptsRes, profileRes, todayRes] = await Promise.all([
-        supabase
-          .from("attempts")
-          .select("qid, qtype, level, correct, mode, time_ms, timestamp_iso")
-          .not('br_selected', 'is', true) // blind review rows are not attempts (sections rebuild 2.7)
+        excludeBlindReviewAttempts(
+          supabase
+            .from("attempts")
+            .select("qid, qtype, level, correct, mode, time_ms, timestamp_iso"),
+        )
           .eq("class_id", classId)
           .order("timestamp_iso", { ascending: true }),
         supabase

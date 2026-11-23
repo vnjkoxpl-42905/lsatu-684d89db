@@ -2,6 +2,7 @@ import * as React from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
+import { excludeBlindReviewAttempts } from "@/lib/attemptsFilter";
 import { buildBreakdown, type AttemptLike, type BreakdownRow } from "@/lib/analyticsBreakdowns";
 
 /**
@@ -18,11 +19,11 @@ export function useTagStats(bankReady: boolean) {
     enabled: !!user,
     staleTime: 60_000,
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from("attempts")
-        .select("qid, qtype, correct, time_ms")
-        .not('br_selected', 'is', true) // blind review rows are not attempts (sections rebuild 2.7)
-        .eq("user_id", user!.id);
+      const { data, error } = await excludeBlindReviewAttempts(
+        supabase
+          .from("attempts")
+          .select("qid, qtype, correct, time_ms"),
+      ).eq("user_id", user!.id);
       if (error) throw error;
       return (data ?? []) as AttemptLike[];
     },

@@ -1,6 +1,42 @@
-import { describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+
+const state = vi.hoisted(() => ({
+  rows: [] as Array<{ qid: string; class_id: string; br_selected?: boolean | null }>,
+}));
+
+vi.mock('@/integrations/supabase/client', () => ({
+  supabase: {
+    from: (table: string) => {
+      let classFilter: string | null = null;
+      let excludeBr = false;
+      const chain = {
+        select: () => chain,
+        eq: (col: string, val: unknown) => {
+          if (col === 'class_id') classFilter = String(val);
+          return chain;
+        },
+        not: (col: string, op: string, val: unknown) => {
+          if (col === 'br_selected' && op === 'is' && val === true) excludeBr = true;
+          return chain;
+        },
+        then: (resolve: (val: unknown) => void) => {
+          if (table !== 'attempts') return resolve({ data: [], error: null });
+          const filtered = state.rows.filter((r) => {
+            if (classFilter && r.class_id !== classFilter) return false;
+            if (excludeBr && r.br_selected === true) return false;
+            return true;
+          });
+          resolve({ data: filtered.map((r) => ({ qid: r.qid })), error: null });
+        },
+      };
+      return chain;
+    },
+  },
+}));
+
 import {
   buildSectionFreshness,
+  fetchAnsweredQids,
   freshnessLabel,
   matchesFreshness,
   sectionKey,
@@ -75,5 +111,21 @@ describe('freshnessLabel', () => {
 
   it('says nothing when freshness is unknown', () => {
     expect(freshnessLabel(undefined)).toBeNull();
+  });
+});
+
+describe('fetchAnsweredQids (F9)', () => {
+  beforeEach(() => {
+    state.rows = [];
+  });
+
+  it('excludes blind review rows (br_selected = true) from freshness qids', async () => {
+    state.rows = [
+      { qid: 'PT101.S2.Q1', class_id: 'class-1', br_selected: null },
+      { qid: 'PT101.S2.Q2', class_id: 'class-1', br_selected: true },
+      { qid: 'PT101.S2.Q3', class_id: 'other-class', br_selected: false },
+    ];
+    const qids = await fetchAnsweredQids('class-1');
+    expect([...qids]).toEqual(['PT101.S2.Q1']);
   });
 });
