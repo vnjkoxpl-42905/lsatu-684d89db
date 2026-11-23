@@ -256,7 +256,18 @@ export async function loadDrillResumeSession(
     current = null;
   }
   if (accountSectionKey(key)) {
-    const backup = readSectionDeviceBackup(userId, key);
+    let backup = readSectionDeviceBackup(userId, key);
+    if (legacyKey && legacyKey !== key && accountSectionKey(legacyKey)) {
+      const legacyBackup = readSectionDeviceBackup(userId, legacyKey);
+      if (legacyBackup && (!backup || legacyBackup.updated_at > backup.updated_at)) {
+        backup = {
+          ...legacyBackup,
+          id: practiceSessionIdFor(userId, key),
+          pool_slug: key,
+          completion_id: key,
+        };
+      }
+    }
     if (backup && (!current || backup.updated_at > current.updated_at)) current = backup;
     try {
       await assertActiveTestLeg(userId, key);
@@ -287,11 +298,18 @@ export async function saveDrillResumeSnapshot(
   userId: string,
   key: string | null,
   snapshot: DrillResumeSnapshot,
+  options?: { expectedUpdatedAt?: string | null },
 ): Promise<void> {
   if (!userId || !key) return;
   const backupStamp = accountSectionKey(key) ? writeSectionDeviceBackup(userId, key, snapshot) : null;
   await queueAccountWrite(userId, key, async () => {
     await assertActiveTestLeg(userId, key);
+    if (accountSectionKey(key) && options?.expectedUpdatedAt) {
+      const current = await readSectionFromAccount(userId, key);
+      if (current && current.updated_at !== options.expectedUpdatedAt) {
+        throw new Error('This section was updated in another tab. Both copies were kept.');
+      }
+    }
     await savePracticeSessionSnapshot(userId, { slug: key, completionId: key }, snapshot);
     if (accountSectionKey(key)) await syncSectionToAccount(userId, key);
   });

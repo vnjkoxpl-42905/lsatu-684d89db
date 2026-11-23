@@ -10,9 +10,11 @@ vi.mock('@/lib/questionLoader', () => ({
 
 import {
   buildCloseoutPayload,
+  initStandaloneSitting,
   isStandalonePoolKey,
   runStandaloneCloseout,
   readCachedSitting,
+  sittingStorageKey,
 } from './sectionCloseout';
 import { UNANSWERED } from './sectionAnswer';
 
@@ -110,5 +112,76 @@ describe('runStandaloneCloseout', () => {
   it('surfaces a server error so Finish can be retried', async () => {
     rpc.mockResolvedValueOnce({ data: null, error: { message: 'network' } });
     await expect(runStandaloneCloseout(args)).rejects.toThrow('network');
+  });
+
+  it('uses an already-opened sittingId directly without a second open call', async () => {
+    rpc.mockResolvedValueOnce({ data: { status: 'created', history_id: 'h9', conflict: false }, error: null });
+    const r = await runStandaloneCloseout({ ...args, sittingId: 's-opened-at-start' });
+    expect(r).toMatchObject({ status: 'created', historyId: 'h9', createdNow: true });
+    expect(rpc).toHaveBeenCalledTimes(1);
+    expect(rpc.mock.calls[0][0]).toBe('close_standalone_section_v1');
+    expect(rpc.mock.calls[0][1]).toMatchObject({ p_sitting_id: 's-opened-at-start' });
+  });
+});
+
+describe('initStandaloneSitting (Phase 1.3)', () => {
+  const poolKey = 'drill::section::pt105-s2';
+
+  it('opens at section start without p_restart, caches sitting id, and binds storage key', async () => {
+    rpc.mockResolvedValueOnce({
+      data: { status: 'open', sitting_id: 'sit-1', generation: 1, history_id: null, adopted: true, adopted_revision: '2026-11-20T10:00:00Z' },
+      error: null,
+    });
+    const reply = await initStandaloneSitting({ userId: 'u1', poolKey });
+    expect(reply).toMatchObject({
+      status: 'open',
+      sittingId: 'sit-1',
+      generation: 1,
+      adopted: true,
+      adoptedRevision: '2026-11-20T10:00:00Z',
+    });
+    expect(rpc.mock.calls[0][1]).toMatchObject({
+      p_pool_key: poolKey,
+      p_restart: false,
+      p_expected_generation: null,
+    });
+    expect(readCachedSitting('u1', poolKey)).toEqual({ id: 'sit-1', generation: 1 });
+    expect(sittingStorageKey(poolKey, reply.sittingId)).toBe('drill::section::pt105-s2#sit-1');
+  });
+
+  it('on reload with a closed sitting id, returns closed + historyId and never passes p_restart', async () => {
+    rpc.mockResolvedValueOnce({ data: { status: 'open', sitting_id: 'sit-1', generation: 1, history_id: null }, error: null });
+    await initStandaloneSitting({ userId: 'u1', poolKey });
+    rpc.mockClear();
+
+    rpc.mockResolvedValueOnce({ data: { status: 'closed', sitting_id: 'sit-1', generation: 1, history_id: 'hist-1' }, error: null });
+    const reply = await initStandaloneSitting({ userId: 'u1', poolKey });
+    expect(reply).toMatchObject({ status: 'closed', historyId: 'hist-1' });
+    expect(rpc.mock.calls[0][1]).toMatchObject({ p_known_sitting_id: 'sit-1', p_restart: false });
+  });
+
+  it('on stale tab whose successor closed, resolves to closed + successor historyId', async () => {
+    rpc.mockResolvedValueOnce({
+      data: { status: 'stale', latest_state: 'closed', sitting_id: 'sit-2', generation: 2, history_id: 'hist-2' },
+      error: null,
+    });
+    const reply = await initStandaloneSitting({ userId: 'u1', poolKey });
+    expect(reply).toMatchObject({ status: 'closed', sittingId: 'sit-2', generation: 2, historyId: 'hist-2' });
+    expect(readCachedSitting('u1', poolKey)).toEqual({ id: 'sit-2', generation: 2 });
+  });
+
+  it('only explicit restart passes p_restart: true with the cached generation as p_expected_generation', async () => {
+    rpc.mockResolvedValueOnce({ data: { status: 'open', sitting_id: 'sit-1', generation: 2, history_id: null }, error: null });
+    await initStandaloneSitting({ userId: 'u1', poolKey });
+    rpc.mockClear();
+
+    rpc.mockResolvedValueOnce({ data: { status: 'open', sitting_id: 'sit-3', generation: 3, history_id: null }, error: null });
+    const reply = await initStandaloneSitting({ userId: 'u1', poolKey, restart: true });
+    expect(reply).toMatchObject({ status: 'open', sittingId: 'sit-3', generation: 3 });
+    expect(rpc.mock.calls[0][1]).toMatchObject({
+      p_restart: true,
+      p_expected_generation: 2,
+      p_known_sitting_id: null,
+    });
   });
 });

@@ -11,6 +11,7 @@
  * through here; they keep their own close-out code.
  */
 import { supabase } from '@/integrations/supabase/client';
+import { practiceSessionIdFor } from '@/bootcamps/main-conclusion/lib/practiceSessionStore';
 import { questionBank } from '@/lib/questionLoader';
 import { analyseSection } from '@/lib/sectionAnalysis';
 import {
@@ -36,6 +37,14 @@ export interface SittingReply {
   historyId: string | null;
   /** Only on `stale`: the state of the latest sitting the tab should reconcile to. */
   latestState?: 'open' | 'closed' | 'abandoned';
+  /** True when generation 1 adopted an in-flight pool-derived resume record. */
+  adopted?: boolean;
+  /** `updated_at` of the adopted record, used for guarded recovery saves. */
+  adoptedRevision?: string | null;
+}
+
+export function sittingStorageKey(poolKey: string, sittingId: string): string {
+  return `${poolKey}#${sittingId}`;
 }
 
 export interface CloseoutReply {
@@ -87,6 +96,8 @@ function toSittingReply(data: unknown): SittingReply {
     generation: Number(d.generation ?? 0),
     historyId: (d.history_id as string | null) ?? null,
     latestState: d.latest_state as SittingReply['latestState'],
+    adopted: d.adopted === true,
+    adoptedRevision: (d.adopted_revision as string | null) ?? null,
   };
 }
 
@@ -95,15 +106,61 @@ export async function openSectionSitting(args: {
   knownSittingId?: string | null;
   restart?: boolean;
   expectedGeneration?: number | null;
+  legacyRecordId?: string | null;
+  sittingRecordId?: string | null;
 }): Promise<SittingReply> {
   const { data, error } = await rpc('open_section_sitting_v1', {
     p_pool_key: args.poolKey,
     p_known_sitting_id: args.knownSittingId ?? null,
     p_restart: !!args.restart,
     p_expected_generation: args.expectedGeneration ?? null,
+    ...(args.legacyRecordId ? { p_legacy_record_id: args.legacyRecordId } : {}),
+    ...(args.sittingRecordId ? { p_sitting_record_id: args.sittingRecordId } : {}),
   });
   if (error) throw new Error(error.message);
   return toSittingReply(data);
+}
+
+/**
+ * Opens or reconciles the server-owned sitting at section START (plan 1.3).
+ *
+ * - Resume/reload never passes `restart`; only an explicit "start over" does,
+ *   sending the cached generation as `expectedGeneration`.
+ * - Caches the returned sitting id and generation only to send back as
+ *   `p_known_sitting_id`; never allocates a generation on the client.
+ * - On `closed` (or `stale` whose latest sitting is `closed`), returns
+ *   `status: 'closed'` + `historyId` so the caller loads the saved report
+ *   instead of starting a new section.
+ */
+export async function initStandaloneSitting(args: {
+  userId: string;
+  poolKey: string;
+  restart?: boolean;
+}): Promise<SittingReply> {
+  const cached = readCachedSitting(args.userId, args.poolKey);
+  const isRestart = args.restart === true;
+  const legacyRecordId = isRestart ? null : practiceSessionIdFor(args.userId, args.poolKey);
+  const sittingRecordId = isRestart
+    ? null
+    : practiceSessionIdFor(args.userId, `${args.poolKey}#adopted-g1`);
+
+  const reply = await openSectionSitting({
+    poolKey: args.poolKey,
+    knownSittingId: isRestart ? null : (cached?.id ?? null),
+    restart: isRestart,
+    expectedGeneration: isRestart ? (cached?.generation ?? 1) : null,
+    legacyRecordId,
+    sittingRecordId,
+  });
+
+  if (reply.sittingId && reply.generation > 0) {
+    writeCachedSitting(args.userId, args.poolKey, reply);
+  }
+
+  if (reply.status === 'stale' && reply.latestState === 'closed' && reply.historyId) {
+    return { ...reply, status: 'closed' };
+  }
+  return reply;
 }
 
 export interface CloseoutPayload {
@@ -208,7 +265,15 @@ export async function runStandaloneCloseout(args: {
   poolKey: string;
   session: DrillSession;
   assignmentId?: string | null;
+  /** Sitting id already opened at section start (Phase 1.3). */
+  sittingId?: string | null;
 }): Promise<CloseoutReply & { createdNow: boolean }> {
+  if (args.sittingId) {
+    const payload = buildCloseoutPayload(args.session, { assignmentId: args.assignmentId });
+    const reply = await closeStandaloneSection(args.sittingId, payload);
+    return { ...reply, createdNow: reply.status === 'created' };
+  }
+
   const cached = readCachedSitting(args.userId, args.poolKey);
   const sitting = await openSectionSitting({ poolKey: args.poolKey, knownSittingId: cached?.id ?? null });
 

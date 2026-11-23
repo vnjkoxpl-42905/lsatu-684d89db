@@ -194,7 +194,22 @@ vi.mock('@/integrations/supabase/client', () => {
         return { ...chain(), insert: async () => ({ error: null }) };
       },
       auth: { getSession: async () => ({ data: { session: null } }) },
-      rpc: async () => ({ data: null, error: null }),
+      rpc: async (fn: string) => {
+        if (fn === 'open_section_sitting_v1') {
+          return {
+            data: {
+              status: 'open',
+              sitting_id: '55555555-5555-4555-8555-555555555555',
+              generation: 1,
+              history_id: null,
+              adopted: true,
+              adopted_revision: null,
+            },
+            error: null,
+          };
+        }
+        return { data: null, error: null };
+      },
       channel: () => ({ on: () => ({ subscribe: () => ({}) }), subscribe: () => ({}) }),
       removeChannel: () => {},
     },

@@ -68,7 +68,12 @@ import {
   persistSectionResults,
   wajQidsForSection,
 } from '@/lib/sectionHistorySave';
-import { isStandalonePoolKey, runStandaloneCloseout } from '@/lib/sectionCloseout';
+import {
+  initStandaloneSitting,
+  isStandalonePoolKey,
+  runStandaloneCloseout,
+  sittingStorageKey,
+} from '@/lib/sectionCloseout';
 import { saveSectionBlindReview, saveSectionPrediction } from '@/lib/sectionReviewRecord';
 import {
   clearCloseoutProgress,
@@ -321,7 +326,7 @@ function DrillContent() {
   // Every remaining drill surface gets the same durable resume row, so closing the browser or
   // signing out mid-drill is never a loss. Null while the guided/practice-set
   // surfaces own the run, so the three can never write over each other.
-  const genericResumeKey = React.useMemo(() => {
+  const baseGenericResumeKey = React.useMemo(() => {
     if (isMcPractice || guidedSessionKey || standaloneSourceKey) return null;
     if (!state?.mode) return null;
     const mode = state.mode === 'practice-set' ? 'type-drill' : state.mode;
@@ -335,6 +340,30 @@ function DrillContent() {
       ptRun,
     });
   }, [isMcPractice, guidedSessionKey, standaloneSourceKey, state, genericResumeIdentity, assignmentId, ptRun]);
+  const isStandaloneSection =
+    state?.mode === 'full-section' && isStandalonePoolKey(baseGenericResumeKey);
+  const [standaloneSitting, setStandaloneSitting] = React.useState<{
+    id: string;
+    generation: number;
+    adoptedRevision: string | null;
+  } | null>(null);
+  const standaloneSittingRef = React.useRef<{
+    id: string;
+    generation: number;
+    adoptedRevision: string | null;
+  } | null>(null);
+  // For standalone legacy full sections, bind resume storage & device backup
+  // to the server-owned sitting id. Null until open_section_sitting_v1 returns
+  // an initialized sitting so neither clock nor autosave runs early (Phase 1.3).
+  const genericResumeKey = React.useMemo(() => {
+    if (!baseGenericResumeKey) return null;
+    if (isStandaloneSection) {
+      return standaloneSitting
+        ? sittingStorageKey(baseGenericResumeKey, standaloneSitting.id)
+        : null;
+    }
+    return baseGenericResumeKey;
+  }, [baseGenericResumeKey, isStandaloneSection, standaloneSitting]);
   // Rows written before a bootcamp day had its own identity were named by the
   // picked question list. Read that key only when the day-keyed row is absent;
   // every new snapshot and completion still writes the day-keyed row.
@@ -1052,11 +1081,39 @@ function DrillContent() {
           }
         }
       }
-      if (genericResumeKey && user && (!initialIndexParam || mode === 'full-section')) {
+      let activeResumeKey = genericResumeKey;
+      let activeLegacyKey = genericLegacyResumeKey;
+      let adoptedLegacyBackupKey: string | null = null;
+      if (isStandaloneSection && baseGenericResumeKey && user) {
+        const reply = await initStandaloneSitting({
+          userId: user.id,
+          poolKey: baseGenericResumeKey,
+        });
+        if (reply.status === 'closed' && reply.historyId) {
+          genericFinalizedRef.current = true;
+          navigate(`/review/section/${encodeURIComponent(reply.historyId)}`, { replace: true });
+          return;
+        }
+        if (reply.sittingId) {
+          const sittingInfo = {
+            id: reply.sittingId,
+            generation: reply.generation,
+            adoptedRevision: reply.adoptedRevision ?? null,
+          };
+          standaloneSittingRef.current = sittingInfo;
+          setStandaloneSitting(sittingInfo);
+          activeResumeKey = sittingStorageKey(baseGenericResumeKey, reply.sittingId);
+          if (reply.adopted) {
+            activeLegacyKey = baseGenericResumeKey;
+            adoptedLegacyBackupKey = baseGenericResumeKey;
+          }
+        }
+      }
+      if (activeResumeKey && user && (!initialIndexParam || mode === 'full-section')) {
         const stored = await loadDrillResumeSession(
           user.id,
-          genericResumeKey,
-          genericLegacyResumeKey,
+          activeResumeKey,
+          activeLegacyKey,
         );
         // A finished assignment's row is that sitting's record. This mount
         // must never write over it: a reload during blind review re-mounts
@@ -1065,8 +1122,11 @@ function DrillContent() {
         if (assignmentId && stored?.status === 'completed') {
           genericFinalizedRef.current = true;
         }
+        const pendingDeviceBackup =
+          hasPendingSectionDeviceBackup(user.id, activeResumeKey) ||
+          (adoptedLegacyBackupKey ? hasPendingSectionDeviceBackup(user.id, adoptedLegacyBackupKey) : false);
         if (isResumableDrillSession(stored)) {
-          if (mode === 'full-section' && hasPendingSectionDeviceBackup(user.id, genericResumeKey)) {
+          if (mode === 'full-section' && pendingDeviceBackup) {
             // The newest device copy has not been acknowledged by the account.
             // Keep the student on that exact question until a retry succeeds.
             initialIndex = stored!.current_index;
@@ -1093,7 +1153,7 @@ function DrillContent() {
             }
           }
           questionQueue = stored.question_queue;
-          if (!hasPendingSectionDeviceBackup(user.id, genericResumeKey)) {
+          if (!pendingDeviceBackup) {
             initialIndex = guidedResumeIndex(
               questionQueue,
               stored.current_index,
@@ -1139,7 +1199,7 @@ function DrillContent() {
       setBootLoadFailed(true);
       setBootError('Your saved drill could not be loaded from your account. Reload to try again.');
     });
-  }, [state, navigate, classId, classIdLoading, qbLoading, settings.allowRepeats, settings.preferUnseen, settings.recycleAfterDays, initialIndexParam, isMcPractice, mcPracticePool, guidedSessionKey, guidedLegacySessionKey, genericResumeKey, genericLegacyResumeKey, standaloneSourceKey, requestedStandaloneRunId, userId]);
+  }, [state, navigate, classId, classIdLoading, qbLoading, settings.allowRepeats, settings.preferUnseen, settings.recycleAfterDays, initialIndexParam, isMcPractice, mcPracticePool, guidedSessionKey, guidedLegacySessionKey, baseGenericResumeKey, isStandaloneSection, genericLegacyResumeKey, standaloneSourceKey, requestedStandaloneRunId, userId]);
 
   // Shapes the student's current place into a resume snapshot. Shared by the two
   // surfaces that persist one — Intro to LR practice sets and guided drills — and
@@ -1365,7 +1425,12 @@ function DrillContent() {
     if (!snapshot) return;
     setRetryingSectionSave(true);
     try {
-      await saveDrillResumeSnapshot(user.id, genericResumeKey, snapshot);
+      await saveDrillResumeSnapshot(user.id, genericResumeKey, snapshot, {
+        expectedUpdatedAt: standaloneSittingRef.current?.adoptedRevision ?? undefined,
+      });
+      if (standaloneSittingRef.current?.adoptedRevision) {
+        standaloneSittingRef.current = { ...standaloneSittingRef.current, adoptedRevision: null };
+      }
       setSectionSaveError(false);
       timerRef.current?.resume();
     } catch (err) {
@@ -3070,7 +3135,12 @@ function DrillContent() {
       if (!snapshot) throw new Error('Could not save this section.');
       // Save the destination and current answer together. No question change is
       // visible until the account has acknowledged this exact snapshot.
-      await saveDrillResumeSnapshot(user.id, genericResumeKey, snapshot);
+      await saveDrillResumeSnapshot(user.id, genericResumeKey, snapshot, {
+        expectedUpdatedAt: standaloneSittingRef.current?.adoptedRevision ?? undefined,
+      });
+      if (standaloneSittingRef.current?.adoptedRevision) {
+        standaloneSittingRef.current = { ...standaloneSittingRef.current, adoptedRevision: null };
+      }
       if (nextIndex !== session.currentIndex || attempts) setSession(nextSession);
       return true;
     } catch (err) {
@@ -3299,14 +3369,15 @@ function DrillContent() {
     // throws, which leaves the student on the section with Finish available,
     // and a retry is safe because the server returns the saved row.
     const atomicCloseout = session.mode === 'full-section' && !guidedSessionKey && !!user
-      && isStandalonePoolKey(genericResumeKey);
+      && isStandalonePoolKey(baseGenericResumeKey);
     if (atomicCloseout) {
       try {
         const reply = await runStandaloneCloseout({
           userId: user!.id,
-          poolKey: genericResumeKey!,
+          poolKey: baseGenericResumeKey!,
           session: updatedSession,
           assignmentId,
+          sittingId: standaloneSittingRef.current?.id ?? null,
         });
         if (reply.status === 'stale' || !reply.historyId) {
           toast.error('This section was restarted in another tab. Reload to continue there.');
