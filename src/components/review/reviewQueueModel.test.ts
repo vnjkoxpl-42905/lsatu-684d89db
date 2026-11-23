@@ -152,24 +152,31 @@ function sectionRow(id: string, overrides: Partial<SectionHistoryRow> = {}): Sec
 }
 
 describe("buildSectionReviewQueue", () => {
-  it("includes only opened blanks from legacy completed standalone sections with report walk links", () => {
-    const [item] = buildSectionReviewQueue([sectionRow("sitting-1")]);
-    expect(item.key).toBe("section:sitting-1:80-2-1");
-    expect(item.href).toBe("/review/section/sitting-1?walk=1&qid=80-2-1");
-    expect(item.reasons).toEqual(["skipped"]);
-    expect(item.sources).toEqual(["section_history"]);
-    expect(item.firstAnswer).toBeNull();
+  it("excludes opened-blank questions without regret or br_changed even on legacy rows (Plan 4.1)", () => {
+    expect(buildSectionReviewQueue([sectionRow("sitting-1")])).toEqual([]);
   });
 
-  it("preserves repeat sittings and excludes PT legs and legacy rows without question detail", () => {
-    const rows = [sectionRow("sitting-1"), sectionRow("sitting-2"), sectionRow("pt-leg", { practiceTestRunId: "pt-run" }), sectionRow("legacy", { questions: [] }), sectionRow("other", { mode: "practice-test" })];
-    expect(buildSectionReviewQueue(rows).map((item) => item.key)).toEqual(["section:sitting-1:80-2-1", "section:sitting-2:80-2-1"]);
-  });
-
-  it("does not call an answered question or an unknown visit a deliberate skip", () => {
-    const answered = { ...sectionRow("x").questions[0], initialAnswer: "A" };
-    const unknown = { ...sectionRow("x").questions[0], qid: "80-2-3", everVisited: undefined };
-    expect(buildSectionReviewQueue([sectionRow("x", { questions: [answered, unknown] })])).toEqual([]);
+  it("includes only regret and br_changed items per history row, preserves repeat sittings, and excludes PT legs and legacy rows without question detail", () => {
+    const withBr = (id: string, extra?: Partial<SectionHistoryRow>) =>
+      sectionRow(id, {
+        brUsed: true,
+        questions: [
+          { qid: "80-2-1", qnum: 1, qtype: "Flaw", difficulty: 3, initialAnswer: "A", correctAnswer: "B", initialCorrect: false, brAnswer: "B", brCorrect: true, brChanged: true, flagged: false, timeMs: 500, switchCount: 0 },
+          { qid: "80-2-2", qnum: 2, qtype: "Strengthen", difficulty: 2, initialAnswer: UNANSWERED, correctAnswer: "C", initialCorrect: false, flagged: false, timeMs: 0, switchCount: 0, everVisited: true },
+        ],
+        ...extra,
+      });
+    const rows = [
+      withBr("sitting-1"),
+      withBr("sitting-2"),
+      withBr("pt-leg", { practiceTestRunId: "pt-run" }),
+      sectionRow("legacy", { questions: [] }),
+      withBr("other", { mode: "practice-test" }),
+    ];
+    const items = buildSectionReviewQueue(rows);
+    expect(items.map((item) => item.key)).toEqual(["section:sitting-1:80-2-1", "section:sitting-2:80-2-1"]);
+    expect(items[0].reasons).toEqual(["br_changed"]);
+    expect(items[0].href).toBe("/review/section/sitting-1?walk=1&qid=80-2-1");
   });
 
   it("excludes sealed assigned sections from the review queue", () => {
@@ -177,6 +184,9 @@ describe("buildSectionReviewQueue", () => {
       releaseRequiresBr: true,
       brUsed: false,
       clientSittingId: "sit-sealed",
+      questions: [
+        { qid: "80-2-1", qnum: 1, qtype: "Flaw", difficulty: 3, initialAnswer: "A", correctAnswer: "A", initialCorrect: true, brAnswer: "B", brCorrect: false, brChanged: true, flagged: false, timeMs: 500, switchCount: 0 },
+      ],
     });
     expect(buildSectionReviewQueue([sealed])).toEqual([]);
   });
@@ -234,12 +244,22 @@ describe("mergeSectionIntoJournal (Phase 4)", () => {
     expect(merged[0].href).toBe("/review/section/hist-1?walk=1&qid=80-2-14");
   });
 
-  it("keeps one journal episode plus separate regret items across two sittings", () => {
+  it("keeps one journal episode across two miss events plus separate regret items across two sittings (Plan 4.5)", () => {
     const jRow = journalRow({
       qid: "80-2-14",
       entry: {
         ...journalRow().entry,
+        revisit_count: 1,
         history_json: [
+          {
+            attempt_at_iso: "2026-11-17T10:00:00Z",
+            result: 0,
+            chosen_answer: "A",
+            correct_answer: "B",
+            time_ms: 65000,
+            confidence_1_5: null,
+            sitting_id: "sit-miss-1",
+          } as never,
           {
             attempt_at_iso: "2026-11-18T10:00:00Z",
             result: 0,
@@ -247,7 +267,7 @@ describe("mergeSectionIntoJournal (Phase 4)", () => {
             correct_answer: "B",
             time_ms: 70000,
             confidence_1_5: null,
-            sitting_id: "sit-miss",
+            sitting_id: "sit-miss-2",
           } as never,
         ],
       },

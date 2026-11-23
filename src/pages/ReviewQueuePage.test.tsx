@@ -7,6 +7,8 @@ import { HS_DRILL_ID, HS_DRILL_ITEMS } from '@/bootcamps/main-conclusion/content
 import { M5_CAPSTONE } from '@/bootcamps/main-conclusion/content/m5-capstone.source';
 import type { ReviewEpisode, ReviewEpisodeEvent } from '@/lib/reviewEpisodes';
 import type { FlaggedQuestionRow } from '@/lib/flaggedService';
+import type { WrongAnswerSmartRow } from '@/lib/journalService';
+import type { SectionHistoryRow } from '@/lib/sectionHistory';
 
 const fixture = vi.hoisted(() => ({
   flagCalls: [] as boolean[], permissionsLoading:false, owner: 'student-a', classroomAccess: true, failedCluster: false, failedCapstone: false,
@@ -16,19 +18,22 @@ const fixture = vi.hoisted(() => ({
   releases: [] as (() => void)[],
   episodeRecords: {} as Record<string, { episodes: ReviewEpisode[]; events: ReviewEpisodeEvent[] }>, episodeFailed: false,
   flags: [] as FlaggedQuestionRow[], flagAccess: false,
+  journalAccess: false,
+  journalEntries: [] as WrongAnswerSmartRow[],
+  sectionRows: [] as SectionHistoryRow[],
 }));
 vi.mock('@/lib/reviewEpisodes', async importOriginal => ({ ...await importOriginal<typeof import('@/lib/reviewEpisodes')>(), createReviewEpisodeService: () => ({ list: async (_actor: string, student: string) => {
   if (fixture.episodeFailed) throw new Error('episode read failed'); return fixture.episodeRecords[student] ?? { episodes: [], events: [] };
 } }) }));
 vi.mock('@/contexts/AuthContext', () => ({ useAuth: () => ({ user: { id: fixture.owner } }) }));
-vi.mock('@/hooks/useUserPermissions', () => ({ useUserPermissions: () => ({ loading: fixture.permissionsLoading, is_admin: false, has_classroom_access: fixture.classroomAccess, has_flagged_access: fixture.flagAccess }) }));
+vi.mock('@/hooks/useUserPermissions', () => ({ useUserPermissions: () => ({ loading: fixture.permissionsLoading, is_admin: false, has_classroom_access: fixture.classroomAccess, has_flagged_access: fixture.flagAccess, has_journal_access: fixture.journalAccess }) }));
 vi.mock('@/hooks/useFlagged', () => ({ useFlagged: ({enabled}:{enabled:boolean}) => { fixture.flagCalls.push(enabled); return { data: fixture.flags, isLoading: false, isError: false }; } }));
-vi.mock('@/hooks/useJournalEntries', () => ({ useJournalEntries: () => ({ data: [], isLoading: false, isError: false }) }));
+vi.mock('@/hooks/useJournalEntries', () => ({ useJournalEntries: (enabled = true) => ({ data: enabled ? fixture.journalEntries : [], isLoading: false, isError: false }) }));
 vi.mock('@/components/review/rcReviewSource', () => ({ loadRcReviewQueue: async () => [] }));
 vi.mock('@/components/review/ptReviewSource', () => ({ loadPracticeTestReviewQueue: async () => [] }));
 vi.mock('@/components/review/nativeLabReviewSource', () => ({ loadNativeLabReviewResult: async () => ({items:[],unavailable:[]}), loadNativeLabReview: async () => [] }));
 vi.mock('@/components/review/introLrReviewSource', () => ({ loadIntroLrReviewQueue: async () => [] }));
-vi.mock('@/lib/sectionHistory', () => ({ fetchSectionHistory: async () => [] }));
+vi.mock('@/lib/sectionHistory', () => ({ fetchSectionHistory: async () => fixture.sectionRows }));
 vi.mock('@/features/activity-centre/api/activitiesClient', () => ({ listAssignmentsForStudent: async () => [], listResponsesForAssignments: async () => [] }));
 vi.mock('@/integrations/supabase/client', () => ({ supabase: { from: (table: string) => {
   let owner = '';
@@ -64,7 +69,8 @@ function seed(owner = 'student-a') {
 }
 beforeEach(() => {
   Object.assign(fixture, { flagCalls: [], permissionsLoading:false, owner: 'student-a', classroomAccess: true, failedCluster: false, failedCapstone: false,
-    clusters: {}, capstones: {}, reads: [], pendingOwner: null, releases: [], episodeRecords: {}, episodeFailed: false, flags: [], flagAccess: false });
+    clusters: {}, capstones: {}, reads: [], pendingOwner: null, releases: [], episodeRecords: {}, episodeFailed: false, flags: [], flagAccess: false,
+    journalAccess: false, journalEntries: [], sectionRows: [] });
   seed();
 });
 afterEach(cleanup);
@@ -218,5 +224,185 @@ describe('Review queue return focus', () => {
     const link=await screen.findByRole('link',{name:/Hard Sentences · Capstone/});
     await waitFor(()=>expect(link).toHaveFocus());
     expect(link).toHaveAttribute('aria-current','true');
+  });
+});
+
+describe('Review hub queue count with merged sections and sealed work (Plan 4.5)', () => {
+  it('displays the exact merged count matching the rendered queue items and excludes sealed sections', async () => {
+    fixture.clusters['student-a'] = [];
+    fixture.capstones['student-a'] = [];
+    fixture.journalAccess = true;
+    fixture.journalEntries = [
+      {
+        id: 'journal-1',
+        qid: 'PT80-S2-Q14',
+        label: 'PT80–S2–Q14',
+        qtype: 'Flaw',
+        level: 3,
+        status: 'wrong',
+        attempts: 1,
+        first_missed: '2026-11-23T10:00:00Z',
+        last_attempted: '2026-11-23T10:00:00Z',
+        last_chosen: 'C',
+        last_correct: 'B',
+        note: null,
+        entry: {
+          id: 'journal-1',
+          class_id: 'class-1',
+          qid: 'PT80-S2-Q14',
+          pt: 80,
+          section: 2,
+          qnum: 14,
+          qtype: 'Flaw',
+          level: 3,
+          first_wrong_at_iso: '2026-11-23T10:00:00Z',
+          last_status: 'wrong',
+          revisit_count: 0,
+          created_at: '2026-11-23T10:00:00Z',
+          updated_at: '2026-11-23T10:00:00Z',
+          history_json: [
+            {
+              attempt_at_iso: '2026-11-23T10:00:00Z',
+              result: 0,
+              chosen_answer: 'C',
+              correct_answer: 'B',
+              time_ms: 60000,
+              confidence_1_5: null,
+              sitting_id: 'sit-merge-1',
+            },
+          ],
+        },
+      } as unknown as WrongAnswerSmartRow,
+    ];
+    fixture.sectionRows = [
+      {
+        id: 'hist-merge',
+        pt: 80,
+        section: 2,
+        mode: 'full-section',
+        practiceTestRunId: null,
+        clientSittingId: 'sit-merge-1',
+        releaseRequiresBr: false,
+        initialScore: 0,
+        initialTotal: 1,
+        initialPercent: 0,
+        brScore: 1,
+        brPercent: 100,
+        brDelta: 1,
+        brUsed: true,
+        totalTimeMs: 60000,
+        avgTimeMs: 60000,
+        unansweredCount: 0,
+        byQtype: {},
+        byDifficulty: {},
+        analysis: null,
+        completedAt: '2026-11-23T10:00:00Z',
+        questions: [
+          {
+            qid: 'PT80-S2-Q14',
+            qnum: 14,
+            qtype: 'Flaw',
+            difficulty: 3,
+            initialAnswer: 'C',
+            correctAnswer: 'B',
+            initialCorrect: false,
+            brAnswer: 'B',
+            brCorrect: true,
+            brChanged: true,
+            flagged: false,
+            timeMs: 60000,
+            switchCount: 0,
+          },
+        ],
+      },
+      {
+        id: 'hist-regret',
+        pt: 80,
+        section: 2,
+        mode: 'full-section',
+        practiceTestRunId: null,
+        clientSittingId: 'sit-regret-1',
+        releaseRequiresBr: false,
+        initialScore: 1,
+        initialTotal: 1,
+        initialPercent: 100,
+        brScore: 0,
+        brPercent: 0,
+        brDelta: -1,
+        brUsed: true,
+        totalTimeMs: 50000,
+        avgTimeMs: 50000,
+        unansweredCount: 0,
+        byQtype: {},
+        byDifficulty: {},
+        analysis: null,
+        completedAt: '2026-11-23T11:00:00Z',
+        questions: [
+          {
+            qid: 'PT80-S2-Q15',
+            qnum: 15,
+            qtype: 'Strengthen',
+            difficulty: 3,
+            initialAnswer: 'A',
+            correctAnswer: 'A',
+            initialCorrect: true,
+            brAnswer: 'D',
+            brCorrect: false,
+            brChanged: true,
+            flagged: false,
+            timeMs: 50000,
+            switchCount: 0,
+          },
+        ],
+      },
+      {
+        id: 'hist-sealed',
+        pt: 81,
+        section: 1,
+        mode: 'full-section',
+        practiceTestRunId: null,
+        clientSittingId: 'sit-sealed-1',
+        releaseRequiresBr: true,
+        initialScore: 0,
+        initialTotal: 1,
+        initialPercent: 0,
+        brScore: null,
+        brPercent: null,
+        brDelta: null,
+        brUsed: false,
+        totalTimeMs: 50000,
+        avgTimeMs: 50000,
+        unansweredCount: 0,
+        byQtype: {},
+        byDifficulty: {},
+        analysis: null,
+        completedAt: '2026-11-23T12:00:00Z',
+        questions: [
+          {
+            qid: 'PT81-S1-Q1',
+            qnum: 1,
+            qtype: 'Flaw',
+            difficulty: 3,
+            initialAnswer: 'B',
+            correctAnswer: 'B',
+            initialCorrect: true,
+            brAnswer: 'E',
+            brCorrect: false,
+            brChanged: true,
+            flagged: false,
+            timeMs: 50000,
+            switchCount: 0,
+          },
+        ],
+      },
+    ];
+
+    mount('/review/to-review');
+    expect(await screen.findByText('2 items')).toBeInTheDocument();
+
+    const section = screen.getByRole('region', { name: 'Work to review' });
+    const links = within(section).getAllByRole('link');
+    expect(links).toHaveLength(2);
+    expect(screen.queryByText(/PT81/)).not.toBeInTheDocument();
   });
 });

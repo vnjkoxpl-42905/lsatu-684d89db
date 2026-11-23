@@ -196,12 +196,12 @@ function sectionWalkHref(historyId: string, qid: string): string {
 /**
  * Builds section review items per released standalone section row (Phase 4.1).
  *
- * Adds what the wrong-answer journal does not hold:
+ * Adds only what the wrong-answer journal does not hold:
  * - regret: right on first pass, wrong in blind review
  * - br_changed: changed answer in blind review
- * - skipped (historical rows without clientSittingId only): opened and left blank
  *
- * Sealed rows contribute nothing (Phase 4.3).
+ * Missed and skipped questions are already journaled at close-out. Sealed rows
+ * contribute nothing (Phase 4.3).
  */
 export function buildSectionReviewQueue(rows: SectionHistoryRow[]): ReviewQueueItem[] {
   const items: ReviewQueueItem[] = [];
@@ -217,15 +217,10 @@ export function buildSectionReviewQueue(rows: SectionHistoryRow[]): ReviewQueueI
         hasBr &&
         question.brAnswer !== question.correctAnswer;
       const isBrChanged = hasBr && question.brAnswer !== question.initialAnswer;
-      const isLegacyOpenedBlank =
-        !row.clientSittingId &&
-        question.initialAnswer === UNANSWERED &&
-        question.everVisited === true;
 
       const reasons: ReviewReason[] = [];
       if (isRegret) reasons.push("regret");
       if (isBrChanged) reasons.push("br_changed");
-      if (isLegacyOpenedBlank && reasons.length === 0) reasons.push("skipped");
       if (reasons.length === 0) continue;
 
       items.push({
