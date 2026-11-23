@@ -1,7 +1,26 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 
 const rpc = vi.fn();
-vi.mock('@/integrations/supabase/client', () => ({ supabase: { rpc: (...a: unknown[]) => rpc(...a) } }));
+const sittingRowLookup = vi.fn();
+vi.mock('@/integrations/supabase/client', () => ({
+  supabase: {
+    rpc: (...a: unknown[]) => rpc(...a),
+    from: (table: string) => {
+      if (table === 'standalone_section_sittings') {
+        return {
+          select: () => ({
+            eq: (_col: string, id: string) => ({
+              maybeSingle: async () => sittingRowLookup(id),
+            }),
+          }),
+        };
+      }
+      return {
+        select: () => ({ eq: () => ({ maybeSingle: async () => ({ data: null, error: null }) }) }),
+      };
+    },
+  },
+}));
 
 const getQuestion = vi.fn();
 vi.mock('@/lib/questionLoader', () => ({
@@ -31,6 +50,7 @@ beforeEach(() => {
   vi.clearAllMocks();
   localStorage.clear();
   getQuestion.mockImplementation((qid: string) => q(qid));
+  sittingRowLookup.mockResolvedValue({ data: null, error: null });
 });
 
 describe('isStandalonePoolKey', () => {
@@ -183,5 +203,70 @@ describe('initStandaloneSitting (Phase 1.3)', () => {
       p_expected_generation: 2,
       p_known_sitting_id: null,
     });
+  });
+
+  it('uses #adopted-g1 (p_sitting_record_id) as storageKey on adoption and recovers it on gen-1 reopen after lost reply (F2)', async () => {
+    const { practiceSessionIdFor } = await import('@/bootcamps/main-conclusion/lib/practiceSessionStore');
+    const userId = '11111111-1111-4111-8111-111111111111';
+    const legacyRecId = practiceSessionIdFor(userId, poolKey);
+    const adoptedRecId = practiceSessionIdFor(userId, `${poolKey}#adopted-g1`);
+
+    // 1. First open reply adopts legacy record.
+    rpc.mockResolvedValueOnce({
+      data: {
+        status: 'open',
+        sitting_id: 'sit-1',
+        generation: 1,
+        history_id: null,
+        adopted: true,
+        adopted_revision: '2026-11-20T10:00:00Z',
+      },
+      error: null,
+    });
+    const first = await initStandaloneSitting({ userId, poolKey });
+    expect(rpc.mock.calls[0][1].p_sitting_record_id).toBe(adoptedRecId);
+    expect((first as { storageKey?: string }).storageKey).toBe(`${poolKey}#adopted-g1`);
+    expect((first as { legacyPoolKey?: string | null }).legacyPoolKey).toBe(poolKey);
+
+    // 2. Simulate lost first reply: no cached sitting, reopen branch omits `adopted` and `adopted_revision`.
+    localStorage.clear();
+    rpc.mockResolvedValueOnce({
+      data: {
+        status: 'open',
+        sitting_id: 'sit-1',
+        generation: 1,
+        history_id: null,
+      },
+      error: null,
+    });
+    sittingRowLookup.mockResolvedValueOnce({
+      data: {
+        adopted_from_record_id: legacyRecId,
+        adopted_revision: '2026-11-20T10:00:00Z',
+      },
+      error: null,
+    });
+
+    const reopened = await initStandaloneSitting({ userId, poolKey });
+    expect(sittingRowLookup).toHaveBeenCalledWith('sit-1');
+    expect(reopened.adopted).toBe(true);
+    expect(reopened.adoptedRevision).toBe('2026-11-20T10:00:00Z');
+    expect((reopened as { storageKey?: string }).storageKey).toBe(`${poolKey}#adopted-g1`);
+    expect((reopened as { legacyPoolKey?: string | null }).legacyPoolKey).toBe(poolKey);
+
+    // 3. Reopen gen-1 with NO legacy account row still recovers #sit-1 + legacyPoolKey for offline device backups.
+    localStorage.clear();
+    rpc.mockResolvedValueOnce({
+      data: { status: 'open', sitting_id: 'sit-non-adopted', generation: 1, history_id: null },
+      error: null,
+    });
+    sittingRowLookup.mockResolvedValueOnce({
+      data: { adopted_from_record_id: null, adopted_revision: null },
+      error: null,
+    });
+    const unAdoptedReopen = await initStandaloneSitting({ userId, poolKey });
+    expect(unAdoptedReopen.adopted).toBe(false);
+    expect((unAdoptedReopen as { storageKey?: string }).storageKey).toBe(`${poolKey}#sit-non-adopted`);
+    expect((unAdoptedReopen as { legacyPoolKey?: string | null }).legacyPoolKey).toBe(poolKey);
   });
 });

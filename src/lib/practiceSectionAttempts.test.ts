@@ -190,4 +190,50 @@ describe('listPracticeSectionAttempts adoption & sitting dedupe (Phase 5.1)', ()
     expect(list[0].status).toBe('completed');
     expect(list[0].href).toBe(`/review/section/${HIST_ID}`);
   });
+
+  it('hides the SQL-copied adopted #adopted-g1 row carrying the old pool_slug once closed (F2)', async () => {
+    const { practiceSessionIdFor } = await import('@/bootcamps/main-conclusion/lib/practiceSessionStore');
+    const poolKey = 'drill::section::pt101-s2';
+    const adoptedRecId = practiceSessionIdFor(USER_ID, `${poolKey}#adopted-g1`);
+    const legacyRec = makePracticeSession({ id: LEGACY_REC_ID });
+    // SQL `legacy.data || jsonb_build_object('id', p_sitting_record_id)` preserves old pool_slug!
+    const sqlCopiedRec = makePracticeSession({
+      id: adoptedRecId,
+      pool_slug: poolKey,
+      completion_id: poolKey,
+      updated_at: '2026-11-20T10:06:00.000Z',
+    });
+
+    // While open: 1 in-progress entry (no duplicate with legacy)
+    mockState.standaloneSittings = [
+      { id: SITTING_ID, pool_key: poolKey, state: 'open', generation: 1, history_id: null, adopted_from_record_id: LEGACY_REC_ID },
+    ];
+    mockState.bootcampKv = [{ data: legacyRec }, { data: sqlCopiedRec }];
+    let list = await listPracticeSectionAttempts(USER_ID);
+    expect(list).toHaveLength(1);
+    expect(list[0].id).toBe(adoptedRecId);
+    expect(list[0].status).toBe('in-progress');
+
+    // Once closed: 0 phantom in-progress rows, only 1 completed history row
+    mockState.standaloneSittings = [
+      { id: SITTING_ID, pool_key: poolKey, state: 'closed', generation: 1, history_id: HIST_ID, adopted_from_record_id: LEGACY_REC_ID },
+    ];
+    mockState.sectionHistory = [
+      {
+        id: HIST_ID,
+        pt: 101,
+        section: 2,
+        initial_score: 1,
+        initial_total: 2,
+        unanswered_count: 0,
+        created_at: '2026-11-20T10:00:00.000Z',
+        completed_at: '2026-11-20T10:35:00.000Z',
+        questions_json: [],
+      },
+    ];
+    list = await listPracticeSectionAttempts(USER_ID);
+    expect(list).toHaveLength(1);
+    expect(list[0].id).toBe(HIST_ID);
+    expect(list[0].status).toBe('completed');
+  });
 });

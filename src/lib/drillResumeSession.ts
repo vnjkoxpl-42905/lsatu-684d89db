@@ -142,7 +142,13 @@ async function readSectionFromAccount(userId: string, key: string): Promise<Prac
     typeof data?.updated_at === 'string' ? data.updated_at : null,
   );
   const parsed = PracticeSession.safeParse(data?.data);
-  return parsed.success ? migratePracticeSession(parsed.data) : null;
+  if (!parsed.success) return null;
+  const migrated = migratePracticeSession(parsed.data);
+  const expectedId = practiceSessionIdFor(userId, key);
+  if (migrated.id !== expectedId || migrated.pool_slug !== key || migrated.completion_id !== key) {
+    return { ...migrated, id: expectedId, pool_slug: key, completion_id: key };
+  }
+  return migrated;
 }
 
 async function readSectionRevisionFromAccount(userId: string, key: string): Promise<string | null> {
@@ -272,7 +278,7 @@ function readSectionDeviceBackup(userId: string, key: string): DrillResumeSessio
   }
 }
 
-function clearSectionDeviceBackup(userId: string, key: string): void {
+export function clearSectionDeviceBackup(userId: string, key: string): void {
   try {
     window.localStorage.removeItem(sectionBackupKey(userId, key));
   } catch {

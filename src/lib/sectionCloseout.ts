@@ -41,10 +41,25 @@ export interface SittingReply {
   adopted?: boolean;
   /** `updated_at` of the adopted record, used for guarded recovery saves. */
   adoptedRevision?: string | null;
+  /** Authoritative resume storage key for this sitting (`#adopted-g1` or `#<sittingId>`). */
+  storageKey?: string;
+  /** Pool key used for legacy local backup/IndexedDB recovery on generation 1. */
+  legacyPoolKey?: string | null;
 }
 
 export function sittingStorageKey(poolKey: string, sittingId: string): string {
   return `${poolKey}#${sittingId}`;
+}
+
+export function adoptedSittingKey(poolKey: string): string {
+  return `${poolKey}#adopted-g1`;
+}
+
+export function storageKeyForSitting(
+  poolKey: string,
+  sitting: { sittingId: string; adopted?: boolean },
+): string {
+  return sitting.adopted ? adoptedSittingKey(poolKey) : sittingStorageKey(poolKey, sitting.sittingId);
 }
 
 export interface CloseoutReply {
@@ -96,8 +111,35 @@ function toSittingReply(data: unknown): SittingReply {
     generation: Number(d.generation ?? 0),
     historyId: (d.history_id as string | null) ?? null,
     latestState: d.latest_state as SittingReply['latestState'],
-    adopted: d.adopted === true,
-    adoptedRevision: (d.adopted_revision as string | null) ?? null,
+    adopted: typeof d.adopted === 'boolean' ? d.adopted : undefined,
+    adoptedRevision: typeof d.adopted_revision === 'string' ? d.adopted_revision : null,
+  };
+}
+
+async function fetchSittingAdoptionInfo(sittingId: string): Promise<{
+  adopted: boolean;
+  adoptedRevision: string | null;
+}> {
+  const { data, error } = await (supabase as unknown as {
+    from(table: string): {
+      select(cols: string): {
+        eq(col: string, val: string): {
+          maybeSingle(): Promise<{
+            data: { adopted_from_record_id?: string | null; adopted_revision?: string | null } | null;
+            error: { message: string } | null;
+          }>;
+        };
+      };
+    };
+  })
+    .from('standalone_section_sittings')
+    .select('adopted_from_record_id, adopted_revision')
+    .eq('id', sittingId)
+    .maybeSingle();
+  if (error) throw new Error(error.message);
+  return {
+    adopted: typeof data?.adopted_from_record_id === 'string' && data.adopted_from_record_id.length > 0,
+    adoptedRevision: typeof data?.adopted_revision === 'string' ? data.adopted_revision : null,
   };
 }
 
@@ -142,7 +184,7 @@ export async function initStandaloneSitting(args: {
   const legacyRecordId = isRestart ? null : practiceSessionIdFor(args.userId, args.poolKey);
   const sittingRecordId = isRestart
     ? null
-    : practiceSessionIdFor(args.userId, `${args.poolKey}#adopted-g1`);
+    : practiceSessionIdFor(args.userId, adoptedSittingKey(args.poolKey));
 
   const reply = await openSectionSitting({
     poolKey: args.poolKey,
@@ -157,10 +199,31 @@ export async function initStandaloneSitting(args: {
     writeCachedSitting(args.userId, args.poolKey, reply);
   }
 
-  if (reply.status === 'stale' && reply.latestState === 'closed' && reply.historyId) {
-    return { ...reply, status: 'closed' };
+  let adopted = reply.adopted;
+  let adoptedRevision = reply.adoptedRevision ?? null;
+  if (reply.sittingId && reply.generation === 1 && adopted === undefined) {
+    const info = await fetchSittingAdoptionInfo(reply.sittingId);
+    adopted = info.adopted;
+    adoptedRevision = info.adoptedRevision;
   }
-  return reply;
+  const resolvedAdopted = adopted === true;
+  const storageKey = reply.sittingId
+    ? storageKeyForSitting(args.poolKey, { sittingId: reply.sittingId, adopted: resolvedAdopted })
+    : args.poolKey;
+  const legacyPoolKey = !isRestart && reply.generation === 1 ? args.poolKey : null;
+  const normalizedStatus =
+    reply.status === 'stale' && reply.latestState === 'closed' && reply.historyId
+      ? ('closed' as const)
+      : reply.status;
+
+  return {
+    ...reply,
+    status: normalizedStatus,
+    adopted: resolvedAdopted,
+    adoptedRevision,
+    storageKey,
+    legacyPoolKey,
+  };
 }
 
 export interface CloseoutPayload {

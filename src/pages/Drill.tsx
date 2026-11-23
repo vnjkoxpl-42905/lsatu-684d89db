@@ -72,7 +72,7 @@ import {
   initStandaloneSitting,
   isStandalonePoolKey,
   runStandaloneCloseout,
-  sittingStorageKey,
+  storageKeyForSitting,
 } from '@/lib/sectionCloseout';
 import { saveSectionBlindReview, saveSectionPrediction } from '@/lib/sectionReviewRecord';
 import {
@@ -172,6 +172,7 @@ import {
   isResumableGuidedSession,
 } from '@/lib/guidedDrillSession';
 import {
+  clearSectionDeviceBackup,
   drillResumeKey,
   loadDrillResumeSession,
   saveDrillResumeSnapshot,
@@ -348,21 +349,23 @@ function DrillContent() {
     id: string;
     generation: number;
     adoptedRevision: string | null;
+    storageKey: string;
   } | null>(null);
   const standaloneSittingRef = React.useRef<{
     id: string;
     generation: number;
     adoptedRevision: string | null;
+    storageKey: string;
   } | null>(null);
+  const adoptedLegacyKeyRef = React.useRef<string | null>(null);
   // For standalone legacy full sections, bind resume storage & device backup
-  // to the server-owned sitting id. Null until open_section_sitting_v1 returns
-  // an initialized sitting so neither clock nor autosave runs early (Phase 1.3).
+  // to the authoritative sitting key (`#adopted-g1` or `#<sittingId>`).
+  // Null until open_section_sitting_v1 returns an initialized sitting so
+  // neither clock nor autosave runs early (Phase 1.3 / F2).
   const genericResumeKey = React.useMemo(() => {
     if (!baseGenericResumeKey) return null;
     if (isStandaloneSection) {
-      return standaloneSitting
-        ? sittingStorageKey(baseGenericResumeKey, standaloneSitting.id)
-        : null;
+      return standaloneSitting ? standaloneSitting.storageKey : null;
     }
     return baseGenericResumeKey;
   }, [baseGenericResumeKey, isStandaloneSection, standaloneSitting]);
@@ -1099,20 +1102,28 @@ function DrillContent() {
           return;
         }
         if (reply.sittingId) {
+          const activeStorageKey =
+            reply.storageKey ??
+            storageKeyForSitting(baseGenericResumeKey, {
+              sittingId: reply.sittingId,
+              adopted: reply.adopted,
+            });
           const sittingInfo = {
             id: reply.sittingId,
             generation: reply.generation,
             adoptedRevision: reply.adoptedRevision ?? null,
+            storageKey: activeStorageKey,
           };
           standaloneSittingRef.current = sittingInfo;
           setStandaloneSitting(sittingInfo);
-          activeResumeKey = sittingStorageKey(baseGenericResumeKey, reply.sittingId);
+          activeResumeKey = activeStorageKey;
           if (reply.adoptedRevision) {
             setAccountSectionRevision(user.id, activeResumeKey, reply.adoptedRevision);
           }
-          if (reply.adopted) {
-            activeLegacyKey = baseGenericResumeKey;
-            adoptedLegacyBackupKey = baseGenericResumeKey;
+          if (reply.legacyPoolKey) {
+            activeLegacyKey = reply.legacyPoolKey;
+            adoptedLegacyBackupKey = reply.legacyPoolKey;
+            adoptedLegacyKeyRef.current = reply.legacyPoolKey;
           }
         }
       }
@@ -1444,6 +1455,10 @@ function DrillContent() {
       });
       if (standaloneSittingRef.current?.adoptedRevision) {
         standaloneSittingRef.current = { ...standaloneSittingRef.current, adoptedRevision: null };
+      }
+      if (adoptedLegacyKeyRef.current) {
+        clearSectionDeviceBackup(user.id, adoptedLegacyKeyRef.current);
+        adoptedLegacyKeyRef.current = null;
       }
       setSectionRevisionConflict(false);
       setSectionSaveError(false);
@@ -3044,6 +3059,10 @@ function DrillContent() {
     if (!snapshot) return;
     try {
       await completeDrillResumeSession(user.id, genericResumeKey, snapshot);
+      if (adoptedLegacyKeyRef.current) {
+        clearSectionDeviceBackup(user.id, adoptedLegacyKeyRef.current);
+        adoptedLegacyKeyRef.current = null;
+      }
     } catch (err) {
       // Non-fatal: the attempts are already saved; this only affects resume.
       console.error('[drill:resume:complete] resume row write failed', {
@@ -3157,6 +3176,10 @@ function DrillContent() {
       });
       if (standaloneSittingRef.current?.adoptedRevision) {
         standaloneSittingRef.current = { ...standaloneSittingRef.current, adoptedRevision: null };
+      }
+      if (adoptedLegacyKeyRef.current) {
+        clearSectionDeviceBackup(user.id, adoptedLegacyKeyRef.current);
+        adoptedLegacyKeyRef.current = null;
       }
       if (nextIndex !== session.currentIndex || attempts) setSession(nextSession);
       return true;

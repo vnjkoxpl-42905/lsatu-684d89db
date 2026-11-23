@@ -1,7 +1,9 @@
 import { supabase } from '@/integrations/supabase/client';
 import { withoutBrSealedRows } from '@/lib/sectionRelease';
 import { PracticeSession, TABLES } from '@/bootcamps/main-conclusion/persistence/records';
+import { practiceSessionIdFor } from '@/bootcamps/main-conclusion/lib/practiceSessionStore';
 import { getPersistence } from '@/bootcamps/main-conclusion/persistence/factory';
+import { storageKeyForSitting } from '@/lib/sectionCloseout';
 import { loadRcIndex } from '@/features/rc/lib/rcBank';
 import { getSessionAttempts, listSessions } from '@/features/rc/api/rcProgress';
 import { timedSectionResumeHref } from './timedSectionAdoption';
@@ -62,15 +64,25 @@ export async function listPracticeSectionAttempts(userId: string): Promise<Pract
 
   const adoptedRecordIds = new Set<string>();
   const sittingStateById = new Map<string, { state: string; historyId: string | null }>();
+  const sittingStateByRecordId = new Map<string, { state: string; historyId: string | null }>();
   for (const row of standaloneSittingRows ?? []) {
-    if (typeof row.adopted_from_record_id === 'string' && row.adopted_from_record_id.length > 0) {
-      adoptedRecordIds.add(row.adopted_from_record_id);
+    const adopted = typeof row.adopted_from_record_id === 'string' && row.adopted_from_record_id.length > 0;
+    if (adopted) {
+      adoptedRecordIds.add(row.adopted_from_record_id as string);
     }
     if (typeof row.id === 'string' && typeof row.state === 'string') {
-      sittingStateById.set(row.id, {
+      const sittingEntry = {
         state: row.state,
         historyId: typeof row.history_id === 'string' ? row.history_id : null,
-      });
+      };
+      sittingStateById.set(row.id, sittingEntry);
+      if (typeof row.pool_key === 'string' && row.pool_key.length > 0) {
+        const recordId = practiceSessionIdFor(
+          userId,
+          storageKeyForSitting(row.pool_key, { sittingId: row.id, adopted }),
+        );
+        sittingStateByRecordId.set(recordId, sittingEntry);
+      }
     }
   }
 
@@ -102,10 +114,10 @@ export async function listPracticeSectionAttempts(userId: string): Promise<Pract
     if (!session.pool_slug.startsWith('drill::section::')) continue;
     if (adoptedRecordIds.has(session.id)) continue;
     const sittingKeyMatch = /^drill::section::pt\d+-s\d+#(.+)$/.exec(session.pool_slug);
-    if (sittingKeyMatch) {
-      const sitting = sittingStateById.get(sittingKeyMatch[1]);
-      if (sitting && sitting.state !== 'open') continue;
-    }
+    const sittingForLocal =
+      sittingStateByRecordId.get(session.id) ??
+      (sittingKeyMatch ? sittingStateById.get(sittingKeyMatch[1]) : undefined);
+    if (sittingForLocal && sittingForLocal.state !== 'open') continue;
     const remote = cloud.get(session.id);
     const remoteParsed = PracticeSession.safeParse(remote);
     if (remoteParsed.success && remoteParsed.data.updated_at >= session.updated_at) continue;
@@ -161,11 +173,16 @@ export async function listPracticeSectionAttempts(userId: string): Promise<Pract
     const preptest = Number(match[1]);
     const section = Number(match[2]);
     const sittingId = match[3] ?? null;
-    if (sittingId) {
-      const sitting = sittingStateById.get(sittingId);
-      // Sitting-keyed records follow sitting state: closed rows live in
-      // section_history and abandoned sittings are hidden.
-      if (sitting && sitting.state !== 'open') continue;
+    const sitting =
+      sittingStateByRecordId.get(session.id) ??
+      (sittingId ? sittingStateById.get(sittingId) : undefined);
+    if (sitting) {
+      // Sitting-keyed records (including SQL-adopted `#adopted-g1` copies whose
+      // inner JSON still holds the old pool_slug) follow the server sitting state:
+      // closed rows live in section_history and abandoned sittings are hidden.
+      if (sitting.state !== 'open') continue;
+      if (session.status === 'completed') continue;
+    } else if (sittingId) {
       if (session.status === 'completed') continue;
     } else if (completedRows?.some((row) => row.completed_at && isCompletedLrMirror(session, {
       pt: row.pt, section: row.section, completedAt: row.completed_at, questions: row.questions_json,
