@@ -11,6 +11,7 @@ import type { RcLetter, RcPassage } from '@/features/rc/lib/rcTypes';
 import { analyseSection } from './sectionAnalysis';
 import { UNANSWERED } from './sectionAnswer';
 import { isHistoricalRcGrade, rcCheckpointGrade } from '@/features/rc/lib/rcHistoricalGrading';
+import type { SectionQuestionStat } from './sectionHistorySave';
 
 export interface TimedSectionState {
   snapshot: TimedSectionSnapshot;
@@ -32,6 +33,32 @@ function rcGrade(state: TimedSectionState, question: LRQuestion, answer: TimedCh
     id: String(prior.id), questionId: Number(prior.question_id), selected: prior.selected as RcLetter | null,
     isCorrect: prior.is_correct as boolean | null,
   } : undefined);
+}
+
+export function buildProtectedCloseoutStats(state: TimedSectionState): SectionQuestionStat[] {
+  return state.questions.map((question) => {
+    const answer = state.answers[question.qid];
+    return {
+      qid: question.qid,
+      qnum: question.qnum,
+      qtype: question.qtype,
+      difficulty: question.difficulty,
+      initialAnswer: answer.selected ?? UNANSWERED,
+      correctAnswer: question.correctAnswer,
+      initialCorrect:
+        state.snapshot.sitting.kind === 'rc'
+          ? rcGrade(state, question, answer) === true
+          : answer.selected === question.correctAnswer,
+      timeMs: answer.timeMs,
+      flagged: answer.flagged,
+      switchCount: answer.switchCount,
+      eliminations: answer.eliminations,
+      answeredInOvertime:
+        state.regulationAnsweredQids === undefined
+          ? undefined
+          : !state.regulationAnsweredQids.includes(question.qid),
+    };
+  });
 }
 
 export class TimedSectionController {
@@ -125,13 +152,7 @@ export class TimedSectionController {
   }
   async close(state: TimedSectionState) {
     // Closeout uses acknowledged child answers only. The runner must checkpoint first.
-    const stats = state.questions.map(question => { const answer = state.answers[question.qid]; return {
-      qid: question.qid, qnum: question.qnum, qtype: question.qtype, difficulty: question.difficulty,
-      initialAnswer: answer.selected ?? UNANSWERED, correctAnswer: question.correctAnswer,
-      initialCorrect: state.snapshot.sitting.kind === 'rc' ? rcGrade(state, question, answer) === true : answer.selected === question.correctAnswer,
-      timeMs: answer.timeMs, flagged: answer.flagged, switchCount: answer.switchCount, eliminations: answer.eliminations,
-      answeredInOvertime: state.regulationAnsweredQids === undefined ? undefined : !state.regulationAnsweredQids.includes(question.qid),
-    }; });
+    const stats = buildProtectedCloseoutStats(state);
     const analysis = JSON.parse(JSON.stringify(analyseSection({ questions: stats,
       paceMsPerQuestion: state.snapshot.sitting.budget_ms === null ? null : state.snapshot.sitting.budget_ms / state.questions.length,
       blindReviewDone: false, kind: state.snapshot.sitting.kind }))) as TimedObject;
