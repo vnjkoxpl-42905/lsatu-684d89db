@@ -129,6 +129,157 @@ export async function fetchOwnedSectionHistoryItem(
   return merged ?? null;
 }
 
+export type OwnedSectionReportResult =
+  | { state: 'not-found' }
+  | {
+      state: 'sealed';
+      reason: 'blind-review' | 'practice-test';
+      id: string;
+      pt: number;
+      section: number;
+      completedAt: string;
+      /** Ordered qids only (no answers, no scores) so blind review can launch when reason === 'blind-review'. */
+      questionQids: string[];
+    }
+  | {
+      state: 'released';
+      row: SectionHistoryRow;
+    };
+
+/**
+ * Loads one section for its owning account, preserving the sealed state so
+ * `/review/section/:historyId` can show "Section complete" + "Do blind review"
+ * without leaking score, first answers, or credited answers.
+ * Fails closed on any lookup error.
+ */
+export async function fetchOwnedSectionReport(
+  userId: string,
+  historyId: string,
+): Promise<OwnedSectionReportResult> {
+  const { data, error } = await supabase
+    .from('section_history')
+    .select('*')
+    .eq('id', historyId)
+    .eq('user_id', userId)
+    .eq('mode', 'full-section')
+    .not('completed_at', 'is', null)
+    .maybeSingle();
+  if (error) throw error;
+  if (
+    !data ||
+    data.id !== historyId ||
+    data.user_id !== userId ||
+    data.mode !== 'full-section' ||
+    typeof data.completed_at !== 'string' ||
+    !Number.isFinite(Date.parse(data.completed_at))
+  ) {
+    return { state: 'not-found' };
+  }
+
+  const baseRow = toHistoryRow(data as Record<string, any>);
+
+  // Practice-test leg: verify the parent run is complete; fail closed if unknown.
+  let runComplete: boolean | undefined = undefined;
+  if (baseRow.practiceTestRunId) {
+    const { data: runData, error: runError } = await supabase
+      .from('practice_test_runs' as never)
+      .select('status')
+      .eq('id', baseRow.practiceTestRunId)
+      .eq('user_id', userId)
+      .maybeSingle();
+    if (runError) {
+      return {
+        state: 'sealed',
+        reason: 'practice-test',
+        id: baseRow.id,
+        pt: baseRow.pt,
+        section: baseRow.section,
+        completedAt: baseRow.completedAt,
+        questionQids: [],
+      };
+    }
+    const status = (runData as { status?: string } | null)?.status;
+    runComplete = status === 'completed';
+    if (!runComplete) {
+      return {
+        state: 'sealed',
+        reason: 'practice-test',
+        id: baseRow.id,
+        pt: baseRow.pt,
+        section: baseRow.section,
+        completedAt: baseRow.completedAt,
+        questionQids: [],
+      };
+    }
+  }
+
+  let record: SectionReviewRecord | undefined;
+  try {
+    const records = await fetchSectionReviewRecords([baseRow.id]);
+    record = records.get(baseRow.id);
+  } catch (err) {
+    console.error('[sectionHistory] review record lookup failed', err);
+    if (baseRow.releaseRequiresBr) {
+      return {
+        state: 'sealed',
+        reason: 'blind-review',
+        id: baseRow.id,
+        pt: baseRow.pt,
+        section: baseRow.section,
+        completedAt: baseRow.completedAt,
+        questionQids: baseRow.questions.map((q) => q.qid),
+      };
+    }
+  }
+
+  if (sectionReleaseState(baseRow, record, runComplete) === 'sealed') {
+    return {
+      state: 'sealed',
+      reason: baseRow.practiceTestRunId && runComplete === false ? 'practice-test' : 'blind-review',
+      id: baseRow.id,
+      pt: baseRow.pt,
+      section: baseRow.section,
+      completedAt: baseRow.completedAt,
+      questionQids: baseRow.releaseRequiresBr ? baseRow.questions.map((q) => q.qid) : [],
+    };
+  }
+
+  const merged: SectionHistoryRow = {
+    ...baseRow,
+    predictedScore: record?.predictedScore ?? null,
+  };
+  if (hasCompletedBlindReview(record)) {
+    merged.brUsed = true;
+    merged.brScore = record.brScore;
+    merged.brPercent = record.brPercent;
+    merged.brDelta = record.brDelta;
+    merged.brResults = record.brResults;
+    if (record.brAnalysis) {
+      merged.analysis = record.brAnalysis as SectionAnalysis;
+      merged.analysisSource = 'blind-review';
+    }
+  }
+
+  return { state: 'released', row: merged };
+}
+
+/** True if the signed-in student owns this completed section row (released or sealed). */
+export async function ownsSectionHistoryRow(
+  userId: string,
+  historyId: string,
+): Promise<boolean> {
+  const { data, error } = await supabase
+    .from('section_history')
+    .select('id')
+    .eq('id', historyId)
+    .eq('user_id', userId)
+    .eq('mode', 'full-section')
+    .not('completed_at', 'is', null)
+    .maybeSingle();
+  if (error) return false;
+  return !!data;
+}
+
 /**
  * Lays the review record over each row: blind review and its diagnosis only
  * when the record is complete, the prediction on its own. Sealed rows are

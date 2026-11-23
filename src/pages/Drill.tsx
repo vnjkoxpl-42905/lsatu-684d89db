@@ -3910,6 +3910,14 @@ function DrillContent() {
           brResults={brResults}
           classId={classId}
           onReviewSection={() => setPostSectionScreen('review-walk')}
+          onStartBlindReview={
+            !brResults?.length && !isSittingReturn(drillReturnTo)
+              ? () => {
+                  setBrPassQids(null);
+                  setPostSectionScreen('review');
+                }
+              : undefined
+          }
           onBack={() => navigate(drillReturnTo || '/classroom')}
           backLabel={
             isSittingReturn(drillReturnTo)
