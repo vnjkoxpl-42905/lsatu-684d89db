@@ -5,7 +5,18 @@ const store = vi.hoisted(() => ({
   savePracticeSessionSnapshot: vi.fn(),
   completePracticeSession: vi.fn(),
 }));
-const accountWrites = vi.hoisted(() => ({ fail: false, readFail: false, row: null as unknown, upsert: vi.fn() }));
+const accountWrites = vi.hoisted(() => ({
+  fail: false,
+  readFail: false,
+  row: null as unknown,
+  rowDbUpdatedAt: '2026-11-23T10:00:00.000Z',
+  dbRows: new Map<string, { data: any; updated_at: string }>(),
+  onSelect: null as (() => void) | null,
+  onBeforeWrite: null as (() => void) | null,
+  upsert: vi.fn(),
+  update: vi.fn(),
+  insert: vi.fn(),
+}));
 const activeDevice = vi.hoisted(() => vi.fn());
 vi.mock('@/lib/practiceTestStore', () => ({ isActivePracticeTestDevice: activeDevice }));
 
@@ -13,9 +24,16 @@ beforeEach(() => {
   accountWrites.fail = false;
   accountWrites.readFail = false;
   accountWrites.row = null;
+  accountWrites.rowDbUpdatedAt = '2026-11-23T10:00:00.000Z';
+  accountWrites.dbRows.clear();
+  accountWrites.onSelect = null;
+  accountWrites.onBeforeWrite = null;
   accountWrites.upsert.mockClear();
+  accountWrites.update.mockClear();
+  accountWrites.insert.mockClear();
   activeDevice.mockReset().mockResolvedValue(true);
   window.localStorage.clear();
+  clearAccountSectionRevisionsForTests();
 });
 
 vi.mock('@/bootcamps/main-conclusion/lib/practiceSessionStore', async (importOriginal) => ({
@@ -25,17 +43,75 @@ vi.mock('@/bootcamps/main-conclusion/lib/practiceSessionStore', async (importOri
 vi.mock('@/integrations/supabase/client', () => ({
   supabase: {
     from: () => ({
-      upsert: async (...args: unknown[]) => {
-        accountWrites.upsert(...args);
-        return { error: accountWrites.fail ? { message: 'offline' } : null };
+      upsert: async (payload: any, ...rest: unknown[]) => {
+        accountWrites.upsert(payload, ...rest);
+        if (accountWrites.fail) return { error: { message: 'offline' } };
+        if (payload?.record_id) {
+          accountWrites.dbRows.set(payload.record_id, {
+            data: payload.data,
+            updated_at: payload.updated_at ?? new Date().toISOString(),
+          });
+        }
+        return { error: null };
+      },
+      insert: (payload: any) => {
+        accountWrites.insert(payload);
+        const execute = async () => {
+          if (accountWrites.fail) return { data: null, error: { message: 'offline' } };
+          if (accountWrites.dbRows.has(payload.record_id)) {
+            return { data: null, error: { code: '23505', message: 'duplicate key' } };
+          }
+          const stamp = payload.updated_at ?? new Date().toISOString();
+          accountWrites.dbRows.set(payload.record_id, { data: payload.data, updated_at: stamp });
+          return { data: [{ updated_at: stamp }], error: null };
+        };
+        return {
+          select: execute,
+          then: (resolve: (v: unknown) => void) => void execute().then(resolve),
+        };
+      },
+      update: (payload: any) => {
+        const filters: Record<string, unknown> = {};
+        const chain: Record<string, any> = {
+          eq: (col: string, val: unknown) => {
+            filters[col] = val;
+            return chain;
+          },
+          select: async () => {
+            accountWrites.onBeforeWrite?.();
+            accountWrites.update({ payload, filters });
+            if (accountWrites.fail) return { data: null, error: { message: 'offline' } };
+            const existing = accountWrites.dbRows.get(String(filters.record_id));
+            if (!existing) return { data: [], error: null };
+            if ('updated_at' in filters && existing.updated_at !== filters.updated_at) {
+              return { data: [], error: null };
+            }
+            const stamp = payload.updated_at ?? new Date().toISOString();
+            accountWrites.dbRows.set(String(filters.record_id), { data: payload.data, updated_at: stamp });
+            return { data: [{ updated_at: stamp }], error: null };
+          },
+        };
+        return chain;
       },
       select: () => {
-        const chain: Record<string, unknown> = {};
-        chain.eq = () => chain;
-        chain.maybeSingle = async () => ({
-          data: accountWrites.row ? { data: accountWrites.row } : null,
-          error: accountWrites.readFail ? new Error('offline') : null,
-        });
+        const filters: Record<string, unknown> = {};
+        const chain: Record<string, any> = {};
+        chain.eq = (col: string, val: unknown) => {
+          filters[col] = val;
+          return chain;
+        };
+        chain.maybeSingle = async () => {
+          if (accountWrites.readFail) return { data: null, error: new Error('offline') };
+          const dbRow = filters.record_id ? accountWrites.dbRows.get(String(filters.record_id)) : undefined;
+          const result = dbRow
+            ? { data: dbRow, error: null }
+            : {
+                data: accountWrites.row ? { data: accountWrites.row, updated_at: accountWrites.rowDbUpdatedAt } : null,
+                error: null,
+              };
+          accountWrites.onSelect?.();
+          return result;
+        };
         return chain;
       },
     }),
@@ -43,6 +119,7 @@ vi.mock('@/integrations/supabase/client', () => ({
 }));
 
 import {
+  clearAccountSectionRevisionsForTests,
   drillResumeKey,
   isResumableDrillSession,
   isSpentDrillSession,
@@ -266,5 +343,110 @@ describe('a row whose clock was already spent', () => {
     expect(isSpentDrillSession(row(undefined), budget)).toBe(false);
     expect(isSpentDrillSession(row(budget), undefined)).toBe(false);
     expect(isSpentDrillSession(null, budget)).toBe(false);
+  });
+});
+
+describe('atomic conditional revision save and assignment key protection (F3)', () => {
+  it('uses an atomic conditional DB write against updated_at and retains both copies on conflict', async () => {
+    const { practiceSessionIdFor } = await import('@/bootcamps/main-conclusion/lib/practiceSessionStore');
+    const userId = '11111111-1111-4111-8111-111111111111';
+    const key = 'drill::section::pt23-s2#sit-1';
+    const recId = practiceSessionIdFor(userId, key);
+
+    const r1 = '2026-11-23T10:00:00.000Z';
+    const r2 = '2026-11-23T10:05:00.000Z';
+    const initialRow = {
+      id: recId,
+      user_id: userId,
+      pool_slug: key,
+      completion_id: key,
+      data_version: 2,
+      question_queue: ['PT23-S2-Q1', 'PT23-S2-Q2'],
+      current_index: 0,
+      attempts: [{ qid: 'PT23-S2-Q1', selected_answer: 'A', correct: false, time_ms: 1000 }],
+      status: 'in_progress',
+      elapsed_ms: 1000,
+      started_at: '2026-11-23T09:50:00.000Z',
+      // Deliberately differs from DB updated_at column r1!
+      updated_at: '2026-11-23T09:55:00.000Z',
+    };
+    accountWrites.dbRows.set(recId, { data: initialRow, updated_at: r1 });
+    store.loadPracticeSession.mockReset().mockResolvedValue(null);
+
+    // Tab A loads at DB revision r1.
+    const loaded = await loadDrillResumeSession(userId, key);
+    expect(loaded?.attempts[0]?.selected_answer).toBe('A');
+
+    // Simulate the race: Tab B commits r2 with answer 'C' right after any read
+    // (or concurrently before Tab A's DB write lands).
+    const tabBRow = {
+      ...initialRow,
+      attempts: [{ qid: 'PT23-S2-Q1', selected_answer: 'C', correct: true, time_ms: 2000 }],
+      updated_at: r2,
+    };
+    accountWrites.onBeforeWrite = () => {
+      accountWrites.dbRows.set(recId, { data: tabBRow, updated_at: r2 });
+    };
+    accountWrites.dbRows.set(recId, { data: { ...initialRow, updated_at: r1 }, updated_at: r1 });
+
+    // Tab A tries to save its stale edit (without even passing explicit expectedUpdatedAt;
+    // it relies on the DB column revision r1 cached on loadDrillResumeSession).
+    const tabASnapshot = {
+      questionQueue: ['PT23-S2-Q1', 'PT23-S2-Q2'],
+      currentIndex: 1,
+      attempts: [{ qid: 'PT23-S2-Q1', selected_answer: 'B', correct: false, time_ms: 1500 }],
+      elapsedMs: 1500,
+      timerMode: '35' as const,
+    };
+    store.savePracticeSessionSnapshot.mockReset().mockResolvedValue(undefined);
+    store.loadPracticeSession.mockResolvedValue({ ...initialRow, attempts: tabASnapshot.attempts });
+
+    await expect(
+      saveDrillResumeSnapshot(userId, key, tabASnapshot),
+    ).rejects.toThrow(/another tab/i);
+
+    // Also verify passing explicit expectedUpdatedAt: r1 catches the same race cleanly.
+    await expect(
+      saveDrillResumeSnapshot(userId, key, tabASnapshot, { expectedUpdatedAt: r1 }),
+    ).rejects.toThrow(/another tab/i);
+
+    // Both copies survived: DB still has Tab B's 'C', and device backup still has Tab A's 'B'.
+    expect(accountWrites.dbRows.get(recId)?.data.attempts[0].selected_answer).toBe('C');
+    expect(accountWrites.dbRows.get(recId)?.updated_at).toBe(r2);
+    expect(hasPendingSectionDeviceBackup(userId, key)).toBe(true);
+    expect(accountWrites.upsert).not.toHaveBeenCalled();
+  });
+
+  it('protects assignment keys with device backup and conditional writes just like standalone section keys', async () => {
+    const { practiceSessionIdFor } = await import('@/bootcamps/main-conclusion/lib/practiceSessionStore');
+    const userId = '11111111-1111-4111-8111-111111111111';
+    const key = 'drill::assignment::hw-1#sit-1';
+    const recId = practiceSessionIdFor(userId, key);
+
+    const snapshot = {
+      questionQueue: ['PT23-S2-Q1'],
+      currentIndex: 0,
+      attempts: [{ qid: 'PT23-S2-Q1', selected_answer: 'B', correct: true, time_ms: 1200 }],
+      elapsedMs: 5000,
+      timerMode: '35' as const,
+    };
+    store.savePracticeSessionSnapshot.mockReset().mockResolvedValue(undefined);
+    store.loadPracticeSession.mockReset().mockResolvedValue({
+      id: recId,
+      user_id: userId,
+      pool_slug: key,
+      completion_id: key,
+      question_queue: snapshot.questionQueue,
+      current_index: 0,
+      attempts: snapshot.attempts,
+      status: 'in_progress',
+      started_at: '2026-11-23T10:00:00Z',
+      updated_at: '2026-11-23T10:00:00Z',
+    });
+
+    // Fail the write and verify device backup is created for assignment keys too.
+    accountWrites.fail = true;
+    await expect(saveDrillResumeSnapshot(userId, key, snapshot)).rejects.toBeTruthy();
+    expect(hasPendingSectionDeviceBackup(userId, key)).toBe(true);
   });
 });

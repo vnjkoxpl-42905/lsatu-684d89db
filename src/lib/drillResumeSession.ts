@@ -38,9 +38,76 @@ import { isActivePracticeTestDevice } from '@/lib/practiceTestStore';
 export const DRILL_SESSION_PREFIX = 'drill::';
 const SECTION_PREFIX = `${DRILL_SESSION_PREFIX}section::`;
 const TEST_LEG_PREFIX = `${DRILL_SESSION_PREFIX}practice-test::`;
+const ASSIGNMENT_PREFIX = `${DRILL_SESSION_PREFIX}assignment::`;
 const accountSectionKey = (key: string) =>
-  key.startsWith(SECTION_PREFIX) || key.startsWith(TEST_LEG_PREFIX);
+  key.startsWith(SECTION_PREFIX) ||
+  key.startsWith(TEST_LEG_PREFIX) ||
+  key.startsWith(ASSIGNMENT_PREFIX);
 const accountWriteChains = new Map<string, Promise<void>>();
+const accountRevisionCache = new Map<string, string | null>();
+const revisionSessionKey = (userId: string, key: string) =>
+  `lsatu:section-rev:${practiceSessionIdFor(userId, key)}`;
+
+export class SectionRevisionConflictError extends Error {
+  constructor(message = 'This section was updated in another tab. Both copies were kept.') {
+    super(message);
+    this.name = 'SectionRevisionConflictError';
+  }
+}
+
+export function setAccountSectionRevision(
+  userId: string,
+  key: string | null,
+  revision: string | null,
+): void {
+  if (!userId || !key || !accountSectionKey(key)) return;
+  const cacheKey = `${userId}::${key}`;
+  accountRevisionCache.set(cacheKey, revision);
+  try {
+    window.sessionStorage?.setItem(
+      revisionSessionKey(userId, key),
+      JSON.stringify({ rev: revision }),
+    );
+  } catch {
+    // Session storage is optional; in-memory cache covers the active tab.
+  }
+}
+
+export function getAccountSectionRevision(
+  userId: string,
+  key: string | null,
+): string | null | undefined {
+  if (!userId || !key || !accountSectionKey(key)) return undefined;
+  const cacheKey = `${userId}::${key}`;
+  if (accountRevisionCache.has(cacheKey)) return accountRevisionCache.get(cacheKey);
+  try {
+    const raw = window.sessionStorage?.getItem(revisionSessionKey(userId, key));
+    if (raw) {
+      const parsed = JSON.parse(raw) as { rev?: unknown };
+      const rev = parsed.rev;
+      if (rev === null) {
+        accountRevisionCache.set(cacheKey, null);
+        return null;
+      }
+      if (typeof rev === 'string') {
+        accountRevisionCache.set(cacheKey, rev);
+        return rev;
+      }
+    }
+  } catch {
+    // Ignore storage read errors.
+  }
+  return undefined;
+}
+
+export function clearAccountSectionRevisionsForTests(): void {
+  accountRevisionCache.clear();
+  try {
+    window.sessionStorage?.clear();
+  } catch {
+    // Ignore storage clear errors.
+  }
+}
 
 function queueAccountWrite(userId: string, key: string, write: () => Promise<void>): Promise<void> {
   const identity = `${userId}::${key}`;
@@ -63,26 +130,93 @@ async function assertActiveTestLeg(userId: string, key: string): Promise<void> {
 
 async function readSectionFromAccount(userId: string, key: string): Promise<PracticeSession | null> {
   const { data, error } = await supabase.from('bootcamp_kv')
-    .select('data')
+    .select('data, updated_at')
     .eq('user_id', userId)
     .eq('table_name', TABLES.practice_sessions)
     .eq('record_id', practiceSessionIdFor(userId, key))
     .maybeSingle();
   if (error) throw error;
+  setAccountSectionRevision(
+    userId,
+    key,
+    typeof data?.updated_at === 'string' ? data.updated_at : null,
+  );
   const parsed = PracticeSession.safeParse(data?.data);
   return parsed.success ? migratePracticeSession(parsed.data) : null;
 }
 
-async function syncSectionToAccount(userId: string, key: string): Promise<void> {
+async function readSectionRevisionFromAccount(userId: string, key: string): Promise<string | null> {
+  const { data, error } = await supabase.from('bootcamp_kv')
+    .select('updated_at')
+    .eq('user_id', userId)
+    .eq('table_name', TABLES.practice_sessions)
+    .eq('record_id', practiceSessionIdFor(userId, key))
+    .maybeSingle();
+  if (error) throw error;
+  const rev = typeof data?.updated_at === 'string' ? data.updated_at : null;
+  setAccountSectionRevision(userId, key, rev);
+  return rev;
+}
+
+async function syncSectionToAccount(
+  userId: string,
+  key: string,
+  expectedDbUpdatedAt?: string | null,
+  options?: { allowOverwrite?: boolean },
+): Promise<void> {
   const record = await loadPracticeSession(userId, key);
   if (!record) throw new Error('The section could not be saved.');
-  const { error } = await supabase.from('bootcamp_kv').upsert({
-    user_id: userId,
-    table_name: TABLES.practice_sessions,
-    record_id: record.id,
-    data: record,
-  }, { onConflict: 'user_id,table_name,record_id' });
-  if (error) throw error;
+  if (options?.allowOverwrite) {
+    const { error } = await supabase.from('bootcamp_kv').upsert({
+      user_id: userId,
+      table_name: TABLES.practice_sessions,
+      record_id: record.id,
+      data: record,
+    }, { onConflict: 'user_id,table_name,record_id' });
+    if (error) throw error;
+    return;
+  }
+
+  let expected = expectedDbUpdatedAt !== undefined
+    ? expectedDbUpdatedAt
+    : getAccountSectionRevision(userId, key);
+  if (expected === undefined) {
+    expected = await readSectionRevisionFromAccount(userId, key);
+  }
+
+  if (typeof expected === 'string') {
+    const { data: rows, error } = await supabase.from('bootcamp_kv')
+      .update({ data: record })
+      .eq('user_id', userId)
+      .eq('table_name', TABLES.practice_sessions)
+      .eq('record_id', record.id)
+      .eq('updated_at', expected)
+      .select('updated_at');
+    if (error) throw error;
+    if (!rows || rows.length === 0) {
+      throw new SectionRevisionConflictError();
+    }
+    const nextRev = typeof rows[0]?.updated_at === 'string' ? rows[0].updated_at : record.updated_at;
+    setAccountSectionRevision(userId, key, nextRev);
+    return;
+  }
+
+  const { data: rows, error } = await supabase.from('bootcamp_kv')
+    .insert({
+      user_id: userId,
+      table_name: TABLES.practice_sessions,
+      record_id: record.id,
+      data: record,
+    })
+    .select('updated_at');
+  if (error) {
+    if (error.code === '23505') {
+      throw new SectionRevisionConflictError();
+    }
+    throw error;
+  }
+  const nextRev = typeof rows?.[0]?.updated_at === 'string' ? rows[0].updated_at : record.updated_at;
+  setAccountSectionRevision(userId, key, nextRev);
 }
 
 export type DrillResumeSession = PracticeSession;
@@ -304,14 +438,10 @@ export async function saveDrillResumeSnapshot(
   const backupStamp = accountSectionKey(key) ? writeSectionDeviceBackup(userId, key, snapshot) : null;
   await queueAccountWrite(userId, key, async () => {
     await assertActiveTestLeg(userId, key);
-    if (accountSectionKey(key) && options?.expectedUpdatedAt) {
-      const current = await readSectionFromAccount(userId, key);
-      if (current && current.updated_at !== options.expectedUpdatedAt) {
-        throw new Error('This section was updated in another tab. Both copies were kept.');
-      }
-    }
     await savePracticeSessionSnapshot(userId, { slug: key, completionId: key }, snapshot);
-    if (accountSectionKey(key)) await syncSectionToAccount(userId, key);
+    if (accountSectionKey(key)) {
+      await syncSectionToAccount(userId, key, options?.expectedUpdatedAt);
+    }
   });
   if (backupStamp && readSectionDeviceBackup(userId, key)?.updated_at === backupStamp) {
     clearSectionDeviceBackup(userId, key);
@@ -336,7 +466,9 @@ export async function completeDrillResumeSession(
   await queueAccountWrite(userId, key, async () => {
     await assertActiveTestLeg(userId, key);
     await completePracticeSession(userId, { slug: key, completionId: key }, snapshot);
-    if (accountSectionKey(key)) await syncSectionToAccount(userId, key);
+    if (accountSectionKey(key)) {
+      await syncSectionToAccount(userId, key, undefined, { allowOverwrite: true });
+    }
   });
   if (accountSectionKey(key)) clearSectionDeviceBackup(userId, key);
 }

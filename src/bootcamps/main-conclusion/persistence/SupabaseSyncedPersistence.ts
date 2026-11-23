@@ -29,7 +29,9 @@ function ownsAccountSave(table: string, record: unknown): boolean {
   if (table !== 'practice_sessions' || !record || typeof record !== 'object') return false;
   const slug = (record as { pool_slug?: unknown }).pool_slug;
   return typeof slug === 'string' &&
-    (slug.startsWith('drill::section::') || slug.startsWith('drill::practice-test::'));
+    (slug.startsWith('drill::section::') ||
+      slug.startsWith('drill::practice-test::') ||
+      slug.startsWith('drill::assignment::'));
 }
 
 function updatedAt(value: unknown): number {

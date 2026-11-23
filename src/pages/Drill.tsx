@@ -180,6 +180,8 @@ import {
   completeDrillResumeSession,
   isResumableDrillSession,
   isSpentDrillSession,
+  SectionRevisionConflictError,
+  setAccountSectionRevision,
 } from '@/lib/drillResumeSession';
 import {
   createStandaloneDrillRun,
@@ -587,6 +589,7 @@ function DrillContent() {
   const [bootLoadFailed, setBootLoadFailed] = React.useState(false);
   const [handoffLost, setHandoffLost] = React.useState(false);
   const [sectionSaveError, setSectionSaveError] = React.useState(false);
+  const [sectionRevisionConflict, setSectionRevisionConflict] = React.useState(false);
   const [retryingSectionSave, setRetryingSectionSave] = React.useState(false);
   const [adaptiveHydrationStatus, setAdaptiveHydrationStatus] = React.useState<'idle' | 'loading' | 'ready' | 'failed'>('idle');
   const { classId, loading: classIdLoading } = useClassId();
@@ -1104,6 +1107,9 @@ function DrillContent() {
           standaloneSittingRef.current = sittingInfo;
           setStandaloneSitting(sittingInfo);
           activeResumeKey = sittingStorageKey(baseGenericResumeKey, reply.sittingId);
+          if (reply.adoptedRevision) {
+            setAccountSectionRevision(user.id, activeResumeKey, reply.adoptedRevision);
+          }
           if (reply.adopted) {
             activeLegacyKey = baseGenericResumeKey;
             adoptedLegacyBackupKey = baseGenericResumeKey;
@@ -1224,9 +1230,12 @@ function DrillContent() {
   React.useEffect(() => {
     if (sectionSaveError && session?.mode === 'full-section') timerRef.current?.pause();
   }, [sectionSaveError, session?.mode]);
-  const pauseForSectionSave = React.useCallback(() => {
+  const pauseForSectionSave = React.useCallback((err?: unknown) => {
     if (session?.mode !== 'full-section') return;
     if (session.fullSectionConfig?.timer.mode !== 'unlimited') timerRef.current?.pause();
+    if (err instanceof SectionRevisionConflictError) {
+      setSectionRevisionConflict(true);
+    }
     setSectionSaveError(true);
   }, [session?.mode, session?.fullSectionConfig?.timer.mode]);
   const sectionTimerConfig = session?.fullSectionConfig?.timer;
@@ -1346,24 +1355,28 @@ function DrillContent() {
   snapshotRef.current = drillResumeSnapshot;
   React.useEffect(() => {
     if (!genericResumeKey || !user || !session || !hasTimer) return;
-    if (genericFinalizedRef.current) return;
+    if (genericFinalizedRef.current || sectionSaveError) return;
     if (session.mode !== 'full-section') return;
     const id = window.setInterval(() => {
       // Re-checked on every beat: the section can finish between two of them.
-      if (genericFinalizedRef.current || hasPendingSectionDeviceBackup(user.id, genericResumeKey)) return;
+      if (
+        genericFinalizedRef.current ||
+        sectionSaveError ||
+        hasPendingSectionDeviceBackup(user.id, genericResumeKey)
+      ) return;
       const snapshot = snapshotRef.current(session);
       if (!snapshot) return;
       void saveDrillResumeSnapshot(user.id, genericResumeKey, snapshot).catch((err) => {
         if (ptRun && err instanceof Error && err.message.includes('another device')) {
           setHandoffLost(true);
         } else {
-          pauseForSectionSave();
+          pauseForSectionSave(err);
         }
         console.error('[drill:resume:heartbeat] resume write failed', { err });
       });
     }, 20_000);
     return () => window.clearInterval(id);
-  }, [genericResumeKey, user, session, hasTimer, ptRun, pauseForSectionSave]);
+  }, [genericResumeKey, user, session, hasTimer, ptRun, pauseForSectionSave, sectionSaveError]);
 
   React.useEffect(() => {
     if (!isMcPractice || !mcPracticePool || !user || !session) return;
@@ -1401,7 +1414,7 @@ function DrillContent() {
       if (ptRun && err instanceof Error && err.message.includes('another device')) {
         setHandoffLost(true);
       } else {
-        pauseForSectionSave();
+        pauseForSectionSave(err);
       }
       // Non-fatal: the drill still works, they just lose the resume point.
       console.error('[drill:resume:snapshot] resume write failed', {
@@ -1432,11 +1445,14 @@ function DrillContent() {
       if (standaloneSittingRef.current?.adoptedRevision) {
         standaloneSittingRef.current = { ...standaloneSittingRef.current, adoptedRevision: null };
       }
+      setSectionRevisionConflict(false);
       setSectionSaveError(false);
       timerRef.current?.resume();
     } catch (err) {
       if (ptRun && err instanceof Error && err.message.includes('another device')) {
         setHandoffLost(true);
+      } else if (err instanceof SectionRevisionConflictError) {
+        setSectionRevisionConflict(true);
       }
       console.error('[drill:resume:retry] account save failed', err);
     } finally {
@@ -3146,7 +3162,7 @@ function DrillContent() {
       return true;
     } catch (err) {
       if (ptRun && err instanceof Error && err.message.includes('another device')) setHandoffLost(true);
-      else pauseForSectionSave();
+      else pauseForSectionSave(err);
       console.error('[drill:section:navigation] account save failed', err);
       return false;
     } finally {
@@ -4959,8 +4975,9 @@ function DrillContent() {
             <AlertDialogHeader>
               <AlertDialogTitle>Saving paused this section</AlertDialogTitle>
               <AlertDialogDescription>
-                Your clock and questions are paused because this section did not save to your account.
-                Your current choice remains on this page. Retry the account save to continue.
+                {sectionRevisionConflict
+                  ? 'This section was updated in another tab or window. Both copies were kept, and saving stays paused so neither overwrites the other.'
+                  : 'Your clock and questions are paused because this section did not save to your account. Your current choice remains on this page. Retry the account save to continue.'}
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>

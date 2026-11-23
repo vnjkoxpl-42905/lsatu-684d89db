@@ -15,7 +15,7 @@ import type { DrillRunSpec } from '@/lib/drillRunSpec';
 import type { LRQuestion } from '@/lib/questionLoader';
 
 const insertCalls = vi.hoisted(() => ({ attempts: [] as Array<Record<string, unknown>>, failNext: 0, delayMs: 0 }));
-const resumeSave = vi.hoisted(() => ({ fail: false, failNext: 0, calls: 0 }));
+const resumeSave = vi.hoisted(() => ({ fail: false, failNext: 0, conflictNext: 0, calls: 0 }));
 const resumeLoad = vi.hoisted(() => ({ fail: false }));
 const ledgerSave = vi.hoisted(() => ({ fail: false, created: 0 }));
 const journalCalls = vi.hoisted(() => ({ wrong: vi.fn(), correct: vi.fn() }));
@@ -73,6 +73,10 @@ vi.mock('@/lib/drillResumeSession', async (importOriginal) => {
     },
     saveDrillResumeSnapshot: async () => {
       resumeSave.calls += 1;
+      if (resumeSave.conflictNext > 0) {
+        resumeSave.conflictNext -= 1;
+        throw new actual.SectionRevisionConflictError();
+      }
       if (resumeSave.fail || resumeSave.failNext > 0) {
         if (resumeSave.failNext > 0) resumeSave.failNext -= 1;
         throw new Error('The account save failed.');
@@ -354,6 +358,7 @@ beforeEach(() => {
   insertCalls.delayMs = 0;
   resumeSave.fail = false;
   resumeSave.failNext = 0;
+  resumeSave.conflictNext = 0;
   resumeSave.calls = 0;
   resumeLoad.fail = false;
   ledgerSave.fail = false;
@@ -692,6 +697,37 @@ describe('Drill review controls — full section keeps the legacy behaviour', ()
     expect(await screen.findByRole('alertdialog', { name: 'Saving paused this section' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Retry save' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Resume Section', hidden: true })).toBeInTheDocument();
+  });
+
+  it('does not allow autosave or heartbeat writes while the section is paused on save error or conflict', async () => {
+    const activeHeartbeatIds = new Set<ReturnType<typeof setInterval>>();
+    const origSetInterval = window.setInterval.bind(window);
+    const origClearInterval = window.clearInterval.bind(window);
+    vi.spyOn(window, 'setInterval').mockImplementation(((fn: TimerHandler, ms?: number, ...args: unknown[]) => {
+      const id = origSetInterval(fn, ms, ...args);
+      if (ms === 20_000) activeHeartbeatIds.add(id);
+      return id;
+    }) as typeof window.setInterval);
+    vi.spyOn(window, 'clearInterval').mockImplementation(((id?: ReturnType<typeof setInterval>) => {
+      if (id !== undefined) activeHeartbeatIds.delete(id);
+      origClearInterval(id);
+    }) as typeof window.clearInterval);
+
+    renderDrill({
+      ...sectionSpec,
+      config: { pt: 23, section: 2, timer: { mode: '35' } } as DrillRunSpec['config'],
+    });
+    await waitForQuestion(18);
+    await waitFor(() => expect(resumeSave.calls).toBeGreaterThan(0));
+
+    resumeSave.conflictNext = 1;
+    fireEvent.click(choiceButton('B'));
+    expect(await screen.findByRole('alertdialog', { name: 'Saving paused this section' })).toBeInTheDocument();
+    expect(screen.getByText(/updated in another tab/i)).toBeInTheDocument();
+    expect(screen.getByText(/both copies were kept/i)).toBeInTheDocument();
+
+    // Once paused on a conflict/save error, no 20s heartbeat timer may remain active to write behind the pause.
+    await waitFor(() => expect(activeHeartbeatIds.size).toBe(0));
   });
 
   it('Answer is gated until the question is attempted and Explanation opens the drawer', async () => {
