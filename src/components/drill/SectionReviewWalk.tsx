@@ -43,6 +43,7 @@ import { cn } from '@/lib/utils';
 import type { DrillSession, BlindReviewResult } from '@/types/drill';
 import type { HighlightMode } from '@/lib/highlightUtils';
 import { useQuestionHighlights } from '@/hooks/useQuestionHighlights';
+import { UNANSWERED, type SectionQuestionStat } from '@/lib/sectionHistorySave';
 
 export type ReviewTab = 'clean' | 'actual' | 'br';
 
@@ -74,6 +75,13 @@ interface Props {
   variant?: 'section' | 'drill';
   /** Extra header controls for the open question, e.g. Notes and Bookmark. */
   headerExtras?: (qid: string) => React.ReactNode;
+  /**
+   * Credited answer per qid saved when the section was sat. When provided, the
+   * walk grades against this map instead of the current question bank's key.
+   */
+  savedCorrectAnswers?: Record<string, string>;
+  /** Saved per-question outcomes so missing bank questions still show their saved record. */
+  savedStatsByQid?: Record<string, SectionQuestionStat>;
 }
 
 /** Which tabs this section can offer. BR appears only if a review happened. */
@@ -88,7 +96,7 @@ const TAB_LABELS: Record<ReviewTab, string> = {
   br: 'BR',
 };
 
-export default function SectionReviewWalk({ session, brResults, onBack, backLabel = 'Section results', initialIndex, initialTab = 'clean', notepadEnabled, onIndexChange, variant = 'section', headerExtras }: Props) {
+export default function SectionReviewWalk({ session, brResults, onBack, backLabel = 'Section results', initialIndex, initialTab = 'clean', notepadEnabled, onIndexChange, variant = 'section', headerExtras, savedCorrectAnswers, savedStatsByQid }: Props) {
   const drillVariant = variant === 'drill';
   const [analysisOpen, setAnalysisOpen] = React.useState(false);
   const [analysisStyle, setAnalysisStyle] = React.useState<LrStyleKey | null>(null);
@@ -169,7 +177,100 @@ export default function SectionReviewWalk({ session, brResults, onBack, backLabe
     return set;
   }, [qids, session]);
 
-  if (!question) return <div>Loading…</div>;
+  const savedStat = savedStatsByQid?.[currentQid];
+  const effectiveCorrectAnswer =
+    savedCorrectAnswers?.[currentQid] ?? savedStat?.correctAnswer ?? question?.correctAnswer ?? '';
+
+  if (!question) {
+    return (
+      <OfficialDrillFrame
+        notepadEnabled={notepadEnabled}
+        header={
+          <div className="flex w-full flex-wrap items-center justify-between gap-x-4 gap-y-2 text-[14px]">
+            <nav
+              aria-label="Breadcrumb"
+              className="flex min-w-0 flex-1 items-center gap-2 truncate text-[15px]"
+            >
+              <button
+                type="button"
+                onClick={onBack}
+                className="font-semibold text-blue-700 transition-colors hover:text-blue-800"
+              >
+                {backLabel}
+              </button>
+              <span aria-hidden className="text-slate-300">/</span>
+              <span className="font-semibold text-slate-900" aria-current="page">
+                Review · Question {currentIndex + 1} of {qids.length}
+              </span>
+            </nav>
+            <label className="flex shrink-0 cursor-pointer items-center gap-2 text-[13px] font-medium text-slate-700">
+              <Switch
+                checked={showAnswers}
+                onCheckedChange={setShowAnswers}
+                aria-label={drillVariant ? 'Show correct' : 'Show answers'}
+              />
+              {drillVariant ? 'Show correct' : 'Show answers'}
+            </label>
+          </div>
+        }
+      >
+        <div className="mx-auto my-8 max-w-2xl rounded-xl border border-slate-200 bg-white p-6 space-y-4 text-slate-900">
+          <p className="text-base font-semibold">Question text is no longer available.</p>
+          <p className="text-sm text-slate-600">
+            This question is no longer in the current question bank. Your saved result from this sitting is shown below.
+          </p>
+          <div className="rounded-lg border border-slate-200 bg-slate-50 p-4 space-y-1.5 text-sm">
+            {savedStat ? (
+              <>
+                <p>
+                  First answer:{' '}
+                  <strong>
+                    {savedStat.initialAnswer === UNANSWERED ? 'Blank' : savedStat.initialAnswer}
+                  </strong>
+                  {savedStat.initialAnswer !== UNANSWERED && (
+                    <span> · {savedStat.initialCorrect ? 'Correct' : 'Missed'}</span>
+                  )}
+                </p>
+                {brResult?.brAnswer && (
+                  <p>
+                    Blind review answer: <strong>{brResult.brAnswer}</strong>
+                  </p>
+                )}
+                {showAnswers && effectiveCorrectAnswer && (
+                  <p>
+                    Saved credited answer: <strong>{effectiveCorrectAnswer}</strong>
+                  </p>
+                )}
+              </>
+            ) : (
+              <>
+                <p>
+                  First answer: <strong>{attempt?.selectedAnswer || 'Blank'}</strong>
+                </p>
+                {showAnswers && effectiveCorrectAnswer && (
+                  <p>
+                    Saved credited answer: <strong>{effectiveCorrectAnswer}</strong>
+                  </p>
+                )}
+              </>
+            )}
+          </div>
+        </div>
+        <OfficialAnswerNavigator
+          questionQueue={qids}
+          currentIndex={currentIndex}
+          attemptedQids={answeredQids}
+          jumpEnabled
+          showQuestionList
+          prevDisabled={currentIndex === 0}
+          nextDisabled={currentIndex >= qids.length - 1}
+          onJumpTo={setCurrentIndex}
+          onPrev={() => setCurrentIndex((i) => Math.max(0, i - 1))}
+          onNext={() => setCurrentIndex((i) => Math.min(qids.length - 1, i + 1))}
+        />
+      </OfficialDrillFrame>
+    );
+  }
 
   const noop = () => {};
 
@@ -236,7 +337,7 @@ export default function SectionReviewWalk({ session, brResults, onBack, backLabe
         eliminatedAnswers={eliminatedByQid.get(currentQid) ?? new Set<string>()}
         isFlagged={false}
         answerRevealed={showAnswers}
-        correctAnswer={question.correctAnswer}
+        correctAnswer={effectiveCorrectAnswer}
         inlineNotes={showAnswers || drillVariant ? inlineNotes : null}
         choiceNoteExpanders={drillVariant}
         choiceNotesHiddenUntilOpen={drillVariant}
@@ -283,37 +384,44 @@ export default function SectionReviewWalk({ session, brResults, onBack, backLabe
           if (highlightMode === 'erase') questionHighlights.removeHighlight(question.qid, id);
         }}
         aboveChoices={
-          <div className="flex items-center gap-1 border-b border-slate-200">
-            {tabs.map((t) => (
-              <button
-                key={t}
-                type="button"
-                role="tab"
-                aria-selected={tab === t}
-                onClick={() => setTab(t)}
-                className={cn(
-                  '-mb-px border-b-2 px-3 py-2 text-[14px] font-semibold transition-colors',
-                  tab === t
-                    ? 'border-slate-900 text-slate-900'
-                    : 'border-transparent text-slate-500 hover:text-slate-900',
-                )}
-              >
-                {TAB_LABELS[t]}
-              </button>
-            ))}
-            <span className="ml-auto text-[13px] text-slate-500">
-              {tab === 'clean'
-                ? freshPicks[currentQid]
-                  ? `Fresh pick: ${freshPicks[currentQid]} · not saved`
-                  : 'Pick an answer to re-try it cold'
-                : tab === 'actual'
-                  ? attempt?.selectedAnswer
-                    ? `First answer: ${attempt.selectedAnswer}`
-                    : 'You left this one blank'
-                  : brResult?.brAnswer
-                    ? `Blind review: ${brResult.brAnswer}`
-                    : 'Not revisited in blind review'}
-            </span>
+          <div className="space-y-1.5">
+            {savedCorrectAnswers && (
+              <p className="text-[12px] text-slate-500">
+                Current question wording. Graded from the credited answer saved with this section.
+              </p>
+            )}
+            <div className="flex items-center gap-1 border-b border-slate-200">
+              {tabs.map((t) => (
+                <button
+                  key={t}
+                  type="button"
+                  role="tab"
+                  aria-selected={tab === t}
+                  onClick={() => setTab(t)}
+                  className={cn(
+                    '-mb-px border-b-2 px-3 py-2 text-[14px] font-semibold transition-colors',
+                    tab === t
+                      ? 'border-slate-900 text-slate-900'
+                      : 'border-transparent text-slate-500 hover:text-slate-900',
+                  )}
+                >
+                  {TAB_LABELS[t]}
+                </button>
+              ))}
+              <span className="ml-auto text-[13px] text-slate-500">
+                {tab === 'clean'
+                  ? freshPicks[currentQid]
+                    ? `Fresh pick: ${freshPicks[currentQid]} · not saved`
+                    : 'Pick an answer to re-try it cold'
+                  : tab === 'actual'
+                    ? attempt?.selectedAnswer
+                      ? `First answer: ${attempt.selectedAnswer}`
+                      : 'You left this one blank'
+                    : brResult?.brAnswer
+                      ? `Blind review: ${brResult.brAnswer}`
+                      : 'Not revisited in blind review'}
+              </span>
+            </div>
           </div>
         }
       />
