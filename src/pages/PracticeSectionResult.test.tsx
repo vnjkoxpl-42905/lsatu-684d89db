@@ -3,11 +3,27 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { describe, expect, it, vi, beforeEach } from 'vitest';
 import { PracticeSectionResult } from './PracticeExamPages';
+import ProtectedRoute from '@/components/ProtectedRoute';
+import { OwnedWorkReviewGate } from '@/components/AssignmentGate';
 
 const mockOwnsSectionHistoryRow = vi.fn();
 const mockListPracticeSectionAttempts = vi.fn();
 
-vi.mock('@/contexts/AuthContext', () => ({ useAuth: () => ({ user: { id: 'u1' } }) }));
+vi.mock('@/contexts/AuthContext', () => ({ useAuth: () => ({ user: { id: 'u1' }, authReady: true }) }));
+vi.mock('@/hooks/useUserPermissions', () => ({
+  useUserPermissions: () => ({
+    loading: false,
+    is_admin: false,
+    has_classroom_access: false,
+    has_analytics_access: false,
+    has_drill_access: false,
+    has_activity_access: false,
+    has_practice_access: false,
+  }),
+}));
+vi.mock('@/components/LockedModule', () => ({
+  default: () => <div>Access locked</div>,
+}));
 vi.mock('@/lib/sectionHistory', async () => {
   const actual = await vi.importActual<typeof import('@/lib/sectionHistory')>('@/lib/sectionHistory');
   return {
@@ -31,8 +47,18 @@ function renderAt(path: string) {
     <QueryClientProvider client={qc}>
       <MemoryRouter initialEntries={[path]}>
         <Routes>
-          <Route path="/testing/attempts/section/lr/:sessionId" element={<PracticeSectionResult />} />
-          <Route path="/review/section/:historyId" element={<div>Section report destination</div>} />
+          <Route
+            path="/testing/attempts/section/lr/:sessionId"
+            element={<ProtectedRoute allowSignedIn><PracticeSectionResult /></ProtectedRoute>}
+          />
+          <Route
+            path="/review/section/:historyId"
+            element={
+              <OwnedWorkReviewGate kind="section">
+                <div>Section report destination</div>
+              </OwnedWorkReviewGate>
+            }
+          />
         </Routes>
       </MemoryRouter>
     </QueryClientProvider>,
@@ -45,11 +71,19 @@ describe('PracticeSectionResult legacy URL resolver', () => {
     mockListPracticeSectionAttempts.mockReset();
   });
 
-  it('redirects to /review/section/:id when the id matches a section_history row', async () => {
+  it('redirects to /review/section/:id when the id matches a section_history row and lets an owner without classroom or analytics flags open their own report (F8)', async () => {
     mockOwnsSectionHistoryRow.mockResolvedValue(true);
     renderAt('/testing/attempts/section/lr/hist-123');
     await waitFor(() => expect(screen.getByText('Section report destination')).toBeTruthy());
+    expect(screen.queryByText('Access locked')).toBeNull();
     expect(mockListPracticeSectionAttempts).not.toHaveBeenCalled();
+  });
+
+  it('blocks a non-owner behind the real OwnedWorkReviewGate when flags are off (F8)', async () => {
+    mockOwnsSectionHistoryRow.mockResolvedValue(false);
+    renderAt('/review/section/hist-other');
+    await waitFor(() => expect(screen.getByText('Access locked')).toBeTruthy());
+    expect(screen.queryByText('Section report destination')).toBeNull();
   });
 
   it('keeps the score summary relabeled when only a completed resume record exists', async () => {

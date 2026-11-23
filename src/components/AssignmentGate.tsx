@@ -38,6 +38,7 @@ export function AssignmentGate({
   authKey,
   authorize,
   assignmentOnly = false,
+  allowWithoutClassroom = false,
   children,
 }: {
   flag: PermissionFlag | readonly PermissionFlag[];
@@ -45,22 +46,24 @@ export function AssignmentGate({
   authKey: string | null;
   authorize: (userId: string) => Promise<boolean>;
   assignmentOnly?: boolean;
+  allowWithoutClassroom?: boolean;
   children: ReactNode;
 }) {
   const { user, authReady } = useAuth();
   const permissions = useUserPermissions();
   const flags = (Array.isArray(flag) ? flag : [flag]) as PermissionFlag[];
   const flagOpen = permissions.is_admin || (!assignmentOnly && flags.some((f) => Boolean(permissions[f])));
+  const canAuthorize = allowWithoutClassroom || permissions.has_classroom_access;
 
   const { data: assigned, isLoading } = useQuery<boolean>({
     queryKey: ["assignment-gate", user?.id, authKey],
-    enabled: authReady && !!user && !permissions.loading && !flagOpen && !!authKey && permissions.has_classroom_access,
+    enabled: authReady && !!user && !permissions.loading && !flagOpen && !!authKey && canAuthorize,
     queryFn: () => authorize(user!.id),
     staleTime: 60_000,
   });
 
   const waiting =
-    authReady && !!user && !permissions.loading && !flagOpen && !!authKey && permissions.has_classroom_access && isLoading;
+    authReady && !!user && !permissions.loading && !flagOpen && !!authKey && canAuthorize && isLoading;
   if (waiting) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
@@ -69,7 +72,7 @@ export function AssignmentGate({
     );
   }
 
-  if (!flagOpen && permissions.has_classroom_access && assigned) return <>{children}</>;
+  if (!flagOpen && canAuthorize && assigned) return <>{children}</>;
   return <ProtectedRoute flag={assignmentOnly ? [] : flag}>{!flagOpen && assignmentOnly ? <LockedModule /> : children}</ProtectedRoute>;
 }
 
@@ -223,6 +226,7 @@ export function OwnedWorkReviewGate({ kind, children }: {
   const params = useParams();
   const id = params.attemptId ?? params.historyId ?? params.attemptKey;
   return <AssignmentGate flag="has_analytics_access" authKey={id ? `review:${kind}:${params.sourceKind ?? ''}:${id}` : null}
+    allowWithoutClassroom={kind === 'section'}
     authorize={async (uid) => {
       if (!id) return false;
       switch (kind) {
