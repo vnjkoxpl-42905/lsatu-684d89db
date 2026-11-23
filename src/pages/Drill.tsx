@@ -3889,12 +3889,15 @@ function DrillContent() {
   }
 
   if (postSectionScreen === 'complete') {
+    const isSealedAssignment = Boolean(assignmentId);
     return (
       <SectionComplete
+        sealed={isSealedAssignment}
         onBlindReview={() => setPostSectionScreen('review')}
         onSeeResults={() => setPostSectionScreen('score-report')}
+        onBackHome={() => navigate(drillReturnTo || '/classroom')}
         score={
-          session
+          !isSealedAssignment && session
             ? [...session.attempts.values()].filter((a) => a.correct).length
             : undefined
         }

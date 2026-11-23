@@ -148,17 +148,134 @@ export type OwnedSectionReportResult =
       row: SectionHistoryRow;
     };
 
+const NON_OUTCOME_COLUMNS =
+  'id,user_id,mode,completed_at,created_at,pt,section,practice_test_run_id,assignment_id,release_requires_br,client_sitting_id';
+
 /**
  * Loads one section for its owning account, preserving the sealed state so
  * `/review/section/:historyId` can show "Section complete" + "Do blind review"
  * without leaking score, first answers, or credited answers.
- * Fails closed on any lookup error.
+ *
+ * Step 1 selects only non-outcome metadata columns and resolves release before
+ * any outcome columns (`initial_score`, `questions_json`, `analysis_json`,
+ * `br_*`) are fetched. Fails closed on any lookup error.
  */
 export async function fetchOwnedSectionReport(
   userId: string,
   historyId: string,
 ): Promise<OwnedSectionReportResult> {
-  const { data, error } = await supabase
+  const { data: metaRaw, error } = await supabase
+    .from('section_history')
+    .select(NON_OUTCOME_COLUMNS as '*')
+    .eq('id', historyId)
+    .eq('user_id', userId)
+    .eq('mode', 'full-section')
+    .not('completed_at', 'is', null)
+    .maybeSingle();
+  if (error) throw error;
+  const meta = metaRaw as Record<string, any> | null;
+  if (
+    !meta ||
+    meta.id !== historyId ||
+    meta.user_id !== userId ||
+    meta.mode !== 'full-section' ||
+    typeof meta.completed_at !== 'string' ||
+    !Number.isFinite(Date.parse(meta.completed_at))
+  ) {
+    return { state: 'not-found' };
+  }
+
+  const completedAt = meta.completed_at as string;
+  const practiceTestRunId = (meta.practice_test_run_id as string | null) ?? null;
+  const releaseRequiresBr = Boolean(meta.release_requires_br);
+  const assignmentId = (meta.assignment_id as string | null) ?? null;
+
+  // Practice-test leg: verify the parent run is complete; fail closed if unknown.
+  let runComplete: boolean | undefined = undefined;
+  if (practiceTestRunId) {
+    const { data: runData, error: runError } = await supabase
+      .from('practice_test_runs' as never)
+      .select('status')
+      .eq('id', practiceTestRunId)
+      .eq('user_id', userId)
+      .maybeSingle();
+    if (runError) {
+      return {
+        state: 'sealed',
+        reason: 'practice-test',
+        id: meta.id,
+        pt: meta.pt,
+        section: meta.section,
+        completedAt,
+        questionQids: [],
+      };
+    }
+    const status = (runData as { status?: string } | null)?.status;
+    runComplete = status === 'complete';
+    if (!runComplete) {
+      return {
+        state: 'sealed',
+        reason: 'practice-test',
+        id: meta.id,
+        pt: meta.pt,
+        section: meta.section,
+        completedAt,
+        questionQids: [],
+      };
+    }
+  }
+
+  const loadAssignmentQids = async (): Promise<string[]> => {
+    if (!assignmentId) return [];
+    try {
+      const { data: asgData, error: asgErr } = await supabase
+        .from('homework_assignments' as never)
+        .select('question_qids')
+        .eq('id', assignmentId)
+        .eq('student_id', userId)
+        .maybeSingle();
+      if (asgErr || !asgData) return [];
+      const qids = (asgData as { question_qids?: unknown }).question_qids;
+      return Array.isArray(qids) ? qids.filter((q): q is string => typeof q === 'string') : [];
+    } catch {
+      return [];
+    }
+  };
+
+  let record: SectionReviewRecord | undefined;
+  try {
+    const records = await fetchSectionReviewRecords([meta.id]);
+    record = records.get(meta.id);
+  } catch (err) {
+    console.error('[sectionHistory] review record lookup failed', err);
+    if (releaseRequiresBr) {
+      return {
+        state: 'sealed',
+        reason: 'blind-review',
+        id: meta.id,
+        pt: meta.pt,
+        section: meta.section,
+        completedAt,
+        questionQids: await loadAssignmentQids(),
+      };
+    }
+  }
+
+  if (sectionReleaseState({ practiceTestRunId, releaseRequiresBr }, record, runComplete) === 'sealed') {
+    const reason = practiceTestRunId && runComplete !== true ? 'practice-test' : 'blind-review';
+    return {
+      state: 'sealed',
+      reason,
+      id: meta.id,
+      pt: meta.pt,
+      section: meta.section,
+      completedAt,
+      questionQids: reason === 'blind-review' ? await loadAssignmentQids() : [],
+    };
+  }
+
+  // Step 2: fetch full outcome columns ONLY after release is confirmed.
+  const { data, error: fullError } = await supabase
     .from('section_history')
     .select('*')
     .eq('id', historyId)
@@ -166,86 +283,10 @@ export async function fetchOwnedSectionReport(
     .eq('mode', 'full-section')
     .not('completed_at', 'is', null)
     .maybeSingle();
-  if (error) throw error;
-  if (
-    !data ||
-    data.id !== historyId ||
-    data.user_id !== userId ||
-    data.mode !== 'full-section' ||
-    typeof data.completed_at !== 'string' ||
-    !Number.isFinite(Date.parse(data.completed_at))
-  ) {
-    return { state: 'not-found' };
-  }
+  if (fullError) throw fullError;
+  if (!data) return { state: 'not-found' };
 
   const baseRow = toHistoryRow(data as Record<string, any>);
-
-  // Practice-test leg: verify the parent run is complete; fail closed if unknown.
-  let runComplete: boolean | undefined = undefined;
-  if (baseRow.practiceTestRunId) {
-    const { data: runData, error: runError } = await supabase
-      .from('practice_test_runs' as never)
-      .select('status')
-      .eq('id', baseRow.practiceTestRunId)
-      .eq('user_id', userId)
-      .maybeSingle();
-    if (runError) {
-      return {
-        state: 'sealed',
-        reason: 'practice-test',
-        id: baseRow.id,
-        pt: baseRow.pt,
-        section: baseRow.section,
-        completedAt: baseRow.completedAt,
-        questionQids: [],
-      };
-    }
-    const status = (runData as { status?: string } | null)?.status;
-    runComplete = status === 'completed';
-    if (!runComplete) {
-      return {
-        state: 'sealed',
-        reason: 'practice-test',
-        id: baseRow.id,
-        pt: baseRow.pt,
-        section: baseRow.section,
-        completedAt: baseRow.completedAt,
-        questionQids: [],
-      };
-    }
-  }
-
-  let record: SectionReviewRecord | undefined;
-  try {
-    const records = await fetchSectionReviewRecords([baseRow.id]);
-    record = records.get(baseRow.id);
-  } catch (err) {
-    console.error('[sectionHistory] review record lookup failed', err);
-    if (baseRow.releaseRequiresBr) {
-      return {
-        state: 'sealed',
-        reason: 'blind-review',
-        id: baseRow.id,
-        pt: baseRow.pt,
-        section: baseRow.section,
-        completedAt: baseRow.completedAt,
-        questionQids: baseRow.questions.map((q) => q.qid),
-      };
-    }
-  }
-
-  if (sectionReleaseState(baseRow, record, runComplete) === 'sealed') {
-    return {
-      state: 'sealed',
-      reason: baseRow.practiceTestRunId && runComplete === false ? 'practice-test' : 'blind-review',
-      id: baseRow.id,
-      pt: baseRow.pt,
-      section: baseRow.section,
-      completedAt: baseRow.completedAt,
-      questionQids: baseRow.releaseRequiresBr ? baseRow.questions.map((q) => q.qid) : [],
-    };
-  }
-
   const merged: SectionHistoryRow = {
     ...baseRow,
     predictedScore: record?.predictedScore ?? null,

@@ -8,6 +8,10 @@ interface SectionCompleteProps {
   score?: number;
   /** Questions in the section. */
   total?: number;
+  /** Assigned sections are sealed until blind review is done: no peek, no skip to results. */
+  sealed?: boolean;
+  /** Quiet back action when the section is sealed until blind review. */
+  onBackHome?: () => void;
 }
 
 /**
@@ -28,9 +32,11 @@ export function SectionComplete({
   onSeeResults,
   score,
   total,
+  sealed = false,
+  onBackHome,
 }: SectionCompleteProps) {
   const [peeked, setPeeked] = React.useState(false);
-  const canPeek = typeof score === 'number' && typeof total === 'number' && total > 0;
+  const canPeek = !sealed && typeof score === 'number' && typeof total === 'number' && total > 0;
 
   return (
     <div className="min-h-screen flex items-center justify-center p-6 bg-background">
@@ -83,13 +89,25 @@ export function SectionComplete({
           </p>
         </div>
 
-        <button
-          type="button"
-          onClick={onSeeResults}
-          className="text-sm text-muted-foreground underline underline-offset-4 transition-colors hover:text-foreground focus-visible:outline-none focus-visible:text-foreground"
-        >
-          Skip to results
-        </button>
+        {sealed ? (
+          onBackHome ? (
+            <button
+              type="button"
+              onClick={onBackHome}
+              className="text-sm text-muted-foreground underline underline-offset-4 transition-colors hover:text-foreground focus-visible:outline-none focus-visible:text-foreground"
+            >
+              Back to Home
+            </button>
+          ) : null
+        ) : (
+          <button
+            type="button"
+            onClick={onSeeResults}
+            className="text-sm text-muted-foreground underline underline-offset-4 transition-colors hover:text-foreground focus-visible:outline-none focus-visible:text-foreground"
+          >
+            Skip to results
+          </button>
+        )}
       </div>
     </div>
   );
