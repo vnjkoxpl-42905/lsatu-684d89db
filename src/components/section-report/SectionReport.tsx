@@ -110,17 +110,6 @@ export function SectionReport({
   }
 
   if (loading && !result) {
-    if (fallbackData) {
-      return (
-        <SectionReportView
-          data={fallbackData}
-          onBack={onBack}
-          backLabel={backLabel}
-          onReviewSection={onReviewSection ? (qid) => onReviewSection(qid) : undefined}
-          title={title}
-        />
-      );
-    }
     return (
       <div className="min-h-screen bg-background flex items-center justify-center p-6">
         <p role="status" className="text-sm text-muted-foreground">
@@ -131,17 +120,6 @@ export function SectionReport({
   }
 
   if (error) {
-    if (fallbackData) {
-      return (
-        <SectionReportView
-          data={fallbackData}
-          onBack={onBack}
-          backLabel={backLabel}
-          onReviewSection={onReviewSection ? (qid) => onReviewSection(qid) : undefined}
-          title={title}
-        />
-      );
-    }
     return (
       <div className="min-h-screen bg-background pb-12">
         <div className="max-w-xl mx-auto px-4 sm:px-6 pt-12">
@@ -163,17 +141,6 @@ export function SectionReport({
   }
 
   if (!result || result.state === 'not-found') {
-    if (fallbackData) {
-      return (
-        <SectionReportView
-          data={fallbackData}
-          onBack={onBack}
-          backLabel={backLabel}
-          onReviewSection={onReviewSection ? (qid) => onReviewSection(qid) : undefined}
-          title={title}
-        />
-      );
-    }
     return (
       <div className="min-h-screen bg-background pb-12">
         <div className="max-w-xl mx-auto px-4 sm:px-6 pt-12">

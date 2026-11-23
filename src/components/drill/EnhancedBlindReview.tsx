@@ -252,48 +252,102 @@ export function EnhancedBlindReview({
     }
   };
 
+  const attemptedQids = new Set<string>();
+  for (const qid of reviewQids) {
+    if ((brAnswers.get(qid) || '') !== '') attemptedQids.add(qid);
+  }
+
+  const headerNode = (
+    <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 w-full text-[14px]">
+      <nav aria-label="Breadcrumb" className="flex items-center gap-2 min-w-0 flex-1 truncate text-[15px]">
+        <button
+          type="button"
+          onClick={onBack}
+          className="text-blue-700 hover:text-blue-800 font-semibold transition-colors"
+        >
+          Section complete
+        </button>
+        <span aria-hidden className="text-slate-300">/</span>
+        <span className="text-[#7f1d1d] font-semibold" aria-current="page">
+          Blind Review · Question {currentIndex + 1} of {reviewQids.length}
+        </span>
+      </nav>
+      <div className="flex items-center gap-2 shrink-0">
+        <button
+          type="button"
+          onClick={handleFinish}
+          className="rounded-full bg-slate-100 hover:bg-slate-200 border border-slate-300 text-blue-900 px-3 sm:px-5 py-1.5 text-[13px] font-medium whitespace-nowrap transition-colors"
+        >
+          Submit blind review
+        </button>
+      </div>
+    </div>
+  );
+
+  const navigatorNode = (
+    <OfficialAnswerNavigator
+      questionQueue={reviewQids}
+      currentIndex={currentIndex}
+      attemptedQids={attemptedQids}
+      jumpEnabled
+      showQuestionList
+      prevDisabled={currentIndex === 0}
+      nextDisabled={currentIndex >= reviewQids.length - 1}
+      onJumpTo={(idx) => {
+        timerRef.current.pause();
+        setCurrentIndex(idx);
+      }}
+      onPrev={handlePrevious}
+      onNext={handleNext}
+    />
+  );
+
   if (!currentQuestion) {
-    return <div>Loading...</div>;
+    return (
+      <OfficialDrillFrame header={headerNode}>
+        <div className="flex-1 flex items-center justify-center p-6 bg-white">
+          <div className="max-w-md w-full rounded-lg border border-slate-200 bg-slate-50 p-6 text-center space-y-3">
+            <h2 className="text-base font-semibold text-slate-900">
+              Question text is no longer available.
+            </h2>
+            <p className="text-sm text-slate-600">
+              You can skip past this retired question and keep your blind review moving.
+              {previousAttempt?.selectedAnswer
+                ? ` Your timed answer (${previousAttempt.selectedAnswer}) stays saved.`
+                : ''}
+            </p>
+            <div className="pt-2 flex items-center justify-center gap-2">
+              {currentIndex < reviewQids.length - 1 ? (
+                <button
+                  type="button"
+                  onClick={handleNext}
+                  className="rounded-md bg-blue-700 hover:bg-blue-800 px-4 py-2 text-sm font-medium text-white transition-colors"
+                >
+                  Continue to next question
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  onClick={handleFinish}
+                  className="rounded-md bg-blue-700 hover:bg-blue-800 px-4 py-2 text-sm font-medium text-white transition-colors"
+                >
+                  Submit blind review
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+        {navigatorNode}
+      </OfficialDrillFrame>
+    );
   }
 
   const currentEliminated = eliminatedAnswers.get(currentQid) || new Set<string>();
   const isFlagged = flaggedQuestions.has(currentQid);
   const readOnly = answerTab === 'actual';
 
-  const attemptedQids = new Set<string>();
-  for (const qid of reviewQids) {
-    if ((brAnswers.get(qid) || '') !== '') attemptedQids.add(qid);
-  }
-
   return (
-    <OfficialDrillFrame
-      header={
-        <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 w-full text-[14px]">
-          <nav aria-label="Breadcrumb" className="flex items-center gap-2 min-w-0 flex-1 truncate text-[15px]">
-            <button
-              type="button"
-              onClick={onBack}
-              className="text-blue-700 hover:text-blue-800 font-semibold transition-colors"
-            >
-              Section complete
-            </button>
-            <span aria-hidden className="text-slate-300">/</span>
-            <span className="text-[#7f1d1d] font-semibold" aria-current="page">
-              Blind Review · Question {currentIndex + 1} of {reviewQids.length}
-            </span>
-          </nav>
-          <div className="flex items-center gap-2 shrink-0">
-            <button
-              type="button"
-              onClick={handleFinish}
-              className="rounded-full bg-slate-100 hover:bg-slate-200 border border-slate-300 text-blue-900 px-3 sm:px-5 py-1.5 text-[13px] font-medium whitespace-nowrap transition-colors"
-            >
-              Submit blind review
-            </button>
-          </div>
-        </div>
-      }
-    >
+    <OfficialDrillFrame header={headerNode}>
       {/* Same toolbar as the section, minus the clock. A blind review is
           untimed, so there is no timer to show and none is passed. */}
       <OfficialDrillToolbar
@@ -388,21 +442,7 @@ export function EnhancedBlindReview({
 
 
 
-      <OfficialAnswerNavigator
-        questionQueue={reviewQids}
-        currentIndex={currentIndex}
-        attemptedQids={attemptedQids}
-        jumpEnabled
-        showQuestionList
-        prevDisabled={currentIndex === 0}
-        nextDisabled={currentIndex >= reviewQids.length - 1}
-        onJumpTo={(idx) => {
-          timerRef.current.pause();
-          setCurrentIndex(idx);
-        }}
-        onPrev={handlePrevious}
-        onNext={handleNext}
-      />
+      {navigatorNode}
     </OfficialDrillFrame>
   );
 }

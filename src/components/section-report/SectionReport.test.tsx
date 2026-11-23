@@ -1,8 +1,8 @@
-import { render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { describe, expect, it, vi, beforeEach } from 'vitest';
 import { SectionReport } from './SectionReport';
-import { selectSectionDiagnosis } from './sectionReportModel';
+import { selectSectionDiagnosis, type SectionReportData } from './sectionReportModel';
 import type { OwnedSectionReportResult, SectionHistoryRow } from '@/lib/sectionHistory';
 
 const mockFetchOwnedSectionReport = vi.fn<
@@ -215,5 +215,72 @@ describe('SectionReport', () => {
       </MemoryRouter>,
     );
     await waitFor(() => expect(screen.queryByRole('button', { name: 'Start over' })).toBeNull());
+  });
+
+  it('never renders fallbackData when historyId lookup errors or is not-found, and forwards clicked qid + row (F6)', async () => {
+    const staleMemoryFallback: SectionReportData = {
+      pt: 130,
+      section: 2,
+      stats: [],
+      initialScore: 99,
+      initialTotal: 99,
+      initialPercent: 99,
+      brScore: null,
+      brPercent: null,
+      brDelta: null,
+      totalTimeMs: 1000,
+      avgTimeMs: 1000,
+      unansweredCount: 0,
+      predictedScore: null,
+      showPredictionStatus: false,
+      analysis: null,
+      analysisSource: 'first-pass',
+      brUsed: false,
+      sectionClock: null,
+      hasDetail: false,
+    };
+
+    mockFetchOwnedSectionReport.mockRejectedValueOnce(new Error('Account report lookup failed'));
+    const { rerender } = render(
+      <MemoryRouter>
+        <SectionReport
+          historyId="hist-err"
+          fallbackData={staleMemoryFallback}
+          onBack={vi.fn()}
+        />
+      </MemoryRouter>,
+    );
+    expect(await screen.findByText('Account report lookup failed')).toBeTruthy();
+    expect(screen.queryByText('99%')).toBeNull();
+
+    mockFetchOwnedSectionReport.mockResolvedValueOnce({ state: 'not-found' });
+    rerender(
+      <MemoryRouter>
+        <SectionReport
+          historyId="hist-missing"
+          fallbackData={staleMemoryFallback}
+          onBack={vi.fn()}
+        />
+      </MemoryRouter>,
+    );
+    expect(await screen.findByText('This section report was not found in your account.')).toBeTruthy();
+    expect(screen.queryByText('99%')).toBeNull();
+
+    const onReviewSection = vi.fn();
+    mockFetchOwnedSectionReport.mockResolvedValueOnce({ state: 'released', row: baseRow });
+    rerender(
+      <MemoryRouter>
+        <SectionReport
+          historyId="hist-1"
+          fallbackData={staleMemoryFallback}
+          onBack={vi.fn()}
+          onReviewSection={onReviewSection}
+        />
+      </MemoryRouter>,
+    );
+    await screen.findByText(/PT130\.S2/);
+    fireEvent.click(screen.getAllByText('Flaw')[1]);
+    fireEvent.click(screen.getByRole('button', { name: /Open in review walk/i }));
+    expect(onReviewSection).toHaveBeenCalledWith('pt130-s2-q1', baseRow);
   });
 });

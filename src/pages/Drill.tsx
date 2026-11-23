@@ -26,6 +26,8 @@ import {
 } from '@/components/drill/official/InlineChoiceExplanation';
 import { useLrExplanation, type LrStyleKey } from '@/hooks/useLrExplanation';
 import SectionReviewWalk from '@/components/drill/SectionReviewWalk';
+import { sectionHistoryToWalkSession } from '@/components/section-report/sectionWalkAdapter';
+import type { SectionHistoryRow } from '@/lib/sectionHistory';
 import HelpSheet from '@/components/help/HelpSheet';
 import OfficialSessionStrip from '@/components/drill/official/OfficialSessionStrip';
 import OfficialDrillToolbar from '@/components/drill/official/OfficialDrillToolbar';
@@ -572,6 +574,10 @@ function DrillContent() {
   // atomically. Null on every other path (results screen saves as before).
   const [sectionHistoryId, setSectionHistoryId] = React.useState<string | null>(null);
   const [sectionCreatedNow, setSectionCreatedNow] = React.useState(false);
+  const [walkSelection, setWalkSelection] = React.useState<{
+    row: SectionHistoryRow;
+    initialQid?: string;
+  } | null>(null);
   const savedCloseoutStatsRef = React.useRef<import('@/lib/sectionHistorySave').SectionQuestionStat[] | null>(null);
   /**
    * What the student guessed before seeing anything. Held for this sitting only
@@ -1274,6 +1280,7 @@ function DrillContent() {
     setPostSectionScreen(null);
     setSectionHistoryId(null);
     setSectionCreatedNow(false);
+    setWalkSelection(null);
     setPredictedScore(null);
     setBrResults([]);
     genericFinalizedRef.current = false;
@@ -4048,14 +4055,38 @@ function DrillContent() {
   // Reading a finished section back, read-only. Distinct from 'review', which
   // is the blind review: that one takes answers and scores them, this one takes
   // nothing and writes nothing.
-  if (postSectionScreen === 'review-walk' && session) {
-    return (
-      <SectionReviewWalk
-        session={session}
-        brResults={brResults}
-        onBack={() => setPostSectionScreen('score-report')}
-      />
-    );
+  if (postSectionScreen === 'review-walk') {
+    if (walkSelection?.row) {
+      const walk = sectionHistoryToWalkSession(walkSelection.row);
+      const initialIndex = walkSelection.initialQid
+        ? Math.max(0, walk.session.questionQueue.indexOf(walkSelection.initialQid))
+        : 0;
+      return (
+        <SectionReviewWalk
+          session={walk.session}
+          brResults={walk.brResults}
+          savedCorrectAnswers={walk.savedCorrectAnswers}
+          savedStatsByQid={walk.savedStatsByQid}
+          initialIndex={initialIndex}
+          onBack={() => {
+            setWalkSelection(null);
+            setPostSectionScreen('score-report');
+          }}
+        />
+      );
+    }
+    if (sectionHistoryId) {
+      return null;
+    }
+    if (session) {
+      return (
+        <SectionReviewWalk
+          session={session}
+          brResults={brResults}
+          onBack={() => setPostSectionScreen('score-report')}
+        />
+      );
+    }
   }
 
   if (postSectionScreen === 'score-report' && session) {
@@ -4089,7 +4120,10 @@ function DrillContent() {
           session={session}
           brResults={brResults}
           classId={classId}
-          onReviewSection={() => setPostSectionScreen('review-walk')}
+          onReviewSection={(qid, row) => {
+            setWalkSelection(row ? { row, initialQid: qid } : null);
+            setPostSectionScreen('review-walk');
+          }}
           onStartBlindReview={
             !brResults?.length && !isSittingReturn(drillReturnTo)
               ? () => {

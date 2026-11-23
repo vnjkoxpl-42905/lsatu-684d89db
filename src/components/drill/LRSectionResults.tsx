@@ -10,6 +10,7 @@ import {
 import type { DrillSession, BlindReviewResult } from '@/types/drill';
 import { toast } from 'sonner';
 import { SectionReport } from '@/components/section-report/SectionReport';
+import type { SectionHistoryRow } from '@/lib/sectionHistory';
 import {
   sectionClockFromSession,
   sessionToReportData,
@@ -29,8 +30,8 @@ interface LRSectionResultsProps {
   savedHistoryId?: string | null;
   /** The close-out call that just ran created the row (not a replay). */
   savedHistoryCreatedNow?: boolean;
-  /** Opens the read-only walk over the whole section. */
-  onReviewSection?: () => void;
+  /** Opens the read-only walk over the saved section (with optional clicked qid + row). */
+  onReviewSection?: (qid?: string, row?: SectionHistoryRow) => void;
   /** Opens blind review from the results screen when it was skipped earlier. */
   onStartBlindReview?: () => void;
   /** Starts the next fresh sitting generation for a standalone section. */
@@ -102,11 +103,11 @@ export function LRSectionResults({
   return (
     <SectionReport
       historyId={savedHistoryId}
-      fallbackData={fallbackData}
+      fallbackData={savedHistoryId ? undefined : fallbackData}
       sectionClock={sectionClock}
       onBack={onBack}
       backLabel={backLabel}
-      onReviewSection={onReviewSection ? () => onReviewSection() : undefined}
+      onReviewSection={onReviewSection ? (qid, row) => onReviewSection(qid, row) : undefined}
       onStartBlindReview={onStartBlindReview ? () => onStartBlindReview() : undefined}
       onStartOver={onStartOver ? () => onStartOver() : undefined}
       title="Section Results"
