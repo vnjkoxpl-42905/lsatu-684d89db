@@ -585,6 +585,28 @@ function DrillContent() {
    * as history.
    */
   const [predictedScore, setPredictedScore] = React.useState<number | null>(null);
+  const [pendingPrediction, setPendingPrediction] = React.useState<number | null>(null);
+  const [retryingPrediction, setRetryingPrediction] = React.useState(false);
+  const [reportRefreshKey, setReportRefreshKey] = React.useState(0);
+
+  const persistPredictionScore = React.useCallback(
+    async (historyId: string, score: number, options?: { isRetry?: boolean }) => {
+      if (options?.isRetry) setRetryingPrediction(true);
+      try {
+        await saveSectionPrediction(historyId, score);
+        setPendingPrediction((prev) => (prev === score ? null : prev));
+        setReportRefreshKey((n) => n + 1);
+        if (options?.isRetry) toast.success('Prediction saved.');
+      } catch (error) {
+        console.error('[drill:prediction] save failed', error);
+        setPendingPrediction(score);
+        toast.error("Your prediction didn't save. Your section is safe.");
+      } finally {
+        if (options?.isRetry) setRetryingPrediction(false);
+      }
+    },
+    [],
+  );
   /**
    * Which questions blind review walks. Null means the whole section, which is
    * what a section's blind review always is. Practice sets set it explicitly,
@@ -1282,6 +1304,7 @@ function DrillContent() {
     setSectionCreatedNow(false);
     setWalkSelection(null);
     setPredictedScore(null);
+    setPendingPrediction(null);
     setBrResults([]);
     genericFinalizedRef.current = false;
     setSession(null);
@@ -3609,6 +3632,7 @@ function DrillContent() {
     // Guess first, then the fork. The guess is only worth anything while the
     // real number is still unknown.
     setPredictedScore(null);
+    setPendingPrediction(null);
     setPostSectionScreen(session.mode === 'full-section' ? 'predict' : 'complete');
   };
 
@@ -3987,10 +4011,7 @@ function DrillContent() {
           setPostSectionScreen(assignmentId ? 'review' : 'complete');
           // Saved to its own record; a failure never blocks the student.
           if (sectionHistoryId) {
-            saveSectionPrediction(sectionHistoryId, score).catch((error) => {
-              console.error('[drill:prediction] save failed', error);
-              toast.error("Your prediction didn't save. Your section is safe.");
-            });
+            void persistPredictionScore(sectionHistoryId, score);
           }
         }}
         onSkip={() => setPostSectionScreen(assignmentId ? 'review' : 'complete')}
@@ -4000,12 +4021,21 @@ function DrillContent() {
 
   if (postSectionScreen === 'complete') {
     const isSealedAssignment = Boolean(assignmentId);
+    const retryPrediction =
+      pendingPrediction !== null && sectionHistoryId
+        ? () => {
+            void persistPredictionScore(sectionHistoryId, pendingPrediction, { isRetry: true });
+          }
+        : undefined;
     return (
       <SectionComplete
         sealed={isSealedAssignment}
         onBlindReview={() => setPostSectionScreen('review')}
         onSeeResults={() => setPostSectionScreen('score-report')}
         onBackHome={() => navigate(drillReturnTo || '/classroom')}
+        pendingPrediction={pendingPrediction}
+        retryingPrediction={retryingPrediction}
+        onRetryPrediction={retryPrediction}
         score={
           !isSealedAssignment && session
             ? [...session.attempts.values()].filter((a) => a.correct).length
@@ -4144,6 +4174,16 @@ function DrillContent() {
               : 'Back to Home'
           }
           predictedScore={predictedScore}
+          pendingPrediction={pendingPrediction}
+          retryingPrediction={retryingPrediction}
+          onRetryPrediction={
+            pendingPrediction !== null && sectionHistoryId
+              ? () => {
+                  void persistPredictionScore(sectionHistoryId, pendingPrediction, { isRetry: true });
+                }
+              : undefined
+          }
+          refreshKey={reportRefreshKey}
           savedHistoryId={sectionHistoryId}
           savedHistoryCreatedNow={sectionCreatedNow}
         />

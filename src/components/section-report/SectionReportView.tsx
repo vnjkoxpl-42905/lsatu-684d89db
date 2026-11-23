@@ -27,6 +27,35 @@ interface FocusArea {
   avgTimeMs: number;
 }
 
+export function PredictionRetryBanner({
+  predictedScore,
+  retrying = false,
+  onRetry,
+}: {
+  predictedScore: number;
+  retrying?: boolean;
+  onRetry: () => void;
+}) {
+  return (
+    <div
+      role="status"
+      className="rounded-lg border border-amber-500/40 bg-amber-500/10 px-4 py-3 text-sm flex flex-wrap items-center justify-between gap-3 text-left"
+    >
+      <span>
+        Your prediction ({predictedScore}) did not save yet. Your section is safe.
+      </span>
+      <button
+        type="button"
+        disabled={retrying}
+        onClick={onRetry}
+        className="font-medium underline underline-offset-4 hover:text-foreground disabled:opacity-50"
+      >
+        {retrying ? 'Retrying...' : 'Retry saving prediction'}
+      </button>
+    </div>
+  );
+}
+
 export interface SectionReportViewProps {
   data: SectionReportData;
   onBack: () => void;
@@ -37,6 +66,10 @@ export interface SectionReportViewProps {
   onStartBlindReview?: () => void;
   /** Starts the next fresh sitting generation for a standalone section. */
   onStartOver?: () => void;
+  /** Non-blocking retry state when initial prediction save failed (F11). */
+  pendingPrediction?: number | null;
+  retryingPrediction?: boolean;
+  onRetryPrediction?: () => void;
   title?: string;
 }
 
@@ -47,6 +80,9 @@ export function SealedSectionReportView({
   onBack,
   backLabel = 'Back to Home',
   onStartBlindReview,
+  pendingPrediction,
+  retryingPrediction,
+  onRetryPrediction,
 }: {
   pt?: number;
   section?: number;
@@ -54,6 +90,9 @@ export function SealedSectionReportView({
   onBack: () => void;
   backLabel?: string;
   onStartBlindReview?: () => void;
+  pendingPrediction?: number | null;
+  retryingPrediction?: boolean;
+  onRetryPrediction?: () => void;
 }) {
   const sectionName =
     typeof pt === 'number' && pt > 0 && typeof section === 'number' && section > 0
@@ -95,6 +134,13 @@ export function SealedSectionReportView({
               Your answers are saved. This section unlocks once the full practice test is finished.
             </p>
           )}
+          {pendingPrediction != null && onRetryPrediction && (
+            <PredictionRetryBanner
+              predictedScore={pendingPrediction}
+              retrying={retryingPrediction}
+              onRetry={onRetryPrediction}
+            />
+          )}
         </Card>
       </div>
     </div>
@@ -108,6 +154,9 @@ export function SectionReportView({
   onReviewSection,
   onStartBlindReview,
   onStartOver,
+  pendingPrediction,
+  retryingPrediction,
+  onRetryPrediction,
   title,
 }: SectionReportViewProps) {
   const navigate = useNavigate();
@@ -256,6 +305,15 @@ export function SectionReportView({
       {/* Summary */}
       <div className="bg-card border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6">
+          {pendingPrediction != null && onRetryPrediction && (
+            <div className="mb-6">
+              <PredictionRetryBanner
+                predictedScore={pendingPrediction}
+                retrying={retryingPrediction}
+                onRetry={onRetryPrediction}
+              />
+            </div>
+          )}
           {/* Rings */}
           <div className="flex flex-wrap items-center justify-center gap-6 sm:gap-12 mb-8">
             <div className="flex flex-col items-center gap-3">

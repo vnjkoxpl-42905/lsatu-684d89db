@@ -35,6 +35,10 @@ export interface SectionReportProps {
   }) => void;
   /** Called when the student explicitly starts a new sitting of a standalone section. */
   onStartOver?: (row: SectionHistoryRow) => void;
+  /** Non-blocking retry state when prediction save failed (F11). */
+  pendingPrediction?: number | null;
+  retryingPrediction?: boolean;
+  onRetryPrediction?: () => void;
   title?: string;
   /** Increment to force a reload from the server (for example after completing blind review). */
   refreshKey?: number;
@@ -49,6 +53,9 @@ export function SectionReport({
   onReviewSection,
   onStartBlindReview,
   onStartOver,
+  pendingPrediction,
+  retryingPrediction,
+  onRetryPrediction,
   title,
   refreshKey = 0,
 }: SectionReportProps) {
@@ -166,6 +173,9 @@ export function SectionReport({
         reason={result.reason}
         onBack={onBack}
         backLabel={backLabel}
+        pendingPrediction={pendingPrediction}
+        retryingPrediction={retryingPrediction}
+        onRetryPrediction={onRetryPrediction}
         onStartBlindReview={
           result.reason === 'blind-review' && onStartBlindReview && result.questionQids.length > 0
             ? () =>
@@ -197,6 +207,9 @@ export function SectionReport({
       backLabel={backLabel}
       onReviewSection={onReviewSection ? (qid) => onReviewSection(qid, row) : undefined}
       onStartOver={canStartOver ? () => onStartOver!(row) : undefined}
+      pendingPrediction={pendingPrediction}
+      retryingPrediction={retryingPrediction}
+      onRetryPrediction={onRetryPrediction}
       onStartBlindReview={
         !row.brUsed && !row.practiceTestRunId && onStartBlindReview && row.questions.length > 0
           ? () =>

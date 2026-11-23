@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { cn } from '@/lib/utils';
+import { PredictionRetryBanner } from '@/components/section-report/SectionReportView';
 
 interface SectionCompleteProps {
   onBlindReview: () => void;
@@ -12,6 +13,10 @@ interface SectionCompleteProps {
   sealed?: boolean;
   /** Quiet back action when the section is sealed until blind review. */
   onBackHome?: () => void;
+  /** Pending predicted score waiting to be retried after a failed save (F11). */
+  pendingPrediction?: number | null;
+  retryingPrediction?: boolean;
+  onRetryPrediction?: () => void;
 }
 
 /**
@@ -34,6 +39,9 @@ export function SectionComplete({
   total,
   sealed = false,
   onBackHome,
+  pendingPrediction,
+  retryingPrediction,
+  onRetryPrediction,
 }: SectionCompleteProps) {
   const [peeked, setPeeked] = React.useState(false);
   const canPeek = !sealed && typeof score === 'number' && typeof total === 'number' && total > 0;
@@ -42,6 +50,14 @@ export function SectionComplete({
     <div className="min-h-screen flex items-center justify-center p-6 bg-background">
       <div className="w-full max-w-md space-y-8 text-center">
         <h1 className="text-3xl font-semibold tracking-tight">Section complete</h1>
+
+        {pendingPrediction != null && onRetryPrediction && (
+          <PredictionRetryBanner
+            predictedScore={pendingPrediction}
+            retrying={retryingPrediction}
+            onRetry={onRetryPrediction}
+          />
+        )}
 
         {/* The peek. Nothing is spent by looking, so nothing warns against it. */}
         {canPeek && (

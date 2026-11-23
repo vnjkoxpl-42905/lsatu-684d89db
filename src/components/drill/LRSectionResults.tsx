@@ -36,6 +36,11 @@ interface LRSectionResultsProps {
   onStartBlindReview?: () => void;
   /** Starts the next fresh sitting generation for a standalone section. */
   onStartOver?: () => void;
+  /** Non-blocking retry state when prediction save failed (F11). */
+  pendingPrediction?: number | null;
+  retryingPrediction?: boolean;
+  onRetryPrediction?: () => void;
+  refreshKey?: number;
 }
 
 export function LRSectionResults({
@@ -48,6 +53,10 @@ export function LRSectionResults({
   onReviewSection,
   onStartBlindReview,
   onStartOver,
+  pendingPrediction,
+  retryingPrediction,
+  onRetryPrediction,
+  refreshKey,
   savedHistoryId,
   savedHistoryCreatedNow,
 }: LRSectionResultsProps) {
@@ -110,6 +119,10 @@ export function LRSectionResults({
       onReviewSection={onReviewSection ? (qid, row) => onReviewSection(qid, row) : undefined}
       onStartBlindReview={onStartBlindReview ? () => onStartBlindReview() : undefined}
       onStartOver={onStartOver ? () => onStartOver() : undefined}
+      pendingPrediction={pendingPrediction}
+      retryingPrediction={retryingPrediction}
+      onRetryPrediction={onRetryPrediction}
+      refreshKey={refreshKey}
       title="Section Results"
     />
   );
