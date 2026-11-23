@@ -163,11 +163,44 @@ export async function openSectionSitting(args: {
   return toSittingReply(data);
 }
 
+export async function fetchLatestSittingGeneration(
+  userId: string,
+  poolKey: string,
+): Promise<number | null> {
+  const { data, error } = await (supabase as unknown as {
+    from(table: string): {
+      select(cols: string): {
+        eq(col: string, val: string): {
+          eq(col: string, val: string): {
+            order(col: string, opts: { ascending: boolean }): {
+              limit(n: number): {
+                maybeSingle(): Promise<{
+                  data: { generation?: number } | null;
+                  error: { message: string } | null;
+                }>;
+              };
+            };
+          };
+        };
+      };
+    };
+  })
+    .from('standalone_section_sittings')
+    .select('generation')
+    .eq('user_id', userId)
+    .eq('pool_key', poolKey)
+    .order('generation', { ascending: false })
+    .limit(1)
+    .maybeSingle();
+  if (error) throw new Error(error.message);
+  return typeof data?.generation === 'number' && data.generation > 0 ? data.generation : null;
+}
+
 /**
  * Opens or reconciles the server-owned sitting at section START (plan 1.3).
  *
  * - Resume/reload never passes `restart`; only an explicit "start over" does,
- *   sending the cached generation as `expectedGeneration`.
+ *   requiring an explicit, cached, or server-looked-up generation.
  * - Caches the returned sitting id and generation only to send back as
  *   `p_known_sitting_id`; never allocates a generation on the client.
  * - On `closed` (or `stale` whose latest sitting is `closed`), returns
@@ -178,9 +211,22 @@ export async function initStandaloneSitting(args: {
   userId: string;
   poolKey: string;
   restart?: boolean;
+  expectedGeneration?: number | null;
 }): Promise<SittingReply> {
   const cached = readCachedSitting(args.userId, args.poolKey);
   const isRestart = args.restart === true;
+  let expectedGeneration: number | null = null;
+  if (isRestart) {
+    expectedGeneration =
+      (typeof args.expectedGeneration === 'number' && args.expectedGeneration > 0
+        ? args.expectedGeneration
+        : null) ??
+      cached?.generation ??
+      (await fetchLatestSittingGeneration(args.userId, args.poolKey));
+    if (expectedGeneration == null) {
+      throw new Error('Cannot start over without an existing sitting generation.');
+    }
+  }
   const legacyRecordId = isRestart ? null : practiceSessionIdFor(args.userId, args.poolKey);
   const sittingRecordId = isRestart
     ? null
@@ -190,7 +236,7 @@ export async function initStandaloneSitting(args: {
     poolKey: args.poolKey,
     knownSittingId: isRestart ? null : (cached?.id ?? null),
     restart: isRestart,
-    expectedGeneration: isRestart ? (cached?.generation ?? 1) : null,
+    expectedGeneration,
     legacyRecordId,
     sittingRecordId,
   });

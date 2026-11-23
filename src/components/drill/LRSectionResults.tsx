@@ -33,6 +33,8 @@ interface LRSectionResultsProps {
   onReviewSection?: () => void;
   /** Opens blind review from the results screen when it was skipped earlier. */
   onStartBlindReview?: () => void;
+  /** Starts the next fresh sitting generation for a standalone section. */
+  onStartOver?: () => void;
 }
 
 export function LRSectionResults({
@@ -44,6 +46,7 @@ export function LRSectionResults({
   predictedScore,
   onReviewSection,
   onStartBlindReview,
+  onStartOver,
   savedHistoryId,
   savedHistoryCreatedNow,
 }: LRSectionResultsProps) {
@@ -105,6 +108,7 @@ export function LRSectionResults({
       backLabel={backLabel}
       onReviewSection={onReviewSection ? () => onReviewSection() : undefined}
       onStartBlindReview={onStartBlindReview ? () => onStartBlindReview() : undefined}
+      onStartOver={onStartOver ? () => onStartOver() : undefined}
       title="Section Results"
     />
   );

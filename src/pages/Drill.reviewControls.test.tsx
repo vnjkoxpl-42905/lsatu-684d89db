@@ -17,6 +17,11 @@ import type { LRQuestion } from '@/lib/questionLoader';
 const insertCalls = vi.hoisted(() => ({ attempts: [] as Array<Record<string, unknown>>, failNext: 0, delayMs: 0 }));
 const resumeSave = vi.hoisted(() => ({ fail: false, failNext: 0, conflictNext: 0, calls: 0 }));
 const resumeLoad = vi.hoisted(() => ({ fail: false }));
+const resumeComplete = vi.hoisted(() => ({ calls: [] as Array<{ userId: string; key: string | null }> }));
+const sittingRpc = vi.hoisted(() => ({
+  calls: [] as Array<Record<string, unknown>>,
+  next: null as Record<string, unknown> | null,
+}));
 const ledgerSave = vi.hoisted(() => ({ fail: false, created: 0 }));
 const journalCalls = vi.hoisted(() => ({ wrong: vi.fn(), correct: vi.fn() }));
 const guidedCompletion = vi.hoisted(() => ({
@@ -84,6 +89,14 @@ vi.mock('@/lib/drillResumeSession', async (importOriginal) => {
       // Navigation tests control account acknowledgments explicitly. The
       // real adapter needs IndexedDB, which jsdom does not provide.
       return undefined;
+    },
+    completeDrillResumeSession: async (
+      userId: string,
+      key: string | null,
+      snapshot: Parameters<typeof actual.completeDrillResumeSession>[2],
+    ) => {
+      resumeComplete.calls.push({ userId, key });
+      return actual.completeDrillResumeSession(userId, key, snapshot);
     },
   };
 });
@@ -198,19 +211,19 @@ vi.mock('@/integrations/supabase/client', () => {
         return { ...chain(), insert: async () => ({ error: null }) };
       },
       auth: { getSession: async () => ({ data: { session: null } }) },
-      rpc: async (fn: string) => {
+      rpc: async (fn: string, params?: Record<string, unknown>) => {
         if (fn === 'open_section_sitting_v1') {
-          return {
-            data: {
-              status: 'open',
-              sitting_id: '55555555-5555-4555-8555-555555555555',
-              generation: 1,
-              history_id: null,
-              adopted: true,
-              adopted_revision: null,
-            },
-            error: null,
+          if (params) sittingRpc.calls.push(params);
+          const payload = sittingRpc.next ?? {
+            status: 'open',
+            sitting_id: '55555555-5555-4555-8555-555555555555',
+            generation: 1,
+            history_id: null,
+            adopted: true,
+            adopted_revision: null,
           };
+          sittingRpc.next = null;
+          return { data: payload, error: null };
         }
         return { data: null, error: null };
       },
@@ -293,7 +306,12 @@ function seedBank() {
 function renderDrill(spec: DrillRunSpec, search = '') {
   function LocationProbe() {
     const location = useLocation();
-    return <output data-testid="location-path">{location.pathname}</output>;
+    return (
+      <>
+        <output data-testid="location-path">{location.pathname}</output>
+        <output data-testid="location-search">{location.search}</output>
+      </>
+    );
   }
 
   return render(
@@ -361,6 +379,9 @@ beforeEach(() => {
   resumeSave.conflictNext = 0;
   resumeSave.calls = 0;
   resumeLoad.fail = false;
+  resumeComplete.calls = [];
+  sittingRpc.calls = [];
+  sittingRpc.next = null;
   ledgerSave.fail = false;
   ledgerSave.created = 0;
   journalCalls.wrong.mockReset();
@@ -728,6 +749,68 @@ describe('Drill review controls — full section keeps the legacy behaviour', ()
 
     // Once paused on a conflict/save error, no 20s heartbeat timer may remain active to write behind the pause.
     await waitFor(() => expect(activeHeartbeatIds.size).toBe(0));
+  });
+
+  it('finalizes a closed sitting resume record before routing to its saved report (F5)', async () => {
+    const { writeSectionDeviceBackup } = await import('@/lib/drillResumeSession');
+    writeSectionDeviceBackup('11111111-1111-4111-8111-111111111111', 'drill::section::pt23-s2#sit-closed', {
+      questionQueue: [Q1.qid, Q2.qid],
+      currentIndex: 1,
+      attempts: [{ qid: Q1.qid, selected_answer: 'B', correct: true, time_ms: 4000 }],
+      elapsedMs: 12000,
+      timerMode: '35',
+    });
+    sittingRpc.next = {
+      status: 'closed',
+      sitting_id: 'sit-closed',
+      generation: 1,
+      history_id: 'hist-closed-1',
+      adopted: false,
+    };
+
+    renderDrill({
+      ...sectionSpec,
+      config: { pt: 23, section: 2, timer: { mode: '35' } } as DrillRunSpec['config'],
+    });
+
+    await waitFor(() =>
+      expect(screen.getByTestId('location-path')).toHaveTextContent('/review/section/hist-closed-1'),
+    );
+    expect(resumeComplete.calls).toContainEqual({
+      userId: '11111111-1111-4111-8111-111111111111',
+      key: 'drill::section::pt23-s2#sit-closed',
+    });
+  });
+
+  it('restarts with p_restart and cached generation on ?restart=1 and strips restart from URL (F5)', async () => {
+    const { writeCachedSitting } = await import('@/lib/sectionCloseout');
+    writeCachedSitting('11111111-1111-4111-8111-111111111111', 'drill::section::pt23-s2', {
+      sittingId: 'sit-prev',
+      generation: 2,
+    });
+    sittingRpc.next = {
+      status: 'open',
+      sitting_id: 'sit-next',
+      generation: 3,
+      history_id: null,
+      adopted: false,
+    };
+
+    renderDrill(
+      {
+        ...sectionSpec,
+        config: { pt: 23, section: 2, timer: { mode: '35' } } as DrillRunSpec['config'],
+      },
+      '?drill=section&pt=23&section=2&restart=1',
+    );
+
+    await waitForQuestion(18);
+    expect(sittingRpc.calls[0]).toMatchObject({
+      p_pool_key: 'drill::section::pt23-s2',
+      p_restart: true,
+      p_expected_generation: 2,
+    });
+    expect(screen.getByTestId('location-search').textContent).not.toContain('restart=1');
   });
 
   it('Answer is gated until the question is attempted and Explanation opens the drawer', async () => {

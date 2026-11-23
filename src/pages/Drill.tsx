@@ -217,7 +217,7 @@ function sectionBudgetMs(timer?: TimerConfig): number | undefined {
 function DrillContent() {
   const adaptiveEngine = useAdaptiveEngine();
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const requestedStandaloneRunId = searchParams.get('run');
   const { user } = useAuth();
   // Depend on the id, never the user object: Supabase hands out a fresh object
@@ -358,6 +358,10 @@ function DrillContent() {
     storageKey: string;
   } | null>(null);
   const adoptedLegacyKeyRef = React.useRef<string | null>(null);
+  const [retakeNonce, setRetakeNonce] = React.useState(0);
+  const pendingRestartRef = React.useRef(false);
+  const pendingRestartGenRef = React.useRef<number | null>(null);
+  const handledUrlRestartRef = React.useRef(false);
   // For standalone legacy full sections, bind resume storage & device backup
   // to the authoritative sitting key (`#adopted-g1` or `#<sittingId>`).
   // Null until open_section_sitting_v1 returns an initialized sitting so
@@ -1092,11 +1096,53 @@ function DrillContent() {
       let activeLegacyKey = genericLegacyResumeKey;
       let adoptedLegacyBackupKey: string | null = null;
       if (isStandaloneSection && baseGenericResumeKey && user) {
+        const urlRestart = searchParams.get('restart') === '1' && !handledUrlRestartRef.current;
+        const shouldRestart = pendingRestartRef.current || urlRestart;
+        const expectedGeneration = pendingRestartGenRef.current;
+        pendingRestartRef.current = false;
+        pendingRestartGenRef.current = null;
+        if (urlRestart) {
+          handledUrlRestartRef.current = true;
+          const nextParams = new URLSearchParams(searchParams);
+          nextParams.delete('restart');
+          nextParams.delete('gen');
+          setSearchParams(nextParams, { replace: true });
+        }
         const reply = await initStandaloneSitting({
           userId: user.id,
           poolKey: baseGenericResumeKey,
+          ...(shouldRestart ? { restart: true, expectedGeneration } : {}),
         });
         if (reply.status === 'closed' && reply.historyId) {
+          const closedStorageKey =
+            reply.storageKey ??
+            storageKeyForSitting(baseGenericResumeKey, {
+              sittingId: reply.sittingId,
+              adopted: reply.adopted,
+            });
+          try {
+            const storedClosed = await loadDrillResumeSession(
+              user.id,
+              closedStorageKey,
+              reply.legacyPoolKey ?? null,
+            );
+            if (storedClosed && storedClosed.status !== 'completed') {
+              await completeDrillResumeSession(user.id, closedStorageKey, {
+                questionQueue: storedClosed.question_queue,
+                currentIndex: storedClosed.current_index,
+                attempts: storedClosed.attempts,
+                elapsedMs: storedClosed.elapsed_ms,
+                timerMode: storedClosed.timer_mode,
+                timerCustomMinutes: storedClosed.timer_custom_minutes,
+                regulationAnsweredQids: storedClosed.regulation_answered_qids,
+              });
+            }
+          } catch (err) {
+            console.warn('[drill:section] closed sitting resume finalization failed', err);
+          }
+          if (reply.legacyPoolKey) {
+            clearSectionDeviceBackup(user.id, reply.legacyPoolKey);
+          }
           genericFinalizedRef.current = true;
           navigate(`/review/section/${encodeURIComponent(reply.historyId)}`, { replace: true });
           return;
@@ -1217,7 +1263,23 @@ function DrillContent() {
       setBootLoadFailed(true);
       setBootError('Your saved drill could not be loaded from your account. Reload to try again.');
     });
-  }, [state, navigate, classId, classIdLoading, qbLoading, settings.allowRepeats, settings.preferUnseen, settings.recycleAfterDays, initialIndexParam, isMcPractice, mcPracticePool, guidedSessionKey, guidedLegacySessionKey, baseGenericResumeKey, isStandaloneSection, genericLegacyResumeKey, standaloneSourceKey, requestedStandaloneRunId, userId]);
+  }, [state, navigate, classId, classIdLoading, qbLoading, settings.allowRepeats, settings.preferUnseen, settings.recycleAfterDays, initialIndexParam, isMcPractice, mcPracticePool, guidedSessionKey, guidedLegacySessionKey, baseGenericResumeKey, isStandaloneSection, genericLegacyResumeKey, standaloneSourceKey, requestedStandaloneRunId, userId, retakeNonce]);
+
+  const handleStartOver = React.useCallback(() => {
+    if (!baseGenericResumeKey || assignmentId || ptRun) return;
+    pendingRestartRef.current = true;
+    pendingRestartGenRef.current = standaloneSittingRef.current?.generation ?? null;
+    standaloneSittingRef.current = null;
+    setStandaloneSitting(null);
+    setPostSectionScreen(null);
+    setSectionHistoryId(null);
+    setSectionCreatedNow(false);
+    setPredictedScore(null);
+    setBrResults([]);
+    genericFinalizedRef.current = false;
+    setSession(null);
+    setRetakeNonce((n) => n + 1);
+  }, [baseGenericResumeKey, assignmentId, ptRun]);
 
   // Shapes the student's current place into a resume snapshot. Shared by the two
   // surfaces that persist one — Intro to LR practice sets and guided drills — and
@@ -4034,6 +4096,11 @@ function DrillContent() {
                   setBrPassQids(null);
                   setPostSectionScreen('review');
                 }
+              : undefined
+          }
+          onStartOver={
+            !assignmentId && !ptRun && isStandaloneSection
+              ? handleStartOver
               : undefined
           }
           onBack={() => navigate(drillReturnTo || '/classroom')}

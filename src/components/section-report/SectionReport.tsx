@@ -33,6 +33,8 @@ export interface SectionReportProps {
     questionQids: string[];
     row?: SectionHistoryRow;
   }) => void;
+  /** Called when the student explicitly starts a new sitting of a standalone section. */
+  onStartOver?: (row: SectionHistoryRow) => void;
   title?: string;
   /** Increment to force a reload from the server (for example after completing blind review). */
   refreshKey?: number;
@@ -46,6 +48,7 @@ export function SectionReport({
   backLabel = 'Back to Home',
   onReviewSection,
   onStartBlindReview,
+  onStartOver,
   title,
   refreshKey = 0,
 }: SectionReportProps) {
@@ -213,12 +216,20 @@ export function SectionReport({
 
   const row = result.row;
   const data = sectionHistoryToReportData(row, sectionClock);
+  const canStartOver =
+    Boolean(onStartOver) &&
+    !row.practiceTestRunId &&
+    !row.assignmentId &&
+    !row.releaseRequiresBr &&
+    row.pt > 0 &&
+    row.section > 0;
   return (
     <SectionReportView
       data={data}
       onBack={onBack}
       backLabel={backLabel}
       onReviewSection={onReviewSection ? (qid) => onReviewSection(qid, row) : undefined}
+      onStartOver={canStartOver ? () => onStartOver!(row) : undefined}
       onStartBlindReview={
         !row.brUsed && !row.practiceTestRunId && onStartBlindReview && row.questions.length > 0
           ? () =>

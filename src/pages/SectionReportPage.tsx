@@ -3,6 +3,7 @@ import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { useAuth } from '@/contexts/AuthContext';
+import { launchDrill } from '@/lib/drillLaunch';
 import { safeReviewHubReturn } from '@/lib/reviewHubReturn';
 import { fetchOwnedSectionReport, type SectionHistoryRow } from '@/lib/sectionHistory';
 import { saveSectionBlindReview } from '@/lib/sectionReviewRecord';
@@ -178,6 +179,9 @@ export default function SectionReportPage() {
         if (!row) return;
         setWalkRow(row);
         setWalkQid(qid ?? null);
+      }}
+      onStartOver={(row) => {
+        navigate(`/drill?${launchDrill({ kind: 'section', pt: row.pt, section: row.section })}&restart=1`);
       }}
       onStartBlindReview={(ctx) => {
         const session = buildDeferredBrSession({

@@ -35,6 +35,8 @@ export interface SectionReportViewProps {
   onReviewSection?: (qid?: string) => void;
   /** Opens blind review for a section that does not have one yet. */
   onStartBlindReview?: () => void;
+  /** Starts the next fresh sitting generation for a standalone section. */
+  onStartOver?: () => void;
   title?: string;
 }
 
@@ -105,6 +107,7 @@ export function SectionReportView({
   backLabel = 'Back to Home',
   onReviewSection,
   onStartBlindReview,
+  onStartOver,
   title,
 }: SectionReportViewProps) {
   const navigate = useNavigate();
@@ -234,13 +237,18 @@ export function SectionReportView({
                 Do blind review
               </Button>
             )}
+            {onStartOver && (
+              <Button variant="outline" size="sm" onClick={onStartOver}>
+                Start over
+              </Button>
+            )}
             {onReviewSection && hasDetail ? (
               <Button variant="outline" size="sm" onClick={() => onReviewSection()}>
                 Open review walk
               </Button>
-            ) : (
+            ) : !onStartOver ? (
               <div className="w-4 sm:w-20" />
-            )}
+            ) : null}
           </div>
         </div>
       </div>

@@ -183,4 +183,37 @@ describe('SectionReport', () => {
     expect(screen.queryByText('Initial Score')).toBeNull();
     expect(screen.queryByRole('button', { name: 'Open review walk' })).toBeNull();
   });
+
+  it('offers Start over only for standalone released sections when onStartOver is provided (F5)', async () => {
+    const onStartOver = vi.fn();
+    mockFetchOwnedSectionReport.mockResolvedValueOnce({ state: 'released', row: baseRow });
+    const { rerender } = render(
+      <MemoryRouter>
+        <SectionReport
+          historyId="hist-1"
+          onBack={vi.fn()}
+          onStartOver={onStartOver}
+        />
+      </MemoryRouter>,
+    );
+
+    const startOver = await screen.findByRole('button', { name: 'Start over' });
+    startOver.click();
+    expect(onStartOver).toHaveBeenCalledWith(baseRow);
+
+    mockFetchOwnedSectionReport.mockResolvedValueOnce({
+      state: 'released',
+      row: { ...baseRow, id: 'hist-pt', practiceTestRunId: 'pt-run-1' },
+    });
+    rerender(
+      <MemoryRouter>
+        <SectionReport
+          historyId="hist-pt"
+          onBack={vi.fn()}
+          onStartOver={onStartOver}
+        />
+      </MemoryRouter>,
+    );
+    await waitFor(() => expect(screen.queryByRole('button', { name: 'Start over' })).toBeNull());
+  });
 });
