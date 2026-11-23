@@ -167,3 +167,10 @@ the code stays so it can be turned back on.
 _Avoid_: tutor mode (the code's flag name), Joshua (the chat's persona; a
 student reading "Joshua is having trouble" thinks the person is), coach (one of
 its tabs).
+
+## Section Close-out, Report, and Review Ownership (2026-11-23)
+
+- **Sitting identity and close-out**: `open_section_sitting_v1` owns the sitting id and generation; `close_standalone_section_v1` (`src/lib/sectionCloseout.ts`) writes `section_history`, `attempts`, and wrong-answer journal entries (tagged with `sitting_id`) in one transaction before post-section screens mount.
+- **Post-section display (`src/components/section-report/`)**: `LRSectionResults` delegates display to `<SectionReport historyId={...} />`, sharing the exact same `SectionReportView`, `AnswerTimeline`, and `SectionDiagnosisBlock` (via `selectSectionDiagnosis`) as `/review/section/:historyId` and `SectionHistoryList`.
+- **Read-only walk (`SectionReviewWalk`)**: Accepts `savedCorrectAnswers` and `savedStatsByQid` from `sectionHistoryToWalkSession` so saved sections are graded from the saved credited answer and missing bank questions show their saved outcome without stalling.
+- **Blind review (`EnhancedBlindReview`)**: Saves through `save_section_blind_review_v1` (`src/lib/sectionReviewRecord.ts`), both in-session and later from `/review/section/:historyId`. Never writes `attempts` rows.

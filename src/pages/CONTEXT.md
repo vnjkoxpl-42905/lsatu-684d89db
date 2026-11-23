@@ -23,3 +23,9 @@ The act of practicing a habit through repetition. The thing a student "sits down
 
 **Pattern**:
 A recurring reasoning structure that repeats across many questions (the "Hunt patterns" habit). Distinct from Principle the question type.
+
+## Section Results and Review Ownership (2026-11-23)
+
+- **`section_history` (written once, immutable first answers)**: Written atomically by `close_standalone_section_v1` (legacy standalone path via `src/lib/sectionCloseout.ts`) or the protected writer (`TimedSectionController.close`). Never updated after close-out.
+- **`section_review_records` (prediction and blind review)**: Written only through `save_section_prediction_v1` and `save_section_blind_review_v1` (`src/lib/sectionReviewRecord.ts`). Blind review is graded on the server from the saved credited answer and never writes `attempts` rows.
+- **Readers and release rule**: `/review/section/:historyId` (`SectionReportPage.tsx`), `PracticeSectionResult` (`/testing/attempts/section/lr/:sessionId`, redirects history ids to `/review/section/:historyId`), `SectionReviewDetail` (redirects `/review/section/:historyId/:qid` to `/review/section/:historyId?walk=1&qid=:qid`), `ReviewQueuePage.tsx` (merges section regret/BR-changed items into journal items strictly by `sitting_id`), `SectionHistoryList`, and `StudentWorkPanel` all read merged history + review records and apply `sectionReleaseState` (`src/lib/sectionRelease.ts`). Assigned sections stay sealed until blind review is complete; practice-test legs stay sealed until the full test ends.

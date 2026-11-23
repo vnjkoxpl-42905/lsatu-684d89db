@@ -55,6 +55,25 @@ export async function listPracticeSectionAttempts(userId: string): Promise<Pract
   }).from('timed_section_sittings_v1').select('id,owner_id,kind,pt,section,phase,created_at,updated_at,frozen_qids,result').eq('owner_id', userId);
   if (protectedError && protectedError.code !== '42P01' && protectedError.code !== 'PGRST205') throw protectedError;
 
+  const { data: standaloneSittingRows, error: standaloneSittingError } = await (supabase as unknown as {
+    from(name: string): { select(columns: string): { eq(key: string, value: string): Promise<{ data: Record<string, unknown>[] | null; error: { code?: string } | null }> } };
+  }).from('standalone_section_sittings').select('id,pool_key,state,generation,history_id,adopted_from_record_id,created_at,closed_at').eq('user_id', userId);
+  if (standaloneSittingError && standaloneSittingError.code !== '42P01' && standaloneSittingError.code !== 'PGRST205') throw standaloneSittingError;
+
+  const adoptedRecordIds = new Set<string>();
+  const sittingStateById = new Map<string, { state: string; historyId: string | null }>();
+  for (const row of standaloneSittingRows ?? []) {
+    if (typeof row.adopted_from_record_id === 'string' && row.adopted_from_record_id.length > 0) {
+      adoptedRecordIds.add(row.adopted_from_record_id);
+    }
+    if (typeof row.id === 'string' && typeof row.state === 'string') {
+      sittingStateById.set(row.id, {
+        state: row.state,
+        historyId: typeof row.history_id === 'string' ? row.history_id : null,
+      });
+    }
+  }
+
   const { data: lrRows, error: lrError } = await supabase
     .from('bootcamp_kv')
     .select('data')
@@ -81,6 +100,12 @@ export async function listPracticeSectionAttempts(userId: string): Promise<Pract
     if (!parsed.success || parsed.data.user_id !== userId) continue;
     const session = parsed.data;
     if (!session.pool_slug.startsWith('drill::section::')) continue;
+    if (adoptedRecordIds.has(session.id)) continue;
+    const sittingKeyMatch = /^drill::section::pt\d+-s\d+#(.+)$/.exec(session.pool_slug);
+    if (sittingKeyMatch) {
+      const sitting = sittingStateById.get(sittingKeyMatch[1]);
+      if (sitting && sitting.state !== 'open') continue;
+    }
     const remote = cloud.get(session.id);
     const remoteParsed = PracticeSession.safeParse(remote);
     if (remoteParsed.success && remoteParsed.data.updated_at >= session.updated_at) continue;
@@ -121,7 +146,7 @@ export async function listPracticeSectionAttempts(userId: string): Promise<Pract
         answered: Math.max(0, total - (row.unanswered_count ?? 0)),
         total,
         correct: row.initial_score,
-        href: `/testing/attempts/section/lr/${encodeURIComponent(row.id)}`,
+        href: `/review/section/${encodeURIComponent(row.id)}`,
       };
     });
 
@@ -130,11 +155,19 @@ export async function listPracticeSectionAttempts(userId: string): Promise<Pract
     const parsed = PracticeSession.safeParse(raw);
     if (!parsed.success) continue;
     const session = parsed.data;
-    const match = /^drill::section::pt(\d+)-s(\d+)$/.exec(session.pool_slug);
+    if (adoptedRecordIds.has(session.id)) continue;
+    const match = /^drill::section::pt(\d+)-s(\d+)(?:#(.+))?$/.exec(session.pool_slug);
     if (!match) continue;
     const preptest = Number(match[1]);
     const section = Number(match[2]);
-    if (completedRows?.some((row) => row.completed_at && isCompletedLrMirror(session, {
+    const sittingId = match[3] ?? null;
+    if (sittingId) {
+      const sitting = sittingStateById.get(sittingId);
+      // Sitting-keyed records follow sitting state: closed rows live in
+      // section_history and abandoned sittings are hidden.
+      if (sitting && sitting.state !== 'open') continue;
+      if (session.status === 'completed') continue;
+    } else if (completedRows?.some((row) => row.completed_at && isCompletedLrMirror(session, {
       pt: row.pt, section: row.section, completedAt: row.completed_at, questions: row.questions_json,
     }))) continue;
     const timer = session.timer_mode && session.timer_mode !== '35'
