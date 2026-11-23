@@ -39,15 +39,18 @@ const readLrAttempts = (studentId: string) => allPages<LrAttemptSourceRow>(async
   return result as unknown as { data: LrAttemptSourceRow[] | null; error: { message: string } | null };
 });
 
-const readLrSections = (studentId: string) => allPages<LrSectionSourceRow>(async (from, to) => {
-  const result = await supabase.from('section_history')
-    .select('id,user_id,mode,completed_at,practice_test_run_id,practice_test_leg,questions_json')
-    .eq('user_id', studentId).order('id').range(from, to);
-  const typed = result as unknown as { data: Array<LrSectionSourceRow & { release_requires_br?: boolean | null }> | null; error: { message: string } | null };
+const readLrSections = async (studentId: string) => {
+  const rows = await allPages<LrSectionSourceRow>(async (from, to) => {
+    const result = await supabase.from('section_history')
+      .select('id,user_id,mode,completed_at,practice_test_run_id,practice_test_leg,questions_json')
+      .eq('user_id', studentId).order('id').range(from, to);
+    return result as unknown as { data: LrSectionSourceRow[] | null; error: { message: string } | null };
+  });
   // Assigned sections sealed behind blind review contribute no first answers yet.
-  if (typed.data) typed.data = await withoutBrSealedRows(typed.data);
-  return typed as { data: LrSectionSourceRow[] | null; error: { message: string } | null };
-});
+  // Apply release filtering AFTER raw pagination so sealed rows inside a 500-row
+  // page never truncate subsequent pages (F7).
+  return withoutBrSealedRows(rows);
+};
 
 const readRcAttempts = (studentId: string) => allPages<RcAttemptSourceRow>(async (from, to) => {
   const result = await supabase.from('rc_attempts')

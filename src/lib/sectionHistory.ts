@@ -21,7 +21,11 @@ import { supabase } from '@/integrations/supabase/client';
 import type { SectionQuestionStat } from '@/lib/sectionHistorySave';
 import type { SectionAnalysis } from '@/lib/sectionAnalysis';
 import { fetchSectionReviewRecords, hasCompletedBlindReview, type SectionReviewRecord } from '@/lib/sectionReviewRecord';
-import { sectionReleaseState } from '@/lib/sectionRelease';
+import {
+  completedPracticeTestRunIds,
+  isPracticeTestRunComplete,
+  sectionReleaseState,
+} from '@/lib/sectionRelease';
 
 export interface SectionHistoryRow {
   id: string;
@@ -213,7 +217,7 @@ export async function fetchOwnedSectionReport(
       };
     }
     const status = (runData as { status?: string } | null)?.status;
-    runComplete = status === 'complete';
+    runComplete = isPracticeTestRunComplete(status);
     if (!runComplete) {
       return {
         state: 'sealed',
@@ -332,6 +336,11 @@ export async function ownsSectionHistoryRow(
  */
 export async function mergeReviewRecords(rows: SectionHistoryRow[]): Promise<SectionHistoryRow[]> {
   if (rows.length === 0) return rows;
+  const runIds = rows
+    .map((r) => r.practiceTestRunId)
+    .filter((id): id is string => typeof id === 'string' && id.length > 0);
+  const completedRuns = await completedPracticeTestRunIds(runIds);
+
   let records = new Map<string, SectionReviewRecord>();
   try {
     records = await fetchSectionReviewRecords(rows.map((r) => r.id));
@@ -342,7 +351,10 @@ export async function mergeReviewRecords(rows: SectionHistoryRow[]): Promise<Sec
   const out: SectionHistoryRow[] = [];
   for (const row of rows) {
     const record = records.get(row.id);
-    if (sectionReleaseState(row, record) === 'sealed') continue;
+    const runComplete = row.practiceTestRunId
+      ? completedRuns.has(row.practiceTestRunId)
+      : undefined;
+    if (sectionReleaseState(row, record, runComplete) === 'sealed') continue;
     const next: SectionHistoryRow = { ...row, predictedScore: record?.predictedScore ?? null };
     if (hasCompletedBlindReview(record)) {
       next.brUsed = true;

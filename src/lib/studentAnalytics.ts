@@ -1,5 +1,6 @@
 import { supabase } from "@/integrations/supabase/client";
-import { withoutBrSealedRows } from '@/lib/sectionRelease';
+import { isPracticeTestRunComplete, withoutBrSealedRows } from '@/lib/sectionRelease';
+import { fetchSectionReviewRecords, hasCompletedBlindReview, type SectionReviewRecord } from '@/lib/sectionReviewRecord';
 import { parseOwnedDrillRun, type StandaloneDrillRun } from "@/lib/drillRunLedger";
 import { estimateScaledScore } from "@/lib/practiceTest";
 import { questionBank } from "@/lib/questionLoader";
@@ -92,11 +93,43 @@ export async function loadStudentPractice(studentId: string): Promise<StudentPra
   if (sections.error) throw sections.error;
   if (practiceTests.error) throw practiceTests.error;
   const lr = (attempts.data ?? []) as AttemptRow[];
+  const practiceTestRows = (practiceTests.data ?? []) as PracticeTestRow[];
+  const completedRuns = new Set(
+    practiceTestRows
+      .filter((t) => isPracticeTestRunComplete(t.status))
+      .map((t) => t.id),
+  );
+  const rawSections = (sections.data ?? []) as unknown as Array<SectionRow & { release_requires_br?: boolean | null }>;
+  const eligiblePtSections = rawSections.filter(
+    (s) => !s.practice_test_run_id || completedRuns.has(s.practice_test_run_id),
+  );
+  const releasedSections = await withoutBrSealedRows(eligiblePtSections);
+  let reviewRecords = new Map<string, SectionReviewRecord>();
+  if (releasedSections.length > 0) {
+    try {
+      reviewRecords = await fetchSectionReviewRecords(releasedSections.map((s) => s.id));
+    } catch (error) {
+      console.error('[studentAnalytics] review records unavailable', error);
+    }
+  }
+  const overlaidSections: SectionRow[] = releasedSections.map((s) => {
+    const rec = reviewRecords.get(s.id);
+    if (hasCompletedBlindReview(rec)) {
+      return {
+        ...s,
+        br_used: true,
+        br_score: rec.brScore,
+        br_total: rec.brTotal,
+      };
+    }
+    return s;
+  });
+
   return {
     attempts: [...lr, ...drillAnswersMissingFrom(lr, drills), ...rc]
       .sort((a, b) => (a.timestamp_iso ?? "").localeCompare(b.timestamp_iso ?? "")),
-    sections: (await withoutBrSealedRows((sections.data ?? []) as unknown as Array<{ id: string; release_requires_br?: boolean | null }>)) as unknown as SectionRow[],
-    practiceTests: (practiceTests.data ?? []) as PracticeTestRow[],
+    sections: overlaidSections,
+    practiceTests: practiceTestRows,
     drills,
   };
 }

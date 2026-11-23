@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import { withoutBrSealedRows } from '@/lib/sectionRelease';
+import { completedPracticeTestRunIds, withoutBrSealedRows } from '@/lib/sectionRelease';
+import { fetchSectionReviewRecords, hasCompletedBlindReview, type SectionReviewRecord } from '@/lib/sectionReviewRecord';
 import { Badge } from '@/components/ui/badge';
 import { Trophy, TrendingUp, Clock } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
@@ -44,18 +45,32 @@ export function RecentPerformanceWidget() {
         .limit(20);
 
       if (error) throw error;
-      const rows = (data || []) as unknown as Array<{ id: string; practice_test_run_id: string | null; release_requires_br?: boolean | null }>;
-      // A practice-test leg stays sealed until its whole run is complete, and an
-      // assigned section until its blind review is done.
-      const runIds = [...new Set(rows.map((r) => r.practice_test_run_id).filter((v): v is string => !!v))];
-      let completedRuns = new Set<string>();
-      if (runIds.length) {
-        const runs = await supabase.from('practice_test_runs').select('id').in('id', runIds).eq('status', 'completed');
-        if (runs.error) throw runs.error;
-        completedRuns = new Set((runs.data ?? []).map((r) => r.id as string));
+      const rows = (data || []) as unknown as Array<SectionRecord & { practice_test_run_id: string | null; release_requires_br?: boolean | null }>;
+      // A practice-test leg stays sealed until its whole run is complete ('complete'),
+      // and an assigned section until its blind review is done.
+      const runIds = rows
+        .map((r) => r.practice_test_run_id)
+        .filter((v): v is string => !!v);
+      const completedRuns = await completedPracticeTestRunIds(runIds);
+      const released = await withoutBrSealedRows(
+        rows.filter((r) => !r.practice_test_run_id || completedRuns.has(r.practice_test_run_id)),
+      );
+      let reviewRecords = new Map<string, SectionReviewRecord>();
+      if (released.length > 0) {
+        try {
+          reviewRecords = await fetchSectionReviewRecords(released.map((r) => r.id));
+        } catch (err) {
+          console.error('[RecentPerformanceWidget] review records unavailable', err);
+        }
       }
-      const released = await withoutBrSealedRows(rows.filter((r) => !r.practice_test_run_id || completedRuns.has(r.practice_test_run_id)));
-      setRecords((released as unknown as typeof data || []).slice(0, 5));
+      const merged: SectionRecord[] = released.slice(0, 5).map((r) => {
+        const rec = reviewRecords.get(r.id);
+        if (hasCompletedBlindReview(rec)) {
+          return { ...r, br_score: rec.brScore, br_percent: rec.brPercent };
+        }
+        return r;
+      });
+      setRecords(merged);
     } catch (error) {
       console.error('Error fetching recent performance:', error);
     } finally {
