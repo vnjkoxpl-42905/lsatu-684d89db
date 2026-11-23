@@ -280,7 +280,7 @@ export function SectionReportView({
               {initialScore}/{initialTotal} · {initialPercent}%
             </span>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
             {!brUsed && onStartBlindReview && hasDetail && (
               <Button variant="secondary" size="sm" onClick={onStartBlindReview}>
                 Do blind review
