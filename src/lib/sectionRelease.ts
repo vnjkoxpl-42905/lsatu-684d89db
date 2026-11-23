@@ -95,6 +95,42 @@ export async function brSealedIds(ids: string[]): Promise<Set<string>> {
   return sealed;
 }
 
+/**
+ * Client sitting ids among `sittingIds` that are sealed behind blind review.
+ * Throws on lookup failure so callers fail closed and hide sitting-linked work.
+ */
+export async function brSealedSittingIds(sittingIds: string[]): Promise<Set<string>> {
+  const unique = [...new Set(sittingIds.filter((id): id is string => typeof id === 'string' && id.length > 0))];
+  const sealed = new Set<string>();
+  if (unique.length === 0) return sealed;
+
+  const flagged: Array<{ id: string; sittingId: string }> = [];
+  for (let i = 0; i < unique.length; i += RELEASE_CHUNK_SIZE) {
+    const chunk = unique.slice(i, i + RELEASE_CHUNK_SIZE);
+    const { data, error } = await supabase
+      .from('section_history')
+      .select('id,client_sitting_id')
+      .in('client_sitting_id' as never, chunk as never)
+      .eq('release_requires_br' as never, true as never);
+    if (error) throw error;
+    for (const row of (data ?? []) as Array<{ id?: string; client_sitting_id?: string | null }>) {
+      if (typeof row.id === 'string' && typeof row.client_sitting_id === 'string' && row.client_sitting_id.length > 0) {
+        flagged.push({ id: row.id, sittingId: row.client_sitting_id });
+      }
+    }
+  }
+  if (flagged.length === 0) return sealed;
+
+  for (let i = 0; i < flagged.length; i += RELEASE_CHUNK_SIZE) {
+    const batch = flagged.slice(i, i + RELEASE_CHUNK_SIZE);
+    const records = await fetchSectionReviewRecords(batch.map((r) => r.id));
+    for (const row of batch) {
+      if (!hasCompletedBlindReview(records.get(row.id))) sealed.add(row.sittingId);
+    }
+  }
+  return sealed;
+}
+
 /** Drops raw `section_history` rows sealed behind blind review. */
 export async function withoutBrSealedRows<T extends { id: string }>(rows: T[]): Promise<T[]> {
   if (rows.length === 0) return rows;

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useQueryClient } from '@tanstack/react-query';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -28,6 +29,7 @@ type BrContext = {
 export default function SectionReportPage() {
   const { historyId } = useParams<{ historyId: string }>();
   const { user } = useAuth();
+  const queryClient = useQueryClient();
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const requestedReturn = searchParams.get('returnTo');
@@ -77,6 +79,8 @@ export default function SectionReportPage() {
         );
         setPendingBrResults(null);
         setBrContext(null);
+        void queryClient.invalidateQueries({ queryKey: ['journal', 'entries'] });
+        void queryClient.invalidateQueries({ queryKey: ['review', 'sections'] });
         setRefreshKey((k) => k + 1);
       } catch (err: unknown) {
         setPendingBrResults(results);

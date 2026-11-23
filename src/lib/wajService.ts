@@ -1,5 +1,6 @@
 import { supabase } from '@/integrations/supabase/client';
 import type { Json } from '@/integrations/supabase/types';
+import { brSealedSittingIds } from '@/lib/sectionRelease';
 
 export interface WAJHistoryItem {
   attempt_at_iso: string;
@@ -8,6 +9,7 @@ export interface WAJHistoryItem {
   correct_answer: string;
   time_ms: number;
   confidence_1_5: number | null;
+  sitting_id?: string;
   review?: {
     q1: string; // why I chose the wrong answer
     q2: string; // why I eliminated the right answer
@@ -206,5 +208,56 @@ export async function getWAJEntries(class_id: string, filters?: {
 
   const { data, error } = await query;
   if (error) throw error;
-  return data as unknown as WAJEntry[];
+  const entries = (data ?? []) as unknown as WAJEntry[];
+
+  const sittingIds = Array.from(
+    new Set(
+      entries.flatMap((entry) =>
+        Array.isArray(entry.history_json)
+          ? entry.history_json
+              .map((item) => item?.sitting_id)
+              .filter((id): id is string => typeof id === 'string' && id.length > 0)
+          : [],
+      ),
+    ),
+  );
+  if (sittingIds.length === 0) return entries;
+
+  let sealedSittings: Set<string>;
+  try {
+    sealedSittings = await brSealedSittingIds(sittingIds);
+  } catch (err) {
+    // Fail closed so misses from an unverified sitting stay hidden behind blind review.
+    console.error('[wajService] seal lookup failed; hiding sitting-linked events', err);
+    sealedSittings = new Set(sittingIds);
+  }
+  if (sealedSittings.size === 0) return entries;
+
+  const filtered: WAJEntry[] = [];
+  for (const entry of entries) {
+    const history = Array.isArray(entry.history_json) ? entry.history_json : [];
+    const visible = history.filter(
+      (item) => !(typeof item?.sitting_id === 'string' && sealedSittings.has(item.sitting_id)),
+    );
+    if (history.length > 0 && visible.length === 0) continue;
+    if (visible.length === history.length) {
+      filtered.push(entry);
+      continue;
+    }
+    const lastStatus: 'wrong' | 'right' =
+      visible[visible.length - 1]?.result === 1 ? 'right' : 'wrong';
+    if (filters?.last_status && lastStatus !== filters.last_status) continue;
+    const firstWrong =
+      visible.find((item) => item.result === 0)?.attempt_at_iso ?? visible[0].attempt_at_iso;
+    const updatedAt = visible[visible.length - 1].attempt_at_iso;
+    filtered.push({
+      ...entry,
+      history_json: visible,
+      last_status: lastStatus,
+      revisit_count: Math.max(0, visible.length - 1),
+      first_wrong_at_iso: firstWrong,
+      updated_at: updatedAt,
+    });
+  }
+  return filtered.sort((a, b) => b.first_wrong_at_iso.localeCompare(a.first_wrong_at_iso));
 }
