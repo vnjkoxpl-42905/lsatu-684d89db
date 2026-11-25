@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { SectionFinishDialog } from './SectionFinishDialog';
 import { cn } from '@/lib/utils';
 import { PredictionRetryBanner } from '@/components/section-report/SectionReportView';
 
@@ -47,84 +48,83 @@ export function SectionComplete({
   const canPeek = !sealed && typeof score === 'number' && typeof total === 'number' && total > 0;
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-6 bg-background">
-      <div className="w-full max-w-md space-y-8 text-center">
-        <h1 className="text-3xl font-semibold tracking-tight">Section complete</h1>
+    <SectionFinishDialog
+      title="Section complete"
+      description="Review your answers untimed before you see the results."
+    >
+      {pendingPrediction != null && onRetryPrediction && (
+        <PredictionRetryBanner
+          predictedScore={pendingPrediction}
+          retrying={retryingPrediction}
+          onRetry={onRetryPrediction}
+        />
+      )}
 
-        {pendingPrediction != null && onRetryPrediction && (
-          <PredictionRetryBanner
-            predictedScore={pendingPrediction}
-            retrying={retryingPrediction}
-            onRetry={onRetryPrediction}
-          />
-        )}
-
-        {/* The peek. Nothing is spent by looking, so nothing warns against it. */}
-        {canPeek && (
-          <div className="min-h-[4.5rem] flex items-center justify-center">
-            {peeked ? (
-              <div className="animate-in fade-in duration-200">
-                <div className="text-4xl font-semibold tabular-nums">
-                  {score} <span className="text-muted-foreground">/ {total}</span>
-                </div>
-                <div className="mt-1 text-sm text-muted-foreground">
-                  Under the clock. Blind review is still open.
-                </div>
+      {/* The peek. Nothing is spent by looking, so nothing warns against it. */}
+      {canPeek && (
+        <div className="min-h-[4.5rem] flex items-center justify-center">
+          {peeked ? (
+            <div className="animate-in fade-in duration-200">
+              <div className="text-4xl font-semibold tabular-nums">
+                {score} <span className="text-muted-foreground">/ {total}</span>
               </div>
-            ) : (
-              <button
-                type="button"
-                onClick={() => setPeeked(true)}
-                className={cn(
-                  'rounded-full border border-border px-5 py-2 text-sm font-medium',
-                  'text-muted-foreground transition-colors hover:bg-accent hover:text-foreground',
-                  'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/20',
-                )}
-              >
-                Peek at score
-              </button>
-            )}
-          </div>
-        )}
-
-        <div className="space-y-3">
-          <button
-            type="button"
-            onClick={onBlindReview}
-            className={cn(
-              'w-full rounded-xl bg-foreground px-6 py-4 text-base font-semibold text-background',
-              'transition-colors hover:bg-foreground/90',
-              'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/20 focus-visible:ring-offset-2',
-            )}
-          >
-            Blind review
-          </button>
-          <p className="text-sm text-muted-foreground">
-            Walk the section again, untimed, without seeing what was right. Change
-            any answer you want to change.
-          </p>
-        </div>
-
-        {sealed ? (
-          onBackHome ? (
+              <div className="mt-1 text-sm text-muted-foreground">
+                Under the clock. Blind review is still open.
+              </div>
+            </div>
+          ) : (
             <button
               type="button"
-              onClick={onBackHome}
-              className="text-sm text-muted-foreground underline underline-offset-4 transition-colors hover:text-foreground focus-visible:outline-none focus-visible:text-foreground"
+              onClick={() => setPeeked(true)}
+              className={cn(
+                'rounded-full border border-border px-5 py-2 text-sm font-medium',
+                'text-muted-foreground transition-colors hover:bg-accent hover:text-foreground',
+                'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/20',
+              )}
             >
-              Back to Home
+              Peek at score
             </button>
-          ) : null
-        ) : (
+          )}
+        </div>
+      )}
+
+      <div className="space-y-3">
+        <button
+          type="button"
+          onClick={onBlindReview}
+          className={cn(
+            'w-full rounded-xl bg-emerald-900 px-6 py-3.5 text-base font-semibold text-white',
+            'transition-colors hover:bg-emerald-800',
+            'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/20 focus-visible:ring-offset-2',
+          )}
+        >
+          Blind review
+        </button>
+        <p className="text-sm text-muted-foreground">
+          Walk the section again, untimed, without seeing what was right. Change
+          any answer you want to change.
+        </p>
+      </div>
+
+      {sealed ? (
+        onBackHome ? (
           <button
             type="button"
-            onClick={onSeeResults}
+            onClick={onBackHome}
             className="text-sm text-muted-foreground underline underline-offset-4 transition-colors hover:text-foreground focus-visible:outline-none focus-visible:text-foreground"
           >
-            Skip to results
+            Back to Home
           </button>
-        )}
-      </div>
-    </div>
+        ) : null
+      ) : (
+        <button
+          type="button"
+          onClick={onSeeResults}
+          className="text-sm text-muted-foreground underline underline-offset-4 transition-colors hover:text-foreground focus-visible:outline-none focus-visible:text-foreground"
+        >
+          Skip to results
+        </button>
+      )}
+    </SectionFinishDialog>
   );
 }

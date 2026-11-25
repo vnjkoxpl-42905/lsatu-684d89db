@@ -49,6 +49,30 @@ export default function SectionReportPage() {
   const [brSaving, setBrSaving] = React.useState(false);
   const startingOver = React.useRef(false);
 
+  const startBlindReview = searchParams.get('blindReview') === '1';
+  React.useEffect(() => {
+    if (!startBlindReview || !historyId || !user?.id) return;
+    let active = true;
+    void fetchOwnedSectionReport(user.id, historyId).then((result) => {
+      if (!active || result.state !== 'released') return;
+      const { row } = result;
+      if (row.brUsed || row.practiceTestRunId || row.questions.length === 0) return;
+      const questionQids = row.questions.map((question) => question.qid);
+      const context = { historyId, pt: row.pt, section: row.section, questionQids, row };
+      setBrContext({ ...context, session: buildDeferredBrSession(context) });
+    }).catch(() => {
+      if (active) toast.error('Could not open blind review. Try again from the report.');
+    }).finally(() => {
+      if (!active) return;
+      setSearchParams((previous) => {
+        const next = new URLSearchParams(previous);
+        next.delete('blindReview');
+        return next;
+      }, { replace: true });
+    });
+    return () => { active = false; };
+  }, [startBlindReview, historyId, user?.id, setSearchParams]);
+
   // If opened with ?walk=1 or ?qid=..., load the row directly so the walk opens immediately.
   React.useEffect(() => {
     if ((!walkParam && !qidParam) || !historyId || !user?.id || walkRow?.id === historyId) return;
@@ -177,6 +201,10 @@ export default function SectionReportPage() {
         }}
       />
     );
+  }
+
+  if (startBlindReview) {
+    return <div className="light min-h-screen bg-background p-6 text-foreground" role="status">Opening blind review…</div>;
   }
 
   return (

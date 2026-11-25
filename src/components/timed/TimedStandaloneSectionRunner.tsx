@@ -1,6 +1,9 @@
 import * as React from 'react';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
+import { ScorePrediction } from '@/components/drill/ScorePrediction';
+import { SectionComplete } from '@/components/drill/SectionComplete';
+import { saveSectionPrediction } from '@/lib/sectionReviewRecord';
 import { Button } from '@/components/ui/button';
 import OfficialDrillFrame from '@/components/drill/official/OfficialDrillFrame';
 import OfficialQuestionPane from '@/components/drill/official/OfficialQuestionPane';
@@ -42,6 +45,9 @@ export default function TimedStandaloneSectionRunner({ controllerFactory = facto
   const [busy, setBusy] = React.useState(false); const busyRef = React.useRef(false);
   const [dirty, setDirty] = React.useState(false);
   const [loading, setLoading] = React.useState(true); const [confirm, setConfirm] = React.useState(false);
+  const [finishStep, setFinishStep] = React.useState<{ identity: string; step: 'predict' | 'complete' } | null>(null);
+  const [failedPrediction, setFailedPrediction] = React.useState<number | null>(null);
+  const [savingPrediction, setSavingPrediction] = React.useState(false);
   const [, tick] = React.useState(0); const questionStart = React.useRef(performance.now());
   const regulation = React.useRef<string[] | undefined>(undefined);
   const regulationAcknowledged = React.useRef(false);
@@ -97,6 +103,7 @@ export default function TimedStandaloneSectionRunner({ controllerFactory = facto
     if (next.regulationAnsweredQids !== undefined) { regulation.current = next.regulationAnsweredQids; regulationAcknowledged.current = true; }
   }, [identity, owner, sittingId]);
   React.useEffect(() => {
+    setFinishStep(null); setFailedPrediction(null); setSavingPrediction(false);
     let cancelled = false; setState(null); stateRef.current = null; setAnswers({}); setError(null); setMissing(false); setLoading(true); setBusy(false); setDirty(false); busyRef.current = false; regulation.current = undefined; regulationAcknowledged.current = false;
     if (!controller) { setError('Sign in to the section owner account to continue.'); setLoading(false); return; }
     void controller.load().then(next => { if (!cancelled) apply(next); }).catch(failure => {
@@ -139,7 +146,14 @@ export default function TimedStandaloneSectionRunner({ controllerFactory = facto
         else if (action === 'exit' && next.snapshot.sitting.phase === 'running') next = await controller.control(next, 'pause');
         else if (['start', 'pause', 'resume', 'claim', 'heartbeat'].includes(action)) next = await controller.control(next, action as 'start' | 'pause' | 'resume' | 'claim' | 'heartbeat');
       }
-      if (next && active.current === requestIdentity) apply(next);
+      if (next && active.current === requestIdentity) {
+        if ((action === 'finish' || action === 'retry') && stateRef.current?.snapshot.sitting.kind === 'lr'
+          && next.snapshot.sitting.phase === 'complete') {
+          setFailedPrediction(null);
+          setFinishStep({ identity: requestIdentity, step: 'predict' });
+        }
+        apply(next);
+      }
       if (action === 'exit' && active.current === requestIdentity) navigate('/testing');
     } catch (failure) {
       if (active.current === requestIdentity) setError(failure instanceof Error ? failure.message : 'The account save was not acknowledged.');
@@ -176,7 +190,8 @@ export default function TimedStandaloneSectionRunner({ controllerFactory = facto
     setDirty(true);
   };
   if (loading || state && (state.snapshot.sitting.owner_id !== owner || state.snapshot.sitting.id !== sittingId)) return <main className="p-8" role="status">Loading your account section…</main>;
-  if (!state || error || pending || clock?.writer !== 'active') return <main className="max-w-2xl mx-auto p-8 space-y-4">
+  const finish = finishStep?.identity === identity && state?.snapshot.sitting.phase === 'complete' ? finishStep.step : null;
+  if (!state || !clock || error || pending || (!finish && clock.writer !== 'active')) return <main className="max-w-2xl mx-auto p-8 space-y-4">
     <h1 className="text-xl font-semibold">{missing ? 'Prepare your section' : state?.snapshot.sitting.phase === 'complete' ? 'Section complete' : 'Section paused'}</h1>
     <p role={error ? 'alert' : undefined}>{error ?? (missing ? 'Prepare this manual section in your account. The clock begins only after you press Start section.' : pending ? 'Retry the retained account command before continuing.' : clock?.writer === 'claim-required' ? 'Refresh and claim the account writer to continue.' : 'This section has finished.')}</p>
     {missing && <Button disabled={busy} onClick={() => void perform('prepare')}>Prepare section</Button>}
@@ -195,6 +210,23 @@ export default function TimedStandaloneSectionRunner({ controllerFactory = facto
     <Button disabled={busy} onClick={() => void perform('start')}>Start section</Button>
     <Button variant="outline" disabled={busy} onClick={() => navigate('/testing')}>Return to Testing</Button>
   </main>;
+  const persistPrediction = async (score: number) => {
+    const historyId = state.snapshot.sitting.result?.historyId;
+    if (typeof historyId !== 'string') return;
+    setSavingPrediction(true);
+    try {
+      await saveSectionPrediction(historyId, score);
+      if (active.current === identity) setFailedPrediction(null);
+    } catch {
+      if (active.current === identity) setFailedPrediction(score);
+    } finally {
+      if (active.current === identity) setSavingPrediction(false);
+    }
+  };
+  const openReport = (blindReview: boolean) => {
+    const href = controller?.reportHref(state);
+    if (href) navigate(blindReview ? href + '?blindReview=1' : href);
+  };
   const question = state.questions[state.currentIndex]; const answer = answers[question.qid]; const rcItem = rcItems[state.currentIndex];
   return <div className="light text-slate-900"><OfficialDrillFrame isPaused={state.snapshot.sitting.phase === 'paused'} onResume={() => void perform('resume')}
     header={<div className="flex flex-wrap gap-3 items-center"><strong>PrepTest {state.snapshot.sitting.pt} · {state.snapshot.sitting.kind.toUpperCase()} section {state.snapshot.sitting.section}</strong><span aria-label="Section time remaining">{clock.remainingMs === 0 && state.snapshot.sitting.kind === 'lr' && regulationAcknowledged.current ? `Overtime +${format(clock.elapsedMs - (state.snapshot.sitting.budget_ms ?? 0))}` : format(clock.remainingMs)}</span>
@@ -243,5 +275,13 @@ export default function TimedStandaloneSectionRunner({ controllerFactory = facto
     <div className="border-t p-3 flex flex-wrap gap-2"><Button variant="outline" disabled={blocked || state.currentIndex === 0} onClick={() => void perform('save', state.currentIndex - 1)}>Previous</Button>
       <nav aria-label="Section questions" className="flex flex-wrap gap-1 flex-1">{state.questions.map((value, index) => <button key={value.qid} aria-current={index === state.currentIndex ? 'step' : undefined} disabled={blocked} onClick={() => void perform('save', index)} className="border rounded px-2 py-1">{index + 1}{answers[value.qid].flagged ? ' ⚑' : ''}{answers[value.qid].selected ? ' •' : ''}</button>)}</nav>
       <Button variant="outline" disabled={blocked || state.currentIndex === state.questions.length - 1} onClick={() => void perform('save', state.currentIndex + 1)}>Next</Button><Button disabled={blocked} onClick={() => setConfirm(true)}>Finish section</Button></div>
-  </OfficialDrillFrame></div>;
+  </OfficialDrillFrame>
+  {finish === 'predict' && <ScorePrediction total={state.questions.length}
+    onSkip={() => setFinishStep({ identity, step: 'complete' })}
+    onPredict={(score) => { setFinishStep({ identity, step: 'complete' }); void persistPrediction(score); }} />}
+  {finish === 'complete' && <SectionComplete score={typeof state.snapshot.sitting.result?.correct === 'number' ? state.snapshot.sitting.result.correct : undefined} total={state.questions.length}
+    onBlindReview={() => openReport(true)} onSeeResults={() => openReport(false)}
+    pendingPrediction={failedPrediction} retryingPrediction={savingPrediction}
+    onRetryPrediction={() => { if (failedPrediction !== null) void persistPrediction(failedPrediction); }} />}
+  </div>;
 }

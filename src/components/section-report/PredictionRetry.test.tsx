@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { act, fireEvent, render, screen, waitFor, within } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { MemoryRouter } from 'react-router-dom';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
@@ -297,7 +297,7 @@ describe('Prediction save failure retry (F11)', () => {
     // Non-blocking retry action on SectionComplete retaining score 18
     const retryOnComplete = await screen.findByRole('button', { name: 'Retry saving prediction' });
     expect(retryOnComplete).toBeInTheDocument();
-    expect(screen.getByText(/18/)).toBeInTheDocument();
+    expect(within(screen.getByRole('dialog', { name: 'Section complete' })).getByText(/18/)).toBeInTheDocument();
 
     // Progression continues to the report where retry remains available
     fireEvent.click(screen.getByRole('button', { name: 'Skip to results' }));

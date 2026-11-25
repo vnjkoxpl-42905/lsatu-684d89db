@@ -3611,7 +3611,7 @@ function DrillContent() {
 
   // Enhanced keyboard navigation for section mode
   React.useEffect(() => {
-    if (session?.mode !== 'full-section' || !currentQuestion) return;
+    if (postSectionScreen || session?.mode !== 'full-section' || !currentQuestion) return;
 
     const handleKeyDown = (e: KeyboardEvent) => {
       // Prevent if user is typing in an input
@@ -3638,7 +3638,7 @@ function DrillContent() {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [session, handleNext, handlePrevious, currentQuestion]);
+  }, [session, handleNext, handlePrevious, currentQuestion, postSectionScreen]);
 
   // Highlights are shared with every other question surface through the hook;
   // the pane hands over every block on screen and the hook clips the
@@ -3754,6 +3754,7 @@ function DrillContent() {
 
   // Keyboard shortcut for BR marking
   React.useEffect(() => {
+    if (postSectionScreen) return;
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key.toLowerCase() === 'b' && !e.ctrlKey && !e.metaKey && !e.altKey) {
         // Only trigger if not in an input field
@@ -3767,14 +3768,14 @@ function DrillContent() {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [currentQuestion, brEnabled]);
+  }, [currentQuestion, brEnabled, postSectionScreen]);
 
   // Start timer on mount if a TimerProvider is present (countdown OR stopwatch).
   React.useEffect(() => {
-    if (timer && !timer.running && !timer.isPaused) {
+    if (!postSectionScreen && timer && !timer.running && !timer.isPaused) {
       timer.start();
     }
-  }, [timer]);
+  }, [timer, postSectionScreen]);
 
   // Fold a resumed section's spent time into the running clock, once. A clock
   // that comes back with nothing left stops here and asks, the way it would
@@ -3796,7 +3797,7 @@ function DrillContent() {
   // asks — once. A section that has already been carried past its buzzer must
   // not be asked again on every tick.
   React.useEffect(() => {
-    if (!timer || !session) return;
+    if (postSectionScreen || !timer || !session) return;
     if (session.mode !== 'full-section') return;
     if (timer.mode !== 'countdown' || timer.ms > 0) return;
     if (overtimeState !== 'none' || session.regulationMark) return;
@@ -3807,7 +3808,7 @@ function DrillContent() {
     setSession({ ...session, regulationMark: { answeredQids } });
     timer.pause();
     setOvertimeState('prompt');
-  }, [timer, session, overtimeState]);
+  }, [timer, session, overtimeState, postSectionScreen]);
 
   // Metadata for the drawer's Details tab, drawn from the active question.
   // MUST be declared before any conditional early returns below to keep hook order stable.
@@ -3980,55 +3981,58 @@ function DrillContent() {
       navigate(`/review/section/${encodeURIComponent(sectionHistoryId)}`, { replace: true });
       return;
     }
-    setPostSectionScreen(assignmentId ? 'review' : 'complete');
+    setPostSectionScreen('complete');
   };
 
   // Handle session completion and post-section flow
   // Show post-section screens (must be BEFORE the session/currentQuestion check)
-  if (postSectionScreen === 'predict' && session) {
-    return (
-      <ScorePrediction
-        total={session.questionQueue.length}
-        onPredict={(score) => {
-          setPredictedScore(score);
-          continueAfterSectionPrediction();
-          // Saved to its own record; a failure never blocks the student.
-          if (sectionHistoryId) {
-            void persistPredictionScore(sectionHistoryId, score);
-          }
-        }}
-        onSkip={continueAfterSectionPrediction}
-      />
-    );
-  }
+  const renderSectionFinish = () => {
+    if (postSectionScreen === 'predict' && session) {
+      return (
+        <ScorePrediction
+          total={session.questionQueue.length}
+          onPredict={(score) => {
+            setPredictedScore(score);
+            continueAfterSectionPrediction();
+            // Saved to its own record; a failure never blocks the student.
+            if (sectionHistoryId) {
+              void persistPredictionScore(sectionHistoryId, score);
+            }
+          }}
+          onSkip={continueAfterSectionPrediction}
+        />
+      );
+    }
 
-  if (postSectionScreen === 'complete') {
-    const isSealedAssignment = Boolean(assignmentId);
-    const retryPrediction =
-      pendingPrediction !== null && sectionHistoryId
-        ? () => {
-            void persistPredictionScore(sectionHistoryId, pendingPrediction, { isRetry: true });
+    if (postSectionScreen === 'complete') {
+      const isSealedAssignment = Boolean(assignmentId);
+      const retryPrediction =
+        pendingPrediction !== null && sectionHistoryId
+          ? () => {
+              void persistPredictionScore(sectionHistoryId, pendingPrediction, { isRetry: true });
+            }
+          : undefined;
+      return (
+        <SectionComplete
+          sealed={isSealedAssignment}
+          onBlindReview={() => setPostSectionScreen('review')}
+          onSeeResults={() => setPostSectionScreen('score-report')}
+          onBackHome={() => navigate(drillReturnTo || '/classroom')}
+          pendingPrediction={pendingPrediction}
+          retryingPrediction={retryingPrediction}
+          onRetryPrediction={retryPrediction}
+          score={
+            !isSealedAssignment && session
+              ? [...session.attempts.values()].filter((a) => a.correct).length
+              : undefined
           }
-        : undefined;
-    return (
-      <SectionComplete
-        sealed={isSealedAssignment}
-        onBlindReview={() => setPostSectionScreen('review')}
-        onSeeResults={() => setPostSectionScreen('score-report')}
-        onBackHome={() => navigate(drillReturnTo || '/classroom')}
-        pendingPrediction={pendingPrediction}
-        retryingPrediction={retryingPrediction}
-        onRetryPrediction={retryPrediction}
-        score={
-          !isSealedAssignment && session
-            ? [...session.attempts.values()].filter((a) => a.correct).length
-            : undefined
-        }
-        total={session?.questionQueue.length}
-      />
-    );
-  }
-  
+          total={session?.questionQueue.length}
+        />
+      );
+    }
+    return null;
+  };
+
   if (postSectionScreen === 'review' && session) {
     return (
       <EnhancedBlindReview
@@ -4249,6 +4253,10 @@ function DrillContent() {
         </Card>
       </div>
     );
+  }
+
+  if (!currentQuestion && (postSectionScreen === 'predict' || postSectionScreen === 'complete')) {
+    return renderSectionFinish();
   }
 
   // Handle session completion with BR (old flow)
@@ -5602,6 +5610,7 @@ function DrillContent() {
           </>
           )}
         </OfficialDrillFrame>
+        {renderSectionFinish()}
         {helpOpen && <HelpSheet open={helpOpen} onOpenChange={setHelpOpen} />}
         {renderVoiceCoachModal()}
         {renderTutorOverlay()}
@@ -6056,6 +6065,7 @@ function DrillContent() {
         onSave={handleWAJSave}
       />
 
+      {renderSectionFinish()}
       {renderVoiceCoachModal()}
 
       {renderTutorOverlay()}
