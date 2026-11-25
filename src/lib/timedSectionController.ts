@@ -56,7 +56,7 @@ export function buildProtectedCloseoutStats(state: TimedSectionState): SectionQu
       answeredInOvertime:
         state.regulationAnsweredQids === undefined
           ? undefined
-          : !state.regulationAnsweredQids.includes(question.qid),
+          : answer.selected != null && !state.regulationAnsweredQids.includes(question.qid),
     };
   });
 }

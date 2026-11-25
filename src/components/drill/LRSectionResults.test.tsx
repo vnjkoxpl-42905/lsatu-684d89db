@@ -1,6 +1,7 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { emailSectionReport } from '@/lib/sectionHistorySave';
 import { LRSectionResults } from './LRSectionResults';
 import type { SectionHistoryRow, OwnedSectionReportResult } from '@/lib/sectionHistory';
 import type { DrillSession } from '@/types/drill';
@@ -95,6 +96,28 @@ const savedRowFromTabA: SectionHistoryRow = {
 describe('LRSectionResults (F6)', () => {
   beforeEach(() => {
     mockFetchOwnedSectionReport.mockReset();
+  });
+
+  it('opening an existing report has no delivery side effect', async () => {
+    mockFetchOwnedSectionReport.mockResolvedValue({ state: 'released', row: savedRowFromTabA });
+    const legacyMountProperties = { savedHistoryCreatedNow: true };
+    const view = () => render(
+      <MemoryRouter>
+        <LRSectionResults
+          session={losingTabSession}
+          classId="u1"
+          savedHistoryId="hist-tab-a"
+          onBack={vi.fn()}
+          {...legacyMountProperties}
+        />
+      </MemoryRouter>,
+    );
+    const first = view();
+    await waitFor(() => expect(screen.getAllByText(/100%/).length).toBeGreaterThan(0));
+    first.unmount();
+    view();
+    await waitFor(() => expect(screen.getAllByText(/100%/).length).toBeGreaterThan(0));
+    expect(emailSectionReport).not.toHaveBeenCalled();
   });
 
   it('never renders losing-tab fallback scores on lookup error when savedHistoryId is set and forwards clicked qid + saved row', async () => {

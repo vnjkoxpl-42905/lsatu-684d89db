@@ -1,6 +1,6 @@
 import { supabase } from "@/integrations/supabase/client";
 import { excludeBlindReviewAttempts } from '@/lib/attemptsFilter';
-import { isPracticeTestRunComplete, withoutBrSealedRows } from '@/lib/sectionRelease';
+import { isPracticeTestRunComplete, readReleasedSectionRows } from '@/lib/sectionRelease';
 import { fetchSectionReviewRecords, hasCompletedBlindReview, type SectionReviewRecord } from '@/lib/sectionReviewRecord';
 import { parseOwnedDrillRun, type StandaloneDrillRun } from "@/lib/drillRunLedger";
 import { estimateScaledScore } from "@/lib/practiceTest";
@@ -72,7 +72,7 @@ export interface StudentPractice {
 
 /** A student's id in LSAT U is profiles.class_id, which is their auth user id. */
 export async function loadStudentPractice(studentId: string): Promise<StudentPractice> {
-  const [attempts, sections, practiceTests, drills] = await Promise.all([
+  const [attempts, practiceTests, drills] = await Promise.all([
     excludeBlindReviewAttempts(
       supabase.from("attempts")
         .select("qid,pt,section,qnum,qtype,level,mode,selected_answer,correct,time_ms,timestamp_iso,br_answer,br_outcome"),
@@ -80,10 +80,6 @@ export async function loadStudentPractice(studentId: string): Promise<StudentPra
       .eq("class_id", studentId)
       .order("timestamp_iso", { ascending: true })
       .limit(10000),
-    supabase.from("section_history")
-      .select("id,pt,section,mode,initial_score,initial_total,br_used,br_score,br_total,completed_at,time_taken_ms,practice_test_run_id")
-      .eq("class_id", studentId)
-      .order("completed_at", { ascending: false }),
     supabase.from("practice_test_runs")
       .select("id,pt,status,completed_at,raw_correct,raw_total,scaled_score")
       .eq("user_id", studentId)
@@ -92,7 +88,6 @@ export async function loadStudentPractice(studentId: string): Promise<StudentPra
   ]);
   const rc = await loadRcAttempts(studentId);
   if (attempts.error) throw attempts.error;
-  if (sections.error) throw sections.error;
   if (practiceTests.error) throw practiceTests.error;
   const lr = (attempts.data ?? []) as AttemptRow[];
   const practiceTestRows = (practiceTests.data ?? []) as PracticeTestRow[];
@@ -101,11 +96,10 @@ export async function loadStudentPractice(studentId: string): Promise<StudentPra
       .filter((t) => isPracticeTestRunComplete(t.status))
       .map((t) => t.id),
   );
-  const rawSections = (sections.data ?? []) as unknown as Array<SectionRow & { release_requires_br?: boolean | null }>;
-  const eligiblePtSections = rawSections.filter(
-    (s) => !s.practice_test_run_id || completedRuns.has(s.practice_test_run_id),
+  const releasedSections = await readReleasedSectionRows<SectionRow>(
+    { column: 'class_id', value: studentId, order: 'completed_at', completedRuns },
+    'id,pt,section,mode,initial_score,initial_total,br_used,br_score,br_total,completed_at,time_taken_ms,practice_test_run_id',
   );
-  const releasedSections = await withoutBrSealedRows(eligiblePtSections);
   let reviewRecords = new Map<string, SectionReviewRecord>();
   if (releasedSections.length > 0) {
     try {

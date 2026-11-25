@@ -17,6 +17,7 @@ import { nativeLabQuestion } from '@/components/review/nativeLabReviewSource';
 import type { NativeLabKind } from '@/bootcamps/main-conclusion/lib/nativeLabAttempt';
 import { supabase } from '@/integrations/supabase/client';
 import { excludeBlindReviewAttempts } from '@/lib/attemptsFilter';
+import { isPracticeTestRunComplete } from '@/lib/sectionRelease';
 
 export type DrillHistorySource = 'lr' | 'intro-lr' | 'rc' | 'abstract' | 'causation';
 
@@ -81,11 +82,15 @@ async function readHistoryPages<T>(userId: string, query: (from: number) => Prom
 export async function filterCompletedHistorySections<T extends { practiceTestRunId: string | null }>(userId: string, sections: T[]): Promise<T[]> {
   await requireHistoryOwner(userId);
   if (!sections.some((s) => s.practiceTestRunId)) return sections;
-  const runs = await readHistoryPages<{ id: string; user_id: string; status: string; completed_at: string | null }>(userId, (from) => supabase
-    .from('practice_test_runs').select('id,user_id,status,completed_at').eq('user_id', userId)
-    .eq('status', 'completed').order('id').range(from, from + PAGE_SIZE - 1));
-  const completed = new Set(runs.filter((r) => r.user_id === userId && r.status === 'completed' && r.completed_at).map((r) => r.id));
+  const completed = await readCompletedParents(userId);
   return sections.filter((s) => !s.practiceTestRunId || completed.has(s.practiceTestRunId));
+}
+
+async function readCompletedParents(userId: string): Promise<Set<string>> {
+  const runs = await readHistoryPages<{ id: string; user_id: string; status: string }>(userId, (from) => supabase
+    .from('practice_test_runs').select('id,user_id,status').eq('user_id', userId)
+    .eq('status', 'complete').order('id').range(from, from + PAGE_SIZE - 1));
+  return new Set(runs.filter((r) => r.user_id === userId && isPracticeTestRunComplete(r.status)).map((r) => r.id));
 }
 
 export function readableHistoryRow(row: DrillHistoryRow): DrillHistoryRow {
@@ -107,26 +112,32 @@ export async function fetchDrillHistory(userId: string): Promise<DrillHistoryRow
   const rows = await readHistoryPages<DrillHistoryRow>(userId, (from) => supabase
     .from('drill_history' as never).select('*').eq('user_id', userId).neq('source', 'rc').neq('source', 'lr')
     .order('attempted_at', { ascending: false }).range(from, from + PAGE_SIZE - 1));
-  type Run = { id: string; user_id: string; status: string; completed_at: string | null };
-  const runs = await readHistoryPages<Run>(userId, (from) => supabase
-    .from('practice_test_runs').select('id,user_id,status,completed_at').eq('user_id', userId)
-    .eq('status', 'completed').order('id').range(from, from + PAGE_SIZE - 1));
-  const completedParents = new Set(runs.filter((r) => r.user_id === userId && r.status === 'completed' && !!r.completed_at).map((r) => r.id));
+  const completedParents = await readCompletedParents(userId);
   const sittings = await readHistoryPages<{ id: string; owner_id: string; phase: string }>(userId, (from) => supabase
     .from('timed_section_sittings_v1' as never).select('id,owner_id,phase').eq('owner_id', userId)
     .eq('phase', 'complete').order('id').range(from, from + PAGE_SIZE - 1));
   const completedSittings = new Set(sittings.filter((r) => r.owner_id === userId && r.phase === 'complete').map((r) => r.id));
-  type LrAttempt = { user_id: string | null; class_id: string; qid: string; pt: number; section: number; qnum: number; qtype: string; correct: boolean | null; time_ms: number | null; selected_answer: string | null; mode: string; timestamp_iso: string; timed_pt_run_id: string | null; timed_section_sitting_id: string | null };
-  const lr = await readHistoryPages<LrAttempt>(userId, (from) => excludeBlindReviewAttempts(
-    supabase.from('attempts')
-      .select('user_id,class_id,qid,pt,section,qnum,qtype,correct,time_ms,selected_answer,mode,timestamp_iso,timed_pt_run_id,timed_section_sitting_id'),
-  ).or(`user_id.eq.${userId},and(user_id.is.null,class_id.eq.${userId})`)
-    .order('timestamp_iso', { ascending: false }).range(from, from + PAGE_SIZE - 1));
-  for (const a of lr) {
-    if ((a.user_id ?? a.class_id) !== userId || (a.timed_pt_run_id && !completedParents.has(a.timed_pt_run_id)) ||
-        (a.timed_section_sitting_id && !completedSittings.has(a.timed_section_sitting_id))) continue;
-    rows.push({ user_id: userId, source: 'lr', question_key: a.qid, question_ref: `PT${a.pt} / S${a.section} / Q${a.qnum}`,
-      detail: a.qtype, correct: a.correct, time_ms: a.time_ms, selected_answer: a.selected_answer, mode: a.mode, attempted_at: a.timestamp_iso });
+  type LrAttemptIdentity = { id: string; user_id: string | null; class_id: string; timed_pt_run_id: string | null; timed_section_sitting_id: string | null };
+  type LrAttempt = LrAttemptIdentity & { qid: string; pt: number; section: number; qnum: number; qtype: string; correct: boolean | null; time_ms: number | null; selected_answer: string | null; mode: string; timestamp_iso: string };
+  const ownerFilter = `user_id.eq.${userId},and(user_id.is.null,class_id.eq.${userId})`;
+  const isReleased = (a: LrAttemptIdentity) => (a.user_id ?? a.class_id) === userId
+    && (!a.timed_pt_run_id || completedParents.has(a.timed_pt_run_id))
+    && (!a.timed_section_sitting_id || completedSittings.has(a.timed_section_sitting_id));
+  const lrIdentities = await readHistoryPages<LrAttemptIdentity>(userId, (from) => excludeBlindReviewAttempts(
+    supabase.from('attempts').select('id,user_id,class_id,timed_pt_run_id,timed_section_sitting_id'),
+  ).or(ownerFilter).order('id').range(from, from + PAGE_SIZE - 1));
+  const releasedLrIds = lrIdentities.filter(isReleased).map(a => a.id);
+  for (let offset = 0; offset < releasedLrIds.length; offset += 100) {
+    const ids = releasedLrIds.slice(offset, offset + 100);
+    const lr = await readHistoryPages<LrAttempt>(userId, (from) => excludeBlindReviewAttempts(
+      supabase.from('attempts')
+        .select('id,user_id,class_id,qid,pt,section,qnum,qtype,correct,time_ms,selected_answer,mode,timestamp_iso,timed_pt_run_id,timed_section_sitting_id'),
+    ).or(ownerFilter).in('id', ids).order('id').range(from, from + PAGE_SIZE - 1));
+    for (const a of lr) {
+      if (!ids.includes(a.id) || !isReleased(a)) continue;
+      rows.push({ user_id: userId, source: 'lr', question_key: a.qid, question_ref: `PT${a.pt} / S${a.section} / Q${a.qnum}`,
+        detail: a.qtype, correct: a.correct, time_ms: a.time_ms, selected_answer: a.selected_answer, mode: a.mode, attempted_at: a.timestamp_iso });
+    }
   }
   type Session = { id: string; user_id: string; status: string; completed_at: string | null; practice_test_run_id: string | null; config: { practiceTestRunId?: string } | null };
   const sessions = await readHistoryPages<Session>(userId, (from) => supabase

@@ -20,11 +20,11 @@
 import { supabase } from '@/integrations/supabase/client';
 import type { SectionQuestionStat } from '@/lib/sectionHistorySave';
 import type { SectionAnalysis } from '@/lib/sectionAnalysis';
-import { fetchSectionReviewRecords, hasCompletedBlindReview, type SectionReviewRecord } from '@/lib/sectionReviewRecord';
+import { buildBlindReviewAnalysisFromSaved, fetchSectionReviewRecords, hasCompletedBlindReview, type SectionReviewRecord } from '@/lib/sectionReviewRecord';
 import {
-  completedPracticeTestRunIds,
+  completedBlindReviewIds,
+  readReleasedSectionRows,
   isPracticeTestRunComplete,
-  sectionReleaseState,
 } from '@/lib/sectionRelease';
 
 export interface SectionHistoryRow {
@@ -118,23 +118,8 @@ export async function fetchOwnedSectionHistoryItem(
   userId: string,
   historyId: string,
 ): Promise<SectionHistoryRow | null> {
-  const { data, error } = await supabase
-    .from('section_history')
-    .select('*')
-    .eq('id', historyId)
-    .eq('user_id', userId)
-    .eq('mode', 'full-section')
-    .is('practice_test_run_id', null)
-    .not('completed_at', 'is', null)
-    .maybeSingle();
-  if (error) throw error;
-  // Detail release requires the persisted completion, never the list reader's
-  // created_at/current-time fallback for historical summary rows.
-  if (!data || data.id !== historyId || data.user_id !== userId || data.mode !== 'full-section'
-    || data.practice_test_run_id != null || typeof data.completed_at !== 'string'
-    || !Number.isFinite(Date.parse(data.completed_at))) return null;
-  const [merged] = await mergeReviewRecords([toHistoryRow(data as Record<string, any>)]);
-  return merged ?? null;
+  const result = await fetchOwnedSectionReport(userId, historyId, { standaloneOnly: true });
+  return result.state === 'released' ? result.row : null;
 }
 
 export type OwnedSectionReportResult =
@@ -148,6 +133,7 @@ export type OwnedSectionReportResult =
       completedAt: string;
       /** Ordered qids only (no answers, no scores) so blind review can launch when reason === 'blind-review'. */
       questionQids: string[];
+      blindReviewPreparationFailed?: boolean;
     }
   | {
       state: 'released';
@@ -169,15 +155,17 @@ const NON_OUTCOME_COLUMNS =
 export async function fetchOwnedSectionReport(
   userId: string,
   historyId: string,
+  { standaloneOnly = false }: { standaloneOnly?: boolean } = {},
 ): Promise<OwnedSectionReportResult> {
-  const { data: metaRaw, error } = await supabase
+  let query = supabase
     .from('section_history')
     .select(NON_OUTCOME_COLUMNS as '*')
     .eq('id', historyId)
     .eq('user_id', userId)
     .eq('mode', 'full-section')
-    .not('completed_at', 'is', null)
-    .maybeSingle();
+    .not('completed_at', 'is', null);
+  if (standaloneOnly) query = query.is('practice_test_run_id', null);
+  const { data: metaRaw, error } = await query.maybeSingle();
   if (error) throw error;
   const meta = metaRaw as Record<string, any> | null;
   if (
@@ -185,6 +173,7 @@ export async function fetchOwnedSectionReport(
     meta.id !== historyId ||
     meta.user_id !== userId ||
     meta.mode !== 'full-section' ||
+    (standaloneOnly && meta.practice_test_run_id != null) ||
     typeof meta.completed_at !== 'string' ||
     !Number.isFinite(Date.parse(meta.completed_at))
   ) {
@@ -194,7 +183,6 @@ export async function fetchOwnedSectionReport(
   const completedAt = meta.completed_at as string;
   const practiceTestRunId = (meta.practice_test_run_id as string | null) ?? null;
   const releaseRequiresBr = Boolean(meta.release_requires_br);
-  const assignmentId = (meta.assignment_id as string | null) ?? null;
 
   // Practice-test leg: verify the parent run is complete; fail closed if unknown.
   let runComplete: boolean | undefined = undefined;
@@ -231,30 +219,20 @@ export async function fetchOwnedSectionReport(
     }
   }
 
-  const loadAssignmentQids = async (): Promise<string[]> => {
-    if (!assignmentId) return [];
+  if (releaseRequiresBr) {
+    let released = false;
     try {
-      const { data: asgData, error: asgErr } = await supabase
-        .from('homework_assignments' as never)
-        .select('question_qids')
-        .eq('id', assignmentId)
-        .eq('student_id', userId)
-        .maybeSingle();
-      if (asgErr || !asgData) return [];
-      const qids = (asgData as { question_qids?: unknown }).question_qids;
-      return Array.isArray(qids) ? qids.filter((q): q is string => typeof q === 'string') : [];
-    } catch {
-      return [];
+      released = (await completedBlindReviewIds([historyId])).has(historyId);
+    } catch (err) {
+      console.error('[sectionHistory] review release lookup failed', err);
     }
-  };
-
-  let record: SectionReviewRecord | undefined;
-  try {
-    const records = await fetchSectionReviewRecords([meta.id]);
-    record = records.get(meta.id);
-  } catch (err) {
-    console.error('[sectionHistory] review record lookup failed', err);
-    if (releaseRequiresBr) {
+    if (!released) {
+      let questionQids: string[] = [];
+      try {
+        questionQids = await fetchFrozenBlindReviewQids(historyId);
+      } catch (err) {
+        console.error('[sectionHistory] blind review preparation failed', err);
+      }
       return {
         state: 'sealed',
         reason: 'blind-review',
@@ -262,22 +240,10 @@ export async function fetchOwnedSectionReport(
         pt: meta.pt,
         section: meta.section,
         completedAt,
-        questionQids: await loadAssignmentQids(),
+        questionQids,
+        blindReviewPreparationFailed: questionQids.length === 0,
       };
     }
-  }
-
-  if (sectionReleaseState({ practiceTestRunId, releaseRequiresBr }, record, runComplete) === 'sealed') {
-    const reason = practiceTestRunId && runComplete !== true ? 'practice-test' : 'blind-review';
-    return {
-      state: 'sealed',
-      reason,
-      id: meta.id,
-      pt: meta.pt,
-      section: meta.section,
-      completedAt,
-      questionQids: reason === 'blind-review' ? await loadAssignmentQids() : [],
-    };
   }
 
   // Step 2: fetch full outcome columns ONLY after release is confirmed.
@@ -292,24 +258,57 @@ export async function fetchOwnedSectionReport(
   if (fullError) throw fullError;
   if (!data) return { state: 'not-found' };
 
-  const baseRow = toHistoryRow(data as Record<string, any>);
-  const merged: SectionHistoryRow = {
-    ...baseRow,
-    predictedScore: record?.predictedScore ?? null,
-  };
-  if (hasCompletedBlindReview(record)) {
-    merged.brUsed = true;
-    merged.brScore = record.brScore;
-    merged.brPercent = record.brPercent;
-    merged.brDelta = record.brDelta;
-    merged.brResults = record.brResults;
-    if (record.brAnalysis) {
-      merged.analysis = record.brAnalysis as SectionAnalysis;
-      merged.analysisSource = 'blind-review';
-    }
+  let record: SectionReviewRecord | undefined;
+  try {
+    record = (await fetchSectionReviewRecords([historyId])).get(historyId);
+  } catch (err) {
+    if (releaseRequiresBr) throw err;
+    console.error('[sectionHistory] review record lookup failed', err);
   }
 
+  const merged = applySavedReview(toHistoryRow(data as Record<string, any>), record);
+
   return { state: 'released', row: merged };
+}
+
+/** The database returns only ordered frozen QIDs for the owner of an assigned section. */
+export async function fetchFrozenBlindReviewQids(historyId: string): Promise<string[]> {
+  const rpc = supabase.rpc as unknown as (
+    name: string,
+    args: { p_history_id: string },
+  ) => Promise<{ data: unknown; error: { message: string } | null }>;
+  const { data, error } = await rpc.call(supabase, 'section_blind_review_qids_v1', {
+    p_history_id: historyId,
+  });
+  if (error) throw new Error(error.message);
+  if (!Array.isArray(data) || !data.every((qid) => typeof qid === 'string' && qid.length > 0)) {
+    throw new Error('Saved blind review questions are unavailable.');
+  }
+  return data;
+}
+
+function applySavedReview(row: SectionHistoryRow, record: SectionReviewRecord | undefined): SectionHistoryRow {
+  const merged: SectionHistoryRow = { ...row, predictedScore: record?.predictedScore ?? null };
+  if (!hasCompletedBlindReview(record)) return merged;
+
+  merged.brUsed = true;
+  merged.brScore = record.brScore;
+  merged.brPercent = record.brPercent;
+  merged.brDelta = record.brDelta;
+  merged.brResults = record.brResults;
+  const analysis = record.brAnalysis as SectionAnalysis | null
+    ?? (row.questions.length > 0
+      ? buildBlindReviewAnalysisFromSaved(
+          row.questions,
+          record.brResults ?? [],
+          row.analysis?.totals?.paceMsPerQuestion ?? null,
+        )
+      : null);
+  if (analysis) {
+    merged.analysis = analysis;
+    merged.analysisSource = 'blind-review';
+  }
+  return merged;
 }
 
 /** True if the signed-in student owns this completed section row (released or sealed). */
@@ -331,45 +330,18 @@ export async function ownsSectionHistoryRow(
 
 /**
  * Lays the review record over each row: blind review and its diagnosis only
- * when the record is complete, the prediction on its own. Sealed rows are
- * dropped. Older rows keep their historical br_* columns.
+ * when the record is complete, the prediction on its own. The reader has
+ * already resolved release. Older rows keep their historical br_* columns.
  */
-export async function mergeReviewRecords(rows: SectionHistoryRow[]): Promise<SectionHistoryRow[]> {
+async function mergeReviewRecords(rows: SectionHistoryRow[]): Promise<SectionHistoryRow[]> {
   if (rows.length === 0) return rows;
-  const runIds = rows
-    .map((r) => r.practiceTestRunId)
-    .filter((id): id is string => typeof id === 'string' && id.length > 0);
-  const completedRuns = await completedPracticeTestRunIds(runIds);
-
   let records = new Map<string, SectionReviewRecord>();
   try {
     records = await fetchSectionReviewRecords(rows.map((r) => r.id));
   } catch (error) {
-    // Without records, flagged rows stay sealed and the rest show as before.
     console.error('[sectionHistory] review records unavailable', error);
   }
-  const out: SectionHistoryRow[] = [];
-  for (const row of rows) {
-    const record = records.get(row.id);
-    const runComplete = row.practiceTestRunId
-      ? completedRuns.has(row.practiceTestRunId)
-      : undefined;
-    if (sectionReleaseState(row, record, runComplete) === 'sealed') continue;
-    const next: SectionHistoryRow = { ...row, predictedScore: record?.predictedScore ?? null };
-    if (hasCompletedBlindReview(record)) {
-      next.brUsed = true;
-      next.brScore = record.brScore;
-      next.brPercent = record.brPercent;
-      next.brDelta = record.brDelta;
-      next.brResults = record.brResults;
-      if (record.brAnalysis) {
-        next.analysis = record.brAnalysis as SectionAnalysis;
-        next.analysisSource = 'blind-review';
-      }
-    }
-    out.push(next);
-  }
-  return out;
+  return rows.map((row) => applySavedReview(row, records.get(row.id)));
 }
 
 function toHistoryRow(r: Record<string, any>): SectionHistoryRow {
@@ -407,20 +379,11 @@ async function fetchSectionHistoryBy(
   column: 'user_id' | 'class_id',
   value: string,
 ): Promise<SectionHistoryRow[]> {
-  // `*` rather than a column list, because the generated types are regenerated
-  // from the deployed schema and reject `analysis_json` by name until the
-  // migration that adds it has been applied. A star select is valid against
-  // both, returns the column once it exists, and simply omits it before then —
-  // which is exactly what the `?? null` below is for.
-  const { data, error } = await supabase
-    .from('section_history')
-    .select('*')
-    .eq(column, value)
-    .order('completed_at', { ascending: false });
-
-  if (error) throw error;
-
-  return mergeReviewRecords(((data ?? []) as unknown as Array<Record<string, any>>).map(toHistoryRow));
+  const rows = await readReleasedSectionRows<Record<string, any> & { id: string }>(
+    { column, value, order: 'completed_at' },
+    '*',
+  );
+  return mergeReviewRecords(rows.map(toHistoryRow));
 }
 
 export interface SectionSummary {

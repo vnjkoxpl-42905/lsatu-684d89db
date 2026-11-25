@@ -88,24 +88,43 @@ Deno.serve(async (req) => {
 
     const { sectionHistoryId } = (await req.json()) as Payload
     if (!sectionHistoryId) return json({ ok: false, error: 'sectionHistoryId is required' }, 400)
-    rowId = sectionHistoryId
 
-    const { data: row, error: rowErr } = await admin
+    const { data: metadata, error: rowErr } = await admin
       .from('section_history')
-      .select('*')
+      .select('id,report_emailed_at,release_requires_br')
       .eq('id', sectionHistoryId)
+      .eq('user_id', userData.user.id)
       .maybeSingle()
     if (rowErr) return json({ ok: false, error: rowErr.message }, 500)
-    if (!row) return json({ ok: false, error: 'No such sitting' }, 404)
+    if (!metadata) return json({ ok: false, error: 'No such sitting' }, 404)
+    rowId = sectionHistoryId
 
-    // The caller's own sitting, or nothing.
-    if (row.user_id !== userData.user.id) return json({ ok: false, error: 'Forbidden' }, 403)
+    if (metadata.release_requires_br === true) {
+      const { data: reviewed, error } = await admin
+        .from('section_review_records')
+        .select('history_id')
+        .eq('history_id', sectionHistoryId)
+        .eq('user_id', userData.user.id)
+        .not('br_completed_at', 'is', null)
+        .contains('br_results', '[]')
+        .maybeSingle()
+      if (error) throw error
+      if (!reviewed) return json({ ok: false, error: 'Blind review is required' }, 409)
+    }
 
-    if (row.report_emailed_at) {
+    if (metadata.report_emailed_at) {
       // Already sent. Re-sending on a re-render would mail the same section
       // twice, and a duplicate report is indistinguishable from a second sitting.
       return json({ ok: true, alreadySent: true })
     }
+
+    const { data: row, error: outcomeError } = await admin
+      .from('section_history')
+      .select('*')
+      .eq('id', sectionHistoryId)
+      .eq('user_id', userData.user.id)
+      .single()
+    if (outcomeError) throw outcomeError
 
     const { data: profile } = await admin
       .from('profiles')

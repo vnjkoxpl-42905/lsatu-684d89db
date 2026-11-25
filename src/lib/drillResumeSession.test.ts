@@ -347,6 +347,167 @@ describe('a row whose clock was already spent', () => {
 });
 
 describe('atomic conditional revision save and assignment key protection (F3)', () => {
+  it('advances the revision after adopting a newer legacy device choice and reopens on the saved account copy', async () => {
+    const { practiceSessionIdFor } = await import('@/bootcamps/main-conclusion/lib/practiceSessionStore');
+    const userId = '11111111-1111-4111-8111-111111111111';
+    const legacyKey = 'drill::section::pt23-s2';
+    const sittingKey = `${legacyKey}#adopted-g1`;
+    const id = practiceSessionIdFor(userId, sittingKey);
+    const originalRevision = '2026-11-23T10:00:00.000Z';
+    const firstAttempt = { qid: 'PT23-S2-Q1', selected_answer: 'A', correct: false, time_ms: 1000 };
+    const secondAttempt = { qid: 'PT23-S2-Q2', selected_answer: 'B', correct: true, time_ms: 3000 };
+    const questionQueue = [firstAttempt.qid, secondAttempt.qid];
+    const account = {
+      id,
+      user_id: userId,
+      pool_slug: legacyKey,
+      completion_id: legacyKey,
+      data_version: 2,
+      question_queue: questionQueue,
+      current_index: 0,
+      attempts: [firstAttempt],
+      status: 'in_progress',
+      elapsed_ms: 1000,
+      started_at: originalRevision,
+      updated_at: originalRevision,
+    };
+    const snapshot = {
+      questionQueue,
+      attempts: [firstAttempt, secondAttempt],
+      currentIndex: 1,
+      elapsedMs: 5200,
+    };
+    accountWrites.dbRows.set(id, { data: account, updated_at: originalRevision });
+    store.loadPracticeSession.mockReset().mockResolvedValue(null);
+    writeSectionDeviceBackup(userId, legacyKey, snapshot);
+    expect(await loadDrillResumeSession(userId, sittingKey, legacyKey, originalRevision)).toMatchObject({
+      id, attempts: snapshot.attempts, elapsed_ms: 5200, current_index: 1,
+    });
+    await saveDrillResumeSnapshot(userId, sittingKey, snapshot);
+    const firstSaveRevision = accountWrites.dbRows.get(id)?.updated_at;
+    expect(firstSaveRevision).not.toBe(originalRevision);
+    expect(accountWrites.update.mock.calls[0][0].filters.updated_at).toBe(originalRevision);
+    expect(hasPendingSectionDeviceBackup(userId, legacyKey)).toBe(false);
+
+    // Reopen still receives the generation's original adoption metadata.
+    // The account revision has advanced, so the next save must use that one.
+    expect(await loadDrillResumeSession(userId, sittingKey, legacyKey, originalRevision)).toMatchObject({
+      attempts: snapshot.attempts, elapsed_ms: 5200,
+    });
+    await saveDrillResumeSnapshot(userId, sittingKey, { ...snapshot, elapsedMs: 8000 });
+    expect(accountWrites.update.mock.calls[1][0].filters.updated_at).toBe(firstSaveRevision);
+    expect(accountWrites.dbRows.get(id)?.data.elapsed_ms).toBe(8000);
+  });
+
+  it('keeps a rejected copy bound to its old revision after reload', async () => {
+    const { practiceSessionIdFor } = await import('@/bootcamps/main-conclusion/lib/practiceSessionStore');
+    const userId = '11111111-1111-4111-8111-111111111111';
+    const key = 'drill::assignment::hw-1#adopted-g1';
+    const recId = practiceSessionIdFor(userId, key);
+    const oldRevision = '2026-11-23T10:00:00.000Z';
+    const winnerRevision = '2026-11-23T10:01:00.000Z';
+    const initial = {
+      id: recId,
+      user_id: userId,
+      pool_slug: key,
+      completion_id: key,
+      data_version: 2,
+      question_queue: ['PT23-S2-Q1', 'PT23-S2-Q2'],
+      current_index: 0,
+      attempts: [{ qid: 'PT23-S2-Q1', selected_answer: 'A', correct: false, time_ms: 1000 }],
+      status: 'in_progress',
+      elapsed_ms: 1000,
+      started_at: oldRevision,
+      updated_at: oldRevision,
+    };
+    const candidate = {
+      questionQueue: initial.question_queue,
+      currentIndex: 1,
+      attempts: [...initial.attempts, { qid: 'PT23-S2-Q2', selected_answer: 'B', correct: true, time_ms: 1200 }],
+      elapsedMs: 3200,
+    };
+    const winner = {
+      ...initial,
+      attempts: [{ ...initial.attempts[0], selected_answer: 'C' }],
+      updated_at: winnerRevision,
+    };
+    accountWrites.dbRows.set(recId, { data: initial, updated_at: oldRevision });
+    store.loadPracticeSession.mockReset().mockResolvedValue(null);
+    await loadDrillResumeSession(userId, key);
+    accountWrites.dbRows.set(recId, { data: winner, updated_at: winnerRevision });
+    store.savePracticeSessionSnapshot.mockReset().mockResolvedValue(undefined);
+    store.loadPracticeSession.mockResolvedValue({ ...initial, attempts: candidate.attempts });
+    await expect(saveDrillResumeSnapshot(userId, key, candidate)).rejects.toThrow(/another tab/i);
+
+    expect(await loadDrillResumeSession(userId, key)).toMatchObject({
+      attempts: candidate.attempts,
+      current_index: 1,
+      elapsed_ms: 3200,
+    });
+    await expect(saveDrillResumeSnapshot(userId, key, candidate)).rejects.toThrow(/another tab/i);
+    expect(accountWrites.dbRows.get(recId)?.data).toEqual(winner);
+    expect(hasPendingSectionDeviceBackup(userId, key)).toBe(true);
+  });
+
+  it('keeps a pending snapshot in its own tab when another tab saves and clears its backup', async () => {
+    const { practiceSessionIdFor } = await import('@/bootcamps/main-conclusion/lib/practiceSessionStore');
+    const userId = '11111111-1111-4111-8111-111111111111';
+    const key = 'drill::section::pt23-s2#sit-two-tabs';
+    const id = practiceSessionIdFor(userId, key);
+    const firstRevision = '2026-11-23T10:00:00.000Z';
+    const qid = 'PT23-S2-Q1';
+    const attempt = { qid, selected_answer: 'A', correct: false, time_ms: 300 };
+    const account = {
+      id,
+      user_id: userId,
+      pool_slug: key,
+      completion_id: key,
+      data_version: 2,
+      question_queue: [qid],
+      current_index: 0,
+      attempts: [attempt],
+      status: 'in_progress',
+      started_at: firstRevision,
+      updated_at: firstRevision,
+    };
+    const tabASnapshot = {
+      questionQueue: [qid], currentIndex: 0, attempts: [{ ...attempt, selected_answer: 'B' }],
+    };
+    const tabBSnapshot = {
+      questionQueue: [qid], currentIndex: 0, attempts: [{ ...attempt, selected_answer: 'C' }],
+    };
+    accountWrites.dbRows.set(id, { data: account, updated_at: firstRevision });
+    store.loadPracticeSession.mockReset().mockResolvedValue(null);
+
+    const tabA = new Map<string, string>();
+    const tabB = new Map<string, string>();
+    let activeTab = tabA;
+    const sessionStorage = vi.spyOn(window, 'sessionStorage', 'get').mockReturnValue({
+      get length() { return activeTab.size; },
+      getItem: (name: string) => activeTab.get(name) ?? null,
+      setItem(name: string, value: string) { activeTab.set(name, value); },
+      removeItem(name: string) { activeTab.delete(name); },
+      clear: () => activeTab.clear(),
+      key: (index: number) => [...activeTab.keys()][index] ?? null,
+    });
+    try {
+      await loadDrillResumeSession(userId, key);
+      writeSectionDeviceBackup(userId, key, tabASnapshot);
+      activeTab = tabB;
+      expect(await loadDrillResumeSession(userId, key)).toMatchObject({ attempts: [attempt] });
+      await saveDrillResumeSnapshot(userId, key, tabBSnapshot);
+      expect(hasPendingSectionDeviceBackup(userId, key)).toBe(false);
+
+      activeTab = tabA;
+      expect(await loadDrillResumeSession(userId, key)).toMatchObject({ attempts: tabASnapshot.attempts });
+      await expect(saveDrillResumeSnapshot(userId, key, tabASnapshot)).rejects.toThrow(/another tab/i);
+      expect(hasPendingSectionDeviceBackup(userId, key)).toBe(true);
+      expect(accountWrites.dbRows.get(id)?.data.attempts).toEqual(tabBSnapshot.attempts);
+    } finally {
+      sessionStorage.mockRestore();
+    }
+  });
+
   it('uses an atomic conditional DB write against updated_at and retains both copies on conflict', async () => {
     const { practiceSessionIdFor } = await import('@/bootcamps/main-conclusion/lib/practiceSessionStore');
     const userId = '11111111-1111-4111-8111-111111111111';

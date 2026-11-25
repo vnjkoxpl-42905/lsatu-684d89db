@@ -21,6 +21,10 @@ const resumeComplete = vi.hoisted(() => ({ calls: [] as Array<{ userId: string; 
 const sittingRpc = vi.hoisted(() => ({
   calls: [] as Array<Record<string, unknown>>,
   next: null as Record<string, unknown> | null,
+  reconcile: [] as Array<Record<string, unknown>>,
+  reconcileFails: false,
+  closes: [] as Array<Record<string, unknown>>,
+  closeReply: null as Record<string, unknown> | null,
 }));
 const ledgerSave = vi.hoisted(() => ({ fail: false, created: 0 }));
 const journalCalls = vi.hoisted(() => ({ wrong: vi.fn(), correct: vi.fn() }));
@@ -212,6 +216,16 @@ vi.mock('@/integrations/supabase/client', () => {
       },
       auth: { getSession: async () => ({ data: { session: null } }) },
       rpc: async (fn: string, params?: Record<string, unknown>) => {
+        if (fn === 'close_standalone_section_v1' && sittingRpc.closeReply) {
+          if (params) sittingRpc.closes.push(params);
+          return { data: sittingRpc.closeReply, error: null };
+        }
+        if (fn === 'reconcile_standalone_section_v1') {
+          if (params) sittingRpc.reconcile.push(params);
+          return sittingRpc.reconcileFails
+            ? { data: null, error: { message: 'offline' } }
+            : { data: { status: 'reconciled' }, error: null };
+        }
         if (fn === 'open_section_sitting_v1') {
           if (params) sittingRpc.calls.push(params);
           const payload = sittingRpc.next ?? {
@@ -382,6 +396,10 @@ beforeEach(() => {
   resumeComplete.calls = [];
   sittingRpc.calls = [];
   sittingRpc.next = null;
+  sittingRpc.reconcile = [];
+  sittingRpc.reconcileFails = false;
+  sittingRpc.closes = [];
+  sittingRpc.closeReply = null;
   ledgerSave.fail = false;
   ledgerSave.created = 0;
   journalCalls.wrong.mockReset();
@@ -391,6 +409,7 @@ beforeEach(() => {
   guidedCompletion.updates = [];
   guidedCompletion.linkedTodo.mockClear();
   window.localStorage.clear();
+  window.sessionStorage.clear();
   store = memoryPersistence();
   __setPersistenceForTests(store);
   vi.spyOn(console, 'error').mockImplementation(() => {});
@@ -751,9 +770,11 @@ describe('Drill review controls — full section keeps the legacy behaviour', ()
     await waitFor(() => expect(activeHeartbeatIds.size).toBe(0));
   });
 
-  it('finalizes a closed sitting resume record before routing to its saved report (F5)', async () => {
-    const { writeSectionDeviceBackup } = await import('@/lib/drillResumeSession');
-    writeSectionDeviceBackup('11111111-1111-4111-8111-111111111111', 'drill::section::pt23-s2#sit-closed', {
+  it('reconciles a committed assignment with the saved winner before opening its report (N4)', async () => {
+    const { hasPendingSectionDeviceBackup, writeSectionDeviceBackup } = await import('@/lib/drillResumeSession');
+    const userId = '11111111-1111-4111-8111-111111111111';
+    const key = 'drill::assignment::assignment-1#sit-closed';
+    writeSectionDeviceBackup(userId, key, {
       questionQueue: [Q1.qid, Q2.qid],
       currentIndex: 1,
       attempts: [{ qid: Q1.qid, selected_answer: 'B', correct: true, time_ms: 4000 }],
@@ -770,19 +791,67 @@ describe('Drill review controls — full section keeps the legacy behaviour', ()
 
     renderDrill({
       ...sectionSpec,
+      assignmentId: 'assignment-1',
       config: { pt: 23, section: 2, timer: { mode: '35' } } as DrillRunSpec['config'],
     });
 
     await waitFor(() =>
       expect(screen.getByTestId('location-path')).toHaveTextContent('/review/section/hist-closed-1'),
     );
-    expect(resumeComplete.calls).toContainEqual({
-      userId: '11111111-1111-4111-8111-111111111111',
-      key: 'drill::section::pt23-s2#sit-closed',
-    });
+    expect(sittingRpc.reconcile).toEqual([{
+      p_sitting_id: 'sit-closed',
+      p_history_id: 'hist-closed-1',
+    }]);
+    expect(resumeComplete.calls).toEqual([]);
+    expect(hasPendingSectionDeviceBackup(userId, key)).toBe(false);
   });
 
-  it('restarts with p_restart and cached generation on ?restart=1 and strips restart from URL (F5)', async () => {
+  it('preserves the pending copy when recovery of the committed winner fails', async () => {
+    const { hasPendingSectionDeviceBackup, writeSectionDeviceBackup } = await import('@/lib/drillResumeSession');
+    const userId = '11111111-1111-4111-8111-111111111111';
+    const key = 'drill::assignment::assignment-1#sit-closed';
+    writeSectionDeviceBackup(userId, key, {
+      questionQueue: [Q1.qid, Q2.qid],
+      currentIndex: 1,
+      attempts: [{ qid: Q1.qid, selected_answer: 'A', correct: false, time_ms: 500 }],
+    });
+    sittingRpc.next = {
+      status: 'closed',
+      sitting_id: 'sit-closed',
+      generation: 1,
+      history_id: 'hist-closed-1',
+      adopted: false,
+    };
+    sittingRpc.reconcileFails = true;
+    renderDrill({ ...sectionSpec, assignmentId: 'assignment-1' });
+    await screen.findByText(/saved drill could not be loaded from your account/i);
+    expect(hasPendingSectionDeviceBackup(userId, key)).toBe(true);
+    expect(resumeComplete.calls).toEqual([]);
+    expect(screen.getByTestId('location-path')).not.toHaveTextContent('/review/section');
+  });
+
+  it('reconciles a replay from a different answer without writing the losing resume', async () => {
+    const sittingId = '55555555-5555-4555-8555-555555555555';
+    sittingRpc.closeReply = { status: 'replayed', history_id: 'hist-winner', conflict: true };
+    renderDrill({ ...sectionSpec, assignmentId: 'assignment-1' });
+    await waitForQuestion(18);
+    fireEvent.click(choiceButton('A'));
+    fireEvent.click(screen.getByRole('button', { name: 'Complete Section' }));
+    fireEvent.click(await screen.findByRole('button', { name: 'Submit anyway' }));
+    await waitFor(() =>
+      expect(screen.getByTestId('location-path')).toHaveTextContent('/review/section/hist-winner'),
+    );
+    expect(sittingRpc.closes).toEqual([expect.objectContaining({
+      p_sitting_id: sittingId,
+      p_payload: expect.objectContaining({
+        questions: expect.arrayContaining([expect.objectContaining({ qid: Q1.qid, initialAnswer: 'A' })]),
+      }),
+    })]);
+    expect(sittingRpc.reconcile).toEqual([{ p_sitting_id: sittingId, p_history_id: 'hist-winner' }]);
+    expect(resumeComplete.calls).toEqual([]);
+  });
+
+  it('opens an unbound historical retake without restarting the cached sitting', async () => {
     const { writeCachedSitting } = await import('@/lib/sectionCloseout');
     writeCachedSitting('11111111-1111-4111-8111-111111111111', 'drill::section::pt23-s2', {
       sittingId: 'sit-prev',
@@ -801,16 +870,31 @@ describe('Drill review controls — full section keeps the legacy behaviour', ()
         ...sectionSpec,
         config: { pt: 23, section: 2, timer: { mode: '35' } } as DrillRunSpec['config'],
       },
-      '?drill=section&pt=23&section=2&restart=1',
+      '?drill=section&pt=23&section=2&historicalRetake=1',
     );
 
     await waitForQuestion(18);
     expect(sittingRpc.calls[0]).toMatchObject({
       p_pool_key: 'drill::section::pt23-s2',
-      p_restart: true,
-      p_expected_generation: 2,
+      p_restart: false,
+      p_known_sitting_id: null,
+      p_expected_generation: null,
     });
-    expect(screen.getByTestId('location-search').textContent).not.toContain('restart=1');
+    expect(screen.getByTestId('location-search').textContent).not.toContain('historicalRetake=1');
+  });
+
+  it('uses the displayed report generation even if the device cache advanced', async () => {
+    const { writeCachedSitting } = await import('@/lib/sectionCloseout');
+    writeCachedSitting('11111111-1111-4111-8111-111111111111', 'drill::section::pt23-s2', {
+      sittingId: 'sit-newer',
+      generation: 5,
+    });
+    renderDrill(
+      { ...sectionSpec, config: { pt: 23, section: 2, timer: { mode: '35' } } as DrillRunSpec['config'] },
+      '?drill=section&pt=23&section=2&restart=1&gen=3',
+    );
+    await waitForQuestion(18);
+    expect(sittingRpc.calls[0]).toMatchObject({ p_restart: true, p_expected_generation: 3 });
   });
 
   it('Answer is gated until the question is attempted and Explanation opens the drawer', async () => {

@@ -3,24 +3,30 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 const owner = '22222222-2222-4222-8222-222222222222';
 const state = vi.hoisted(() => ({
   sectionRows: [] as Array<Record<string, unknown>>,
-  sealedIds: new Set<string>(),
+  outcomeIds: [] as string[],
+  runs: [] as Array<Record<string, unknown>>,
   ranges: [] as Array<[number, number]>,
 }));
 
 vi.mock('@/lib/studentScopedWork', () => ({ assertActiveStudentScope: vi.fn(async () => {}) }));
-vi.mock('@/lib/sectionRelease', async () => {
-  const actual = await vi.importActual<typeof import('./sectionRelease')>('./sectionRelease');
-  return {
-    ...actual,
-    withoutBrSealedRows: async <T extends { id: string }>(rows: T[]) =>
-      rows.filter((r) => !state.sealedIds.has(r.id)),
-  };
-});
 vi.mock('@/integrations/supabase/client', () => ({
   supabase: {
     rpc: vi.fn(async () => ({ data: owner, error: null })),
     from: (table: string) => {
+      let ids: string[] = [];
       const chain = {
+        in: (_column: string, values: string[]) => {
+          ids = values;
+          if (table === 'section_history') state.outcomeIds.push(...values);
+          return chain;
+        },
+        not: () => chain,
+        contains: () => chain,
+        then: (resolve: (value: unknown) => unknown) => Promise.resolve({
+          data: table === 'section_history' ? state.sectionRows.filter(row => ids.includes(String(row.id)))
+            : table === 'practice_test_runs' ? state.runs.filter(row => ids.includes(String(row.id))) : [],
+          error: null,
+        }).then(resolve),
         select: () => chain,
         eq: () => chain,
         order: () => chain,
@@ -29,7 +35,7 @@ vi.mock('@/integrations/supabase/client', () => ({
             state.ranges.push([from, to]);
             return { data: state.sectionRows.slice(from, to + 1), error: null };
           }
-          return { data: [], error: null };
+          return { data: table === 'practice_test_runs' ? state.runs : [], error: null };
         },
       };
       return chain;
@@ -42,13 +48,15 @@ import { loadFirstAnswerLedger } from './firstAnswerSources';
 describe('loadFirstAnswerLedger post-pagination release filtering (F7)', () => {
   beforeEach(() => {
     state.ranges = [];
-    state.sealedIds.clear();
+    state.outcomeIds = [];
+    state.runs = [];
     state.sectionRows = Array.from({ length: 501 }, (_, i) => ({
       id: `sec-${i + 1}`,
       user_id: owner,
       mode: 'full-section',
       completed_at: '2026-11-20T10:00:00Z',
       practice_test_run_id: null,
+      release_requires_br: i === 9,
       practice_test_leg: null,
       questions_json: [
         {
@@ -58,8 +66,16 @@ describe('loadFirstAnswerLedger post-pagination release filtering (F7)', () => {
         },
       ],
     }));
-    // One sealed row inside the first 500-row page.
-    state.sealedIds.add('sec-10');
+  });
+
+  it('keeps a complete-status leg sealed without a persisted completion timestamp', async () => {
+    state.runs = [{ id: 'pending', user_id: owner, status: 'complete', completed_at: null }];
+    state.sectionRows[1].practice_test_run_id = 'pending';
+    const ledger = await loadFirstAnswerLedger({ mode: 'self', actorId: owner, studentId: owner });
+
+    expect(ledger.answers.some((answer) => answer.attemptId.includes('sec-2:'))).toBe(false);
+    expect(state.outcomeIds).not.toContain('sec-2');
+    expect(state.outcomeIds).toContain('sec-3');
   });
 
   it('fetches page 2 across 501 rows even when a sealed row sits inside page 1, returning all 500 released sections', async () => {

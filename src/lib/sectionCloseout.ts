@@ -69,6 +69,21 @@ export interface CloseoutReply {
   conflict: boolean;
 }
 
+/**
+ * Finish account bookkeeping using the committed history row. The RPC returns
+ * an acknowledgment, so it never needs to send a sealed result to the runner.
+ */
+export async function reconcileStandaloneSection(sittingId: string, historyId: string): Promise<void> {
+  const { data, error } = await rpc('reconcile_standalone_section_v1', {
+    p_sitting_id: sittingId,
+    p_history_id: historyId,
+  });
+  if (error) throw new Error(error.message);
+  if ((data as { status?: string } | null)?.status !== 'reconciled') {
+    throw new Error('Could not confirm the saved section.');
+  }
+}
+
 const POOL_KEY = /^drill::(section::pt[0-9]+-s[0-9]+|assignment::[A-Za-z0-9-]+)$/;
 
 /** True when the resume key names a section the new close-out owns. */
@@ -163,44 +178,29 @@ export async function openSectionSitting(args: {
   return toSittingReply(data);
 }
 
-export async function fetchLatestSittingGeneration(
+export async function fetchSectionSittingGeneration(
   userId: string,
-  poolKey: string,
-): Promise<number | null> {
-  const { data, error } = await (supabase as unknown as {
-    from(table: string): {
-      select(cols: string): {
-        eq(col: string, val: string): {
-          eq(col: string, val: string): {
-            order(col: string, opts: { ascending: boolean }): {
-              limit(n: number): {
-                maybeSingle(): Promise<{
-                  data: { generation?: number } | null;
-                  error: { message: string } | null;
-                }>;
-              };
-            };
-          };
-        };
-      };
-    };
-  })
-    .from('standalone_section_sittings')
+  sittingId: string,
+): Promise<number> {
+  const { data, error } = await supabase
+    .from('standalone_section_sittings' as never)
     .select('generation')
     .eq('user_id', userId)
-    .eq('pool_key', poolKey)
-    .order('generation', { ascending: false })
-    .limit(1)
+    .eq('id', sittingId)
     .maybeSingle();
   if (error) throw new Error(error.message);
-  return typeof data?.generation === 'number' && data.generation > 0 ? data.generation : null;
+  const generation = (data as { generation?: number } | null)?.generation;
+  if (typeof generation !== 'number' || !Number.isSafeInteger(generation) || generation <= 0) {
+    throw new Error('Saved section generation is unavailable.');
+  }
+  return generation;
 }
 
 /**
  * Opens or reconciles the server-owned sitting at section START (plan 1.3).
  *
  * - Resume/reload never passes `restart`; only an explicit "start over" does,
- *   requiring an explicit, cached, or server-looked-up generation.
+ *   requiring the displayed sitting generation.
  * - Caches the returned sitting id and generation only to send back as
  *   `p_known_sitting_id`; never allocates a generation on the client.
  * - On `closed` (or `stale` whose latest sitting is `closed`), returns
@@ -212,20 +212,14 @@ export async function initStandaloneSitting(args: {
   poolKey: string;
   restart?: boolean;
   expectedGeneration?: number | null;
+  /** A historical report has no sitting to restart. Ordinary open can resume a current sitting. */
+  fromHistoricalReport?: boolean;
 }): Promise<SittingReply> {
   const cached = readCachedSitting(args.userId, args.poolKey);
   const isRestart = args.restart === true;
-  let expectedGeneration: number | null = null;
-  if (isRestart) {
-    expectedGeneration =
-      (typeof args.expectedGeneration === 'number' && args.expectedGeneration > 0
-        ? args.expectedGeneration
-        : null) ??
-      cached?.generation ??
-      (await fetchLatestSittingGeneration(args.userId, args.poolKey));
-    if (expectedGeneration == null) {
-      throw new Error('Cannot start over without an existing sitting generation.');
-    }
+  const expectedGeneration = isRestart ? args.expectedGeneration ?? null : null;
+  if (isRestart && (expectedGeneration == null || !Number.isSafeInteger(expectedGeneration) || expectedGeneration <= 0)) {
+    throw new Error('Cannot start over without an existing sitting generation.');
   }
   const legacyRecordId = isRestart ? null : practiceSessionIdFor(args.userId, args.poolKey);
   const sittingRecordId = isRestart
@@ -234,7 +228,7 @@ export async function initStandaloneSitting(args: {
 
   const reply = await openSectionSitting({
     poolKey: args.poolKey,
-    knownSittingId: isRestart ? null : (cached?.id ?? null),
+    knownSittingId: isRestart || args.fromHistoricalReport ? null : (cached?.id ?? null),
     restart: isRestart,
     expectedGeneration,
     legacyRecordId,
@@ -376,14 +370,15 @@ export async function runStandaloneCloseout(args: {
   assignmentId?: string | null;
   /** Sitting id already opened at section start (Phase 1.3). */
   sittingId?: string | null;
-}): Promise<CloseoutReply & { createdNow: boolean; questions?: SectionQuestionStat[] }> {
+}): Promise<CloseoutReply & { sittingId?: string; createdNow: boolean; questions?: SectionQuestionStat[] }> {
   if (args.sittingId) {
     const payload = buildCloseoutPayload(args.session, { assignmentId: args.assignmentId });
     const reply = await closeStandaloneSection(args.sittingId, payload);
     return {
       ...reply,
+      sittingId: args.sittingId,
       createdNow: reply.status === 'created',
-      questions: reply.conflict ? undefined : payload.questions,
+      questions: reply.status === 'created' ? payload.questions : undefined,
     };
   }
 
@@ -395,20 +390,21 @@ export async function runStandaloneCloseout(args: {
     // its saved result is the answer; if it is open, this tab is not it.
     writeCachedSitting(args.userId, args.poolKey, sitting);
     if (sitting.latestState === 'closed' && sitting.historyId) {
-      return { status: 'replayed', historyId: sitting.historyId, conflict: true, createdNow: false };
+      return { status: 'replayed', historyId: sitting.historyId, sittingId: sitting.sittingId, conflict: true, createdNow: false };
     }
     return { status: 'stale', historyId: null, conflict: false, createdNow: false };
   }
   writeCachedSitting(args.userId, args.poolKey, sitting);
   if (sitting.status === 'closed') {
-    return { status: 'replayed', historyId: sitting.historyId, conflict: false, createdNow: false };
+    return { status: 'replayed', historyId: sitting.historyId, sittingId: sitting.sittingId, conflict: false, createdNow: false };
   }
 
   const payload = buildCloseoutPayload(args.session, { assignmentId: args.assignmentId });
   const reply = await closeStandaloneSection(sitting.sittingId, payload);
   return {
     ...reply,
+    sittingId: sitting.sittingId,
     createdNow: reply.status === 'created',
-    questions: reply.conflict ? undefined : payload.questions,
+    questions: reply.status === 'created' ? payload.questions : undefined,
   };
 }

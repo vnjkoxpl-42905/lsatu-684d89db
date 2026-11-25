@@ -34,6 +34,14 @@ export interface WAJEntry {
   updated_at: string;
 }
 
+export function journalMissEvidence(entry: WAJEntry) {
+  const history = Array.isArray(entry.history_json) ? entry.history_json : [];
+  return {
+    firstMiss: history.find((attempt) => attempt.result === 0),
+    isLegacyMiss: history.length === 0 && entry.last_status === 'wrong',
+  };
+}
+
 export async function logWrongAnswer(params: {
   class_id: string;
   qid: string;
@@ -187,11 +195,12 @@ export async function getWAJEntries(class_id: string, filters?: {
   pt?: number;
   last_status?: 'wrong' | 'right';
 }) {
-  let query: any = supabase
+  let query = supabase
     .from('wrong_answer_journal')
     .select('*')
     .eq('class_id', class_id)
-    .order('first_wrong_at_iso', { ascending: false });
+    .order('first_wrong_at_iso', { ascending: false })
+    .order('id');
 
   if (filters?.qtype) {
     query = query.eq('qtype', filters.qtype);
@@ -202,13 +211,15 @@ export async function getWAJEntries(class_id: string, filters?: {
   if (filters?.pt) {
     query = query.eq('pt', filters.pt);
   }
-  if (filters?.last_status) {
-    query = query.eq('last_status', filters.last_status);
+  const entries: WAJEntry[] = [];
+  const pageSize = 500;
+  for (let from = 0; ; from += pageSize) {
+    const { data, error } = await query.range(from, from + pageSize - 1);
+    if (error) throw error;
+    const page = (data ?? []) as unknown as WAJEntry[];
+    entries.push(...page);
+    if (page.length < pageSize) break;
   }
-
-  const { data, error } = await query;
-  if (error) throw error;
-  const entries = (data ?? []) as unknown as WAJEntry[];
 
   const sittingIds = Array.from(
     new Set(
@@ -221,7 +232,8 @@ export async function getWAJEntries(class_id: string, filters?: {
       ),
     ),
   );
-  if (sittingIds.length === 0) return entries;
+  const matchesStatus = (entry: WAJEntry) => !filters?.last_status || entry.last_status === filters.last_status;
+  if (sittingIds.length === 0) return entries.filter(matchesStatus);
 
   let sealedSittings: Set<string>;
   try {
@@ -231,7 +243,7 @@ export async function getWAJEntries(class_id: string, filters?: {
     console.error('[wajService] seal lookup failed; hiding sitting-linked events', err);
     sealedSittings = new Set(sittingIds);
   }
-  if (sealedSittings.size === 0) return entries;
+  if (sealedSittings.size === 0) return entries.filter(matchesStatus);
 
   const filtered: WAJEntry[] = [];
   for (const entry of entries) {
@@ -246,7 +258,6 @@ export async function getWAJEntries(class_id: string, filters?: {
     }
     const lastStatus: 'wrong' | 'right' =
       visible[visible.length - 1]?.result === 1 ? 'right' : 'wrong';
-    if (filters?.last_status && lastStatus !== filters.last_status) continue;
     const firstWrong =
       visible.find((item) => item.result === 0)?.attempt_at_iso ?? visible[0].attempt_at_iso;
     const updatedAt = visible[visible.length - 1].attempt_at_iso;
@@ -259,5 +270,5 @@ export async function getWAJEntries(class_id: string, filters?: {
       updated_at: updatedAt,
     });
   }
-  return filtered.sort((a, b) => b.first_wrong_at_iso.localeCompare(a.first_wrong_at_iso));
+  return filtered.filter(matchesStatus).sort((a, b) => b.first_wrong_at_iso.localeCompare(a.first_wrong_at_iso));
 }

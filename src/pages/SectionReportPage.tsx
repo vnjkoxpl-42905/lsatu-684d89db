@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
+import { toast } from 'sonner';
+import { fetchSectionSittingGeneration } from '@/lib/sectionCloseout';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { useAuth } from '@/contexts/AuthContext';
@@ -8,6 +10,7 @@ import { launchDrill } from '@/lib/drillLaunch';
 import { safeReviewHubReturn } from '@/lib/reviewHubReturn';
 import { fetchOwnedSectionReport, type SectionHistoryRow } from '@/lib/sectionHistory';
 import { saveSectionBlindReview } from '@/lib/sectionReviewRecord';
+import { emailSectionReport } from '@/lib/sectionHistorySave';
 import { SectionReport } from '@/components/section-report/SectionReport';
 import {
   buildDeferredBrSession,
@@ -44,6 +47,7 @@ export default function SectionReportPage() {
   const [pendingBrResults, setPendingBrResults] = React.useState<BlindReviewResult[] | null>(null);
   const [brSaveError, setBrSaveError] = React.useState<string | null>(null);
   const [brSaving, setBrSaving] = React.useState(false);
+  const startingOver = React.useRef(false);
 
   // If opened with ?walk=1 or ?qid=..., load the row directly so the walk opens immediately.
   React.useEffect(() => {
@@ -77,6 +81,7 @@ export default function SectionReportPage() {
             ? { savedQuestions: ctx.row.questions, session: ctx.session }
             : undefined,
         );
+        if (!ctx.row || ctx.row.releaseRequiresBr) void emailSectionReport(ctx.historyId);
         setPendingBrResults(null);
         setBrContext(null);
         void queryClient.invalidateQueries({ queryKey: ['journal', 'entries'] });
@@ -93,7 +98,7 @@ export default function SectionReportPage() {
         setBrSaving(false);
       }
     },
-    [],
+    [queryClient],
   );
 
   // Deferred blind review save error / retry screen (preserves completed BR results).
@@ -184,8 +189,20 @@ export default function SectionReportPage() {
         setWalkRow(row);
         setWalkQid(qid ?? null);
       }}
-      onStartOver={(row) => {
-        navigate(`/drill?${launchDrill({ kind: 'section', pt: row.pt, section: row.section })}&restart=1`);
+      onStartOver={async (row) => {
+        if (!user?.id || startingOver.current) return;
+        startingOver.current = true;
+        try {
+          const launch = launchDrill({ kind: 'section', pt: row.pt, section: row.section });
+          const intent = row.clientSittingId
+            ? `restart=1&gen=${await fetchSectionSittingGeneration(user.id, row.clientSittingId)}`
+            : 'historicalRetake=1';
+          navigate(`/drill?${launch}&${intent}`);
+        } catch (err) {
+          console.error('[sectionReport] could not start over', err);
+          toast.error('Could not start over. Please try again.');
+          startingOver.current = false;
+        }
       }}
       onStartBlindReview={(ctx) => {
         const session = buildDeferredBrSession({

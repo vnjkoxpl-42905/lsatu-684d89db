@@ -43,8 +43,10 @@ const accountSectionKey = (key: string) =>
   key.startsWith(SECTION_PREFIX) ||
   key.startsWith(TEST_LEG_PREFIX) ||
   key.startsWith(ASSIGNMENT_PREFIX);
+const sittingSectionKey = (key: string) => accountSectionKey(key) && key.includes('#');
 const accountWriteChains = new Map<string, Promise<void>>();
 const accountRevisionCache = new Map<string, string | null>();
+const acknowledgedSittingRecords = new Map<string, DrillResumeSession>();
 const revisionSessionKey = (userId: string, key: string) =>
   `lsatu:section-rev:${practiceSessionIdFor(userId, key)}`;
 
@@ -102,6 +104,7 @@ export function getAccountSectionRevision(
 
 export function clearAccountSectionRevisionsForTests(): void {
   accountRevisionCache.clear();
+  acknowledgedSittingRecords.clear();
   try {
     window.sessionStorage?.clear();
   } catch {
@@ -142,13 +145,19 @@ async function readSectionFromAccount(userId: string, key: string): Promise<Prac
     typeof data?.updated_at === 'string' ? data.updated_at : null,
   );
   const parsed = PracticeSession.safeParse(data?.data);
-  if (!parsed.success) return null;
+  if (!parsed.success) {
+    acknowledgedSittingRecords.delete(revisionSessionKey(userId, key));
+    return null;
+  }
   const migrated = migratePracticeSession(parsed.data);
   const expectedId = practiceSessionIdFor(userId, key);
-  if (migrated.id !== expectedId || migrated.pool_slug !== key || migrated.completion_id !== key) {
-    return { ...migrated, id: expectedId, pool_slug: key, completion_id: key };
+  const record = migrated.id !== expectedId || migrated.pool_slug !== key || migrated.completion_id !== key
+    ? { ...migrated, id: expectedId, pool_slug: key, completion_id: key }
+    : migrated;
+  if (sittingSectionKey(key)) {
+    acknowledgedSittingRecords.set(revisionSessionKey(userId, key), record);
   }
-  return migrated;
+  return record;
 }
 
 async function readSectionRevisionFromAccount(userId: string, key: string): Promise<string | null> {
@@ -168,9 +177,9 @@ async function syncSectionToAccount(
   userId: string,
   key: string,
   expectedDbUpdatedAt?: string | null,
-  options?: { allowOverwrite?: boolean },
-): Promise<void> {
-  const record = await loadPracticeSession(userId, key);
+  options?: { allowOverwrite?: boolean; record?: DrillResumeSession },
+): Promise<string | undefined> {
+  const record = options?.record ?? await loadPracticeSession(userId, key);
   if (!record) throw new Error('The section could not be saved.');
   if (options?.allowOverwrite) {
     const { error } = await supabase.from('bootcamp_kv').upsert({
@@ -180,7 +189,7 @@ async function syncSectionToAccount(
       data: record,
     }, { onConflict: 'user_id,table_name,record_id' });
     if (error) throw error;
-    return;
+    return undefined;
   }
 
   let expected = expectedDbUpdatedAt !== undefined
@@ -204,7 +213,7 @@ async function syncSectionToAccount(
     }
     const nextRev = typeof rows[0]?.updated_at === 'string' ? rows[0].updated_at : record.updated_at;
     setAccountSectionRevision(userId, key, nextRev);
-    return;
+    return nextRev;
   }
 
   const { data: rows, error } = await supabase.from('bootcamp_kv')
@@ -223,6 +232,7 @@ async function syncSectionToAccount(
   }
   const nextRev = typeof rows?.[0]?.updated_at === 'string' ? rows[0].updated_at : record.updated_at;
   setAccountSectionRevision(userId, key, nextRev);
+  return nextRev;
 }
 
 export type DrillResumeSession = PracticeSession;
@@ -231,14 +241,56 @@ export type DrillResumeSnapshot = PracticeSessionSnapshot;
 const sectionBackupKey = (userId: string, key: string) =>
   `lsatu:section-backup:${practiceSessionIdFor(userId, key)}`;
 
-/** Synchronous device copy, including the latest unacknowledged choice. */
-export function writeSectionDeviceBackup(
+interface PendingSittingCopy {
+  record: DrillResumeSession;
+  baseRevision: string | null;
+  legacySource?: { key: string; snapshot: DrillResumeSession };
+}
+
+function readPendingSitting(userId: string, key: string): PendingSittingCopy | null {
+  try {
+    const raw = window.sessionStorage.getItem(sectionBackupKey(userId, key));
+    if (!raw) return null;
+    const pending = JSON.parse(raw) as PendingSittingCopy;
+    const record = PracticeSession.safeParse(pending.record);
+    if (!record.success || record.data.user_id !== userId || record.data.pool_slug !== key) return null;
+    if (pending.baseRevision !== null && typeof pending.baseRevision !== 'string') return null;
+    return { ...pending, record: record.data };
+  } catch {
+    return null;
+  }
+}
+
+function writePendingSitting(userId: string, key: string, pending: PendingSittingCopy) {
+  // sessionStorage survives reload and is isolated per tab. A shared slot
+  // lets one tab erase another tab's pending answers when clearing its own.
+  window.sessionStorage.setItem(sectionBackupKey(userId, key), JSON.stringify(pending));
+}
+
+function acknowledgePendingSitting(userId: string, key: string, pending: PendingSittingCopy): void {
+  clearSectionDeviceBackup(userId, key);
+  const source = pending.legacySource;
+  if (source && source.key === key.split('#', 1)[0] &&
+      JSON.stringify(readSectionDeviceBackup(userId, source.key)) === JSON.stringify(source.snapshot)) {
+    clearSectionDeviceBackup(userId, source.key);
+  }
+}
+
+/** Called after the server acknowledges the saved sitting's completion. */
+export function clearReconciledSectionDeviceBackup(userId: string, key: string): void {
+  const pending = readPendingSitting(userId, key);
+  if (pending) acknowledgePendingSitting(userId, key, pending);
+}
+
+function makeSectionBackup(
   userId: string,
   key: string | null,
   snapshot: DrillResumeSnapshot,
-): string | null {
+): DrillResumeSession | null {
   if (!userId || !key || !accountSectionKey(key) || !snapshot.questionQueue.length) return null;
-  const previous = readSectionDeviceBackup(userId, key);
+  const previous = sittingSectionKey(key)
+    ? readPendingSitting(userId, key)?.record ?? acknowledgedSittingRecords.get(revisionSessionKey(userId, key))
+    : readSectionDeviceBackup(userId, key);
   const time = new Date(Math.max(Date.now(), previous ? Date.parse(previous.updated_at) + 1 : 0)).toISOString();
   const record = PracticeSession.safeParse({
     id: practiceSessionIdFor(userId, key),
@@ -250,17 +302,37 @@ export function writeSectionDeviceBackup(
     current_index: Math.min(Math.max(snapshot.currentIndex, 0), snapshot.questionQueue.length - 1),
     attempts: snapshot.attempts,
     status: 'in_progress',
-    elapsed_ms: snapshot.elapsedMs,
-    timer_mode: snapshot.timerMode,
-    timer_custom_minutes: snapshot.timerCustomMinutes,
-    regulation_answered_qids: snapshot.regulationAnsweredQids,
-    started_at: time,
+    elapsed_ms: snapshot.elapsedMs ?? previous?.elapsed_ms,
+    timer_mode: snapshot.timerMode ?? previous?.timer_mode,
+    timer_custom_minutes: snapshot.timerCustomMinutes ?? previous?.timer_custom_minutes,
+    regulation_answered_qids: snapshot.regulationAnsweredQids ?? previous?.regulation_answered_qids,
+    started_at: previous?.started_at ?? time,
     updated_at: time,
   });
-  if (!record.success) return null;
+  return record.success ? record.data : null;
+}
+
+/** Synchronous device copy, including the latest unacknowledged choice. */
+export function writeSectionDeviceBackup(
+  userId: string,
+  key: string | null,
+  snapshot: DrillResumeSnapshot,
+): string | null {
+  if (!key) return null;
+  const record = makeSectionBackup(userId, key, snapshot);
+  if (!record) return null;
   try {
-    window.localStorage.setItem(sectionBackupKey(userId, key), JSON.stringify(record.data));
-    return time;
+    if (sittingSectionKey(key)) {
+      const pending = readPendingSitting(userId, key);
+      writePendingSitting(userId, key, {
+        ...pending,
+        record,
+        baseRevision: pending ? pending.baseRevision : getAccountSectionRevision(userId, key) ?? null,
+      });
+    } else {
+      window.localStorage.setItem(sectionBackupKey(userId, key), JSON.stringify(record));
+    }
+    return record.updated_at;
   } catch (error) {
     console.warn('[drill:section] device backup unavailable', error);
     return null;
@@ -280,6 +352,10 @@ function readSectionDeviceBackup(userId: string, key: string): DrillResumeSessio
 
 export function clearSectionDeviceBackup(userId: string, key: string): void {
   try {
+    if (sittingSectionKey(key)) {
+      window.sessionStorage.removeItem(sectionBackupKey(userId, key));
+      return;
+    }
     window.localStorage.removeItem(sectionBackupKey(userId, key));
   } catch {
     // The completed account row is authoritative even if browser storage is unavailable.
@@ -382,8 +458,57 @@ export async function loadDrillResumeSession(
   userId: string,
   key: string | null,
   legacyKey?: string | null,
+  adoptionRevision?: string | null,
 ): Promise<DrillResumeSession | null> {
   if (!userId || !key) return null;
+  if (sittingSectionKey(key)) {
+    const pending = readPendingSitting(userId, key);
+    const legacyDevice = legacyKey ? readSectionDeviceBackup(userId, legacyKey) : null;
+    const unversioned = !pending ? readSectionDeviceBackup(userId, key)
+      ?? await loadPracticeSession(userId, key, { readOnly: true }) : null;
+    const legacy = legacyDevice ?? (!pending && legacyKey
+      ? await loadPracticeSession(userId, legacyKey, { readOnly: true }) : null);
+    let account: DrillResumeSession | null;
+    let verified = false;
+    try {
+      account = await readSectionFromAccount(userId, key);
+      verified = true;
+    } catch (error) {
+      if (pending) return pending.record;
+      if (!unversioned && !legacy) throw error;
+      account = null;
+    }
+    if (pending) {
+      if (JSON.stringify(account) !== JSON.stringify(pending.record)) return pending.record;
+      acknowledgePendingSitting(userId, key, pending);
+      return account;
+    }
+    const recovered = unversioned && (!legacy || unversioned.updated_at >= legacy.updated_at)
+      ? unversioned
+      : legacy;
+    if (recovered?.status === 'in_progress' && (!account || recovered.updated_at > account.updated_at)) {
+      const record = {
+        ...recovered,
+        id: practiceSessionIdFor(userId, key),
+        pool_slug: key,
+        completion_id: key,
+      };
+      // Only the legacy source can be tied to the revision copied by the server.
+      // Older unversioned sitting backups are preserved without assuming they
+      // were derived from the latest account record.
+      const legacyRevision = legacyKey ? getAccountSectionRevision(userId, legacyKey) : undefined;
+      const baseRevision = recovered === legacy
+        ? legacyRevision === undefined ? adoptionRevision ?? null : legacyRevision
+        : null;
+      const legacySource = recovered === legacyDevice && legacyKey
+        ? { key: legacyKey, snapshot: recovered }
+        : undefined;
+      writePendingSitting(userId, key, { record, baseRevision, legacySource });
+      return record;
+    }
+    if (!verified) throw new Error('The section account copy could not be checked.');
+    return account;
+  }
   // Hydration compares the locally saved timestamp with the account row before
   // returning. Reading the cloud first could bypass a newer unsynced answer.
   let current: DrillResumeSession | null;
@@ -441,6 +566,29 @@ export async function saveDrillResumeSnapshot(
   options?: { expectedUpdatedAt?: string | null },
 ): Promise<void> {
   if (!userId || !key) return;
+  if (sittingSectionKey(key)) {
+    const pending = readPendingSitting(userId, key);
+    const record = makeSectionBackup(userId, key, snapshot);
+    if (!record) throw new Error('Could not save this section.');
+    const baseRevision = pending ? pending.baseRevision :
+      options?.expectedUpdatedAt !== undefined
+        ? options.expectedUpdatedAt
+        : getAccountSectionRevision(userId, key) ?? null;
+    writePendingSitting(userId, key, { ...pending, record, baseRevision });
+    await queueAccountWrite(userId, key, async () => {
+      const latest = readPendingSitting(userId, key);
+      const expected = latest ? latest.baseRevision : baseRevision;
+      const revision = await syncSectionToAccount(userId, key, expected, { record });
+      acknowledgedSittingRecords.set(revisionSessionKey(userId, key), record);
+      const current = readPendingSitting(userId, key);
+      if (current?.record.updated_at === record.updated_at) {
+        acknowledgePendingSitting(userId, key, current);
+      } else if (current && current.baseRevision === expected && revision) {
+        writePendingSitting(userId, key, { ...current, baseRevision: revision });
+      }
+    });
+    return;
+  }
   const backupStamp = accountSectionKey(key) ? writeSectionDeviceBackup(userId, key, snapshot) : null;
   await queueAccountWrite(userId, key, async () => {
     await assertActiveTestLeg(userId, key);
@@ -455,7 +603,8 @@ export async function saveDrillResumeSnapshot(
 }
 
 export function hasPendingSectionDeviceBackup(userId: string, key: string | null): boolean {
-  return !!userId && !!key && !!readSectionDeviceBackup(userId, key);
+  if (!userId || !key) return false;
+  return sittingSectionKey(key) ? !!readPendingSitting(userId, key) : !!readSectionDeviceBackup(userId, key);
 }
 
 /**

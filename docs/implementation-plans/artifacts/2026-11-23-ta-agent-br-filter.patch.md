@@ -27,6 +27,8 @@ Historic blind review rows sit in `public.attempts` with `br_selected = true` (A
 
 ## Notes for Edge Function review / deploy
 
+The client and `scripts/student-work.ts` use the shared nullable-safe filter. The separate Edge inventory in `src/lib/attemptsReaders.test.ts` tracks the six server reads covered by this proposal and its follow-up review. The TA and tutor history summaries and the administrative attempt metrics need an explicit decision on counting first-pass work. Review the tutor's post-answer authorization lookup separately from the history summary, since it verifies an answer-specific request. Verify the authorized patch with `br_selected` values `NULL`, `false` and `true` using its actual server query and role.
+
 Other Edge Functions that query `public.attempts` without `.not("br_selected", "is", true)` (discovered via search; verify per-function intent before deploying):
 - `supabase/functions/ta-chat/index.ts:300` (`admin.from("attempts").select("qtype, section, correct, timestamp_iso").eq("class_id", studentId)`)
 - `supabase/functions/tutor-chat/index.ts:439` and `:471` (`post-answer` verification and `recentWrong` memory context)

@@ -1,5 +1,5 @@
 import { supabase } from '@/integrations/supabase/client';
-import { withoutBrSealedRows } from '@/lib/sectionRelease';
+import { readReleasedSectionRows } from '@/lib/sectionRelease';
 import { PracticeSession, TABLES } from '@/bootcamps/main-conclusion/persistence/records';
 import { practiceSessionIdFor } from '@/bootcamps/main-conclusion/lib/practiceSessionStore';
 import { getPersistence } from '@/bootcamps/main-conclusion/persistence/factory';
@@ -63,6 +63,7 @@ export async function listPracticeSectionAttempts(userId: string): Promise<Pract
   if (standaloneSittingError && standaloneSittingError.code !== '42P01' && standaloneSittingError.code !== 'PGRST205') throw standaloneSittingError;
 
   const adoptedRecordIds = new Set<string>();
+  const authoritativePools = new Set<string>();
   const sittingStateById = new Map<string, { state: string; historyId: string | null }>();
   const sittingStateByRecordId = new Map<string, { state: string; historyId: string | null }>();
   for (const row of standaloneSittingRows ?? []) {
@@ -77,6 +78,7 @@ export async function listPracticeSectionAttempts(userId: string): Promise<Pract
       };
       sittingStateById.set(row.id, sittingEntry);
       if (typeof row.pool_key === 'string' && row.pool_key.length > 0) {
+        authoritativePools.add(row.pool_key);
         const recordId = practiceSessionIdFor(
           userId,
           storageKeyForSitting(row.pool_key, { sittingId: row.id, adopted }),
@@ -112,12 +114,9 @@ export async function listPracticeSectionAttempts(userId: string): Promise<Pract
     if (!parsed.success || parsed.data.user_id !== userId) continue;
     const session = parsed.data;
     if (!session.pool_slug.startsWith('drill::section::')) continue;
-    if (adoptedRecordIds.has(session.id)) continue;
-    const sittingKeyMatch = /^drill::section::pt\d+-s\d+#(.+)$/.exec(session.pool_slug);
-    const sittingForLocal =
-      sittingStateByRecordId.get(session.id) ??
-      (sittingKeyMatch ? sittingStateById.get(sittingKeyMatch[1]) : undefined);
-    if (sittingForLocal && sittingForLocal.state !== 'open') continue;
+    // The sitting flow owns guarded writes for these records, including rejected local candidates.
+    if (session.pool_slug.includes('#') || authoritativePools.has(session.pool_slug)) continue;
+    if (adoptedRecordIds.has(session.id) || sittingStateByRecordId.has(session.id)) continue;
     const remote = cloud.get(session.id);
     const remoteParsed = PracticeSession.safeParse(remote);
     if (remoteParsed.success && remoteParsed.data.updated_at >= session.updated_at) continue;
@@ -133,17 +132,16 @@ export async function listPracticeSectionAttempts(userId: string): Promise<Pract
     cloud.set(session.id, session);
   }
 
-  const { data: completedRows, error: historyError } = await supabase
-    .from('section_history')
-    .select('id, pt, section, initial_score, initial_total, unanswered_count, created_at, completed_at, questions_json')
-    .eq('user_id', userId)
-    .eq('mode', 'full-section')
-    .is('practice_test_run_id', null)
-    .order('completed_at', { ascending: false });
-  if (historyError) throw historyError;
-  // An assigned section stays hidden until its blind review is done.
-  const releasedRows = await withoutBrSealedRows((completedRows ?? []) as Array<NonNullable<typeof completedRows>[number] & { release_requires_br?: boolean | null }>);
-  const completedLr: PracticeSectionAttempt[] = releasedRows
+  type SavedSection = {
+    id: string; pt: number; section: number; initial_score: number | null;
+    initial_total: number | null; unanswered_count: number | null;
+    created_at: string | null; completed_at: string | null; questions_json: unknown;
+  };
+  const completedRows = await readReleasedSectionRows<SavedSection>(
+    { column: 'user_id', value: userId, order: 'completed_at', standalone: true },
+    'id,pt,section,initial_score,initial_total,unanswered_count,created_at,completed_at,questions_json',
+  );
+  const completedLr: PracticeSectionAttempt[] = completedRows
     .filter((row) => row.pt > 0 && row.section > 0 && !!row.completed_at && !(protectedRows ?? []).some(sitting => (sitting.result as { historyId?: string } | null)?.historyId === row.id))
     .map((row) => {
       const total = row.initial_total ?? 0;

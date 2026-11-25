@@ -193,13 +193,15 @@ const fromRow = (r: RecordRow): SectionReviewRecord => ({
 /** Records for many history rows at once, keyed by history id. Owner or admin only (RLS). */
 export async function fetchSectionReviewRecords(historyIds: string[]): Promise<Map<string, SectionReviewRecord>> {
   const out = new Map<string, SectionReviewRecord>();
-  if (historyIds.length === 0) return out;
-  const { data, error } = await supabase
-    .from('section_review_records' as never)
-    .select('history_id,predicted_score,br_results,br_score,br_total,br_percent,br_delta,br_analysis_json,br_completed_at')
-    .in('history_id', historyIds);
-  if (error) throw error;
-  for (const row of (data ?? []) as unknown as RecordRow[]) out.set(row.history_id, fromRow(row));
+  const batchSize = 200;
+  for (let offset = 0; offset < historyIds.length; offset += batchSize) {
+    const { data, error } = await supabase
+      .from('section_review_records' as never)
+      .select('history_id,predicted_score,br_results,br_score,br_total,br_percent,br_delta,br_analysis_json,br_completed_at')
+      .in('history_id', historyIds.slice(offset, offset + batchSize));
+    if (error) throw error;
+    for (const row of (data ?? []) as unknown as RecordRow[]) out.set(row.history_id, fromRow(row));
+  }
   return out;
 }
 

@@ -102,13 +102,14 @@ export function buildSectionStats(
 
       if (!question) return null;
 
+      const initialAnswer = attempt?.selectedAnswer || UNANSWERED;
       // No attempt means the question was never answered, which counts as wrong.
       return {
         qid,
         qnum: idx + 1,
         qtype: question.qtype,
         difficulty: question.difficulty,
-        initialAnswer: attempt?.selectedAnswer || UNANSWERED,
+        initialAnswer,
         correctAnswer: question.correctAnswer,
         initialCorrect: attempt?.correct || false,
         brAnswer: brResult?.brAnswer,
@@ -129,7 +130,7 @@ export function buildSectionStats(
         // sitting from before visits were tracked must not report every
         // question as one the student never opened.
         everVisited: visited.size > 0 ? visited.has(qid) : undefined,
-        answeredInOvertime: atBuzzer ? !atBuzzer.has(qid) : undefined,
+        answeredInOvertime: atBuzzer ? initialAnswer !== UNANSWERED && !atBuzzer.has(qid) : undefined,
         flagged: attempt?.brMarked || false,
       };
     })

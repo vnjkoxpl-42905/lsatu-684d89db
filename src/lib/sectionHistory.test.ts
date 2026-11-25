@@ -1,8 +1,9 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 
-const order = vi.fn();
-const eq = vi.fn(() => ({ order }));
-const select = vi.fn(() => ({ eq }));
+const read = vi.fn();
+const order = vi.fn(() => ({ order, range: read }));
+const eq = vi.fn(() => ({ order, in: read }));
+const select = vi.fn(() => ({ eq, in: async () => ({ data: [], error: null }) }));
 vi.mock('@/integrations/supabase/client', () => ({
   supabase: { from: () => ({ select }) },
 }));
@@ -65,7 +66,7 @@ const row = (over: Partial<SectionHistoryRow> = {}): SectionHistoryRow =>
 
 beforeEach(() => {
   vi.clearAllMocks();
-  order.mockResolvedValue({ data: [raw()], error: null });
+  read.mockResolvedValue({ data: [raw()], error: null });
 });
 
 describe('fetchSectionHistory', () => {
@@ -77,7 +78,7 @@ describe('fetchSectionHistory', () => {
   });
 
   it('carries the totals and the per-question record through', async () => {
-    order.mockResolvedValue({
+    read.mockResolvedValue({
       data: [
         raw({
           questions_json: [
@@ -114,7 +115,7 @@ describe('fetchSectionHistory', () => {
   it('ignores a phantom BR score left on a row from before the fix', async () => {
     // Rows written before the empty-array fix carry br_score/br_delta for a
     // review that was never sat. `br_used` is the authority.
-    order.mockResolvedValue({
+    read.mockResolvedValue({
       data: [raw({ br_used: false, br_score: 0, br_percent: 0, br_delta: -20 })],
       error: null,
     });
@@ -126,7 +127,7 @@ describe('fetchSectionHistory', () => {
   });
 
   it('keeps a real blind review', async () => {
-    order.mockResolvedValue({
+    read.mockResolvedValue({
       data: [raw({ br_used: true, br_score: 23, br_percent: 92, br_delta: 3 })],
       error: null,
     });
@@ -144,7 +145,7 @@ describe('fetchSectionHistory', () => {
   });
 
   it('throws so the page can say it failed instead of showing zero sections', async () => {
-    order.mockResolvedValue({ data: null, error: { message: 'nope' } });
+    read.mockResolvedValue({ data: null, error: { message: 'nope' } });
 
     await expect(fetchSectionHistory('u')).rejects.toBeTruthy();
   });

@@ -4,6 +4,7 @@ import type { ActivityAssignment, ActivityItemResponse } from "@/features/activi
 import type { SectionHistoryRow } from "@/lib/sectionHistory";
 import { UNANSWERED } from "@/lib/sectionAnswer";
 import { mergeBrIntoQuestionStats } from "@/components/section-report/sectionReportModel";
+import { journalMissEvidence } from "@/lib/wajService";
 
 export type ReviewReason =
   | "missed"
@@ -63,8 +64,7 @@ export function buildReviewQueue(
 
   for (const row of journalRows) {
     const history = Array.isArray(row.entry.history_json) ? row.entry.history_json : [];
-    const firstMiss = history.find((attempt) => attempt.result === 0);
-    const isLegacyMiss = history.length === 0 && row.entry.last_status === "wrong";
+    const { firstMiss, isLegacyMiss } = journalMissEvidence(row.entry);
     if (!firstMiss && !isLegacyMiss) continue;
 
     // Preserve sitting_id values from journal history events before collapsing.

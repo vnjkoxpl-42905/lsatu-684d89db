@@ -105,8 +105,8 @@ describe('LRSectionResults answer timeline', () => {
     );
 
     // q1 was answered at the buzzer and got it wrong; q2 came after.
-    expect(screen.getByText(/At time: 0\/1 on the 1 questions you reached/)).toBeTruthy();
-    expect(screen.getByText(/answered after the clock ran out \(1 right\)/)).toBeTruthy();
+    expect(screen.getByText(/At time: 0\/1 on the 1 questions you answered/)).toBeTruthy();
+    expect(screen.getByText(/Overtime answers: 1. Correct in overtime: 1. Unanswered: 0./)).toBeTruthy();
     expect(screen.getByText(/· overtime/)).toBeTruthy();
   });
 });

@@ -1,6 +1,6 @@
 import { supabase } from '@/integrations/supabase/client';
 import { excludeBlindReviewAttempts } from '@/lib/attemptsFilter';
-import { withoutBrSealedRows } from '@/lib/sectionRelease';
+import { readReleasedSectionRows } from '@/lib/sectionRelease';
 import {
   adaptLrAttempts,
   adaptLrSections,
@@ -41,18 +41,10 @@ const readLrAttempts = (studentId: string) => allPages<LrAttemptSourceRow>(async
   return result as unknown as { data: LrAttemptSourceRow[] | null; error: { message: string } | null };
 });
 
-const readLrSections = async (studentId: string) => {
-  const rows = await allPages<LrSectionSourceRow>(async (from, to) => {
-    const result = await supabase.from('section_history')
-      .select('id,user_id,mode,completed_at,practice_test_run_id,practice_test_leg,questions_json')
-      .eq('user_id', studentId).order('id').range(from, to);
-    return result as unknown as { data: LrSectionSourceRow[] | null; error: { message: string } | null };
-  });
-  // Assigned sections sealed behind blind review contribute no first answers yet.
-  // Apply release filtering AFTER raw pagination so sealed rows inside a 500-row
-  // page never truncate subsequent pages (F7).
-  return withoutBrSealedRows(rows);
-};
+const readLrSections = (studentId: string, completedRuns: ReadonlySet<string>) => readReleasedSectionRows<LrSectionSourceRow>(
+  { column: 'user_id', value: studentId, order: 'id', completedRuns },
+  'id,user_id,mode,completed_at,practice_test_run_id,practice_test_leg,questions_json',
+);
 
 const readRcAttempts = (studentId: string) => allPages<RcAttemptSourceRow>(async (from, to) => {
   const result = await supabase.from('rc_attempts')
@@ -89,12 +81,17 @@ export async function loadFirstAnswerLedger(scope: StudentSubjectScope): Promise
 }> {
   await assertActiveStudentScope(scope);
   const studentId = await resolveStudentAccountId(scope);
+  const runsRead = readPracticeTests(studentId);
+  const completedRunsRead = runsRead.then(
+    (runs) => completedPracticeTestIds(runs, studentId),
+    () => new Set<string>(),
+  );
   const [lrAttemptsResult, lrSectionsResult, rcAttemptsResult, rcSessionsResult, runsResult] = await Promise.allSettled([
     readLrAttempts(studentId),
-    readLrSections(studentId),
+    completedRunsRead.then((runs) => readLrSections(studentId, runs)),
     readRcAttempts(studentId),
     readRcSessions(studentId),
-    readPracticeTests(studentId),
+    runsRead,
   ]);
 
   const coverage: ProgressCoverage = {
@@ -107,9 +104,8 @@ export async function loadFirstAnswerLedger(scope: StudentSubjectScope): Promise
       'Full PrepTest answers count only after the run is marked complete.',
     ],
   };
-  const runs = runsResult.status === 'fulfilled' ? runsResult.value : [];
   if (runsResult.status === 'rejected') coverage.missingSources.push({ source: 'practice_test_runs', reason: errorReason(runsResult.reason) });
-  const completedRuns = completedPracticeTestIds(runs, studentId);
+  const completedRuns = await completedRunsRead;
 
   const lrAttempts = lrAttemptsResult.status === 'fulfilled' ? lrAttemptsResult.value : [];
   if (lrAttemptsResult.status === 'fulfilled') coverage.includedSources.push('lr_attempts');

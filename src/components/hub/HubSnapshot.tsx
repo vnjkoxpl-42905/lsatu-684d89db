@@ -14,6 +14,7 @@ import { formatRelativeShort } from '@/lib/time';
 import { useSelectedHubStudent } from '@/hooks/useHubStudents';
 import { useAuth } from '@/contexts/AuthContext';
 import { useInbox } from '@/hooks/useInbox';
+import { getWAJEntries, journalMissEvidence } from '@/lib/wajService';
 
 interface Props {
   studentId: string | null;
@@ -32,7 +33,7 @@ interface ProfileStats {
  *   - Practice attempts + accuracy (from profiles aggregates)
  *   - Last seen / last practiced (from profiles)
  *   - Streak / XP (from profiles)
- *   - Wrong-answer count (count query)
+ *   - Visible journal entries with a miss in the Review queue
  *   - Assignment counts (already in useHubStudents row)
  *   - Unread + Needs reply (from useInbox vs current user)
  *
@@ -62,12 +63,11 @@ export default function HubSnapshot({ studentId }: Props) {
     queryKey: ['hub-snapshot-waj', studentId],
     enabled: !!studentId,
     queryFn: async () => {
-      const { count, error } = await supabase
-        .from('wrong_answer_journal')
-        .select('*', { count: 'exact', head: true })
-        .eq('class_id', studentId as string);
-      if (error) throw error;
-      return count ?? 0;
+      const entries = await getWAJEntries(studentId!);
+      return entries.filter((entry) => {
+        const { firstMiss, isLegacyMiss } = journalMissEvidence(entry);
+        return firstMiss || isLegacyMiss;
+      }).length;
     },
   });
 
@@ -115,8 +115,8 @@ export default function HubSnapshot({ studentId }: Props) {
           />
           <Metric
             icon={AlertCircle}
-            label="To review"
-            value={(wajCount ?? 0).toLocaleString()}
+            label="Journal to review"
+            value={wajCount?.toLocaleString() ?? '—'}
           />
           <Metric
             icon={Flame}

@@ -1,4 +1,9 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { createElement } from 'react';
+import { cleanup, render, screen, within } from '@testing-library/react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { buildReviewQueue } from '@/components/review/reviewQueueModel';
+import { getWrongAnswerSmartRows } from '@/lib/journalService';
 
 const state = vi.hoisted(() => ({
   wajRows: [] as Array<Record<string, unknown>>,
@@ -11,6 +16,7 @@ const state = vi.hoisted(() => ({
 
 function makeBuilder(table: string) {
   const filters: Array<{ op: 'eq' | 'in'; col: string; val: unknown }> = [];
+  let bounds: [number, number] | undefined;
   const builder: any = {
     select: () => builder,
     eq: (col: string, val: unknown) => {
@@ -22,6 +28,10 @@ function makeBuilder(table: string) {
       return builder;
     },
     order: () => builder,
+    not: () => builder,
+    contains: () => builder,
+    range: (from: number, to: number) => { bounds = [from, to]; return builder; },
+    maybeSingle: async () => ({ data: null, error: null }),
     then: (resolve: (value: unknown) => void, reject?: (err: unknown) => void) => {
       try {
         if (table === 'wrong_answer_journal') {
@@ -29,7 +39,7 @@ function makeBuilder(table: string) {
           for (const f of filters) {
             if (f.op === 'eq') rows = rows.filter((r) => r[f.col] === f.val);
           }
-          resolve({ data: rows, error: null });
+          resolve({ data: bounds ? rows.slice(bounds[0], bounds[1] + 1) : rows, count: rows.length, error: null });
           return;
         }
         if (table === 'section_history') {
@@ -74,6 +84,60 @@ vi.mock('@/integrations/supabase/client', () => ({
 }));
 
 import { getWAJEntries } from './wajService';
+import HubSnapshot from '@/components/hub/HubSnapshot';
+
+vi.mock('@/hooks/useHubStudents', () => ({ useSelectedHubStudent: () => null }));
+vi.mock('@/contexts/AuthContext', () => ({ useAuth: () => ({ user: null }) }));
+vi.mock('@/hooks/useInbox', () => ({ useInbox: () => ({ conversations: [] }) }));
+vi.mock('@/lib/wajNotesService', () => ({ getNotesForClass: async () => new Map() }));
+
+it('applies both status filters to the last visible result after sealing', async () => {
+  state.sectionHistoryError = null;
+  state.reviewRecordsError = null;
+  state.reviewRecords = [];
+  state.sectionHistoryRows = [{ id: 'history', client_sitting_id: 'sealed', release_requires_br: true }];
+  const prior = { result: 1, attempt_at_iso: '2026-11-21T12:00:00.000Z' };
+  state.wajRows = [{ id: 'row', class_id: 'class-1', last_status: 'wrong', history_json: [
+    prior,
+    { result: 0, attempt_at_iso: '2026-11-23T12:00:00.000Z', sitting_id: 'sealed' },
+  ] }];
+  expect(await getWAJEntries('class-1', { last_status: 'right' })).toMatchObject([
+    { id: 'row', last_status: 'right', history_json: [prior], revisit_count: 0 },
+  ]);
+  expect(await getWAJEntries('class-1', { last_status: 'wrong' })).toEqual([]);
+});
+
+it('matches the mounted hub count to the projected journal portion of the Review queue', async () => {
+  state.sectionHistoryError = null;
+  state.reviewRecordsError = null;
+  state.reviewRecords = [];
+  state.sectionHistoryRows = [{ id: 'history', client_sitting_id: 'sealed', release_requires_br: true }];
+  const time = '2026-11-23T12:00:00.000Z';
+  state.wajRows = [
+    { id: 'released', qid: 'Q1', class_id: 'class-1', last_status: 'right', first_wrong_at_iso: time, history_json: [{ result: 0 }, { result: 1 }] },
+    { id: 'sealed', qid: 'Q2', class_id: 'class-1', last_status: 'wrong', first_wrong_at_iso: time, history_json: [{ result: 0, sitting_id: 'sealed' }] },
+    { id: 'prior-right', qid: 'Q3', class_id: 'class-1', last_status: 'wrong', first_wrong_at_iso: time, history_json: [{ result: 1, attempt_at_iso: time }, { result: 0, sitting_id: 'sealed' }] },
+  ];
+  const client = new QueryClient({ defaultOptions: { queries: { retry: false } } });
+  try {
+    render(createElement(QueryClientProvider, { client }, createElement(HubSnapshot, { studentId: 'class-1' })));
+    const queue = buildReviewQueue(await getWrongAnswerSmartRows('class-1'), []);
+    expect(queue.map((item) => item.qid)).toEqual(['Q1']);
+    expect(await within(screen.getByText('Journal to review').parentElement!.parentElement!).findByText(String(queue.length))).toBeInTheDocument();
+  } finally {
+    cleanup();
+    client.clear();
+  }
+});
+
+it('applies visible status after reading every journal page', async () => {
+  state.sectionHistoryError = null;
+  state.wajRows = Array.from({ length: 501 }, (_, index) => ({
+    id: `row-${index}`, class_id: 'class-1', last_status: index === 500 ? 'right' : 'wrong', history_json: [],
+  }));
+  const rows = await getWAJEntries('class-1', { last_status: 'right' });
+  expect(rows.map((row) => row.id)).toEqual(['row-500']);
+});
 
 describe('getWAJEntries sealed assigned-section enforcement', () => {
   beforeEach(() => {

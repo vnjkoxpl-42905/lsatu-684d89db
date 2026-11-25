@@ -122,9 +122,30 @@ describe('SectionReport', () => {
     expect(screen.getByText('No prediction saved')).toBeTruthy();
     expect(screen.getByText('First-pass diagnosis')).toBeTruthy();
     expect(screen.getByText('Timing pressure cost late questions.')).toBeTruthy();
-    expect(screen.getByText(/At time: 0\/1 on the 1 questions you reached/)).toBeTruthy();
+    expect(screen.getByText(/At time: 0\/1 on the 1 questions you answered/)).toBeTruthy();
     expect(screen.getByRole('button', { name: 'Do blind review' })).toBeTruthy();
     expect(screen.getByRole('button', { name: 'Open review walk' })).toBeTruthy();
+  });
+
+  it.each([0, 1])('separates %i overtime answers from blanks in a 26-question report', async (overtime) => {
+    const questions = Array.from({ length: 26 }, (_, index) => ({
+      ...baseRow.questions[0],
+      qid: `q${index + 1}`,
+      qnum: index + 1,
+      initialAnswer: index < 10 + overtime ? 'B' : '—',
+      initialCorrect: index < 10 + overtime,
+      // Existing persisted rows also marked blanks as overtime.
+      answeredInOvertime: index >= 10,
+    }));
+    mockFetchOwnedSectionReport.mockResolvedValue({
+      state: 'released',
+      row: { ...baseRow, questions, initialTotal: 26, initialScore: 10 + overtime },
+    });
+    render(<MemoryRouter><SectionReport historyId="hist-1" onBack={vi.fn()} /></MemoryRouter>);
+    expect(await screen.findByText(/At time: 10\/10/)).toBeTruthy();
+    expect(screen.getByText(new RegExp(`Overtime answers: ${overtime}\\.`))).toBeTruthy();
+    expect(screen.getByText(new RegExp(`Unanswered: ${16 - overtime}\\.`))).toBeTruthy();
+    expect(screen.getByText(/score above counts all 26/)).toBeTruthy();
   });
 
   it('shows saved prediction and blind review diagnosis label when BR is complete', async () => {
@@ -182,6 +203,31 @@ describe('SectionReport', () => {
     expect(screen.queryByText(/20\/25/)).toBeNull();
     expect(screen.queryByText('Initial Score')).toBeNull();
     expect(screen.queryByRole('button', { name: 'Open review walk' })).toBeNull();
+  });
+
+  it('retries preparing blind review without showing a sealed result', async () => {
+    const sealedReport = {
+      state: 'sealed' as const,
+      reason: 'blind-review' as const,
+      id: 'hist-sealed',
+      pt: 130,
+      section: 2,
+      completedAt: '2026-11-23T10:00:00Z',
+    };
+    mockFetchOwnedSectionReport
+      .mockResolvedValueOnce({ ...sealedReport, questionQids: [], blindReviewPreparationFailed: true })
+      .mockResolvedValueOnce({ ...sealedReport, questionQids: ['frozen-q1'] });
+    const onStartBlindReview = vi.fn();
+    render(
+      <MemoryRouter>
+        <SectionReport historyId="hist-sealed" onBack={vi.fn()} onStartBlindReview={onStartBlindReview} />
+      </MemoryRouter>,
+    );
+
+    fireEvent.click(await screen.findByRole('button', { name: 'Retry loading questions' }));
+    fireEvent.click(await screen.findByRole('button', { name: 'Do blind review' }));
+    expect(onStartBlindReview).toHaveBeenCalledWith(expect.objectContaining({ questionQids: ['frozen-q1'] }));
+    expect(screen.queryByText('Initial Score')).toBeNull();
   });
 
   it('offers Start over only for standalone released sections when onStartOver is provided (F5)', async () => {

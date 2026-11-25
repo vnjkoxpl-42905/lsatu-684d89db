@@ -15,6 +15,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { excludeBlindReviewAttempts } from "@/lib/attemptsFilter";
 import { formatLastActiveLabel, isUserOnline } from "@/lib/presence";
 import { formatRelativeShort } from "@/lib/time";
+import { getWAJEntries } from "@/lib/wajService";
 import {
   useAdminTAAssignmentsForStudent,
   type StudentTAAssignment,
@@ -51,7 +52,7 @@ const FLAG_KEYS = Object.keys(FLAG_LABELS) as (keyof HubStudentRow)[];
 /**
  * Overview tab. Pulls the student's row out of the shared useHubStudents
  * cache (already loaded for the left panel, so this reuses data) and
- * fetches two lightweight counts (attempts, WAJ) per student.
+ * fetches an attempts count and a count of visible journal entries per student.
  *
  * The ta_assignments detail strip is mounted unchanged — it has its own
  * query + collapse state.
@@ -84,16 +85,7 @@ export default function StudentOverview({ studentId }: Props) {
   const { data: wajCount, isLoading: wajLoading } = useQuery<number>({
     queryKey: ["hub-overview-waj", studentId],
     enabled: !!studentId,
-    queryFn: async () => {
-      // Mirror the ta-chat edge function: wrong_answer_journal is filtered
-      // by class_id on the admin side too.
-      const { count, error } = await supabase
-        .from("wrong_answer_journal")
-        .select("*", { count: "exact", head: true })
-        .eq("class_id", studentId as string);
-      if (error) throw error;
-      return count ?? 0;
-    },
+    queryFn: async () => (await getWAJEntries(studentId!)).length,
   });
 
   if (!studentId) {
@@ -150,7 +142,7 @@ export default function StudentOverview({ studentId }: Props) {
           <StatCard
             icon={BarChart3}
             label="WAJ items"
-            value={wajLoading ? "…" : (wajCount ?? 0).toLocaleString()}
+            value={wajLoading ? "…" : wajCount?.toLocaleString() ?? "—"}
           />
         </div>
       </section>

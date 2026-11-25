@@ -6,6 +6,7 @@ const USER_ID = '11111111-1111-4111-8111-111111111111';
 const db = vi.hoisted(() => ({
   sectionHistory: [] as Array<Record<string, unknown>>,
   practiceTestRuns: [] as Array<Record<string, unknown>>,
+  outcomeRequests: [] as unknown[][],
   reviewRecords: [] as Array<Record<string, unknown>>,
 }));
 
@@ -15,6 +16,7 @@ vi.mock('@/integrations/supabase/client', () => ({
   supabase: {
     from: (table: string) => {
       const makeChain = (rows: Array<Record<string, unknown>>) => {
+        let outcomeProjection = false;
         let inFilter: { col: string; vals: unknown[] } | null = null;
         let eqFilter: Array<{ col: string; val: unknown }> = [];
         const resolve = () => {
@@ -29,14 +31,19 @@ vi.mock('@/integrations/supabase/client', () => ({
           return { data: filtered, error: null };
         };
         const chain: Record<string, any> = {
-          select: () => chain,
+          select: (columns: string) => {
+            outcomeProjection = table === 'section_history' && (columns === '*' || columns.includes('initial_score'));
+            return chain;
+          },
           eq: (col: string, val: unknown) => {
             eqFilter.push({ col, val });
             return chain;
           },
+          contains: () => chain,
           not: () => chain,
           in: (col: string, vals: unknown[]) => {
             inFilter = { col, vals };
+            if (outcomeProjection) db.outcomeRequests.push(vals);
             return chain;
           },
           order: () => chain,
@@ -62,6 +69,7 @@ import { RecentPerformanceWidget } from '@/components/dashboard/RecentPerformanc
 
 describe('F7: unified practice_test_runs "complete" status and section_review_records overlay', () => {
   beforeEach(() => {
+    db.outcomeRequests = [];
     db.practiceTestRuns = [
       {
         id: 'run-complete',
@@ -167,6 +175,10 @@ describe('F7: unified practice_test_runs "complete" status and section_review_re
       },
     ];
 
+    db.sectionHistory.push(
+      { ...db.sectionHistory[1], id: 'hist-missing-parent', practice_test_run_id: 'missing-parent' },
+      { ...db.sectionHistory[2], id: 'hist-assigned-sealed' },
+    );
     db.reviewRecords = [
       {
         history_id: 'hist-assigned-released',
@@ -188,6 +200,9 @@ describe('F7: unified practice_test_runs "complete" status and section_review_re
     expect(ids).toContain('hist-pt-complete');
     expect(ids).toContain('hist-assigned-released');
     expect(ids).not.toContain('hist-pt-in-progress');
+    expect(ids).not.toContain('hist-missing-parent');
+    expect(ids).not.toContain('hist-assigned-sealed');
+    expect(db.outcomeRequests.flat().sort()).toEqual(['hist-assigned-released', 'hist-pt-complete']);
     expect(rows.find((r) => r.id === 'hist-assigned-released')?.brScore).toBe(20);
   });
 
@@ -197,6 +212,9 @@ describe('F7: unified practice_test_runs "complete" status and section_review_re
     expect(ids).toContain('hist-pt-complete');
     expect(ids).toContain('hist-assigned-released');
     expect(ids).not.toContain('hist-pt-in-progress');
+    expect(ids).not.toContain('hist-missing-parent');
+    expect(ids).not.toContain('hist-assigned-sealed');
+    expect(db.outcomeRequests.flat().sort()).toEqual(['hist-assigned-released', 'hist-pt-complete']);
     const assigned = practice.sections.find((s) => s.id === 'hist-assigned-released')!;
     expect(assigned.br_used).toBe(true);
     expect(assigned.br_score).toBe(20);
@@ -209,6 +227,7 @@ describe('F7: unified practice_test_runs "complete" status and section_review_re
     await waitFor(() => expect(screen.getByText('PT122-S3')).toBeTruthy());
     expect(screen.getByText('PT120-S1')).toBeTruthy();
     expect(screen.queryByText('PT121-S2')).toBeNull();
+    expect(db.outcomeRequests.flat().sort()).toEqual(['hist-assigned-released', 'hist-pt-complete']);
     expect(screen.getByText('20/25')).toBeTruthy();
     expect(screen.queryByText('12/25')).toBeNull();
   });

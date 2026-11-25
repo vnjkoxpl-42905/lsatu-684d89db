@@ -10,7 +10,7 @@
  *   and behave as today.
  */
 import { supabase } from '@/integrations/supabase/client';
-import { fetchSectionReviewRecords, hasCompletedBlindReview, type SectionReviewRecord } from '@/lib/sectionReviewRecord';
+import { hasCompletedBlindReview, type SectionReviewRecord } from '@/lib/sectionReviewRecord';
 
 export type ReleaseState = 'sealed' | 'released';
 
@@ -55,7 +55,7 @@ export async function completedPracticeTestRunIds(runIds: string[]): Promise<Set
         .eq('status', 'complete');
       if (error) throw error;
       for (const row of (data ?? []) as Array<{ id?: string; status?: string | null }>) {
-        if (typeof row.id === 'string' && (!('status' in row) || row.status === undefined || isPracticeTestRunComplete(row.status))) {
+        if (typeof row.id === 'string' && isPracticeTestRunComplete(row.status)) {
           completed.add(row.id);
         }
       }
@@ -65,34 +65,6 @@ export async function completedPracticeTestRunIds(runIds: string[]): Promise<Set
     console.error('[sectionRelease] practice-test run lookup failed; hiding legs', error);
     return new Set();
   }
-}
-
-/**
- * Ids among `ids` that are sealed behind blind review. Throws on a failed
- * lookup; callers treat that as "hide", since the safe failure is not showing
- * an outcome early.
- */
-export async function brSealedIds(ids: string[]): Promise<Set<string>> {
-  const sealed = new Set<string>();
-  if (ids.length === 0) return sealed;
-  const flagged: string[] = [];
-  for (let i = 0; i < ids.length; i += RELEASE_CHUNK_SIZE) {
-    const chunk = ids.slice(i, i + RELEASE_CHUNK_SIZE);
-    // `release_requires_br` is newer than the generated types, hence the casts.
-    const { data, error } = await supabase
-      .from('section_history')
-      .select('id')
-      .in('id', chunk)
-      .eq('release_requires_br' as never, true as never);
-    if (error) throw error;
-    for (const row of (data ?? []) as Array<{ id: string }>) {
-      flagged.push(row.id);
-    }
-  }
-  if (flagged.length === 0) return sealed;
-  const records = await fetchSectionReviewRecords(flagged);
-  for (const id of flagged) if (!hasCompletedBlindReview(records.get(id))) sealed.add(id);
-  return sealed;
 }
 
 /**
@@ -121,27 +93,91 @@ export async function brSealedSittingIds(sittingIds: string[]): Promise<Set<stri
   }
   if (flagged.length === 0) return sealed;
 
-  for (let i = 0; i < flagged.length; i += RELEASE_CHUNK_SIZE) {
-    const batch = flagged.slice(i, i + RELEASE_CHUNK_SIZE);
-    const records = await fetchSectionReviewRecords(batch.map((r) => r.id));
-    for (const row of batch) {
-      if (!hasCompletedBlindReview(records.get(row.id))) sealed.add(row.sittingId);
-    }
-  }
+  const completed = await completedBlindReviewIds(flagged.map((row) => row.id));
+  for (const row of flagged) if (!completed.has(row.id)) sealed.add(row.sittingId);
   return sealed;
 }
 
-/** Drops raw `section_history` rows sealed behind blind review. */
-export async function withoutBrSealedRows<T extends { id: string }>(rows: T[]): Promise<T[]> {
-  if (rows.length === 0) return rows;
-  let sealed: Set<string>;
-  try {
-    sealed = await brSealedIds(rows.map((r) => r.id));
-  } catch (error) {
-    // Which rows are sealed is unknown, so show none rather than risk
-    // revealing an assigned section before its blind review.
-    console.error('[sectionRelease] seal lookup failed; hiding rows', error);
-    return [];
+/** Reads the persisted release marker without returning review outcomes. */
+export async function completedBlindReviewIds(ids: string[]): Promise<Set<string>> {
+  const completed = new Set<string>();
+  for (let offset = 0; offset < ids.length; offset += RELEASE_CHUNK_SIZE) {
+    const { data, error } = await supabase
+      .from('section_review_records' as never)
+      .select('history_id')
+      .in('history_id', ids.slice(offset, offset + RELEASE_CHUNK_SIZE))
+      .not('br_completed_at', 'is', null)
+      .contains('br_results', '[]');
+    if (error) throw error;
+    for (const row of (data ?? []) as Array<{ history_id: string }>) {
+      completed.add(row.history_id);
+    }
   }
-  return rows.filter((r) => !sealed.has(r.id));
+  return completed;
+}
+
+interface SectionReadScope {
+  column: 'user_id' | 'class_id';
+  value: string;
+  order: 'id' | 'created_at' | 'completed_at';
+  standalone?: boolean;
+  limit?: number;
+  completedRuns?: ReadonlySet<string>;
+}
+
+interface SectionReleaseMetadata {
+  id: string;
+  practice_test_run_id?: string | null;
+  release_requires_br?: boolean | null;
+}
+
+/** Page scoped metadata first and request outcomes only for IDs cleared for release. */
+export async function readReleasedSectionRows<T extends { id: string }>(
+  scope: SectionReadScope,
+  outcomeColumns: string,
+): Promise<T[]> {
+  const rows: T[] = [];
+  const pageSize = Math.min(scope.limit ?? 500, 500);
+  for (let offset = 0; ; offset += pageSize) {
+    let metadataQuery = supabase.from('section_history')
+      .select('id,practice_test_run_id,release_requires_br')
+      .eq(scope.column, scope.value);
+    if (scope.standalone) {
+      metadataQuery = metadataQuery.eq('mode', 'full-section').is('practice_test_run_id', null);
+    }
+    const { data, error } = await metadataQuery
+      .order(scope.order, { ascending: scope.order === 'id' })
+      .order('id')
+      .range(offset, offset + pageSize - 1);
+    if (error) throw error;
+    const page = (data ?? []) as unknown as SectionReleaseMetadata[];
+    const parentIds = page.flatMap((row) => row.practice_test_run_id ? [row.practice_test_run_id] : []);
+    const completedRuns = scope.completedRuns ?? await completedPracticeTestRunIds(parentIds);
+    const eligible = page.filter((row) => !row.practice_test_run_id || completedRuns.has(row.practice_test_run_id));
+
+    let reviewed = new Set<string>();
+    try {
+      reviewed = await completedBlindReviewIds(eligible.filter((row) => row.release_requires_br).map((row) => row.id));
+    } catch (error) {
+      console.error('[sectionRelease] review completion unavailable; hiding assigned sections', error);
+    }
+
+    const ids = eligible
+      .filter((row) => !row.release_requires_br || reviewed.has(row.id))
+      .map((row) => row.id);
+    for (let i = 0; i < ids.length; i += RELEASE_CHUNK_SIZE) {
+      const chunk = ids.slice(i, i + RELEASE_CHUNK_SIZE);
+      const { data: outcomes, error: outcomeError } = await supabase.from('section_history')
+        .select(outcomeColumns)
+        .eq(scope.column, scope.value)
+        .in('id', chunk);
+      if (outcomeError) throw outcomeError;
+      const byId = new Map(((outcomes ?? []) as unknown as T[]).map((row) => [row.id, row]));
+      for (const id of chunk) {
+        const row = byId.get(id);
+        if (row) rows.push(row);
+      }
+    }
+    if (page.length < pageSize || (scope.limit !== undefined && offset + pageSize >= scope.limit)) return rows;
+  }
 }

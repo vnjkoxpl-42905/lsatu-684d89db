@@ -498,3 +498,34 @@ APPROVED for plan SHA256 a25bbc02d384661db8ff1c560ffa114976854ca8af66ba761b37c39
 
 ### Post-approval edit (2026-11-18)
 Only the "Decisions for Joshua, not part of this build" section changed, to record Joshua's four decisions. No build steps, contracts or tests changed. New SHA256 4f39f6a1706988983470f390c994f75a98b39fd687e21da64ed0c10979ad87fc; the round 8 approval was issued for a25bbc02... and covers the build content unchanged.
+
+## Round-three implementation and Phase 0 evidence ledger (2026-11-24)
+
+Independent review base: `7dc7b355fbaf240dd4ef252ec1a4976fd2908ea0`. Round-two findings and release gates are in the [independent review](../../ai-os/handoffs/2026-11-23-pr291-round2-review.md). Before revising the PR's completion claims, collect the missing evidence below on the exact candidate tip.
+
+| Phase 0 item | Evidence available | Open proof |
+| --- | --- | --- |
+| 0.1 Policies, triggers, function ownership | Checked-in [rebuild SQL](../docs/implementation-plans/artifacts/2026-11-20-sections-post-section-rebuild.sql) and [protected writer](../docs/implementation-plans/artifacts/2026-09-30-standalone-timed-writer.sql) describe the separate roles and writers. | Export actual policies, grants, function owners and trigger definitions, then exercise explicit owner, unrelated student and teacher roles. |
+| 0.2 Attempts readers | [AST guard](../src/lib/attemptsReaders.test.ts) enumerates client/operator expressions. [Edge inventory](../docs/implementation-plans/artifacts/2026-11-23-ta-agent-br-filter.patch.md) names the deferred service readers. | Confirm scope and review authorization for each Edge reader and its deployed version. |
+| 0.3 Row counts | The round-two PR body reports one test sitting's counts. | Capture aggregate counts for historical BR attempts, BR-used history rows and rows with no saved questions. |
+| 0.4 Capability | The app exposes a capability RPC and the protected writer fixtures cover the enabled and disabled states. | Capture current ordinary-user capability split through the approved probe. |
+| 0.5 Protected report | Signed-in local Exam Attempts rendered protected route entries. The account had a completed RC entry and no completed protected LR entry. | Verify an eligible completed protected LR sitting reaches the saved report through its legacy link and its protected completion screen. |
+| 0.6 Legacy journal duplication | Round-two evidence documents duplicate risk. Current isolated fixture asserts one append per miss after replay. | Retain a real pre-change reproduction or label the historical reproduction unobserved. Capture post-change cardinality on the authorized fixture. |
+| 0.7 Close-out retry duplication | Fixture distinguishes first write from replay. The PR body's HTTP 500 is a pre-commit scenario. | Verify commit followed by a lost acknowledgment, replay/reload, one result and one set of side effects. |
+| 0.8 Report email | Edge source reads persisted history and uses a sitting-level provider idempotency key. The candidate requires assigned BR before fetching outcomes. | Approved Edge deployment and controlled delivery proof for close-out, first release, remount and retry. |
+| 0.9 Old URLs | Route fixtures cover old owner/non-owner gates, history redirect and resume-only summary. | Current test-account sample of valid history and resume-only IDs, including protected LR. |
+| 0.10 Resume identity | `open_section_sitting_v1`, `sectionCloseout.ts`, `drillResumeSession.ts`, `practiceSectionAttempts.ts` and `Drill.tsx` bind account records and pending saves to a sitting. | Real interrupted adoption, concurrent tabs, and two separate database connections. |
+| 0.11 Pre-release exposure | Standard history and analytics use metadata-first reads. The approved plan records legacy journal and attempt write timing. | Compare actual ordinary request payloads before and after BR and PT completion. Decide whether direct table enforcement and remaining journal/TA readers belong in this PR. |
+| 0.12 History readers | Shared release gate covers history, attempts list, first-answer analytics, teacher analytics and Recent Performance. Drill History gates protected LR and RC attempts by persisted completion. | Confirm browser request scopes and direct-access policies on the deployed candidate under each role. |
+| 0.13 Assignment ownership | The checked-in close-out RPC scopes homework to the signed-in owner and checks membership of frozen question IDs in the assignment. | Verify the actual deployed definition and forged input behavior against an approved disposable database. |
+
+Legacy first-pass grade is supplied by the existing browser bank and persisted by the standalone writer. The protected writer computes the stored totals from checkpoint and frozen section state. Both paths use the saved credited answer to grade later blind review through its own RPC where applicable. Source inspection and mocks establish the application paths. Phase 0 remains open until the actual deployed definitions, grants, counts, and role evidence are captured.
+
+For isolated verification after authorization, use `scripts/verification/sections-post-section-rebuild-sql.mjs --with-reconciliation-proposal --with-blind-review-qids-proposal` and `scripts/verification/standalone-timed-writer.mjs --sections-conformance` with a disposable PGlite module. The protected overtime comparison should fail before applying the proposal. Repeat with `--apply-overtime-proposal` to confirm the real persisted fields, totals and diagnosis match. Use a separate two-connection PostgreSQL fixture for actual races.
+
+Local gate results for the round-three worktree:
+
+- Production build and Edge function typecheck passed. The four-worker full suite ran 787 files. All 21 failing files were on the recorded baseline. No new failure file remained.
+- The changed-file suite passed 219 tests in 28 files. The final first-answer and resume follow-up passed 32 tests in three files, including the regression where a parent had a complete status and no persisted completion timestamp.
+- The signed-in browser reached the legacy saved report. Four widths (375, 500, 768 and 1440 px) in both themes showed all four measured actions in bounds and zero horizontal page overflow. The 500 px check used viewport width. The desktop sidecar and completed protected LR route still need proof.
+- The database fixtures and SQL proposals passed source or syntax review only. The managed database, GitHub branch, and production deployment were untouched. The unrelated MCP worktree change was left in place.

@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react';
-import { completedPracticeTestRunIds, withoutBrSealedRows } from '@/lib/sectionRelease';
+import { readReleasedSectionRows } from '@/lib/sectionRelease';
 import { fetchSectionReviewRecords, hasCompletedBlindReview, type SectionReviewRecord } from '@/lib/sectionReviewRecord';
 import { Badge } from '@/components/ui/badge';
 import { Trophy, TrendingUp, Clock } from 'lucide-react';
-import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { useClassId } from '@/hooks/useClassId';
 import { cn } from '@/lib/utils';
@@ -23,60 +22,55 @@ interface SectionRecord {
 
 export function RecentPerformanceWidget() {
   const { user } = useAuth();
+  const userId = user?.id;
   const { classId, loading: classIdLoading } = useClassId();
   const [records, setRecords] = useState<SectionRecord[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (classIdLoading) return;
-    fetchRecentPerformance();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user, classId, classIdLoading]);
-
-  const fetchRecentPerformance = async () => {
-    if (!user || !classId) return;
-
-    try {
-      const { data, error } = await supabase
-        .from('section_history')
-        .select('id, pt, section, initial_score, initial_total, initial_percent, br_score, br_percent, created_at, total_time_ms, practice_test_run_id')
-        .eq('class_id', classId)
-        .order('created_at', { ascending: false })
-        .limit(20);
-
-      if (error) throw error;
-      const rows = (data || []) as unknown as Array<SectionRecord & { practice_test_run_id: string | null; release_requires_br?: boolean | null }>;
-      // A practice-test leg stays sealed until its whole run is complete ('complete'),
-      // and an assigned section until its blind review is done.
-      const runIds = rows
-        .map((r) => r.practice_test_run_id)
-        .filter((v): v is string => !!v);
-      const completedRuns = await completedPracticeTestRunIds(runIds);
-      const released = await withoutBrSealedRows(
-        rows.filter((r) => !r.practice_test_run_id || completedRuns.has(r.practice_test_run_id)),
-      );
-      let reviewRecords = new Map<string, SectionReviewRecord>();
-      if (released.length > 0) {
-        try {
-          reviewRecords = await fetchSectionReviewRecords(released.map((r) => r.id));
-        } catch (err) {
-          console.error('[RecentPerformanceWidget] review records unavailable', err);
-        }
-      }
-      const merged: SectionRecord[] = released.slice(0, 5).map((r) => {
-        const rec = reviewRecords.get(r.id);
-        if (hasCompletedBlindReview(rec)) {
-          return { ...r, br_score: rec.brScore, br_percent: rec.brPercent };
-        }
-        return r;
-      });
-      setRecords(merged);
-    } catch (error) {
-      console.error('Error fetching recent performance:', error);
-    } finally {
-      setLoading(false);
+    setRecords([]);
+    if (classIdLoading) {
+      setLoading(true);
+      return;
     }
-  };
+    if (!userId || !classId) {
+      setLoading(false);
+      return;
+    }
+
+    let active = true;
+    setLoading(true);
+    const fetchRecentPerformance = async () => {
+      try {
+        const released = await readReleasedSectionRows<SectionRecord>(
+          { column: 'class_id', value: classId, order: 'created_at', limit: 20 },
+          'id,pt,section,initial_score,initial_total,initial_percent,br_score,br_percent,created_at,total_time_ms',
+        );
+        let reviewRecords = new Map<string, SectionReviewRecord>();
+        if (released.length > 0) {
+          try {
+            reviewRecords = await fetchSectionReviewRecords(released.map((row) => row.id));
+          } catch (error) {
+            console.error('[RecentPerformanceWidget] review records unavailable', error);
+          }
+        }
+        if (active) {
+          setRecords(released.slice(0, 5).map((row) => {
+            const record = reviewRecords.get(row.id);
+            return hasCompletedBlindReview(record)
+              ? { ...row, br_score: record.brScore, br_percent: record.brPercent }
+              : row;
+          }));
+        }
+      } catch (error) {
+        console.error('Error fetching recent performance:', error);
+      } finally {
+        if (active) setLoading(false);
+      }
+    };
+    void fetchRecentPerformance();
+    return () => { active = false; };
+  }, [userId, classId, classIdLoading]);
 
   const formatTime = (ms: number) => {
     const totalSec = Math.floor(ms / 1000);

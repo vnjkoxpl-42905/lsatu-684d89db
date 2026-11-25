@@ -3,7 +3,7 @@ const state = vi.hoisted(() => ({ actor: '10000000-0000-4000-8000-000000000001',
 vi.mock('@/integrations/supabase/client', () => ({ supabase: {
   auth: { getUser: async () => ({ data: { user: { id: state.actor } }, error: null }) },
   from: (table: string) => {
-    const chain = { select: () => chain, eq: () => chain, is: () => chain, order: () => chain,
+    const chain = { select: () => chain, eq: () => chain, in: () => chain, range: () => chain, is: () => chain, order: () => chain,
       then: (resolve: (value: unknown) => unknown) => Promise.resolve({ data: table === 'timed_section_sittings_v1' ? state.sittings : table === 'bootcamp_kv' ? state.lr.map(data => ({ data })) : state.history, error: table === 'timed_section_sittings_v1' ? state.tableError : null }).then(resolve) };
     return chain;
   },

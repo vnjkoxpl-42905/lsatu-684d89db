@@ -12,6 +12,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { supabase } from "@/integrations/supabase/client";
+import { excludeBlindReviewAttempts } from "@/lib/attemptsFilter";
 
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 
@@ -134,17 +135,17 @@ async function main() {
   }
 
   // Question-bank work
-  const { count: attempts } = await supabase
+  const { count: attempts } = await excludeBlindReviewAttempts(supabase
     .from("attempts")
-    .select("*", { count: "exact", head: true })
+    .select("*", { count: "exact", head: true }))
     .eq("user_id", id)
-    .gte("created_at", since);
-  const { count: correct } = await supabase
+    .gte("timestamp_iso", since);
+  const { count: correct } = await excludeBlindReviewAttempts(supabase
     .from("attempts")
-    .select("*", { count: "exact", head: true })
+    .select("*", { count: "exact", head: true }))
     .eq("user_id", id)
-    .eq("is_correct", true)
-    .gte("created_at", since);
+    .eq("correct", true)
+    .gte("timestamp_iso", since);
   const pct = attempts ? Math.round((100 * (correct ?? 0)) / attempts) : null;
   console.log(
     `\nQUESTIONS (last ${days}d): ${attempts ?? 0} attempted` +

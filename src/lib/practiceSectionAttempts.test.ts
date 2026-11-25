@@ -61,7 +61,7 @@ vi.mock('@/integrations/supabase/client', () => ({
 }));
 
 vi.mock('@/lib/sectionRelease', () => ({
-  withoutBrSealedRows: async <T,>(rows: T[]) => rows,
+  readReleasedSectionRows: async () => mockState.sectionHistory,
 }));
 
 vi.mock('@/bootcamps/main-conclusion/persistence/factory', () => ({
@@ -131,6 +131,28 @@ describe('listPracticeSectionAttempts adoption & sitting dedupe (Phase 5.1)', ()
     mockState.sectionHistory = [];
     mockState.localRows = [];
     mockState.upserts = [];
+  });
+
+  it('keeps a rejected local save out of the account when the attempts list loads', async () => {
+    const poolKey = 'drill::section::pt101-s2';
+    const account = makePracticeSession({
+      id: SITTING_REC_ID,
+      pool_slug: `${poolKey}#${SITTING_ID}`,
+    });
+    mockState.standaloneSittings = [
+      { id: SITTING_ID, pool_key: poolKey, state: 'open', generation: 1 },
+    ];
+    mockState.bootcampKv = [{ data: account }];
+    mockState.localRows = [
+      { ...account, current_index: 0, updated_at: '2026-11-20T10:10:00.000Z' },
+      makePracticeSession({ updated_at: '2026-11-20T10:10:00.000Z' }),
+      makePracticeSession({ id: HIST_ID, pool_slug: 'drill::section::pt102-s2#orphan' }),
+    ];
+
+    await listPracticeSectionAttempts(USER_ID);
+
+    expect(mockState.upserts).toEqual([]);
+    expect(mockState.bootcampKv).toEqual([{ data: account }]);
   });
 
   it('shows exactly one entry before adoption, after adoption, after completion, and with a stale local copy', async () => {

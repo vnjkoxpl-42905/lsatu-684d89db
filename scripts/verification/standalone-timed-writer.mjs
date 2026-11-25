@@ -9,6 +9,8 @@ const modulePath=flag>=0?process.argv[flag+1]:process.env.PGLITE_MODULE;
 if(!modulePath) throw new Error('Pass --pglite-module absolute/path/to/dist/index.js');
 const {PGlite}=await import(pathToFileURL(resolve(modulePath)).href);
 const db=new PGlite(); let checks=0;
+const sectionsConformance = process.argv.includes('--sections-conformance');
+const applyOvertimeProposal = process.argv.includes('--apply-overtime-proposal');
 const check=(a,b)=>{assert.deepEqual(a,b);checks++;};
 const denied=async(action,code)=>{await assert.rejects(action,e=>!code||e.code===code);checks++;};
 const admin=()=>db.exec('reset role');
@@ -91,15 +93,69 @@ try{
  await admin();await db.query('update public.profiles set has_drill_access=true where class_id=$1',[owner]);await auth();
  // Missing required journal storage rolls back all attempts/history and receipt.
  await admin();await db.exec("create function public.fixture_fail_section_journal() returns trigger language plpgsql as $$begin raise exception 'fixture journal failure'; end$$; create trigger fixture_fail_section_journal before insert on public.wrong_answer_journal for each row execute function public.fixture_fail_section_journal()");await auth();
- const close=command(sitting,'close',{answerKeys:blueprint.legs[0].qids.map(qid=>({qid,correctAnswer:'A'})),analysis:{}},'device-b');
+ if (sectionsConformance) {
+  await commit('checkpoint',{regulationAnsweredQids:[answer.qid]},'device-b');
+ }
+ const diagnosis = { headline: 'Fixture diagnosis', findings: [{ qnums: [1] }] };
+ const close=command(sitting,'close',{answerKeys:blueprint.legs[0].qids.map(qid=>({qid,correctAnswer:'A'})),analysis:diagnosis},'device-b');
  await denied(()=>rpc('commit_timed_section_v1',close));check((await read(sitting.id)).sitting.revision,sitting.revision);
  check((await db.query('select count(*)::int n from public.attempts where timed_section_sitting_id=$1',[sitting.id])).rows[0].n,0);
- await admin();await db.exec('drop trigger fixture_fail_section_journal on public.wrong_answer_journal');await auth();
+ await admin();await db.exec('drop trigger fixture_fail_section_journal on public.wrong_answer_journal');
+ if (sectionsConformance && applyOvertimeProposal) {
+  await db.exec(await readFile(new URL('../../docs/implementation-plans/artifacts/2026-11-24-protected-section-overtime-PROPOSAL.sql',import.meta.url),'utf8'));
+ }
+ await auth();
  response=await rpc('commit_timed_section_v1',close);sitting=response.sitting;
  check(sitting.phase,'complete');check(sitting.result.total,2);check(sitting.result.answered,1);check(sitting.result.correct,0);
  check((await db.query('select count(*)::int n from public.attempts where timed_section_sitting_id=$1',[sitting.id])).rows[0].n,1);
  check((await db.query('select count(*)::int n from public.section_history where timed_section_sitting_id=$1',[sitting.id])).rows[0].n,1);
  check((await rpc('commit_timed_section_v1',close)).sitting.completed_at,sitting.completed_at);
+ if (sectionsConformance) {
+  // Both production writers persist the same independently constructed sitting.
+  await admin();
+  await db.exec(`
+    create type public.app_role as enum ('admin','student');
+    create function public.has_role(uuid, public.app_role) returns boolean language sql stable as $$ select false $$;
+    alter table public.section_history add column br_score integer, add column br_total integer,
+      add column br_percent numeric, add column br_delta integer;
+    create table public.homework_assignments(id uuid primary key, student_id uuid, question_qids text[]);
+  `);
+  await db.exec(await readFile(new URL('../../docs/implementation-plans/artifacts/2026-11-20-sections-post-section-rebuild.sql',import.meta.url),'utf8'));
+  await auth();
+  const legacyOpen = (await db.query(
+    "select public.open_section_sitting_v1('drill::section::pt140-s1',null,false,null,null,null) result",
+  )).rows[0].result;
+  const questions = blueprint.legs[0].questions.map((question, index) => ({
+    qid: question.qid, qnum: question.qnum, qtype: question.qtype, difficulty: question.level,
+    initialAnswer: index === 0 ? answer.selected : '—', correctAnswer: 'A',
+    initialCorrect: false, timeMs: index === 0 ? answer.timeMs : 200,
+    switchCount: index === 0 ? answer.switchCount : 0, flagged: true,
+    eliminations: index === 0 ? [] : ['A'], answeredInOvertime: false,
+  }));
+  const legacyClose = (await db.query('select public.close_standalone_section_v1($1,$2) result', [
+    legacyOpen.sitting_id,
+    JSON.stringify({
+      pt: 140, section: 1, questions, analysis: diagnosis,
+      history: {
+        initial_score: 0, initial_percent: 0, total_time_ms: 700, avg_time_ms: 350, unanswered_count: 1,
+        by_qtype_json: { Flaw: { total: 1, correct: 0 }, Strengthen: { total: 1, correct: 0 } },
+        by_difficulty_json: { 2: { total: 1, correct: 0 }, 3: { total: 1, correct: 0 } },
+      },
+      attempts: [{ qid: answer.qid, pt: 140, section: 1, qnum: 1, qtype: 'Flaw', level: 3,
+        correct: false, time_ms: 500, selected_answer: 'B' }],
+      journal: questions.map(q => ({ qid: q.qid, pt: 140, section: 1, qnum: q.qnum,
+        qtype: q.qtype, level: q.difficulty, item: { result: 0, chosen_answer: q.initialAnswer, correct_answer: 'A' } })),
+    }),
+  ])).rows[0].result;
+  check(legacyClose.status, 'created');
+  const persisted = async (id) => (await db.query(`select pt,section,mode,initial_score,initial_total,
+    initial_percent,total_time_ms,avg_time_ms,unanswered_count,br_used,total_questions,time_taken_ms,
+    questions_json,analysis_json,by_qtype_json,by_difficulty_json from public.section_history where id=$1`, [id])).rows[0];
+  const protectedRow = await persisted(sitting.result.historyId);
+  const legacyRow = await persisted(legacyClose.history_id);
+  check(protectedRow.questions_json[1].answeredInOvertime, false);
+  check(protectedRow, legacyRow);
+ }
  await denied(()=>db.query('update public.attempts set timed_section_sitting_id=null where timed_section_sitting_id=$1',[sitting.id]),'42501');
  await denied(()=>db.query('update public.section_history set timed_section_sitting_id=null where timed_section_sitting_id=$1',[sitting.id]),'42501');
  await denied(()=>rpc('commit_timed_section_v1',command(sitting,'claim',{},'device-b')),'PT409');

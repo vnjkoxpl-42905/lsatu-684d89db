@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { MemoryRouter } from 'react-router-dom';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
@@ -12,6 +12,8 @@ const rpcMock = vi.hoisted(() => ({
   predictionFails: 0,
   predictionCalls: [] as Array<{ historyId: string; score: number }>,
   reportFetchCount: 0,
+  emails: [] as Array<Record<string, unknown>>,
+  opens: [] as Array<Record<string, unknown>>,
   toastError: vi.fn(),
 }));
 
@@ -149,13 +151,19 @@ vi.mock('@/integrations/supabase/client', () => {
     supabase: {
       from: () => ({ ...chain(), insert: async () => ({ error: null }) }),
       auth: { getSession: async () => ({ data: { session: null } }) },
-      rpc: async (fn: string) => {
+      rpc: async (fn: string, args?: Record<string, unknown>) => {
+        if (fn === 'reconcile_standalone_section_v1') {
+          return { data: { status: 'reconciled' }, error: null };
+        }
         if (fn === 'open_section_sitting_v1') {
+          rpcMock.opens.push(args ?? {});
           return {
             data: {
               status: 'open',
-              sitting_id: '55555555-5555-4555-8555-555555555555',
-              generation: 1,
+              sitting_id: args?.p_restart
+                ? '66666666-6666-4666-8666-666666666666'
+                : '55555555-5555-4555-8555-555555555555',
+              generation: args?.p_restart ? 2 : 1,
               history_id: null,
               adopted: false,
               adopted_revision: null,
@@ -174,6 +182,12 @@ vi.mock('@/integrations/supabase/client', () => {
           };
         }
         return { data: null, error: null };
+      },
+      functions: {
+        invoke: async (name: string, options: { body: Record<string, unknown> }) => {
+          if (name === 'send-section-report') rpcMock.emails.push(options.body);
+          return { data: { ok: true }, error: null };
+        },
       },
       channel: () => ({ on: () => ({ subscribe: () => ({}) }), subscribe: () => ({}) }),
       removeChannel: () => {},
@@ -240,8 +254,10 @@ describe('Prediction save failure retry (F11)', () => {
   beforeEach(() => {
     seedTwentyQuestions();
     rpcMock.predictionFails = 0;
+    rpcMock.emails = [];
     rpcMock.predictionCalls = [];
     rpcMock.reportFetchCount = 0;
+    rpcMock.opens = [];
     rpcMock.toastError.mockReset();
     window.localStorage.clear();
     __setPersistenceForTests(memoryPersistence());
@@ -306,6 +322,37 @@ describe('Prediction save failure retry (F11)', () => {
       expect(screen.queryByRole('button', { name: 'Retry saving prediction' })).not.toBeInTheDocument(),
     );
     expect(await screen.findByText(/You guessed 18/)).toBeInTheDocument();
+  });
+
+  it('starts exactly one retake from the immediate report on a double click', async () => {
+    const qc = new QueryClient({ defaultOptions: { queries: { retry: false } } });
+    render(
+      <QueryClientProvider client={qc}>
+        <MemoryRouter initialEntries={['/drill?drill=section&pt=23&section=2']}>
+          <DrillRunSpecProvider spec={sectionSpec}>
+            <Drill />
+          </DrillRunSpecProvider>
+        </MemoryRouter>
+      </QueryClientProvider>,
+    );
+
+    await screen.findByText(/Stimulus 1:/);
+    fireEvent.click(screen.getByRole('button', { name: 'Complete Section' }));
+    fireEvent.click(await screen.findByRole('button', { name: 'Submit anyway' }));
+    const skipPrediction = await screen.findByRole('button', { name: 'Skip' });
+    expect(rpcMock.emails).toEqual([{ sectionHistoryId: expect.any(String) }]);
+    fireEvent.click(skipPrediction);
+    fireEvent.click(await screen.findByRole('button', { name: 'Skip to results' }));
+    const action = await screen.findByRole('button', { name: 'Start over' });
+    expect(rpcMock.emails).toHaveLength(1);
+    act(() => {
+      fireEvent.click(action);
+      fireEvent.click(action);
+    });
+    await screen.findByText(/Stimulus 1:/);
+    expect(rpcMock.opens.filter((request) => request.p_restart)).toEqual([
+      expect.objectContaining({ p_expected_generation: 1 }),
+    ]);
   });
 
   it('shows the prediction retry banner on SealedSectionReportView when a sealed assigned section failed to save prediction', async () => {

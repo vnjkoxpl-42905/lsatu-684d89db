@@ -1,11 +1,11 @@
 import { ORDERED_CANONICAL_MAIN_CONCLUSION_QUESTIONS } from '@/bootcamps/main-conclusion/data/reference-drills/canonicalStructureQuestions';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-const mock = vi.hoisted(() => ({ owner: 'owner', tables: {} as Record<string, { data: unknown[]; error: { message: string } | null }>, calls: [] as { table: string; filters: [string, unknown][] }[] }));
+const mock = vi.hoisted(() => ({ owner: 'owner', tables: {} as Record<string, { data: unknown[]; error: { message: string } | null }>, calls: [] as { table: string; projection: string; filters: [string, unknown][] }[] }));
 vi.mock('@/integrations/supabase/client', () => ({ supabase: {
   auth: { getUser: vi.fn(async () => ({ data: { user: { id: mock.owner } }, error: null })) },
   from: (table: string) => {
-    const call = { table, filters: [] as [string, unknown][] }; mock.calls.push(call);
-    const query = { select: () => query, eq: (k: string, v: unknown) => { call.filters.push([k, v]); return query; },
+    const call = { table, projection: '', filters: [] as [string, unknown][] }; mock.calls.push(call);
+    const query = { select: (projection: string) => { call.projection = projection; return query; }, eq: (k: string, v: unknown) => { call.filters.push([k, v]); return query; },
       neq: (k: string, v: unknown) => { call.filters.push([`not:${k}`, v]); return query; },
       or: () => query, not: () => query, in: (k: string, v: unknown) => { call.filters.push([k, v]); return query; }, order: () => query,
       range: async () => mock.tables[table] ?? { data: [], error: null } };
@@ -36,19 +36,34 @@ describe('saved drill history RC disclosure boundary', () => {
     mock.tables.practice_test_runs = { data: [{ id: 'other', user_id: 'owner', status: 'completed', completed_at: '2026-09-30' }], error: null };
     expect(await fetchDrillHistory('owner')).toEqual([]);
     expect(mock.calls.some(c => c.table === 'rc_attempts')).toBe(false);
-    mock.tables.practice_test_runs.data = [{ id: 'parent', user_id: 'owner', status: 'completed', completed_at: '2026-09-30' }];
+    mock.tables.practice_test_runs.data = [{ id: 'parent', user_id: 'owner', status: 'complete', completed_at: '2026-09-30' }];
     mock.tables.rc_attempts = { data: [attempt('child', false)], error: null };
     expect(await fetchDrillHistory('owner')).toHaveLength(1);
   });
   it('withholds LR timed outcomes until exact owned completed work', async () => {
     const base = { user_id: 'owner', class_id: 'owner', qid: 'q', pt: 140, section: 1, qnum: 1, qtype: 'Must be true', correct: true, time_ms: 1000, selected_answer: 'A', mode: 'full-section', timestamp_iso: '2026-09-30', timed_pt_run_id: null, timed_section_sitting_id: null };
-    mock.tables.attempts = { data: [{ ...base, timed_pt_run_id: 'active' }, { ...base, timed_pt_run_id: 'done' }, { ...base, timed_section_sitting_id: 'active-section' }, base], error: null };
-    mock.tables.practice_test_runs = { data: [{ id: 'done', user_id: 'owner', status: 'completed', completed_at: '2026-09-30' }], error: null };
+    mock.tables.attempts = { data: [
+      { ...base, id: 'active-leg', timed_pt_run_id: 'active' },
+      { ...base, id: 'released-leg', timed_pt_run_id: 'done' },
+      { ...base, id: 'active-section-attempt', timed_section_sitting_id: 'active-section' },
+      { ...base, id: 'ordinary' },
+    ], error: null };
+    mock.tables.practice_test_runs = { data: [{ id: 'done', user_id: 'owner', status: 'complete', completed_at: '2026-09-30' }], error: null };
     expect(await fetchDrillHistory('owner')).toHaveLength(2);
+    const calls = mock.calls.filter(call => call.table === 'attempts');
+    expect(calls[0].projection).not.toMatch(/correct|selected_answer/);
+    const outcomeReads = calls.filter(call => call.projection.includes('selected_answer'));
+    expect(outcomeReads).toHaveLength(1);
+    expect(outcomeReads[0].filters).toContainEqual(['id', ['released-leg', 'ordinary']]);
   });
   it('rejects failed source authority rather than showing empty saved history', async () => {
     mock.tables.rc_drill_sessions = { data: [], error: { message: 'offline' } };
     await expect(fetchDrillHistory('owner')).rejects.toThrow('offline');
+  });
+  it('withholds raw attempts if practice-test parent status lookup fails', async () => {
+    mock.tables.practice_test_runs = { data: [], error: { message: 'parent lookup failed' } };
+    await expect(fetchDrillHistory('owner')).rejects.toThrow('parent lookup failed');
+    expect(mock.calls.some(c => c.table === 'attempts' || c.table === 'rc_attempts')).toBe(false);
   });
   it('stops an old-owner request before any source read', async () => {
     mock.owner = 'new-owner';
@@ -62,6 +77,16 @@ it('sections exclude incomplete parents without altering original records', asyn
   const rows = [{ practiceTestRunId: null }, { practiceTestRunId: 'active' }];
   expect(await filterCompletedHistorySections('owner', rows)).toEqual([rows[0]]);
   expect(rows).toHaveLength(2);
+});
+it('releases page history for a saved completed parent of the same owner', async () => {
+  mock.owner = 'owner';
+  mock.tables = { practice_test_runs: { data: [
+    { id: 'released', user_id: 'owner', status: 'complete' },
+    { id: 'active', user_id: 'owner', status: 'in-progress' },
+    { id: 'foreign', user_id: 'other', status: 'complete' },
+  ], error: null } };
+  const rows = ['released', 'active', 'foreign', 'missing'].map(practiceTestRunId => ({ practiceTestRunId }));
+  expect(await filterCompletedHistorySections('owner', rows)).toEqual([rows[0]]);
 });
 it('formats a supported native saved answer without exposing submission UUID or JSON', () => {
   const run = '12345678-1234-4123-8123-123456789012';

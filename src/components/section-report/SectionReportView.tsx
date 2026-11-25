@@ -14,6 +14,7 @@ import {
   Lock,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { UNANSWERED } from '@/lib/sectionAnswer';
 import ScoreRing from '@/components/drill/ScoreRing';
 import { AnswerTimeline, formatClock } from './AnswerTimeline';
 import { SectionDiagnosisBlock } from './SectionDiagnosisBlock';
@@ -80,6 +81,7 @@ export function SealedSectionReportView({
   onBack,
   backLabel = 'Back to Home',
   onStartBlindReview,
+  onRetryBlindReviewPreparation,
   pendingPrediction,
   retryingPrediction,
   onRetryPrediction,
@@ -90,6 +92,7 @@ export function SealedSectionReportView({
   onBack: () => void;
   backLabel?: string;
   onStartBlindReview?: () => void;
+  onRetryBlindReviewPreparation?: () => void;
   pendingPrediction?: number | null;
   retryingPrediction?: boolean;
   onRetryPrediction?: () => void;
@@ -123,6 +126,14 @@ export function SealedSectionReportView({
               <p className="text-sm text-muted-foreground">
                 Your answers are saved. Complete blind review to see your score, answers, and section report.
               </p>
+              {onRetryBlindReviewPreparation && (
+                <div className="space-y-2 pt-2">
+                  <p role="alert" className="text-sm text-muted-foreground">
+                    Your blind review questions could not load.
+                  </p>
+                  <Button onClick={onRetryBlindReviewPreparation}>Retry loading questions</Button>
+                </div>
+              )}
               {onStartBlindReview && (
                 <div className="pt-2">
                   <Button onClick={onStartBlindReview}>Do blind review</Button>
@@ -226,14 +237,16 @@ export function SectionReportView({
   }, [stats]);
 
   const regulationSplit = React.useMemo(() => {
-    const inOvertime = stats.filter((s) => s.answeredInOvertime);
-    if (inOvertime.length === 0) return null;
-    const inTime = stats.filter((s) => !s.answeredInOvertime);
+    if (!stats.some((s) => s.answeredInOvertime !== undefined)) return null;
+    const answers = stats.filter((s) => s.initialAnswer && s.initialAnswer !== UNANSWERED);
+    const inOvertime = answers.filter((s) => s.answeredInOvertime);
+    const inTime = answers.filter((s) => !s.answeredInOvertime);
     return {
       answered: inTime.length,
       correct: inTime.filter((s) => s.initialCorrect).length,
       overtimeCount: inOvertime.length,
       overtimeCorrect: inOvertime.filter((s) => s.initialCorrect).length,
+      unanswered: stats.length - answers.length,
       total: stats.length,
     };
   }, [stats]);
@@ -411,11 +424,11 @@ export function SectionReportView({
             <div className="mb-6 mx-auto max-w-xl rounded-lg border border-border bg-background/50 px-4 py-3 text-center text-sm">
               <span className="font-medium">
                 At time: {regulationSplit.correct}/{regulationSplit.answered} on the{' '}
-                {regulationSplit.answered} questions you reached.
+                {regulationSplit.answered} questions you answered.
               </span>{' '}
               <span className="text-muted-foreground">
-                The other {regulationSplit.overtimeCount} were answered after the clock ran out (
-                {regulationSplit.overtimeCorrect} right). The score above counts all{' '}
+                Overtime answers: {regulationSplit.overtimeCount}. Correct in overtime: {regulationSplit.overtimeCorrect}.{' '}
+                Unanswered: {regulationSplit.unanswered}. The score above counts all{' '}
                 {regulationSplit.total}.
               </span>
             </div>
@@ -634,7 +647,7 @@ export function SectionReportView({
                       </div>
                       <div className="text-xs text-muted-foreground">
                         Level {stat.difficulty}
-                        {stat.answeredInOvertime && (
+                        {stat.answeredInOvertime && stat.initialAnswer && stat.initialAnswer !== UNANSWERED && (
                           <span className="ml-1.5 text-amber-600" title="Answered after time">
                             · overtime
                           </span>

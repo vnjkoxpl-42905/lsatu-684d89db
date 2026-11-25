@@ -1,5 +1,8 @@
 // Isolated verification of docs/implementation-plans/artifacts/2026-11-20-sections-post-section-rebuild.sql
 // Run: node scripts/verification/sections-post-section-rebuild-sql.mjs --pglite-module /abs/path/pglite/dist/index.js
+// Include the unshipped reconciliation contract in this disposable fixture
+// with --with-reconciliation-proposal. Verify the ordered, outcome-free
+// blind review projection with --with-blind-review-qids-proposal.
 // PGlite has one connection, so "concurrent" cases are checked as sequential
 // interleavings; the advisory lock that serializes them in production is not
 // exercised here.
@@ -12,6 +15,8 @@ import { setupSql, owner, other } from './timed-pt-writer-fixtures.mjs';
 
 const flag = process.argv.indexOf('--pglite-module');
 const modulePath = flag >= 0 ? process.argv[flag + 1] : process.env.PGLITE_MODULE;
+const withReconciliation = process.argv.includes('--with-reconciliation-proposal');
+const withBlindReviewQids = process.argv.includes('--with-blind-review-qids-proposal');
 if (!modulePath) throw new Error('Pass --pglite-module /absolute/path/to/pglite/dist/index.js');
 const { PGlite } = await import(pathToFileURL(resolve(modulePath)).href);
 const db = new PGlite();
@@ -34,6 +39,22 @@ const open = (pool, opts = {}) => one(
   [pool, opts.known ?? null, opts.restart ?? false, opts.gen ?? null, opts.legacy ?? null, opts.sittingRecord ?? null],
 ).then((x) => x.r);
 const close = (id, payload) => one('select public.close_standalone_section_v1($1,$2) r', [id, JSON.stringify(payload)]).then((x) => x.r);
+const reconcile = (id, historyId) =>
+  one('select public.reconcile_standalone_section_v1($1,$2) r', [id, historyId]).then((x) => x.r);
+
+const blindReviewQids = (historyId) =>
+  one('select public.section_blind_review_qids_v1($1) r', [historyId]).then((x) => x.r);
+
+function resumeId(user, storageKey) {
+  const hash = (letters) => letters.reduce(
+    (h, letter) => Math.imul(h ^ letter.charCodeAt(0), 0x01000193),
+    0x811c9dc5,
+  ) >>> 0;
+  const letters = [...`${user}::${storageKey}`];
+  const fwd = hash(letters).toString(16).padStart(8, '0');
+  const rev = hash(letters.reverse()).toString(16).padStart(8, '0');
+  return `00000000-0000-4000-8000-${fwd}${rev.slice(0, 4)}`;
+}
 
 const QIDS = ['q1', 'q2', 'q3'];
 const payload = (answers = ['A', 'B', '-'], extra = {}) => {
@@ -73,6 +94,20 @@ try {
   await db.exec(sql);
   await db.exec(sql); // re-runnable
   checks++;
+  if (withReconciliation) {
+    await db.exec(`
+      alter table public.homework_assignments
+        add column status text not null default 'assigned',
+        add column completed_at timestamptz,
+        add column score numeric;
+      create table public.classroom_items (
+        student_id uuid, status text, completed_at timestamptz, visible_to_student boolean,
+        unlock_at timestamptz, type text, source_table text, source_id text, metadata_json jsonb,
+        created_at timestamptz not null
+      );
+      create table public.weekly_plan_items (student_id uuid, status text, metadata_json jsonb);
+    `);
+  }
 
   const pool = 'drill::section::pt105-s2';
 
@@ -124,6 +159,14 @@ try {
   check([reload.status, reload.history_id], ['closed', historyId], 'reload of a closed sitting');
   await su();
   check(await count('select count(*) n from public.standalone_section_sittings where user_id=$1', [owner]), 1, 'no successor created');
+  if (withReconciliation) {
+    await db.exec(await readFile(new URL('../../docs/implementation-plans/artifacts/2026-11-24-standalone-section-reconciliation-proposal.sql', import.meta.url), 'utf8'));
+    await auth(owner);
+    check(await reconcile(reload.sitting_id, reload.history_id), { status: 'reconciled' }, 'previously closed row can be reconciled');
+    await su();
+    check((await one("select data->>'status' status from public.bootcamp_kv where user_id=$1 and record_id=$2",
+      [owner, resumeId(owner, `${pool}#${first.sitting_id}`)])).status, 'completed');
+  }
 
   // --- new visit after close: generation 2 ----------------------------------
   await auth(owner);
@@ -175,13 +218,86 @@ try {
   const asg = (await one('insert into public.homework_assignments(student_id,question_qids) values($1,$2) returning id', [owner, QIDS])).id;
   const foreignAsg = (await one('insert into public.homework_assignments(student_id,question_qids) values($1,$2) returning id', [other, QIDS])).id;
   await auth(owner);
-  const as = await open(`drill::assignment::${asg}`);
+  const assignmentPool = `drill::assignment::${asg}`;
+  const as = await open(assignmentPool);
+  const assignmentResumeId = resumeId(owner, `${assignmentPool}#${as.sitting_id}`);
   await denied(() => close(as.sitting_id, payload()), '22023', 'assignment sitting needs an assignment id');
   await denied(() => close(as.sitting_id, payload(undefined, { assignment_id: foreignAsg })), '42501', 'foreign assignment');
+  if (withReconciliation) {
+    await su();
+    await db.query("insert into public.classroom_items values($1,'assigned',null,true,null,'homework','homework_assignments',$2,'{}','2026-01-01')", [owner, asg]);
+    await db.query("insert into public.weekly_plan_items values($1,'assigned',jsonb_build_object('action', jsonb_build_object('ref_id',$2::text)))", [owner, asg]);
+    await db.query("insert into public.bootcamp_kv(user_id,table_name,record_id,data) values($1,'practice_sessions',$2,$3)", [
+      owner,
+      assignmentResumeId,
+      JSON.stringify({ id: assignmentResumeId, status: 'in_progress', questions: ['losing-question'], attempts: ['C'] }),
+    ]);
+    await auth(owner);
+  }
   const asDone = await close(as.sitting_id, payload(undefined, { assignment_id: asg }));
   check(asDone.status, 'created');
   await su();
   check((await one('select assignment_id, release_requires_br from public.section_history where id=$1', [asDone.history_id])), { assignment_id: asg, release_requires_br: true });
+  if (withBlindReviewQids) {
+    await db.exec(await readFile(new URL('../../docs/implementation-plans/artifacts/2026-11-24-section-blind-review-qids-PROPOSAL.sql', import.meta.url), 'utf8'));
+    await db.query('update public.homework_assignments set question_qids=$1 where id=$2', [['q3', 'replacement', 'q1'], asg]);
+
+    await auth(owner);
+    check(await blindReviewQids(asDone.history_id), QIDS, 'sealed owner receives only frozen QIDs in saved order after assignment changes');
+    check(await blindReviewQids(asDone.history_id), QIDS, 'preparation retry returns the identical frozen projection');
+    check(await blindReviewQids(historyId), [], 'an unassigned report is outside the preparation boundary');
+
+    await auth(other);
+    check(await blindReviewQids(asDone.history_id), [], 'unrelated student receives no question IDs');
+    await auth(null);
+    check(await blindReviewQids(asDone.history_id), [], 'authenticated role without a user receives no question IDs');
+    await su(); await db.exec('set role anon');
+    await denied(() => blindReviewQids(asDone.history_id), '42501', 'anon cannot call blind review preparation');
+
+    await su();
+    check(await count('select count(*) n from public.section_review_records where history_id=$1', [asDone.history_id]),
+      0, 'preparation remains read-only before blind review');
+    await db.query('update public.homework_assignments set question_qids=$1 where id=$2', [QIDS, asg]);
+  }
+  if (withReconciliation) {
+    check((await one('select status,score::text from public.homework_assignments where id=$1', [asg])),
+      { status: 'completed', score: null }, 'close commit completes homework without exposing a sealed score');
+    check((await one('select status from public.classroom_items where source_id=$1', [asg])).status, 'completed');
+    check((await one('select status from public.weekly_plan_items where student_id=$1', [owner])).status, 'completed');
+    check((await one("select data->>'status' status, data->'question_queue' queue, data->'attempts' attempts from public.bootcamp_kv where user_id=$1 and record_id=$2", [owner, assignmentResumeId])),
+      { status: 'completed', queue: QIDS, attempts: [] }, 'same commit completes resume with saved question IDs and no sealed outcomes');
+    const attemptsBefore = await count('select count(*) n from public.attempts where user_id=$1', [owner]);
+    const journalBefore = await count('select coalesce(sum(jsonb_array_length(history_json)),0) n from public.wrong_answer_journal where class_id=$1', [owner]);
+
+    await auth(other);
+    await denied(() => reconcile(as.sitting_id, asDone.history_id), '42501', 'foreign caller cannot reconcile');
+    await auth(owner);
+    await denied(() => reconcile(as.sitting_id, historyId), '42501', 'another history cannot nominate the winner');
+    // Drop the response from the original commit. The only information the
+    // reload receives is the canonical sitting and report IDs.
+    const reopened = await open(assignmentPool, { known: as.sitting_id });
+    check(reopened.status, 'closed');
+    check(await reconcile(reopened.sitting_id, reopened.history_id), { status: 'reconciled' });
+    const losingRetry = await close(as.sitting_id, payload(['B', 'B', 'B'], { assignment_id: asg }));
+    check([losingRetry.status, losingRetry.conflict], ['replayed', true]);
+    check(await reconcile(as.sitting_id, losingRetry.history_id), { status: 'reconciled' });
+
+    await su();
+    check((await one('select status,score::text from public.homework_assignments where id=$1', [asg])),
+      { status: 'completed', score: null }, 'completed homework does not reveal a sealed score');
+
+    await auth(owner);
+    const reviewed = await one("select public.save_section_blind_review_v1($1,'[]'::jsonb,null) r", [asDone.history_id]);
+    check(reviewed.r.status, 'saved');
+    await su();
+    check((await one('select status,score::text from public.homework_assignments where id=$1', [asg])),
+      { status: 'completed', score: '33.33' }, 'blind review releases the saved first-pass score');
+    check((await one("select jsonb_path_query_array(data,'$.attempts[*].selected_answer') answers from public.bootcamp_kv where user_id=$1 and record_id=$2", [owner, assignmentResumeId])).answers,
+      ['A', 'B'], 'released resume keeps the committed winner choices');
+    check(await count('select count(*) n from public.section_history where client_sitting_id=$1', [as.sitting_id]), 1);
+    check(await count('select count(*) n from public.attempts where user_id=$1', [owner]), attemptsBefore);
+    check(await count('select coalesce(sum(jsonb_array_length(history_json)),0) n from public.wrong_answer_journal where class_id=$1', [owner]), journalBefore);
+  }
 
   // --- adoption of an in-flight record --------------------------------------
   await db.query("insert into public.bootcamp_kv(user_id,table_name,record_id,data,updated_at) values($1,'practice_sessions','legacy-1',$2,'2026-11-01')",

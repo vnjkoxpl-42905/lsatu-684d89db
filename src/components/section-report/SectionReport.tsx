@@ -171,6 +171,11 @@ export function SectionReport({
         pt={result.pt}
         section={result.section}
         reason={result.reason}
+        onRetryBlindReviewPreparation={
+          result.blindReviewPreparationFailed && onStartBlindReview
+            ? () => setRetryCount((count) => count + 1)
+            : undefined
+        }
         onBack={onBack}
         backLabel={backLabel}
         pendingPrediction={pendingPrediction}

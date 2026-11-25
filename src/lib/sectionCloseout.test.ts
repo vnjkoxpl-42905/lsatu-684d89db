@@ -2,7 +2,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 
 const rpc = vi.fn();
 const sittingRowLookup = vi.fn();
-const latestGenerationLookup = vi.fn();
+const generationLookup = vi.fn();
 vi.mock('@/integrations/supabase/client', () => ({
   supabase: {
     rpc: (...a: unknown[]) => rpc(...a),
@@ -12,12 +12,8 @@ vi.mock('@/integrations/supabase/client', () => ({
           select: () => ({
             eq: (_col: string, val: string) => ({
               maybeSingle: async () => sittingRowLookup(val),
-              eq: (_col2: string, poolKey: string) => ({
-                order: () => ({
-                  limit: () => ({
-                    maybeSingle: async () => latestGenerationLookup(val, poolKey),
-                  }),
-                }),
+              eq: (col2: string, sittingId: string) => ({
+                maybeSingle: async () => generationLookup(_col, val, col2, sittingId),
               }),
             }),
           }),
@@ -37,6 +33,7 @@ vi.mock('@/lib/questionLoader', () => ({
 
 import {
   buildCloseoutPayload,
+  fetchSectionSittingGeneration,
   initStandaloneSitting,
   isStandalonePoolKey,
   runStandaloneCloseout,
@@ -59,7 +56,7 @@ beforeEach(() => {
   localStorage.clear();
   getQuestion.mockImplementation((qid: string) => q(qid));
   sittingRowLookup.mockResolvedValue({ data: null, error: null });
-  latestGenerationLookup.mockResolvedValue({ data: null, error: null });
+  generationLookup.mockResolvedValue({ data: null, error: null });
 });
 
 describe('isStandalonePoolKey', () => {
@@ -199,13 +196,13 @@ describe('initStandaloneSitting (Phase 1.3)', () => {
     expect(readCachedSitting('u1', poolKey)).toEqual({ id: 'sit-2', generation: 2 });
   });
 
-  it('only explicit restart passes p_restart: true with the cached generation as p_expected_generation', async () => {
-    rpc.mockResolvedValueOnce({ data: { status: 'open', sitting_id: 'sit-1', generation: 2, history_id: null }, error: null });
+  it('only explicit restart passes p_restart: true with the displayed generation', async () => {
+    rpc.mockResolvedValueOnce({ data: { status: 'open', sitting_id: 'sit-1', generation: 4, history_id: null }, error: null });
     await initStandaloneSitting({ userId: 'u1', poolKey });
     rpc.mockClear();
 
     rpc.mockResolvedValueOnce({ data: { status: 'open', sitting_id: 'sit-3', generation: 3, history_id: null }, error: null });
-    const reply = await initStandaloneSitting({ userId: 'u1', poolKey, restart: true });
+    const reply = await initStandaloneSitting({ userId: 'u1', poolKey, restart: true, expectedGeneration: 2 });
     expect(reply).toMatchObject({ status: 'open', sittingId: 'sit-3', generation: 3 });
     expect(rpc.mock.calls[0][1]).toMatchObject({
       p_restart: true,
@@ -279,22 +276,23 @@ describe('initStandaloneSitting (Phase 1.3)', () => {
     expect((unAdoptedReopen as { legacyPoolKey?: string | null }).legacyPoolKey).toBe(poolKey);
   });
 
-  it('requires an explicit or server generation when restarting and never defaults to 1 (F5)', async () => {
+  it('looks up the displayed sitting by owner and exact id before a saved-page retake', async () => {
+    generationLookup.mockResolvedValueOnce({ data: { generation: 2 }, error: null });
+    await expect(fetchSectionSittingGeneration('u1', 'sit-old')).resolves.toBe(2);
+    expect(generationLookup).toHaveBeenCalledWith('user_id', 'u1', 'id', 'sit-old');
+  });
+
+  it('requires an explicit generation even when the device has a cached generation (F5)', async () => {
+    rpc.mockResolvedValueOnce({
+      data: { status: 'open', sitting_id: 'sit-4', generation: 4, history_id: null },
+      error: null,
+    });
+    await initStandaloneSitting({ userId: 'u1', poolKey });
+    rpc.mockClear();
+
     await expect(
       initStandaloneSitting({ userId: 'u1', poolKey, restart: true }),
     ).rejects.toThrow(/generation/i);
     expect(rpc).not.toHaveBeenCalled();
-
-    latestGenerationLookup.mockResolvedValueOnce({ data: { generation: 4 }, error: null });
-    rpc.mockResolvedValueOnce({
-      data: { status: 'open', sitting_id: 'sit-5', generation: 5, history_id: null },
-      error: null,
-    });
-    const fromServerGen = await initStandaloneSitting({ userId: 'u1', poolKey, restart: true });
-    expect(fromServerGen.generation).toBe(5);
-    expect(rpc.mock.calls[0][1]).toMatchObject({
-      p_restart: true,
-      p_expected_generation: 4,
-    });
   });
 });

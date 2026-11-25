@@ -28,8 +28,6 @@ interface LRSectionResultsProps {
    * writes nothing: no second history row, no second journal pass (audit F2, F3).
    */
   savedHistoryId?: string | null;
-  /** The close-out call that just ran created the row (not a replay). */
-  savedHistoryCreatedNow?: boolean;
   /** Opens the read-only walk over the saved section (with optional clicked qid + row). */
   onReviewSection?: (qid?: string, row?: SectionHistoryRow) => void;
   /** Opens blind review from the results screen when it was skipped earlier. */
@@ -58,7 +56,6 @@ export function LRSectionResults({
   onRetryPrediction,
   refreshKey,
   savedHistoryId,
-  savedHistoryCreatedNow,
 }: LRSectionResultsProps) {
   const { user } = useAuth();
   const savedRef = React.useRef(false);
@@ -78,10 +75,7 @@ export function LRSectionResults({
       if (!user || savedRef.current) return;
       savedRef.current = true;
 
-      if (savedHistoryId) {
-        if (savedHistoryCreatedNow) void emailSectionReport(savedHistoryId);
-        return;
-      }
+      if (savedHistoryId) return;
 
       try {
         const stats = buildSectionStats(session, brResults);

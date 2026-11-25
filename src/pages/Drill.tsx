@@ -73,6 +73,7 @@ import {
 import {
   initStandaloneSitting,
   isStandalonePoolKey,
+  reconcileStandaloneSection,
   runStandaloneCloseout,
   storageKeyForSitting,
 } from '@/lib/sectionCloseout';
@@ -174,7 +175,7 @@ import {
   isResumableGuidedSession,
 } from '@/lib/guidedDrillSession';
 import {
-  clearSectionDeviceBackup,
+  clearReconciledSectionDeviceBackup,
   drillResumeKey,
   loadDrillResumeSession,
   saveDrillResumeSnapshot,
@@ -184,7 +185,6 @@ import {
   isResumableDrillSession,
   isSpentDrillSession,
   SectionRevisionConflictError,
-  setAccountSectionRevision,
 } from '@/lib/drillResumeSession';
 import {
   createStandaloneDrillRun,
@@ -350,16 +350,13 @@ function DrillContent() {
   const [standaloneSitting, setStandaloneSitting] = React.useState<{
     id: string;
     generation: number;
-    adoptedRevision: string | null;
     storageKey: string;
   } | null>(null);
   const standaloneSittingRef = React.useRef<{
     id: string;
     generation: number;
-    adoptedRevision: string | null;
     storageKey: string;
   } | null>(null);
-  const adoptedLegacyKeyRef = React.useRef<string | null>(null);
   const [retakeNonce, setRetakeNonce] = React.useState(0);
   const pendingRestartRef = React.useRef(false);
   const pendingRestartGenRef = React.useRef<number | null>(null);
@@ -760,6 +757,7 @@ function DrillContent() {
         requestedStandaloneRunId ?? null,
         mcPracticePool?.slug ?? null,
         initialIndexParam ?? null,
+        retakeNonce,
       ]);
       if (sessionInitKeyRef.current === initKey) return;
       sessionInitKeyRef.current = initKey;
@@ -1122,24 +1120,29 @@ function DrillContent() {
       }
       let activeResumeKey = genericResumeKey;
       let activeLegacyKey = genericLegacyResumeKey;
-      let adoptedLegacyBackupKey: string | null = null;
+      let adoptionRevision: string | null = null;
       if (isStandaloneSection && baseGenericResumeKey && user) {
         const urlRestart = searchParams.get('restart') === '1' && !handledUrlRestartRef.current;
-        const shouldRestart = pendingRestartRef.current || urlRestart;
-        const expectedGeneration = pendingRestartGenRef.current;
+        const historicalRetake = searchParams.get('historicalRetake') === '1' && !handledUrlRestartRef.current;
+        const urlGeneration = Number(searchParams.get('gen'));
+        const boundUrlRestart = urlRestart && Number.isSafeInteger(urlGeneration) && urlGeneration > 0;
+        const shouldRestart = pendingRestartRef.current || boundUrlRestart;
+        const expectedGeneration = pendingRestartRef.current ? pendingRestartGenRef.current : urlGeneration;
         pendingRestartRef.current = false;
         pendingRestartGenRef.current = null;
-        if (urlRestart) {
+        if (urlRestart || historicalRetake) {
           handledUrlRestartRef.current = true;
           const nextParams = new URLSearchParams(searchParams);
           nextParams.delete('restart');
           nextParams.delete('gen');
+          nextParams.delete('historicalRetake');
           setSearchParams(nextParams, { replace: true });
         }
         const reply = await initStandaloneSitting({
           userId: user.id,
           poolKey: baseGenericResumeKey,
           ...(shouldRestart ? { restart: true, expectedGeneration } : {}),
+          ...(historicalRetake || (urlRestart && !boundUrlRestart) ? { fromHistoricalReport: true } : {}),
         });
         if (reply.status === 'closed' && reply.historyId) {
           const closedStorageKey =
@@ -1148,30 +1151,10 @@ function DrillContent() {
               sittingId: reply.sittingId,
               adopted: reply.adopted,
             });
-          try {
-            const storedClosed = await loadDrillResumeSession(
-              user.id,
-              closedStorageKey,
-              reply.legacyPoolKey ?? null,
-            );
-            if (storedClosed && storedClosed.status !== 'completed') {
-              await completeDrillResumeSession(user.id, closedStorageKey, {
-                questionQueue: storedClosed.question_queue,
-                currentIndex: storedClosed.current_index,
-                attempts: storedClosed.attempts,
-                elapsedMs: storedClosed.elapsed_ms,
-                timerMode: storedClosed.timer_mode,
-                timerCustomMinutes: storedClosed.timer_custom_minutes,
-                regulationAnsweredQids: storedClosed.regulation_answered_qids,
-              });
-            }
-          } catch (err) {
-            console.warn('[drill:section] closed sitting resume finalization failed', err);
-          }
-          if (reply.legacyPoolKey) {
-            clearSectionDeviceBackup(user.id, reply.legacyPoolKey);
-          }
+          await reconcileStandaloneSection(reply.sittingId, reply.historyId);
+          clearReconciledSectionDeviceBackup(user.id, closedStorageKey);
           genericFinalizedRef.current = true;
+          if (baseGenericResumeKey.startsWith('drill::section::')) void emailSectionReport(reply.historyId);
           navigate(`/review/section/${encodeURIComponent(reply.historyId)}`, { replace: true });
           return;
         }
@@ -1185,19 +1168,14 @@ function DrillContent() {
           const sittingInfo = {
             id: reply.sittingId,
             generation: reply.generation,
-            adoptedRevision: reply.adoptedRevision ?? null,
             storageKey: activeStorageKey,
           };
           standaloneSittingRef.current = sittingInfo;
           setStandaloneSitting(sittingInfo);
           activeResumeKey = activeStorageKey;
-          if (reply.adoptedRevision) {
-            setAccountSectionRevision(user.id, activeResumeKey, reply.adoptedRevision);
-          }
+          adoptionRevision = reply.adoptedRevision ?? null;
           if (reply.legacyPoolKey) {
             activeLegacyKey = reply.legacyPoolKey;
-            adoptedLegacyBackupKey = reply.legacyPoolKey;
-            adoptedLegacyKeyRef.current = reply.legacyPoolKey;
           }
         }
       }
@@ -1206,6 +1184,7 @@ function DrillContent() {
           user.id,
           activeResumeKey,
           activeLegacyKey,
+          adoptionRevision,
         );
         // A finished assignment's row is that sitting's record. This mount
         // must never write over it: a reload during blind review re-mounts
@@ -1214,9 +1193,7 @@ function DrillContent() {
         if (assignmentId && stored?.status === 'completed') {
           genericFinalizedRef.current = true;
         }
-        const pendingDeviceBackup =
-          hasPendingSectionDeviceBackup(user.id, activeResumeKey) ||
-          (adoptedLegacyBackupKey ? hasPendingSectionDeviceBackup(user.id, adoptedLegacyBackupKey) : false);
+        const pendingDeviceBackup = hasPendingSectionDeviceBackup(user.id, activeResumeKey);
         if (isResumableDrillSession(stored)) {
           if (mode === 'full-section' && pendingDeviceBackup) {
             // The newest device copy has not been acknowledged by the account.
@@ -1294,9 +1271,11 @@ function DrillContent() {
   }, [state, navigate, classId, classIdLoading, qbLoading, settings.allowRepeats, settings.preferUnseen, settings.recycleAfterDays, initialIndexParam, isMcPractice, mcPracticePool, guidedSessionKey, guidedLegacySessionKey, baseGenericResumeKey, isStandaloneSection, genericLegacyResumeKey, standaloneSourceKey, requestedStandaloneRunId, userId, retakeNonce]);
 
   const handleStartOver = React.useCallback(() => {
-    if (!baseGenericResumeKey || assignmentId || ptRun) return;
+    const generation = standaloneSittingRef.current?.generation;
+    if (!baseGenericResumeKey || assignmentId || ptRun || !generation || pendingRestartRef.current) return;
     pendingRestartRef.current = true;
-    pendingRestartGenRef.current = standaloneSittingRef.current?.generation ?? null;
+    pendingRestartGenRef.current = generation;
+    savedCloseoutStatsRef.current = null;
     standaloneSittingRef.current = null;
     setStandaloneSitting(null);
     setPostSectionScreen(null);
@@ -1542,16 +1521,7 @@ function DrillContent() {
     if (!snapshot) return;
     setRetryingSectionSave(true);
     try {
-      await saveDrillResumeSnapshot(user.id, genericResumeKey, snapshot, {
-        expectedUpdatedAt: standaloneSittingRef.current?.adoptedRevision ?? undefined,
-      });
-      if (standaloneSittingRef.current?.adoptedRevision) {
-        standaloneSittingRef.current = { ...standaloneSittingRef.current, adoptedRevision: null };
-      }
-      if (adoptedLegacyKeyRef.current) {
-        clearSectionDeviceBackup(user.id, adoptedLegacyKeyRef.current);
-        adoptedLegacyKeyRef.current = null;
-      }
+      await saveDrillResumeSnapshot(user.id, genericResumeKey, snapshot);
       setSectionRevisionConflict(false);
       setSectionSaveError(false);
       timerRef.current?.resume();
@@ -3151,10 +3121,6 @@ function DrillContent() {
     if (!snapshot) return;
     try {
       await completeDrillResumeSession(user.id, genericResumeKey, snapshot);
-      if (adoptedLegacyKeyRef.current) {
-        clearSectionDeviceBackup(user.id, adoptedLegacyKeyRef.current);
-        adoptedLegacyKeyRef.current = null;
-      }
     } catch (err) {
       // Non-fatal: the attempts are already saved; this only affects resume.
       console.error('[drill:resume:complete] resume row write failed', {
@@ -3263,16 +3229,7 @@ function DrillContent() {
       if (!snapshot) throw new Error('Could not save this section.');
       // Save the destination and current answer together. No question change is
       // visible until the account has acknowledged this exact snapshot.
-      await saveDrillResumeSnapshot(user.id, genericResumeKey, snapshot, {
-        expectedUpdatedAt: standaloneSittingRef.current?.adoptedRevision ?? undefined,
-      });
-      if (standaloneSittingRef.current?.adoptedRevision) {
-        standaloneSittingRef.current = { ...standaloneSittingRef.current, adoptedRevision: null };
-      }
-      if (adoptedLegacyKeyRef.current) {
-        clearSectionDeviceBackup(user.id, adoptedLegacyKeyRef.current);
-        adoptedLegacyKeyRef.current = null;
-      }
+      await saveDrillResumeSnapshot(user.id, genericResumeKey, snapshot);
       if (nextIndex !== session.currentIndex || attempts) setSession(nextSession);
       return true;
     } catch (err) {
@@ -3503,6 +3460,7 @@ function DrillContent() {
     const atomicCloseout = session.mode === 'full-section' && !guidedSessionKey && !!user
       && isStandalonePoolKey(baseGenericResumeKey);
     if (atomicCloseout) {
+      let committed = false;
       try {
         const reply = await runStandaloneCloseout({
           userId: user!.id,
@@ -3511,18 +3469,33 @@ function DrillContent() {
           assignmentId,
           sittingId: standaloneSittingRef.current?.id ?? null,
         });
-        if (reply.status === 'stale' || !reply.historyId) {
+        if (reply.status === 'stale' || !reply.historyId || !reply.sittingId) {
           toast.error('This section was restarted in another tab. Reload to continue there.');
           return;
         }
+        // The saved winner alone supplies assignment and completed-resume
+        // values. In-progress autosaves must stop once close-out has committed.
+        committed = true;
+        genericFinalizedRef.current = true;
+        await reconcileStandaloneSection(reply.sittingId, reply.historyId);
+        if (standaloneSittingRef.current?.id === reply.sittingId && genericResumeKey) {
+          clearReconciledSectionDeviceBackup(user!.id, genericResumeKey);
+        }
         if (reply.conflict) {
           toast.info('This section was already submitted from another tab. Showing the saved result.');
+        }
+        if (!assignmentId) void emailSectionReport(reply.historyId);
+        if (reply.status === 'replayed') {
+          navigate(`/review/section/${encodeURIComponent(reply.historyId)}`, { replace: true });
+          return;
         }
         setSectionHistoryId(reply.historyId);
         setSectionCreatedNow(reply.createdNow);
         savedCloseoutStatsRef.current = reply.questions ?? null;
       } catch (e) {
-        toast.error("Your section didn't save. Check your connection and press Finish again.");
+        toast.error(committed
+          ? 'Your answers saved. Press Finish again to load your report.'
+          : "Your section didn't save. Check your connection and press Finish again.");
         throw e;
       }
     }
@@ -3567,7 +3540,7 @@ function DrillContent() {
     await finalizeGuidedAssignment();
 
     // Close the applicable account-owned sitting before opening its results.
-    await finalizeDrillResumeSession(updatedAttempts);
+    if (!atomicCloseout) await finalizeDrillResumeSession(updatedAttempts);
     if (standaloneSourceKey && !genericFinalizedRef.current) {
       try {
         await persistStandaloneSession(updatedSession, true);
@@ -3583,7 +3556,7 @@ function DrillContent() {
     // and no "Mark done" to press. Quiet by design: a failure here leaves the
     // card up, which is where we already were, and must never interrupt the
     // results screen.
-    if (session.mode === 'full-section' && user && session.fullSectionConfig) {
+    if (!atomicCloseout && session.mode === 'full-section' && user && session.fullSectionConfig) {
       await closeOutAssignedSection(
         user.id,
         session.fullSectionConfig.pt,
@@ -3596,7 +3569,7 @@ function DrillContent() {
     // card never leaves Home. Attempts are already committed above; the score
     // is written for Joshua and is not shown to her, because a sealed section
     // reveals nothing until blind review is done.
-    if (assignmentId && user) {
+    if (!atomicCloseout && assignmentId && user) {
       const score = homeworkScore(session.questionQueue.length, updatedAttempts);
       try {
         await closeOutHomeworkAssignment(assignmentId, user.id, score);
@@ -4000,6 +3973,16 @@ function DrillContent() {
     }
   };
 
+  const continueAfterSectionPrediction = () => {
+    if (sectionHistoryId && !sectionCreatedNow) {
+      // A replay may have won in another tab. The saved report owns the
+      // question order and first-pass outcomes for its blind review.
+      navigate(`/review/section/${encodeURIComponent(sectionHistoryId)}`, { replace: true });
+      return;
+    }
+    setPostSectionScreen(assignmentId ? 'review' : 'complete');
+  };
+
   // Handle session completion and post-section flow
   // Show post-section screens (must be BEFORE the session/currentQuestion check)
   if (postSectionScreen === 'predict' && session) {
@@ -4008,13 +3991,13 @@ function DrillContent() {
         total={session.questionQueue.length}
         onPredict={(score) => {
           setPredictedScore(score);
-          setPostSectionScreen(assignmentId ? 'review' : 'complete');
+          continueAfterSectionPrediction();
           // Saved to its own record; a failure never blocks the student.
           if (sectionHistoryId) {
             void persistPredictionScore(sectionHistoryId, score);
           }
         }}
-        onSkip={() => setPostSectionScreen(assignmentId ? 'review' : 'complete')}
+        onSkip={continueAfterSectionPrediction}
       />
     );
   }
@@ -4060,10 +4043,13 @@ function DrillContent() {
             // No attempts rows (audit F4). A failure keeps the student here
             // with their answers so the save can be retried.
             try {
-              await saveSectionBlindReview(sectionHistoryId, results, {
-                savedQuestions: savedCloseoutStatsRef.current ?? undefined,
-                session,
-              });
+              const savedQuestions = savedCloseoutStatsRef.current;
+              await saveSectionBlindReview(
+                sectionHistoryId,
+                results,
+                savedQuestions ? { savedQuestions, session } : undefined,
+              );
+              if (assignmentId) void emailSectionReport(sectionHistoryId);
             } catch (error) {
               console.error('[drill:br] save failed', error);
               toast.error("Your blind review didn't save. Press Finish review again.");
@@ -4185,7 +4171,6 @@ function DrillContent() {
           }
           refreshKey={reportRefreshKey}
           savedHistoryId={sectionHistoryId}
-          savedHistoryCreatedNow={sectionCreatedNow}
         />
       );
     }
