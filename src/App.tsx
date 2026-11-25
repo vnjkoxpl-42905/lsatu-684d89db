@@ -675,8 +675,6 @@ const App = () => {
                       <Route path={REVIEW_HUB_ROUTES.imported.path} element={<ProtectedRoute flag={[...REVIEW_HUB_ROUTES.imported.flags]}><ImportedWorkPage /></ProtectedRoute>} />
                       <Route path={REVIEW_HUB_ROUTES.queue.path} element={<ProtectedRoute allowSignedIn={REVIEW_HUB_ROUTES.queue.allowSignedIn}><ReviewQueuePage /></ProtectedRoute>} />
                       <Route path="activity/:assignmentId/:itemOrder" element={<ActivityAssignmentGate><ActivityReviewDetail /></ActivityAssignmentGate>} />
-                      <Route path="section/:historyId" element={<OwnedWorkReviewGate kind="section"><SectionReportPage /></OwnedWorkReviewGate>} />
-                      <Route path="section/:historyId/:qid" element={<OwnedWorkReviewGate kind="section"><SectionReviewDetail /></OwnedWorkReviewGate>} />
                       <Route path="intro-lr/:attemptId" element={<OwnedWorkReviewGate kind="intro-lr"><IntroLrReviewDetail /></OwnedWorkReviewGate>} />
                       <Route path="hard-sentences/:sourceKind/:attemptKey" element={<OwnedWorkReviewGate kind="hard-sentences"><HardSentencesReviewDetail /></OwnedWorkReviewGate>} />
                       <Route path="native-lab/:attemptId" element={<OwnedWorkReviewGate kind="native-lab"><NativeLabReviewDetail /></OwnedWorkReviewGate>} />
@@ -684,6 +682,8 @@ const App = () => {
                       <Route path={REVIEW_HUB_ROUTES.flagged.path} element={<ProtectedRoute flag={REVIEW_HUB_ROUTES.flagged.flag}><ReviewIndexList section="flagged" /></ProtectedRoute>} />
                     </Route>
 
+                    <Route path="/review/section/:historyId" element={<ProtectedRoute allowSignedIn><OwnedWorkReviewGate kind="section"><SectionReportPage /></OwnedWorkReviewGate></ProtectedRoute>} />
+                    <Route path="/review/section/:historyId/:qid" element={<ProtectedRoute allowSignedIn><OwnedWorkReviewGate kind="section"><SectionReviewDetail /></OwnedWorkReviewGate></ProtectedRoute>} />
                     {REVIEW_HUB_ALIASES.map(({path, to}) => <Route key={path} path={path} element={<RedirectWithSearch to={to} />} />)}
 
                     <Route path="/library" element={<ProtectedRoute allowSignedIn><StudentDestination destination="library" /></ProtectedRoute>}>

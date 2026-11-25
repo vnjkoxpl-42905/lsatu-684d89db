@@ -325,8 +325,31 @@ describe('SectionReport', () => {
       </MemoryRouter>,
     );
     await screen.findByText(/PT130\.S2/);
-    fireEvent.click(screen.getAllByText('Flaw')[1]);
+    fireEvent.click(screen.getByRole('button', { name: /^Q1\b/ }));
     fireEvent.click(screen.getByRole('button', { name: /Open in review walk/i }));
     expect(onReviewSection).toHaveBeenCalledWith('pt130-s2-q1', baseRow);
+  });
+
+  it('sorts filtered questions by time spent and restores question order', async () => {
+    const [first, second] = baseRow.questions;
+    mockFetchOwnedSectionReport.mockResolvedValue({
+      state: 'released',
+      row: { ...baseRow, questions: [first, { ...second, timeMs: 120_000 }] },
+    });
+    render(<MemoryRouter><SectionReport historyId="hist-1" onBack={vi.fn()} /></MemoryRouter>);
+
+    const sort = await screen.findByRole('combobox', { name: 'Sort by' });
+    const firstQuestion = () => screen.getAllByRole('button', { name: /^Q\d+\b/ })[0];
+    expect(firstQuestion()).toHaveTextContent('Q1');
+
+    fireEvent.change(sort, { target: { value: 'time' } });
+    expect(firstQuestion()).toHaveTextContent('Q2');
+    fireEvent.click(screen.getByRole('button', { name: /^Incorrect\b/ }));
+    expect(screen.getAllByRole('button', { name: /^Q\d+\b/ })).toHaveLength(1);
+    fireEvent.click(screen.getByRole('button', { name: /^All questions\b/ }));
+    expect(firstQuestion()).toHaveTextContent('Q2');
+
+    fireEvent.change(sort, { target: { value: 'question' } });
+    expect(firstQuestion()).toHaveTextContent('Q1');
   });
 });

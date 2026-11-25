@@ -175,6 +175,14 @@ export function SectionReportView({
   const [expandedRows, setExpandedRows] = React.useState<Set<string>>(new Set());
   const [activeFilter, setActiveFilter] = React.useState<string | null>(null);
   const [showAllTypes, setShowAllTypes] = React.useState(false);
+  const [sortByTime, setSortByTime] = React.useState(false);
+  const questionHeading = React.useRef<HTMLHeadingElement>(null);
+
+  const filterFromBreakdown = (filter: string | null) => {
+    setActiveFilter(filter);
+    questionHeading.current?.focus({ preventScroll: true });
+    questionHeading.current?.scrollIntoView?.({ block: 'start' });
+  };
 
   const {
     stats,
@@ -279,6 +287,8 @@ export function SectionReportView({
     }
   }
 
+  displayStats.sort((a, b) => (sortByTime ? b.timeMs - a.timeMs : 0) || a.qnum - b.qnum);
+
   const outcomeFilters = [
     { value: null, label: 'All questions', count: stats.length },
     { value: 'incorrect', label: 'Incorrect', count: stats.filter((stat) => !stat.initialCorrect && stat.initialAnswer && stat.initialAnswer !== UNANSWERED).length },
@@ -324,7 +334,7 @@ export function SectionReportView({
 
       {/* Summary */}
       <div className="border-b border-border bg-card">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
           {pendingPrediction != null && onRetryPrediction && (
             <div className="mb-6">
               <PredictionRetryBanner
@@ -335,13 +345,13 @@ export function SectionReportView({
             </div>
           )}
           <dl className={cn(
-            'mb-6 grid overflow-hidden rounded-2xl border border-border bg-white',
-            brScore !== null && 'sm:grid-cols-3',
+            'mb-4 grid overflow-hidden rounded-2xl border border-border bg-white',
+            brScore !== null && 'grid-cols-3',
           )}>
-            <div className="space-y-2 bg-[var(--section-finish-score)] px-5 py-5 sm:px-7">
+            <div className="min-w-0 space-y-2 bg-[var(--section-finish-score)] px-3 py-4 sm:px-6">
               <dt className="text-sm font-medium text-muted-foreground">Initial Score</dt>
               <dd className="flex flex-wrap items-baseline gap-x-3 gap-y-1 tabular-nums">
-                <span className="font-serif text-4xl font-semibold">{initialScore}<span className="ml-1 text-xl font-normal text-muted-foreground">/{initialTotal}</span></span>
+                <span className="font-serif text-3xl font-semibold sm:text-4xl">{initialScore}<span className="ml-1 text-base font-normal sm:text-xl text-muted-foreground">/{initialTotal}</span></span>
                 <span className="text-sm font-medium">{initialPercent}%</span>
               </dd>
               {typeof predictedScore === 'number' ? (
@@ -360,16 +370,16 @@ export function SectionReportView({
             </div>
             {brScore !== null && (
               <>
-                <div className="space-y-2 border-t border-border px-5 py-5 sm:border-l sm:border-t-0 sm:px-7">
+                <div className="min-w-0 space-y-2 border-l border-border px-3 py-4 sm:px-6">
                   <dt className="text-sm font-medium text-muted-foreground">Blind Review</dt>
                   <dd className="flex flex-wrap items-baseline gap-x-3 gap-y-1 tabular-nums">
-                    <span className="font-serif text-4xl font-semibold">{brScore}<span className="ml-1 text-xl font-normal text-muted-foreground">/{initialTotal}</span></span>
+                    <span className="font-serif text-3xl font-semibold sm:text-4xl">{brScore}<span className="ml-1 text-base font-normal sm:text-xl text-muted-foreground">/{initialTotal}</span></span>
                     {brPercent !== null && <span className="text-sm font-medium">{brPercent}%</span>}
                   </dd>
                 </div>
-                <div className="space-y-2 border-t border-border px-5 py-5 sm:border-l sm:border-t-0 sm:px-7">
+                <div className="min-w-0 space-y-2 border-l border-border px-3 py-4 sm:px-6">
                   <dt className="text-sm font-medium text-muted-foreground">Score change</dt>
-                  <dd className="font-serif text-4xl font-semibold tabular-nums">
+                  <dd className="font-serif text-3xl font-semibold sm:text-4xl tabular-nums">
                     {delta === null ? '–' : `${delta > 0 ? '+' : ''}${delta}`}
                   </dd>
                 </div>
@@ -378,7 +388,7 @@ export function SectionReportView({
           </dl>
 
           {/* Stat Chips */}
-          <div className="flex items-center justify-center gap-6 mb-6">
+          <div className="flex items-center justify-center gap-6">
             <div className="text-center">
               <div className="text-sm font-medium">{formatClock(totalTimeMs)}</div>
               <div className="text-xs text-muted-foreground">Total Time</div>
@@ -397,7 +407,7 @@ export function SectionReportView({
 
           {/* Regulation vs overtime split */}
           {regulationSplit && (
-            <div className="mb-6 mx-auto max-w-xl rounded-lg border border-border bg-background/50 px-4 py-3 text-center text-sm">
+            <div className="mt-4 mx-auto max-w-xl rounded-lg border border-border bg-background/50 px-4 py-3 text-center text-sm">
               <span className="font-medium">
                 At time: {regulationSplit.correct}/{regulationSplit.answered} on the{' '}
                 {regulationSplit.answered} questions you answered.
@@ -409,167 +419,8 @@ export function SectionReportView({
               </span>
             </div>
           )}
-
-          {/* Top 3 Focus Areas & by-type table */}
-          {hasDetail && focusAreas.length > 0 && (
-            <div className="mb-6">
-              <div className="text-xs text-muted-foreground mb-3 text-center">Top 3 Focus Areas</div>
-              <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6">
-                {focusAreas.map((area) => (
-                  <button
-                    key={`top-${area.qtype}`}
-                    type="button"
-                    onClick={() =>
-                      setActiveFilter(
-                        activeFilter === `qtype:${area.qtype}` ? null : `qtype:${area.qtype}`,
-                      )
-                    }
-                    className={cn(
-                      'flex flex-col items-center gap-2 p-3 rounded-lg transition-colors',
-                      activeFilter === `qtype:${area.qtype}`
-                        ? 'bg-primary/10 ring-2 ring-primary'
-                        : 'hover:bg-accent/30',
-                    )}
-                  >
-                    <ScoreRing
-                      value={area.accuracy}
-                      total={100}
-                      radius={28}
-                      strokeWidth={4}
-                      arcClassName={area.accuracy < 50 ? 'text-destructive' : 'text-primary'}
-                      tooltip={`${area.correct} / ${area.total}`}
-                      compact
-                    >
-                      <div className="text-sm font-bold">{area.accuracy}%</div>
-                    </ScoreRing>
-                    <div className="text-xs font-medium">{area.qtype}</div>
-                    <div className="text-xs text-muted-foreground">
-                      {area.correct}/{area.total}
-                    </div>
-                  </button>
-                ))}
-              </div>
-
-              {allFocusAreas.length > focusAreas.length && (
-                <div className="mt-4 flex justify-center">
-                  <button
-                    type="button"
-                    onClick={() => setShowAllTypes((v) => !v)}
-                    className="inline-flex items-center gap-1 text-xs font-medium text-muted-foreground hover:text-foreground transition-colors"
-                    aria-expanded={showAllTypes}
-                  >
-                    {showAllTypes ? 'Hide' : 'Show all types'}
-                    {showAllTypes ? (
-                      <ChevronUp className="w-3.5 h-3.5" />
-                    ) : (
-                      <ChevronDown className="w-3.5 h-3.5" />
-                    )}
-                  </button>
-                </div>
-              )}
-
-              {showAllTypes && (
-                <div className="mt-3 max-w-xl mx-auto divide-y divide-border rounded-lg border border-border bg-card overflow-hidden">
-                  {allFocusAreas.map((area) => {
-                    const isActive = activeFilter === `qtype:${area.qtype}`;
-                    return (
-                      <button
-                        key={`all-${area.qtype}`}
-                        type="button"
-                        onClick={() =>
-                          setActiveFilter(isActive ? null : `qtype:${area.qtype}`)
-                        }
-                        className={cn(
-                          'w-full flex items-center gap-3 px-3 py-2 text-left transition-colors',
-                          isActive
-                            ? 'bg-primary/10 ring-1 ring-inset ring-primary'
-                            : 'hover:bg-accent/40',
-                        )}
-                      >
-                        <div className="flex-1 min-w-0 text-sm font-medium truncate">
-                          {area.qtype}
-                        </div>
-                        <div className="text-xs font-mono text-muted-foreground tabular-nums">
-                          {area.correct}/{area.total}
-                        </div>
-                        <div
-                          className={cn(
-                            'text-xs font-semibold tabular-nums w-10 text-right',
-                            area.accuracy < 50 ? 'text-destructive' : 'text-foreground',
-                          )}
-                        >
-                          {area.accuracy}%
-                        </div>
-                        <div className="text-xs text-muted-foreground tabular-nums w-12 text-right">
-                          {formatClock(area.avgTimeMs)}
-                        </div>
-                      </button>
-                    );
-                  })}
-                </div>
-              )}
-            </div>
-          )}
-
-          {/* Difficulty Distribution */}
-          {hasDetail && (
-            <div>
-              <div className="text-xs text-muted-foreground mb-3 text-center">
-                Difficulty Distribution
-              </div>
-              <div className="flex items-center gap-3 max-w-xl mx-auto">
-                <button
-                  type="button"
-                  onClick={() => setActiveFilter(activeFilter === 'easy' ? null : 'easy')}
-                  className={cn(
-                    'flex-1 px-3 sm:px-4 py-2 rounded-lg transition-colors text-xs sm:text-sm font-medium',
-                    activeFilter === 'easy'
-                      ? 'bg-green-100 ring-2 ring-green-600'
-                      : 'bg-muted hover:bg-accent',
-                  )}
-                >
-                  Easy: {difficultyDist.easy}
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setActiveFilter(activeFilter === 'medium' ? null : 'medium')}
-                  className={cn(
-                    'flex-1 px-3 sm:px-4 py-2 rounded-lg transition-colors text-xs sm:text-sm font-medium',
-                    activeFilter === 'medium'
-                      ? 'bg-yellow-100 ring-2 ring-yellow-600'
-                      : 'bg-muted hover:bg-accent',
-                  )}
-                >
-                  Medium: {difficultyDist.medium}
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setActiveFilter(activeFilter === 'hard' ? null : 'hard')}
-                  className={cn(
-                    'flex-1 px-3 sm:px-4 py-2 rounded-lg transition-colors text-xs sm:text-sm font-medium',
-                    activeFilter === 'hard'
-                      ? 'bg-red-100 ring-2 ring-red-600'
-                      : 'bg-muted hover:bg-accent',
-                  )}
-                >
-                  Hard: {difficultyDist.hard}
-                </button>
-              </div>
-            </div>
-          )}
         </div>
       </div>
-
-      {/* Diagnosis */}
-      {analysis && (
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 mt-6">
-          <SectionDiagnosisBlock
-            analysis={analysis}
-            analysisSource={analysisSource}
-            brUsed={brUsed}
-          />
-        </div>
-      )}
 
       {/* Question Table */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 mt-6 space-y-2">
@@ -580,8 +431,18 @@ export function SectionReportView({
         ) : (
           <>
             <div className="flex flex-wrap items-baseline justify-between gap-2">
-              <h2 className="font-serif text-2xl font-semibold">Question review</h2>
-              <span className="text-sm text-muted-foreground">{displayStats.length} of {stats.length} questions</span>
+              <h2 ref={questionHeading} tabIndex={-1} className="scroll-mt-28 font-serif text-2xl font-semibold">Question review</h2>
+              <label className="flex items-center gap-2 text-sm text-muted-foreground">
+                Sort by
+                <select
+                  value={sortByTime ? 'time' : 'question'}
+                  onChange={(event) => setSortByTime(event.currentTarget.value === 'time')}
+                  className="rounded-md border border-border bg-card px-2 py-1.5 text-foreground"
+                >
+                  <option value="question">Question number</option>
+                  <option value="time">Time spent</option>
+                </select>
+              </label>
             </div>
             <div role="group" aria-label="Filter questions" className="flex flex-wrap gap-2 py-2">
               {outcomeFilters.map(({ value, label, count }) => (
@@ -593,6 +454,7 @@ export function SectionReportView({
                 </Button>
               ))}
             </div>
+            <p className="text-sm text-muted-foreground" aria-live="polite">{displayStats.length} of {stats.length} questions</p>
             {displayStats.length === 0 && <p className="py-4 text-sm text-muted-foreground">No questions match this filter.</p>}
             <div className="flex flex-wrap items-center justify-end gap-4 pb-1 text-xs text-muted-foreground">
               <span className="flex items-center gap-1.5">
@@ -788,6 +650,170 @@ export function SectionReportView({
           </>
         )}
       </div>
+
+      {hasDetail && (
+        <section aria-label="Section breakdown" className="mx-auto mt-8 max-w-7xl px-4 sm:px-6">
+          <div className="rounded-2xl border border-border bg-card p-5 sm:p-6">
+          {/* Top 3 Focus Areas & by-type table */}
+          {hasDetail && focusAreas.length > 0 && (
+            <div className="mb-6">
+              <div className="text-xs text-muted-foreground mb-3 text-center">Top 3 Focus Areas</div>
+              <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6">
+                {focusAreas.map((area) => (
+                  <button
+                    key={`top-${area.qtype}`}
+                    type="button"
+                    onClick={() =>
+                      filterFromBreakdown(
+                        activeFilter === `qtype:${area.qtype}` ? null : `qtype:${area.qtype}`,
+                      )
+                    }
+                    className={cn(
+                      'flex flex-col items-center gap-2 p-3 rounded-lg transition-colors',
+                      activeFilter === `qtype:${area.qtype}`
+                        ? 'bg-primary/10 ring-2 ring-primary'
+                        : 'hover:bg-accent/30',
+                    )}
+                  >
+                    <ScoreRing
+                      value={area.accuracy}
+                      total={100}
+                      radius={28}
+                      strokeWidth={4}
+                      arcClassName={area.accuracy < 50 ? 'text-destructive' : 'text-primary'}
+                      tooltip={`${area.correct} / ${area.total}`}
+                      compact
+                    >
+                      <div className="text-sm font-bold">{area.accuracy}%</div>
+                    </ScoreRing>
+                    <div className="text-xs font-medium">{area.qtype}</div>
+                    <div className="text-xs text-muted-foreground">
+                      {area.correct}/{area.total}
+                    </div>
+                  </button>
+                ))}
+              </div>
+
+              {allFocusAreas.length > focusAreas.length && (
+                <div className="mt-4 flex justify-center">
+                  <button
+                    type="button"
+                    onClick={() => setShowAllTypes((v) => !v)}
+                    className="inline-flex items-center gap-1 text-xs font-medium text-muted-foreground hover:text-foreground transition-colors"
+                    aria-expanded={showAllTypes}
+                  >
+                    {showAllTypes ? 'Hide' : 'Show all types'}
+                    {showAllTypes ? (
+                      <ChevronUp className="w-3.5 h-3.5" />
+                    ) : (
+                      <ChevronDown className="w-3.5 h-3.5" />
+                    )}
+                  </button>
+                </div>
+              )}
+
+              {showAllTypes && (
+                <div className="mt-3 max-w-xl mx-auto divide-y divide-border rounded-lg border border-border bg-card overflow-hidden">
+                  {allFocusAreas.map((area) => {
+                    const isActive = activeFilter === `qtype:${area.qtype}`;
+                    return (
+                      <button
+                        key={`all-${area.qtype}`}
+                        type="button"
+                        onClick={() =>
+                          filterFromBreakdown(isActive ? null : `qtype:${area.qtype}`)
+                        }
+                        className={cn(
+                          'w-full flex items-center gap-3 px-3 py-2 text-left transition-colors',
+                          isActive
+                            ? 'bg-primary/10 ring-1 ring-inset ring-primary'
+                            : 'hover:bg-accent/40',
+                        )}
+                      >
+                        <div className="flex-1 min-w-0 text-sm font-medium truncate">
+                          {area.qtype}
+                        </div>
+                        <div className="text-xs font-mono text-muted-foreground tabular-nums">
+                          {area.correct}/{area.total}
+                        </div>
+                        <div
+                          className={cn(
+                            'text-xs font-semibold tabular-nums w-10 text-right',
+                            area.accuracy < 50 ? 'text-destructive' : 'text-foreground',
+                          )}
+                        >
+                          {area.accuracy}%
+                        </div>
+                        <div className="text-xs text-muted-foreground tabular-nums w-12 text-right">
+                          {formatClock(area.avgTimeMs)}
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Difficulty Distribution */}
+          {hasDetail && (
+            <div>
+              <div className="text-xs text-muted-foreground mb-3 text-center">
+                Difficulty Distribution
+              </div>
+              <div className="flex items-center gap-3 max-w-xl mx-auto">
+                <button
+                  type="button"
+                  onClick={() => filterFromBreakdown(activeFilter === 'easy' ? null : 'easy')}
+                  className={cn(
+                    'flex-1 px-3 sm:px-4 py-2 rounded-lg transition-colors text-xs sm:text-sm font-medium',
+                    activeFilter === 'easy'
+                      ? 'bg-green-100 ring-2 ring-green-600'
+                      : 'bg-muted hover:bg-accent',
+                  )}
+                >
+                  Easy: {difficultyDist.easy}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => filterFromBreakdown(activeFilter === 'medium' ? null : 'medium')}
+                  className={cn(
+                    'flex-1 px-3 sm:px-4 py-2 rounded-lg transition-colors text-xs sm:text-sm font-medium',
+                    activeFilter === 'medium'
+                      ? 'bg-yellow-100 ring-2 ring-yellow-600'
+                      : 'bg-muted hover:bg-accent',
+                  )}
+                >
+                  Medium: {difficultyDist.medium}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => filterFromBreakdown(activeFilter === 'hard' ? null : 'hard')}
+                  className={cn(
+                    'flex-1 px-3 sm:px-4 py-2 rounded-lg transition-colors text-xs sm:text-sm font-medium',
+                    activeFilter === 'hard'
+                      ? 'bg-red-100 ring-2 ring-red-600'
+                      : 'bg-muted hover:bg-accent',
+                  )}
+                >
+                  Hard: {difficultyDist.hard}
+                </button>
+              </div>
+            </div>
+          )}
+          </div>
+        </section>
+      )}
+      {/* Diagnosis */}
+      {analysis && (
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 mt-6">
+          <SectionDiagnosisBlock
+            analysis={analysis}
+            analysisSource={analysisSource}
+            brUsed={brUsed}
+          />
+        </div>
+      )}
     </div>
   );
 }
