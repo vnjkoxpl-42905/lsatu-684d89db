@@ -103,7 +103,7 @@ export function SealedSectionReportView({
       : 'Timed section';
 
   return (
-    <div className="min-h-screen bg-background pb-12">
+    <div className="light min-h-screen bg-background text-foreground pb-12">
       <div className="sticky top-0 z-20 bg-card/95 backdrop-blur border-b shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between gap-4">
           <Button variant="ghost" size="sm" onClick={onBack}>
@@ -280,7 +280,7 @@ export function SectionReportView({
   const timelineScaleMs = Math.max(slowestTimeMs, (targetMsPerQuestion ?? 0) * 1.1, 1);
 
   return (
-    <div className="min-h-screen bg-background pb-12">
+    <div className="light min-h-screen bg-background text-foreground pb-12">
       <div className="sticky top-0 z-20 bg-card/95 backdrop-blur border-b shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex flex-wrap items-center justify-between gap-3">
           <Button variant="ghost" size="sm" onClick={onBack}>
@@ -548,7 +548,7 @@ export function SectionReportView({
                   className={cn(
                     'flex-1 px-3 sm:px-4 py-2 rounded-lg transition-colors text-xs sm:text-sm font-medium',
                     activeFilter === 'easy'
-                      ? 'bg-green-100 dark:bg-green-900/30 ring-2 ring-green-600'
+                      ? 'bg-green-100 ring-2 ring-green-600'
                       : 'bg-muted hover:bg-accent',
                   )}
                 >
@@ -560,7 +560,7 @@ export function SectionReportView({
                   className={cn(
                     'flex-1 px-3 sm:px-4 py-2 rounded-lg transition-colors text-xs sm:text-sm font-medium',
                     activeFilter === 'medium'
-                      ? 'bg-yellow-100 dark:bg-yellow-900/30 ring-2 ring-yellow-600'
+                      ? 'bg-yellow-100 ring-2 ring-yellow-600'
                       : 'bg-muted hover:bg-accent',
                   )}
                 >
@@ -572,7 +572,7 @@ export function SectionReportView({
                   className={cn(
                     'flex-1 px-3 sm:px-4 py-2 rounded-lg transition-colors text-xs sm:text-sm font-medium',
                     activeFilter === 'hard'
-                      ? 'bg-red-100 dark:bg-red-900/30 ring-2 ring-red-600'
+                      ? 'bg-red-100 ring-2 ring-red-600'
                       : 'bg-muted hover:bg-accent',
                   )}
                 >
@@ -699,8 +699,8 @@ export function SectionReportView({
                           className={cn(
                             'w-8 h-8 rounded-full flex items-center justify-center font-mono text-sm',
                             stat.brCorrect
-                              ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 border-green-600'
-                              : 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400 border-red-600',
+                              ? 'bg-green-100 text-green-700 border-green-600'
+                              : 'bg-red-100 text-red-700 border-red-600',
                           )}
                         >
                           {stat.brAnswer}

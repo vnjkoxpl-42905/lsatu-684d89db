@@ -118,7 +118,7 @@ export function SectionReport({
 
   if (loading && !result) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center p-6">
+      <div className="light min-h-screen bg-background text-foreground flex items-center justify-center p-6">
         <p role="status" className="text-sm text-muted-foreground">
           Loading section report...
         </p>
@@ -128,7 +128,7 @@ export function SectionReport({
 
   if (error) {
     return (
-      <div className="min-h-screen bg-background pb-12">
+      <div className="light min-h-screen bg-background text-foreground pb-12">
         <div className="max-w-xl mx-auto px-4 sm:px-6 pt-12">
           <Button variant="ghost" size="sm" onClick={onBack} className="mb-4">
             <ArrowLeft className="w-4 h-4 mr-2" />
@@ -149,7 +149,7 @@ export function SectionReport({
 
   if (!result || result.state === 'not-found') {
     return (
-      <div className="min-h-screen bg-background pb-12">
+      <div className="light min-h-screen bg-background text-foreground pb-12">
         <div className="max-w-xl mx-auto px-4 sm:px-6 pt-12">
           <Button variant="ghost" size="sm" onClick={onBack} className="mb-4">
             <ArrowLeft className="w-4 h-4 mr-2" />
