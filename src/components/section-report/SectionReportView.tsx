@@ -9,6 +9,7 @@ import {
   ArrowRight,
   CheckCircle2,
   XCircle,
+  X,
   Flag,
   ChevronDown,
   ChevronUp,
@@ -20,6 +21,8 @@ import ScoreRing from '@/components/drill/ScoreRing';
 import { AnswerTimeline, formatClock } from './AnswerTimeline';
 import { SectionDiagnosisBlock } from './SectionDiagnosisBlock';
 import type { SectionReportData } from './sectionReportModel';
+
+const reviewActionClass = 'bg-[var(--section-review-action)] font-serif font-semibold text-white hover:bg-[var(--section-review-action-hover)] focus-visible:ring-[var(--section-review-action)]';
 
 interface FocusArea {
   qtype: string;
@@ -137,7 +140,7 @@ export function SealedSectionReportView({
               )}
               {onStartBlindReview && (
                 <div className="pt-2">
-                  <Button onClick={onStartBlindReview}>Do blind review</Button>
+                  <Button className={reviewActionClass} onClick={onStartBlindReview}>Do blind review</Button>
                 </div>
               )}
             </>
@@ -296,6 +299,14 @@ export function SectionReportView({
     { value: 'flagged', label: 'Flagged', count: stats.filter((stat) => stat.flagged).length },
   ];
 
+  const activeFilterLabel = activeFilter?.startsWith('qtype:')
+    ? `Type: ${activeFilter.slice('qtype:'.length)}`
+    : activeFilter
+      ? outcomeFilters.find(({ value }) => value === activeFilter)?.label
+        ?? `Difficulty: ${activeFilter.charAt(0).toUpperCase()}${activeFilter.slice(1)}`
+      : null;
+  const canStartBlindReview = !brUsed && Boolean(onStartBlindReview) && hasDetail;
+
   const targetMsPerQuestion = sectionClock?.perQuestionMs ?? null;
   const slowestTimeMs = displayStats.reduce(
     (max, s) => Math.max(max, s.timeMs, s.answerTrail?.[s.answerTrail.length - 1]?.atMs ?? 0),
@@ -313,8 +324,8 @@ export function SectionReportView({
           </Button>
           <h1 className="min-w-0 font-serif text-xl font-semibold sm:text-2xl">{heading}</h1>
           <div className="flex flex-wrap items-center gap-2">
-            {!brUsed && onStartBlindReview && hasDetail && (
-              <Button size="sm" className="bg-[var(--section-finish-action)] text-white hover:bg-[var(--section-finish-action-hover)]" onClick={onStartBlindReview}>
+            {canStartBlindReview && (
+              <Button size="sm" className={reviewActionClass} onClick={onStartBlindReview}>
                 Do blind review
               </Button>
             )}
@@ -324,7 +335,9 @@ export function SectionReportView({
               </Button>
             )}
             {onReviewSection && hasDetail && (
-              <Button variant="outline" size="sm" onClick={() => onReviewSection()}>
+              <Button variant={canStartBlindReview ? 'outline' : 'default'} size="sm"
+                className={canStartBlindReview ? undefined : reviewActionClass}
+                onClick={() => onReviewSection()}>
                 Open review walk
               </Button>
             )}
@@ -454,8 +467,22 @@ export function SectionReportView({
                 </Button>
               ))}
             </div>
-            <p className="text-sm text-muted-foreground" aria-live="polite">{displayStats.length} of {stats.length} questions</p>
-            {displayStats.length === 0 && <p className="py-4 text-sm text-muted-foreground">No questions match this filter.</p>}
+            <div className="flex min-h-8 flex-wrap items-center gap-2">
+              <p className="text-sm text-muted-foreground" aria-live="polite">{displayStats.length} of {stats.length} questions</p>
+              {activeFilterLabel && (
+                <Button variant="outline" size="sm" className="h-auto rounded-full px-3 py-1 text-xs"
+                  aria-label={`Clear filter: ${activeFilterLabel}`}
+                  onClick={() => {
+                    setActiveFilter(null);
+                    questionHeading.current?.focus({ preventScroll: true });
+                  }}>
+                  {activeFilterLabel}<X className="ml-1.5 h-3.5 w-3.5" aria-hidden="true" />
+                </Button>
+              )}
+            </div>
+            {displayStats.length === 0 && (
+              <p className="py-4 text-sm text-muted-foreground">No questions match this filter. Clear it to see all questions.</p>
+            )}
             <div className="flex flex-wrap items-center justify-end gap-4 pb-1 text-xs text-muted-foreground">
               <span className="flex items-center gap-1.5">
                 <span className="inline-block w-3.5 h-3.5 rounded-full border border-border bg-background" />

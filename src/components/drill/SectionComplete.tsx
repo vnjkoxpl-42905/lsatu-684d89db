@@ -93,9 +93,9 @@ export function SectionComplete({
           type="button"
           onClick={onBlindReview}
           className={cn(
-            'w-full rounded-xl bg-[var(--section-finish-action)] px-6 py-3.5 text-base font-semibold text-white',
-            'transition-colors hover:bg-[var(--section-finish-action-hover)]',
-            'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/20 focus-visible:ring-offset-2',
+            'w-full rounded-xl bg-[var(--section-review-action)] px-6 py-3.5 font-serif text-base font-semibold text-white',
+            'transition-colors hover:bg-[var(--section-review-action-hover)]',
+            'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--section-review-action)] focus-visible:ring-offset-2',
           )}
         >
           Blind review

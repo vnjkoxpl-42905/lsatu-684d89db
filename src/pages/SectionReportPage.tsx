@@ -32,6 +32,10 @@ type BrContext = {
 export default function SectionReportPage() {
   const { historyId } = useParams<{ historyId: string }>();
   const { user } = useAuth();
+  return <SectionReportSession key={JSON.stringify([user?.id, historyId])} historyId={historyId} userId={user?.id} />;
+}
+
+function SectionReportSession({ historyId, userId }: { historyId?: string; userId?: string }) {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -43,6 +47,16 @@ export default function SectionReportPage() {
   const [refreshKey, setRefreshKey] = React.useState(0);
   const [walkRow, setWalkRow] = React.useState<SectionHistoryRow | null>(null);
   const [walkQid, setWalkQid] = React.useState<string | null>(qidParam);
+  const [openingWalk, setOpeningWalk] = React.useState(Boolean((walkParam || qidParam) && userId && historyId));
+  const reportReturn = React.useRef<{ x: number; y: number; focus: HTMLElement | null } | null>(null);
+
+  React.useLayoutEffect(() => {
+    if (walkRow || !reportReturn.current) return;
+    const { x, y, focus } = reportReturn.current;
+    reportReturn.current = null;
+    if (focus?.isConnected) focus.focus({ preventScroll: true });
+    window.scrollTo({ left: x, top: y, behavior: 'instant' });
+  }, [walkRow]);
   const [brContext, setBrContext] = React.useState<BrContext | null>(null);
   const [pendingBrResults, setPendingBrResults] = React.useState<BlindReviewResult[] | null>(null);
   const [brSaveError, setBrSaveError] = React.useState<string | null>(null);
@@ -51,9 +65,9 @@ export default function SectionReportPage() {
 
   const startBlindReview = searchParams.get('blindReview') === '1';
   React.useEffect(() => {
-    if (!startBlindReview || !historyId || !user?.id) return;
+    if (!startBlindReview || !historyId || !userId) return;
     let active = true;
-    void fetchOwnedSectionReport(user.id, historyId).then((result) => {
+    void fetchOwnedSectionReport(userId, historyId).then((result) => {
       if (!active || result.state !== 'released') return;
       const { row } = result;
       if (row.brUsed || row.practiceTestRunId || row.questions.length === 0) return;
@@ -71,15 +85,16 @@ export default function SectionReportPage() {
       }, { replace: true });
     });
     return () => { active = false; };
-  }, [startBlindReview, historyId, user?.id, setSearchParams]);
+  }, [startBlindReview, historyId, userId, setSearchParams]);
 
   // If opened with ?walk=1 or ?qid=..., load the row directly so the walk opens immediately.
   React.useEffect(() => {
-    if ((!walkParam && !qidParam) || !historyId || !user?.id || walkRow?.id === historyId) return;
+    if ((!walkParam && !qidParam) || !historyId || !userId || walkRow?.id === historyId) return;
     let active = true;
-    void fetchOwnedSectionReport(user.id, historyId)
+    void fetchOwnedSectionReport(userId, historyId)
       .then((res) => {
         if (!active) return;
+        setOpeningWalk(false);
         if (res.state === 'released' && res.row.questions.length > 0) {
           setWalkRow(res.row);
           if (qidParam) setWalkQid(qidParam);
@@ -87,11 +102,14 @@ export default function SectionReportPage() {
       })
       .catch(() => {
         // Fall back to SectionReport which shows the error state.
+      })
+      .finally(() => {
+        if (active) setOpeningWalk(false);
       });
     return () => {
       active = false;
     };
-  }, [walkParam, qidParam, historyId, user?.id, walkRow?.id]);
+  }, [walkParam, qidParam, historyId, userId, walkRow?.id]);
 
   const submitBlindReview = React.useCallback(
     async (ctx: BrContext, results: BlindReviewResult[]) => {
@@ -175,13 +193,14 @@ export default function SectionReportPage() {
     );
   }
 
-  // Active read-only review walk screen.
+  // Keep the report mounted during a walk opened from the report.
+  let reviewWalk: React.ReactNode = null;
   if (walkRow) {
     const walk = sectionHistoryToWalkSession(walkRow);
     const initialIndex = walkQid
       ? Math.max(0, walk.session.questionQueue.indexOf(walkQid))
       : 0;
-    return (
+    reviewWalk = (
       <SectionReviewWalk
         session={walk.session}
         brResults={walk.brResults}
@@ -207,43 +226,59 @@ export default function SectionReportPage() {
     return <div className="light min-h-screen bg-background p-6 text-foreground" role="status">Opening blind review…</div>;
   }
 
+  if (openingWalk) {
+    return <div className="light min-h-screen bg-background p-6 text-foreground" role="status">Opening review walk…</div>;
+  }
+
+  if (walkRow && !reportReturn.current) return reviewWalk;
+
   return (
-    <SectionReport
-      historyId={historyId ?? null}
-      onBack={() => navigate(returnTo)}
-      backLabel={requestedReturn ? 'Back' : 'Back to History'}
-      onReviewSection={(qid, row) => {
-        if (!row) return;
-        setWalkRow(row);
-        setWalkQid(qid ?? null);
-      }}
-      onStartOver={async (row) => {
-        if (!user?.id || startingOver.current) return;
-        startingOver.current = true;
-        try {
-          const launch = launchDrill({ kind: 'section', pt: row.pt, section: row.section });
-          const intent = row.clientSittingId
-            ? `restart=1&gen=${await fetchSectionSittingGeneration(user.id, row.clientSittingId)}`
-            : 'historicalRetake=1';
-          navigate(`/drill?${launch}&${intent}`);
-        } catch (err) {
-          console.error('[sectionReport] could not start over', err);
-          toast.error('Could not start over. Please try again.');
-          startingOver.current = false;
-        }
-      }}
-      onStartBlindReview={(ctx) => {
-        const session = buildDeferredBrSession({
-          pt: ctx.pt,
-          section: ctx.section,
-          questionQids: ctx.questionQids,
-          row: ctx.row,
-        });
-        setBrContext({ ...ctx, session });
-        setPendingBrResults(null);
-        setBrSaveError(null);
-      }}
-      refreshKey={refreshKey}
-    />
+    <>
+      <div hidden={Boolean(walkRow)}>
+        <SectionReport
+          historyId={historyId ?? null}
+          onBack={() => navigate(returnTo)}
+          backLabel={requestedReturn ? 'Back' : 'Back to History'}
+          onReviewSection={(qid, row) => {
+            if (!row) return;
+            reportReturn.current = {
+              x: window.scrollX,
+              y: window.scrollY,
+              focus: document.activeElement instanceof HTMLElement ? document.activeElement : null,
+            };
+            setWalkRow(row);
+            setWalkQid(qid ?? null);
+          }}
+          onStartOver={async (row) => {
+            if (!userId || startingOver.current) return;
+            startingOver.current = true;
+            try {
+              const launch = launchDrill({ kind: 'section', pt: row.pt, section: row.section });
+              const intent = row.clientSittingId
+                ? `restart=1&gen=${await fetchSectionSittingGeneration(userId, row.clientSittingId)}`
+                : 'historicalRetake=1';
+              navigate(`/drill?${launch}&${intent}`);
+            } catch (err) {
+              console.error('[sectionReport] could not start over', err);
+              toast.error('Could not start over. Please try again.');
+              startingOver.current = false;
+            }
+          }}
+          onStartBlindReview={(ctx) => {
+            const session = buildDeferredBrSession({
+              pt: ctx.pt,
+              section: ctx.section,
+              questionQids: ctx.questionQids,
+              row: ctx.row,
+            });
+            setBrContext({ ...ctx, session });
+            setPendingBrResults(null);
+            setBrSaveError(null);
+          }}
+          refreshKey={refreshKey}
+        />
+      </div>
+      {reviewWalk}
+    </>
   );
 }

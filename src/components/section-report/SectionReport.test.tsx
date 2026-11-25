@@ -1,15 +1,25 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom';
+import { fireEvent, render, screen, waitFor, within } from '@testing-library/react';
+import { MemoryRouter, Route, Routes } from 'react-router-dom';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { describe, expect, it, vi, beforeEach } from 'vitest';
 import { SectionReport } from './SectionReport';
+import SectionReportPage from '@/pages/SectionReportPage';
 import { selectSectionDiagnosis, type SectionReportData } from './sectionReportModel';
 import type { OwnedSectionReportResult, SectionHistoryRow } from '@/lib/sectionHistory';
 
 const mockFetchOwnedSectionReport = vi.fn<
   (userId: string, historyId: string) => Promise<OwnedSectionReportResult>
 >();
+const primaryReviewFill = 'bg-[var(--section-review-action)]';
 
 vi.mock('@/contexts/AuthContext', () => ({ useAuth: () => ({ user: { id: 'u1' } }) }));
+vi.mock('@/components/drill/SectionReviewWalk', () => ({
+  default: ({ onBack, initialIndex, session }: {
+    onBack: () => void;
+    initialIndex: number;
+    session: { questionQueue: string[] };
+  }) => <button onClick={onBack}>Return from question {initialIndex + 1} of {session.questionQueue.length}</button>,
+}));
 vi.mock('@/lib/sectionHistory', async () => {
   const actual = await vi.importActual<typeof import('@/lib/sectionHistory')>('@/lib/sectionHistory');
   return {
@@ -123,8 +133,8 @@ describe('SectionReport', () => {
     expect(screen.getByText('First-pass diagnosis')).toBeTruthy();
     expect(screen.getByText('Timing pressure cost late questions.')).toBeTruthy();
     expect(screen.getByText(/At time: 0\/1 on the 1 questions you answered/)).toBeTruthy();
-    expect(screen.getByRole('button', { name: 'Do blind review' })).toBeTruthy();
-    expect(screen.getByRole('button', { name: 'Open review walk' })).toBeTruthy();
+    expect(screen.getByRole('button', { name: 'Do blind review' })).toHaveClass(primaryReviewFill);
+    expect(screen.getByRole('button', { name: 'Open review walk' })).not.toHaveClass(primaryReviewFill);
   });
 
   it.each([0, 1])('separates %i overtime answers from blanks in a 26-question report', async (overtime) => {
@@ -175,6 +185,7 @@ describe('SectionReport', () => {
     await waitFor(() => expect(screen.getByText('Blind review diagnosis')).toBeTruthy());
     expect(screen.getByText(/You guessed 22/)).toBeTruthy();
     expect(screen.queryByRole('button', { name: 'Do blind review' })).toBeNull();
+    expect(screen.getByRole('button', { name: 'Open review walk' })).toHaveClass(primaryReviewFill);
   });
 
   it('hides score, first answers, and credited answers for a sealed assigned section', async () => {
@@ -199,7 +210,7 @@ describe('SectionReport', () => {
     );
 
     await waitFor(() => expect(screen.getByText('Section complete')).toBeTruthy());
-    expect(screen.getByRole('button', { name: 'Do blind review' })).toBeTruthy();
+    expect(screen.getByRole('button', { name: 'Do blind review' })).toHaveClass(primaryReviewFill);
     expect(screen.queryByText(/20\/25/)).toBeNull();
     expect(screen.queryByText('Initial Score')).toBeNull();
     expect(screen.queryByRole('button', { name: 'Open review walk' })).toBeNull();
@@ -351,5 +362,62 @@ describe('SectionReport', () => {
 
     fireEvent.change(sort, { target: { value: 'question' } });
     expect(firstQuestion()).toHaveTextContent('Q1');
+
+    const breakdown = screen.getByRole('region', { name: 'Section breakdown' });
+    fireEvent.click(within(breakdown).getByRole('button', { name: /Flaw/ }));
+    fireEvent.click(screen.getByRole('button', { name: 'Clear filter: Type: Flaw' }));
+    expect(screen.getByRole('button', { name: /^All questions\b/ })).toHaveAttribute('aria-pressed', 'true');
+    expect(screen.getByRole('heading', { name: 'Question review' })).toHaveFocus();
+  });
+
+  it('restores the report state and focus after a full-order question walk', async () => {
+    mockFetchOwnedSectionReport.mockResolvedValue({ state: 'released', row: baseRow });
+    const scrollTo = vi.spyOn(window, 'scrollTo').mockImplementation(() => {});
+    const client = new QueryClient();
+    try {
+      render(
+        <QueryClientProvider client={client}>
+          <MemoryRouter initialEntries={['/review/section/hist-1']}>
+            <Routes><Route path="/review/section/:historyId" element={<SectionReportPage />} /></Routes>
+          </MemoryRouter>
+        </QueryClientProvider>,
+      );
+      fireEvent.change(await screen.findByRole('combobox', { name: 'Sort by' }), { target: { value: 'time' } });
+      fireEvent.click(screen.getByRole('button', { name: /^Flagged\b/ }));
+      fireEvent.click(screen.getByRole('button', { name: /^Q2\b/ }));
+      const trigger = screen.getByRole('button', { name: 'Open in review walk' });
+      trigger.focus();
+      fireEvent.click(trigger);
+
+      fireEvent.click(await screen.findByRole('button', { name: 'Return from question 2 of 2' }));
+      expect(screen.getByRole('combobox', { name: 'Sort by' })).toHaveValue('time');
+      expect(screen.getByRole('button', { name: 'Clear filter: Flagged' })).toBeVisible();
+      expect(screen.queryByRole('button', { name: /^Q1\b/ })).toBeNull();
+      expect(trigger).toHaveFocus();
+      expect(scrollTo).toHaveBeenCalledTimes(1);
+      expect(mockFetchOwnedSectionReport).toHaveBeenCalledTimes(1);
+    } finally {
+      scrollTo.mockRestore();
+      client.clear();
+    }
+  });
+
+  it('opens a deep-linked question walk from one owner-scoped report fetch', async () => {
+    mockFetchOwnedSectionReport.mockResolvedValue({ state: 'released', row: baseRow });
+    const client = new QueryClient();
+    try {
+      render(
+        <QueryClientProvider client={client}>
+          <MemoryRouter initialEntries={['/review/section/hist-1?walk=1&qid=pt130-s2-q2']}>
+            <Routes><Route path="/review/section/:historyId" element={<SectionReportPage />} /></Routes>
+          </MemoryRouter>
+        </QueryClientProvider>,
+      );
+      expect(await screen.findByRole('button', { name: 'Return from question 2 of 2' })).toBeVisible();
+      expect(mockFetchOwnedSectionReport).toHaveBeenCalledExactlyOnceWith('u1', 'hist-1');
+      expect(screen.queryByRole('heading', { name: 'Question review' })).toBeNull();
+    } finally {
+      client.clear();
+    }
   });
 });
