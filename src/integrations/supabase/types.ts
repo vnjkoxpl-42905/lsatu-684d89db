@@ -5437,6 +5437,7 @@ export type Database = {
       section_history: {
         Row: {
           analysis_json: Json | null
+          assignment_id: string | null
           avg_time_ms: number | null
           blind_review_percent: number | null
           blind_review_score: number | null
@@ -5448,6 +5449,7 @@ export type Database = {
           by_difficulty_json: Json | null
           by_qtype_json: Json | null
           class_id: string
+          client_sitting_id: string | null
           completed_at: string | null
           created_at: string | null
           id: string
@@ -5459,6 +5461,7 @@ export type Database = {
           practice_test_run_id: string | null
           pt: number
           questions_json: Json | null
+          release_requires_br: boolean | null
           report_email_error: string | null
           report_emailed_at: string | null
           section: number
@@ -5471,6 +5474,7 @@ export type Database = {
         }
         Insert: {
           analysis_json?: Json | null
+          assignment_id?: string | null
           avg_time_ms?: number | null
           blind_review_percent?: number | null
           blind_review_score?: number | null
@@ -5482,6 +5486,7 @@ export type Database = {
           by_difficulty_json?: Json | null
           by_qtype_json?: Json | null
           class_id: string
+          client_sitting_id?: string | null
           completed_at?: string | null
           created_at?: string | null
           id?: string
@@ -5493,6 +5498,7 @@ export type Database = {
           practice_test_run_id?: string | null
           pt: number
           questions_json?: Json | null
+          release_requires_br?: boolean | null
           report_email_error?: string | null
           report_emailed_at?: string | null
           section: number
@@ -5505,6 +5511,7 @@ export type Database = {
         }
         Update: {
           analysis_json?: Json | null
+          assignment_id?: string | null
           avg_time_ms?: number | null
           blind_review_percent?: number | null
           blind_review_score?: number | null
@@ -5516,6 +5523,7 @@ export type Database = {
           by_difficulty_json?: Json | null
           by_qtype_json?: Json | null
           class_id?: string
+          client_sitting_id?: string | null
           completed_at?: string | null
           created_at?: string | null
           id?: string
@@ -5527,6 +5535,7 @@ export type Database = {
           practice_test_run_id?: string | null
           pt?: number
           questions_json?: Json | null
+          release_requires_br?: boolean | null
           report_email_error?: string | null
           report_emailed_at?: string | null
           section?: number
@@ -5551,6 +5560,62 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "timed_section_sittings_v1"
             referencedColumns: ["id", "owner_id"]
+          },
+        ]
+      }
+      section_review_records: {
+        Row: {
+          br_analysis_json: Json | null
+          br_completed_at: string | null
+          br_delta: number | null
+          br_percent: number | null
+          br_results: Json | null
+          br_score: number | null
+          br_total: number | null
+          created_at: string
+          history_id: string
+          predicted_at: string | null
+          predicted_score: number | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          br_analysis_json?: Json | null
+          br_completed_at?: string | null
+          br_delta?: number | null
+          br_percent?: number | null
+          br_results?: Json | null
+          br_score?: number | null
+          br_total?: number | null
+          created_at?: string
+          history_id: string
+          predicted_at?: string | null
+          predicted_score?: number | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          br_analysis_json?: Json | null
+          br_completed_at?: string | null
+          br_delta?: number | null
+          br_percent?: number | null
+          br_results?: Json | null
+          br_score?: number | null
+          br_total?: number | null
+          created_at?: string
+          history_id?: string
+          predicted_at?: string | null
+          predicted_score?: number | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "section_review_records_history_id_user_id_fkey"
+            columns: ["history_id", "user_id"]
+            isOneToOne: false
+            referencedRelation: "section_history"
+            referencedColumns: ["id", "user_id"]
           },
         ]
       }
@@ -6030,6 +6095,48 @@ export type Database = {
           student_id?: string
           title?: string
           updated_at?: string
+        }
+        Relationships: []
+      }
+      standalone_section_sittings: {
+        Row: {
+          adopted_from_record_id: string | null
+          adopted_revision: string | null
+          closed_at: string | null
+          created_at: string
+          generation: number
+          history_id: string | null
+          id: string
+          initialized_at: string
+          pool_key: string
+          state: string
+          user_id: string
+        }
+        Insert: {
+          adopted_from_record_id?: string | null
+          adopted_revision?: string | null
+          closed_at?: string | null
+          created_at?: string
+          generation: number
+          history_id?: string | null
+          id?: string
+          initialized_at?: string
+          pool_key: string
+          state?: string
+          user_id: string
+        }
+        Update: {
+          adopted_from_record_id?: string | null
+          adopted_revision?: string | null
+          closed_at?: string | null
+          created_at?: string
+          generation?: number
+          history_id?: string | null
+          id?: string
+          initialized_at?: string
+          pool_key?: string
+          state?: string
+          user_id?: string
         }
         Relationships: []
       }
@@ -8984,6 +9091,10 @@ export type Database = {
           isSetofReturn: true
         }
       }
+      close_standalone_section_v1: {
+        Args: { p_payload: Json; p_sitting_id: string }
+        Returns: Json
+      }
       commit_timed_section_v1: { Args: { p_command: Json }; Returns: Json }
       commit_timed_work_v1: { Args: { p_command: Json }; Returns: Json }
       complete_single_session_outbox: {
@@ -9685,6 +9796,17 @@ export type Database = {
         }
         Returns: Json
       }
+      open_section_sitting_v1: {
+        Args: {
+          p_expected_generation?: number
+          p_known_sitting_id?: string
+          p_legacy_record_id?: string
+          p_pool_key: string
+          p_restart?: boolean
+          p_sitting_record_id?: string
+        }
+        Returns: Json
+      }
       persist_single_session_checkout_fingerprint: {
         Args: {
           _booking_id: string
@@ -10095,6 +10217,14 @@ export type Database = {
           isOneToOne: true
           isSetofReturn: false
         }
+      }
+      save_section_blind_review_v1: {
+        Args: { p_analysis: Json; p_answers: Json; p_history_id: string }
+        Returns: Json
+      }
+      save_section_prediction_v1: {
+        Args: { p_history_id: string; p_score: number }
+        Returns: Json
       }
       search_teaching_assets: {
         Args: { max_rows?: number; q: string }
