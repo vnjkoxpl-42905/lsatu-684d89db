@@ -1,0 +1,18 @@
+/* Light palette shared by LR section completion and saved reports. */
+.section-finish-palette {
+  --background: 207 34% 96%;
+  --foreground: 215 30% 22%;
+  --card: 0 0% 100%;
+  --card-foreground: var(--foreground);
+  --muted: 208 29% 92%;
+  --muted-foreground: 214 20% 35%;
+  --accent: 205 37% 92%;
+  --accent-foreground: var(--foreground);
+  --secondary: var(--accent);
+  --secondary-foreground: var(--foreground);
+  --border: 208 25% 84%;
+  --ring: 201 66% 34%;
+  --section-finish-action: #1d6588;
+  --section-finish-action-hover: #174f6b;
+  --section-finish-score: #e9f2f8;
+}

@@ -40,7 +40,7 @@ export function ScorePrediction({ total, onPredict, onSkip }: ScorePredictionPro
           onChange={(event) => setValue(Number(event.currentTarget.value))}
           onPointerUp={(event) => setValue(Number(event.currentTarget.value))}
           aria-label="Predicted score"
-          className="w-full accent-emerald-800"
+          className="w-full accent-[var(--section-finish-action)]"
         />
 
         <div className="flex justify-between text-xs text-muted-foreground tabular-nums">
@@ -55,8 +55,8 @@ export function ScorePrediction({ total, onPredict, onSkip }: ScorePredictionPro
           disabled={value === null}
           onClick={() => { if (value !== null) onPredict(value); }}
           className={cn(
-            'w-full rounded-xl bg-foreground px-6 py-4 text-base font-semibold text-background',
-            'transition-colors hover:bg-foreground/90 disabled:opacity-40',
+            'w-full rounded-xl bg-[var(--section-finish-action)] px-6 py-4 text-base font-semibold text-white',
+            'transition-colors hover:bg-[var(--section-finish-action-hover)] disabled:opacity-40',
             'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/20 focus-visible:ring-offset-2',
           )}
         >

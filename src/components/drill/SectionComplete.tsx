@@ -93,8 +93,8 @@ export function SectionComplete({
           type="button"
           onClick={onBlindReview}
           className={cn(
-            'w-full rounded-xl bg-emerald-900 px-6 py-3.5 text-base font-semibold text-white',
-            'transition-colors hover:bg-emerald-800',
+            'w-full rounded-xl bg-[var(--section-finish-action)] px-6 py-3.5 text-base font-semibold text-white',
+            'transition-colors hover:bg-[var(--section-finish-action-hover)]',
             'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/20 focus-visible:ring-offset-2',
           )}
         >

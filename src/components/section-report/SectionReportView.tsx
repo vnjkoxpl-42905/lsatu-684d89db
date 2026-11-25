@@ -1,4 +1,5 @@
 import * as React from 'react';
+import './sectionFinishPalette.css';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -103,7 +104,7 @@ export function SealedSectionReportView({
       : 'Timed section';
 
   return (
-    <div className="light min-h-screen bg-background text-foreground pb-12">
+    <div className="light section-finish-palette min-h-screen bg-background text-foreground pb-12">
       <div className="sticky top-0 z-20 bg-card/95 backdrop-blur border-b shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between gap-4">
           <Button variant="ghost" size="sm" onClick={onBack}>
@@ -293,7 +294,7 @@ export function SectionReportView({
   const timelineScaleMs = Math.max(slowestTimeMs, (targetMsPerQuestion ?? 0) * 1.1, 1);
 
   return (
-    <div className="light min-h-screen bg-background text-foreground pb-12">
+    <div className="light section-finish-palette min-h-screen bg-background text-foreground pb-12">
       <div className="sticky top-0 z-20 bg-card/95 backdrop-blur border-b shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex flex-wrap items-center justify-between gap-3">
           <Button variant="ghost" size="sm" onClick={onBack}>
@@ -303,7 +304,7 @@ export function SectionReportView({
           <h1 className="min-w-0 font-serif text-xl font-semibold sm:text-2xl">{heading}</h1>
           <div className="flex flex-wrap items-center gap-2">
             {!brUsed && onStartBlindReview && hasDetail && (
-              <Button size="sm" className="bg-emerald-900 text-white hover:bg-emerald-800" onClick={onStartBlindReview}>
+              <Button size="sm" className="bg-[var(--section-finish-action)] text-white hover:bg-[var(--section-finish-action-hover)]" onClick={onStartBlindReview}>
                 Do blind review
               </Button>
             )}
@@ -322,7 +323,7 @@ export function SectionReportView({
       </div>
 
       {/* Summary */}
-      <div className="border-b border-border bg-[#fafaf7]">
+      <div className="border-b border-border bg-card">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6">
           {pendingPrediction != null && onRetryPrediction && (
             <div className="mb-6">
@@ -337,7 +338,7 @@ export function SectionReportView({
             'mb-6 grid overflow-hidden rounded-2xl border border-border bg-white',
             brScore !== null && 'sm:grid-cols-3',
           )}>
-            <div className="space-y-2 bg-[#eef3ed] px-5 py-5 sm:px-7">
+            <div className="space-y-2 bg-[var(--section-finish-score)] px-5 py-5 sm:px-7">
               <dt className="text-sm font-medium text-muted-foreground">Initial Score</dt>
               <dd className="flex flex-wrap items-baseline gap-x-3 gap-y-1 tabular-nums">
                 <span className="font-serif text-4xl font-semibold">{initialScore}<span className="ml-1 text-xl font-normal text-muted-foreground">/{initialTotal}</span></span>
