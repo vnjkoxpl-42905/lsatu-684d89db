@@ -80,6 +80,9 @@ try{
  await commit('pause');check(sitting.phase,'paused');check(sitting.clock_anchor_at,null);
  const oldWriter=command(sitting,'resume');await commit('claim',{},'device-b');check(Number(sitting.writer_epoch),2);
  await denied(()=>rpc('commit_timed_section_v1',oldWriter),'PT409');await commit('resume',{},'device-b');
+ if (sectionsConformance) {
+  await commit('checkpoint',{currentIndex:1,answers:[answer],regulationAnsweredQids:[answer.qid]},'device-b');
+ }
  // Force an expired lease through its executor in the isolated fixture.
  await admin();await db.exec('set role timed_section_executor');
  await db.query("update public.timed_section_sittings_v1 set lease_expires_at=clock_timestamp()-interval '1 millisecond',revision=revision+1 where id=$1",[sitting.id]);
@@ -93,9 +96,6 @@ try{
  await admin();await db.query('update public.profiles set has_drill_access=true where class_id=$1',[owner]);await auth();
  // Missing required journal storage rolls back all attempts/history and receipt.
  await admin();await db.exec("create function public.fixture_fail_section_journal() returns trigger language plpgsql as $$begin raise exception 'fixture journal failure'; end$$; create trigger fixture_fail_section_journal before insert on public.wrong_answer_journal for each row execute function public.fixture_fail_section_journal()");await auth();
- if (sectionsConformance) {
-  await commit('checkpoint',{regulationAnsweredQids:[answer.qid]},'device-b');
- }
  const diagnosis = { headline: 'Fixture diagnosis', findings: [{ qnums: [1] }] };
  const close=command(sitting,'close',{answerKeys:blueprint.legs[0].qids.map(qid=>({qid,correctAnswer:'A'})),analysis:diagnosis},'device-b');
  await denied(()=>rpc('commit_timed_section_v1',close));check((await read(sitting.id)).sitting.revision,sitting.revision);
