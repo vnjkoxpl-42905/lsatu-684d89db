@@ -92,8 +92,8 @@ export const QUESTION_STEMS: QuestionStem[] = [
   {
     id: "qs_14",
     category: "Role",
-    stem: "It is a statement for which some evidence is provided and that is the conclusion of the argument as a whole:",
-    explanation: "Same as qs_12: the statement in question is supported by support, and is the main conclusion. The argument contains an intermediate conclusion that supports it. When faced with this answer choice, make sure it is indeed the main conclusion and that the argument contains an intermediate conclusion.",
+    stem: "It is a statement for which some evidence is provided and that itself is offered as support for the conclusion of the argument as a whole:",
+    explanation: "Same as qs_13: the statement in question is supported by support, and supports the main conclusion. This is the intermediate conclusion. Check both directions: something in the stimulus must support the statement, and the statement must in turn support the main conclusion.",
   },
 ];
 
