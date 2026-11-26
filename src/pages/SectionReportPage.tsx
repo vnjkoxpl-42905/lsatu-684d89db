@@ -51,7 +51,12 @@ function SectionReportSession({ historyId, userId }: { historyId?: string; userI
   const reportReturn = React.useRef<{ x: number; y: number; focus: HTMLElement | null } | null>(null);
 
   React.useLayoutEffect(() => {
-    if (walkRow || !reportReturn.current) return;
+    if (!reportReturn.current) return;
+    if (walkRow) {
+      // The hidden report leaves the window scrolled; start the walk at its header.
+      window.scrollTo({ left: 0, top: 0, behavior: 'instant' });
+      return;
+    }
     const { x, y, focus } = reportReturn.current;
     reportReturn.current = null;
     if (focus?.isConnected) focus.focus({ preventScroll: true });

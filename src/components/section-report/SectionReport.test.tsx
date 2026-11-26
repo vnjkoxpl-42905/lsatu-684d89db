@@ -387,16 +387,22 @@ describe('SectionReport', () => {
       fireEvent.click(screen.getByRole('button', { name: /^Q2\b/ }));
       const trigger = screen.getByRole('button', { name: 'Open in review walk' });
       trigger.focus();
+      Object.defineProperty(window, 'scrollY', { configurable: true, value: 640 });
       fireEvent.click(trigger);
 
-      fireEvent.click(await screen.findByRole('button', { name: 'Return from question 2 of 2' }));
+      const returnButton = await screen.findByRole('button', { name: 'Return from question 2 of 2' });
+      expect(scrollTo).toHaveBeenCalledTimes(1);
+      expect(scrollTo).toHaveBeenLastCalledWith({ left: 0, top: 0, behavior: 'instant' });
+      fireEvent.click(returnButton);
       expect(screen.getByRole('combobox', { name: 'Sort by' })).toHaveValue('time');
       expect(screen.getByRole('button', { name: 'Clear filter: Flagged' })).toBeVisible();
       expect(screen.queryByRole('button', { name: /^Q1\b/ })).toBeNull();
       expect(trigger).toHaveFocus();
-      expect(scrollTo).toHaveBeenCalledTimes(1);
+      expect(scrollTo).toHaveBeenCalledTimes(2);
+      expect(scrollTo).toHaveBeenLastCalledWith({ left: 0, top: 640, behavior: 'instant' });
       expect(mockFetchOwnedSectionReport).toHaveBeenCalledTimes(1);
     } finally {
+      Object.defineProperty(window, 'scrollY', { configurable: true, value: 0 });
       scrollTo.mockRestore();
       client.clear();
     }
