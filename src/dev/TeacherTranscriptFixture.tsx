@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import "./teacherTranscriptFixture.css";
 import type { TaskBoardAdditions } from "@/components/classroom/home/teacher/TeacherTasks";
 
 interface Preview {
@@ -95,8 +96,7 @@ function FixtureRow({ action, refresh }: { action: FixtureAction; refresh: () =>
       event.preventDefault();
       if (!busy && action.available_sections.includes(section)) void save("preview", { section });
     }}>
-      <h4>{action.state === "pin" ? "Next-session planning" : action.preview?.title ?? `PT ${action.pt}, section ${action.section}`}</h4>
-      {action.state === "pin" && <p>Assign PT {action.pt}, section {action.section} next session?</p>}
+      <h4>{action.state === "pin" ? `Assign PT ${action.pt}, section ${action.section} next session?` : action.preview?.title ?? `PT ${action.pt}, section ${action.section}`}</h4>
       {action.state === "done" && <p>{action.student_name}</p>}
       {action.state === "pending" && action.preview && (
         <p>{action.student_name} · {action.preview.notification}</p>
@@ -122,7 +122,7 @@ function FixtureRow({ action, refresh }: { action: FixtureAction; refresh: () =>
           <button disabled={busy || !action.available_sections.includes(section)}>{action.state === "pin" ? "Prepare assignment" : "Update preview"}</button>
           </details>
           {action.state === "pending" && action.preview && (
-            <button type="button" disabled={busy || section !== action.preview.section || !action.available_sections.includes(section)}
+            <button className="home-desk-primary" type="button" disabled={busy || section !== action.preview.section || !action.available_sections.includes(section)}
               onClick={() => void save("execute", { revision: action.preview!.id })}>Accept &amp; assign</button>
           )}
           <button type="button" disabled={busy} onClick={() => void save("dismiss", {})}>Dismiss</button>
