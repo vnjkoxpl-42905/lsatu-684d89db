@@ -405,7 +405,10 @@ describe("Teacher Home provider setup rendering", () => {
     );
     expect(screen.queryByRole("heading", { name: /After-session work|Private reminders|Next up|Email/ })).toBeNull();
     expect(screen.getByRole("heading", { name: /^Tasks$/ })).toBeInTheDocument();
-    fireEvent.click(screen.getByText("More", { exact: true }));
+    expect(screen.queryByText("More", { exact: true })).toBeNull();
+    expect(screen.queryByRole("button", { name: "Create session link" })).toBeNull();
+    fireEvent.click(screen.getByRole("button", { name: "Open Teacher tools" }));
+    expect(screen.getByRole("button", { name: "Create session link" })).toBeInTheDocument();
     fireEvent.click(screen.getByRole("button", { name: "Calendar and email" }));
     const tools = await screen.findByRole("dialog", { name: "Teacher tools" });
     expect(within(tools).getByRole("heading", { name: "Calendar" })).toBeInTheDocument();

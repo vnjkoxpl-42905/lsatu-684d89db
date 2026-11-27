@@ -71,8 +71,9 @@ function TeacherDeskContent({
   const [accessRail, setAccessRail] = React.useState(false);
   const [railSection, setRailSection] = React.useState<"access" | "messages" | "connections">("access");
   const accountTrigger = React.useRef<HTMLButtonElement | null>(null);
+  const bookingTrigger = React.useRef<HTMLButtonElement | null>(null);
   const openBooking = (mode: "credits" | "link", trigger?: HTMLButtonElement) => {
-    accountTrigger.current = trigger ?? null;
+    bookingTrigger.current = trigger ?? null;
     setBookingMode(mode);
     setBooking(true);
   };
@@ -271,17 +272,6 @@ function TeacherDeskContent({
           <div className="teacher-home-question-finder">
             <QuestionFinder actorId={desk.actorId} returnTo="/classroom" />
           </div>
-          <details className="home-desk-more-menu obs-more">
-            <summary>More</summary>
-            <div>
-              <button onClick={(event) => openBooking("link", event.currentTarget)}>
-                Create session link
-              </button>
-              <button onClick={(event) => openAccessRail(event.currentTarget, "connections")}>
-                Calendar and email
-              </button>
-            </div>
-          </details>
         </div>
       </header>
       <div className="obs-top">
@@ -476,6 +466,7 @@ function TeacherDeskContent({
                 Messages{model.unread.state === "ready" && model.unread.total > 0 && <span>{model.unread.total}</span>}
               </button>
               <button type="button" aria-pressed={railSection === "connections"} onClick={() => setRailSection("connections")}>Calendar and email</button>
+              <button type="button" aria-haspopup="dialog" onClick={(event) => openBooking("link", event.currentTarget)}>Create session link</button>
             </div>
             {railSection === "connections" && <div className="teacher-board-connections">{agenda}{correspondence}</div>}
             <div hidden={railSection !== "access"}>
@@ -513,7 +504,7 @@ function TeacherDeskContent({
         open={booking}
         onClose={() => {
           setBooking(false);
-          requestAnimationFrame(() => accountTrigger.current?.focus());
+          requestAnimationFrame(() => bookingTrigger.current?.focus());
         }}
         actorId={desk.actorId}
         students={desk.access.data ?? []}
