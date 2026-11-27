@@ -1,3 +1,4 @@
+import { prepareTranscript, sessionForTranscript, transcriptActions } from "./transcriptAssignments.ts";
 import { invalidateDeskRoster, readDesk } from "./desk.ts";
 import { createClient } from "npm:@supabase/supabase-js@2";
 import {
@@ -65,10 +66,10 @@ Deno.serve(async (req) => {
     const body = await req.json();
     requestAction = body.action;
     if (
-      !["sync", "import_folders", "status", "folder_links", "agenda", "email"]
-        .includes(
-          body.action ?? "sync",
-        )
+      ![
+        "sync", "import_folders", "status", "folder_links", "agenda", "email",
+        "transcript_assignments", "accept_transcript", "refresh_transcript", "correct_transcript",
+      ].includes(body.action ?? "sync")
     ) {
       return json({ error: "unknown_action" }, 400);
     }
@@ -96,6 +97,9 @@ Deno.serve(async (req) => {
     if (body.action === "agenda" || body.action === "email") {
       if (body.ticket) return json({ error: "forbidden" }, 403);
       return json(await readDesk(body, owner, googleEmail, db));
+    }
+    if (body.action === "transcript_assignments") {
+      return json(await transcriptActions(db, owner, googleEmail, body));
     }
     authenticated = true;
     await recordSyncAttempt(
@@ -129,6 +133,13 @@ Deno.serve(async (req) => {
     ) {
       failureCode = "calendar_owner_mismatch";
       throw new Error(failureCode);
+    }
+    if (["accept_transcript", "refresh_transcript", "correct_transcript"].includes(body.action)) {
+      try {
+        return json(await transcriptActions(db, owner, googleEmail, body));
+      } catch {
+        return json({ error: "transcript_preview_unavailable" }, 409);
+      }
     }
     if (body.action === "folder_links") {
       if (body.ticket) return json({ error: "forbidden" }, 403);
@@ -300,6 +311,14 @@ Deno.serve(async (req) => {
           _event: event.id,
           _source: source,
         });
+        if (source.transcript_status === "linked") {
+          try {
+            const session = await sessionForTranscript(db, owner, { event_id: event.id, calendar_id: settings.calendar_id });
+            if (session) await prepareTranscript(db, session, googleEmail, { event });
+          } catch {
+            console.warn("teacher_transcript_preparation_deferred");
+          }
+        }
       }
     };
     await runWorker(

@@ -28,10 +28,10 @@ export function StudentAccessTable({ region, onEdit, onOpenRail, inRail = false 
       <header>
         <h2 id={headingId} className={inRail ? "sr-only" : undefined}>Student access</h2>
         {onOpenRail && <button type="button" className="obs-access-open-rail" aria-haspopup="dialog"
-          onClick={(event) => onOpenRail(event.currentTarget)}>Open access panel <span aria-hidden="true">↗</span></button>}
+          onClick={(event) => onOpenRail(event.currentTarget)}>Manage access</button>}
         <div className="obs-access-views" role="group" aria-label="Student access view">
           <button type="button" aria-pressed={view === "needs"} onClick={() => { setView("needs"); setLimit(6); }}>
-            Needs access{region.state === "ready" ? ` · ${queue.length}` : ""}
+            Needs access{region.state === "ready" && (inRail || queue.length > 0) ? ` · ${queue.length}` : ""}
           </button>
           <button type="button" aria-pressed={view === "all"} onClick={() => { setView("all"); setLimit(6); }}>All students</button>
         </div>

@@ -17,9 +17,11 @@ import { SessionTask } from "./PostSessionWork";
 export function DeskStatus({
   region,
   noun,
+  setupLabel,
 }: {
   region: DeskRegion<unknown>;
   noun: string;
+  setupLabel?: string;
 }) {
   return (
     <>
@@ -36,7 +38,7 @@ export function DeskStatus({
         </p>
       ) : region.state === "setup" ? (
         <p className="home-desk-empty">
-          {noun} is not connected yet.{" "}
+          {setupLabel ?? `${noun} is not connected yet.`}{" "}
           {region.retry ? (
             <button disabled={region.retryBlocked} onClick={region.retry}>
               {region.retryBlocked ? "Check again shortly" : "Check connection"}
@@ -128,41 +130,104 @@ function ManualRow({ task, desk }: { task: ManualTask; desk: TeachingDesk }) {
     </li>
   );
 }
+export interface CompletedAssignmentRow {
+  id: string;
+  title: string;
+  studentId: string;
+  studentName: string;
+  content: React.ReactNode;
+}
+
+export interface TaskBoardAdditions {
+  pendingCount: number;
+  pending: React.ReactNode;
+  completed: CompletedAssignmentRow[];
+  planning: React.ReactNode;
+  loading: boolean;
+}
+
 export function MyList({
   desk,
   students,
   onAll,
+  additionalTasks,
+  historyRevision,
 }: {
   desk: TeachingDesk;
   students: TeacherStudentRow[];
-  onAll: () => void;
+  onAll: (includeDone: boolean, trigger: HTMLButtonElement) => void;
+  additionalTasks?: TaskBoardAdditions;
+  historyRevision?: number;
 }) {
+  const headingId = React.useId();
   const [adding, setAdding] = React.useState(false);
   const [title, setTitle] = React.useState("");
   const [studentId, setStudentId] = React.useState("");
   const [busy, setBusy] = React.useState(false);
   const [error, setError] = React.useState("");
+  const [done, setDone] = React.useState<ManualTask[]>([]);
+  const [doneError, setDoneError] = React.useState(false);
+  const [doneLoading, setDoneLoading] = React.useState(false);
+  const [doneTotal, setDoneTotal] = React.useState(0);
+  const [doneRefresh, refreshDone] = React.useReducer((current: number) => current + 1, 0);
+  const hasDoneLoader = Boolean(desk.loadManual);
+  const mutateManual = desk.mutateManual;
+  const loader = React.useRef(desk.loadManual);
+  loader.current = desk.loadManual;
+  React.useEffect(() => {
+    const load = loader.current;
+    if (!load) return;
+    let active = true;
+    setDoneLoading(true);
+    setDoneError(false);
+    void load(true, null, null, null).then((page) => {
+      if (active) {
+        setDone(page.items);
+        setDoneTotal(page.total);
+      }
+    }).catch(() => {
+      if (active) setDoneError(true);
+    }).finally(() => {
+      if (active) setDoneLoading(false);
+    });
+    return () => { active = false; };
+  }, [desk.actorId, hasDoneLoader, doneRefresh, historyRevision]);
+  const boardDesk: TeachingDesk = mutateManual ? {
+    ...desk,
+    mutateManual: async (task, input) => {
+      await mutateManual(task, input);
+      if (input.action === "handle" || input.action === "reopen") refreshDone();
+    },
+  } : desk;
+  const tasks = desk.manual.data?.items ?? [];
+  const openCount = (desk.manual.data?.total ?? 0) + (additionalTasks?.pendingCount ?? 0);
+  const completedCount = (hasDoneLoader ? doneTotal : 0) + (additionalTasks?.completed.length ?? 0);
+  const hasMoreOpen = (desk.manual.data?.total ?? 0) > tasks.length;
+  const visibleDone = (hasDoneLoader ? done : []).filter((item) => !tasks.some((task) => task.id === item.id)).slice(0, 2);
   return (
     <section
-      className="classroom-home-region home-desk-my-list"
+      className="classroom-home-region home-desk-my-list teacher-task-board"
       id="home-my-list"
+      aria-labelledby={headingId}
     >
       <header className="classroom-home-region-head">
-        <h2>My list</h2>
-        {desk.manual.state === "ready" ? (
-          <span className="classroom-home-count">
-            {desk.manual.data?.total ?? 0}
+        <h2 id={headingId}>Tasks</h2>
+        {desk.manual.state === "ready" && !additionalTasks?.loading && openCount > 0 ? (
+          <span className="classroom-home-count" aria-label={`${openCount} to do`}>
+            {openCount}
           </span>
         ) : null}
         <button
           className="classroom-home-more"
+          type="button"
           onClick={() => setAdding(!adding)}
           aria-expanded={adding}
+          disabled={!desk.mutateManual}
         >
-          {adding ? "Cancel" : "Add task +"}
+          {adding ? "Cancel" : "Add a to-do"}
         </button>
       </header>
-      <DeskStatus region={desk.manual} noun="My list" />
+      <DeskStatus region={desk.manual} noun="private tasks" setupLabel="Private tasks are not connected." />
       {desk.pendingManual ? (
         <div className="home-desk-confirm" role="status">
           <p>
@@ -256,21 +321,34 @@ export function MyList({
           {error ? <p role="alert">{error}</p> : null}
         </form>
       ) : null}
-      {desk.manual.state === "ready" ? (
-        desk.manual.data?.items?.length ? (
-          <ul className="home-desk-manual-list">
-            {desk.manual.data.items.slice(0, 2).map((task) => (
-              <ManualRow key={task.id} task={task} desk={desk} />
-            ))}
-          </ul>
-        ) : (
-          <p className="home-desk-empty">
-            Nothing on your list. Add a private reminder.
-          </p>
-        )
-      ) : null}
-      <button className="classroom-home-more" onClick={onAll}>
-        All tasks and handled history ↗
+      <div className="teacher-board-columns">
+        <section aria-labelledby={headingId + "-todo"}>
+          <h3 id={headingId + "-todo"}>To do</h3>
+          {tasks.length ? <ul className="home-desk-manual-list">
+            {tasks.map((task) => <ManualRow key={task.id} task={task} desk={boardDesk} />)}
+          </ul> : desk.manual.state === "ready" && !openCount && !additionalTasks?.loading ? <p className="home-desk-empty">No open tasks.</p> : null}
+          {additionalTasks?.pending}
+        </section>
+        <section aria-labelledby={headingId + "-done"}>
+          <h3 id={headingId + "-done"}>Done</h3>
+          {doneTotal > visibleDone.length && <p>{completedCount} completed</p>}
+          {doneLoading && !done.length && <p role="status">Loading completed tasks…</p>}
+          {doneError && <p role="alert">Could not load completed tasks. <button type="button" onClick={refreshDone}>Retry</button></p>}
+          {visibleDone.length ? (
+            <ul className="home-desk-manual-list">
+              {visibleDone.map((task) => <ManualRow key={task.id} task={task} desk={boardDesk} />)}
+            </ul>
+          ) : !doneLoading && !doneError && !completedCount && !additionalTasks?.loading ? (
+            <p className="home-desk-empty">No completed tasks shown.</p>
+          ) : null}
+          {additionalTasks?.completed.map((assignment) => (
+            <React.Fragment key={assignment.id}>{assignment.content}</React.Fragment>
+          ))}
+        </section>
+      </div>
+      {additionalTasks?.planning}
+      <button type="button" className="classroom-home-more" onClick={(event) => onAll(!hasMoreOpen, event.currentTarget)}>
+        {hasMoreOpen ? "All tasks and history" : "Task history"}
       </button>
     </section>
   );
@@ -278,20 +356,28 @@ export function MyList({
 export function AllTasksSheet({
   open,
   onClose,
+  onCloseAutoFocus,
+  onManualChange,
+  initialHandled = false,
+  completedAssignments,
   desk,
   work,
   students,
   onOpen,
 }: {
   open: boolean;
+  initialHandled?: boolean;
+  completedAssignments?: CompletedAssignmentRow[];
   onClose: () => void;
+  onCloseAutoFocus?: (event: Event) => void;
+  onManualChange?: () => void;
   desk: TeachingDesk;
   work?: PostSessionHomeState;
   students: TeacherStudentRow[];
   onOpen: (route: string) => void;
 }) {
-  const [kind, setKind] = React.useState("session");
-  const [handled, setHandled] = React.useState(false);
+  const [kind, setKind] = React.useState("manual");
+  const [handled, setHandled] = React.useState(initialHandled);
   const [student, setStudent] = React.useState("");
   const [query, setQuery] = React.useState("");
   const [page, setPage] = React.useState<DeskPage<any> | null>(null);
@@ -353,6 +439,15 @@ export function AllTasksSheet({
         .toLowerCase()
         .includes(query.toLowerCase()),
   );
+  const includeAssignments = kind === "manual" && handled && completedAssignments !== undefined;
+  const assignmentsForStudent = includeAssignments
+    ? completedAssignments.filter((assignment) => !student || student === assignment.studentId)
+    : [];
+  const filteredAssignments = assignmentsForStudent.filter(({ title, studentName }) =>
+    `${title} ${studentName}`.toLowerCase().includes(query.toLowerCase()),
+  );
+  const assignmentStudents = new Map((completedAssignments ?? []).map(({ studentId, studentName }) => [studentId, studentName]));
+  for (const registered of students) assignmentStudents.delete(registered.id);
   return (
     <Sheet
       open={open}
@@ -363,6 +458,7 @@ export function AllTasksSheet({
       <SheetContent
         className="home-desk-sheet"
         overlayClassName="home-desk-overlay"
+        onCloseAutoFocus={onCloseAutoFocus}
       >
         <SheetTitle>All tasks</SheetTitle>
         <SheetDescription>
@@ -374,7 +470,7 @@ export function AllTasksSheet({
             Type
             <select value={kind} onChange={(e) => setKind(e.target.value)}>
               <option value="session">After-session</option>
-              <option value="manual">My list</option>
+              <option value="manual">{includeAssignments ? "Tasks & assignments" : "Private tasks"}</option>
               <option value="consultation">Consultations</option>
             </select>
           </label>
@@ -400,6 +496,7 @@ export function AllTasksSheet({
                   {s.name}
                 </option>
               ))}
+              {[...assignmentStudents].map(([id, name]) => <option key={id} value={id}>{name}</option>)}
             </select>
           </label>
           <label>
@@ -413,11 +510,19 @@ export function AllTasksSheet({
         </div>
         {page ? (
           <p className="home-desk-empty">
-            {page.total} {handled ? "handled" : "active"}{" "}
-            {kind === "session" ? "session tasks" : "list tasks"}
+            {includeAssignments
+              ? `${page.total + assignmentsForStudent.length} completed · ${page.total} private tasks · ${assignmentsForStudent.length} assignment${assignmentsForStudent.length === 1 ? "" : "s"}`
+              : `${page.total} ${handled ? "handled" : "active"} ${kind === "session" ? "session tasks" : "list tasks"}`}
             {query ? " · Search applies to loaded rows" : ""}
           </p>
         ) : null}
+        {filteredAssignments.length > 0 && (
+          <section aria-label="Completed assignments">
+            {filteredAssignments.map((assignment) => (
+              <React.Fragment key={assignment.id}>{assignment.content}</React.Fragment>
+            ))}
+          </section>
+        )}
         {page?.student_counts?.length && student ? (
           <p className="home-desk-empty">
             {(() => {
@@ -463,6 +568,7 @@ export function AllTasksSheet({
                   ...desk,
                   mutateManual: async (t, c) => {
                     await desk.mutateManual?.(t, c);
+                    if (c.action === "handle" || c.action === "reopen") onManualChange?.();
                     await load();
                   },
                 }}
@@ -472,7 +578,7 @@ export function AllTasksSheet({
         </ul>
         {busy ? (
           <p aria-busy="true">Loading tasks…</p>
-        ) : page && !filtered.length ? (
+        ) : page && !filtered.length && !filteredAssignments.length ? (
           <p>No tasks in this view.</p>
         ) : null}
         {page?.next_cursor ? (

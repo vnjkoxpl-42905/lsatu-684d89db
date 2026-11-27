@@ -1,0 +1,130 @@
+.classroom-root .home-desk.home-obs .obs-dock.teacher-quick-dock {
+  display: block;
+  box-sizing: border-box;
+  width: 56px;
+  height: 56px;
+  bottom: calc(22px + env(safe-area-inset-bottom, 0px));
+  overflow: hidden;
+  padding: 0;
+  border: 1px solid #585f55;
+  border-radius: 28px;
+  color: #f4f4e9;
+  background: radial-gradient(ellipse at 50% 10%, #373d35 0%, #1b201c 65%);
+  box-shadow: inset 0 1px #dce4d035, 0 8px 24px #161b164a;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  transition: width 300ms cubic-bezier(.22, .86, .25, 1.04), height 300ms cubic-bezier(.22, .86, .25, 1.04);
+}
+
+.classroom-root .home-desk.home-obs .obs-dock.teacher-quick-dock[data-expanded="true"] {
+  width: 284px;
+  height: 174px;
+}
+
+.classroom-root .home-obs .obs-panel.teacher-dock-panel {
+  bottom: calc(84px + env(safe-area-inset-bottom, 0px));
+}
+
+.classroom-root .home-obs .teacher-quick-dock :is(.teacher-dock-launcher, .teacher-dock-action) {
+  display: grid;
+  place-items: center;
+  box-sizing: border-box;
+  padding: 0;
+  color: inherit;
+  background: transparent;
+}
+
+.classroom-root .home-obs .teacher-quick-dock .teacher-dock-launcher {
+  position: absolute;
+  left: 50%;
+  bottom: 3px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  transform: translateX(-50%);
+}
+
+.teacher-dock-launcher svg {
+  grid-area: 1 / 1;
+  width: 22px;
+  height: 22px;
+  transition: opacity 150ms ease, transform 220ms ease;
+}
+
+.teacher-dock-launcher .teacher-dock-close-icon {
+  opacity: 0;
+  transform: rotate(-18deg) scale(.75);
+}
+
+.teacher-quick-dock[data-expanded="true"] .teacher-dock-grid-icon {
+  opacity: 0;
+  transform: rotate(18deg) scale(.75);
+}
+
+.teacher-quick-dock[data-expanded="true"] .teacher-dock-close-icon {
+  opacity: 1;
+  transform: none;
+}
+
+.teacher-dock-actions {
+  position: absolute;
+  left: 50%;
+  bottom: 60px;
+  width: min(272px, calc(100vw - 36px));
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 4px;
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, 14px) scale(.92);
+  transform-origin: 50% 100%;
+  transition: opacity 130ms ease, transform 200ms ease, visibility 240ms;
+}
+
+.teacher-quick-dock[data-expanded="true"] .teacher-dock-actions {
+  visibility: visible;
+  opacity: 1;
+  pointer-events: auto;
+  transform: translate(-50%, 0) scale(1);
+  transition: opacity 160ms 95ms ease, transform 240ms 60ms ease, visibility 0ms;
+}
+
+.classroom-root .home-obs .teacher-quick-dock .teacher-dock-action {
+  flex: 0 0 calc((100% - 8px) / 3);
+  min-height: 44px;
+  padding: 3px 2px;
+  border-radius: 10px;
+  align-content: center;
+  gap: 3px;
+  white-space: normal;
+  text-align: center;
+  font: 500 14px/1.25 Lexend, Outfit, system-ui, sans-serif;
+}
+
+.teacher-dock-action svg {
+  width: 19px;
+  height: 19px;
+}
+
+.classroom-root .home-obs .teacher-quick-dock .teacher-dock-action[data-primary] {
+  color: #d9e6c7;
+}
+
+.classroom-root .home-obs .teacher-quick-dock :is(.teacher-dock-launcher, .teacher-dock-action):hover {
+  background: #f4f4e921;
+}
+
+.classroom-root .home-obs .teacher-quick-dock :is(.teacher-dock-launcher, .teacher-dock-action):focus-visible {
+  outline: 2px solid #e0ebd4;
+  outline-offset: -2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .classroom-root .home-desk.home-obs .obs-dock.teacher-quick-dock,
+  .teacher-dock-launcher svg,
+  .teacher-quick-dock .teacher-dock-actions {
+    transition: none;
+  }
+}

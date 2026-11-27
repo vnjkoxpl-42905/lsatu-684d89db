@@ -343,7 +343,7 @@ describe("Teaching desk interactions", () => {
     expect(screen.queryByRole("button", { name: "Retry pending addition" })).toBeNull();
     expect(actions.addHomeBookingCredits).not.toHaveBeenCalled();
   });
-  it("caps Home at two sessions using the true total and preserves unsaved input across disclosure", () => {
+  it("caps Home at two sessions and preserves unsaved input across disclosure", () => {
     render(
       <PostSessionWork
         work={{
@@ -365,12 +365,12 @@ describe("Teaching desk interactions", () => {
         onAll={vi.fn()}
       />,
     );
-    expect(screen.getByText("12")).toBeInTheDocument();
+    expect(screen.queryByText("12")).not.toBeInTheDocument();
     expect(
-      screen.getAllByRole("button", { name: "Open follow-up" }),
+      screen.getAllByRole("button", { name: /^Details/ }),
     ).toHaveLength(2);
     fireEvent.click(
-      screen.getAllByRole("button", { name: "Open follow-up" })[0],
+      screen.getAllByRole("button", { name: /^Details/ })[0],
     );
     fireEvent.click(screen.getAllByText("Add transcript link")[0]);
     const input = screen.getAllByLabelText("Google Docs transcript URL")[0];
@@ -379,9 +379,9 @@ describe("Teaching desk interactions", () => {
         value: "https://docs.google.com/document/d/unsaved_document_123/edit",
       },
     });
-    fireEvent.click(screen.getByRole("button", { name: "Close follow-up" }));
+    fireEvent.click(screen.getByRole("button", { name: /^Details/, expanded: true }));
     fireEvent.click(
-      screen.getAllByRole("button", { name: "Open follow-up" })[0],
+      screen.getAllByRole("button", { name: /^Details/ })[0],
     );
     expect(input).toHaveValue(
       "https://docs.google.com/document/d/unsaved_document_123/edit",
@@ -400,7 +400,7 @@ describe("Teaching desk interactions", () => {
         onOpen={vi.fn()}
       />,
     );
-    fireEvent.click(screen.getByRole("button", { name: "Open follow-up" }));
+    fireEvent.click(screen.getByRole("button", { name: /^Details/ }));
     fireEvent.click(screen.getByRole("checkbox", { name: "Recap prepared" }));
     fireEvent.click(screen.getByRole("checkbox", { name: "Recap posted" }));
     expect(update).toHaveBeenCalledWith(task, {
@@ -422,7 +422,7 @@ describe("Teaching desk interactions", () => {
     render(
       <MyList desk={{ ...desk, mutateManual }} students={[]} onAll={vi.fn()} />,
     );
-    fireEvent.click(screen.getByRole("button", { name: "Add task +" }));
+    fireEvent.click(screen.getByRole("button", { name: "Add a to-do" }));
     fireEvent.change(screen.getByLabelText("Task"), {
       target: { value: "Call after session" },
     });
@@ -640,7 +640,7 @@ describe("Teaching desk interactions", () => {
         onAll={vi.fn()}
       />,
     );
-    fireEvent.click(screen.getByRole("button", { name: "Add task +" }));
+    fireEvent.click(screen.getByRole("button", { name: "Add a to-do" }));
     fireEvent.change(screen.getByLabelText("Task"), {
       target: { value: "Edited draft" },
     });

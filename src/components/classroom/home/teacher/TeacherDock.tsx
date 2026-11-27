@@ -1,33 +1,41 @@
+import { CalendarDays, ClipboardPlus, Grid2X2, MessageCircle, Search, Users, X } from "lucide-react";
 import * as React from "react";
 import type { AgendaEvent } from "./teachingDeskModel";
 import { safeGoogleLink } from "./teachingDeskModel";
 import type { TeacherStudentRow, TeacherThreadRow } from "./teacherHomeModel";
 import { filterStudents } from "./teacherHomeModel";
 import { clockLabel, eventName, timedEvents } from "./observatoryModel";
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
+import "./teacher-dock.css";
 
-type PanelKey = "search" | "msg" | "cal" | "stu" | "more";
+const AssignmentBuilder = React.lazy(() => import("@/components/teacher/AssignmentBuilder"));
+
+type PanelKey = "search" | "msg" | "cal" | "stu";
+type DockView = PanelKey | "quick" | null;
 
 const TITLES: Record<PanelKey, string> = {
   search: "Search",
   msg: "Messages",
   cal: "Calendar",
   stu: "Students",
-  more: "More",
 };
 
-/**
- * The teacher dock (home-v2): a pill fixed to the bottom of Home with search,
- * Assign work (lit), Messages, Calendar and Students. Panels rise from it,
- * one at a time. Escape or Close returns focus to whatever opened the panel.
- * Under 820px the dock collapses to a search button, Assign work and More.
- * Every row is real: unread threads, calendar events, the roster.
- */
+const QUICK_ACTIONS = [
+  { key: "search", label: "Search", Icon: Search },
+  { key: "assign", label: "Assign work", Icon: ClipboardPlus },
+  { key: "msg", label: "Messages", Icon: MessageCircle },
+  { key: "cal", label: "Calendar", Icon: CalendarDays },
+  { key: "stu", label: "Students", Icon: Users },
+] as const;
+
+/** Teacher Home shortcuts and their data-backed panels. */
 export function TeacherDock({
   students,
   rosterReady,
   unread,
   unreadTotal,
   events,
+  actorId,
   onOpen,
 }: {
   students: TeacherStudentRow[];
@@ -35,57 +43,46 @@ export function TeacherDock({
   unread: TeacherThreadRow[];
   unreadTotal: number | null;
   events: AgendaEvent[] | undefined;
+  actorId?: string;
   onOpen: (route: string) => void;
 }) {
-  const [open, setOpen] = React.useState<PanelKey | null>(null);
+  const [view, setView] = React.useState<DockView>(null);
   const [query, setQuery] = React.useState("");
-  const opener = React.useRef<HTMLElement | null>(null);
+  const [assignOpen, setAssignOpen] = React.useState(false);
+  const [assignStudentId, setAssignStudentId] = React.useState("");
+  const assignStudent = students.find((student) => student.id === assignStudentId);
+  const dockRef = React.useRef<HTMLElement>(null);
+  const launcherRef = React.useRef<HTMLButtonElement>(null);
   const panelRef = React.useRef<HTMLDivElement>(null);
   const headRef = React.useRef<HTMLHeadingElement>(null);
-  const inputRef = React.useRef<HTMLInputElement>(null);
-  const keepFocus = React.useRef(false);
   const panelId = React.useId();
+  const actionsId = `${panelId}-actions`;
+  const unreadCountId = `${panelId}-unread`;
+  const expanded = view === "quick";
+  const open = expanded ? null : view;
 
-  const close = React.useCallback((restore = true) => {
-    setOpen(null);
-    if (restore) {
-      const target = opener.current;
-      requestAnimationFrame(() => {
-        if (target && document.contains(target) && target.offsetParent !== null) target.focus();
-      });
-    }
+  const close = React.useCallback((restoreFocus = true) => {
+    setView(null);
+    if (restoreFocus) launcherRef.current?.focus();
   }, []);
 
-  const show = (key: PanelKey, from: HTMLElement | null, opts: { keepFocus?: boolean } = {}) => {
-    if (open === key && opener.current === from && !opts.keepFocus) {
-      close();
-      return;
-    }
-    opener.current = from;
-    keepFocus.current = !!opts.keepFocus;
-    setOpen(key);
-  };
-
-  // Move focus into a panel opened by a button; the inline search keeps it.
   React.useEffect(() => {
-    if (!open || keepFocus.current) return;
-    const panel = panelRef.current;
-    const first = panel?.querySelector<HTMLElement>("input, button:not([data-close])");
+    if (!open) return;
+    const first = panelRef.current?.querySelector<HTMLElement>("input, button:not([data-close])");
     (first ?? headRef.current)?.focus();
   }, [open]);
 
   React.useEffect(() => {
-    if (!open) return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        e.stopPropagation();
-        close();
-      }
+    if (!view) return;
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key !== "Escape" || event.defaultPrevented) return;
+      event.preventDefault();
+      event.stopPropagation();
+      close();
     };
-    const onDown = (e: PointerEvent) => {
-      const t = e.target as Node;
-      if (panelRef.current?.contains(t)) return;
-      if ((t as Element).closest?.(".obs-dock")) return;
+    const onDown = (event: PointerEvent) => {
+      if (!(event.target instanceof Node)) return;
+      if (dockRef.current?.contains(event.target) || panelRef.current?.contains(event.target)) return;
       close(false);
     };
     document.addEventListener("keydown", onKey);
@@ -94,7 +91,7 @@ export function TeacherDock({
       document.removeEventListener("keydown", onKey);
       document.removeEventListener("pointerdown", onDown);
     };
-  }, [open, close]);
+  }, [view, close]);
 
   const go = (route: string) => {
     close(false);
@@ -118,7 +115,7 @@ export function TeacherDock({
     if (e.key === "ArrowUp") {
       e.preventDefault();
       if (i > 0) items[i - 1].focus();
-      else if (open === "search") (inputRef.current ?? panelRef.current?.querySelector("input"))?.focus();
+      else if (open === "search") panelRef.current?.querySelector("input")?.focus();
     }
   };
 
@@ -145,32 +142,28 @@ export function TeacherDock({
   if (open === "search") {
     body = (
       <>
-        {keepFocus.current ? null : (
-          <>
-            <label className="sr-only" htmlFor={`${panelId}-q2`}>
-              Search students
-            </label>
-            <input
-              id={`${panelId}-q2`}
-              className="obs-pin"
-              type="search"
-              autoComplete="off"
-              placeholder="Search students"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === "ArrowDown") {
-                  const b = panelRef.current?.querySelector<HTMLElement>(".obs-prow");
-                  if (b) {
-                    e.preventDefault();
-                    b.focus();
-                  }
-                }
-                if (e.key === "Enter" && matches[0]) go(matches[0].route);
-              }}
-            />
-          </>
-        )}
+        <label className="sr-only" htmlFor={`${panelId}-query`}>
+          Search students
+        </label>
+        <input
+          id={`${panelId}-query`}
+          className="obs-pin"
+          type="search"
+          autoComplete="off"
+          placeholder="Search students"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "ArrowDown") {
+              const b = panelRef.current?.querySelector<HTMLElement>(".obs-prow");
+              if (b) {
+                e.preventDefault();
+                b.focus();
+              }
+            }
+            if (e.key === "Enter" && matches[0]) go(matches[0].route);
+          }}
+        />
         {results}
       </>
     );
@@ -257,36 +250,14 @@ export function TeacherDock({
         </button>
       </>
     );
-  } else if (open === "more") {
-    body = (
-      <ul className="obs-plist">
-        {(["msg", "cal", "stu"] as const).map((k) => (
-          <li key={k}>
-            <button
-              className="obs-prow"
-              onClick={() => {
-                keepFocus.current = true;
-                setOpen(k);
-                requestAnimationFrame(() => headRef.current?.focus());
-              }}
-            >
-              <span>{TITLES[k]}</span>
-              {k === "msg" && unreadTotal ? <small>{unreadTotal} unread</small> : null}
-            </button>
-          </li>
-        ))}
-      </ul>
-    );
   }
-
-  const exp = (k: PanelKey) => open === k;
 
   return (
     <>
       <div
         ref={panelRef}
         id={panelId}
-        className={open ? "obs-panel is-open" : "obs-panel"}
+        className={open ? "obs-panel teacher-dock-panel is-open" : "obs-panel teacher-dock-panel"}
         role="dialog"
         aria-modal="false"
         aria-labelledby={`${panelId}-h`}
@@ -295,7 +266,7 @@ export function TeacherDock({
       >
         <div className="obs-ph">
           <h2 id={`${panelId}-h`} ref={headRef} tabIndex={-1}>
-            {open === "search" && keepFocus.current ? "Students" : open ? TITLES[open] : ""}
+              {open ? TITLES[open] : ""}
           </h2>
           <button className="obs-x" data-close onClick={() => close()}>
             Close
@@ -303,66 +274,100 @@ export function TeacherDock({
         </div>
         {body}
       </div>
-      <nav className="obs-dock" aria-label="Teacher dock">
-        <label className="sr-only" htmlFor={`${panelId}-q`}>
-          Search students
-        </label>
-        <input
-          ref={inputRef}
-          id={`${panelId}-q`}
-          className="obs-d-only obs-dock-q"
-          type="search"
-          autoComplete="off"
-          placeholder="Search students"
-          aria-controls={panelId}
-          value={query}
-          onChange={(e) => {
-            setQuery(e.target.value);
-            if (!e.target.value.trim()) {
-              if (open === "search") close(false);
-              return;
-            }
-            if (open !== "search") show("search", e.currentTarget, { keepFocus: true });
-          }}
-          onKeyDown={(e) => {
-            if (e.key === "ArrowDown" && open === "search") {
-              const b = panelRef.current?.querySelector<HTMLElement>(".obs-prow");
-              if (b) {
-                e.preventDefault();
-                b.focus();
-              }
-            }
-            if (e.key === "Enter" && matches[0]) go(matches[0].route);
-          }}
-        />
+      <nav
+        ref={dockRef}
+        className="obs-dock teacher-quick-dock"
+        aria-label="Teacher dock"
+        data-expanded={expanded}
+      >
         <button
-          className="obs-m-only"
-          aria-label="Search"
-          aria-expanded={exp("search")}
-          aria-controls={panelId}
-          onClick={(e) => show("search", e.currentTarget)}
+          ref={launcherRef}
+          className="teacher-dock-launcher"
+          type="button"
+          aria-label={expanded ? "Close quick actions" : "Open quick actions"}
+          aria-controls={actionsId}
+          aria-expanded={expanded}
+          onClick={() => setView(expanded ? null : "quick")}
         >
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
-            <circle cx="7" cy="7" r="5" />
-            <path d="m11 11 3.5 3.5" />
-          </svg>
+          <Grid2X2 className="teacher-dock-grid-icon" aria-hidden="true" strokeWidth={1.75} />
+          <X className="teacher-dock-close-icon" aria-hidden="true" strokeWidth={1.75} />
         </button>
-        <button className="obs-lit" onClick={() => go("/teacher/library/assignments")}>
-          Assign work
-        </button>
-        <button className="obs-d-only" aria-expanded={exp("msg")} aria-controls={panelId} onClick={(e) => show("msg", e.currentTarget)}>
-          Messages{unreadTotal ? <span className="obs-dock-n">{unreadTotal}</span> : null}
-        </button>
-        <button className="obs-d-only" aria-expanded={exp("cal")} aria-controls={panelId} onClick={(e) => show("cal", e.currentTarget)}>
-          Calendar
-        </button>
-        <button className="obs-d-only" aria-expanded={exp("stu")} aria-controls={panelId} onClick={(e) => show("stu", e.currentTarget)}>
-          Students
-        </button>
-        <button className="obs-m-only" aria-expanded={exp("more") || exp("msg") || exp("cal") || exp("stu")} aria-controls={panelId} onClick={(e) => show("more", e.currentTarget)}>
-          More
-        </button>
+        <div
+          id={actionsId}
+          className="teacher-dock-actions"
+          role="group"
+          aria-label="Quick actions"
+          aria-hidden={!expanded}
+        >
+          {QUICK_ACTIONS.map(({ key, label, Icon }) => (
+            <button
+              key={key}
+              className="teacher-dock-action"
+              type="button"
+              data-primary={key === "assign" || undefined}
+              aria-haspopup="dialog"
+              aria-controls={key === "assign" ? undefined : panelId}
+              aria-describedby={key === "msg" && unreadTotal ? unreadCountId : undefined}
+              disabled={!expanded}
+              onClick={() => {
+                if (key !== "assign") {
+                  setView(key);
+                } else if (actorId) {
+                  close(false);
+                  setAssignStudentId("");
+                  setAssignOpen(true);
+                } else {
+                  go("/teacher/library/assignments");
+                }
+              }}
+            >
+              <Icon aria-hidden="true" strokeWidth={1.75} />
+              {label}
+            </button>
+          ))}
+          {unreadTotal ? <span id={unreadCountId} className="sr-only">{unreadTotal} unread</span> : null}
+        </div>
       </nav>
+      <Sheet open={assignOpen} onOpenChange={setAssignOpen}>
+        <SheetContent
+          className="overflow-y-auto sm:max-w-xl"
+          onCloseAutoFocus={(event) => {
+            event.preventDefault();
+            launcherRef.current?.focus();
+          }}
+        >
+          <SheetHeader>
+            <SheetTitle>Assign work</SheetTitle>
+            <SheetDescription>Choose a student and the work you want to assign.</SheetDescription>
+          </SheetHeader>
+          <div className="mt-5 space-y-5">
+            <label className="block space-y-2 text-sm">
+              <span>Student</span>
+              <select
+                className="min-h-11 w-full rounded-md border bg-background px-3"
+                value={assignStudentId}
+                disabled={!rosterReady}
+                onChange={(event) => setAssignStudentId(event.target.value)}
+              >
+                <option value="">{rosterReady ? "Choose a student" : "Loading students…"}</option>
+                {students.map((student) => <option value={student.id} key={student.id}>{student.name}</option>)}
+              </select>
+            </label>
+            {assignStudent && actorId && actorId !== "preview" ? (
+              <React.Suspense fallback={<p role="status">Loading assignment form…</p>}>
+                <AssignmentBuilder
+                  key={assignStudent.id}
+                  studentId={assignStudent.id}
+                  adminUserId={actorId}
+                  onClose={() => setAssignOpen(false)}
+                />
+              </React.Suspense>
+            ) : assignStudent && actorId === "preview" ? (
+              <p role="status">Assignments for sample students are disabled in this preview.</p>
+            ) : null}
+          </div>
+        </SheetContent>
+      </Sheet>
     </>
   );
 }

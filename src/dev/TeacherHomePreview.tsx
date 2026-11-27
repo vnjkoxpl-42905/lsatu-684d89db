@@ -4,8 +4,9 @@
  * behave as they will live.
  */
 import { useState } from "react";
+import { useTeacherTranscriptFixture } from "./TeacherTranscriptFixture";
 import { tierFlags, type ManagedUser } from "@/lib/adminUsers";
-import type { DeskActions } from "@/components/classroom/home/teacher/teachingDeskModel";
+import type { DeskActions, ManualTask } from "@/components/classroom/home/teacher/teachingDeskModel";
 import { TeacherHomeView } from "@/components/classroom/home/teacher/TeacherHomeView";
 import type { TeacherHomeModel } from "@/components/classroom/home/teacher/teacherHomeModel";
 import { EMPTY_DESK, type AgendaEvent } from "@/components/classroom/home/teacher/teachingDeskModel";
@@ -45,8 +46,8 @@ const EVENTS = [
 const task = (id: string, name: string, notes: boolean) => ({
   id, revision: 1, student_id: `sample-${id}`, student_name: name, source_title: `LSAT session: ${name}`,
   starts_at: at(-1, "13:00").toISOString(), ends_at: at(-1, "14:00").toISOString(),
-  source_state: "ended" as const, match_state: "matched" as const, transcript_doc_id: "doc", transcript_source: "auto" as const,
-  transcript_status: "linked" as const, drive_folder_url: null, local_slug: null,
+  source_state: "ended" as const, match_state: "matched" as const, transcript_doc_id: notes ? "preview_document_fixture_123" : null, transcript_source: "auto" as const,
+  transcript_status: notes ? "linked" as const : "waiting" as const, drive_folder_url: null, local_slug: null,
   recap_done: false, notes_done: notes, work_assigned: false, handled_at: null, kind: "session" as const,
 });
 
@@ -62,7 +63,9 @@ const MODEL: TeacherHomeModel = {
     ],
   },
   roster: { state: "ready", total: 3, recent: [
-    { id: "sample-lydia", name: "Lydia Park", activityLabel: "Active today", route: "/teacher/students" },
+    { id: "sample-lydia", name: "Lydia Park", activityLabel: "Active today", route: "/teacher/students/sample-lydia" },
+    { id: "sample-celia", name: "Celia Moreno", activityLabel: "Active yesterday", route: "/teacher/students/sample-celia" },
+    { id: "sample-hana", name: "Hana Ito", activityLabel: "Active yesterday", route: "/teacher/students/sample-hana" },
   ] },
   sessions: { state: "ready", rows: [] },
   postSession: {
@@ -73,7 +76,12 @@ const MODEL: TeacherHomeModel = {
       handled: [], total: 3, handled_total: 3,
     },
   } as TeacherHomeModel["postSession"],
-  desk: { ...EMPTY_DESK, actorId: "preview", agenda: { state: "ready", data: { events: EVENTS } } } as TeacherHomeModel["desk"],
+  desk: { ...EMPTY_DESK, actorId: "preview", agenda: { state: "ready", data: { events: EVENTS } },
+    results: { state: "ready", data: ["Lydia Park", "Lydia Park", "Hana Ito"].map((name, i) => ({
+      id: `sample-result-${i}`, student_id: `sample-${name.split(" ")[0].toLowerCase()}`,
+      student_name: name, title: "PT110 · 3", score: "19/26",
+      completed_at: at(-i - 1, "13:00").toISOString(),
+    })) } } as TeacherHomeModel["desk"],
 };
 
 const sampleAccounts = [
@@ -89,10 +97,37 @@ const saveSampleAccess: DeskActions["saveHomeAccess"] = async (person, tier, dra
 
 export default function TeacherHomePreview() {
   const [accounts, setAccounts] = useState(sampleAccounts);
+  const transcript = new URLSearchParams(window.location.search).get("state") === "transcript";
+  const additionalTasks = useTeacherTranscriptFixture(transcript);
+  const [tasks, setTasks] = useState<ManualTask[]>([]);
+  const page = (handled: boolean) => {
+    const items = tasks.filter((task) => Boolean(task.handled_at) === handled);
+    return { items, total: items.length, next_cursor: null };
+  };
   const model: TeacherHomeModel = {
     ...MODEL,
     desk: {
       ...MODEL.desk!,
+      manual: { state: "ready", data: page(false) },
+      loadManual: async (handled) => page(handled),
+      mutateManual: async (task, change) => {
+        if (change.action === "create" && change.title) {
+          const student = MODEL.roster.recent.find((row) => row.id === change.studentId);
+          setTasks((rows) => [...rows, {
+            id: crypto.randomUUID(), revision: 1, title: change.title!,
+            student_id: student?.id ?? null, student_name: student?.name ?? null,
+            kind: "manual", blocker: null, created_at: new Date().toISOString(), handled_at: null,
+          }]);
+        } else if (task) {
+          setTasks((rows) => rows.map((row) => row.id === task.id ? {
+            ...row,
+            revision: row.revision + 1,
+            blocker: change.action === "edit" ? change.blocker ?? null : row.blocker,
+            handled_at: change.action === "handle" ? new Date().toISOString()
+              : change.action === "reopen" ? null : row.handled_at,
+          } : row));
+        }
+      },
       access: { state: "ready", data: accounts },
       actions: { ...MODEL.desk?.actions, saveHomeAccess: saveSampleAccess } as DeskActions,
       refreshAccess: (person) => {
@@ -104,7 +139,7 @@ export default function TeacherHomePreview() {
     <div className="classroom-root classroom-root-home">
       <main className="classroom-stage">
         <div className="classroom-column">
-          <TeacherHomeView model={model} onOpen={(r) => console.info("open", r)} />
+          <TeacherHomeView model={model} additionalTasks={additionalTasks} onOpen={(r) => console.info("open", r)} />
         </div>
       </main>
     </div>
