@@ -1,13 +1,12 @@
 import { conditionalFullCourseAssignmentsReleased } from '@/lib/conditionalCourseEdition';
-import { snapshotConditionalRequirements } from '@/bootcamps/conditionals/courseRequirements';
 import { supabase } from '@/integrations/supabase/client';
-import { BOOTCAMPS } from '@/lib/bootcamps';
+import { planBootcampAssignment } from '@/lib/bootcampAssignmentPlan';
 import { createClassroomItem } from '@/lib/classroomItems';
 import type { ClassroomItemType } from '@/hooks/useClassroomItems';
 import { notifyStudentOfClassroomItem, type NotifyResult } from '@/lib/classroomNotify';
 import { parseLocalDay } from '@/lib/localDate';
 import { coerceStudentLevel, type StudentLevel } from '@/lib/studentLevel';
-import { conditionalProtectedGrantRoute, resolveConditionalAssignment, type ConditionalAssignmentTarget } from '@/lib/conditionalBootcampAssignment';
+import { conditionalProtectedGrantRoute, type ConditionalAssignmentTarget } from '@/lib/conditionalBootcampAssignment';
 import { assignReadingCenter, READING_CENTER_PATH } from '@/lib/readingCenterAccess';
 import { newAssignmentDelivery, assignmentDeliveryColumns, assignmentWriteSignal, type AssignmentDelivery } from '@/lib/assignmentDelivery';
 
@@ -335,17 +334,13 @@ async function planFor(
     }
 
     case 'bootcamp': {
-      const bootcamp = BOOTCAMPS.find((b) => b.id === item.topicId);
-      if (!bootcamp) throw new Error(`Unknown bootcamp: ${item.topicId}`);
-      if (item.conditionalTarget && item.topicId !== 'conditionals') throw new Error('Conditional targets apply only to Conditional Logic Bootcamp.');
-      const conditional = item.topicId === 'conditionals' ? await resolveConditionalAssignment(item.conditionalTarget) : null;
-      if (conditional?.target.courseEdition && !conditionalFullCourseAssignmentsReleased()) throw new Error('Full conditional course assignments are not released yet.');
-      const assignedRoute = conditional?.route ?? bootcamp.route;
+      const bootcamp = await planBootcampAssignment(item.topicId, item.conditionalTarget, conditionalFullCourseAssignmentsReleased());
+      const assignedRoute = bootcamp.route;
 
       return {
         type: 'bootcamp_module',
-        title: conditional?.title ?? bootcamp.title,
-        description: conditional?.description ?? bootcamp.description,
+        title: bootcamp.title,
+        description: bootcamp.description,
         assignmentType: 'bootcamp',
         // A bootcamp has no per-student row: the classroom item IS the
         // assignment, and source_id is the bootcamp's own route.
@@ -355,8 +350,7 @@ async function planFor(
         route: () => assignedRoute,
         unlockAt,
         dueAt: null,
-        metadata: { bootcamp_id: bootcamp.id, ...(conditional ? { conditional_target: conditional.target, conditional_target_key: conditional.key,
-          ...(conditional.target.courseEdition && conditional.target.scope !== 'activity' ? { conditional_requirements: snapshotConditionalRequirements(conditional.target) } : {}) } : {}) },
+        metadata: bootcamp.metadata,
       };
     }
   }

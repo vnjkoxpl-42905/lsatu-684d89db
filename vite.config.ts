@@ -3,7 +3,7 @@ import react from "@vitejs/plugin-react-swc";
 import path from "path";
 import { execSync } from "child_process";
 import { componentTagger } from "lovable-tagger";
-import { mcpPlugin } from "@lovable.dev/mcp-js/stacks/supabase/vite";
+import { supabaseMcpPlugin } from "./scripts/mcp-vite";
 
 
 function resolveBuildSha(): string {
@@ -39,7 +39,7 @@ export default defineConfig(({ mode }) => ({
   plugins: [
     react(),
     mode === "development" && componentTagger(),
-    mcpPlugin(),
+    supabaseMcpPlugin(),
   ].filter(Boolean),
   resolve: {
     alias: {
