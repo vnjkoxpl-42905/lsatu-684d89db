@@ -17,9 +17,11 @@ import { SessionTask } from "./PostSessionWork";
 export function DeskStatus({
   region,
   noun,
+  setupLabel,
 }: {
   region: DeskRegion<unknown>;
   noun: string;
+  setupLabel?: string;
 }) {
   return (
     <>
@@ -36,7 +38,7 @@ export function DeskStatus({
         </p>
       ) : region.state === "setup" ? (
         <p className="home-desk-empty">
-          {noun} is not connected yet.{" "}
+          {setupLabel ?? `${noun} is not connected yet.`}{" "}
           {region.retry ? (
             <button disabled={region.retryBlocked} onClick={region.retry}>
               {region.retryBlocked ? "Check again shortly" : "Check connection"}
@@ -148,8 +150,8 @@ export function MyList({
       id="home-my-list"
     >
       <header className="classroom-home-region-head">
-        <h2>My list</h2>
-        {desk.manual.state === "ready" ? (
+        <h2>Private reminders</h2>
+        {desk.manual.state === "ready" && (desk.manual.data?.total ?? 0) > 0 ? (
           <span className="classroom-home-count">
             {desk.manual.data?.total ?? 0}
           </span>
@@ -159,10 +161,10 @@ export function MyList({
           onClick={() => setAdding(!adding)}
           aria-expanded={adding}
         >
-          {adding ? "Cancel" : "Add task +"}
+          {adding ? "Cancel" : "Add reminder"}
         </button>
       </header>
-      <DeskStatus region={desk.manual} noun="My list" />
+      <DeskStatus region={desk.manual} noun="private reminders" setupLabel="Reminders are not connected." />
       {desk.pendingManual ? (
         <div className="home-desk-confirm" role="status">
           <p>
@@ -265,7 +267,7 @@ export function MyList({
           </ul>
         ) : (
           <p className="home-desk-empty">
-            Nothing on your list. Add a private reminder.
+            No reminders.
           </p>
         )
       ) : null}

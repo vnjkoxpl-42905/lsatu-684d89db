@@ -13,6 +13,7 @@ import {
 } from "./observatoryModel";
 
 const DOW = new Intl.DateTimeFormat("en-US", { weekday: "short" });
+const SHORT_DATE = new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric" });
 
 /** Follow-up gauge: post-session work handled out of all raised. */
 export function FollowUpGauge({
@@ -145,29 +146,31 @@ export function SevenDayStrip({
   onOpen: (route: string) => void;
 }) {
   const days = stripDays(timedEvents(agenda.data?.events), now);
-  const students = days.reduce((a, d) => a + d.sessions.length, 0);
-  const range = `${new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric" }).format(days[0].day)} to ${days[6].day.getDate()}`;
+  const first = days[0].day;
+  const last = days[6].day;
+  const rangeEnd = first.getMonth() === last.getMonth() ? last.getDate() : SHORT_DATE.format(last);
   return (
     <section className="obs-card obs-strip" aria-labelledby="obs-strip-h">
       <header className="obs-sh">
         <h2 id="obs-strip-h" tabIndex={-1}>Next seven days</h2>
-        <span>
-          {range}
-          {agenda.state === "ready" ? ` · ${students} student${students === 1 ? "" : "s"}` : ""}
-        </span>
+        <span>{SHORT_DATE.format(first)}{" – "}{rangeEnd}</span>
       </header>
       {agenda.state === "ready" ? (
         <ol className="obs-cols">
           {days.map((d) => {
             const dow = DOW.format(d.day);
             return (
-              <li key={d.day.toISOString()} className={d.isToday ? "obs-col is-today" : "obs-col"}>
+              <li
+                key={d.day.toISOString()}
+                className={`obs-col${d.isToday ? " is-today" : ""}${d.sessions.length ? "" : " is-empty"}`}
+              >
                 <span className="obs-dn">{dow}{d.isToday ? " · Today" : ""}</span>
                 <span className="obs-dd">{d.day.getDate()}</span>
                 {d.sessions.length ? (
                   d.sessions.map((s) => (
                     <button
                       key={s.event.id}
+                      type="button"
                       className="obs-sess"
                       aria-label={`${dow} ${d.day.getDate()}${d.isToday ? ", today" : ""}: ${s.event.student_name ?? s.event.title}, ${clockLabel(s.start)}`}
                       onClick={() => onOpen(`/teacher/students/${encodeURIComponent(s.event.student_id!)}`)}
@@ -180,7 +183,10 @@ export function SevenDayStrip({
                     </button>
                   ))
                 ) : (
-                  <span className="obs-free" aria-label="No sessions">·</span>
+                  <span className="obs-free">
+                    <span className="sr-only">No student sessions shown</span>
+                    <span aria-hidden="true">·</span>
+                  </span>
                 )}
               </li>
             );
@@ -197,7 +203,7 @@ export function SevenDayStrip({
 
 /**
  * Message faces (home-v2): each unread conversation as a face with its
- * initial, the newest waiting message as a one-line preview, and the time.
+ * initial, the newest waiting message as a preview, and the time.
  * Built from the same unread rows the inbox badge counts.
  */
 export function MessageFaces({
@@ -214,9 +220,9 @@ export function MessageFaces({
     <section className="obs-card obs-msgs" aria-labelledby={headingId}>
       <div className="obs-lbl obs-lbl-paper">
         <h2 id={headingId}>Messages</h2>
-        <span>
-          {unread.state === "ready" ? `${unread.total ?? 0} unread` : ""}
-        </span>
+        {unread.state === "ready" && (
+          <span className="obs-message-count">{unread.total ?? 0} unread</span>
+        )}
       </div>
       {unread.state === "loading" ? (
         <p className="obs-note">Checking messages…</p>
@@ -229,7 +235,7 @@ export function MessageFaces({
         <ul className="obs-mlist" aria-label="Unread message previews">
           {unread.rows.slice(0, 4).map((t) => (
             <li key={t.id}>
-              <button className="obs-mrow" onClick={() => onOpen(t.route)}>
+              <button type="button" className="obs-mrow" onClick={() => onOpen(t.route)}>
                 <span className="obs-face" aria-hidden="true">
                   {t.initial}
                 </span>
@@ -253,7 +259,7 @@ export function MessageFaces({
       {unread.refreshFailed && unread.rows.length ? (
         <p className="obs-note">Could not refresh. These are the last loaded messages.</p>
       ) : null}
-      <button className="obs-textbtn" onClick={() => onOpen("/teacher/inbox")}>
+      <button type="button" className="obs-textbtn" onClick={() => onOpen("/teacher/inbox")}>
         Open inbox
       </button>
     </section>

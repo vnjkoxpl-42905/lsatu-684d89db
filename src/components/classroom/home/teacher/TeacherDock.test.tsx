@@ -29,39 +29,79 @@ function renderDock(onOpen = vi.fn()) {
   return onOpen;
 }
 
+function openQuickActions() {
+  const launcher = screen.getByRole("button", { name: "Open quick actions" });
+  fireEvent.click(launcher);
+  return launcher;
+}
+
 describe("TeacherDock", () => {
-  it("Assign work routes to the assignment library", () => {
+  it("starts with one launcher and returns focus when quick actions close", () => {
+    renderDock();
+    const dock = screen.getByRole("navigation", { name: "Teacher dock" });
+    expect(within(dock).getAllByRole("button")).toHaveLength(1);
+
+    const launcher = openQuickActions();
+    const actions = screen.getByRole("group", { name: "Quick actions" });
+    expect(launcher).toHaveAccessibleName("Close quick actions");
+    expect(launcher).toHaveAttribute("aria-expanded", "true");
+    expect(within(actions).getAllByRole("button")).toHaveLength(5);
+    expect(within(actions).getByRole("button", { name: "Messages" })).toHaveAccessibleDescription("1 unread");
+
+    within(actions).getByRole("button", { name: "Messages" }).focus();
+    fireEvent.keyDown(document, { key: "Escape" });
+    expect(screen.queryByRole("group", { name: "Quick actions" })).toBeNull();
+    expect(launcher).toHaveFocus();
+  });
+
+  it("Assign work closes quick actions and routes to the assignment library", () => {
     const onOpen = renderDock();
+    const launcher = openQuickActions();
     fireEvent.click(screen.getByRole("button", { name: "Assign work" }));
     expect(onOpen).toHaveBeenCalledWith("/teacher/library/assignments");
+    expect(launcher).toHaveAttribute("aria-expanded", "false");
   });
 
-  it("opens one panel at a time and Escape returns focus to its opener", () => {
+  it("opens one panel at a time and restores launcher focus after dismissal", () => {
     renderDock();
-    const messages = screen.getByRole("button", { name: /^Messages/ });
-    fireEvent.click(messages);
-    const dialog = screen.getByRole("dialog", { name: "Messages" });
-    expect(within(dialog).getByRole("button", { name: /Celia Moreno/ })).toBeInTheDocument();
-    expect(messages).toHaveAttribute("aria-expanded", "true");
+    const launcher = openQuickActions();
+    fireEvent.click(screen.getByRole("button", { name: "Messages" }));
+    const messages = screen.getByRole("dialog", { name: "Messages" });
+    const unread = within(messages).getByRole("button", { name: /Celia Moreno/ });
+    expect(unread).toHaveFocus();
+    expect(launcher).toHaveAttribute("aria-expanded", "false");
+
+    openQuickActions();
+    expect(screen.queryByRole("dialog")).toBeNull();
     fireEvent.click(screen.getByRole("button", { name: "Calendar" }));
     expect(screen.getByRole("dialog", { name: "Calendar" })).toBeInTheDocument();
-    expect(messages).toHaveAttribute("aria-expanded", "false");
     fireEvent.keyDown(document, { key: "Escape" });
     expect(screen.queryByRole("dialog")).toBeNull();
+    expect(launcher).toHaveFocus();
   });
 
-  it("searches the real roster and opens the match", () => {
+  it("focuses the search field, searches the real roster, and opens the match", () => {
     const onOpen = renderDock();
-    const inputs = screen.getAllByLabelText("Search students");
-    fireEvent.change(inputs[0], { target: { value: "lyd" } });
+    openQuickActions();
+    fireEvent.click(screen.getByRole("button", { name: "Search" }));
+    const input = screen.getByRole("searchbox", { name: "Search students" });
+    expect(input).toHaveFocus();
+    fireEvent.change(input, { target: { value: "lyd" } });
     const list = screen.getByRole("list", { name: "Matching students" });
-    fireEvent.click(within(list).getByRole("button", { name: /Lydia Park/ }));
+    const match = within(list).getByRole("button", { name: /Lydia Park/ });
+    fireEvent.keyDown(input, { key: "ArrowDown" });
+    expect(match).toHaveFocus();
+    fireEvent.keyDown(match, { key: "ArrowUp" });
+    expect(input).toHaveFocus();
+    fireEvent.click(match);
     expect(onOpen).toHaveBeenCalledWith("/teacher/students/s1");
   });
 
   it("says when nothing matches", () => {
     renderDock();
-    fireEvent.change(screen.getAllByLabelText("Search students")[0], { target: { value: "zzz" } });
+    openQuickActions();
+    fireEvent.click(screen.getByRole("button", { name: "Search" }));
+    fireEvent.change(screen.getByRole("searchbox", { name: "Search students" }), { target: { value: "zzz" } });
     expect(screen.getByText("No match for “zzz”")).toBeInTheDocument();
   });
 });
