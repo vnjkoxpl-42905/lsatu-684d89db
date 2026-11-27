@@ -5,7 +5,7 @@ import { useStudentAssignment } from "@/hooks/useStudentAssignments";
 import { useUserSettings } from "@/contexts/UserSettingsContext";
 import { singleSectionOf } from "@/lib/drillRunSpec";
 import { launchDrill } from "@/lib/drillLaunch";
-import { SECTION_DIRECTIONS, sectionMinutes } from "@/lib/sectionDirections";
+import { assignedRcSectionRoute, readSectionTimingMode, SECTION_DIRECTIONS, sectionMinutes } from "@/lib/sectionDirections";
 import { SectionDirectionsCard } from "@/components/drill/official/SectionDirectionsCard";
 import "./section-directions.css";
 
@@ -32,7 +32,9 @@ export default function SectionDirectionsPage() {
     () => (assignment ? singleSectionOf(assignment.question_qids ?? []) : null),
     [assignment],
   );
-  useLoadedStudentWorkAcknowledgment({sourceTable:'homework_assignments',sourceId:assignment?.id,studentId:assignment?.student_id,ready:!!assignment && !!section && !loading && !error && profileTimingStatus!=='loading'});
+  const assignedTimingMode = readSectionTimingMode(assignment?.section_timing_mode);
+  const checkingProfileTiming = assignedTimingMode === null && profileTimingStatus === "loading";
+  useLoadedStudentWorkAcknowledgment({sourceTable:'homework_assignments',sourceId:assignment?.id,studentId:assignment?.student_id,ready:!!assignment && !!section && !loading && !error && !checkingProfileTiming});
 
   if (loading && !assignment) {
     return (
@@ -64,6 +66,10 @@ export default function SectionDirectionsPage() {
     );
   }
 
+  if (assignment.section_kind === "rc") {
+    return <Navigate to={assignedRcSectionRoute(assignmentId)} replace />;
+  }
+
   // Not one section (a mixed set, or a set that was edited after assigning):
   // the ordinary assignment page knows what to do with it.
   if (!section) {
@@ -75,17 +81,14 @@ export default function SectionDirectionsPage() {
     return <Navigate to="/history" replace />;
   }
 
-  const minutes = sectionMinutes(settings.defaultTimingMode);
-  const checkingProfileTiming = profileTimingStatus === "loading";
+  const timingMode = assignedTimingMode ?? settings.defaultTimingMode;
+  const minutes = sectionMinutes(timingMode);
   const questionCount = assignment.question_qids.length;
-  // Only LR sections are qid-shaped today; an RC assignment will arrive with
-  // its own kind on the row rather than being inferred from a qid pattern.
   const directions = SECTION_DIRECTIONS.lr;
 
   const goToQuestions = () => {
     if (checkingProfileTiming) return;
-    const timerMode =
-      settings.defaultTimingMode === "35" ? undefined : settings.defaultTimingMode;
+    const timerMode = timingMode === "35" ? undefined : timingMode;
     const query = launchDrill({
       kind: "assignment",
       assignmentId,

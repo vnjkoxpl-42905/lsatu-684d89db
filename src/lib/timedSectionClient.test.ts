@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { TimedSectionClient, TIMED_SECTION_OPERATIONS, type TimedSectionCommand, type TimedSectionSitting, type TimedSectionTransport } from './timedSectionClient';
+import { prepareAssignedTimedSection, TimedSectionClient, TIMED_SECTION_OPERATIONS, type TimedSectionCommand, type TimedSectionSitting, type TimedSectionTransport } from './timedSectionClient';
 const owner = '10000000-0000-4000-8000-000000000001';
 const work = '20000000-0000-4000-8000-000000000001';
 const other = '10000000-0000-4000-8000-000000000002';
@@ -55,6 +55,43 @@ beforeEach(() => {
     : name === 'read_timed_section_v1' ? authority() : reply(args.p_command), error: null }));
   client = create();
 });
+describe('assigned RC sitting transport', () => {
+  const assignment = '60000000-0000-4000-8000-000000000001';
+  const launch = '60000000-0000-4000-8000-000000000002';
+  const input = { ownerId: owner, assignmentId: assignment, launchId: launch, deviceId: 'device-a',
+    pt: 140, section: 1, manifest: 'a'.repeat(64), budgetMs: 3150000 };
+  const ready: TimedSectionSitting = {
+    ...state(1, 'rc'), phase: 'ready', source_kind: 'assigned-canonical',
+    source_key: 'assignment::' + assignment, pace: 'time-and-a-half', budget_ms: 3150000, elapsed_ms: 0,
+  };
+  const prepare = () => prepareAssignedTimedSection(input, { auth: { getUser: actor }, rpc } as TimedSectionTransport);
+
+  it('binds the prepared and refreshed sitting to the assignment and exact budget', async () => {
+    rpc.mockImplementation(async name => ({ data: name.includes('capability') ? capability : authority(ready), error: null }));
+    await expect(prepare()).resolves.toEqual(ready);
+    await expect(client.refresh()).resolves.toMatchObject({ sitting: ready });
+    expect(rpc).toHaveBeenCalledWith('start_assigned_timed_section_v1', {
+      p_assignment_id: assignment, p_client_launch_id: launch, p_device_id: 'device-a',
+    });
+    expect(rpc).toHaveBeenCalledWith('read_timed_section_v1', { p_work_id: work });
+  });
+  it.each([
+    { source_key: 'assignment::' + other },
+    { source_kind: 'manual-canonical' as const, source_key: 'rc::pt140-s1' },
+    { pace: 'standard' as const, budget_ms: 2100000 },
+    { manifest_sha256: 'b'.repeat(64) },
+  ])('rejects a valid sitting for another binding %j', async override => {
+    rpc.mockResolvedValue({ data: authority({ ...ready, ...override }), error: null });
+    await expect(prepare()).rejects.toMatchObject({ kind: 'contract' });
+  });
+  it('discards a pending response when the signed-in account changes', async () => {
+    actor.mockResolvedValueOnce({ data: { user: { id: owner } }, error: null });
+    actor.mockResolvedValueOnce({ data: { user: { id: other } }, error: null });
+    rpc.mockResolvedValue({ data: authority(ready), error: null });
+    await expect(prepare()).rejects.toMatchObject({ kind: 'access' });
+  });
+});
+
 describe('isolated standalone section transport', () => {
   it.each([
     ['standard', 2100000], ['time-and-a-half', 3150000], ['double-time', 4200000], ['untimed', null],

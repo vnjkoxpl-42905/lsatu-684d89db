@@ -119,6 +119,21 @@ describe('SectionDirectionsPage', () => {
     expect(navigate.mock.calls[0][0]).toBe(launchedUrl);
   });
 
+  it.each([
+    ['unlimited', 'Untimed section', 'unlimited'],
+    ['35', 'Total Section Time - 35 minutes', null],
+    ['52.5', 'Total Section Time - 52 minutes 30 seconds', '52.5'],
+    ['70', 'Total Section Time - 70 minutes', '70'],
+  ])('uses the assigned %s clock before the profile loads', (timing, label, queryTimer) => {
+    profileTiming.status = 'loading';
+    assignment.mockReturnValue({ assignment: sectionRow({ section_timing_mode: timing }), loading: false, error: null });
+    mount();
+    expect(screen.getByText(label)).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'GO TO QUESTIONS' }));
+    const url = new URL(navigate.mock.calls[0][0], 'https://local.test');
+    expect(url.searchParams.get('timer')).toBe(queryTimer);
+  });
+
   it('sends a mixed set back to the ordinary assignment page', () => {
     assignment.mockReturnValue({
       assignment: sectionRow({ question_qids: ['PT156-S4-Q1', 'PT101-S2-Q1'] }),

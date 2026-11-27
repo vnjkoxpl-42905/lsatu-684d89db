@@ -34,15 +34,22 @@ const eligible = (session: Session) =>
   session.transcript_source === "auto" &&
   !!session.student_id && !!session.transcript_doc_id;
 
+const sectionTimingModes = ["35", "52.5", "70", "unlimited"] as const;
+type SectionTimingMode = typeof sectionTimingModes[number];
+
+type SectionProposal = {
+  pt: number | null;
+  section: number | null;
+  excerpt: string;
+};
+
 export function explicitSection(
   text: string,
   teacherName: string,
   studentName?: string | null,
 ) {
-  const choices = new Map<
-    string,
-    { pt: number; section: number; excerpt: string }
-  >();
+  const choices = new Map<string, SectionProposal>();
+  let unspecified: SectionProposal | null = null;
   for (const line of text.split(/\r?\n/)) {
     const speakerEnd = line.indexOf(":");
     if (
@@ -50,26 +57,40 @@ export function explicitSection(
       normalizeEmail(line.slice(0, speakerEnd)) !== normalizeEmail(teacherName)
     ) continue;
     const sentence = line.slice(speakerEnd + 1).trim();
-    const commitment = /^(?:I will|I['’]ll)\s+assign\s+(.+)$/i.exec(sentence);
+    const commitment =
+      /^(?:I will|I['ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢]ll)\s+assign\s+(.+)$/i
+        .exec(
+          sentence,
+        );
     if (!commitment) continue;
-    const assignment = commitment[1];
-    const recipient = ["you", studentName?.trim()].find((name) =>
-      name && assignment.toLowerCase().startsWith(name.toLowerCase() + " ")
-    );
+    const assignment = commitment[1].replace(/^to\s+/i, "");
+    const recipient = ["you", "her", "him", "them", studentName?.trim()].find((
+      name,
+    ) => name && assignment.toLowerCase().startsWith(name.toLowerCase() + " "));
     const reference = recipient
       ? assignment.slice(recipient.length).trimStart()
       : assignment;
     const match =
       /^(?:PT|PrepTest)\s*(\d{1,3})(?:[,.\s]+)(?:section\s*|S)([1-4])\.?$/i
         .exec(reference);
-    if (!match) continue;
+    if (!match) {
+      if (
+        /^(?:a|one) (?:(?:full|timed|untimed|LR|RC) )*section\.?$/i.test(
+          reference,
+        )
+      ) {
+        unspecified ??= { pt: null, section: null, excerpt: line.trim() };
+      }
+      continue;
+    }
     choices.set(match[1] + ":" + match[2], {
       pt: Number(match[1]),
       section: Number(match[2]),
       excerpt: line.trim(),
     });
   }
-  return choices.size === 1 ? [...choices.values()][0] : null;
+  if (choices.size === 1) return [...choices.values()][0];
+  return choices.size === 0 ? unspecified : null;
 }
 
 function matchesStudent(
@@ -101,7 +122,12 @@ export async function prepareTranscript(
   options: {
     event?: CalendarEvent;
     accept?: string;
-    correction?: { previewId: string; section: number };
+    correction?: {
+      previewId: string;
+      pt: number;
+      section: number;
+      timing: SectionTimingMode;
+    };
   } = {},
 ) {
   const { accept, correction } = options;
@@ -177,9 +203,27 @@ export async function prepareTranscript(
     p_accept: accept ?? null,
     p_replace: correction?.previewId ?? null,
     p_selected_section: correction?.section ?? null,
+    p_selected_pt: correction?.pt ?? null,
+    p_timing_mode: correction?.timing ?? null,
   });
   if (error) throw error;
   return data;
+}
+
+async function listAssignmentSections(db: SupabaseClient) {
+  const [lr, rc] = await Promise.all([
+    db.from("lr_sections").select("preptest,section"),
+    db.rpc("teacher_transcript_rc_catalog"),
+  ]);
+  if (lr.error) throw lr.error;
+  if (rc.error) throw rc.error;
+
+  const sections: { preptest: number; section: number; kind: "lr" | "rc" }[] =
+    (lr.data ?? []).map((entry) => ({ ...entry, kind: "lr" }));
+  sections.push(...(rc.data ?? []));
+  return sections.sort((a, b) =>
+    a.preptest - b.preptest || a.section - b.section
+  );
 }
 
 export async function transcriptActions(
@@ -189,14 +233,15 @@ export async function transcriptActions(
   body: Record<string, unknown>,
 ) {
   if (body.action === "transcript_assignments") {
-    const { data, error } = await db.from(
-      "teacher_transcript_assignment_previews",
-    )
-      .select("id,session_id,student_id,snapshot,receipt")
-      .eq("owner_id", owner).is("superseded_at", null)
-      .order("created_at", { ascending: false }).limit(100);
-    if (error) throw error;
-    return { actions: data };
+    const [previews, sections] = await Promise.all([
+      db.from("teacher_transcript_assignment_previews")
+        .select("id,session_id,student_id,snapshot,receipt")
+        .eq("owner_id", owner).is("superseded_at", null)
+        .order("created_at", { ascending: false }).limit(100),
+      listAssignmentSections(db),
+    ]);
+    if (previews.error) throw previews.error;
+    return { actions: previews.data, sections };
   }
 
   if (
@@ -210,15 +255,18 @@ export async function transcriptActions(
   });
   if (!session) throw new Error("Session unavailable");
   const section = typeof body.section === "number" ? body.section : 0;
-  if (
-    body.action === "correct_transcript" &&
-    (!Number.isInteger(section) || section < 1 || section > 4)
-  ) {
-    throw new Error("Invalid section");
+  const pt = typeof body.pt === "number" ? body.pt : 0;
+  const timing = sectionTimingModes.find((mode) => mode === body.timing);
+  let correction;
+  if (body.action === "correct_transcript") {
+    if (
+      !Number.isInteger(pt) || pt < 1 || pt > 999 ||
+      !Number.isInteger(section) || section < 1 || section > 4 || !timing
+    ) {
+      throw new Error("Invalid section or timing");
+    }
+    correction = { previewId: body.previewId as string, pt, section, timing };
   }
-  const correction = body.action === "correct_transcript"
-    ? { previewId: body.previewId as string, section }
-    : undefined;
   return {
     action: await prepareTranscript(db, session, googleEmail, {
       accept: body.action === "accept_transcript"

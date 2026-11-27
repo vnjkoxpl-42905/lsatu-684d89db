@@ -14,6 +14,7 @@ import { isRcSavedState } from '@/features/rc/lib/rcSavedSetCodec';
 import { DrillLaunchError, launchNeedsResolution, type DrillLaunch } from '@/lib/drillLaunch';
 import { listSavedSets } from '@/lib/savedSets';
 import { supabase } from '@/integrations/supabase/client';
+import { readSectionTimingMode } from '@/lib/sectionDirections';
 import { getPracticePool } from '@/bootcamps/main-conclusion/data/practiceDrillPools';
 import {
   pickHomeworkForDay,
@@ -51,6 +52,30 @@ export class DeadDrillLinkError extends DrillLaunchError {
   }
 }
 
+export async function resolveHomeworkAssignmentLaunch(assignmentId: string, userId: string | undefined) {
+  if (!userId) throw new DeadDrillLinkError('Sign in to open your assignment.');
+  // A select of the row also works on older deployments without the timing column.
+  const { data, error } = await supabase
+    .from('homework_assignments')
+    .select('*')
+    .eq('id', assignmentId)
+    .eq('student_id', userId)
+    .maybeSingle();
+  if (error) throw error;
+  if (!data) throw new DeadDrillLinkError('That assignment no longer exists.');
+  const assignment = data as typeof data & { section_timing_mode?: unknown; section_kind?: unknown };
+  if (assignment.section_kind === 'rc') {
+    throw new DeadDrillLinkError('Open your assigned Reading Comprehension section from My Work.');
+  }
+  if (!assignment.question_qids?.length) {
+    throw new DeadDrillLinkError('That assignment has no questions on it.');
+  }
+  return {
+    qids: assignment.question_qids,
+    timingMode: readSectionTimingMode(assignment.section_timing_mode),
+  };
+}
+
 export async function resolveDrillLaunch(
   launch: DrillLaunch,
   userId: string | undefined,
@@ -78,26 +103,8 @@ export async function resolveDrillLaunch(
       return set.question_ids;
     }
 
-    case 'assignment': {
-      // `homework_assignments`, which is where the classroom assignment surfaces
-      // read theirs from (`useStudentAssignment`). NOT `guided_drill_assignments`:
-      // those are a different table with different ids, and looking an id up in
-      // the wrong one makes a live assignment read as a dead link.
-      const { data, error } = await supabase
-        .from('homework_assignments')
-        .select('id, question_qids')
-        .eq('id', launch.assignmentId)
-        .maybeSingle();
-      if (error) throw error;
-      const qids = (data as { question_qids?: string[] } | null)?.question_qids ?? [];
-      if (!data) {
-        throw new DeadDrillLinkError('That assignment no longer exists.');
-      }
-      if (qids.length === 0) {
-        throw new DeadDrillLinkError('That assignment has no questions on it.');
-      }
-      return qids;
-    }
+    case 'assignment':
+      return (await resolveHomeworkAssignmentLaunch(launch.assignmentId, userId)).qids;
 
     case 'practice-set': {
       // The pool is static source data with a fixed list, so re-resolving the

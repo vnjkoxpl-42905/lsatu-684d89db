@@ -1,0 +1,145 @@
+.classroom-root .home-desk.home-obs .obs-greet {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px 12px;
+  margin-block-end: 24px;
+}
+
+.classroom-root .home-desk.home-obs .obs-greet > div:first-child { display: contents; }
+.classroom-root .home-desk.home-obs .obs-greet h1 {
+  grid-area: 1 / 1 / 2 / -1;
+  margin: 0;
+  line-height: 1.15;
+}
+.classroom-root .home-desk.home-obs .obs-greet .obs-date { grid-area: 2 / 1; margin: 0; }
+.classroom-root .home-desk.home-obs .obs-greet .obs-acts {
+  grid-area: 2 / 2;
+  justify-self: end;
+  gap: 10px;
+  margin: 0;
+}
+.classroom-root .home-desk.home-obs .obs-greet .obs-sum { grid-area: 3 / 1 / 4 / -1; }
+.classroom-root .home-desk.home-obs .obs-greet .obs-acts summary { min-height: 44px; }
+
+.classroom-root .teacher-home-question-finder .qf-trigger {
+  inline-size: clamp(168px, 21vw, 232px);
+  min-inline-size: 0;
+  min-block-size: 44px;
+  padding-inline: 14px;
+  background: var(--home-paper, #faf9f6);
+}
+
+.classroom-root .teacher-home-question-finder .qf-trigger-label {
+  display: inline;
+  color: var(--home-ink, #262322);
+}
+
+@media (max-width: 700px) {
+  .classroom-root .home-desk.home-obs .obs-greet .obs-acts {
+    grid-area: 3 / 1 / 4 / -1;
+    justify-self: stretch;
+  }
+
+  .classroom-root .teacher-home-question-finder {
+    flex: 1;
+    min-inline-size: 0;
+  }
+
+  .classroom-root .teacher-home-question-finder .qf-trigger {
+    inline-size: 100%;
+  }
+}
+
+.classroom-root .home-desk.home-obs .eclipse-grid { gap: 16px; }
+.classroom-root .home-desk.home-obs .eclipse-grid .classroom-home-region-head { margin-block-end: 12px; }
+.classroom-root .home-desk.home-obs .classroom-home-post-session .classroom-home-session-task { padding: 16px; }
+.classroom-root .home-desk.home-obs .classroom-home-task-heading h3 {
+  font-size: clamp(18px, 2vw, 26px);
+  line-height: 1.2;
+}
+.classroom-root .home-desk.home-obs .classroom-home-task-heading .classroom-home-task-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  font-size: 14px;
+}
+.classroom-home-task-toggle svg { flex: none; }
+.classroom-home-task-toggle[aria-expanded="true"] svg { transform: rotate(180deg); }
+.home-desk-task-transcript {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.home-desk-task-summary > p { margin: 0; }
+
+.classroom-root .home-desk.home-obs .eclipse-three {
+  gap: 0;
+  align-items: stretch;
+  border: 1px solid var(--home-line);
+  border-radius: 24px;
+  background: var(--home-plane);
+}
+.classroom-root .home-desk.home-obs .eclipse-three > .classroom-home-region {
+  min-width: 0;
+  padding: 16px 20px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+.classroom-root .home-desk.home-obs .eclipse-three .classroom-home-region-head { margin-block-end: 8px; }
+.classroom-root .home-desk.home-obs .eclipse-three > .home-desk-my-list { border-inline-start: 1px solid var(--home-line); }
+.classroom-root .home-desk.home-obs .home-desk-my-list .classroom-home-region-head { justify-content: flex-start; gap: 12px; }
+.classroom-root .home-desk.home-obs .home-desk-my-list .classroom-home-region-head button { margin-inline-start: 0; }
+.classroom-root .home-desk.home-obs .home-desk-correspondence .home-desk-empty button {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.classroom-root .home-desk.home-obs .home-desk-student-actions { margin-block-start: 12px; }
+.classroom-root .home-desk.home-obs .home-desk-student-actions > summary {
+  align-content: center;
+  min-height: 44px;
+  cursor: pointer;
+}
+.classroom-root .home-desk.home-obs .home-desk-student-actions .home-desk-student-columns {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-block-start: 12px;
+}
+.obs-access-edge-tab {
+  width: 44px;
+  justify-content: center;
+  padding: 0;
+}
+
+@container classroom-home (min-width: 820px) {
+  .classroom-root .home-desk.home-obs .eclipse-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@container classroom-home (min-width: 280px) and (max-width: 520px) {
+  .classroom-root .home-desk.home-obs .classroom-home-post-session .classroom-home-task-heading {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 8px;
+    align-items: start;
+  }
+}
+@container classroom-home (max-width: 760px) {
+  .classroom-root .home-desk.home-obs .eclipse-three { grid-template-columns: minmax(0, 1fr); }
+  .classroom-root .home-desk.home-obs .eclipse-three > .home-desk-my-list {
+    border-inline-start: 0;
+    border-block-start: 1px solid var(--home-line);
+  }
+  .classroom-root .home-desk.home-obs .home-desk-student-actions .home-desk-student-columns {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+@media (max-width: 700px) {
+  .classroom-root .home-desk.home-obs .obs-greet { margin-block-end: 16px; }
+  .classroom-root .home-desk.home-obs .obs-greet h1 { font-size: clamp(28px, 8vw, 36px); }
+}

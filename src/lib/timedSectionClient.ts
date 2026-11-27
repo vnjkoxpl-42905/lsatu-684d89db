@@ -4,6 +4,7 @@ import type { TimedCheckpointPayload, TimedObject, TimedWorkFailure, TimedWorkLo
 export const TIMED_SECTION_OPERATIONS = ['create', 'claim', 'start', 'checkpoint', 'heartbeat', 'pause', 'resume', 'close', 'abandon'] as const;
 export type TimedSectionOperation = typeof TIMED_SECTION_OPERATIONS[number];
 export type TimedSectionPace = 'standard' | 'time-and-a-half' | 'double-time' | 'untimed';
+export type TimedSectionSource = 'manual-canonical' | 'assigned-canonical';
 export interface TimedSectionPayloads {
   create: { kind: 'lr' | 'rc'; pt: number; section: number; pace: TimedSectionPace };
   claim: Record<string, never>; start: Record<string, never>; heartbeat: Record<string, never>;
@@ -16,7 +17,7 @@ export interface TimedSectionCommand {
   expectedRevision: number; writerEpoch: number; operation: TimedSectionOperation; payload: TimedObject;
 }
 export interface TimedSectionSitting extends TimedObject {
-  id: string; owner_id: string; kind: 'lr' | 'rc'; source_kind: 'manual-canonical'; source_key: string;
+  id: string; owner_id: string; kind: 'lr' | 'rc'; source_kind: TimedSectionSource; source_key: string;
   pt: number; section: number; manifest_sha256: string; frozen_source: TimedObject; frozen_qids: string[];
   pace: TimedSectionPace; budget_ms: number | null; lease_ms: number; phase: 'ready' | 'running' | 'paused' | 'complete' | 'abandoned';
   revision: number; writer_epoch: number; device_id: string; elapsed_ms: number;
@@ -34,7 +35,7 @@ export interface TimedSectionAuthority {
 export interface TimedSectionAcknowledgment extends TimedSectionAuthority { receipt: TimedSectionReceipt }
 export interface TimedSectionTransport {
   auth: { getUser(): Promise<{ data: { user: { id: string } | null }; error: unknown }> };
-  rpc(name: string, args?: { p_command: TimedSectionCommand } | { p_work_id: string }): PromiseLike<{ data: unknown; error: { code?: string; message?: string; details?: string } | null }>;
+  rpc(name: string, args?: { p_command: TimedSectionCommand } | { p_work_id: string } | { p_assignment_id: string; p_client_launch_id: string; p_device_id: string }): PromiseLike<{ data: unknown; error: { code?: string; message?: string; details?: string } | null }>;
 }
 export class TimedSectionError extends Error {
   constructor(public readonly kind: TimedWorkFailure, message: string, public readonly authoritativeSitting?: TimedSectionSitting) {
@@ -72,8 +73,12 @@ function parseCommand(value: unknown, workId: string): TimedSectionCommand {
   return value as unknown as TimedSectionCommand;
 }
 function parseSitting(value: unknown, owner: string, work: string): TimedSectionSitting {
-  if (!object(value) || value.id !== work || value.owner_id !== owner || !['lr', 'rc'].includes(value.kind as string) || value.source_kind !== 'manual-canonical'
-    || !integer(value.pt) || value.pt < 1 || !integer(value.section) || value.section < 1 || value.source_key !== `${value.kind}::pt${value.pt}-s${value.section}`
+  if (!object(value) || value.id !== work || value.owner_id !== owner || !['lr', 'rc'].includes(value.kind as string)
+    || !integer(value.pt) || value.pt < 1 || !integer(value.section) || value.section < 1
+    || !(value.source_kind === 'manual-canonical'
+      ? value.source_key === `${value.kind}::pt${value.pt}-s${value.section}`
+      : value.source_kind === 'assigned-canonical' && value.kind === 'rc' && typeof value.source_key === 'string'
+        && value.source_key.startsWith('assignment::') && uuid.test(value.source_key.slice('assignment::'.length)))
     || typeof value.manifest_sha256 !== 'string' || !/^[a-f0-9]{64}$/.test(value.manifest_sha256) || !object(value.frozen_source)
     || !Array.isArray(value.frozen_qids) || !value.frozen_qids.length || value.frozen_qids.some(qid => typeof qid !== 'string' || !qid)
     || new Set(value.frozen_qids).size !== value.frozen_qids.length || !integer(value.current_index) || value.current_index >= value.frozen_qids.length
@@ -224,6 +229,55 @@ function forward(next: TimedSectionSitting, previous: TimedSectionSitting): void
   if (next.writer_epoch < previous.writer_epoch || next.elapsed_ms < previous.elapsed_ms
     || next.revision === previous.revision && canonical(next) !== canonical(previous)
     || ['complete', 'abandoned'].includes(previous.phase) && canonical(next) !== canonical(previous)) fail('The account would regress acknowledged section work.');
+}
+
+export function isAssignedTimedSection(sitting: TimedSectionSitting, assignmentId: string): boolean {
+  return sitting.source_kind === 'assigned-canonical' && sitting.kind === 'rc'
+    && sitting.source_key === 'assignment::' + assignmentId;
+}
+
+/** Prepare or retrieve the one account sitting for this assignment. The clock stays ready. */
+export async function prepareAssignedTimedSection(input: {
+  ownerId: string;
+  assignmentId: string;
+  launchId: string;
+  deviceId: string;
+  pt: number;
+  section: number;
+  manifest: string;
+  budgetMs: number | null;
+}, transport: TimedSectionTransport = supabase as unknown as TimedSectionTransport): Promise<TimedSectionSitting> {
+  if (!uuid.test(input.ownerId) || !uuid.test(input.assignmentId) || !uuid.test(input.launchId)) {
+    fail('A valid account and assignment are required.');
+  }
+  const assertOwner = async () => {
+    const { data, error } = await transport.auth.getUser();
+    if (error || data.user?.id !== input.ownerId) {
+      throw new TimedSectionError('access', 'Your account changed. Open your assignment again.');
+    }
+  };
+  await assertOwner();
+  let response: Awaited<ReturnType<TimedSectionTransport['rpc']>>;
+  try {
+    response = await transport.rpc('start_assigned_timed_section_v1', {
+      p_assignment_id: input.assignmentId,
+      p_client_launch_id: input.launchId,
+      p_device_id: input.deviceId,
+    });
+  } catch {
+    throw new TimedSectionError('transport', 'Your section could not open. Try again.');
+  }
+  await assertOwner();
+  if (response.error) throw new TimedSectionError('access', 'Your section could not open. Try again from My Work.');
+  if (!object(response.data) || !object(response.data.sitting) || typeof response.data.sitting.id !== 'string'
+    || !uuid.test(response.data.sitting.id)) fail('The account did not return a valid assigned section.');
+  const { sitting } = parseAuthority(response.data, input.ownerId, response.data.sitting.id);
+  if (!isAssignedTimedSection(sitting, input.assignmentId) || sitting.pt !== input.pt
+    || sitting.section !== input.section || sitting.manifest_sha256 !== input.manifest
+    || sitting.budget_ms !== input.budgetMs) {
+    fail('This section or its timing differs from your assignment.');
+  }
+  return sitting;
 }
 
 /** Separate namespace and parser; the established full-PrepTest client is unchanged. */

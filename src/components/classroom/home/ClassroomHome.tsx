@@ -67,9 +67,10 @@ function StudentHome({permissionsResolved}: {permissionsResolved:boolean}) {
 
 function TeacherHome() {
   const navigate = useNavigate();
-  const { model, retryInbox, retryRoster, retrySessions } = useTeacherHome();
+  const { model, additionalTasks, retryInbox, retryRoster, retrySessions } = useTeacherHome();
   return (
     <TeacherHomeView
+      additionalTasks={additionalTasks}
       model={model}
       onOpen={(route) => navigate(route)}
       onRetryInbox={retryInbox}

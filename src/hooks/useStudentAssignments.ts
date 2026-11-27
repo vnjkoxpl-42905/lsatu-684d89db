@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
+import type { SectionTimingMode } from "@/lib/sectionDirections";
 
 /**
  * Student-scoped view of homework_assignments.
@@ -15,6 +16,11 @@ export interface StudentAssignment {
   set_id: string | null;
   student_id: string;
   question_qids: string[];
+  section_timing_mode?: SectionTimingMode | null;
+  section_kind?: "rc" | "lr" | null;
+  section_preptest?: number | null;
+  section_number?: number | null;
+  section_manifest_sha256?: string | null;
   set_title: string;
   set_description: string | null;
   status: AssignmentStatus;

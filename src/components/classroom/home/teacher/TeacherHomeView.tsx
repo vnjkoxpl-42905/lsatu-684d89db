@@ -2,11 +2,10 @@ import { createPortal } from "react-dom";
 import { PanelRightOpen } from "lucide-react";
 import * as React from "react";
 import { useHomeFeedback } from "../useHomeFeedback";
-import { postSessionLede, calendarCheckIsStale } from "./postSessionModel";
+import QuestionFinder from "@/components/questionfinder/QuestionFinder";
 import type { TeacherHomeModel } from "./teacherHomeModel";
 import { filterStudents } from "./teacherHomeModel";
-import { PostSessionWork } from "./PostSessionWork";
-import { MyList, AllTasksSheet, DeskStatus } from "./TeacherTasks";
+import { MyList, AllTasksSheet, DeskStatus, type TaskBoardAdditions } from "./TeacherTasks";
 import { TeacherScheduleSheet } from "./TeacherScheduleSheet";
 import { EclipseStage } from "./EclipseStage";
 import "./eclipse.css";
@@ -14,6 +13,9 @@ import "./observatory.css";
 import { MessageFaces, SevenDayStrip } from "./ObservatoryWidgets";
 import { StudentAccessTable } from "./StudentAccessTable";
 import { TeacherDock } from "./TeacherDock";
+import { TeacherStudentsFolder } from "./TeacherStudentsFolder";
+import "./teacher-home-layout.css";
+import "./teacherTaskBoard.css";
 import { AccessSheet, BookingSheet } from "./TeacherAccessBooking";
 import {
   EMPTY_DESK,
@@ -45,28 +47,33 @@ function TeacherDeskContent({
   onOpen,
   onRetryInbox,
   onRetryRoster,
+  additionalTasks,
 }: {
   model: TeacherHomeModel;
   onOpen: (route: string) => void;
   onRetryInbox?: () => void;
   onRetryRoster?: () => void;
   onRetrySessions?: () => void;
+  additionalTasks?: TaskBoardAdditions;
 }) {
   const desk = model.desk ?? EMPTY_DESK;
   const rootRef = React.useRef<HTMLDivElement>(null);
   useHomeFeedback(rootRef);
   const students = model.roster.all ?? model.roster.recent;
-  const [allTasks, setAllTasks] = React.useState(false);
+  const [taskHistory, setTaskHistory] = React.useState<"active" | "handled" | null>(null);
+  const [taskHistoryRevision, onHistoryChange] = React.useReducer((revision: number) => revision + 1, 0);
+  const taskHistoryTrigger = React.useRef<HTMLButtonElement | null>(null);
   const [scheduleOpen, setScheduleOpen] = React.useState(false);
   const scheduleTrigger = React.useRef<HTMLButtonElement>(null);
   const [booking, setBooking] = React.useState(false);
   const [bookingMode, setBookingMode] = React.useState<"credits" | "link">("link");
   const [accessOpen, setAccessOpen] = React.useState(false);
   const [accessRail, setAccessRail] = React.useState(false);
-  const [railSection, setRailSection] = React.useState<"access" | "messages">("access");
+  const [railSection, setRailSection] = React.useState<"access" | "messages" | "connections">("access");
   const accountTrigger = React.useRef<HTMLButtonElement | null>(null);
+  const bookingTrigger = React.useRef<HTMLButtonElement | null>(null);
   const openBooking = (mode: "credits" | "link", trigger?: HTMLButtonElement) => {
-    accountTrigger.current = trigger ?? null;
+    bookingTrigger.current = trigger ?? null;
     setBookingMode(mode);
     setBooking(true);
   };
@@ -74,11 +81,11 @@ function TeacherDeskContent({
   const railEditTrigger = React.useRef<HTMLButtonElement>(null);
   const railPullStart = React.useRef<number | null>(null);
   const railPullHandled = React.useRef(false);
-  const openAccessRail = (trigger: HTMLButtonElement) => {
+  const openAccessRail = (trigger: HTMLButtonElement, section: typeof railSection = "access") => {
     accountTrigger.current = trigger;
     setAccess(null);
     railEditTrigger.current = null;
-    setRailSection("access");
+    setRailSection(section);
     setAccessRail(true);
     setAccessOpen(true);
   };
@@ -96,31 +103,9 @@ function TeacherDeskContent({
   const matches = search.trim()
     ? filterStudents(students, search).slice(0, 5)
     : [];
-  const sessionTotal =
-    model.postSession?.data?.total ??
-    model.postSession?.data?.tasks?.length ??
-    0;
-  const sessionSummary =
-    postSessionLede(model.postSession) ??
-    (model.postSession?.state === "ready"
-      ? "Your saved follow-up work is below."
-      : model.postSession?.state === "loading"
-        ? "Checking your session follow-up…"
-        : model.postSession?.state === "error"
-          ? "Your session follow-up could not be checked."
-          : "Connect session follow-up to see your next steps.");
-  const settings = model.postSession?.data?.settings;
-  const quietWork =
-    model.postSession?.state === "ready" &&
-    !model.postSession.refreshFailed &&
-    settings?.enabled &&
-    !settings.last_error &&
-    !settings.catching_up &&
-    !calendarCheckIsStale(settings) &&
-    sessionTotal === 0 &&
-    desk.manual.state === "ready" &&
-    !desk.manual.stale &&
-    desk.manual.data?.total === 0;
+  const firstName = model.displayName?.trim().split(/\s+/)[0];
+  const quietWork = desk.manual.state === "ready" && !desk.manual.stale &&
+    desk.manual.data?.total === 0 && !additionalTasks?.loading && !additionalTasks?.pendingCount;
   const correspondence = (
     <section
       className="classroom-home-region home-desk-correspondence-region"
@@ -128,17 +113,12 @@ function TeacherDeskContent({
       tabIndex={-1}
     >
       <header className="classroom-home-region-head">
-        <h2>Correspondence</h2>
+        <h2>Email</h2>
+        <a href={EMAIL} target="_blank" rel="noopener noreferrer">Open email ↗</a>
       </header>
       <div className="home-desk-correspondence">
         <div>
-          <div className="home-desk-subhead">
-            <h3>Email</h3>
-            <a href={EMAIL} target="_blank" rel="noopener noreferrer">
-              Open email ↗
-            </a>
-          </div>
-          <DeskStatus region={desk.email} noun="student and enquiry email" />
+          <DeskStatus region={desk.email} noun="student and enquiry email" setupLabel="Not connected." />
           {desk.email.data?.enquiries_configured === false ? (
             <p role="status" className="home-desk-empty">
               Student email is shown. Add the Gmail label “LSAT U/Tutoring
@@ -175,50 +155,94 @@ function TeacherDeskContent({
             </p>
           ) : null}
         </div>
-        <div>
-          <div className="home-desk-subhead">
-            <h3>
-              Messages{" "}
-              {model.unread.state === "ready" ? `(${model.unread.total})` : ""}
-            </h3>
-            <button onClick={() => onOpen("/teacher/inbox")}>Inbox ↗</button>
-          </div>
-          {model.unread.state === "loading" ? (
-            <p className="home-desk-empty">Loading messages…</p>
-          ) : model.unread.state === "error" ? (
-            <p role="alert">
-              Unread messages are unknown.{" "}
-              <button onClick={onRetryInbox}>Retry</button>
-            </p>
-          ) : (
-            <>
-              {model.unread.refreshFailed ? (
-                <p role="status" className="home-desk-empty">
-                  Could not refresh messages. Showing the last loaded
-                  conversations.
-                </p>
-              ) : null}
-              <ul aria-label="Unread conversations">
-                {model.unread.rows.slice(0, 2).map((t) => (
-                  <li key={t.id}>
-                    <button onClick={() => onOpen(t.route)}>
-                      <b>{t.name}</b>
-                      <small>{t.snippet}</small>
-                    </button>
-                  </li>
-                ))}
-              </ul>
-              {!model.unread.rows.length ? (
-                <p className="home-desk-empty">
-                  {model.unread.refreshFailed
-                    ? "No conversations were unread when the inbox last loaded."
-                    : "No unread conversations."}
-                </p>
-              ) : null}
-            </>
-          )}
-        </div>
+
       </div>
+    </section>
+  );
+  const agenda = (
+    <section className="classroom-home-region home-desk-agenda">
+      <header className="classroom-home-region-head">
+        <h2>Calendar</h2>
+        <a href={CALENDAR} target="_blank" rel="noopener noreferrer">
+          Calendar ↗
+        </a>
+      </header>
+      <DeskStatus region={desk.agenda} noun="primary calendar" />
+      {desk.agenda.state === "ready" ? (
+        desk.agenda.data?.events?.length ? (
+          <ul className="home-desk-agenda-list">
+            {desk.agenda.data.events.slice(0, 3).map((event) => (
+              <li key={event.id}>
+                <time dateTime={event.starts_at}>
+                  {when(event.starts_at)}
+                </time>
+                {safeGoogleLink(event.calendar_url, "calendar") ? (
+                  <a
+                    href={safeGoogleLink(event.calendar_url, "calendar")!}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {event.title}
+                  </a>
+                ) : (
+                  <b>{event.title}</b>
+                )}
+                {event.student_id ? (
+                  <button
+                    onClick={() =>
+                      onOpen(
+                        `/teacher/students/${encodeURIComponent(event.student_id!)}`,
+                      )
+                    }
+                  >
+                    Prepare for {event.student_name || "student"} ↗
+                  </button>
+                ) : (
+                  <details>
+                    <summary>Label event</summary>
+                    <p>
+                      Only student sessions and consultations create
+                      follow-up work.
+                    </p>
+                    <button
+                      disabled={!desk.classify}
+                      onClick={() =>
+                        void desk
+                          .classify?.(event.id, "session")
+                          .catch(() =>
+                            setClassifyError("Could not label this event."),
+                          )
+                      }
+                    >
+                      Student session
+                    </button>
+                    <button
+                      disabled={!desk.classify}
+                      onClick={() =>
+                        void desk
+                          .classify?.(event.id, "consultation")
+                          .catch(() =>
+                            setClassifyError("Could not label this event."),
+                          )
+                      }
+                    >
+                      Consultation
+                    </button>
+                  </details>
+                )}
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p className="home-desk-empty">No events in the next seven days.</p>
+        )
+      ) : null}
+      {classifyError ? <p role="alert">{classifyError}</p> : null}
+      {desk.agenda.data?.fetched_at ? (
+        <p className="home-desk-footnote">
+          Checked {when(desk.agenda.data.fetched_at)} · Primary calendar
+        </p>
+      ) : null}
     </section>
   );
   const [obsTick, setObsTick] = React.useState(() => Date.now());
@@ -240,26 +264,14 @@ function TeacherDeskContent({
         <div>
           <h1>
             {model.greeting}
-            {model.displayName ? `, ${model.displayName}.` : "."}
+            {firstName ? `, ${firstName}.` : "."}
           </h1>
           <p className="obs-date">{model.dateline}</p>
         </div>
-        <p className="home-desk-summary obs-sum">{sessionSummary}</p>
         <div className="obs-acts">
-          <details className="home-desk-more-menu obs-more">
-            <summary>More</summary>
-            <div>
-              <a href={EMAIL} target="_blank" rel="noopener noreferrer">
-                Open email ↗
-              </a>
-              <button onClick={(event) => openBooking("link", event.currentTarget)}>
-                Create session link
-              </button>
-              <button onClick={() => onOpen("/teacher/students")}>
-                All students
-              </button>
-            </div>
-          </details>
+          <div className="teacher-home-question-finder">
+            <QuestionFinder actorId={desk.actorId} returnTo="/classroom" />
+          </div>
         </div>
       </header>
       <div className="obs-top">
@@ -273,116 +285,19 @@ function TeacherDeskContent({
       <SevenDayStrip agenda={desk.agenda} now={obsNow} onOpen={onOpen} />
       <MessageFaces unread={model.unread} onOpen={onOpen} onRetry={onRetryInbox} />
 
-      <div className="eclipse-zone">
-        <div className="eclipse-zl" aria-hidden="true">01 · Follow up</div>
-        <div className="eclipse-grid">
-          <div className="eclipse-col">
-            <PostSessionWork
-              work={model.postSession}
-              students={students}
-              onOpen={onOpen}
-              onAll={() => setAllTasks(true)}
-            />
-          </div>
-          <div className="eclipse-col">
-            <section className="classroom-home-region home-desk-agenda">
-              <header className="classroom-home-region-head">
-                <h2>Next up</h2>
-                <a href={CALENDAR} target="_blank" rel="noopener noreferrer">
-                  Calendar ↗
-                </a>
-              </header>
-              <DeskStatus region={desk.agenda} noun="primary calendar" />
-              {desk.agenda.state === "ready" ? (
-                desk.agenda.data?.events?.length ? (
-                  <ul className="home-desk-agenda-list">
-                    {desk.agenda.data.events.slice(0, 3).map((event) => (
-                      <li key={event.id}>
-                        <time dateTime={event.starts_at}>
-                          {when(event.starts_at)}
-                        </time>
-                        {safeGoogleLink(event.calendar_url, "calendar") ? (
-                          <a
-                            href={safeGoogleLink(event.calendar_url, "calendar")!}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            {event.title}
-                          </a>
-                        ) : (
-                          <b>{event.title}</b>
-                        )}
-                        {event.student_id ? (
-                          <button
-                            onClick={() =>
-                              onOpen(
-                                `/teacher/students/${encodeURIComponent(event.student_id!)}`,
-                              )
-                            }
-                          >
-                            Prepare for {event.student_name || "student"} ↗
-                          </button>
-                        ) : (
-                          <details>
-                            <summary>Label event</summary>
-                            <p>
-                              Only student sessions and consultations create
-                              follow-up work.
-                            </p>
-                            <button
-                              disabled={!desk.classify}
-                              onClick={() =>
-                                void desk
-                                  .classify?.(event.id, "session")
-                                  .catch(() =>
-                                    setClassifyError("Could not label this event."),
-                                  )
-                              }
-                            >
-                              Student session
-                            </button>
-                            <button
-                              disabled={!desk.classify}
-                              onClick={() =>
-                                void desk
-                                  .classify?.(event.id, "consultation")
-                                  .catch(() =>
-                                    setClassifyError("Could not label this event."),
-                                  )
-                              }
-                            >
-                              Consultation
-                            </button>
-                          </details>
-                        )}
-                      </li>
-                    ))}
-                  </ul>
-                ) : (
-                  <p className="home-desk-empty">No events in the next seven days.</p>
-                )
-              ) : null}
-              {classifyError ? <p role="alert">{classifyError}</p> : null}
-              {desk.agenda.data?.fetched_at ? (
-                <p className="home-desk-footnote">
-                  Checked {when(desk.agenda.data.fetched_at)} · Primary calendar
-                </p>
-              ) : null}
-            </section>
-          </div>
-        </div>
-      </div>
+      <MyList
+        key={desk.actorId}
+        desk={desk}
+        students={students}
+        additionalTasks={additionalTasks}
+        historyRevision={taskHistoryRevision}
+        onAll={(includeDone, trigger) => {
+          taskHistoryTrigger.current = trigger;
+          setTaskHistory(includeDone ? "handled" : "active");
+        }}
+      />
 
       <div className="eclipse-zone">
-        <div className="eclipse-zl" aria-hidden="true">02 · Inbox and tasks</div>
-        <div className="eclipse-three">
-          {correspondence}
-          <MyList desk={desk} students={students} onAll={() => setAllTasks(true)} />
-        </div>
-      </div>
-
-      <div className="eclipse-zone">
-        <div className="eclipse-zl" aria-hidden="true">03 · Students</div>
         <section className="classroom-home-region home-desk-students">
           <header className="classroom-home-region-head">
             <h2>Students at a glance</h2>
@@ -393,149 +308,86 @@ function TeacherDeskContent({
               All students ↗
             </button>
           </header>
-          <div className="home-desk-student-columns">
-            <div>
-              <h3>Recent activity</h3>
-              {model.roster.refreshFailed ? (
-                <p role="status">Could not refresh student activity.</p>
-              ) : null}
-              {model.roster.state === "error" ? (
-                <p role="alert">
-                  Activity unavailable.{" "}
-                  <button onClick={onRetryRoster}>Retry</button>
-                </p>
-              ) : model.roster.state === "loading" ? (
-                <p>Loading activity…</p>
-              ) : (
-                <ul aria-label="Recently active students">
-                  {model.roster.recent.slice(0, 3).map((s) => (
-                    <li key={s.id}>
-                      <button onClick={() => onOpen(s.route)}>
-                        <b>{s.name}</b>
-                        <small>{s.activityLabel}</small>
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-              )}
-              <label className="home-desk-label" htmlFor="home-student-search">
-                Find a student
-                <input
-                  id="home-student-search"
-                  type="search"
-                  placeholder="Student name"
-                  disabled={model.roster.state !== "ready"}
-                  value={search}
-                  onChange={(e) => setSearch(e.target.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter" && matches[0]) onOpen(matches[0].route);
-                    if (e.key === "Escape") setSearch("");
-                  }}
-                />
-              </label>
-              {search.trim() ? (
-                matches.length ? (
-                  <ul aria-label="Matching students">
-                    {matches.map((s) => (
-                      <li key={s.id}>
-                        <button onClick={() => onOpen(s.route)}>{s.name} ↗</button>
-                        {desk.access.data?.find((p) => p.class_id === s.id) ? (
-                          <button
-                            onClick={(e) => {
-                              accountTrigger.current = e.currentTarget;
-                              setAccessOpen(true);
-                              setAccess(
-                                desk.access.data!.find((p) => p.class_id === s.id)!,
-                              );
-                            }}
-                          >
-                            Edit access
-                          </button>
-                        ) : null}
-                      </li>
-                    ))}
-                  </ul>
-                ) : (
-                  <p>No matching students.</p>
-                )
-              ) : null}
-            </div>
-            <div className="eclipse-results">
-              <h3>Recent results</h3>
-              <DeskStatus region={desk.results} noun="test results" />
-              {desk.results.state === "ready" ? (
-                desk.results.data?.length ? (
-                  <ul>
-                    {desk.results.data.slice(0, 3).map((r) => {
-                      const parsed =
-                        typeof r.score === "string"
-                          ? /^(\d+)\s*\/\s*(\d+)$/.exec(r.score.trim())
-                          : null;
-                      const got = parsed ? Number(parsed[1]) : null;
-                      const of = parsed ? Number(parsed[2]) : null;
-                      return (
-                        <li key={r.id}>
-                          <button
-                            onClick={() =>
-                              onOpen(
-                                `/teacher/students/${encodeURIComponent(r.student_id)}/work`,
-                              )
-                            }
-                          >
-                            <span className="eclipse-res-head">
-                              <b>
-                                {r.student_name}
-                                <small>{r.title}</small>
-                              </b>
-                              <span>{r.score ?? "Result available"}</span>
-                            </span>
-                            {got !== null && of && of <= 60 && got <= of ? (
-                              <span className="eclipse-ticks" aria-hidden="true">
-                                {Array.from({ length: of }, (_, i) => (
-                                  <i key={i} className={i < got ? "on" : undefined} />
-                                ))}
-                              </span>
-                            ) : null}
-                          </button>
+          <TeacherStudentsFolder
+            roster={model.roster}
+            results={desk.results}
+            onOpen={onOpen}
+            onRetryRoster={onRetryRoster}
+          />
+          <details className="home-desk-student-actions">
+            <summary>Find or manage a student</summary>
+            <div className="home-desk-student-columns">
+              <div>
+                <label className="home-desk-label" htmlFor="home-student-search">
+                  Find a student
+                  <input
+                    id="home-student-search"
+                    type="search"
+                    placeholder="Student name"
+                    disabled={model.roster.state !== "ready"}
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" && matches[0]) onOpen(matches[0].route);
+                      if (e.key === "Escape") setSearch("");
+                    }}
+                  />
+                </label>
+                {search.trim() ? (
+                  matches.length ? (
+                    <ul aria-label="Matching students">
+                      {matches.map((s) => (
+                        <li key={s.id}>
+                          <button onClick={() => onOpen(s.route)}>{s.name} ↗</button>
+                          {desk.access.data?.find((p) => p.class_id === s.id) ? (
+                            <button
+                              onClick={(e) => {
+                                accountTrigger.current = e.currentTarget;
+                                setAccessOpen(true);
+                                setAccess(
+                                  desk.access.data!.find((p) => p.class_id === s.id)!,
+                                );
+                              }}
+                            >
+                              Edit access
+                            </button>
+                          ) : null}
                         </li>
-                      );
-                    })}
-                  </ul>
-                ) : (
-                  <p className="home-desk-empty">No recent results recorded.</p>
-                )
-              ) : null}
-            </div>
-            <div
-              className="home-desk-account-actions"
-              data-account-controls="student-credits-scheduling-20261028"
-              role="group"
-              aria-label="Student accounts"
-            >
-              <h3>Student accounts</h3>
-              <button ref={scheduleTrigger} onClick={() => setScheduleOpen(true)}>
-                Schedule a session <span aria-hidden="true">↗</span>
-              </button>
-              <button onClick={(e) => openBooking("credits", e.currentTarget)}>
-                Add session credits <span aria-hidden="true">↗</span>
-              </button>
-              <button
-                onClick={(e) => {
-                  accountTrigger.current = e.currentTarget;
-                  setAccess(null);
-                  setAccessOpen(true);
-                }}
+                      ))}
+                    </ul>
+                  ) : (
+                    <p>No matching students.</p>
+                  )
+                ) : null}
+              </div>
+              <div
+                className="home-desk-account-actions"
+                data-account-controls="student-credits-scheduling-20261028"
+                role="group"
+                aria-label="Student accounts"
               >
-                Account access <span aria-hidden="true">↗</span>
-              </button>
-              <button onClick={(e) => openBooking("link", e.currentTarget)}>
-                Individual booking links <span aria-hidden="true">↗</span>
-              </button>
+                <h3>Student accounts</h3>
+                <button ref={scheduleTrigger} onClick={() => setScheduleOpen(true)}>
+                  Schedule a session <span aria-hidden="true">↗</span>
+                </button>
+                <button onClick={(e) => openBooking("credits", e.currentTarget)}>
+                  Add session credits <span aria-hidden="true">↗</span>
+                </button>
+                <button
+                  onClick={(e) => {
+                    accountTrigger.current = e.currentTarget;
+                    setAccess(null);
+                    setAccessOpen(true);
+                  }}
+                >
+                  Account access <span aria-hidden="true">↗</span>
+                </button>
+                <button onClick={(e) => openBooking("link", e.currentTarget)}>
+                  Individual booking links <span aria-hidden="true">↗</span>
+                </button>
+              </div>
             </div>
-          </div>
-          <p className="home-desk-footnote">
-            Recent activity is based on the last recorded visit.
-          </p>
+          </details>
         </section>
       </div>
       {createPortal(
@@ -572,11 +424,11 @@ function TeacherDeskContent({
           onPointerCancel={() => { railPullStart.current = null; }}
         >
           <PanelRightOpen size={17} aria-hidden="true" />
-          <span>Tools</span>
         </button>,
         document.body,
       )}
       <TeacherDock
+        actorId={desk.actorId}
         students={students}
         rosterReady={model.roster.state === "ready"}
         unread={model.unread.rows}
@@ -584,14 +436,25 @@ function TeacherDeskContent({
         events={desk.agenda.state === "ready" ? (desk.agenda.data?.events ?? []) : undefined}
         onOpen={onOpen}
       />
-      <AllTasksSheet
-        open={allTasks}
-        onClose={() => setAllTasks(false)}
-        desk={desk}
-        work={model.postSession}
-        students={students}
-        onOpen={onOpen}
-      />
+      {taskHistory && (
+        <AllTasksSheet
+          key={desk.actorId}
+          open
+          initialHandled={taskHistory === "handled"}
+          onClose={() => setTaskHistory(null)}
+          onManualChange={onHistoryChange}
+          onCloseAutoFocus={(event) => {
+            if (!taskHistoryTrigger.current?.isConnected) return;
+            event.preventDefault();
+            taskHistoryTrigger.current.focus();
+          }}
+          desk={desk}
+          work={model.postSession}
+          completedAssignments={additionalTasks?.completed}
+          students={students}
+          onOpen={onOpen}
+        />
+      )}
       <AccessSheet
         open={accessOpen || !!access}
         browseEditTrigger={railEditTrigger}
@@ -602,7 +465,10 @@ function TeacherDeskContent({
               <button type="button" aria-label={model.unread.state === "ready" && model.unread.total > 0 ? `Messages, ${model.unread.total} unread` : "Messages"} aria-pressed={railSection === "messages"} onClick={() => setRailSection("messages")}>
                 Messages{model.unread.state === "ready" && model.unread.total > 0 && <span>{model.unread.total}</span>}
               </button>
+              <button type="button" aria-pressed={railSection === "connections"} onClick={() => setRailSection("connections")}>Calendar and email</button>
+              <button type="button" aria-haspopup="dialog" onClick={(event) => openBooking("link", event.currentTarget)}>Create session link</button>
             </div>
+            {railSection === "connections" && <div className="teacher-board-connections">{agenda}{correspondence}</div>}
             <div hidden={railSection !== "access"}>
               <StudentAccessTable inRail region={desk.access} onEdit={(person, trigger) => {
                 railEditTrigger.current = trigger;
@@ -638,7 +504,7 @@ function TeacherDeskContent({
         open={booking}
         onClose={() => {
           setBooking(false);
-          requestAnimationFrame(() => accountTrigger.current?.focus());
+          requestAnimationFrame(() => bookingTrigger.current?.focus());
         }}
         actorId={desk.actorId}
         students={desk.access.data ?? []}

@@ -139,6 +139,17 @@ describe("ClassroomHome role dispatch", () => {
     expectNoStudentContent();
   });
 
+  it("opens one question finder directly from Teacher Home", async () => {
+    setPermissions({ is_admin: true });
+    renderHome();
+    const finders = screen.getAllByRole("button", { name: "Find a question" });
+    expect(finders).toHaveLength(1);
+    fireEvent.click(finders[0]);
+    expect(await screen.findByRole("dialog", { name: "Find a question" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "LR" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "RC" })).toBeInTheDocument();
+  });
+
   it("keeps the teaching desk mounted through a background refresh failure", () => {
     const retry = vi.fn();
     setPermissions({ is_admin: true });

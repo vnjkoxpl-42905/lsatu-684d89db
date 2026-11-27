@@ -19,7 +19,7 @@ import { hasStructuredWorkspace } from "@/components/classroom/structured-assign
 import { useStudentExternalUploads } from "@/hooks/useExternalWorkUploads";
 import { useHomeworkSet } from "@/hooks/useHomeworkSets";
 import { singleSectionOf } from "@/lib/drillRunSpec";
-import { sectionDirectionsRoute } from "@/lib/sectionDirections";
+import { assignedRcSectionRoute, sectionDirectionsRoute } from "@/lib/sectionDirections";
 import { useQueryClient } from "@tanstack/react-query";
 import { isSelfContainedItem, resolveItemRoute } from "@/lib/classroomItems";
 import { launchDrill } from "@/lib/drillLaunch";
@@ -591,6 +591,10 @@ export function ClassroomAssignmentView() {
   // One PrepTest section is sat from its directions page, not from here. The
   // emailed link and the inbox message still point at /classroom/:id, so this
   // is where they land before being sent on.
+  if (assignment.section_kind === "rc") {
+    return <Navigate to={assignedRcSectionRoute(assignment.id)} replace />;
+  }
+
   if (assignment.status !== "completed" && singleSectionOf(assignment.question_qids)) {
     return <Navigate to={sectionDirectionsRoute(assignment.id)} replace />;
   }

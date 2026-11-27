@@ -252,6 +252,19 @@ describe('an assigned PrepTest section is sat, not marked', () => {
     expect(row.selfCompleting).toBe(true);
   });
 
+  it('continues a protected RC assignment from its source despite a stale mirror', () => {
+    const homework = { ...sectionHw, id: 'hw-rc', section_kind: 'rc', question_qids: ['1', '2'],
+      status: 'in_progress', started_at: '2026-09-12T00:00:00Z' };
+    const [row] = buildAssignedRows({
+      ...EMPTY,
+      hw: [homework as never],
+      items: [item({ type: 'homework', source_table: 'homework_assignments', source_id: 'hw-rc',
+        status: 'assigned', metadata_json: { assigned_route: '/classroom/hw-rc' } })],
+    });
+    expect(row).toMatchObject({ route: '/testing/sections/assigned/hw-rc', selfCompleting: true,
+      workSection: 'rc', status: 'in_progress' });
+  });
+
   it('keeps the classroom page and Mark done for a mixed set', () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const [row] = buildAssignedRows({ ...EMPTY, hw: [mixedHw as any] });

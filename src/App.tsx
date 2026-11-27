@@ -68,6 +68,7 @@ const PracticeTestRunPage = safeLazy(() => import("./pages/PracticeTestRun"));
 const TimedOfficialChildRunner = safeLazy(() => import("./components/testing/TimedOfficialChildRunner"));
 const TimedStandaloneSectionRunner = safeLazy(() => import("./components/timed/TimedStandaloneSectionRunner"));
 const SectionDirectionsPage = safeLazy(() => import("./pages/SectionDirections"));
+const AssignedRcSectionDirections = safeLazy(() => import("./pages/AssignedRcSectionDirections"));
 const Auth = safeLazy(() => import("./pages/Auth"));
 import ResetPassword from "./pages/ResetPassword";
 import ClassroomAccountView from "./components/classroom/AccountView";
@@ -521,6 +522,12 @@ const App = () => {
                   } />
                   <Route path="/testing/test/:runId/rc/:legIndex" element={
                     <PracticeTestRunGate><TimedOfficialChildRunner kind="rc" /></PracticeTestRunGate>
+                  } />
+                  <Route path="/testing/sections/assigned/:assignmentId" element={
+                    <ProtectedRoute flag="has_classroom_access"><AssignedRcSectionDirections /></ProtectedRoute>
+                  } />
+                  <Route path="/testing/sections/assigned/:assignmentId/sitting/:sittingId" element={
+                    <ProtectedRoute flag="has_classroom_access"><TimedStandaloneSectionRunner /></ProtectedRoute>
                   } />
                   <Route path="/testing/sections/:sittingId" element={
                     <ProtectedRoute flag="has_drill_access"><TimedStandaloneSectionRunner /></ProtectedRoute>

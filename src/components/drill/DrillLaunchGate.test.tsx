@@ -12,6 +12,7 @@ vi.mock('@/contexts/AuthContext', () => ({
 }));
 
 const resolveDrillLaunch = vi.fn();
+const resolveHomeworkAssignmentLaunch = vi.fn();
 const recordExposures = vi.fn();
 const questionBankState = vi.hoisted(() => ({ isLoading: false }));
 const adoptionState = vi.hoisted(() => ({ enabled: false }));
@@ -37,6 +38,7 @@ vi.mock('@/lib/drillLaunchResolve', async () => {
   return {
     ...actual,
     resolveDrillLaunch: (...args: unknown[]) => resolveDrillLaunch(...args),
+    resolveHomeworkAssignmentLaunch: (...args: unknown[]) => resolveHomeworkAssignmentLaunch(...args),
   };
 });
 
@@ -83,6 +85,26 @@ const specOf = (): DrillRunSpec => JSON.parse(screen.getByTestId('spec').textCon
 const queueOf = () => (specOf().config as { selectedQids?: string[] } | undefined)?.selectedQids;
 
 describe('the gate', () => {
+  it.each([
+    ['35', '70', '35'],
+    ['52.5', '70', '52.5'],
+    ['70', '52.5', '70'],
+    ['unlimited', '70', 'unlimited'],
+  ])('holds the assignment clock at %s even when the URL requests %s', async (timingMode, queryTimer, expected) => {
+    resolveHomeworkAssignmentLaunch.mockResolvedValueOnce({ qids: ['PT156-S4-Q1', 'PT156-S4-Q2'], timingMode });
+    renderAt({ pathname: '/drill', search: '?drill=assignment&assignment=hw-9&timer=' + queryTimer });
+    await screen.findByTestId('runner');
+    expect(resolveHomeworkAssignmentLaunch).toHaveBeenCalledWith('hw-9', 'user_1');
+    expect(specOf()).toMatchObject({ assignmentId: 'hw-9', mode: 'full-section', sealed: true, config: { timer: { mode: expected } } });
+  });
+
+  it('preserves the launch timing when the assignment has no timing override', async () => {
+    resolveHomeworkAssignmentLaunch.mockResolvedValueOnce({ qids: ['PT156-S4-Q1', 'PT156-S4-Q2'], timingMode: null });
+    renderAt({ pathname: '/drill', search: '?drill=assignment&assignment=hw-9&timer=52.5' });
+    await screen.findByTestId('runner');
+    expect(specOf()).toMatchObject({ config: { timer: { mode: '52.5' } } });
+  });
+
   it('runs a trusted embedded guided launch without rewriting or mistaking the enclosing course assignment', async () => {
     resolveDrillLaunch.mockResolvedValue(['q1']);
     render(<MemoryRouter initialEntries={['/bootcamp/conditionals/centre/guided/run?assignment=course-grant']}><DrillLaunchGate launch={{ kind: 'guided-drill', drillId: 'native-id', options: { returnTo: '/bootcamp/conditionals/centre' } }}><Runner /></DrillLaunchGate></MemoryRouter>);
