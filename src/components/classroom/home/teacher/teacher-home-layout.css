@@ -16,10 +16,40 @@
 .classroom-root .home-desk.home-obs .obs-greet .obs-acts {
   grid-area: 2 / 2;
   justify-self: end;
+  gap: 10px;
   margin: 0;
 }
 .classroom-root .home-desk.home-obs .obs-greet .obs-sum { grid-area: 3 / 1 / 4 / -1; }
 .classroom-root .home-desk.home-obs .obs-greet .obs-acts summary { min-height: 44px; }
+
+.classroom-root .teacher-home-question-finder .qf-trigger {
+  inline-size: clamp(168px, 21vw, 232px);
+  min-inline-size: 0;
+  min-block-size: 44px;
+  padding-inline: 14px;
+  background: var(--home-paper, #faf9f6);
+}
+
+.classroom-root .teacher-home-question-finder .qf-trigger-label {
+  display: inline;
+  color: var(--home-ink, #262322);
+}
+
+@media (max-width: 700px) {
+  .classroom-root .home-desk.home-obs .obs-greet .obs-acts {
+    grid-area: 3 / 1 / 4 / -1;
+    justify-self: stretch;
+  }
+
+  .classroom-root .teacher-home-question-finder {
+    flex: 1;
+    min-inline-size: 0;
+  }
+
+  .classroom-root .teacher-home-question-finder .qf-trigger {
+    inline-size: 100%;
+  }
+}
 
 .classroom-root .home-desk.home-obs .eclipse-grid { gap: 16px; }
 .classroom-root .home-desk.home-obs .eclipse-grid .classroom-home-region-head { margin-block-end: 12px; }

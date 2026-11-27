@@ -2,6 +2,7 @@ import { createPortal } from "react-dom";
 import { PanelRightOpen } from "lucide-react";
 import * as React from "react";
 import { useHomeFeedback } from "../useHomeFeedback";
+import QuestionFinder from "@/components/questionfinder/QuestionFinder";
 import type { TeacherHomeModel } from "./teacherHomeModel";
 import { filterStudents } from "./teacherHomeModel";
 import { MyList, AllTasksSheet, DeskStatus, type TaskBoardAdditions } from "./TeacherTasks";
@@ -267,6 +268,9 @@ function TeacherDeskContent({
           <p className="obs-date">{model.dateline}</p>
         </div>
         <div className="obs-acts">
+          <div className="teacher-home-question-finder">
+            <QuestionFinder actorId={desk.actorId} returnTo="/classroom" />
+          </div>
           <details className="home-desk-more-menu obs-more">
             <summary>More</summary>
             <div>
