@@ -1,6 +1,7 @@
 import { fireEvent, render, screen, waitFor, within } from '@testing-library/react';
 import { MemoryRouter, Route, Routes, useNavigate } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import type { ReactNode } from 'react';
 import { describe, expect, it, vi, beforeEach } from 'vitest';
 import { SectionReport } from './SectionReport';
 import SectionReportPage from '@/pages/SectionReportPage';
@@ -11,6 +12,15 @@ const mockFetchOwnedSectionReport = vi.fn<
   (userId: string, historyId: string) => Promise<OwnedSectionReportResult>
 >();
 const primaryReviewFill = 'bg-[var(--section-review-action)]';
+const mockToast = vi.hoisted(() => ({ error: vi.fn(), info: vi.fn() }));
+
+// jsdom does not implement window scrolling; tests that count calls spy on this stub.
+Object.defineProperty(window, 'scrollTo', { value: () => {}, writable: true, configurable: true });
+
+vi.mock('sonner', () => ({ toast: mockToast }));
+vi.mock('@/components/drill/EnhancedBlindReview', () => ({
+  EnhancedBlindReview: ({ onBack }: { onBack: () => void }) => <button onClick={onBack}>Leave blind review</button>,
+}));
 
 vi.mock('@/contexts/AuthContext', () => ({ useAuth: () => ({ user: { id: 'u1' } }) }));
 vi.mock('@/components/drill/SectionReviewWalk', () => ({
@@ -113,6 +123,8 @@ describe('selectSectionDiagnosis', () => {
 describe('SectionReport', () => {
   beforeEach(() => {
     mockFetchOwnedSectionReport.mockReset();
+    mockToast.error.mockReset();
+    mockToast.info.mockReset();
   });
 
   it('shows score, explicit no prediction saved, first-pass diagnosis label, overtime split, and Do blind review', async () => {
@@ -551,6 +563,108 @@ describe('SectionReport', () => {
       await waitFor(() => expect(screen.queryByRole('button', { name: 'Do blind review' })).toBeNull());
       expect(screen.getByRole('heading', { name: 'Question review' })).toBeVisible();
       expect(mockFetchOwnedSectionReport.mock.calls.length).toBeGreaterThanOrEqual(3);
+    } finally {
+      client.clear();
+    }
+  });
+
+  function renderPage(initialEntry: string, extra?: ReactNode) {
+    const client = new QueryClient();
+    const view = render(
+      <QueryClientProvider client={client}>
+        <MemoryRouter initialEntries={[initialEntry]}>
+          {extra}
+          <Routes><Route path="/review/section/:historyId" element={<SectionReportPage />} /></Routes>
+        </MemoryRouter>
+      </QueryClientProvider>,
+    );
+    return { ...view, client };
+  }
+
+  it('keeps the report state when a history-navigated question link is abandoned', async () => {
+    mockFetchOwnedSectionReport
+      .mockResolvedValueOnce({ state: 'released', row: baseRow })
+      .mockImplementationOnce(() => new Promise(() => {}));
+    function Nav() {
+      const navigate = useNavigate();
+      return (
+        <>
+          <button onClick={() => navigate('/review/section/hist-1?qid=pt130-s2-q2')}>Go to Q2</button>
+          <button onClick={() => navigate(-1)}>Browser back</button>
+        </>
+      );
+    }
+    const { client } = renderPage('/review/section/hist-1', <Nav />);
+    try {
+      fireEvent.change(await screen.findByRole('combobox', { name: 'Sort by' }), { target: { value: 'time' } });
+      fireEvent.click(screen.getByRole('button', { name: /^Flagged\b/ }));
+      fireEvent.click(screen.getByRole('button', { name: 'Go to Q2' }));
+      expect(await screen.findByRole('status')).toHaveTextContent('Opening review walk');
+      fireEvent.click(screen.getByRole('button', { name: 'Browser back' }));
+      await waitFor(() => expect(screen.queryByRole('status')).toBeNull());
+      expect(screen.getByRole('combobox', { name: 'Sort by' })).toHaveValue('time');
+      expect(screen.getByRole('button', { name: 'Clear filter: Flagged' })).toBeVisible();
+      expect(mockFetchOwnedSectionReport).toHaveBeenCalledTimes(2);
+    } finally {
+      client.clear();
+    }
+  });
+
+  it('covers the report while blind review is checked, so the walk cannot open underneath', async () => {
+    let resolveCheck: (value: OwnedSectionReportResult) => void = () => {};
+    mockFetchOwnedSectionReport
+      .mockResolvedValueOnce({ state: 'released', row: baseRow })
+      .mockImplementationOnce(() => new Promise((resolve) => { resolveCheck = resolve; }));
+    const { client } = renderPage('/review/section/hist-1');
+    try {
+      fireEvent.click(await screen.findByRole('button', { name: 'Do blind review' }));
+      expect(screen.getByRole('status')).toHaveTextContent('Opening blind review');
+      expect(screen.queryByRole('button', { name: 'Open review walk' })).toBeNull();
+      resolveCheck({ state: 'released', row: baseRow });
+      expect(await screen.findByRole('button', { name: 'Leave blind review' })).toBeVisible();
+      fireEvent.click(screen.getByRole('button', { name: 'Leave blind review' }));
+      expect(await screen.findByRole('combobox', { name: 'Sort by' })).toBeVisible();
+      expect(mockFetchOwnedSectionReport).toHaveBeenCalledTimes(2);
+    } finally {
+      client.clear();
+    }
+  });
+
+  it('does not start blind review when the check fails, and drops a check after leaving', async () => {
+    let resolveLate: (value: OwnedSectionReportResult) => void = () => {};
+    mockFetchOwnedSectionReport
+      .mockResolvedValueOnce({ state: 'released', row: baseRow })
+      .mockRejectedValueOnce(new Error('network down'))
+      .mockImplementationOnce(() => new Promise((resolve) => { resolveLate = resolve; }));
+    const consoleError = vi.spyOn(console, 'error').mockImplementation(() => {});
+    const { client, unmount } = renderPage('/review/section/hist-1');
+    try {
+      fireEvent.click(await screen.findByRole('button', { name: 'Do blind review' }));
+      await waitFor(() => expect(mockToast.error).toHaveBeenCalledWith('Could not open blind review. Please try again.'));
+      expect(screen.queryByRole('button', { name: 'Leave blind review' })).toBeNull();
+      expect(screen.getByRole('button', { name: 'Do blind review' })).toBeVisible();
+
+      fireEvent.click(screen.getByRole('button', { name: 'Do blind review' }));
+      unmount();
+      resolveLate({ state: 'released', row: { ...baseRow, brUsed: true } });
+      await new Promise((resolve) => setTimeout(resolve, 0));
+      expect(mockToast.info).not.toHaveBeenCalled();
+    } finally {
+      consoleError.mockRestore();
+      client.clear();
+    }
+  });
+
+  it('refreshes instead of starting when the fresh read is not eligible', async () => {
+    mockFetchOwnedSectionReport
+      .mockResolvedValueOnce({ state: 'released', row: baseRow })
+      .mockResolvedValueOnce({ state: 'not-found' })
+      .mockResolvedValue({ state: 'released', row: baseRow });
+    const { client } = renderPage('/review/section/hist-1');
+    try {
+      fireEvent.click(await screen.findByRole('button', { name: 'Do blind review' }));
+      await waitFor(() => expect(mockFetchOwnedSectionReport).toHaveBeenCalledTimes(3));
+      expect(screen.queryByRole('button', { name: 'Leave blind review' })).toBeNull();
     } finally {
       client.clear();
     }

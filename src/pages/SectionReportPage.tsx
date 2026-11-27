@@ -20,6 +20,8 @@ import SectionReviewWalk from '@/components/drill/SectionReviewWalk';
 import { EnhancedBlindReview } from '@/components/drill/EnhancedBlindReview';
 import type { BlindReviewResult, DrillSession } from '@/types/drill';
 
+type ReportPlace = { x: number; y: number; focus: HTMLElement | null };
+
 type BrContext = {
   historyId: string;
   pt: number;
@@ -48,28 +50,67 @@ function SectionReportSession({ historyId, userId }: { historyId?: string; userI
   const [walkRow, setWalkRow] = React.useState<SectionHistoryRow | null>(null);
   const [walkQid, setWalkQid] = React.useState<string | null>(qidParam);
   const [openingWalk, setOpeningWalk] = React.useState(Boolean((walkParam || qidParam) && userId && historyId));
-  const reportReturn = React.useRef<{ x: number; y: number; focus: HTMLElement | null } | null>(null);
-
-  React.useLayoutEffect(() => {
-    if (!reportReturn.current) return;
-    if (walkRow) {
-      // The hidden report leaves the window scrolled; start the walk at its header.
-      window.scrollTo({ left: 0, top: 0, behavior: 'instant' });
-      return;
-    }
-    const { x, y, focus } = reportReturn.current;
-    reportReturn.current = null;
-    if (focus?.isConnected) focus.focus({ preventScroll: true });
-    window.scrollTo({ left: x, top: y, behavior: 'instant' });
-  }, [walkRow]);
   const [brContext, setBrContext] = React.useState<BrContext | null>(null);
   const [pendingBrResults, setPendingBrResults] = React.useState<BlindReviewResult[] | null>(null);
   const [brSaveError, setBrSaveError] = React.useState<string | null>(null);
   const [brSaving, setBrSaving] = React.useState(false);
+  const [checkingBr, setCheckingBr] = React.useState(false);
+  const [reportMounted, setReportMounted] = React.useState(false);
   const startingOver = React.useRef(false);
-  const checkingBr = React.useRef(false);
+  const brCheck = React.useRef<number | null>(null);
+  const brCheckSeq = React.useRef(0);
+  const reportReturn = React.useRef<ReportPlace | null>(null);
+  const hiddenFrom = React.useRef<ReportPlace | null>(null);
+  const lastScroll = React.useRef({ x: 0, y: 0 });
 
   const startBlindReview = searchParams.get('blindReview') === '1';
+  const urlWalkPending = openingWalk && Boolean(walkParam || qidParam) && !walkRow;
+  const status = startBlindReview || checkingBr
+    ? 'Opening blind review…'
+    : urlWalkPending
+      ? 'Opening review walk…'
+      : null;
+  // One screen at a time covers the report. Once shown, the report stays mounted underneath it.
+  const reportVisible = !brContext && !status && !walkRow;
+  const wasVisible = React.useRef(reportVisible);
+
+  React.useEffect(() => {
+    if (reportVisible && !reportMounted) setReportMounted(true);
+  }, [reportVisible, reportMounted]);
+
+  React.useEffect(() => {
+    if (!reportVisible) return;
+    const remember = () => { lastScroll.current = { x: window.scrollX, y: window.scrollY }; };
+    remember();
+    window.addEventListener('scroll', remember, { passive: true });
+    return () => window.removeEventListener('scroll', remember);
+  }, [reportVisible]);
+
+  React.useLayoutEffect(() => {
+    if (reportVisible === wasVisible.current) return;
+    wasVisible.current = reportVisible;
+    if (!reportVisible) {
+      // Covering: keep the student's place and start the covering screen at its top.
+      hiddenFrom.current = reportReturn.current ?? { ...lastScroll.current, focus: null };
+      reportReturn.current = null;
+      window.scrollTo({ left: 0, top: 0, behavior: 'instant' });
+      return;
+    }
+    const place = hiddenFrom.current;
+    hiddenFrom.current = null;
+    if (!place) return;
+    if (place.focus?.isConnected) place.focus.focus({ preventScroll: true });
+    window.scrollTo({ left: place.x, top: place.y, behavior: 'instant' });
+  }, [reportVisible]);
+
+  // A pending blind-review check is dropped when the session ends or the address changes.
+  React.useEffect(() => () => { brCheck.current = null; }, []);
+  React.useEffect(() => {
+    if (brCheck.current === null) return;
+    brCheck.current = null;
+    setCheckingBr(false);
+  }, [walkParam, qidParam]);
+
   React.useEffect(() => {
     if (!startBlindReview || !historyId || !userId) return;
     let active = true;
@@ -156,9 +197,61 @@ function SectionReportSession({ historyId, userId }: { historyId?: string; userI
     [queryClient],
   );
 
-  // Deferred blind review save error / retry screen (preserves completed BR results).
+  // Re-read the section before starting: the mounted report can be stale (another tab may
+  // have finished blind review). Start only on a conclusive "not done yet".
+  const startCheckedBlindReview = async (requested: { historyId: string }) => {
+    if (!userId || brCheck.current !== null) return;
+    const id = ++brCheckSeq.current;
+    brCheck.current = id;
+    setCheckingBr(true);
+    let latest: Awaited<ReturnType<typeof fetchOwnedSectionReport>> | null = null;
+    try {
+      latest = await fetchOwnedSectionReport(userId, requested.historyId);
+    } catch (err) {
+      console.error('[sectionReport] could not check blind review', err);
+    }
+    if (brCheck.current !== id) return;
+    brCheck.current = null;
+    setCheckingBr(false);
+    if (!latest) {
+      toast.error('Could not open blind review. Please try again.');
+      return;
+    }
+    let next: Omit<BrContext, 'session'> | null = null;
+    if (latest.state === 'released') {
+      const { row } = latest;
+      if (row.brUsed) {
+        toast.info('Blind review for this section is already done.');
+      } else if (!row.practiceTestRunId && row.questions.length > 0) {
+        next = {
+          historyId: row.id,
+          pt: row.pt,
+          section: row.section,
+          questionQids: row.questions.map((question) => question.qid),
+          row,
+        };
+      }
+    } else if (
+      latest.state === 'sealed'
+      && latest.reason === 'blind-review'
+      && !latest.blindReviewPreparationFailed
+      && latest.questionQids.length > 0
+    ) {
+      next = { historyId: latest.id, pt: latest.pt, section: latest.section, questionQids: latest.questionQids };
+    }
+    if (!next) {
+      setRefreshKey((k) => k + 1);
+      return;
+    }
+    setPendingBrResults(null);
+    setBrSaveError(null);
+    setBrContext({ ...next, session: buildDeferredBrSession(next) });
+  };
+
+  let screen: React.ReactNode = null;
   if (brContext && pendingBrResults) {
-    return (
+    // Deferred blind review save error / retry screen (preserves completed BR results).
+    screen = (
       <div className="min-h-screen bg-background flex items-center justify-center p-6">
         <Card className="max-w-md w-full p-6 space-y-4 text-center">
           <h2 className="text-lg font-semibold">Could not save blind review</h2>
@@ -187,11 +280,8 @@ function SectionReportSession({ historyId, userId }: { historyId?: string; userI
         </Card>
       </div>
     );
-  }
-
-  // Active deferred blind review screen.
-  if (brContext) {
-    return (
+  } else if (brContext) {
+    screen = (
       <EnhancedBlindReview
         session={brContext.session}
         reviewQids={brContext.questionQids}
@@ -204,16 +294,14 @@ function SectionReportSession({ historyId, userId }: { historyId?: string; userI
         }}
       />
     );
-  }
-
-  // Keep the report mounted during a walk opened from the report.
-  let reviewWalk: React.ReactNode = null;
-  if (walkRow) {
+  } else if (status) {
+    screen = <div className="light min-h-screen bg-background p-6 text-foreground" role="status">{status}</div>;
+  } else if (walkRow) {
     const walk = sectionHistoryToWalkSession(walkRow);
     const initialIndex = walkQid
       ? Math.max(0, walk.session.questionQueue.indexOf(walkQid))
       : 0;
-    reviewWalk = (
+    screen = (
       <SectionReviewWalk
         session={walk.session}
         brResults={walk.brResults}
@@ -235,83 +323,51 @@ function SectionReportSession({ historyId, userId }: { historyId?: string; userI
     );
   }
 
-  if (startBlindReview) {
-    return <div className="light min-h-screen bg-background p-6 text-foreground" role="status">Opening blind review…</div>;
-  }
-
-  // Only while the address still asks for a walk that has not loaded yet.
-  if (openingWalk && (walkParam || qidParam) && !walkRow) {
-    return <div className="light min-h-screen bg-background p-6 text-foreground" role="status">Opening review walk…</div>;
-  }
-
-  if (walkRow && !reportReturn.current) return reviewWalk;
-
   return (
     <>
-      <div hidden={Boolean(walkRow)}>
-        <SectionReport
-          historyId={historyId ?? null}
-          onBack={() => navigate(returnTo)}
-          backLabel={requestedReturn ? 'Back' : 'Back to History'}
-          onReviewSection={(qid, row, trigger) => {
-            if (!row) return;
-            // Safari does not focus a clicked button, so prefer the element that was activated.
-            const focused = document.activeElement instanceof HTMLElement && document.activeElement !== document.body
-              ? document.activeElement
-              : null;
-            reportReturn.current = {
-              x: window.scrollX,
-              y: window.scrollY,
-              focus: trigger ?? focused,
-            };
-            setWalkRow(row);
-            setWalkQid(qid ?? null);
-          }}
-          onStartOver={async (row) => {
-            if (!userId || startingOver.current) return;
-            startingOver.current = true;
-            try {
-              const launch = launchDrill({ kind: 'section', pt: row.pt, section: row.section });
-              const intent = row.clientSittingId
-                ? `restart=1&gen=${await fetchSectionSittingGeneration(userId, row.clientSittingId)}`
-                : 'historicalRetake=1';
-              navigate(`/drill?${launch}&${intent}`);
-            } catch (err) {
-              console.error('[sectionReport] could not start over', err);
-              toast.error('Could not start over. Please try again.');
-              startingOver.current = false;
-            }
-          }}
-          onStartBlindReview={async (ctx) => {
-            if (checkingBr.current) return;
-            checkingBr.current = true;
-            try {
-              // The mounted report can be stale (another tab may have finished blind review).
-              if (userId) {
-                const latest = await fetchOwnedSectionReport(userId, ctx.historyId).catch(() => null);
-                if (latest?.state === 'released' && latest.row.brUsed) {
-                  toast.info('Blind review for this section is already done.');
-                  setRefreshKey((k) => k + 1);
-                  return;
-                }
+      {(reportVisible || reportMounted) && (
+        <div hidden={!reportVisible}>
+          <SectionReport
+            historyId={historyId ?? null}
+            onBack={() => navigate(returnTo)}
+            backLabel={requestedReturn ? 'Back' : 'Back to History'}
+            onReviewSection={(qid, row, trigger) => {
+              if (!row) return;
+              // Safari does not focus a clicked button, so prefer the element that was activated.
+              const focused = document.activeElement instanceof HTMLElement && document.activeElement !== document.body
+                ? document.activeElement
+                : null;
+              reportReturn.current = { x: window.scrollX, y: window.scrollY, focus: trigger ?? focused };
+              setWalkRow(row);
+              setWalkQid(qid ?? null);
+            }}
+            onStartOver={async (row) => {
+              if (!userId || startingOver.current) return;
+              startingOver.current = true;
+              try {
+                const launch = launchDrill({ kind: 'section', pt: row.pt, section: row.section });
+                const intent = row.clientSittingId
+                  ? `restart=1&gen=${await fetchSectionSittingGeneration(userId, row.clientSittingId)}`
+                  : 'historicalRetake=1';
+                navigate(`/drill?${launch}&${intent}`);
+              } catch (err) {
+                console.error('[sectionReport] could not start over', err);
+                toast.error('Could not start over. Please try again.');
+                startingOver.current = false;
               }
-              const session = buildDeferredBrSession({
-                pt: ctx.pt,
-                section: ctx.section,
-                questionQids: ctx.questionQids,
-                row: ctx.row,
-              });
-              setBrContext({ ...ctx, session });
-              setPendingBrResults(null);
-              setBrSaveError(null);
-            } finally {
-              checkingBr.current = false;
-            }
-          }}
-          refreshKey={refreshKey}
-        />
-      </div>
-      {reviewWalk}
+            }}
+            onStartBlindReview={(ctx) => {
+              const trigger = document.activeElement instanceof HTMLElement && document.activeElement !== document.body
+                ? document.activeElement
+                : null;
+              reportReturn.current = { x: window.scrollX, y: window.scrollY, focus: trigger };
+              void startCheckedBlindReview(ctx);
+            }}
+            refreshKey={refreshKey}
+          />
+        </div>
+      )}
+      {screen}
     </>
   );
 }
