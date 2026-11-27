@@ -155,6 +155,7 @@ describe("TeacherHomeView", () => {
     const account = { class_id: "s1", display_name: "Lydia Park", email: "lydia@example.invalid", role: "student", access_tier: "tier_2", archived_at: null } as any;
     const save = vi.fn().mockResolvedValue({ ...account, access_tier: "tier_3" });
     render(<TeacherHomeView model={{ ...READY, desk: { ...EMPTY_DESK, access: { state: "ready", data: [account] }, actions: { saveHomeAccess: save } as any } }} onOpen={vi.fn()} />);
+    fireEvent.click(screen.getByText("Find or manage a student"));
     fireEvent.change(screen.getByLabelText("Find a student"), { target: { value: "Lydia" } });
     const trigger = screen.getByRole("button", { name: "Edit access" });
     fireEvent.click(trigger);
@@ -171,6 +172,7 @@ describe("TeacherHomeView", () => {
   });
   it("makes account operations discoverable and opens access selection without an account write", async () => {
     render(<TeacherHomeView model={READY} onOpen={vi.fn()} />);
+    fireEvent.click(screen.getByText("Find or manage a student"));
     const accounts = screen.getByRole("group", { name: "Student accounts" });
     expect(accounts).toHaveAttribute("data-account-controls", "student-credits-scheduling-20261028");
     expect(within(accounts).getByRole("button", { name: "Schedule a session" })).toBeInTheDocument();
@@ -220,11 +222,12 @@ describe("TeacherHomeView", () => {
     expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(
       "Good afternoon, Joshua.",
     );
+    fireEvent.click(screen.getByRole("button", { name: "Open quick actions" }));
     fireEvent.click(screen.getByRole("button", { name: "Assign work" }));
     expect(onOpen).toHaveBeenCalledWith("/teacher/library/assignments");
     expectNoStudentContent();
   });
-  it("shows the canonical unread total while capping previews at two and opens the exact conversation", () => {
+  it("shows one Messages section and opens the exact conversation", () => {
     const onOpen = vi.fn();
     render(
       <TeacherHomeView
@@ -233,9 +236,9 @@ describe("TeacherHomeView", () => {
       />,
     );
     expect(
-      screen.getByRole("heading", { name: "Messages (9)" }),
+      screen.getByRole("heading", { name: "Messages" }),
     ).toBeInTheDocument();
-    const list = screen.getByRole("list", { name: "Unread conversations" });
+    const list = screen.getByRole("list", { name: "Unread message previews" });
     expect(within(list).getAllByRole("listitem")).toHaveLength(2);
     fireEvent.click(within(list).getByRole("button", { name: /Celia/ }));
     expect(onOpen).toHaveBeenCalledWith("/teacher/inbox/platform:c1");
@@ -255,7 +258,7 @@ describe("TeacherHomeView", () => {
     const { rerender } = render(
       <TeacherHomeView model={LOADING} onOpen={vi.fn()} />,
     );
-    expect(screen.getByText("Loading messages…")).toBeInTheDocument();
+    expect(screen.getByText("Checking messages…")).toBeInTheDocument();
     expect(screen.queryByText("No unread conversations.")).toBeNull();
     expect(screen.getByLabelText("Find a student")).toBeDisabled();
     const retry = vi.fn();
@@ -263,7 +266,7 @@ describe("TeacherHomeView", () => {
       <TeacherHomeView model={FAILED} onOpen={vi.fn()} onRetryInbox={retry} />,
     );
     fireEvent.click(
-      within(screen.getByText(/Unread messages are unknown/)).getByRole(
+      within(screen.getByText(/Messages could not be checked/)).getByRole(
         "button",
         { name: "Retry" },
       ),
@@ -280,7 +283,7 @@ describe("TeacherHomeView", () => {
     expect(screen.queryByText("No unread conversations.")).toBeNull();
     expect(
       screen.getByText(
-        "No conversations were unread when the inbox last loaded.",
+        "Nothing was unread at the last check.",
       ),
     ).toBeInTheDocument();
     rerender(
@@ -290,11 +293,9 @@ describe("TeacherHomeView", () => {
       />,
     );
     expect(
-      screen.getByRole("list", { name: "Unread conversations" }),
+      screen.getByRole("list", { name: "Unread message previews" }),
     ).toBeInTheDocument();
-    expect(screen.getByRole("status")).toHaveTextContent(
-      "Could not refresh messages",
-    );
+    expect(screen.getByText("Could not refresh. These are the last loaded messages.")).toBeInTheDocument();
   });
   it("searches beyond recent students, supports accent-insensitive Enter and Escape", () => {
     const onOpen = vi.fn();
@@ -370,10 +371,10 @@ describe("Teacher Home provider setup rendering", () => {
       screen.getByRole("heading", { name: "After-session work" }),
     ).toBeInTheDocument();
     expect(
-      screen.getByRole("heading", { name: "My list" }),
+      screen.getByRole("heading", { name: "Private reminders" }),
     ).toBeInTheDocument();
     expect(
-      screen.getByText(/student and enquiry email is not connected yet/),
+      screen.getByText("Not connected."),
     ).toBeInTheDocument();
     expect(
       screen.queryByText("No unread student or enquiry email."),

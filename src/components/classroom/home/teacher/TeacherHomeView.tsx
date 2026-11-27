@@ -14,6 +14,8 @@ import "./observatory.css";
 import { MessageFaces, SevenDayStrip } from "./ObservatoryWidgets";
 import { StudentAccessTable } from "./StudentAccessTable";
 import { TeacherDock } from "./TeacherDock";
+import { TeacherStudentsFolder } from "./TeacherStudentsFolder";
+import "./teacher-home-layout.css";
 import { AccessSheet, BookingSheet } from "./TeacherAccessBooking";
 import {
   EMPTY_DESK,
@@ -100,15 +102,10 @@ function TeacherDeskContent({
     model.postSession?.data?.total ??
     model.postSession?.data?.tasks?.length ??
     0;
-  const sessionSummary =
-    postSessionLede(model.postSession) ??
-    (model.postSession?.state === "ready"
-      ? "Your saved follow-up work is below."
-      : model.postSession?.state === "loading"
-        ? "Checking your session follow-up…"
-        : model.postSession?.state === "error"
-          ? "Your session follow-up could not be checked."
-          : "Connect session follow-up to see your next steps.");
+  const sessionSummary = model.postSession?.refreshFailed
+    ? postSessionLede(model.postSession)
+    : null;
+  const firstName = model.displayName?.trim().split(/\s+/)[0];
   const settings = model.postSession?.data?.settings;
   const quietWork =
     model.postSession?.state === "ready" &&
@@ -128,17 +125,12 @@ function TeacherDeskContent({
       tabIndex={-1}
     >
       <header className="classroom-home-region-head">
-        <h2>Correspondence</h2>
+        <h2>Email</h2>
+        <a href={EMAIL} target="_blank" rel="noopener noreferrer">Open email ↗</a>
       </header>
       <div className="home-desk-correspondence">
         <div>
-          <div className="home-desk-subhead">
-            <h3>Email</h3>
-            <a href={EMAIL} target="_blank" rel="noopener noreferrer">
-              Open email ↗
-            </a>
-          </div>
-          <DeskStatus region={desk.email} noun="student and enquiry email" />
+          <DeskStatus region={desk.email} noun="student and enquiry email" setupLabel="Not connected." />
           {desk.email.data?.enquiries_configured === false ? (
             <p role="status" className="home-desk-empty">
               Student email is shown. Add the Gmail label “LSAT U/Tutoring
@@ -175,49 +167,7 @@ function TeacherDeskContent({
             </p>
           ) : null}
         </div>
-        <div>
-          <div className="home-desk-subhead">
-            <h3>
-              Messages{" "}
-              {model.unread.state === "ready" ? `(${model.unread.total})` : ""}
-            </h3>
-            <button onClick={() => onOpen("/teacher/inbox")}>Inbox ↗</button>
-          </div>
-          {model.unread.state === "loading" ? (
-            <p className="home-desk-empty">Loading messages…</p>
-          ) : model.unread.state === "error" ? (
-            <p role="alert">
-              Unread messages are unknown.{" "}
-              <button onClick={onRetryInbox}>Retry</button>
-            </p>
-          ) : (
-            <>
-              {model.unread.refreshFailed ? (
-                <p role="status" className="home-desk-empty">
-                  Could not refresh messages. Showing the last loaded
-                  conversations.
-                </p>
-              ) : null}
-              <ul aria-label="Unread conversations">
-                {model.unread.rows.slice(0, 2).map((t) => (
-                  <li key={t.id}>
-                    <button onClick={() => onOpen(t.route)}>
-                      <b>{t.name}</b>
-                      <small>{t.snippet}</small>
-                    </button>
-                  </li>
-                ))}
-              </ul>
-              {!model.unread.rows.length ? (
-                <p className="home-desk-empty">
-                  {model.unread.refreshFailed
-                    ? "No conversations were unread when the inbox last loaded."
-                    : "No unread conversations."}
-                </p>
-              ) : null}
-            </>
-          )}
-        </div>
+
       </div>
     </section>
   );
@@ -240,23 +190,17 @@ function TeacherDeskContent({
         <div>
           <h1>
             {model.greeting}
-            {model.displayName ? `, ${model.displayName}.` : "."}
+            {firstName ? `, ${firstName}.` : "."}
           </h1>
           <p className="obs-date">{model.dateline}</p>
         </div>
-        <p className="home-desk-summary obs-sum">{sessionSummary}</p>
+        {sessionSummary ? <p className="home-desk-summary obs-sum" role="status">{sessionSummary}</p> : null}
         <div className="obs-acts">
           <details className="home-desk-more-menu obs-more">
             <summary>More</summary>
             <div>
-              <a href={EMAIL} target="_blank" rel="noopener noreferrer">
-                Open email ↗
-              </a>
               <button onClick={(event) => openBooking("link", event.currentTarget)}>
                 Create session link
-              </button>
-              <button onClick={() => onOpen("/teacher/students")}>
-                All students
               </button>
             </div>
           </details>
@@ -274,7 +218,6 @@ function TeacherDeskContent({
       <MessageFaces unread={model.unread} onOpen={onOpen} onRetry={onRetryInbox} />
 
       <div className="eclipse-zone">
-        <div className="eclipse-zl" aria-hidden="true">01 · Follow up</div>
         <div className="eclipse-grid">
           <div className="eclipse-col">
             <PostSessionWork
@@ -374,7 +317,6 @@ function TeacherDeskContent({
       </div>
 
       <div className="eclipse-zone">
-        <div className="eclipse-zl" aria-hidden="true">02 · Inbox and tasks</div>
         <div className="eclipse-three">
           {correspondence}
           <MyList desk={desk} students={students} onAll={() => setAllTasks(true)} />
@@ -382,7 +324,6 @@ function TeacherDeskContent({
       </div>
 
       <div className="eclipse-zone">
-        <div className="eclipse-zl" aria-hidden="true">03 · Students</div>
         <section className="classroom-home-region home-desk-students">
           <header className="classroom-home-region-head">
             <h2>Students at a glance</h2>
@@ -393,149 +334,86 @@ function TeacherDeskContent({
               All students ↗
             </button>
           </header>
-          <div className="home-desk-student-columns">
-            <div>
-              <h3>Recent activity</h3>
-              {model.roster.refreshFailed ? (
-                <p role="status">Could not refresh student activity.</p>
-              ) : null}
-              {model.roster.state === "error" ? (
-                <p role="alert">
-                  Activity unavailable.{" "}
-                  <button onClick={onRetryRoster}>Retry</button>
-                </p>
-              ) : model.roster.state === "loading" ? (
-                <p>Loading activity…</p>
-              ) : (
-                <ul aria-label="Recently active students">
-                  {model.roster.recent.slice(0, 3).map((s) => (
-                    <li key={s.id}>
-                      <button onClick={() => onOpen(s.route)}>
-                        <b>{s.name}</b>
-                        <small>{s.activityLabel}</small>
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-              )}
-              <label className="home-desk-label" htmlFor="home-student-search">
-                Find a student
-                <input
-                  id="home-student-search"
-                  type="search"
-                  placeholder="Student name"
-                  disabled={model.roster.state !== "ready"}
-                  value={search}
-                  onChange={(e) => setSearch(e.target.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter" && matches[0]) onOpen(matches[0].route);
-                    if (e.key === "Escape") setSearch("");
-                  }}
-                />
-              </label>
-              {search.trim() ? (
-                matches.length ? (
-                  <ul aria-label="Matching students">
-                    {matches.map((s) => (
-                      <li key={s.id}>
-                        <button onClick={() => onOpen(s.route)}>{s.name} ↗</button>
-                        {desk.access.data?.find((p) => p.class_id === s.id) ? (
-                          <button
-                            onClick={(e) => {
-                              accountTrigger.current = e.currentTarget;
-                              setAccessOpen(true);
-                              setAccess(
-                                desk.access.data!.find((p) => p.class_id === s.id)!,
-                              );
-                            }}
-                          >
-                            Edit access
-                          </button>
-                        ) : null}
-                      </li>
-                    ))}
-                  </ul>
-                ) : (
-                  <p>No matching students.</p>
-                )
-              ) : null}
-            </div>
-            <div className="eclipse-results">
-              <h3>Recent results</h3>
-              <DeskStatus region={desk.results} noun="test results" />
-              {desk.results.state === "ready" ? (
-                desk.results.data?.length ? (
-                  <ul>
-                    {desk.results.data.slice(0, 3).map((r) => {
-                      const parsed =
-                        typeof r.score === "string"
-                          ? /^(\d+)\s*\/\s*(\d+)$/.exec(r.score.trim())
-                          : null;
-                      const got = parsed ? Number(parsed[1]) : null;
-                      const of = parsed ? Number(parsed[2]) : null;
-                      return (
-                        <li key={r.id}>
-                          <button
-                            onClick={() =>
-                              onOpen(
-                                `/teacher/students/${encodeURIComponent(r.student_id)}/work`,
-                              )
-                            }
-                          >
-                            <span className="eclipse-res-head">
-                              <b>
-                                {r.student_name}
-                                <small>{r.title}</small>
-                              </b>
-                              <span>{r.score ?? "Result available"}</span>
-                            </span>
-                            {got !== null && of && of <= 60 && got <= of ? (
-                              <span className="eclipse-ticks" aria-hidden="true">
-                                {Array.from({ length: of }, (_, i) => (
-                                  <i key={i} className={i < got ? "on" : undefined} />
-                                ))}
-                              </span>
-                            ) : null}
-                          </button>
+          <TeacherStudentsFolder
+            roster={model.roster}
+            results={desk.results}
+            onOpen={onOpen}
+            onRetryRoster={onRetryRoster}
+          />
+          <details className="home-desk-student-actions">
+            <summary>Find or manage a student</summary>
+            <div className="home-desk-student-columns">
+              <div>
+                <label className="home-desk-label" htmlFor="home-student-search">
+                  Find a student
+                  <input
+                    id="home-student-search"
+                    type="search"
+                    placeholder="Student name"
+                    disabled={model.roster.state !== "ready"}
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" && matches[0]) onOpen(matches[0].route);
+                      if (e.key === "Escape") setSearch("");
+                    }}
+                  />
+                </label>
+                {search.trim() ? (
+                  matches.length ? (
+                    <ul aria-label="Matching students">
+                      {matches.map((s) => (
+                        <li key={s.id}>
+                          <button onClick={() => onOpen(s.route)}>{s.name} ↗</button>
+                          {desk.access.data?.find((p) => p.class_id === s.id) ? (
+                            <button
+                              onClick={(e) => {
+                                accountTrigger.current = e.currentTarget;
+                                setAccessOpen(true);
+                                setAccess(
+                                  desk.access.data!.find((p) => p.class_id === s.id)!,
+                                );
+                              }}
+                            >
+                              Edit access
+                            </button>
+                          ) : null}
                         </li>
-                      );
-                    })}
-                  </ul>
-                ) : (
-                  <p className="home-desk-empty">No recent results recorded.</p>
-                )
-              ) : null}
-            </div>
-            <div
-              className="home-desk-account-actions"
-              data-account-controls="student-credits-scheduling-20261028"
-              role="group"
-              aria-label="Student accounts"
-            >
-              <h3>Student accounts</h3>
-              <button ref={scheduleTrigger} onClick={() => setScheduleOpen(true)}>
-                Schedule a session <span aria-hidden="true">↗</span>
-              </button>
-              <button onClick={(e) => openBooking("credits", e.currentTarget)}>
-                Add session credits <span aria-hidden="true">↗</span>
-              </button>
-              <button
-                onClick={(e) => {
-                  accountTrigger.current = e.currentTarget;
-                  setAccess(null);
-                  setAccessOpen(true);
-                }}
+                      ))}
+                    </ul>
+                  ) : (
+                    <p>No matching students.</p>
+                  )
+                ) : null}
+              </div>
+              <div
+                className="home-desk-account-actions"
+                data-account-controls="student-credits-scheduling-20261028"
+                role="group"
+                aria-label="Student accounts"
               >
-                Account access <span aria-hidden="true">↗</span>
-              </button>
-              <button onClick={(e) => openBooking("link", e.currentTarget)}>
-                Individual booking links <span aria-hidden="true">↗</span>
-              </button>
+                <h3>Student accounts</h3>
+                <button ref={scheduleTrigger} onClick={() => setScheduleOpen(true)}>
+                  Schedule a session <span aria-hidden="true">↗</span>
+                </button>
+                <button onClick={(e) => openBooking("credits", e.currentTarget)}>
+                  Add session credits <span aria-hidden="true">↗</span>
+                </button>
+                <button
+                  onClick={(e) => {
+                    accountTrigger.current = e.currentTarget;
+                    setAccess(null);
+                    setAccessOpen(true);
+                  }}
+                >
+                  Account access <span aria-hidden="true">↗</span>
+                </button>
+                <button onClick={(e) => openBooking("link", e.currentTarget)}>
+                  Individual booking links <span aria-hidden="true">↗</span>
+                </button>
+              </div>
             </div>
-          </div>
-          <p className="home-desk-footnote">
-            Recent activity is based on the last recorded visit.
-          </p>
+          </details>
         </section>
       </div>
       {createPortal(
@@ -572,7 +450,6 @@ function TeacherDeskContent({
           onPointerCancel={() => { railPullStart.current = null; }}
         >
           <PanelRightOpen size={17} aria-hidden="true" />
-          <span>Tools</span>
         </button>,
         document.body,
       )}

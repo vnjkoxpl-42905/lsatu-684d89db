@@ -1,4 +1,5 @@
 import * as React from "react";
+import { ChevronDown } from "lucide-react";
 import type { TeacherStudentRow } from "./teacherHomeModel";
 import {
   calendarCheckIsStale,
@@ -46,14 +47,8 @@ export function SessionTask({
     cancelled: "Session cancelled",
     unavailable: "Calendar event unavailable",
   }[task.source_state];
-  const remaining = [
-    !task.recap_done && "Recap",
-    !task.recap_posted && "Post recap",
-    !task.notes_done && "Notes",
-    !task.work_assigned && "Next work",
-  ]
-    .filter(Boolean)
-    .join(" · ");
+  const readyToHandle = task.recap_done && task.recap_posted && task.notes_done && task.work_assigned;
+  const linkedTranscript = task.transcript_status === "linked" ? doc : null;
   return (
     <li
       className={`classroom-home-session-task ${expanded ? "is-expanded" : ""}`}
@@ -70,29 +65,34 @@ export function SessionTask({
         {onToggle ? (
           <button
             type="button"
-            className="classroom-home-quiet-button"
+            className="classroom-home-quiet-button classroom-home-task-toggle"
+            aria-label={task.student_name ? `Details for ${task.student_name}` : "Details"}
             aria-expanded={expanded}
             aria-controls={`${id}-detail`}
             onClick={onToggle}
           >
-            {expanded ? "Close follow-up" : "Open follow-up"}
-            <span aria-hidden="true">{expanded ? " −" : " ↗"}</span>
+            Details
+            <ChevronDown size={14} aria-hidden="true" />
           </button>
         ) : null}
       </div>
       {!expanded ? (
-        <p className="home-desk-task-summary">
-          {task.blocker
-            ? `Blocked: ${task.blocker}`
-            : remaining || "Steps complete; ready to handle"}
-          <span>
-            {task.transcript_status === "linked"
-              ? "Transcript linked"
-              : task.transcript_status === "needs_review"
-                ? "Transcript needs review"
-                : "Waiting for transcript"}
-          </span>
-        </p>
+        <div className="home-desk-task-summary">
+          {task.blocker ? <p>Blocked: {task.blocker}</p> : readyToHandle ? <p>Steps complete; ready to handle</p> : null}
+          {linkedTranscript ? (
+            <a className="home-desk-task-transcript" href={linkedTranscript} target="_blank" rel="noopener noreferrer">
+              Open transcript
+            </a>
+          ) : (
+            <span>
+              {task.transcript_status === "linked"
+                ? "Transcript linked"
+                : task.transcript_status === "needs_review"
+                  ? "Transcript needs review"
+                  : "Waiting for transcript"}
+            </span>
+          )}
+        </div>
       ) : null}
       <div id={`${id}-detail`} hidden={!expanded}>
         <p className="classroom-home-task-sync">
@@ -311,11 +311,6 @@ export function PostSessionWork({
     >
       <header className="classroom-home-region-head">
         <h2 id="teacher-home-work-title">After-session work</h2>
-        {work.state === "ready" ? (
-          <span className="classroom-home-count">
-            {data?.total ?? tasks.length}
-          </span>
-        ) : null}
         {onAll ? (
           <button className="classroom-home-more" onClick={onAll}>
             All tasks ↗

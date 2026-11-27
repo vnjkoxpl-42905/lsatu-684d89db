@@ -45,8 +45,8 @@ const EVENTS = [
 const task = (id: string, name: string, notes: boolean) => ({
   id, revision: 1, student_id: `sample-${id}`, student_name: name, source_title: `LSAT session: ${name}`,
   starts_at: at(-1, "13:00").toISOString(), ends_at: at(-1, "14:00").toISOString(),
-  source_state: "ended" as const, match_state: "matched" as const, transcript_doc_id: "doc", transcript_source: "auto" as const,
-  transcript_status: "linked" as const, drive_folder_url: null, local_slug: null,
+  source_state: "ended" as const, match_state: "matched" as const, transcript_doc_id: notes ? "preview_document_fixture_123" : null, transcript_source: "auto" as const,
+  transcript_status: notes ? "linked" as const : "waiting" as const, drive_folder_url: null, local_slug: null,
   recap_done: false, notes_done: notes, work_assigned: false, handled_at: null, kind: "session" as const,
 });
 
@@ -62,7 +62,9 @@ const MODEL: TeacherHomeModel = {
     ],
   },
   roster: { state: "ready", total: 3, recent: [
-    { id: "sample-lydia", name: "Lydia Park", activityLabel: "Active today", route: "/teacher/students" },
+    { id: "sample-lydia", name: "Lydia Park", activityLabel: "Active today", route: "/teacher/students/sample-lydia" },
+    { id: "sample-celia", name: "Celia Moreno", activityLabel: "Active yesterday", route: "/teacher/students/sample-celia" },
+    { id: "sample-hana", name: "Hana Ito", activityLabel: "Active yesterday", route: "/teacher/students/sample-hana" },
   ] },
   sessions: { state: "ready", rows: [] },
   postSession: {
@@ -73,7 +75,12 @@ const MODEL: TeacherHomeModel = {
       handled: [], total: 3, handled_total: 3,
     },
   } as TeacherHomeModel["postSession"],
-  desk: { ...EMPTY_DESK, actorId: "preview", agenda: { state: "ready", data: { events: EVENTS } } } as TeacherHomeModel["desk"],
+  desk: { ...EMPTY_DESK, actorId: "preview", agenda: { state: "ready", data: { events: EVENTS } },
+    results: { state: "ready", data: ["Lydia Park", "Lydia Park", "Hana Ito"].map((name, i) => ({
+      id: `sample-result-${i}`, student_id: `sample-${name.split(" ")[0].toLowerCase()}`,
+      student_name: name, title: "PT110 · 3", score: "19/26",
+      completed_at: at(-i - 1, "13:00").toISOString(),
+    })) } } as TeacherHomeModel["desk"],
 };
 
 const sampleAccounts = [

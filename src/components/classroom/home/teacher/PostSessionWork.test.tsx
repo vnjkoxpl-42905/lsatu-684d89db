@@ -102,7 +102,7 @@ describe("After-session work", () => {
         onOpen={vi.fn()}
       />,
     );
-    fireEvent.click(screen.getByRole("button", { name: "Open follow-up" }));
+    fireEvent.click(screen.getByRole("button", { name: /^Details/ }));
     expect(
       screen.getByRole("link", { name: /Review earlier transcript link/ }),
     ).toHaveAttribute(
@@ -143,7 +143,7 @@ describe("After-session work", () => {
         onOpen={vi.fn()}
       />,
     );
-    fireEvent.click(screen.getByRole("button", { name: "Open follow-up" }));
+    fireEvent.click(screen.getByRole("button", { name: /^Details/ }));
     fireEvent.click(screen.getByRole("checkbox", { name: "Recap prepared" }));
     expect(update).toHaveBeenCalledWith(task, {
       action: "checklist",
@@ -248,7 +248,7 @@ describe("After-session work", () => {
       screen.getByText("Automatic updates are paused. Showing saved work."),
     ).toBeInTheDocument();
     expect(screen.getByText("Ada")).toBeInTheDocument();
-    fireEvent.click(screen.getByRole("button", { name: "Open follow-up" }));
+    fireEvent.click(screen.getByRole("button", { name: /^Details/ }));
     fireEvent.click(screen.getByRole("button", { name: "Mark handled" }));
     expect(update).toHaveBeenCalledWith(task, { action: "handle" });
   });

@@ -7,12 +7,11 @@ import {
   eventName,
   orbitAngle,
   sameDay,
-  shortHour,
   timedEvents,
   todayPlanets,
 } from "./observatoryModel";
 
-const CALENDAR = "https://calendar.google.com/calendar/u/0/r";
+const SHORT_DATE = new Intl.DateTimeFormat("en-US", { weekday: "short", month: "short", day: "numeric" });
 const CX = 200;
 const CY = 200;
 const R = 128;
@@ -65,37 +64,27 @@ export function EclipseStage({
   const [ox, oy] = pt(an, R + 10);
 
   let stateLabel = "Next session";
-  let count: React.ReactNode = null;
-  let countLabel = "";
-  let whoLine: React.ReactNode = null;
+  let timeLabel = "";
+  let countdown: React.ReactNode = null;
+  let countdownLabel = "";
+
   if (current) {
-    const left = Math.max(0, Math.round((current.end.getTime() - now.getTime()) / 60_000));
+    const minutes = Math.ceil((current.end.getTime() - now.getTime()) / 60_000);
     stateLabel = "In session";
-    count = (<>{left}<small>min</small></>);
-    countLabel = `${left} minutes left`;
-    whoLine = (
-      <>
-        {current.event.student_name ? `with ${current.event.student_name}` : eventName(current.event)}{" "}
-        <span>until {clockLabel(current.end)}</span>
-      </>
-    );
+    timeLabel = `until ${clockLabel(current.end)}`;
+    countdown = <>{minutes}<small>min</small> left</>;
+    countdownLabel = `${minutes} ${minutes === 1 ? "minute" : "minutes"} left`;
   } else if (next && sameDay(next.start, now)) {
-    const mins = Math.max(0, Math.round((next.start.getTime() - now.getTime()) / 60_000));
-    const h = Math.floor(mins / 60);
-    const m = mins % 60;
-    count = (<>{h ? (<>{h}<small>h</small> </>) : null}{m}<small>min</small></>);
-    countLabel = `${h ? `${h} hours ` : ""}${m} minutes`;
-    whoLine = (
-      <>
-        until {eventName(next.event)} <span>at {clockLabel(next.start)}</span>
-      </>
-    );
+    const minutes = Math.ceil((next.start.getTime() - now.getTime()) / 60_000);
+    const hours = Math.floor(minutes / 60);
+    const remainder = minutes % 60;
+    timeLabel = `at ${clockLabel(next.start)}`;
+    countdown = <>In {hours ? <>{hours}<small>h</small>{" "}</> : null}{remainder}<small>min</small></>;
+    const hoursLabel = hours ? `${hours} ${hours === 1 ? "hour" : "hours"} ` : "";
+    countdownLabel = `In ${hoursLabel}${remainder} ${remainder === 1 ? "minute" : "minutes"}`;
   } else if (next) {
-    const day = new Intl.DateTimeFormat("en-US", { weekday: "short" }).format(next.start);
     stateLabel = "No more sessions today";
-    count = (<>{day}<small>{clockLabel(next.start)}</small></>);
-    countLabel = `Next on ${day} at ${clockLabel(next.start)}`;
-    whoLine = (<>{eventName(next.event)} <span>is next</span></>);
+    timeLabel = `${SHORT_DATE.format(next.start)} at ${clockLabel(next.start)}`;
   }
 
   const studentId = target?.event.student_id;
@@ -112,10 +101,15 @@ export function EclipseStage({
         {agenda.state === "ready" ? (
           target ? (
             <>
-              <div className="obs-count" role="text" aria-label={countLabel}>
-                {count}
-              </div>
-              <p className="obs-who">{whoLine}</p>
+              <p className="obs-who obs-appointment">
+                {eventName(target.event)}{" "}<span>{timeLabel}</span>
+              </p>
+              {countdown && (
+                <p className="obs-count">
+                  <span aria-hidden="true">{countdown}</span>
+                  <span className="sr-only">{countdownLabel}</span>
+                </p>
+              )}
             </>
           ) : (
             <p className="obs-who">No events in the next seven days.</p>
@@ -128,31 +122,36 @@ export function EclipseStage({
           <p className="obs-who" role="alert">
             Your calendar could not be checked.{" "}
             {agenda.retry ? (
-              <button className="obs-inline" onClick={agenda.retry}>
+              <button type="button" className="obs-inline" onClick={agenda.retry}>
                 Retry
               </button>
             ) : null}
           </p>
         )}
-        <div className="obs-spacer" />
-        <div className="obs-hero-acts">
-          {studentId ? (
-            <button
-              className="obs-btn-light"
-              onClick={() => onOpen(`/teacher/students/${encodeURIComponent(studentId)}`)}
-            >
-              Open {firstName || "student"}'s prep
-            </button>
-          ) : target && link ? (
-            <a className="obs-btn-light" href={link} target="_blank" rel="noopener noreferrer">
-              {target.event.kind === "consultation" ? "Open consultation" : "Open event"}{" "}
-              <span aria-hidden="true">↗</span>
-            </a>
-          ) : null}
-          <a className="obs-ghost" href={CALENDAR} target="_blank" rel="noopener noreferrer">
-            Calendar ↗
-          </a>
-        </div>
+        {agenda.state === "ready" && agenda.stale && (
+          <p className="obs-calendar-status" role="status">
+            Showing the last loaded calendar.{" "}
+            {agenda.retry ? <button type="button" className="obs-inline" onClick={agenda.retry}>Retry</button> : null}
+          </p>
+        )}
+        {agenda.state === "ready" && (studentId || link) ? (
+          <div className="obs-hero-acts">
+            {studentId ? (
+              <button
+                type="button"
+                className="obs-btn-light"
+                onClick={() => onOpen(`/teacher/students/${encodeURIComponent(studentId)}`)}
+              >
+                Open {firstName || "student"}'s prep
+              </button>
+            ) : (
+              <a className="obs-btn-light" href={link ?? undefined} target="_blank" rel="noopener noreferrer">
+                {target?.event.kind === "consultation" ? "Open consultation" : "Open event"}{" "}
+                <span aria-hidden="true">↗</span>
+              </a>
+            )}
+          </div>
+        ) : null}
       </div>
       <div className="obs-orrery" aria-hidden="true">
         <svg viewBox="0 0 400 400">
@@ -180,14 +179,6 @@ export function EclipseStage({
             strokeDasharray="1 5"
             strokeLinecap="round"
           />
-          {[9, 21].map((h) => {
-            const [x, y] = pt(orbitAngle(at(h)), R + 20);
-            return (
-              <text key={h} x={x} y={y} textAnchor="middle" dominantBaseline="middle" className="obs-hour">
-                {h === 9 ? "9 am" : "9 pm"}
-              </text>
-            );
-          })}
           <circle cx={CX} cy={CY} r={58} fill="url(#obs-disc)" />
           <circle cx={CX} cy={CY} r={58} fill="none" stroke="rgba(255,255,255,.92)" strokeWidth={1.4} />
           <path d={`M${CX - 40} ${CY - 42} A58 58 0 0 1 ${CX + 26} ${CY - 52}`} fill="none" stroke="#fff" strokeWidth={2.4} strokeLinecap="round" opacity=".9" />
@@ -195,9 +186,6 @@ export function EclipseStage({
           {planets.map((p) => {
             const [x, y] = pt(p.angle, R);
             const lit = p.state === "current" || p.state === "next";
-            const side = x > CX + 20 ? 1 : x < CX - 20 ? -1 : 0;
-            const [lx, ly] = side ? [x, y + 22] : pt(p.angle, R + 22);
-            const name = p.event.student_name?.split(" ")[0] ?? eventName(p.event);
             return (
               <g key={p.event.id} data-planet={p.state}>
                 {p.state === "current" ? <circle cx={x} cy={y} r={16} fill="rgba(244,239,228,.16)" /> : null}
@@ -206,10 +194,6 @@ export function EclipseStage({
                 ) : (
                   <circle cx={x} cy={y} r={lit ? 8 : 6} fill={p.state === "current" ? "#f4efe4" : "#fff"} opacity={lit ? 1 : 0.6} />
                 )}
-                <text x={lx} y={side ? ly : ly - 2} textAnchor="middle" className={lit ? "obs-pl on" : "obs-pl"}>
-                  {name}
-                  {p.state === "current" ? " · in session" : ` ${shortHour(p.start)}`}
-                </text>
               </g>
             );
           })}
