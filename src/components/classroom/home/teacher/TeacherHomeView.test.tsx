@@ -210,7 +210,7 @@ describe("TeacherHomeView", () => {
       />,
     );
     expect(container.querySelector(".home-desk-masthead")).not.toHaveTextContent("sessions were waiting");
-    expect(screen.getByRole("heading", { name: "Tasks", exact: true })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /^Tasks$/ })).toBeInTheDocument();
   });
   it("keeps Assign work in the header without a student assignment promotion", () => {
     const onOpen = vi.fn();
@@ -404,7 +404,7 @@ describe("Teacher Home provider setup rendering", () => {
       "Joshua",
     );
     expect(screen.queryByRole("heading", { name: /After-session work|Private reminders|Next up|Email/ })).toBeNull();
-    expect(screen.getByRole("heading", { name: "Tasks", exact: true })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /^Tasks$/ })).toBeInTheDocument();
     fireEvent.click(screen.getByText("More", { exact: true }));
     fireEvent.click(screen.getByRole("button", { name: "Calendar and email" }));
     const tools = await screen.findByRole("dialog", { name: "Teacher tools" });

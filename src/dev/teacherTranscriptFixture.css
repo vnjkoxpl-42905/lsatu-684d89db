@@ -1,0 +1,66 @@
+.teacher-task-board .teacher-transcript-fixture-row {
+  display: grid;
+  gap: 0.375rem;
+  min-width: 0;
+  padding: 0.875rem;
+  border: 1px solid var(--home-line);
+  border-radius: 0.625rem;
+  background: var(--home-surface);
+  overflow-wrap: anywhere;
+}
+
+.teacher-task-board .teacher-transcript-fixture-row h4 {
+  font-weight: 650;
+}
+
+.teacher-task-board .teacher-transcript-fixture-row p {
+  font-size: 0.875rem;
+}
+
+.teacher-task-board .teacher-board-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.375rem 0.5rem;
+}
+
+.teacher-task-board .teacher-board-actions > details {
+  flex-basis: 100%;
+}
+
+.teacher-task-board .teacher-transcript-fixture :is(button, summary),
+.teacher-task-board .teacher-transcript-fixture-row :is(button, summary, select) {
+  min-height: 44px;
+}
+
+.teacher-task-board .teacher-transcript-fixture-row :is(button, select) {
+  padding-inline: 0.75rem;
+  border: 1px solid var(--home-line);
+  border-radius: 0.5rem;
+}
+
+.teacher-task-board .teacher-transcript-fixture-row summary {
+  align-content: center;
+  cursor: pointer;
+}
+
+.teacher-task-board .teacher-transcript-fixture-row :is(label, select) {
+  margin-inline-end: 0.5rem;
+}
+
+.teacher-task-board .teacher-transcript-fixture-row button:disabled {
+  opacity: 0.5;
+}
+
+.teacher-task-board .teacher-transcript-fixture-row :is(button, summary, select):focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+
+.teacher-task-board .teacher-transcript-fixture > h3 {
+  font-weight: 650;
+}
+
+.teacher-task-board .teacher-transcript-fixture > .teacher-transcript-fixture-row {
+  margin-top: 0.5rem;
+}
