@@ -429,7 +429,7 @@ describe('SectionReport', () => {
   });
 
   it('drops the opening status when the walk request leaves the address before loading', async () => {
-    vi.spyOn(window, 'scrollTo').mockImplementation(() => {});
+    const scrollSpy = vi.spyOn(window, 'scrollTo').mockImplementation(() => {});
     mockFetchOwnedSectionReport
       .mockImplementationOnce(() => new Promise(() => {}))
       .mockResolvedValue({ state: 'released', row: baseRow });
@@ -464,6 +464,7 @@ describe('SectionReport', () => {
       await waitFor(() => expect(screen.queryByText(/Opening review walk/)).toBeNull());
       expect(screen.getByRole('button', { name: 'Return from question 1 of 2' })).toBeVisible();
     } finally {
+      scrollSpy.mockRestore();
       client.clear();
     }
   });
@@ -495,6 +496,61 @@ describe('SectionReport', () => {
       await screen.findByRole('heading', { name: 'Question review' });
       fireEvent.click(screen.getByRole('button', { name: 'Go to walk' }));
       expect(await screen.findByRole('button', { name: 'Return from question 1 of 2' })).toBeVisible();
+    } finally {
+      client.clear();
+    }
+  });
+
+  it('holds the report while a history-navigated question link loads', async () => {
+    let resolveWalk: (value: OwnedSectionReportResult) => void = () => {};
+    mockFetchOwnedSectionReport
+      .mockResolvedValueOnce({ state: 'released', row: baseRow })
+      .mockImplementationOnce(() => new Promise((resolve) => { resolveWalk = resolve; }))
+      .mockResolvedValue({ state: 'released', row: baseRow });
+    function GoToQuestion() {
+      const navigate = useNavigate();
+      return <button onClick={() => navigate('/review/section/hist-1?qid=pt130-s2-q2')}>Go to Q2</button>;
+    }
+    const scrollSpy = vi.spyOn(window, 'scrollTo').mockImplementation(() => {});
+    const client = new QueryClient();
+    try {
+      render(
+        <QueryClientProvider client={client}>
+          <MemoryRouter initialEntries={['/review/section/hist-1']}>
+            <GoToQuestion />
+            <Routes><Route path="/review/section/:historyId" element={<SectionReportPage />} /></Routes>
+          </MemoryRouter>
+        </QueryClientProvider>,
+      );
+      await screen.findByRole('heading', { name: 'Question review' });
+      fireEvent.click(screen.getByRole('button', { name: 'Go to Q2' }));
+      expect(await screen.findByRole('status')).toHaveTextContent('Opening review walk');
+      expect(screen.queryByRole('button', { name: 'Open review walk' })).toBeNull();
+      resolveWalk({ state: 'released', row: baseRow });
+      expect(await screen.findByRole('button', { name: 'Return from question 2 of 2' })).toBeVisible();
+    } finally {
+      scrollSpy.mockRestore();
+      client.clear();
+    }
+  });
+
+  it('does not start a second blind review when another tab already finished it', async () => {
+    mockFetchOwnedSectionReport
+      .mockResolvedValueOnce({ state: 'released', row: baseRow })
+      .mockResolvedValue({ state: 'released', row: { ...baseRow, brUsed: true, brScore: 22, brPercent: 88, brDelta: 2 } });
+    const client = new QueryClient();
+    try {
+      render(
+        <QueryClientProvider client={client}>
+          <MemoryRouter initialEntries={['/review/section/hist-1']}>
+            <Routes><Route path="/review/section/:historyId" element={<SectionReportPage />} /></Routes>
+          </MemoryRouter>
+        </QueryClientProvider>,
+      );
+      fireEvent.click(await screen.findByRole('button', { name: 'Do blind review' }));
+      await waitFor(() => expect(screen.queryByRole('button', { name: 'Do blind review' })).toBeNull());
+      expect(screen.getByRole('heading', { name: 'Question review' })).toBeVisible();
+      expect(mockFetchOwnedSectionReport.mock.calls.length).toBeGreaterThanOrEqual(3);
     } finally {
       client.clear();
     }

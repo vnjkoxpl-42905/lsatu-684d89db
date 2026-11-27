@@ -67,6 +67,7 @@ function SectionReportSession({ historyId, userId }: { historyId?: string; userI
   const [brSaveError, setBrSaveError] = React.useState<string | null>(null);
   const [brSaving, setBrSaving] = React.useState(false);
   const startingOver = React.useRef(false);
+  const checkingBr = React.useRef(false);
 
   const startBlindReview = searchParams.get('blindReview') === '1';
   React.useEffect(() => {
@@ -100,6 +101,8 @@ function SectionReportSession({ historyId, userId }: { historyId?: string; userI
       return;
     }
     if (!historyId || !userId || walkRow?.id === historyId) return;
+    // Every new URL request (including history navigation) holds the report until it settles.
+    setOpeningWalk(true);
     let active = true;
     void fetchOwnedSectionReport(userId, historyId)
       .then((res) => {
@@ -279,16 +282,31 @@ function SectionReportSession({ historyId, userId }: { historyId?: string; userI
               startingOver.current = false;
             }
           }}
-          onStartBlindReview={(ctx) => {
-            const session = buildDeferredBrSession({
-              pt: ctx.pt,
-              section: ctx.section,
-              questionQids: ctx.questionQids,
-              row: ctx.row,
-            });
-            setBrContext({ ...ctx, session });
-            setPendingBrResults(null);
-            setBrSaveError(null);
+          onStartBlindReview={async (ctx) => {
+            if (checkingBr.current) return;
+            checkingBr.current = true;
+            try {
+              // The mounted report can be stale (another tab may have finished blind review).
+              if (userId) {
+                const latest = await fetchOwnedSectionReport(userId, ctx.historyId).catch(() => null);
+                if (latest?.state === 'released' && latest.row.brUsed) {
+                  toast.info('Blind review for this section is already done.');
+                  setRefreshKey((k) => k + 1);
+                  return;
+                }
+              }
+              const session = buildDeferredBrSession({
+                pt: ctx.pt,
+                section: ctx.section,
+                questionQids: ctx.questionQids,
+                row: ctx.row,
+              });
+              setBrContext({ ...ctx, session });
+              setPendingBrResults(null);
+              setBrSaveError(null);
+            } finally {
+              checkingBr.current = false;
+            }
           }}
           refreshKey={refreshKey}
         />
