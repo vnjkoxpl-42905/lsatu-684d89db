@@ -344,6 +344,13 @@
       "when": 1795533141170,
       "tag": "0048_static_student_work_access",
       "breakpoints": true
+    },
+    {
+      "idx": 49,
+      "version": "7",
+      "when": 1795798850369,
+      "tag": "0049_teacher_transcript_assignment",
+      "breakpoints": true
     }
   ]
 }

@@ -7361,6 +7361,56 @@ export type Database = {
         }
         Relationships: []
       }
+      teacher_transcript_assignment_previews: {
+        Row: {
+          created_at: string
+          document_hash: string
+          document_id: string
+          id: string
+          owner_id: string
+          receipt: Json | null
+          session_id: string
+          snapshot: Json
+          source_revision: number
+          student_id: string
+          superseded_at: string | null
+        }
+        Insert: {
+          created_at?: string
+          document_hash: string
+          document_id: string
+          id?: string
+          owner_id: string
+          receipt?: Json | null
+          session_id: string
+          snapshot: Json
+          source_revision: number
+          student_id: string
+          superseded_at?: string | null
+        }
+        Update: {
+          created_at?: string
+          document_hash?: string
+          document_id?: string
+          id?: string
+          owner_id?: string
+          receipt?: Json | null
+          session_id?: string
+          snapshot?: Json
+          source_revision?: number
+          student_id?: string
+          superseded_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "teacher_transcript_assignment_previews_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "teacher_post_session_tasks"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       teacher_worker_tickets: {
         Row: {
           expires_at: string
@@ -10519,6 +10569,23 @@ export type Database = {
           _student_id?: string
           _task_id: string
           _value?: boolean
+        }
+        Returns: Json
+      }
+      teacher_transcript_assignment: {
+        Args: {
+          p_accept?: string
+          p_document: string
+          p_excerpt?: string
+          p_hash: string
+          p_owner: string
+          p_pt?: number
+          p_replace?: string
+          p_section?: number
+          p_selected_section?: number
+          p_session: string
+          p_source_revision: number
+          p_student: string
         }
         Returns: Json
       }
