@@ -83,3 +83,27 @@
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+
+.teacher-transcript-fields {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1rem;
+  margin-block: 0.75rem;
+}
+
+.teacher-transcript-fields label {
+  margin-bottom: 0.25rem;
+  display: block;
+  font-weight: 600;
+}
+
+.teacher-transcript-fields input,
+.teacher-transcript-fields select {
+  min-height: 2.75rem;
+  max-width: 100%;
+  border: 1px solid currentColor;
+  border-radius: 0.5rem;
+  background: transparent;
+  padding-inline: 0.5rem;
+}

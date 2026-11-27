@@ -21,7 +21,6 @@ Deno.test("tentative, unsupported, or competing commitments cannot become an app
     const body of [
       "Example Teacher: I might assign you PT110, section 3.",
       "Example Student: I will assign PT110, section 3.",
-      "Example Teacher: I will assign you a timed LR section.",
       "Example Teacher: I will assign you PT110, section 3 by Friday.",
       "Example Teacher: I will assign PT110, section 3.\nExample Teacher: I will assign PT110, section 2.",
     ]
@@ -156,5 +155,18 @@ Deno.test("linked session uses the authenticated export and prepares a preview w
       if (value === undefined) Deno.env.delete(name);
       else Deno.env.set(name, value);
     });
+  }
+});
+
+Deno.test("an explicit commitment to an unspecified section asks the teacher to choose", () => {
+  const result = explicitSection(
+    "Example Teacher: I will assign to her a section.",
+    "Example Teacher",
+  );
+  if (
+    !result || result.pt !== null || result.section !== null ||
+    result.excerpt !== "Example Teacher: I will assign to her a section."
+  ) {
+    throw new Error("Expected a pending section choice");
   }
 });

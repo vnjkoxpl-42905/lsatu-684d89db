@@ -8,6 +8,19 @@ import type { TimerMode } from '@/types/drill';
  */
 
 export type SectionKind = 'lr' | 'rc';
+export type SectionTimingMode = Exclude<TimerMode, 'custom'>;
+
+export function readSectionTimingMode(value: unknown): SectionTimingMode | null {
+  switch (value) {
+    case '35':
+    case '52.5':
+    case '70':
+    case 'unlimited':
+      return value;
+    default:
+      return null;
+  }
+}
 
 export function sectionDirectionsRoute(assignmentId: string): string {
   return `/section/${encodeURIComponent(assignmentId)}`;

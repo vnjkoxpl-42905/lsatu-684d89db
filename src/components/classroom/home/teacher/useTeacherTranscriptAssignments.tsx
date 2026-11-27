@@ -1,74 +1,140 @@
-import { useId, useState } from "react";
+import { useEffect, useId, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import type { TaskBoardAdditions } from "./TeacherTasks";
+
+const timingOptions = {
+  "35": "35 minutes",
+  "52.5": "52 minutes 30 seconds (+50%)",
+  "70": "70 minutes (+100%)",
+  unlimited: "Untimed",
+} as const;
+
+type TimingMode = keyof typeof timingOptions;
+type SavedChoice = { pt: number; section: number; timing: TimingMode };
+type CatalogSection = { preptest: number; section: number };
+type AssignmentBoard = { actions: Preview[]; sections?: CatalogSection[] };
 
 type Preview = {
   id: string;
   session_id: string;
   student_id: string;
   snapshot: {
-    pt: number;
-    section: number;
+    pt: number | null;
+    section: number | null;
+    timing_mode?: TimingMode;
     excerpt: string;
     student_name: string;
     catalog: { title: string; description: string | null; question_qids: string[] } | null;
   };
-  receipt: { approved_at: string; assignment: { assignment_id: string; already_assigned: boolean } } | null;
+  receipt: { approved_at: string; assignment: { assignment_id: string; already_assigned: boolean; route?: string } } | null;
 };
 
-async function request(action: string, preview?: Preview, section?: number) {
+async function request(action: string, preview?: Preview, choice?: SavedChoice) {
   const { data, error } = await supabase.functions.invoke("teacher-post-session-sync", {
-    body: { action, sessionId: preview?.session_id, previewId: preview?.id, section },
+    body: { action, sessionId: preview?.session_id, previewId: preview?.id, ...choice },
   });
   if (error) throw error;
   return data;
 }
 
-function AssignmentPreview({ preview, reload }: { preview: Preview; reload: () => Promise<unknown> }) {
+function AssignmentPreview({ preview, sections, reload }: {
+  preview: Preview;
+  sections: CatalogSection[] | undefined;
+  reload: () => Promise<unknown>;
+}) {
   const { snapshot } = preview;
-  const sectionId = useId();
-  const [section, setSection] = useState(snapshot.section);
+  const id = useId();
+  const savedTiming = snapshot.timing_mode ?? "35";
+  const [pt, setPt] = useState(String(snapshot.pt ?? ""));
+  const [section, setSection] = useState(snapshot.section ?? 0);
+  const [timing, setTiming] = useState<TimingMode>(savedTiming);
+  const [open, setOpen] = useState(false);
+  const preptest = Number(pt);
+  const changed = preptest !== snapshot.pt || section !== snapshot.section || timing !== savedTiming;
+  const sectionOptions = sections
+    ? sections.filter((entry) => entry.preptest === preptest).map((entry) => entry.section)
+    : [1, 2, 3, 4];
+  const valid = Number.isInteger(preptest) && preptest >= 1 && preptest <= 999 && sectionOptions.includes(section);
   const change = useMutation({
-    mutationFn: (action: string) => request(action, preview, section),
+    mutationFn: ({ action, choice }: { action: string; choice?: SavedChoice }) => request(action, preview, choice),
     onSettled: reload,
   });
-  const [showPreview, setShowPreview] = useState(false);
+
+  useEffect(() => {
+    setPt(String(snapshot.pt ?? ""));
+    setSection(snapshot.section ?? 0);
+    setTiming(savedTiming);
+  }, [preview.id, snapshot.pt, snapshot.section, savedTiming]);
+
+  const title = snapshot.catalog?.title ??
+    (snapshot.pt && snapshot.section ? `PT ${snapshot.pt}, Section ${snapshot.section}` : "Choose a section");
   return (
     <li className="home-desk-manual-row">
-      <b>{snapshot.student_name} · {snapshot.catalog?.title ?? `PT ${snapshot.pt}, section ${snapshot.section}`}</b>
+      <b>{snapshot.student_name} · {title}</b>
+      {snapshot.catalog && <small>{timingOptions[savedTiming]}</small>}
       <div className="teacher-board-actions">
-        <button type="button" aria-expanded={showPreview} onClick={() => setShowPreview(!showPreview)}>
-          {showPreview ? "Hide preview" : "Review assignment"}
+        <button type="button" aria-expanded={open} aria-controls={id} onClick={() => setOpen(!open)}>
+          {open ? "Hide preview" : "Review assignment"}
         </button>
       </div>
-      {showPreview && <>
-        <p>PT {snapshot.pt}, section {snapshot.section}</p>
-        {snapshot.catalog ? <>
-          {snapshot.catalog.description && <p>{snapshot.catalog.description}</p>}
-          <details><summary>{snapshot.catalog.question_qids.length} questions</summary>
-            <ol>{snapshot.catalog.question_qids.map((qid) => <li key={qid}>{qid}</li>)}</ol>
-          </details>
-          <p>No notification will be sent.</p>
-        </> : <p>A unique matching homework set is needed before this can be assigned.</p>}
+      {open && <div id={id}>
+        <div className="teacher-transcript-fields">
+          <div>
+            <label htmlFor={`${id}-pt`}>PrepTest</label>
+            {sections ? (
+              <select id={`${id}-pt`} value={pt} disabled={change.isPending} onChange={(event) => {
+                setPt(event.target.value);
+                setSection(0);
+              }}>
+                <option value="">Choose</option>
+                {[...new Set(sections.map((entry) => entry.preptest))].map((number) => (
+                  <option key={number} value={number}>PT {number}</option>
+                ))}
+              </select>
+            ) : (
+              <input id={`${id}-pt`} type="number" min={1} max={999} inputMode="numeric" value={pt}
+                disabled={change.isPending} onChange={(event) => { setPt(event.target.value); setSection(0); }} />
+            )}
+          </div>
+          <div>
+            <label htmlFor={`${id}-section`}>Section</label>
+            <select id={`${id}-section`} value={sectionOptions.includes(section) ? section : 0} disabled={change.isPending || !sectionOptions.length}
+              onChange={(event) => setSection(Number(event.target.value))}>
+              <option value={0}>Choose</option>
+              {sectionOptions.map((number) => <option key={number} value={number}>{number}</option>)}
+            </select>
+          </div>
+          <div>
+            <label htmlFor={`${id}-timing`}>Timing</label>
+            <select id={`${id}-timing`} value={timing} disabled={change.isPending}
+              onChange={(event) => setTiming(event.target.value as TimingMode)}>
+              {(["unlimited", "35", "52.5", "70"] as const).map((mode) => <option key={mode} value={mode}>{timingOptions[mode]}</option>)}
+            </select>
+          </div>
+        </div>
+        {!changed && snapshot.catalog && (
+          <p>{snapshot.catalog.question_qids.length} questions · {timingOptions[savedTiming]} · No notification</p>
+        )}
+        {!changed && !snapshot.catalog && valid && <p>This section is unavailable. Choose another one.</p>}
         <details><summary>Transcript excerpt</summary><p>{snapshot.excerpt}</p></details>
         <div className="teacher-board-actions">
-          <label htmlFor={sectionId}>Section</label>
-          <select id={sectionId} value={section} disabled={change.isPending}
-            onChange={(event) => setSection(Number(event.target.value))}>
-            {[1, 2, 3, 4].map((number) => <option key={number} value={number}>{number}</option>)}
-          </select>
-          {section !== snapshot.section && <button type="button" disabled={change.isPending}
-            onClick={() => change.mutate("correct_transcript")}>Update preview</button>}
-          {snapshot.catalog && <button type="button" className="home-desk-primary"
-            disabled={change.isPending || section !== snapshot.section} onClick={() => change.mutate("accept_transcript")}>
-            Accept &amp; assign
-          </button>}
-          <button type="button" disabled={change.isPending} onClick={() => change.mutate("refresh_transcript")}>
+          {changed ? (
+            <button type="button" className="home-desk-primary" disabled={!valid || change.isPending}
+              onClick={() => change.mutate({ action: "correct_transcript", choice: { pt: preptest, section, timing } })}>
+              Update preview
+            </button>
+          ) : snapshot.catalog ? (
+            <button type="button" className="home-desk-primary" disabled={change.isPending}
+              onClick={() => change.mutate({ action: "accept_transcript" })}>
+              Accept &amp; assign
+            </button>
+          ) : null}
+          <button type="button" disabled={change.isPending} onClick={() => change.mutate({ action: "refresh_transcript" })}>
             Refresh preview
           </button>
         </div>
-      </>}
+      </div>}
       {change.isError && <p role="alert">Could not confirm this request. Refresh the preview before approving again.</p>}
     </li>
   );
@@ -77,15 +143,15 @@ function AssignmentPreview({ preview, reload }: { preview: Preview; reload: () =
 export function useTeacherTranscriptAssignments(actorId: string | undefined): TaskBoardAdditions | undefined {
   const client = useQueryClient();
   const queryKey = ["teacher-home:transcript-assignments", actorId];
-  const query = useQuery<Preview[]>({
+  const query = useQuery<AssignmentBoard>({
     queryKey,
     enabled: Boolean(actorId),
-    queryFn: async () => (await request("transcript_assignments")).actions,
+    queryFn: () => request("transcript_assignments"),
     refetchInterval: 60_000,
   });
   if (!actorId) return undefined;
-  const pending = query.data?.filter((row) => !row.receipt) ?? [];
-  const completed = query.data?.filter((row) => row.receipt) ?? [];
+  const pending = query.data?.actions.filter((row) => !row.receipt) ?? [];
+  const completed = query.data?.actions.filter((row) => row.receipt) ?? [];
   return {
     pendingCount: pending.length,
     loading: query.isPending,
@@ -93,7 +159,7 @@ export function useTeacherTranscriptAssignments(actorId: string | undefined): Ta
       {query.isError && <p role="alert">Could not load transcript assignments.{" "}
         <button type="button" onClick={() => void query.refetch()}>Try again</button>
       </p>}
-      {pending.map((preview) => <AssignmentPreview key={preview.id} preview={preview}
+      {pending.map((preview) => <AssignmentPreview key={preview.session_id} preview={preview} sections={query.data?.sections}
         reload={() => client.invalidateQueries({ queryKey })} />)}
     </>,
     completed: completed.map(({ id, snapshot, student_id, receipt }) => ({
@@ -102,7 +168,7 @@ export function useTeacherTranscriptAssignments(actorId: string | undefined): Ta
       studentId: student_id,
       studentName: snapshot.student_name,
       content: <p>{receipt!.assignment.already_assigned ? "Existing assignment confirmed" : "Assignment confirmed"}{" "}
-        <a href={`/classroom/${receipt!.assignment.assignment_id}`}>Open assignment</a>
+        <a href={receipt!.assignment.route ?? `/classroom/${receipt!.assignment.assignment_id}`}>Open assignment</a>
       </p>,
     })),
     planning: null,

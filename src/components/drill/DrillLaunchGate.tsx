@@ -32,7 +32,7 @@ import {
   type DrillLaunch,
   type PtLegRef,
 } from '@/lib/drillLaunch';
-import { resolveDrillLaunch } from '@/lib/drillLaunchResolve';
+import { resolveDrillLaunch, resolveHomeworkAssignmentLaunch } from '@/lib/drillLaunchResolve';
 import { loadStandaloneDrillRun } from '@/lib/drillRunLedger';
 import { standaloneDrillResumeSpec } from '@/lib/standaloneDrillResumeSpec';
 import { drillRunSpecFromLaunch, type DrillRunSpec } from '@/lib/drillRunSpec';
@@ -113,8 +113,13 @@ export default function DrillLaunchGate({ children, launch: embeddedLaunch }: Pr
   // what stops the effect from resolving the same launch a second time.
   const launchKey = React.useMemo(() => (launch ? launchDrill(launch) : null), [launch]);
   const requestedGuidedRunId = launch?.kind === 'guided-drill' ? searchParams.get('run') : null;
-  const requestedStandaloneRunId = launch && ['questions', 'filter', 'smart-drill', 'saved-set'].includes(launch.kind)
-    ? searchParams.get('run') : null;
+  const homeworkAssignmentId = launch?.kind === 'assignment'
+    ? launch.assignmentId
+    : launch?.kind === 'questions' && !launch.carry?.ptLeg && !launch.carry?.guidedAssignmentId
+      ? launch.carry?.assignmentId
+      : undefined;
+  const requestedStandaloneRunId = !homeworkAssignmentId && launch &&
+    ['questions', 'filter', 'smart-drill', 'saved-set'].includes(launch.kind) ? searchParams.get('run') : null;
   const resolutionKey = `${user?.id ?? ''}:${launchKey ?? ''}:${requestedGuidedRunId ?? requestedStandaloneRunId ?? ''}`;
   const protectedResume = embeddedLaunch ? null : searchParams.get('timedSectionSittingId');
   const eligible = launch?.kind === 'section' && !launch.ptLeg && !launch.sealed &&
@@ -140,7 +145,7 @@ export default function DrillLaunchGate({ children, launch: embeddedLaunch }: Pr
     return () => { cancelled = true; };
   }, [eligible, pace, launch, protectedResume, resolutionKey, user?.id, navigate]);
 
-  const needsResolution = !!launch && (launchNeedsResolution(launch) || !!requestedStandaloneRunId);
+  const needsResolution = !!launch && (launchNeedsResolution(launch) || !!requestedStandaloneRunId || !!homeworkAssignmentId);
   const waitsForQuestionBank =
     needsResolution && (launch.kind === 'bootcamp-day' || launch.kind === 'guided-drill');
 
@@ -159,7 +164,7 @@ export default function DrillLaunchGate({ children, launch: embeddedLaunch }: Pr
     // A saved-drill link proves itself against the account, so it must wait
     // for sign-in to finish restoring. Treating a still-loading session as
     // signed out flashes "This drill isn't available" on every cold open.
-    if (requestedStandaloneRunId && !authReady) return;
+    if ((requestedStandaloneRunId || homeworkAssignmentId) && !authReady) return;
     let cancelled = false;
     setFailure(null);
 
@@ -170,6 +175,18 @@ export default function DrillLaunchGate({ children, launch: embeddedLaunch }: Pr
           const run = await loadStandaloneDrillRun(user.id, requestedStandaloneRunId);
           if (!run) throw new DrillLaunchError('This saved drill was not found in your account.');
           const spec = standaloneDrillResumeSpec(run);
+          if (!cancelled) setResolved({ key: resolutionKey, spec });
+          return;
+        }
+        if (homeworkAssignmentId) {
+          const { qids, timingMode } = await resolveHomeworkAssignmentLaunch(homeworkAssignmentId, user?.id);
+          const assignmentLaunch: DrillLaunch = timingMode ? {
+            kind: 'assignment',
+            assignmentId: homeworkAssignmentId,
+            timerMode: timingMode === '35' ? undefined : timingMode,
+            options: launch.options,
+          } : launch;
+          const spec = drillRunSpecFromLaunch(assignmentLaunch, qids);
           if (!cancelled) setResolved({ key: resolutionKey, spec });
           return;
         }
@@ -205,6 +222,7 @@ export default function DrillLaunchGate({ children, launch: embeddedLaunch }: Pr
     resolutionKey,
     requestedGuidedRunId,
     requestedStandaloneRunId,
+    homeworkAssignmentId,
     needsResolution,
     resolved?.key,
     waitsForQuestionBank,

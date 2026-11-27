@@ -8,7 +8,7 @@ if (!process.argv[2]) throw new Error("Pass the path to the local PGlite module.
 const { PGlite } = await import(pathToFileURL(resolve(process.argv[2])).href);
 const db = new PGlite();
 const migration = (name) => readFile(new URL("../../supabase/migrations/" + name, import.meta.url), "utf8");
-const [teacher, other, student, session, set] = Array.from({ length: 5 }, () => randomUUID());
+const [teacher, other, student, session] = Array.from({ length: 4 }, () => randomUUID());
 
 try {
   await db.exec(`
@@ -17,11 +17,12 @@ try {
     create function auth.uid() returns uuid language sql stable as
       $$ select nullif(current_setting('request.jwt.claim.sub', true), '')::uuid $$;
     create table user_roles(user_id uuid, role text);
-    create table profiles(class_id text, has_classroom_access boolean, archived_at timestamptz);
+    create table profiles(class_id text, has_classroom_access boolean, archived_at timestamptz, lsat_accommodation text);
     create table teacher_post_session_tasks(id uuid primary key, owner_id uuid, student_id uuid, student_name text,
       revision integer, source_state text, match_state text, transcript_status text,
       transcript_source text, transcript_doc_id text);
     create table lr_questions(preptest integer, section integer, question_number integer, qid text);
+    create table timed_section_content_manifests_v1(pt integer, section integer, kind text, definition jsonb);
     create table homework_sets(id uuid primary key, created_by uuid, title text, description text, question_qids text[], class_id text);
     create table homework_assignments(id uuid primary key default gen_random_uuid(), set_id uuid, student_id uuid,
       question_qids text[], set_title text, set_description text, status text, assigned_by uuid, class_id text,
@@ -37,15 +38,18 @@ try {
   const writerEnd = writer.indexOf("$function$", writer.indexOf("AS $function$", writerStart) + "AS $function$".length);
   await db.exec(writer.slice(writerStart, writerEnd + "$function$".length) + ";");
   await db.exec(await readFile(new URL("../../drizzle/migrations/0049_teacher_transcript_assignment.sql", import.meta.url), "utf8"));
+  await db.exec(await migration("20261127193000_teacher_transcript_section_timing.sql"));
   await db.query("insert into user_roles values ($1, 'admin'), ($2, 'admin')", [teacher, other]);
-  await db.query("insert into profiles values ($1, true, null)", [student]);
+  await db.query("insert into profiles values ($1, true, null, 'accommodation_53')", [student]);
   await db.query("insert into teacher_post_session_tasks values ($1,$2,$3,'Example Student',1,'ended','matched','linked','auto','test-doc')", [session, teacher, student]);
-  await db.exec("insert into lr_questions values (110,3,2,'test-q2'),(110,3,1,'test-q1')");
-  await db.query("insert into homework_sets values ($1,$2,'Example LR section',null,array['test-q1','test-q2'],null)", [set, teacher]);
+  await db.exec("insert into lr_questions values (110,3,2,'PT110-S3-Q2'),(110,3,1,'PT110-S3-Q1')");
 
-  const call = async ({ hash = "first", accept = null, actor = teacher, replace = null, section = null } = {}) => (await db.query(
-    "select teacher_transcript_assignment($1,$2,'test-doc',$3,$4,1,110,3,'Example Teacher: I will assign you PT110, section 3.',$5,$6,$7) as value",
-    [actor, session, hash, student, accept, replace, section],
+  const call = async ({
+    hash = "first", accept = null, actor = teacher, replace = null, section = null, pt = null, timing = null,
+    proposedPt = null, proposedSection = null, excerpt = "Example Teacher: I will assign you a section.",
+  } = {}) => (await db.query(
+    "select teacher_transcript_assignment($1,$2,'test-doc',$3,$4,1,$5,$6,$7,$8,$9,$10,$11,$12) as value",
+    [actor, session, hash, student, proposedPt, proposedSection, excerpt, accept, replace, section, pt, timing],
   )).rows[0].value;
   const count = async (table) => (await db.query("select count(*)::int as count from " + table)).rows[0].count;
 
@@ -55,23 +59,43 @@ try {
   await assert.rejects(call({ actor: other }), /Session unavailable/);
   const first = await call();
   assert.equal((await call()).id, first.id);
+  assert.equal(first.snapshot.catalog, null);
+  assert.equal(first.snapshot.timing_mode, "52.5");
   assert.equal(await count("homework_assignments"), 0);
-  const corrected = await call({ replace: first.id, section: 2 });
+  await assert.rejects(call({ accept: first.id }), /Preview changed/);
+  const corrected = await call({ replace: first.id, pt: 110, section: 2, timing: "35" });
   assert.equal(corrected.snapshot.section, 2);
   assert.equal(corrected.snapshot.catalog, null);
-  assert.equal((await call()).id, corrected.id);
+  await db.exec("insert into lr_questions values (110,2,1,'PT110-S2-Q1'),(110,2,3,'PT110-S2-Q3')");
+  assert.equal((await call()).snapshot.catalog, null);
+  await db.query("insert into timed_section_content_manifests_v1 values (110,2,'lr',$1)",
+    [{ qids: ["PT110-S2-Q1", "PT110-S2-Q3"] }]);
+  const withdrawn = await call();
+  assert.deepEqual(withdrawn.snapshot.catalog.question_qids, ["PT110-S2-Q1", "PT110-S2-Q3"]);
+  assert.equal((await call()).id, withdrawn.id);
   await assert.rejects(call({ accept: first.id }), /Preview changed/);
   await assert.rejects(call({ accept: corrected.id }), /Preview changed/);
   await assert.rejects(call({ accept: first.id, hash: "changed" }), /Preview changed/);
-  const second = await call({ hash: "changed" });
+  const second = await call({
+    hash: "changed", proposedPt: 110, proposedSection: 3, excerpt: "Example Teacher: I will assign PT110, Section 3.",
+  });
   assert.notEqual(second.id, first.id);
   await assert.rejects(call({ accept: first.id, hash: "changed" }), /Preview changed/);
-  await db.query("update homework_sets set title = 'Revised catalog title' where id = $1", [set]);
+  assert.deepEqual(second.snapshot.catalog.question_qids, ["PT110-S3-Q1", "PT110-S3-Q2"]);
+  await db.exec("insert into lr_questions values (110,3,3,'PT110-S3-Q3')");
   await assert.rejects(call({ accept: second.id, hash: "changed" }), /Preview changed/);
-  const final = await call({ hash: "changed" });
-  assert.equal(final.snapshot.catalog.title, "Revised catalog title");
-  assert.deepEqual(final.snapshot.catalog.question_qids, ["test-q1", "test-q2"]);
+  let final = second;
+  for (const timing of ["35", "70", "52.5", "unlimited"]) {
+    const old = final;
+    final = await call({ hash: "changed", replace: old.id, pt: 110, section: 3, timing });
+    assert.equal(final.snapshot.timing_mode, timing);
+    assert.notEqual(final.id, old.id);
+    await assert.rejects(call({ accept: old.id, hash: "changed" }), /Preview changed/);
+  }
+  assert.equal(final.snapshot.catalog.title, "PT110, Section 3");
+  assert.deepEqual(final.snapshot.catalog.question_qids, ["PT110-S3-Q1", "PT110-S3-Q2", "PT110-S3-Q3"]);
   assert.equal(await count("homework_assignments"), 0);
+  assert.equal(await count("homework_sets"), 0);
   await db.exec("update teacher_post_session_tasks set transcript_status = 'needs_review'");
   await assert.rejects(call({ accept: final.id, hash: "changed" }), /Session changed/);
   await db.exec("update teacher_post_session_tasks set transcript_status = 'linked'");
@@ -92,8 +116,13 @@ try {
   const [assignment] = (await db.query("select * from homework_assignments")).rows;
   assert.equal(assignment.id, accepted.receipt.assignment.assignment_id);
   assert.equal(assignment.student_id, student);
+  assert.equal(assignment.class_id, student);
+  assert.equal(assignment.set_id, null);
+  assert.equal(assignment.section_timing_mode, "unlimited");
   assert.equal(assignment.notification_policy, "suppressed");
-  console.log("PASS: approval migration and existing writer, private access, stale source and catalog, no pre-approval write, writer rollback, receipt recovery and one assignment.");
+  assert.equal(accepted.receipt.assignment.route, "/classroom/" + assignment.id);
+  await assert.rejects(db.exec("update homework_assignments set section_timing_mode = '35'"), /timing is immutable/);
+  console.log("PASS: full LR section without a saved set, generic proposal, all four timing previews, stale source and catalog, immutable student timing, writer rollback and one assignment.");
 } finally {
   await db.close();
 }
