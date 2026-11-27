@@ -69,12 +69,14 @@ function SectionReportSession({ historyId, userId }: { historyId?: string; userI
   const startingOver = React.useRef(false);
   const location = useLocation();
   const [checkingBr, setCheckingBr] = React.useState(false);
+  const [initialReport, setInitialReport] = React.useState<Awaited<ReturnType<typeof fetchOwnedSectionReport>> | null>(null);
   const brCheck = React.useRef<number | null>(null);
   const brCheckSeq = React.useRef(0);
 
   // A pending blind-review check belongs to the address that started it.
-  React.useEffect(() => () => { brCheck.current = null; }, []);
-  React.useEffect(() => {
+  // Layout effects: cancel in the same commit as the navigation or unmount, before a late read can land.
+  React.useLayoutEffect(() => () => { brCheck.current = null; }, []);
+  React.useLayoutEffect(() => {
     if (brCheck.current === null) return;
     brCheck.current = null;
     setCheckingBr(false);
@@ -165,6 +167,10 @@ function SectionReportSession({ historyId, userId }: { historyId?: string; userI
       .then((res) => {
         if (!active) return;
         setOpeningWalk(false);
+        if (res.state !== 'released' || res.row.questions.length === 0) {
+          // No walk to open: hand this read to the report so it does not read again.
+          setInitialReport(res);
+        }
         if (res.state === 'released' && res.row.questions.length > 0) {
           setWalkRow(res.row);
           setWalkQid(qidParam);
@@ -292,7 +298,8 @@ function SectionReportSession({ historyId, userId }: { historyId?: string; userI
     );
   }
 
-  if (startBlindReview || checkingBr) {
+  // A walk that has already loaded wins over a pending ?blindReview=1 read, as on main.
+  if ((startBlindReview && !walkRow) || checkingBr) {
     return <div className="light min-h-screen bg-background p-6 text-foreground" role="status">Opening blind review…</div>;
   }
 
@@ -308,6 +315,7 @@ function SectionReportSession({ historyId, userId }: { historyId?: string; userI
       <div hidden={Boolean(walkRow)}>
         <SectionReport
           historyId={historyId ?? null}
+          initialResult={initialReport}
           onBack={() => navigate(returnTo)}
           backLabel={requestedReturn ? 'Back' : 'Back to History'}
           onReviewSection={(qid, row, trigger) => {

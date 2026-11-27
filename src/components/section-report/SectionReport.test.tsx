@@ -677,4 +677,36 @@ describe('SectionReport', () => {
       client.clear();
     }
   });
+
+  it('shows a loaded walk while a ?blindReview=1 read is still pending', async () => {
+    mockFetchOwnedSectionReport
+      .mockImplementationOnce(() => new Promise(() => {}))
+      .mockResolvedValue({ state: 'released', row: baseRow });
+    const { client } = renderPage('/review/section/hist-1?walk=1&blindReview=1');
+    try {
+      expect(await screen.findByRole('button', { name: 'Return from question 1 of 2' })).toBeVisible();
+      expect(screen.queryByText(/Opening blind review/)).toBeNull();
+    } finally {
+      client.clear();
+    }
+  });
+
+  it('renders a sealed section from the walk link read without reading it again', async () => {
+    mockFetchOwnedSectionReport.mockResolvedValue({
+      state: 'sealed',
+      reason: 'blind-review',
+      id: 'hist-1',
+      pt: 130,
+      section: 2,
+      completedAt: '2026-11-23T10:00:00Z',
+      questionQids: ['frozen-q1'],
+    });
+    const { client } = renderPage('/review/section/hist-1?walk=1');
+    try {
+      expect(await screen.findByRole('button', { name: 'Do blind review' })).toBeVisible();
+      expect(mockFetchOwnedSectionReport).toHaveBeenCalledTimes(1);
+    } finally {
+      client.clear();
+    }
+  });
 });
