@@ -94,7 +94,12 @@ function SectionReportSession({ historyId, userId }: { historyId?: string; userI
 
   // If opened with ?walk=1 or ?qid=..., load the row directly so the walk opens immediately.
   React.useEffect(() => {
-    if ((!walkParam && !qidParam) || !historyId || !userId || walkRow?.id === historyId) return;
+    if (!walkParam && !qidParam) {
+      // The address no longer asks for a walk; an abandoned load must not leave the status behind.
+      setOpeningWalk(false);
+      return;
+    }
+    if (!historyId || !userId || walkRow?.id === historyId) return;
     let active = true;
     void fetchOwnedSectionReport(userId, historyId)
       .then((res) => {
@@ -102,7 +107,7 @@ function SectionReportSession({ historyId, userId }: { historyId?: string; userI
         setOpeningWalk(false);
         if (res.state === 'released' && res.row.questions.length > 0) {
           setWalkRow(res.row);
-          if (qidParam) setWalkQid(qidParam);
+          setWalkQid(qidParam);
         }
       })
       .catch(() => {
@@ -231,8 +236,8 @@ function SectionReportSession({ historyId, userId }: { historyId?: string; userI
     return <div className="light min-h-screen bg-background p-6 text-foreground" role="status">Opening blind review…</div>;
   }
 
-  // Only while the address still asks for a walk: an abandoned load never clears openingWalk.
-  if (openingWalk && (walkParam || qidParam)) {
+  // Only while the address still asks for a walk that has not loaded yet.
+  if (openingWalk && (walkParam || qidParam) && !walkRow) {
     return <div className="light min-h-screen bg-background p-6 text-foreground" role="status">Opening review walk…</div>;
   }
 

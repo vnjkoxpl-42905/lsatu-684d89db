@@ -429,12 +429,18 @@ describe('SectionReport', () => {
   });
 
   it('drops the opening status when the walk request leaves the address before loading', async () => {
+    vi.spyOn(window, 'scrollTo').mockImplementation(() => {});
     mockFetchOwnedSectionReport
       .mockImplementationOnce(() => new Promise(() => {}))
       .mockResolvedValue({ state: 'released', row: baseRow });
     function GoToReport() {
       const navigate = useNavigate();
-      return <button onClick={() => navigate('/review/section/hist-1')}>Go to report</button>;
+      return (
+        <>
+          <button onClick={() => navigate('/review/section/hist-1')}>Go to report</button>
+          <button onClick={() => navigate(-1)}>Browser back</button>
+        </>
+      );
     }
     const client = new QueryClient();
     try {
@@ -450,6 +456,45 @@ describe('SectionReport', () => {
       fireEvent.click(screen.getByRole('button', { name: 'Go to report' }));
       expect(await screen.findByRole('heading', { name: 'Question review' })).toBeVisible();
       expect(screen.queryByText(/Opening review walk/)).toBeNull();
+
+      // Open the walk from the report, then go back to the original ?walk=1 entry.
+      fireEvent.click(screen.getByRole('button', { name: 'Open review walk' }));
+      expect(await screen.findByRole('button', { name: 'Return from question 1 of 2' })).toBeVisible();
+      fireEvent.click(screen.getByRole('button', { name: 'Browser back' }));
+      await waitFor(() => expect(screen.queryByText(/Opening review walk/)).toBeNull());
+      expect(screen.getByRole('button', { name: 'Return from question 1 of 2' })).toBeVisible();
+    } finally {
+      client.clear();
+    }
+  });
+
+  it('starts a later general walk at the first question after an abandoned question link', async () => {
+    mockFetchOwnedSectionReport
+      .mockImplementationOnce(() => new Promise(() => {}))
+      .mockResolvedValue({ state: 'released', row: baseRow });
+    function Nav() {
+      const navigate = useNavigate();
+      return (
+        <>
+          <button onClick={() => navigate('/review/section/hist-1')}>Go to report</button>
+          <button onClick={() => navigate('/review/section/hist-1?walk=1')}>Go to walk</button>
+        </>
+      );
+    }
+    const client = new QueryClient();
+    try {
+      render(
+        <QueryClientProvider client={client}>
+          <MemoryRouter initialEntries={['/review/section/hist-1?qid=pt130-s2-q2']}>
+            <Nav />
+            <Routes><Route path="/review/section/:historyId" element={<SectionReportPage />} /></Routes>
+          </MemoryRouter>
+        </QueryClientProvider>,
+      );
+      fireEvent.click(screen.getByRole('button', { name: 'Go to report' }));
+      await screen.findByRole('heading', { name: 'Question review' });
+      fireEvent.click(screen.getByRole('button', { name: 'Go to walk' }));
+      expect(await screen.findByRole('button', { name: 'Return from question 1 of 2' })).toBeVisible();
     } finally {
       client.clear();
     }
