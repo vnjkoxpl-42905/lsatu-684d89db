@@ -2781,6 +2781,11 @@ export type Database = {
           notification_policy: string
           question_qids: string[]
           score: number | null
+          section_kind: string | null
+          section_manifest_sha256: string | null
+          section_number: number | null
+          section_preptest: number | null
+          section_timing_mode: string | null
           set_description: string | null
           set_id: string | null
           set_title: string
@@ -2800,6 +2805,11 @@ export type Database = {
           notification_policy?: string
           question_qids: string[]
           score?: number | null
+          section_kind?: string | null
+          section_manifest_sha256?: string | null
+          section_number?: number | null
+          section_preptest?: number | null
+          section_timing_mode?: string | null
           set_description?: string | null
           set_id?: string | null
           set_title: string
@@ -2819,6 +2829,11 @@ export type Database = {
           notification_policy?: string
           question_qids?: string[]
           score?: number | null
+          section_kind?: string | null
+          section_manifest_sha256?: string | null
+          section_number?: number | null
+          section_preptest?: number | null
+          section_timing_mode?: string | null
           set_description?: string | null
           set_id?: string | null
           set_title?: string
@@ -2828,6 +2843,18 @@ export type Database = {
           unlock_at?: string | null
         }
         Relationships: [
+          {
+            foreignKeyName: "homework_assignment_section_source_fk"
+            columns: [
+              "section_manifest_sha256",
+              "section_preptest",
+              "section_kind",
+              "section_number",
+            ]
+            isOneToOne: false
+            referencedRelation: "timed_section_content_manifests_v1"
+            referencedColumns: ["manifest_sha256", "pt", "kind", "section"]
+          },
           {
             foreignKeyName: "homework_assignments_set_id_fkey"
             columns: ["set_id"]
@@ -7700,6 +7727,7 @@ export type Database = {
           elapsed_ms: number
           frozen_qids: string[]
           frozen_source: Json
+          homework_assignment_id: string | null
           id: string
           kind: string
           lease_expires_at: string | null
@@ -7728,6 +7756,7 @@ export type Database = {
           elapsed_ms?: number
           frozen_qids: string[]
           frozen_source: Json
+          homework_assignment_id?: string | null
           id: string
           kind: string
           lease_expires_at?: string | null
@@ -7756,6 +7785,7 @@ export type Database = {
           elapsed_ms?: number
           frozen_qids?: string[]
           frozen_source?: Json
+          homework_assignment_id?: string | null
           id?: string
           kind?: string
           lease_expires_at?: string | null
@@ -7781,6 +7811,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "timed_section_content_manifests_v1"
             referencedColumns: ["manifest_sha256", "pt", "kind", "section"]
+          },
+          {
+            foreignKeyName: "timed_section_sittings_v1_homework_assignment_id_fkey"
+            columns: ["homework_assignment_id"]
+            isOneToOne: false
+            referencedRelation: "homework_assignments"
+            referencedColumns: ["id"]
           },
         ]
       }
@@ -10394,6 +10431,14 @@ export type Database = {
         Args: { _start_at: string }
         Returns: number
       }
+      start_assigned_timed_section_v1: {
+        Args: {
+          p_assignment_id: string
+          p_client_launch_id: string
+          p_device_id: string
+        }
+        Returns: Json
+      }
       start_section_attempt: {
         Args: { p_activity_id: string }
         Returns: string
@@ -10582,12 +10627,22 @@ export type Database = {
           p_pt?: number
           p_replace?: string
           p_section?: number
+          p_selected_pt?: number
           p_selected_section?: number
           p_session: string
           p_source_revision: number
           p_student: string
+          p_timing_mode?: string
         }
         Returns: Json
+      }
+      teacher_transcript_rc_catalog: {
+        Args: never
+        Returns: {
+          kind: string
+          preptest: number
+          section: number
+        }[]
       }
       teacher_worker_consume: { Args: { _ticket: string }; Returns: string }
       timed_practice_test_capability_v1: { Args: never; Returns: Json }
@@ -10644,6 +10699,39 @@ export type Database = {
           p_run: Database["public"]["Tables"]["timed_section_sittings_v1"]["Row"]
         }
         Returns: Json
+      }
+      timed_section_owned_homework_v1: {
+        Args: { p_assignment: string; p_owner: string }
+        Returns: {
+          assigned_by: string
+          class_id: string
+          completed_at: string | null
+          created_at: string
+          id: string
+          issuance: number
+          notification_group_id: string | null
+          notification_policy: string
+          question_qids: string[]
+          score: number | null
+          section_kind: string | null
+          section_manifest_sha256: string | null
+          section_number: number | null
+          section_preptest: number | null
+          section_timing_mode: string | null
+          set_description: string | null
+          set_id: string | null
+          set_title: string
+          started_at: string | null
+          status: string
+          student_id: string
+          unlock_at: string | null
+        }
+        SetofOptions: {
+          from: "*"
+          to: "homework_assignments"
+          isOneToOne: true
+          isSetofReturn: false
+        }
       }
       timed_section_protected_v1: { Args: { p_id: string }; Returns: boolean }
       timed_section_require_access_v1: {
