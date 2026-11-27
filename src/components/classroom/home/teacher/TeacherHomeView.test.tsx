@@ -183,7 +183,7 @@ describe("TeacherHomeView", () => {
     expect(screen.queryByRole("button", { name: "Confirm access change" })).toBeNull();
   });
 
-  it("keeps the masthead truthful when a saved empty queue cannot refresh", () => {
+  it("keeps legacy session queue status out of the masthead", () => {
     const { container } = render(
       <TeacherHomeView
         model={{
@@ -209,12 +209,8 @@ describe("TeacherHomeView", () => {
         onOpen={vi.fn()}
       />,
     );
-    expect(
-      within(
-        container.querySelector(".home-desk-masthead") as HTMLElement,
-      ).getByText("0 sessions were waiting when your work list last loaded."),
-    ).toBeInTheDocument();
-    expect(container.querySelector('[data-work-state="quiet"]')).toBeNull();
+    expect(container.querySelector(".home-desk-masthead")).not.toHaveTextContent("sessions were waiting");
+    expect(screen.getByRole("heading", { name: "Tasks", exact: true })).toBeInTheDocument();
   });
   it("keeps Assign work in the header without a student assignment promotion", () => {
     const onOpen = vi.fn();
@@ -244,16 +240,56 @@ describe("TeacherHomeView", () => {
     expect(onOpen).toHaveBeenCalledWith("/teacher/inbox/platform:c1");
     expect(screen.queryByText(/needs reply/i)).toBeNull();
   });
-  it("does not confuse missing provider setup with an empty healthy queue", () => {
+  it("keeps legacy provider setup out of the private task board", () => {
     render(<TeacherHomeView model={READY} onOpen={vi.fn()} />);
-    expect(
-      screen.getByText(/Automatic session tasks are not connected/),
-    ).toBeInTheDocument();
+    expect(screen.queryByText(/Automatic session tasks are not connected/)).toBeNull();
+    expect(screen.getByRole("heading", { name: "To do" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Done" })).toBeInTheDocument();
     expect(
       screen.queryByText("No after-session tasks are waiting."),
     ).toBeNull();
     expect(screen.queryByText("No payment decisions waiting.")).toBeNull();
   });
+  it("shows transcript actions and approved assignments in their task lanes and history", async () => {
+    const loadManual = vi.fn().mockResolvedValue({ items: [], total: 0, next_cursor: null });
+    render(
+      <TeacherHomeView
+        model={{ ...READY, desk: { ...EMPTY_DESK, loadManual } }}
+        additionalTasks={{
+          pendingCount: 1,
+          pending: <button type="button">Review suggested homework</button>,
+          completed: [{
+            id: "assignment-1",
+            studentId: "s1",
+            studentName: "Lydia Park",
+            title: "Inference homework",
+            content: <p>Inference homework</p>,
+          }],
+          planning: null,
+          loading: false,
+        }}
+        onOpen={vi.fn()}
+      />,
+    );
+
+    expect(within(screen.getByRole("region", { name: "To do" })).getByRole("button", { name: "Review suggested homework" })).toBeInTheDocument();
+    expect(within(screen.getByRole("region", { name: "Done" })).getByText("Inference homework")).toBeInTheDocument();
+
+    const historyTrigger = screen.getByRole("button", { name: "Task history" });
+    fireEvent.click(historyTrigger);
+    const history = await screen.findByRole("dialog", { name: "All tasks" });
+    expect(await within(history).findByText(/1 completed/)).toBeInTheDocument();
+    expect(within(history).getByLabelText("Status")).toHaveValue("handled");
+    expect(within(history).getByText("Inference homework")).toBeInTheDocument();
+    fireEvent.change(within(history).getByLabelText("Search loaded tasks"), { target: { value: "Lydia" } });
+    expect(within(history).getByText("Inference homework")).toBeInTheDocument();
+    fireEvent.change(within(history).getByLabelText("Student"), { target: { value: "s2" } });
+    expect(await within(history).findByText(/0 completed/)).toBeInTheDocument();
+    expect(within(history).queryByText("Inference homework")).toBeNull();
+    fireEvent.click(within(history).getByRole("button", { name: "Close" }));
+    await waitFor(() => expect(historyTrigger).toHaveFocus());
+  });
+
   it("separates unknown inbox and activity from empty data", () => {
     const { rerender } = render(
       <TeacherHomeView model={LOADING} onOpen={vi.fn()} />,
@@ -328,7 +364,7 @@ describe("TeacherHomeView", () => {
 });
 
 describe("Teacher Home provider setup rendering", () => {
-  it("keeps the desk rendered when email has the live array-free setup envelope", () => {
+  it("keeps email setup in Teacher tools when it has the live array-free setup envelope", async () => {
     const email = {
       state: "setup" as const,
       data: {
@@ -367,21 +403,15 @@ describe("Teacher Home provider setup rendering", () => {
     expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(
       "Joshua",
     );
-    expect(
-      screen.getByRole("heading", { name: "After-session work" }),
-    ).toBeInTheDocument();
-    expect(
-      screen.getByRole("heading", { name: "Private reminders" }),
-    ).toBeInTheDocument();
-    expect(
-      screen.getByText("Not connected."),
-    ).toBeInTheDocument();
-    expect(
-      screen.queryByText("No unread student or enquiry email."),
-    ).toBeNull();
-    expect(
-      screen.getByRole("heading", { name: "Next up" }),
-    ).toBeInTheDocument();
+    expect(screen.queryByRole("heading", { name: /After-session work|Private reminders|Next up|Email/ })).toBeNull();
+    expect(screen.getByRole("heading", { name: "Tasks", exact: true })).toBeInTheDocument();
+    fireEvent.click(screen.getByText("More", { exact: true }));
+    fireEvent.click(screen.getByRole("button", { name: "Calendar and email" }));
+    const tools = await screen.findByRole("dialog", { name: "Teacher tools" });
+    expect(within(tools).getByRole("heading", { name: "Calendar" })).toBeInTheDocument();
+    expect(within(tools).getByRole("heading", { name: "Email" })).toBeInTheDocument();
+    expect(within(tools).getByText("Not connected.")).toBeInTheDocument();
+    expect(within(tools).queryByText("No unread student or enquiry email.")).toBeNull();
   });
 });
 

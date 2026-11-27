@@ -5,7 +5,10 @@ import { safeGoogleLink } from "./teachingDeskModel";
 import type { TeacherStudentRow, TeacherThreadRow } from "./teacherHomeModel";
 import { filterStudents } from "./teacherHomeModel";
 import { clockLabel, eventName, timedEvents } from "./observatoryModel";
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import "./teacher-dock.css";
+
+const AssignmentBuilder = React.lazy(() => import("@/components/teacher/AssignmentBuilder"));
 
 type PanelKey = "search" | "msg" | "cal" | "stu";
 type DockView = PanelKey | "quick" | null;
@@ -32,6 +35,7 @@ export function TeacherDock({
   unread,
   unreadTotal,
   events,
+  actorId,
   onOpen,
 }: {
   students: TeacherStudentRow[];
@@ -39,10 +43,14 @@ export function TeacherDock({
   unread: TeacherThreadRow[];
   unreadTotal: number | null;
   events: AgendaEvent[] | undefined;
+  actorId?: string;
   onOpen: (route: string) => void;
 }) {
   const [view, setView] = React.useState<DockView>(null);
   const [query, setQuery] = React.useState("");
+  const [assignOpen, setAssignOpen] = React.useState(false);
+  const [assignStudentId, setAssignStudentId] = React.useState("");
+  const assignStudent = students.find((student) => student.id === assignStudentId);
   const dockRef = React.useRef<HTMLElement>(null);
   const launcherRef = React.useRef<HTMLButtonElement>(null);
   const panelRef = React.useRef<HTMLDivElement>(null);
@@ -297,13 +305,20 @@ export function TeacherDock({
               className="teacher-dock-action"
               type="button"
               data-primary={key === "assign" || undefined}
-              aria-haspopup={key === "assign" ? undefined : "dialog"}
+              aria-haspopup="dialog"
               aria-controls={key === "assign" ? undefined : panelId}
               aria-describedby={key === "msg" && unreadTotal ? unreadCountId : undefined}
               disabled={!expanded}
               onClick={() => {
-                if (key === "assign") go("/teacher/library/assignments");
-                else setView(key);
+                if (key !== "assign") {
+                  setView(key);
+                } else if (actorId) {
+                  close(false);
+                  setAssignStudentId("");
+                  setAssignOpen(true);
+                } else {
+                  go("/teacher/library/assignments");
+                }
               }}
             >
               <Icon aria-hidden="true" strokeWidth={1.75} />
@@ -313,6 +328,46 @@ export function TeacherDock({
           {unreadTotal ? <span id={unreadCountId} className="sr-only">{unreadTotal} unread</span> : null}
         </div>
       </nav>
+      <Sheet open={assignOpen} onOpenChange={setAssignOpen}>
+        <SheetContent
+          className="overflow-y-auto sm:max-w-xl"
+          onCloseAutoFocus={(event) => {
+            event.preventDefault();
+            launcherRef.current?.focus();
+          }}
+        >
+          <SheetHeader>
+            <SheetTitle>Assign work</SheetTitle>
+            <SheetDescription>Choose a student and the work you want to assign.</SheetDescription>
+          </SheetHeader>
+          <div className="mt-5 space-y-5">
+            <label className="block space-y-2 text-sm">
+              <span>Student</span>
+              <select
+                className="min-h-11 w-full rounded-md border bg-background px-3"
+                value={assignStudentId}
+                disabled={!rosterReady}
+                onChange={(event) => setAssignStudentId(event.target.value)}
+              >
+                <option value="">{rosterReady ? "Choose a student" : "Loading students…"}</option>
+                {students.map((student) => <option value={student.id} key={student.id}>{student.name}</option>)}
+              </select>
+            </label>
+            {assignStudent && actorId && actorId !== "preview" ? (
+              <React.Suspense fallback={<p role="status">Loading assignment form…</p>}>
+                <AssignmentBuilder
+                  key={assignStudent.id}
+                  studentId={assignStudent.id}
+                  adminUserId={actorId}
+                  onClose={() => setAssignOpen(false)}
+                />
+              </React.Suspense>
+            ) : assignStudent && actorId === "preview" ? (
+              <p role="status">Assignments for sample students are disabled in this preview.</p>
+            ) : null}
+          </div>
+        </SheetContent>
+      </Sheet>
     </>
   );
 }
