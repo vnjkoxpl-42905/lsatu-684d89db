@@ -9907,6 +9907,10 @@ export type Database = {
         Args: { _booking_id: string; _google_event_id: string }
         Returns: Json
       }
+      reconcile_standalone_section_v1: {
+        Args: { p_history_id: string; p_sitting_id: string }
+        Returns: Json
+      }
       record_booking_worker_heartbeat: {
         Args: {
           _error?: string
@@ -10236,6 +10240,10 @@ export type Database = {
           rank: number
           title: string
         }[]
+      }
+      section_blind_review_qids_v1: {
+        Args: { p_history_id: string }
+        Returns: Json
       }
       set_booking_availability: {
         Args: { _ranges: Json; _timezone: string }
