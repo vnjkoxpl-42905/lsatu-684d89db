@@ -57,9 +57,11 @@ export function explicitSection(
       normalizeEmail(line.slice(0, speakerEnd)) !== normalizeEmail(teacherName)
     ) continue;
     const sentence = line.slice(speakerEnd + 1).trim();
-    const commitment = /^(?:I will|I['Ã¢â‚¬â„¢]ll)\s+assign\s+(.+)$/i.exec(
-      sentence,
-    );
+    const commitment =
+      /^(?:I will|I['ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢]ll)\s+assign\s+(.+)$/i
+        .exec(
+          sentence,
+        );
     if (!commitment) continue;
     const assignment = commitment[1].replace(/^to\s+/i, "");
     const recipient = ["you", "her", "him", "them", studentName?.trim()].find((
@@ -208,6 +210,22 @@ export async function prepareTranscript(
   return data;
 }
 
+async function listAssignmentSections(db: SupabaseClient) {
+  const [lr, rc] = await Promise.all([
+    db.from("lr_sections").select("preptest,section"),
+    db.rpc("teacher_transcript_rc_catalog"),
+  ]);
+  if (lr.error) throw lr.error;
+  if (rc.error) throw rc.error;
+
+  const sections: { preptest: number; section: number; kind: "lr" | "rc" }[] =
+    (lr.data ?? []).map((entry) => ({ ...entry, kind: "lr" }));
+  sections.push(...(rc.data ?? []));
+  return sections.sort((a, b) =>
+    a.preptest - b.preptest || a.section - b.section
+  );
+}
+
 export async function transcriptActions(
   db: SupabaseClient,
   owner: string,
@@ -220,12 +238,10 @@ export async function transcriptActions(
         .select("id,session_id,student_id,snapshot,receipt")
         .eq("owner_id", owner).is("superseded_at", null)
         .order("created_at", { ascending: false }).limit(100),
-      db.from("lr_sections").select("preptest,section")
-        .order("preptest").order("section"),
+      listAssignmentSections(db),
     ]);
     if (previews.error) throw previews.error;
-    if (sections.error) throw sections.error;
-    return { actions: previews.data, sections: sections.data };
+    return { actions: previews.data, sections };
   }
 
   if (

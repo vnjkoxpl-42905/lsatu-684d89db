@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import Runner, { standaloneCreationRequest } from './TimedStandaloneSectionRunner';
 import type { TimedSectionController, TimedSectionState } from '@/lib/timedSectionController';
@@ -22,14 +23,16 @@ vi.mock('@/lib/highlightUtils', async importOriginal => ({ ...(await importOrigi
 let nextCapture: { section: 'stimulus'; start: number; end: number; text: string }[] = [];
 vi.mock('@/components/drill/official/OfficialQuestionPane', () => ({ default: ({ question, onAnswerSelect, interactionLocked, highlights, onTextSelection }: { question: { questionStem: string }; onAnswerSelect(answer: string): void; interactionLocked: boolean; highlights: { start: number; end: number }[]; onTextSelection(regions: unknown[]): boolean }) => <div>{question.questionStem}<span data-testid="lr-marks">{highlights.map(value => `${value.start}-${value.end}`).join(',')}</span><button onClick={() => onTextSelection([])}>Drag select</button><button disabled={interactionLocked} onClick={() => onAnswerSelect('A')}>Select A</button></div> }));
 function state(phase = 'running'): TimedSectionState {
-  return { snapshot: { sitting: { id: work, owner_id: owner, pt: 140, section: 1, kind: 'lr', phase, budget_ms: 2100000 }, pending: null },
+  return { snapshot: { sitting: { id: work, owner_id: owner, pt: 140, section: 1, kind: 'lr', source_kind: 'manual-canonical', phase, budget_ms: 2100000 }, pending: null },
     questions: [{ qid: 'q1', qnum: 1, questionStem: 'Verified question', stimulus: 'Text', answerChoices: { A: 'a', B: 'b', C: 'c', D: 'd', E: 'e' }, correctAnswer: 'A', qtype: 'Necessary Assumption', difficulty: 3 }],
     passages: [], currentIndex: 0, answers: { q1: { selected: null, timeMs: 0, flagged: false, switchCount: 0, eliminations: [] } },
   } as unknown as TimedSectionState;
 }
 let controller: Record<string, ReturnType<typeof vi.fn>>;
+let queryClient: QueryClient;
 beforeEach(() => {
   actor = owner;
+  queryClient = new QueryClient();
   localStorage.clear();
   vi.restoreAllMocks();
   controller = { load: vi.fn().mockResolvedValue(state()), clock: vi.fn().mockReturnValue({ writer: 'active', remainingMs: 2100000 }),
@@ -38,7 +41,7 @@ beforeEach(() => {
     retry: vi.fn().mockResolvedValue(state()), recoverRejected: vi.fn().mockResolvedValue(state('paused')), reportHref: vi.fn().mockReturnValue('/review/section/history') };
 });
 const factory = () => controller as unknown as TimedSectionController;
-function tree(query = '') { return <MemoryRouter initialEntries={[`/testing/sections/${work}${query}`]} future={{ v7_startTransition: true, v7_relativeSplatPath: true }}><Routes><Route path="/testing/sections/:sittingId" element={<Runner controllerFactory={factory} />} /><Route path="/testing" element={<div>Testing destination</div>} /></Routes></MemoryRouter>; }
+function tree(query = '') { return <QueryClientProvider client={queryClient}><MemoryRouter initialEntries={[`/testing/sections/${work}${query}`]} future={{ v7_startTransition: true, v7_relativeSplatPath: true }}><Routes><Route path="/testing/sections/:sittingId" element={<Runner controllerFactory={factory} />} /><Route path="/testing" element={<div>Testing destination</div>} /></Routes></MemoryRouter></QueryClientProvider>; }
 function mount(query = '') { return render(tree(query)); }
 describe('standalone account section runner', () => {
   it('requires a deliberate prepare and start; a creation URL cannot begin the clock', async () => {
@@ -94,6 +97,39 @@ describe('standalone account section runner', () => {
         choices: [{ letter: 'A', text: 'a' }, { letter: 'B', text: 'b' }, { letter: 'C', text: 'c' }, { letter: 'D', text: 'd' }, { letter: 'E', text: 'e' }] }] }] as never;
     return rc;
   }
+  const assignedId = '60000000-0000-4000-8000-000000000002';
+  function mountAssigned() {
+    const url = '/testing/sections/assigned/' + assignedId + '/sitting/' + work + '?pace=double-time';
+    return render(<QueryClientProvider client={queryClient}><MemoryRouter initialEntries={[url]}><Routes>
+      <Route path="/testing/sections/assigned/:assignmentId/sitting/:sittingId" element={<Runner controllerFactory={factory} />} />
+    </Routes></MemoryRouter></QueryClientProvider>);
+  }
+  it('shows the exact approved clock on a ready assigned RC sitting before the student starts', async () => {
+    const rc = rcState();
+    Object.assign(rc.snapshot.sitting, { source_kind: 'assigned-canonical', source_key: 'assignment::' + assignedId,
+      budget_ms: 3150000, phase: 'ready' });
+    controller.load.mockResolvedValue(rc);
+    const running = { ...rc, snapshot: { ...rc.snapshot,
+      sitting: { ...rc.snapshot.sitting, phase: 'running' as const } } };
+    controller.control.mockResolvedValueOnce(running);
+    controller.clock.mockImplementation(s => ({ writer: 'active', remainingMs: s.snapshot.sitting.budget_ms }));
+    const invalidate = vi.spyOn(queryClient, 'invalidateQueries');
+    mountAssigned();
+    expect(await screen.findByText(/52:30\./)).toBeInTheDocument();
+    expect(controller.control).not.toHaveBeenCalled();
+    await act(async () => fireEvent.click(screen.getByRole('button', { name: 'Start section' })));
+    expect(controller.control).toHaveBeenCalledWith(rc, 'start');
+    expect(await screen.findByLabelText('Section time remaining')).toHaveTextContent('52:30');
+    expect(invalidate).toHaveBeenCalledWith({ queryKey: ['student-assignments', owner] });
+  });
+  it('rejects a manual RC sitting on an assigned section URL', async () => {
+    controller.load.mockResolvedValue(rcState());
+    mountAssigned();
+    expect(await screen.findByRole('alert')).toHaveTextContent('Open this section from its original entry');
+    expect(screen.queryByTestId('rc-reader')).not.toBeInTheDocument();
+    expect(controller.control).not.toHaveBeenCalled();
+  });
+
   it('mounts the RC reader with display controls for an RC sitting, and still checkpoints answers to the account', async () => {
     const rc = rcState(); controller.load.mockResolvedValue(rc);
     mount();

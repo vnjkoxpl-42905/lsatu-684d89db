@@ -17,6 +17,10 @@ export interface StudentAssignment {
   student_id: string;
   question_qids: string[];
   section_timing_mode?: SectionTimingMode | null;
+  section_kind?: "rc" | "lr" | null;
+  section_preptest?: number | null;
+  section_number?: number | null;
+  section_manifest_sha256?: string | null;
   set_title: string;
   set_description: string | null;
   status: AssignmentStatus;

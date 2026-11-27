@@ -3,7 +3,22 @@ begin;
 
 alter table public.homework_assignments
   add column section_timing_mode text
-  check (section_timing_mode in ('35', '52.5', '70', 'unlimited'));
+  check (section_timing_mode in ('35', '52.5', '70', 'unlimited')),
+  add column section_kind text,
+  add column section_preptest integer,
+  add column section_number integer,
+  add column section_manifest_sha256 text,
+  add constraint homework_assignment_section_source_check check (
+    (section_kind is null and section_preptest is null and section_number is null and section_manifest_sha256 is null)
+    or
+    (section_kind is not null and section_kind = 'rc' and section_preptest is not null
+      and section_number is not null and section_manifest_sha256 is not null
+      and section_timing_mode is not null and section_preptest between 1 and 999 and section_number between 1 and 4
+      and coalesce(cardinality(question_qids), 0) > 0)
+  ),
+  add constraint homework_assignment_section_source_fk foreign key (
+    section_manifest_sha256, section_preptest, section_kind, section_number
+  ) references public.timed_section_content_manifests_v1 (manifest_sha256, pt, kind, section);
 
 create function public.guard_homework_assignment_section_timing()
 returns trigger language plpgsql set search_path = public, pg_temp as $$
@@ -11,13 +26,37 @@ begin
   if new.section_timing_mode is distinct from old.section_timing_mode then
     raise exception 'Assigned section timing is immutable' using errcode = '42501';
   end if;
+  if (new.section_kind, new.section_preptest, new.section_number, new.section_manifest_sha256)
+    is distinct from (old.section_kind, old.section_preptest, old.section_number, old.section_manifest_sha256)
+    or (old.section_kind = 'rc' and new.question_qids is distinct from old.question_qids) then
+    raise exception 'Assigned section source is immutable' using errcode = '42501';
+  end if;
   return new;
 end;
 $$;
 
 create trigger homework_assignment_section_timing_immutable
-  before update of section_timing_mode on public.homework_assignments
+  before update of section_timing_mode, section_kind, section_preptest, section_number, section_manifest_sha256, question_qids
+  on public.homework_assignments
   for each row execute function public.guard_homework_assignment_section_timing();
+
+-- Share only the active RC addresses with the authenticated teacher endpoint.
+create function public.teacher_transcript_rc_catalog()
+returns table(preptest integer, section integer, kind text)
+language sql stable security definer set search_path = public, pg_temp as $$
+  select m.pt, m.section, m.kind::text
+  from timed_section_configuration_v1 configuration
+  join timed_section_content_manifests_v1 m on m.manifest_sha256 = configuration.manifest_sha256
+  where configuration.singleton and configuration.enabled and m.kind = 'rc'
+    and not exists (
+      select from timed_section_content_manifests_v1 conflicting
+      where conflicting.manifest_sha256 = m.manifest_sha256 and conflicting.pt = m.pt
+        and conflicting.section = m.section and conflicting.kind <> m.kind
+    )
+  order by m.pt, m.section;
+$$;
+revoke all on function public.teacher_transcript_rc_catalog() from public, anon, authenticated;
+grant execute on function public.teacher_transcript_rc_catalog() to service_role;
 
 drop function public.teacher_transcript_assignment(
   uuid, uuid, text, text, uuid, integer, integer, integer, text, uuid, uuid, integer
@@ -36,6 +75,8 @@ declare
   snapshot jsonb;
   canonical text[];
   consecutive boolean;
+  rc_definition jsonb;
+  rc_manifest_sha256 text;
   catalog jsonb;
   default_timing_mode text;
   timing_mode text;
@@ -118,8 +159,33 @@ begin
     raise exception 'Invalid section or timing';
   end if;
 
-  -- The full LR catalog is the source; no saved Library set is required.
+  -- The active protected catalog supplies the exact RC question order and source hash.
   if p_pt is not null then
+    select m.definition, m.manifest_sha256 into rc_definition, rc_manifest_sha256
+    from timed_section_configuration_v1 configuration
+    join timed_section_content_manifests_v1 m on m.manifest_sha256 = configuration.manifest_sha256
+    where configuration.singleton and configuration.enabled
+      and m.pt = p_pt and m.section = p_section and m.kind = 'rc'
+      and not exists (
+        select from timed_section_content_manifests_v1 conflicting
+        where conflicting.manifest_sha256 = m.manifest_sha256 and conflicting.pt = m.pt
+          and conflicting.section = m.section and conflicting.kind <> m.kind
+      )
+    for share of configuration;
+  end if;
+
+  if rc_definition is not null then
+    select array_agg(qid order by ordinal) into canonical
+    from jsonb_array_elements_text(rc_definition->'qids') with ordinality as questions(qid, ordinal)
+    having count(*) > 0 and count(distinct qid) = count(*)
+      and count(*) = (rc_definition->>'questionCount')::integer
+      and bool_and(qid <> '');
+    if canonical is not null then
+      catalog := jsonb_build_object('kind', 'rc',
+        'title', format('PT%s, Section %s', p_pt, p_section), 'question_qids', canonical,
+        'manifest_sha256', rc_manifest_sha256);
+    end if;
+  elsif p_pt is not null then
     select array_agg(qid order by question_number), min(question_number) = 1 and max(question_number) = count(*)
     into canonical, consecutive
     from (
@@ -167,18 +233,25 @@ begin
   -- The assignment, Classroom mirror, audit entry and approval receipt commit together.
   insert into homework_assignments (
     student_id, class_id, assigned_by, set_title, question_qids, status,
-    section_timing_mode, notification_policy, notification_group_id
+    section_timing_mode, section_kind, section_preptest, section_number, section_manifest_sha256,
+    notification_policy, notification_group_id
   ) values (
     p_student, p_student, p_owner, catalog->>'title', canonical, 'assigned',
-    timing_mode, 'suppressed', gen_random_uuid()
+    timing_mode,
+    case when catalog->>'kind' = 'rc' then 'rc' end,
+    case when catalog->>'kind' = 'rc' then p_pt end,
+    case when catalog->>'kind' = 'rc' then p_section end,
+    case when catalog->>'kind' = 'rc' then rc_manifest_sha256 end,
+    'suppressed', gen_random_uuid()
   ) returning id into assignment_id;
 
-  route := '/classroom/' || assignment_id::text;
+  route := case when catalog->>'kind' = 'rc' then '/testing/sections/assigned/' else '/classroom/' end
+    || assignment_id::text;
   insert into classroom_items (
     student_id, created_by, type, title, source_table, source_id, status, visible_to_student, metadata_json
   ) values (
     p_student, p_owner, 'homework', catalog->>'title', 'homework_assignments', assignment_id, 'assigned', true,
-    jsonb_build_object('assigned_route', route, 'section_kind', 'lr', 'pt', p_pt,
+    jsonb_build_object('assigned_route', route, 'section_kind', catalog->>'kind', 'pt', p_pt,
       'section', p_section, 'section_timing_mode', timing_mode)
   );
 

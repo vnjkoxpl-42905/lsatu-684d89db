@@ -12,7 +12,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { resolveItemRoute } from '@/lib/classroomItems';
 import { readSectionBriefing, type SectionBriefing } from '@/lib/sectionBriefing';
 import { singleSectionOf } from '@/lib/drillRunSpec';
-import { sectionDirectionsRoute } from '@/lib/sectionDirections';
+import { assignedRcSectionRoute, sectionDirectionsRoute } from '@/lib/sectionDirections';
 import { mergeWorkSections, sectionFromCitation, sectionFromMetadata, sectionFromQuestionIds, type AssignedWorkSection } from '@/lib/assignedWorkSection';
 import { listAssignmentsForStudent as listGuidedForStudent, type GuidedDrill, type GuidedDrillAssignment } from '@/lib/guidedDrills';
 import { listStudentAssignments as listActivityForStudent } from '@/features/activity-centre/api/activitiesClient';
@@ -156,6 +156,7 @@ export function buildAssignedRows({
       // it opens on the section's directions page and the clock does the
       // rest. Finishing the run completes the row, so it must never carry a
       // "Mark done" the student could press without sitting it.
+      const rc = a.section_kind === 'rc';
       const section = singleSectionOf(a.question_qids ?? []);
       put({
         key: `hw-${a.id}`,
@@ -164,12 +165,14 @@ export function buildAssignedRows({
         sourceTable: 'homework_assignments',
         title: a.set_title || 'Homework',
         subtitle: `${a.question_qids?.length ?? 0} questions${a.score != null ? ` · ${Math.round(a.score)}%` : ''}`,
-        status: homeworkWorkStatus(a, homeworkEvidence[a.id]),
+        status: rc && a.status === 'in_progress' && a.started_at
+          ? 'in_progress'
+          : homeworkWorkStatus(a, homeworkEvidence[a.id]),
         createdAt: a.created_at,
         dueAt: null,
-        route: section ? sectionDirectionsRoute(a.id) : `/classroom/${encodeURIComponent(a.id)}`,
-        selfCompleting: !!section,
-        workSection: sectionFromQuestionIds(a.question_qids),
+        route: rc ? assignedRcSectionRoute(a.id) : section ? sectionDirectionsRoute(a.id) : `/classroom/${encodeURIComponent(a.id)}`,
+        selfCompleting: rc || !!section,
+        workSection: rc ? 'rc' : sectionFromQuestionIds(a.question_qids),
       });
     }
 

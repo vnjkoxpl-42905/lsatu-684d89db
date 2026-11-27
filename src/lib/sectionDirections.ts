@@ -22,6 +22,11 @@ export function readSectionTimingMode(value: unknown): SectionTimingMode | null 
   }
 }
 
+export function assignedRcSectionRoute(assignmentId: string, sittingId?: string): string {
+  const assignment = '/testing/sections/assigned/' + encodeURIComponent(assignmentId);
+  return sittingId ? assignment + '/sitting/' + encodeURIComponent(sittingId) : assignment;
+}
+
 export function sectionDirectionsRoute(assignmentId: string): string {
   return `/section/${encodeURIComponent(assignmentId)}`;
 }

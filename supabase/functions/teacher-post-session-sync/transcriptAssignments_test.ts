@@ -170,3 +170,49 @@ Deno.test("an explicit commitment to an unspecified section asks the teacher to 
     throw new Error("Expected a pending section choice");
   }
 });
+
+Deno.test("Teacher Home lists LR and RC section addresses in order", async () => {
+  const { transcriptActions } = await import("./transcriptAssignments.ts");
+  const db = {
+    from: (name: string) => {
+      const query = {
+        select: () => query,
+        eq: () => query,
+        is: () => query,
+        order: () => query,
+        limit: () => query,
+        then: (resolve: (result: { data: unknown }) => unknown) =>
+          Promise.resolve(
+            resolve({
+              data: name === "lr_sections"
+                ? [{ preptest: 110, section: 3 }]
+                : [],
+            }),
+          ),
+      };
+      return query;
+    },
+    rpc: (name: string) => {
+      if (name !== "teacher_transcript_rc_catalog") {
+        throw new Error("Unexpected RPC");
+      }
+      return { data: [{ preptest: 110, section: 2, kind: "rc" }] };
+    },
+  } as unknown as Parameters<typeof transcriptActions>[0];
+
+  const result = await transcriptActions(
+    db,
+    "teacher-id",
+    "teacher@example.test",
+    {
+      action: "transcript_assignments",
+    },
+  );
+  if (
+    !("sections" in result) ||
+    result.sections?.map(({ kind, section }) => kind + section).join() !==
+      "rc2,lr3"
+  ) {
+    throw new Error("Expected the active LR and RC section addresses");
+  }
+});

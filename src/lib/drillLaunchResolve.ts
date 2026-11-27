@@ -63,7 +63,10 @@ export async function resolveHomeworkAssignmentLaunch(assignmentId: string, user
     .maybeSingle();
   if (error) throw error;
   if (!data) throw new DeadDrillLinkError('That assignment no longer exists.');
-  const assignment = data as typeof data & { section_timing_mode?: unknown };
+  const assignment = data as typeof data & { section_timing_mode?: unknown; section_kind?: unknown };
+  if (assignment.section_kind === 'rc') {
+    throw new DeadDrillLinkError('Open your assigned Reading Comprehension section from My Work.');
+  }
   if (!assignment.question_qids?.length) {
     throw new DeadDrillLinkError('That assignment has no questions on it.');
   }

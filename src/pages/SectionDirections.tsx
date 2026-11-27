@@ -5,7 +5,7 @@ import { useStudentAssignment } from "@/hooks/useStudentAssignments";
 import { useUserSettings } from "@/contexts/UserSettingsContext";
 import { singleSectionOf } from "@/lib/drillRunSpec";
 import { launchDrill } from "@/lib/drillLaunch";
-import { readSectionTimingMode, SECTION_DIRECTIONS, sectionMinutes } from "@/lib/sectionDirections";
+import { assignedRcSectionRoute, readSectionTimingMode, SECTION_DIRECTIONS, sectionMinutes } from "@/lib/sectionDirections";
 import { SectionDirectionsCard } from "@/components/drill/official/SectionDirectionsCard";
 import "./section-directions.css";
 
@@ -66,6 +66,10 @@ export default function SectionDirectionsPage() {
     );
   }
 
+  if (assignment.section_kind === "rc") {
+    return <Navigate to={assignedRcSectionRoute(assignmentId)} replace />;
+  }
+
   // Not one section (a mixed set, or a set that was edited after assigning):
   // the ordinary assignment page knows what to do with it.
   if (!section) {
@@ -80,8 +84,6 @@ export default function SectionDirectionsPage() {
   const timingMode = assignedTimingMode ?? settings.defaultTimingMode;
   const minutes = sectionMinutes(timingMode);
   const questionCount = assignment.question_qids.length;
-  // Only LR sections are qid-shaped today; an RC assignment will arrive with
-  // its own kind on the row rather than being inferred from a qid pattern.
   const directions = SECTION_DIRECTIONS.lr;
 
   const goToQuestions = () => {

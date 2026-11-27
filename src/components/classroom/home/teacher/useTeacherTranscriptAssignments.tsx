@@ -12,7 +12,7 @@ const timingOptions = {
 
 type TimingMode = keyof typeof timingOptions;
 type SavedChoice = { pt: number; section: number; timing: TimingMode };
-type CatalogSection = { preptest: number; section: number };
+type CatalogSection = { preptest: number; section: number; kind?: "lr" | "rc" };
 type AssignmentBoard = { actions: Preview[]; sections?: CatalogSection[] };
 
 type Preview = {
@@ -25,7 +25,7 @@ type Preview = {
     timing_mode?: TimingMode;
     excerpt: string;
     student_name: string;
-    catalog: { title: string; description: string | null; question_qids: string[] } | null;
+    catalog: { title: string; kind?: "lr" | "rc"; question_qids: string[] } | null;
   };
   receipt: { approved_at: string; assignment: { assignment_id: string; already_assigned: boolean; route?: string } } | null;
 };
@@ -52,10 +52,11 @@ function AssignmentPreview({ preview, sections, reload }: {
   const [open, setOpen] = useState(false);
   const preptest = Number(pt);
   const changed = preptest !== snapshot.pt || section !== snapshot.section || timing !== savedTiming;
-  const sectionOptions = sections
-    ? sections.filter((entry) => entry.preptest === preptest).map((entry) => entry.section)
-    : [1, 2, 3, 4];
-  const valid = Number.isInteger(preptest) && preptest >= 1 && preptest <= 999 && sectionOptions.includes(section);
+  const sectionOptions: CatalogSection[] = sections
+    ? sections.filter((entry) => entry.preptest === preptest)
+    : [1, 2, 3, 4].map((number) => ({ preptest, section: number }));
+  const sectionIsAvailable = sectionOptions.some((entry) => entry.section === section);
+  const valid = Number.isInteger(preptest) && preptest >= 1 && preptest <= 999 && sectionIsAvailable;
   const change = useMutation({
     mutationFn: ({ action, choice }: { action: string; choice?: SavedChoice }) => request(action, preview, choice),
     onSettled: reload,
@@ -71,7 +72,7 @@ function AssignmentPreview({ preview, sections, reload }: {
     (snapshot.pt && snapshot.section ? `PT ${snapshot.pt}, Section ${snapshot.section}` : "Choose a section");
   return (
     <li className="home-desk-manual-row">
-      <b>{snapshot.student_name} · {title}</b>
+      <b>{snapshot.student_name} Â· {title}</b>
       {snapshot.catalog && <small>{timingOptions[savedTiming]}</small>}
       <div className="teacher-board-actions">
         <button type="button" aria-expanded={open} aria-controls={id} onClick={() => setOpen(!open)}>
@@ -99,10 +100,14 @@ function AssignmentPreview({ preview, sections, reload }: {
           </div>
           <div>
             <label htmlFor={`${id}-section`}>Section</label>
-            <select id={`${id}-section`} value={sectionOptions.includes(section) ? section : 0} disabled={change.isPending || !sectionOptions.length}
+            <select id={`${id}-section`} value={sectionIsAvailable ? section : 0} disabled={change.isPending || !sectionOptions.length}
               onChange={(event) => setSection(Number(event.target.value))}>
               <option value={0}>Choose</option>
-              {sectionOptions.map((number) => <option key={number} value={number}>{number}</option>)}
+              {sectionOptions.map(({ section: number, kind }) => (
+                <option key={number} value={number}>
+                  {kind ? `Section ${number} (${kind.toUpperCase()})` : number}
+                </option>
+              ))}
             </select>
           </div>
           <div>
@@ -114,7 +119,7 @@ function AssignmentPreview({ preview, sections, reload }: {
           </div>
         </div>
         {!changed && snapshot.catalog && (
-          <p>{snapshot.catalog.question_qids.length} questions · {timingOptions[savedTiming]} · No notification</p>
+          <p>{snapshot.catalog.kind === "rc" ? "Reading Comprehension" : "Logical Reasoning"}{" | "}{snapshot.catalog.question_qids.length} questions Â· {timingOptions[savedTiming]} Â· No notification</p>
         )}
         {!changed && !snapshot.catalog && valid && <p>This section is unavailable. Choose another one.</p>}
         <details><summary>Transcript excerpt</summary><p>{snapshot.excerpt}</p></details>

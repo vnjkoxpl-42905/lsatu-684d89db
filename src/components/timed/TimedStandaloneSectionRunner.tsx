@@ -1,13 +1,15 @@
 import * as React from 'react';
+import { useQueryClient } from '@tanstack/react-query';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
+import { studentAssignmentsQueryKey } from '@/hooks/useStudentAssignments';
 import { ScorePrediction } from '@/components/drill/ScorePrediction';
 import { SectionComplete } from '@/components/drill/SectionComplete';
 import { saveSectionPrediction } from '@/lib/sectionReviewRecord';
 import { Button } from '@/components/ui/button';
 import OfficialDrillFrame from '@/components/drill/official/OfficialDrillFrame';
 import OfficialQuestionPane from '@/components/drill/official/OfficialQuestionPane';
-import { TimedSectionClient, TimedSectionError, type TimedSectionPayloads } from '@/lib/timedSectionClient';
+import { isAssignedTimedSection, TimedSectionClient, TimedSectionError, type TimedSectionPayloads, type TimedSectionSitting } from '@/lib/timedSectionClient';
 import { TimedSectionController, type TimedSectionState } from '@/lib/timedSectionController';
 import type { TimedChildAnswer } from '@/lib/timedChildController';
 import type { TimedLetter } from '@/lib/timedWorkClient';
@@ -32,11 +34,17 @@ function format(ms: number | null) { if (ms === null) return 'Untimed'; const se
 
 /** Dedicated account writer. A URL may offer creation; only an explicit action creates or starts it. */
 export default function TimedStandaloneSectionRunner({ controllerFactory = factory }: { controllerFactory?: StandaloneControllerFactory }) {
-  const { sittingId = '' } = useParams(); const [params] = useSearchParams(); const { user } = useAuth(); const navigate = useNavigate();
+  const { assignmentId, sittingId = '' } = useParams(); const [params] = useSearchParams(); const { user } = useAuth(); const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const device = React.useMemo(getPracticeTestDeviceId, []);
-  const identity = `${user?.id ?? ''}:${sittingId}`; const active = React.useRef(identity); active.current = identity;
+  const identity = (user?.id ?? '') + ':' + (assignmentId ?? '') + ':' + sittingId; const active = React.useRef(identity); active.current = identity;
   const controller = React.useMemo(() => user?.id && uuid.test(sittingId) ? controllerFactory(user.id, sittingId, device) : null, [user?.id, sittingId, device, controllerFactory]);
-  const creation = standaloneCreationRequest(params);
+  const creation = assignmentId ? null : standaloneCreationRequest(params);
+  const returnRoute = assignmentId ? '/classroom' : '/testing';
+  const returnLabel = assignmentId ? 'Classroom' : 'Testing';
+  const matchesSource = React.useCallback((sitting: TimedSectionSitting) =>
+    assignmentId ? isAssignedTimedSection(sitting, assignmentId) : sitting.source_kind === 'manual-canonical',
+  [assignmentId]);
   const [state, setState] = React.useState<TimedSectionState | null>(null);
   const [answers, setAnswers] = React.useState<Record<string, TimedChildAnswer>>({});
   const answersRef = React.useRef(answers); answersRef.current = answers;
@@ -97,11 +105,16 @@ export default function TimedStandaloneSectionRunner({ controllerFactory = facto
   const rcItems = React.useMemo(() => state?.snapshot.sitting.kind === 'rc' ? initialState(state.passages).items : [], [state?.passages, state?.snapshot.sitting.kind]);
   const apply = React.useCallback((next: TimedSectionState) => {
     if (active.current !== identity || next.snapshot.sitting.owner_id !== owner || next.snapshot.sitting.id !== sittingId) return;
+    const sitting = next.snapshot.sitting;
+    if (!matchesSource(sitting)) {
+      setError('Open this section from its original entry in My Work or Testing.');
+      return;
+    }
     setState(next); stateRef.current = next; setAnswers(next.answers); answersRef.current = next.answers;
     questionStart.current = performance.now(); setMissing(false); setError(null);
     setDirty(false);
     if (next.regulationAnsweredQids !== undefined) { regulation.current = next.regulationAnsweredQids; regulationAcknowledged.current = true; }
-  }, [identity, owner, sittingId]);
+  }, [identity, matchesSource, owner, sittingId]);
   React.useEffect(() => {
     setFinishStep(null); setFailedPrediction(null); setSavingPrediction(false);
     let cancelled = false; setState(null); stateRef.current = null; setAnswers({}); setError(null); setMissing(false); setLoading(true); setBusy(false); setDirty(false); busyRef.current = false; regulation.current = undefined; regulationAcknowledged.current = false;
@@ -114,6 +127,12 @@ export default function TimedStandaloneSectionRunner({ controllerFactory = facto
     }).finally(() => { if (!cancelled) setLoading(false); });
     return () => { cancelled = true; };
   }, [controller, apply, identity]);
+  const assignmentPhase = state && matchesSource(state.snapshot.sitting) ? state.snapshot.sitting.phase : null;
+  React.useEffect(() => {
+    if (!assignmentId || !owner || !assignmentPhase || assignmentPhase === 'ready') return;
+    void queryClient.invalidateQueries({ queryKey: studentAssignmentsQueryKey(owner) });
+    void queryClient.invalidateQueries({ queryKey: ['classroom-items', owner] });
+  }, [assignmentId, assignmentPhase, owner, queryClient]);
   const clock = state && controller ? controller.clock(state) : null;
   // A save in flight has already stored its command; that is not a stalled save, so the section stays on screen.
   const pending = busy ? null : controller?.pending();
@@ -154,7 +173,7 @@ export default function TimedStandaloneSectionRunner({ controllerFactory = facto
         }
         apply(next);
       }
-      if (action === 'exit' && active.current === requestIdentity) navigate('/testing');
+      if (action === 'exit' && active.current === requestIdentity) navigate(returnRoute);
     } catch (failure) {
       if (active.current === requestIdentity) setError(failure instanceof Error ? failure.message : 'The account save was not acknowledged.');
     } finally { if (active.current === requestIdentity) { busyRef.current = false; setBusy(false); } }
@@ -189,7 +208,7 @@ export default function TimedStandaloneSectionRunner({ controllerFactory = facto
     answersRef.current = next; setAnswers(next);
     setDirty(true);
   };
-  if (loading || state && (state.snapshot.sitting.owner_id !== owner || state.snapshot.sitting.id !== sittingId)) return <main className="p-8" role="status">Loading your account section…</main>;
+  if (loading || state && (state.snapshot.sitting.owner_id !== owner || state.snapshot.sitting.id !== sittingId || !matchesSource(state.snapshot.sitting))) return <main className="p-8" role="status">Loading your account section…</main>;
   const finish = finishStep?.identity === identity && state?.snapshot.sitting.phase === 'complete' ? finishStep.step : null;
   if (!state || !clock || error || pending || (!finish && clock.writer !== 'active')) return <main className="max-w-2xl mx-auto p-8 space-y-4">
     <h1 className="text-xl font-semibold">{missing ? 'Prepare your section' : state?.snapshot.sitting.phase === 'complete' ? 'Section complete' : 'Section paused'}</h1>
@@ -201,14 +220,14 @@ export default function TimedStandaloneSectionRunner({ controllerFactory = facto
     {!missing && !pending && <Button disabled={busy} variant="outline" onClick={() => void perform('load')}>Retry account load</Button>}
     {state && clock?.writer === 'claim-required' && !pending && <Button disabled={busy} onClick={() => void perform('claim')}>Claim this section</Button>}
     {state?.snapshot.sitting.phase === 'complete' && <Button onClick={() => { const href = controller?.reportHref(state); if (href) navigate(href); }}>View section report</Button>}
-    <Button variant="outline" disabled={busy} onClick={() => navigate('/testing')}>Return to Testing</Button>
+    <Button variant="outline" disabled={busy} onClick={() => navigate(returnRoute)}>Return to {returnLabel}</Button>
   </main>;
   if (state.snapshot.sitting.phase === 'ready') return <main className="max-w-2xl mx-auto p-8 space-y-4">
     <h1 className="text-xl font-semibold">PrepTest {state.snapshot.sitting.pt} · {state.snapshot.sitting.kind.toUpperCase()} section {state.snapshot.sitting.section}</h1>
     <p>{state.questions.length} verified questions. Choose the best answer to each question. Answers and explanations appear after you finish.</p>
     <p>{format(state.snapshot.sitting.budget_ms)}. Your account has acknowledged this section. The clock has not started.</p>
     <Button disabled={busy} onClick={() => void perform('start')}>Start section</Button>
-    <Button variant="outline" disabled={busy} onClick={() => navigate('/testing')}>Return to Testing</Button>
+    <Button variant="outline" disabled={busy} onClick={() => navigate(returnRoute)}>Return to {returnLabel}</Button>
   </main>;
   const persistPrediction = async (score: number) => {
     const historyId = state.snapshot.sitting.result?.historyId;
@@ -230,7 +249,7 @@ export default function TimedStandaloneSectionRunner({ controllerFactory = facto
   const question = state.questions[state.currentIndex]; const answer = answers[question.qid]; const rcItem = rcItems[state.currentIndex];
   return <div className="light text-slate-900"><OfficialDrillFrame isPaused={state.snapshot.sitting.phase === 'paused'} onResume={() => void perform('resume')}
     header={<div className="flex flex-wrap gap-3 items-center"><strong>PrepTest {state.snapshot.sitting.pt} · {state.snapshot.sitting.kind.toUpperCase()} section {state.snapshot.sitting.section}</strong><span aria-label="Section time remaining">{clock.remainingMs === 0 && state.snapshot.sitting.kind === 'lr' && regulationAcknowledged.current ? `Overtime +${format(clock.elapsedMs - (state.snapshot.sitting.budget_ms ?? 0))}` : format(clock.remainingMs)}</span>
-      <Button variant="outline" disabled={busy || state.snapshot.sitting.phase !== 'running'} onClick={() => void perform('pause')}>Pause</Button><Button variant="outline" disabled={busy} onClick={() => void perform('exit')}>Testing</Button><span role="status">{busy ? 'Saving to your account…' : dirty ? 'Unsaved changes' : 'Account save acknowledged'}</span></div>}>
+      <Button variant="outline" disabled={busy || state.snapshot.sitting.phase !== 'running'} onClick={() => void perform('pause')}>Pause</Button><Button variant="outline" disabled={busy} onClick={() => void perform('exit')}>{returnLabel}</Button><span role="status">{busy ? 'Saving to your account…' : dirty ? 'Unsaved changes' : 'Account save acknowledged'}</span></div>}>
     {localSaveError && <div role="alert" className="border-b p-2"><p>{localSaveError}</p><Button size="sm" variant="outline" onClick={() => setLocalRetry(value => value + 1)}>Retry saving marks</Button></div>}
     {rcItem && !localSaveError && <p className="px-2 text-sm">Marks and display settings are saved on this device only.</p>}
     {confirm && <div role="dialog" aria-label="Finish section" className="p-4 flex flex-wrap gap-3"><p>{Object.values(answers).filter(value => !value.selected).length} unanswered. Finish this section?</p><Button disabled={busy} onClick={() => { setConfirm(false); void perform('finish'); }}>Confirm finish</Button><Button variant="outline" onClick={() => setConfirm(false)}>Keep working</Button></div>}
