@@ -422,7 +422,7 @@ describe("Teaching desk interactions", () => {
     render(
       <MyList desk={{ ...desk, mutateManual }} students={[]} onAll={vi.fn()} />,
     );
-    fireEvent.click(screen.getByRole("button", { name: "Add reminder" }));
+    fireEvent.click(screen.getByRole("button", { name: "Add a to-do" }));
     fireEvent.change(screen.getByLabelText("Task"), {
       target: { value: "Call after session" },
     });
@@ -640,7 +640,7 @@ describe("Teaching desk interactions", () => {
         onAll={vi.fn()}
       />,
     );
-    fireEvent.click(screen.getByRole("button", { name: "Add reminder" }));
+    fireEvent.click(screen.getByRole("button", { name: "Add a to-do" }));
     fireEvent.change(screen.getByLabelText("Task"), {
       target: { value: "Edited draft" },
     });
