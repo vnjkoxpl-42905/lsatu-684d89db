@@ -1,3 +1,4 @@
+import { useTeacherTranscriptAssignments } from "./useTeacherTranscriptAssignments";
 /**
  * Live half of the teaching desk.
  *
@@ -48,6 +49,7 @@ function regionState(query: {
 
 export function useTeacherHome(): {
   model: TeacherHomeModel;
+  additionalTasks: ReturnType<typeof useTeacherTranscriptAssignments>;
   retryInbox: () => void;
   retryRoster: () => void;
   retrySessions: () => void;
@@ -58,6 +60,7 @@ export function useTeacherHome(): {
   const isAdmin = permissions.resolved === true && permissions.is_admin;
   const postSession = usePostSessionHome(actorId, isAdmin);
   const desk = useTeachingDesk(actorId, isAdmin);
+  const additionalTasks = useTeacherTranscriptAssignments(isAdmin ? actorId : undefined);
   const { displayName } = useClassroomLayout();
   const inbox = useInbox();
 
@@ -168,6 +171,7 @@ export function useTeacherHome(): {
 
   return {
     model,
+    additionalTasks,
     retryInbox: () => void inbox.refresh(),
     retryRoster: () => void rosterQuery.refetch(),
     retrySessions: () => void sessionsQuery.refetch(),
