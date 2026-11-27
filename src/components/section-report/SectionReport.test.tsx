@@ -1,5 +1,5 @@
 import { fireEvent, render, screen, waitFor, within } from '@testing-library/react';
-import { MemoryRouter, Route, Routes } from 'react-router-dom';
+import { MemoryRouter, Route, Routes, useNavigate } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { describe, expect, it, vi, beforeEach } from 'vitest';
 import { SectionReport } from './SectionReport';
@@ -338,7 +338,7 @@ describe('SectionReport', () => {
     await screen.findByText(/PT130\.S2/);
     fireEvent.click(screen.getByRole('button', { name: /^Q1\b/ }));
     fireEvent.click(screen.getByRole('button', { name: /Open in review walk/i }));
-    expect(onReviewSection).toHaveBeenCalledWith('pt130-s2-q1', baseRow);
+    expect(onReviewSection).toHaveBeenCalledWith('pt130-s2-q1', baseRow, expect.any(HTMLButtonElement));
   });
 
   it('sorts filtered questions by time spent and restores question order', async () => {
@@ -386,7 +386,8 @@ describe('SectionReport', () => {
       fireEvent.click(screen.getByRole('button', { name: /^Flagged\b/ }));
       fireEvent.click(screen.getByRole('button', { name: /^Q2\b/ }));
       const trigger = screen.getByRole('button', { name: 'Open in review walk' });
-      trigger.focus();
+      // Safari leaves focus where it was when a button is clicked.
+      screen.getByRole('combobox', { name: 'Sort by' }).focus();
       Object.defineProperty(window, 'scrollY', { configurable: true, value: 640 });
       fireEvent.click(trigger);
 
@@ -422,6 +423,33 @@ describe('SectionReport', () => {
       expect(await screen.findByRole('button', { name: 'Return from question 2 of 2' })).toBeVisible();
       expect(mockFetchOwnedSectionReport).toHaveBeenCalledExactlyOnceWith('u1', 'hist-1');
       expect(screen.queryByRole('heading', { name: 'Question review' })).toBeNull();
+    } finally {
+      client.clear();
+    }
+  });
+
+  it('drops the opening status when the walk request leaves the address before loading', async () => {
+    mockFetchOwnedSectionReport
+      .mockImplementationOnce(() => new Promise(() => {}))
+      .mockResolvedValue({ state: 'released', row: baseRow });
+    function GoToReport() {
+      const navigate = useNavigate();
+      return <button onClick={() => navigate('/review/section/hist-1')}>Go to report</button>;
+    }
+    const client = new QueryClient();
+    try {
+      render(
+        <QueryClientProvider client={client}>
+          <MemoryRouter initialEntries={['/review/section/hist-1?walk=1']}>
+            <GoToReport />
+            <Routes><Route path="/review/section/:historyId" element={<SectionReportPage />} /></Routes>
+          </MemoryRouter>
+        </QueryClientProvider>,
+      );
+      expect(screen.getByRole('status')).toHaveTextContent('Opening review walk');
+      fireEvent.click(screen.getByRole('button', { name: 'Go to report' }));
+      expect(await screen.findByRole('heading', { name: 'Question review' })).toBeVisible();
+      expect(screen.queryByText(/Opening review walk/)).toBeNull();
     } finally {
       client.clear();
     }

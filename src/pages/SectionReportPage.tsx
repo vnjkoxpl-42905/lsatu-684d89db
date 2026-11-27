@@ -231,7 +231,8 @@ function SectionReportSession({ historyId, userId }: { historyId?: string; userI
     return <div className="light min-h-screen bg-background p-6 text-foreground" role="status">Opening blind review…</div>;
   }
 
-  if (openingWalk) {
+  // Only while the address still asks for a walk: an abandoned load never clears openingWalk.
+  if (openingWalk && (walkParam || qidParam)) {
     return <div className="light min-h-screen bg-background p-6 text-foreground" role="status">Opening review walk…</div>;
   }
 
@@ -244,12 +245,16 @@ function SectionReportSession({ historyId, userId }: { historyId?: string; userI
           historyId={historyId ?? null}
           onBack={() => navigate(returnTo)}
           backLabel={requestedReturn ? 'Back' : 'Back to History'}
-          onReviewSection={(qid, row) => {
+          onReviewSection={(qid, row, trigger) => {
             if (!row) return;
+            // Safari does not focus a clicked button, so prefer the element that was activated.
+            const focused = document.activeElement instanceof HTMLElement && document.activeElement !== document.body
+              ? document.activeElement
+              : null;
             reportReturn.current = {
               x: window.scrollX,
               y: window.scrollY,
-              focus: document.activeElement instanceof HTMLElement ? document.activeElement : null,
+              focus: trigger ?? focused,
             };
             setWalkRow(row);
             setWalkQid(qid ?? null);

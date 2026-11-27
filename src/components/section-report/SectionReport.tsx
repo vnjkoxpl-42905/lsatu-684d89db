@@ -24,7 +24,7 @@ export interface SectionReportProps {
   onBack: () => void;
   backLabel?: string;
   /** Called when the user opens the read-only review walk (with optional qid and loaded row). */
-  onReviewSection?: (qid?: string, row?: SectionHistoryRow) => void;
+  onReviewSection?: (qid?: string, row?: SectionHistoryRow, trigger?: HTMLElement) => void;
   /** Called when the user clicks "Do blind review" on a released or sealed section. */
   onStartBlindReview?: (context: {
     historyId: string;
@@ -99,7 +99,7 @@ export function SectionReport({
         data={fallbackData}
         onBack={onBack}
         backLabel={backLabel}
-        onReviewSection={onReviewSection ? (qid) => onReviewSection(qid) : undefined}
+        onReviewSection={onReviewSection ? (qid, trigger) => onReviewSection(qid, undefined, trigger) : undefined}
         onStartBlindReview={
           !fallbackData.brUsed && onStartBlindReview
             ? () =>
@@ -210,7 +210,7 @@ export function SectionReport({
       data={data}
       onBack={onBack}
       backLabel={backLabel}
-      onReviewSection={onReviewSection ? (qid) => onReviewSection(qid, row) : undefined}
+      onReviewSection={onReviewSection ? (qid, trigger) => onReviewSection(qid, row, trigger) : undefined}
       onStartOver={canStartOver ? () => onStartOver!(row) : undefined}
       pendingPrediction={pendingPrediction}
       retryingPrediction={retryingPrediction}

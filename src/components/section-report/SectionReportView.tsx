@@ -66,7 +66,7 @@ export interface SectionReportViewProps {
   onBack: () => void;
   backLabel?: string;
   /** Opens the read-only review walk (optionally starting at a specific qid). */
-  onReviewSection?: (qid?: string) => void;
+  onReviewSection?: (qid?: string, trigger?: HTMLElement) => void;
   /** Opens blind review for a section that does not have one yet. */
   onStartBlindReview?: () => void;
   /** Starts the next fresh sitting generation for a standalone section. */
@@ -337,7 +337,7 @@ export function SectionReportView({
             {onReviewSection && hasDetail && (
               <Button variant={canStartBlindReview ? 'outline' : 'default'} size="sm"
                 className={canStartBlindReview ? undefined : reviewActionClass}
-                onClick={() => onReviewSection()}>
+                onClick={(event) => onReviewSection(undefined, event.currentTarget)}>
                 Open review walk
               </Button>
             )}
@@ -637,7 +637,7 @@ export function SectionReportView({
                             type="button"
                             onClick={(e) => {
                               e.stopPropagation();
-                              onReviewSection(stat.qid);
+                              onReviewSection(stat.qid, e.currentTarget);
                             }}
                             className="inline-flex items-center gap-1 text-xs font-medium text-primary hover:underline"
                           >
