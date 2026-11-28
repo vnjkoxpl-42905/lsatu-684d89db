@@ -221,7 +221,12 @@ describe("Testing Centre", () => {
   it("opens the section launcher behind the first door", () => {
     renderPage();
     fireEvent.click(screen.getByRole("button", { name: /Take a section/ }));
-    fireEvent.click(screen.getByRole("button", { name: /Choose specific/i }));
+    const delegatedChoice = screen.getByRole("button", { name: "Let me choose for you" });
+    expect(delegatedChoice).toHaveAccessibleDescription(
+      "Review a random Logical Reasoning section before you start."
+    );
+    expect(screen.queryByText("Selection preference")).toBeNull();
+    fireEvent.click(screen.getByRole("button", { name: "Pick a PrepTest and section" }));
     expect(screen.getByTestId("section-selector")).toBeTruthy();
     const dialog = screen.getByRole("dialog", { name: "Choose a section" });
     expect(dialog.querySelector("h2")?.classList.contains("sr-only")).toBe(true);

@@ -18,7 +18,7 @@ import * as DialogPrimitive from "@radix-ui/react-dialog";
 import * as React from "react";
 import { parseWorkIdentity, withWorkIdentity } from '@/lib/studentWorkIdentity';
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
-import { ArrowUpRight, Dice5, Loader2, MousePointer2, X } from "lucide-react";
+import { ArrowUpRight, Dice5, List, Loader2, MousePointer2, Shuffle, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Select,
@@ -613,6 +613,7 @@ export default function TestingCentre() {
     setDoor(next);
   };
   const setupSelected = Boolean(selection || selectedPt || assignedOnly);
+  const choosingSection = door === "section" && !setupSelected;
   const eligibleTests = tests;
 
   return (
@@ -670,7 +671,9 @@ export default function TestingCentre() {
         {dialogHost && <DialogPrimitive.Portal container={dialogHost}>
           <DialogPrimitive.Overlay className="testing-setup-overlay" />
           <DialogPrimitive.Content id={PANEL_ID} className="testing-setup-dialog"
+            data-section-choice={choosingSection ? "" : undefined}
             data-section-form={door === "section" && setupSelected ? "" : undefined}
+            {...(choosingSection ? { "aria-describedby": undefined } : {})}
             onCloseAutoFocus={(event) => {
               if (!launchButton.current) return;
               event.preventDefault();
@@ -680,24 +683,32 @@ export default function TestingCentre() {
               {door === "section" ? "Choose a section" : "Full exam attempt"}
             </DialogPrimitive.Title>
             <DialogPrimitive.Close aria-label="Close setup" className="testing-setup-close"><X size={18} /></DialogPrimitive.Close>
-            <DialogPrimitive.Description className={setupSelected ? "sr-only" : "testing-setup-preference"}>
-              {setupSelected ? "Review your selection and timing before starting." : "Selection preference"}
-            </DialogPrimitive.Description>
+            {!choosingSection && (
+              <DialogPrimitive.Description className={setupSelected ? "sr-only" : "testing-setup-preference"}>
+                {setupSelected ? "Review your selection and timing before starting." : "Selection preference"}
+              </DialogPrimitive.Description>
+            )}
             {!setupSelected && (
               <div className="testing-setup-choices">
                 <button type="button" onClick={() => setSelection("specific")}>
-                  <MousePointer2 size={20} aria-hidden="true" />
-                  <strong>Choose specific</strong>
-                  <span>Pick a {door === "section" ? "section" : "PrepTest"}.</span>
+                  {choosingSection ? <List size={20} aria-hidden="true" /> : <MousePointer2 size={20} aria-hidden="true" />}
+                  <strong>{choosingSection ? "Pick a PrepTest and section" : "Choose specific"}</strong>
+                  {!choosingSection && <span>Pick a PrepTest.</span>}
                 </button>
                 <button type="button" disabled={door === "test" && !eligibleTests.length}
+                  aria-labelledby={choosingSection ? "section-choice-random-label" : undefined}
+                  aria-describedby={choosingSection ? "section-choice-random-detail" : undefined}
                   onClick={() => {
                     if (door === "test") setRandomPt(eligibleTests[Math.floor(Math.random() * eligibleTests.length)].pt);
                     setSelection("random");
                   }}>
-                  <Dice5 size={20} aria-hidden="true" />
-                  <strong>Random</strong>
-                  <span>Randomly select a {door === "section" ? "section" : "PrepTest"}.</span>
+                  {choosingSection ? <Shuffle size={20} aria-hidden="true" /> : <Dice5 size={20} aria-hidden="true" />}
+                  <strong id={choosingSection ? "section-choice-random-label" : undefined}>
+                    {choosingSection ? "Let me choose for you" : "Random"}
+                  </strong>
+                  <span id={choosingSection ? "section-choice-random-detail" : undefined}>
+                    {choosingSection ? "Review a random Logical Reasoning section before you start." : "Randomly select a PrepTest."}
+                  </span>
                 </button>
               </div>
             )}
