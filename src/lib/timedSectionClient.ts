@@ -107,7 +107,7 @@ function parseSitting(value: unknown, owner: string, work: string): TimedSection
   canonical(value);
   return value as unknown as TimedSectionSitting;
 }
-function source(s: TimedSectionSitting): string {
+export function timedSectionSourceIdentity(s: TimedSectionSitting): string {
   return canonical([s.id, s.owner_id, s.kind, s.source_kind, s.source_key, s.pt, s.section, s.manifest_sha256, s.frozen_source, s.frozen_qids, s.pace, s.budget_ms, s.lease_ms, s.created_at]);
 }
 function questionStates(value: unknown, roster: string[]): void {
@@ -224,7 +224,7 @@ function parseAuthority(value: unknown, owner: string, work: string): TimedSecti
   return { contractVersion: 1, workKind: 'standalone-section', sitting, child, receipt, replayed: value.replayed, serverTime: value.serverTime };
 }
 function forward(next: TimedSectionSitting, previous: TimedSectionSitting): void {
-  if (source(next) !== source(previous)) fail('The account changed the frozen section source.');
+  if (timedSectionSourceIdentity(next) !== timedSectionSourceIdentity(previous)) fail('The account changed the frozen section source.');
   if (next.revision < previous.revision) throw new TimedSectionError('conflict', 'The read predates acknowledged section work.', previous);
   if (next.writer_epoch < previous.writer_epoch || next.elapsed_ms < previous.elapsed_ms
     || next.revision === previous.revision && canonical(next) !== canonical(previous)
@@ -414,7 +414,7 @@ export class TimedSectionClient {
       if (!stored.pending || canonical(stored.pending) !== canonical(pending)) throw new TimedSectionError('conflict', 'The retained section command changed in flight.');
       let refreshRequired = false;
       if (stored.sitting) {
-        if (source(result.sitting) !== source(stored.sitting)) fail('The command response changed the frozen section source.');
+        if (timedSectionSourceIdentity(result.sitting) !== timedSectionSourceIdentity(stored.sitting)) fail('The command response changed the frozen section source.');
         if (result.sitting.revision < stored.sitting.revision) { refreshRequired = true; result = { ...result, sitting: stored.sitting, child: null }; }
         else forward(result.sitting, stored.sitting);
       }

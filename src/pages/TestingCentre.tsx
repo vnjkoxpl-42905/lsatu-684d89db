@@ -58,6 +58,7 @@ import { prepareOfficialPracticeTest } from '@/lib/timedPracticeTestEntry';
 import { practiceTestPath } from "@/lib/practiceTestRunner";
 import { PracticeExamsNav } from "./PracticeExamsNav";
 import { listPracticeSectionAttempts, type PracticeSectionAttempt } from "@/lib/practiceSectionAttempts";
+import { newSectionStartIntent } from "@/lib/timedSectionAdoption";
 import "./testing-centre.css";
 
 type Door = null | "section" | "test";
@@ -669,12 +670,15 @@ export default function TestingCentre() {
         {dialogHost && <DialogPrimitive.Portal container={dialogHost}>
           <DialogPrimitive.Overlay className="testing-setup-overlay" />
           <DialogPrimitive.Content id={PANEL_ID} className="testing-setup-dialog"
+            data-section-form={door === "section" && setupSelected ? "" : undefined}
             onCloseAutoFocus={(event) => {
               if (!launchButton.current) return;
               event.preventDefault();
               launchButton.current.focus();
             }}>
-            <DialogPrimitive.Title>{door === "section" ? "Single section attempt" : "Full exam attempt"}</DialogPrimitive.Title>
+            <DialogPrimitive.Title className={door === "section" && setupSelected ? "sr-only" : undefined}>
+              {door === "section" ? "Choose a section" : "Full exam attempt"}
+            </DialogPrimitive.Title>
             <DialogPrimitive.Close aria-label="Close setup" className="testing-setup-close"><X size={18} /></DialogPrimitive.Close>
             <DialogPrimitive.Description className={setupSelected ? "sr-only" : "testing-setup-preference"}>
               {setupSelected ? "Review your selection and timing before starting." : "Selection preference"}
@@ -697,30 +701,34 @@ export default function TestingCentre() {
                 </button>
               </div>
             )}
-            {setupSelected && <div>
-              {door === "section" && (
-                <div className="testing-panel">
+            {setupSelected && (
+              door === "section" ? (
+                <div className="testing-panel testing-section-setup">
                   {isLoading && <Working>Loading questions…</Working>}
                   {!isLoading && error && <p className="testing-note">{error}</p>}
                   {!isLoading && !error && manifest && (
                     <SectionSelector
                       manifest={manifest}
                       hideStatus
+                      ownerId={user?.id}
                       randomizeOnOpen={selection === "random"}
                       onStartSection={(config) =>
                         navigate("/drill", {
-                          state: { mode: "full-section", config, returnTo: "/practice/exams" },
+                          state: {
+                            mode: "full-section",
+                            config,
+                            returnTo: "/practice/exams",
+                            startSection: user ? newSectionStartIntent(user.id, config.pt, config.section) : undefined,
+                          },
                         })
                       }
-                      onStartRcSection={(href) => navigate(href)}
+                      onStartRcSection={(href, state) => navigate(href, { state })}
                       onCancel={() => setDoor(null)}
                     />
                   )}
                 </div>
-              )}
-
-              {door === "test" && (
-                <>
+              ) : door === "test" ? (
+                <div>
                   {(isLoading || (!rcSections && !rcError)) && (
                     <div className="testing-panel">
                       <Working>Working out which PrepTests can be sat end to end…</Working>
@@ -734,9 +742,9 @@ export default function TestingCentre() {
                   {!isLoading && !error && !rcError && manifest && rcSections && (
                     <PracticeTestSelector tests={tests} onBegin={beginTest} assignedOnly={assignedOnly} initialPt={randomPt ?? selectedPt} />
                   )}
-                </>
-              )}
-            </div>}
+                </div>
+              ) : null
+            )}
             {actionError && <p className="testing-note" role="alert">{actionError}</p>}
           </DialogPrimitive.Content>
         </DialogPrimitive.Portal>}

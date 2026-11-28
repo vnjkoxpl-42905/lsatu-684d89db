@@ -13,6 +13,8 @@ function setup(kind: 'lr' | 'rc', pt = blueprint.pt) {
   const selectedBlueprint = manifest.blueprints.find((value: { pt: number }) => value.pt === pt);
   const source = selectedBlueprint.legs.find((value: { kind: string }) => value.kind === kind);
   const sitting = { id: work, owner_id: owner, kind, pt, section: source.section, frozen_source: source, frozen_qids: source.qids,
+    source_kind: 'manual-canonical', source_key: 'fixture', manifest_sha256: '0'.repeat(64), pace: 'standard',
+    lease_ms: 30000, created_at: '2026-09-30T09:59:00Z',
     phase: 'running', budget_ms: 2100000, elapsed_ms: 1000, clock_anchor_at: '2026-09-30T10:00:00Z', lease_expires_at: '2026-09-30T10:00:30Z',
     device_id: 'device-a', revision: 2, writer_epoch: 1, current_index: 0 } as unknown as TimedSectionSitting;
   const snapshot = { contractVersion: 1, workKind: 'standalone-section', sitting, serverTime: '2026-09-30T10:00:05Z',
@@ -21,13 +23,40 @@ function setup(kind: 'lr' | 'rc', pt = blueprint.pt) {
   } as unknown as TimedSectionSnapshot;
   const client = { refresh: vi.fn().mockResolvedValue(snapshot), readPending: vi.fn().mockReturnValue(null), readRejection: vi.fn().mockReturnValue(null),
     prepare: vi.fn().mockResolvedValue({}), retry: vi.fn().mockResolvedValue(snapshot), requireCapability: vi.fn().mockResolvedValue(undefined) };
-  const controller = new TimedSectionController(client as unknown as TimedSectionClient, 'device-a',
-    async (pt, section) => JSON.parse(readFileSync(`public/data/PT${pt}-S${section}-LR.json`, 'utf8')),
-    async () => JSON.parse(readFileSync(`public/data/rc/RC-PT${pt}.json`, 'utf8')).passages.map(passage => ({ ...passage,
-      questions: passage.questions.map(question => question.questionId === 10733 ? { ...question, correctAnswer: 'D' } : question) })), () => 1000);
-  return { snapshot, controller, client };
+  const loadRaw = vi.fn(async (pt, section) => JSON.parse(readFileSync(`public/data/PT${pt}-S${section}-LR.json`, 'utf8')));
+  const loadRc = vi.fn(async () => JSON.parse(readFileSync(`public/data/rc/RC-PT${pt}.json`, 'utf8')).passages.map(passage => ({ ...passage,
+    questions: passage.questions.map(question => question.questionId === 10733 ? { ...question, correctAnswer: 'D' } : question) })));
+  const controller = new TimedSectionController(client as unknown as TimedSectionClient, 'device-a', loadRaw, loadRc, () => 1000);
+  return { snapshot, controller, client, loadRaw, loadRc };
 }
 describe('parentless standalone section controller', () => {
+  it.each([
+    ['lr', false], ['lr', true], ['rc', false], ['rc', true],
+  ] as const)('keeps the first %s question ready after start (lost reply: %s)', async (kind, lostReply) => {
+    const { controller, client, snapshot, loadRaw, loadRc } = setup(kind);
+    snapshot.sitting.phase = 'ready';
+    const ready = await controller.load();
+    const fetchContent = kind === 'lr' ? loadRaw : loadRc;
+    fetchContent.mockRejectedValue(new Error('A second bank request would delay the first question'));
+    const started = { ...snapshot, sitting: { ...snapshot.sitting, phase: 'running' } };
+    client.retry.mockResolvedValue(started);
+    let running;
+    if (lostReply) {
+      client.retry.mockRejectedValueOnce(new Error('Start response lost'));
+      await expect(controller.control(ready, 'start')).rejects.toThrow('Start response lost');
+      client.refresh.mockResolvedValue(started);
+      client.readPending.mockReturnValue({ operation: 'start', payload: {} });
+      expect((await controller.load()).questions).toBe(ready.questions);
+      running = await controller.retry();
+    } else {
+      running = await controller.control(ready, 'start');
+    }
+    expect(running.snapshot.sitting.phase).toBe('running');
+    expect(running.questions).toBe(ready.questions);
+    expect(client.prepare).toHaveBeenCalledTimes(1);
+    expect(fetchContent).toHaveBeenCalledTimes(1);
+  });
+
   it.each([
     ['running', 'B', true], ['complete', 'B', true], ['running', 'D', false], ['complete', 'D', false],
   ] as const)('preserves the acknowledged historical %s %s score without regrading', async (phase, selected, isCorrect) => {

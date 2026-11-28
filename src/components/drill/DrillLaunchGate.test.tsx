@@ -1,11 +1,12 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen, waitFor } from '@testing-library/react';
-import { MemoryRouter, Route, Routes, useLocation } from 'react-router-dom';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { MemoryRouter, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 
 import DrillLaunchGate from './DrillLaunchGate';
 import { useDrillRunSpec } from './DrillRunSpecContext';
 import { DeadDrillLinkError } from '@/lib/drillLaunchResolve';
 import type { DrillRunSpec } from '@/lib/drillRunSpec';
+import { claimSectionStart, newSectionStartIntent } from '@/lib/timedSectionAdoption';
 
 vi.mock('@/contexts/AuthContext', () => ({
   useAuth: () => ({ user: { id: 'user_1' }, authReady: true }),
@@ -77,7 +78,7 @@ function renderAt(entry: { pathname: string; search?: string; state?: unknown })
 }
 function SectionDestination() {
   const location = useLocation();
-  return <div data-testid="protected-section">{location.pathname}{location.search}</div>;
+  return <div data-testid="protected-section" data-start-ticket={location.state?.timedSectionStart}>{location.pathname}{location.search}</div>;
 }
 
 const searchOf = () => new URLSearchParams(screen.getByTestId('runner').textContent ?? '');
@@ -136,7 +137,35 @@ describe('the gate', () => {
     renderAt({ pathname: '/drill', search: '?mode=full-section&pt=101&section=2&timer=52.5' });
     const destination = await screen.findByTestId('protected-section');
     expect(destination.textContent).toMatch(/^\/testing\/sections\/[0-9a-f-]+\?kind=lr&pt=101&section=2&pace=time-and-a-half$/);
+    expect(destination).not.toHaveAttribute('data-start-ticket');
     expect(screen.queryByTestId('runner')).not.toBeInTheDocument();
+  });
+  it('passes a one-use, owner-scoped Start ticket only for the Testing Centre action', async () => {
+    adoptionState.enabled = true;
+    function Setup() {
+      const navigate = useNavigate();
+      return <button onClick={() => navigate('/drill', { state: {
+        mode: 'full-section',
+        config: {
+          pt: 101,
+          section: 2,
+          timer: { mode: '52.5', isPaused: false, elapsedMs: 0, startedAt: 0 },
+        },
+        startSection: newSectionStartIntent('user_1', 101, 2),
+      } })}>Start section</button>;
+    }
+    render(<MemoryRouter initialEntries={['/practice/exams']}><Routes>
+      <Route path="/practice/exams" element={<Setup />} />
+      <Route path="/drill" element={<DrillLaunchGate><Runner /></DrillLaunchGate>} />
+      <Route path="/testing/sections/:id" element={<SectionDestination />} />
+    </Routes></MemoryRouter>);
+    fireEvent.click(screen.getByRole('button', { name: 'Start section' }));
+    const destination = await screen.findByTestId('protected-section');
+    const token = destination.getAttribute('data-start-ticket');
+    const href = destination.textContent ?? '';
+    expect(href).toMatch(/kind=lr&pt=101&section=2&pace=time-and-a-half$/);
+    expect(claimSectionStart(token, 'user_1', href)).toBe(true);
+    expect(claimSectionStart(token, 'user_1', href)).toBe(false);
   });
   it.each([
     '?mode=full-section&pt=101&section=2&legacySectionResume=1',

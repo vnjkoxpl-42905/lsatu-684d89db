@@ -1,4 +1,4 @@
-import { TimedSectionClient, TimedSectionError, type TimedSectionPayloads } from './timedSectionClient';
+import { TimedSectionClient, TimedSectionError, timedSectionSourceIdentity, type TimedSectionPayloads } from './timedSectionClient';
 import { TimedSectionStore, timedSectionClock, type TimedSectionSnapshot } from './timedSectionStore';
 import { verifyStandaloneLrContent, verifyStandaloneRcContent } from './timedSectionContent';
 import type { TimedLrRawQuestion } from './timedLrAdapter';
@@ -63,6 +63,7 @@ export function buildProtectedCloseoutStats(state: TimedSectionState): SectionQu
 
 export class TimedSectionController {
   private readonly store: TimedSectionStore;
+  private verifiedContent?: Pick<TimedSectionState, 'questions' | 'passages'> & { source: string };
   constructor(private readonly client: TimedSectionClient, private readonly deviceId: string,
     private readonly loadRaw: (pt: number, section: number) => Promise<TimedLrRawQuestion[]> = async (pt, section) => {
       const response = await fetch(`/data/PT${pt}-S${section}-LR.json`);
@@ -74,19 +75,28 @@ export class TimedSectionController {
   pending() { return this.client.readPending(); }
   rejection() { return this.client.readRejection(); }
   clock(state: TimedSectionState) { return timedSectionClock(state.snapshot, this.deviceId, this.now()); }
-  async load() { return this.hydrate(await this.store.load()); }
+  async load() {
+    const starting = this.pending()?.operation === 'start';
+    return this.hydrate(await this.store.load(), starting);
+  }
   async create(payload: TimedSectionPayloads['create']) {
     await this.client.requireCapability('create');
     await this.store.prepare('create', payload, null);
     return this.hydrate(await this.store.retry());
   }
-  async retry() { return this.hydrate(await this.store.retry()); }
-  async recoverRejected() { return this.hydrate(await this.store.archiveRejectedCommand()); }
+  async retry() {
+    const starting = this.pending()?.operation === 'start';
+    return this.hydrate(await this.store.retry(), starting);
+  }
+  async recoverRejected() {
+    const starting = this.pending()?.operation === 'start';
+    return this.hydrate(await this.store.archiveRejectedCommand(), starting);
+  }
   async control(state: TimedSectionState, operation: 'start' | 'claim' | 'pause' | 'resume' | 'abandon' | 'heartbeat') {
     await this.store.prepare(operation, {}, state.snapshot);
-    return this.retry();
+    return this.hydrate(await this.store.retry(), operation === 'start');
   }
-  private async hydrate(snapshot: TimedSectionSnapshot): Promise<TimedSectionState> {
+  private async loadContent(snapshot: TimedSectionSnapshot): Promise<Pick<TimedSectionState, 'questions' | 'passages'>> {
     const sitting = snapshot.sitting;
     const passages = sitting.kind === 'rc' ? await verifyStandaloneRcContent(sitting, await this.loadRc(sitting.frozen_source.passageIds as number[])) : [];
     const questions: LRQuestion[] = sitting.kind === 'lr'
@@ -95,6 +105,16 @@ export class TimedSectionController {
         qnum: item.question.position, stimulus: item.passage.text, questionStem: item.question.prompt,
         answerChoices: Object.fromEntries(item.question.choices.map(choice => [choice.letter, choice.text])) as LRQuestion['answerChoices'],
         correctAnswer: item.question.correctAnswer, difficulty: 3, qtype: 'RC' }));
+    return { questions, passages };
+  }
+  private async hydrate(snapshot: TimedSectionSnapshot, reuseContent = false): Promise<TimedSectionState> {
+    const sitting = snapshot.sitting;
+    const source = timedSectionSourceIdentity(sitting);
+    const cached = this.verifiedContent;
+    // Starting the server clock must not put another bank request between the
+    // acknowledged start and the first question.
+    const { questions, passages } = reuseContent && cached?.source === source
+      ? cached : await this.loadContent(snapshot);
     const answers = Object.fromEntries(questions.map(question => [question.qid, empty(sitting.kind === 'rc')]));
     const put = (qid: unknown, fields: Partial<TimedChildAnswer>) => {
       if (typeof qid !== 'string' || !answers[qid]) invalid('An account answer is outside the frozen section.');
@@ -127,6 +147,7 @@ export class TimedSectionController {
       });
       for (const marker of (pending.payload.questionStates ?? []) as TimedObject[]) put(marker.qid, { timeMs: Number(marker.timeMs), flagged: Boolean(marker.flagged), eliminations: marker.eliminations as TimedChildAnswer['eliminations'] });
     }
+    this.verifiedContent = { source, questions, passages };
     return { snapshot, questions, passages, answers, currentIndex: sitting.current_index,
       ...(child?.kind === 'lr' && Array.isArray(child.record.regulation_answered_qids) ? { regulationAnsweredQids: child.record.regulation_answered_qids as string[] } : {}) };
   }

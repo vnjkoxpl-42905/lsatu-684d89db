@@ -2,10 +2,11 @@ import * as React from 'react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { MemoryRouter, Route, Routes } from 'react-router-dom';
+import { MemoryRouter, Route, Routes, useNavigate } from 'react-router-dom';
 import Runner, { standaloneCreationRequest } from './TimedStandaloneSectionRunner';
 import type { TimedSectionController, TimedSectionState } from '@/lib/timedSectionController';
 import { TimedSectionError } from '@/lib/timedSectionClient';
+import { newManualSectionLaunch } from '@/lib/timedSectionAdoption';
 const owner = '10000000-0000-4000-8000-000000000001'; const work = '20000000-0000-4000-8000-000000000001';
 let actor = owner;
 vi.mock('@/contexts/AuthContext', () => ({ useAuth: () => ({ user: { id: actor } }) }));
@@ -43,20 +44,88 @@ beforeEach(() => {
 const factory = () => controller as unknown as TimedSectionController;
 function tree(query = '') { return <QueryClientProvider client={queryClient}><MemoryRouter initialEntries={[`/testing/sections/${work}${query}`]} future={{ v7_startTransition: true, v7_relativeSplatPath: true }}><Routes><Route path="/testing/sections/:sittingId" element={<Runner controllerFactory={factory} />} /><Route path="/testing" element={<div>Testing destination</div>} /></Routes></MemoryRouter></QueryClientProvider>; }
 function mount(query = '') { return render(tree(query)); }
+function mountStart() {
+  vi.spyOn(crypto, 'randomUUID').mockReturnValueOnce(work);
+  const handoff = newManualSectionLaunch('lr', 140, 1, 'standard', owner);
+  function Setup() {
+    const navigate = useNavigate();
+    return <button onClick={() => navigate(handoff.href, { state: handoff.state })}>Start from setup</button>;
+  }
+  return render(<React.StrictMode><QueryClientProvider client={queryClient}><MemoryRouter initialEntries={['/setup']}><Routes>
+    <Route path="/setup" element={<Setup />} />
+    <Route path="/testing/sections/:sittingId" element={<Runner controllerFactory={factory} />} />
+  </Routes></MemoryRouter></QueryClientProvider></React.StrictMode>);
+}
 describe('standalone account section runner', () => {
-  it('requires a deliberate prepare and start; a creation URL cannot begin the clock', async () => {
+  it('requires a deliberate Start action even when a creation URL is loaded', async () => {
     controller.load.mockRejectedValue(new TimedSectionError('access', 'Unknown account sitting'));
     mount('?kind=lr&pt=140&section=1&pace=standard');
-    await screen.findByRole('button', { name: 'Prepare section' });
+    const start = await screen.findByRole('button', { name: 'Start section' });
     expect(controller.create).not.toHaveBeenCalled(); expect(controller.control).not.toHaveBeenCalled();
-    fireEvent.click(screen.getByRole('button', { name: 'Prepare section' }));
-    await screen.findByRole('button', { name: 'Start section' }); expect(controller.control).not.toHaveBeenCalled();
-    fireEvent.click(screen.getByRole('button', { name: 'Start section' }));
+    fireEvent.click(start);
     await waitFor(() => expect(controller.control).toHaveBeenCalledWith(expect.anything(), 'start'));
+    expect(controller.create).toHaveBeenCalledTimes(1);
+  });
+  it('uses one setup action and waits for verified questions before starting under Strict Mode', async () => {
+    controller.load.mockRejectedValue(new TimedSectionError('access', 'Unknown account sitting'));
+    let finishCreate: (ready: TimedSectionState) => void = () => {};
+    controller.create.mockReturnValue(new Promise<TimedSectionState>(resolve => { finishCreate = resolve; }));
+    controller.control.mockResolvedValue(state());
+    mountStart();
+    const start = screen.getByRole('button', { name: 'Start from setup' });
+    fireEvent.click(start);
+    fireEvent.click(start);
+    await waitFor(() => expect(controller.create).toHaveBeenCalledTimes(1));
+    expect(screen.getByRole('status')).toHaveTextContent('Opening section');
+    expect(controller.control).not.toHaveBeenCalled();
+    await act(async () => finishCreate(state('ready')));
+    await screen.findByText('Verified question');
+    expect(controller.control).toHaveBeenCalledExactlyOnceWith(expect.anything(), 'start');
+  });
+  it('reads an uncertain Start before replaying its exact command without issuing another start', async () => {
+    controller.load.mockRejectedValueOnce(new TimedSectionError('access', 'Unknown account sitting')).mockResolvedValue(state());
+    controller.control.mockImplementationOnce(async () => {
+      controller.pending.mockReturnValue({ operation: 'start' });
+      throw new Error('Lost Start response');
+    });
+    controller.retry.mockImplementation(async () => { controller.pending.mockReturnValue(null); return state(); });
+    mountStart();
+    fireEvent.click(screen.getByRole('button', { name: 'Start from setup' }));
+    expect(await screen.findByRole('alert')).toHaveTextContent('couldn’t confirm whether your timer started');
+    expect(controller.retry).not.toHaveBeenCalled();
+    fireEvent.click(screen.getByRole('button', { name: 'Check and continue' }));
+    await screen.findByText('Verified question');
+    expect(controller.load).toHaveBeenCalledTimes(2);
+    expect(controller.load.mock.invocationCallOrder[1]).toBeLessThan(controller.retry.mock.invocationCallOrder[0]);
+    expect(controller.retry).toHaveBeenCalledTimes(1);
+    expect(controller.create).toHaveBeenCalledTimes(1);
+    expect(controller.control).toHaveBeenCalledTimes(1);
+  });
+  it('waits for a fresh Start gesture when an uncertain attempt is confirmed ready without a retained command', async () => {
+    controller.load.mockRejectedValueOnce(new TimedSectionError('access', 'Unknown account sitting')).mockResolvedValue(state('ready'));
+    controller.control.mockRejectedValueOnce(new Error('Start could not be confirmed'));
+    mountStart();
+    fireEvent.click(screen.getByRole('button', { name: 'Start from setup' }));
+    fireEvent.click(await screen.findByRole('button', { name: 'Check and continue' }));
+    expect(await screen.findByRole('button', { name: 'Start section' })).toBeEnabled();
+    expect(controller.retry).not.toHaveBeenCalled();
+    expect(controller.control).toHaveBeenCalledTimes(1);
+  });
+  it('does not start a matching old history entry', async () => {
+    vi.spyOn(crypto, 'randomUUID').mockReturnValueOnce(work);
+    const { href, state: handoffState } = newManualSectionLaunch('lr', 140, 1, 'standard', owner);
+    const [pathname, search] = href.split('?');
+    controller.load.mockRejectedValue(new TimedSectionError('access', 'Unknown account sitting'));
+    render(<QueryClientProvider client={queryClient}><MemoryRouter initialEntries={[{ pathname, search: '?' + search, state: handoffState }]}><Routes>
+      <Route path="/testing/sections/:sittingId" element={<Runner controllerFactory={factory} />} />
+    </Routes></MemoryRouter></QueryClientProvider>);
+    await screen.findByRole('button', { name: 'Start section' });
+    expect(controller.create).not.toHaveBeenCalled();
+    expect(controller.control).not.toHaveBeenCalled();
   });
   it('cannot turn an arbitrary unknown sitting URL into a new account record', async () => {
     controller.load.mockRejectedValue(new TimedSectionError('access', 'Unknown sitting')); mount();
-    await screen.findByText('Unknown sitting'); expect(screen.queryByRole('button', { name: 'Prepare section' })).toBeNull(); expect(controller.create).not.toHaveBeenCalled();
+    await screen.findByText('We couldn’t open your section.'); expect(screen.queryByRole('button', { name: 'Start section' })).toBeNull(); expect(controller.create).not.toHaveBeenCalled();
   });
   it('checkpoints selected answers before pausing', async () => {
     mount(); await screen.findByText('Verified question'); fireEvent.click(screen.getByRole('button', { name: 'Select A' }));
@@ -68,15 +137,26 @@ describe('standalone account section runner', () => {
   it('does not pause or close after a failed account checkpoint; exposes exact saved retry', async () => {
     controller.checkpoint.mockImplementation(async () => { controller.pending.mockReturnValue({ operation: 'checkpoint' }); throw new Error('Lost reply'); });
     mount(); await screen.findByText('Verified question'); fireEvent.click(screen.getByRole('button', { name: 'Pause' }));
-    await screen.findByText('Lost reply'); expect(controller.control).not.toHaveBeenCalled(); expect(controller.close).not.toHaveBeenCalled();
-    fireEvent.click(screen.getByRole('button', { name: 'Retry saved command' }));
+    await screen.findByText('We couldn’t confirm your last change. Try again before continuing.'); expect(controller.control).not.toHaveBeenCalled(); expect(controller.close).not.toHaveBeenCalled();
+    fireEvent.click(screen.getByRole('button', { name: 'Try again' }));
     await waitFor(() => expect(controller.retry).toHaveBeenCalledTimes(1));
     expect(controller.checkpoint).toHaveBeenCalledTimes(1);
   });
   it('shows a claim screen instead of opening questions for an expired writer', async () => {
     controller.clock.mockReturnValue({ writer: 'claim-required', remainingMs: 2070000 }); mount();
-    await screen.findByRole('button', { name: 'Claim this section' }); expect(screen.queryByText('Verified question')).toBeNull();
+    await screen.findByRole('button', { name: 'Continue on this device' }); expect(screen.queryByText('Verified question')).toBeNull();
     expect(controller.control).not.toHaveBeenCalled();
+  });
+  it('can reload a paused section after a failed Resume before a command was retained', async () => {
+    controller.load.mockResolvedValue(state('paused'));
+    controller.control.mockRejectedValueOnce(new Error('Resume unavailable'));
+    mount();
+    fireEvent.click(await screen.findByRole('button', { name: 'Resume section' }));
+    expect(await screen.findByRole('alert')).toHaveTextContent('We couldn’t open your section.');
+    fireEvent.click(screen.getByRole('button', { name: 'Try again' }));
+    await screen.findByRole('button', { name: 'Resume section' });
+    expect(controller.load).toHaveBeenCalledTimes(2);
+    expect(controller.control).toHaveBeenCalledExactlyOnceWith(expect.anything(), 'resume');
   });
   it('only exposes reports after complete account authority', async () => {
     controller.load.mockResolvedValue(state('complete')); controller.clock.mockReturnValue({ writer: 'terminal', remainingMs: 0 }); mount();
@@ -125,7 +205,7 @@ describe('standalone account section runner', () => {
   it('rejects a manual RC sitting on an assigned section URL', async () => {
     controller.load.mockResolvedValue(rcState());
     mountAssigned();
-    expect(await screen.findByRole('alert')).toHaveTextContent('Open this section from its original entry');
+    expect(await screen.findByRole('alert')).toHaveTextContent('We couldn’t open your section.');
     expect(screen.queryByTestId('rc-reader')).not.toBeInTheDocument();
     expect(controller.control).not.toHaveBeenCalled();
   });
@@ -245,10 +325,10 @@ describe('standalone account section runner', () => {
     const done = { ...rc, snapshot: { ...rc.snapshot, sitting: { ...rc.snapshot.sitting, phase: 'complete' } } };
     controller.close.mockImplementation(async () => { controller.clock.mockReturnValue({ writer: 'terminal', remainingMs: 0 }); return done; });
     mount();
-    expect(await screen.findByRole('alert')).toHaveTextContent('Expiry checkpoint lost');
+    expect(await screen.findByRole('alert')).toHaveTextContent('We couldn’t confirm your last change.');
     expect(controller.close).not.toHaveBeenCalled();
     expect(screen.queryByRole('button', { name: 'View section report' })).toBeNull();
-    fireEvent.click(screen.getByRole('button', { name: 'Retry saved command' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Try again' }));
     await screen.findByRole('button', { name: 'View section report' });
     expect(controller.retry).toHaveBeenCalledTimes(1);
     expect(controller.retry.mock.invocationCallOrder[0]).toBeLessThan(controller.close.mock.invocationCallOrder[0]);
@@ -286,15 +366,16 @@ describe('standalone account section runner', () => {
     controller.load.mockReturnValue(new Promise(() => {}));
     actor = '10000000-0000-4000-8000-000000000002'; view.rerender(tree());
     expect(screen.queryByText('Verified question')).toBeNull();
-    expect(screen.getByRole('status')).toHaveTextContent('Loading your account section');
+    expect(screen.getByRole('status')).toHaveTextContent('Opening section');
     expect(controller.checkpoint).not.toHaveBeenCalled();
   });
-  it('surfaces disabled creation without silently swallowing the capability reason', async () => {
+  it('explains that the clock stays stopped when creation is unavailable', async () => {
     controller.load.mockRejectedValue(new TimedSectionError('access', 'Unknown account sitting'));
     controller.create.mockRejectedValue(new TimedSectionError('capability', 'The protected section writer is not available.'));
     mount('?kind=lr&pt=140&section=1&pace=standard');
-    fireEvent.click(await screen.findByRole('button', { name: 'Prepare section' }));
-    expect(await screen.findByRole('alert')).toHaveTextContent('The protected section writer is not available.');
+    fireEvent.click(await screen.findByRole('button', { name: 'Start section' }));
+    expect(await screen.findByRole('alert')).toHaveTextContent('Your timer hasn’t started.');
+    expect(screen.getByRole('button', { name: 'Try again' })).toBeEnabled();
     expect(controller.control).not.toHaveBeenCalled();
   });
   it('resets busy for a new owner while an old owner command remains in flight', async () => {
@@ -316,9 +397,9 @@ describe('standalone account section runner', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Select A' }));
     expect(screen.getByRole('status')).toHaveTextContent('Unsaved changes');
     fireEvent.click(screen.getByRole('button', { name: 'Pause' }));
-    expect(screen.getByRole('status')).toHaveTextContent('Saving to your account');
+    expect(screen.getByRole('status')).toHaveTextContent('Saving answers');
     await act(async () => acknowledge(state()));
-    expect(screen.getByRole('status')).toHaveTextContent('Account save acknowledged');
+    expect(screen.getByRole('status')).toBeEmptyDOMElement();
   });
   it('acknowledges checkpoint and pause before leaving a running section', async () => {
     mount(); await screen.findByText('Verified question');

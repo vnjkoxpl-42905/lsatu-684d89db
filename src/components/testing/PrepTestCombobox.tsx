@@ -32,6 +32,7 @@ import {
   CommandList,
 } from "@/components/ui/command";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { cn } from "@/lib/utils";
 
 export type PrepTestOption = {
   pt: number;
@@ -56,6 +57,7 @@ function matches(option: PrepTestOption, query: string): boolean {
 }
 
 export function PrepTestCombobox({
+  centerValue = false,
   emptyMessage = "No PrepTest by that number.",
   id,
   labelId,
@@ -64,6 +66,7 @@ export function PrepTestCombobox({
   placeholder = "Choose a PrepTest",
   value,
 }: {
+  centerValue?: boolean;
   emptyMessage?: string;
   /** Also the second half of the trigger's own aria-labelledby. */
   id: string;
@@ -125,13 +128,16 @@ export function PrepTestCombobox({
           // Self-referencing, so the name carries both the field and its
           // current value. A <label for> does not name a <button>.
           aria-labelledby={`${labelId} ${id}`}
-          className="w-full justify-between font-normal"
+          className={cn("w-full font-normal", centerValue ? "relative justify-center px-10" : "justify-between")}
           id={id}
           role="combobox"
           variant="outline"
         >
-          {chosen ? optionLabel(chosen) : placeholder}
-          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" aria-hidden />
+          <span className={centerValue ? "truncate" : undefined}>{chosen ? optionLabel(chosen) : placeholder}</span>
+          <ChevronsUpDown
+            className={cn("h-4 w-4 shrink-0 opacity-50", centerValue ? "absolute right-4" : "ml-2")}
+            aria-hidden
+          />
         </Button>
       </PopoverTrigger>
       <PopoverContent

@@ -1,15 +1,7 @@
 /**
  * What the section launcher tells a student before they commit.
  *
- * Two pieces of copy are load-bearing here. "Fresh" is our word for a section
- * with no attempts against it, and on its own it is a filter nobody can read.
- * And every field on this panel states a choice while none of them says what
- * happens once the choice is made — a student pressing Start is committing to
- * the whole section under a clock, and should know that before they press it.
- *
- * The commitment line has to be conditional in two directions: it cannot quote
- * a question count before a section is chosen, and it cannot promise a clock
- * that Unlimited does not start.
+ * Keep the chosen section's question count separate from the timing summary.
  */
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
@@ -123,6 +115,7 @@ const renderSelector = (props?: Partial<Parameters<typeof SectionSelector>[0]>) 
     <MemoryRouter>
       <SectionSelector
         manifest={manifest}
+        ownerId="student-1"
         onStartSection={vi.fn()}
         onCancel={vi.fn()}
         {...props}
@@ -195,7 +188,7 @@ describe('SectionSelector', () => {
     await pickSection();
     await waitFor(() => expect(document.activeElement).toBe(screen.getByRole('combobox', { name: /Section/i })));
     fireEvent.click(screen.getByRole('combobox', { name: /Timing/i }));
-    await waitFor(() => expect(document.activeElement).toBe(screen.getByRole('option', { name: /^Unlimited/ })));
+    await waitFor(() => expect(document.activeElement).toBe(screen.getByRole('option', { name: 'Untimed' })));
     fireEvent.click(await screen.findByRole('option', { name: /^Standard/ }));
     await waitFor(() => expect(screen.getByRole('combobox', { name: /Timing/i }).textContent).toContain('35:00'));
 
@@ -263,17 +256,21 @@ describe('SectionSelector', () => {
     renderSelector();
     await screen.findByText(/Select a PrepTest/);
 
-    expect(screen.queryByText(/in their published order/)).toBeNull();
+    expect(screen.queryByText(/^\d+ questions$/)).toBeNull();
   });
 
-  it('states the real question count and the clock once a section is chosen', async () => {
+  it('shows the section count and total time without adding a pace estimate', async () => {
     renderSelector();
     await pickSection();
 
     // 26, from the bank the runner reads, not the manifest's own count.
-    const line = await screen.findByText(/All 26 questions, in their published order\./);
-    expect(line.textContent).toMatch(/The clock starts straight away\./);
-    expect(line.textContent).toMatch(/blind review comes after/);
+    expect(await screen.findByText('26 questions')).toBeTruthy();
+    expect(screen.queryByText(/published order|clock starts/i)).toBeNull();
+    const timing = screen.getByRole('combobox', { name: /Timing.*Standard.*35:00/ });
+    expect(timing.textContent).not.toMatch(/Average/i);
+    fireEvent.click(timing);
+    expect(await screen.findByRole('option', { name: /Double time.*70:00/ })).toBeTruthy();
+    expect(screen.queryByText(/Average/i)).toBeNull();
   });
 
   it('filters the PrepTests by substring, not by fuzzy score', async () => {
@@ -343,7 +340,7 @@ describe('SectionSelector', () => {
     // steppers here; the picker's own test checks they sit outside the list.
   });
 
-  it('does not promise a clock that Unlimited never starts', async () => {
+  it('shows Untimed and retains the selected question count', async () => {
     renderSelector();
 
     // Let the freshness read settle before opening the popover. The picker
@@ -357,14 +354,11 @@ describe('SectionSelector', () => {
     // rather than only the field. It was aria-label="Section timing", which
     // announced the field and dropped "Standard / 35:00".
     fireEvent.click(screen.getByRole('combobox', { name: /Timing/i }));
-    fireEvent.click(await screen.findByRole('option', { name: /Unlimited/ }));
+    fireEvent.click(await screen.findByRole('option', { name: 'Untimed' }));
     await pickSection();
 
-    const line = await screen.findByText(
-      (_, el) => el?.tagName === 'P' && /No clock, so take as long as you want\./.test(el.textContent ?? ''),
-    );
-    expect(line.textContent).toMatch(/All 26 questions, in their published order\./);
-    expect(line.textContent).not.toMatch(/The clock begins only after you press Start section/);
+    expect(await screen.findByText('26 questions')).toBeTruthy();
+    expect(screen.getByRole('combobox', { name: /Timing.*Untimed/ })).toBeTruthy();
   });
 
   it('shows the Status filter for RC sections and filters out attempted RC sections under Fresh', async () => {
@@ -402,7 +396,7 @@ describe('SectionSelector', () => {
     expect(allTests).toEqual(['PrepTest 141', 'PrepTest 140']);
   });
 
-  it('launches an RC section directly to newManualSectionHref when manualSectionsEnabled is true and pace is mapped', async () => {
+  it('carries Start intent to the protected RC route when the pace is supported', async () => {
     rcTestState.passages = buildRcPassageFixtures(141, 1);
     rcTestState.freshness = new Map([
       ['141-1', { pt: 141, section: 1, total: 28, unseen: 28, percentFresh: 100, isFresh: true }],
@@ -423,6 +417,7 @@ describe('SectionSelector', () => {
     expect(onStartRcSection.mock.calls[0][0]).toMatch(
       /^\/testing\/sections\/[0-9a-f-]+\?kind=rc&pt=141&section=1&pace=standard$/,
     );
+    expect(onStartRcSection.mock.calls[0][1]).toEqual({ timedSectionStart: expect.any(String) });
   });
 
   it('falls back to rcSectionHref when manualSectionsEnabled is false', async () => {
@@ -446,28 +441,6 @@ describe('SectionSelector', () => {
     expect(onStartRcSection.mock.calls[0][0]).toBe(
       '/rc?passages=14111%2C14112%2C14113%2C14114&reveal=end_of_set&timing=standard&start=1&timedSection=manual-canonical',
     );
-  });
-
-  it.each([
-    [true, /The clock begins only after you press Start section\./],
-    [false, /The clock starts straight away\./],
-  ])('words the RC clock truthfully when manualSectionsEnabled is %s', async (enabled, expected) => {
-    rcTestState.passages = buildRcPassageFixtures(141, 1);
-    rcTestState.freshness = new Map([
-      ['141-1', { pt: 141, section: 1, total: 28, unseen: 28, percentFresh: 100, isFresh: true }],
-    ]);
-    rcTestState.manualEnabled = enabled;
-    rcTestState.coverage = true;
-
-    renderSelector({ initialKind: 'rc', onStartRcSection: vi.fn() });
-    await waitFor(() => expect(screen.queryByText(/Checking what you have worked/)).toBeNull());
-    await openPrepTests();
-    fireEvent.click(await screen.findByText(/^PrepTest 141$/));
-    await openSelectShowing(/Select a section/);
-    fireEvent.click(await screen.findByText(/^Section 1$/));
-
-    const line = await screen.findByText(/in their published order/);
-    await waitFor(() => expect(line.textContent).toMatch(expected));
   });
 
   it('starts an RC section only once when Start is clicked twice quickly', async () => {

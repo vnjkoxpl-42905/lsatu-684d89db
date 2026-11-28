@@ -223,6 +223,8 @@ describe("Testing Centre", () => {
     fireEvent.click(screen.getByRole("button", { name: /Take a section/ }));
     fireEvent.click(screen.getByRole("button", { name: /Choose specific/i }));
     expect(screen.getByTestId("section-selector")).toBeTruthy();
+    const dialog = screen.getByRole("dialog", { name: "Choose a section" });
+    expect(dialog.querySelector("h2")?.classList.contains("sr-only")).toBe(true);
   });
 
   it("offers a PrepTest whose RC section is short, and says so", async () => {
