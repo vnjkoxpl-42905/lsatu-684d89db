@@ -409,25 +409,26 @@ export const TRANSLATOR_ITEMS: TranslatorDrillItem[] = [
   },
   {
     stemNumber: 14,
-    stemText: "It is a statement for which some evidence is provided and that is the conclusion of the argument as a whole:",
-    correctKeywords: ["evidence", "provided", "conclusion", "whole"],
+    stemText: "It is a statement for which some evidence is provided and that itself is offered as support for the conclusion of the argument as a whole:",
+    correctKeywords: ["evidence", "provided", "support", "conclusion", "whole"],
     idealTranslation:
-      "The statement is the main conclusion of the argument, and the argument provides some evidence for it.",
+      "The statement has its own support, and it also supports the main conclusion. It is an intermediate conclusion.",
     walkthrough: {
       reasoning: [
-        "Same as example 12. The statement in question is supported by support, and is the conclusion of the argument as a whole. The phrase \"some evidence is provided\" is a soft cue: it doesn't say the evidence is sufficient or that the support chain is multi-layered, only that some support exists.",
-        "When faced with this answer choice, make sure the quoted statement is in fact the main conclusion (not an intermediate one) and that at least one supporting statement exists in the stimulus.",
+        "Same as the previous choice. The statement in question is supported by support, and supports the main conclusion. This is also the intermediate conclusion.",
+        "Check both directions. Something in the stimulus must support the statement, and the statement must in turn support the main conclusion. If nothing supports it, it is a premise. If it supports nothing further, it is the main conclusion.",
       ],
       vocab: [],
       requirements: [
-        "The quoted statement must be the main conclusion of the argument.",
         "At least one statement in the stimulus must support it.",
+        "It must be offered as support for the main conclusion.",
+        "It must not be the main conclusion itself.",
       ],
       example: {
         stimulus:
           "All practicing lawyers must have passed the bar. John is a partner at a prestigious law firm and therefore he is a practicing lawyer, so he must have passed the bar.",
         explanation:
-          "John having passed the bar is the main conclusion of the argument. The argument provides evidence for it: that all practicing lawyers must have passed the bar, and that John is a practicing lawyer.",
+          "John being a practicing lawyer has evidence behind it: he is a partner at a prestigious law firm. It is also offered as support for the main conclusion, that he must have passed the bar. That makes it the intermediate conclusion.",
       },
     },
   },
