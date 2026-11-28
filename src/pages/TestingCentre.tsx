@@ -18,7 +18,7 @@ import * as DialogPrimitive from "@radix-ui/react-dialog";
 import * as React from "react";
 import { parseWorkIdentity, withWorkIdentity } from '@/lib/studentWorkIdentity';
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
-import { ArrowUpRight, Dice5, List, Loader2, MousePointer2, Shuffle, X } from "lucide-react";
+import { ArrowUpRight, Dice5, Loader2, MousePointer2, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Select,
@@ -691,7 +691,14 @@ export default function TestingCentre() {
             {!setupSelected && (
               <div className="testing-setup-choices">
                 <button type="button" onClick={() => setSelection("specific")}>
-                  {choosingSection ? <List size={20} aria-hidden="true" /> : <MousePointer2 size={20} aria-hidden="true" />}
+                  {choosingSection ? (
+                    <svg aria-hidden="true" className="testing-section-choice-icon" viewBox="0 0 24 24"
+                      fill="none" stroke="currentColor" strokeWidth="1.65" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M7 21H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h10l3 3v5m-4-8v4h4M7 8h4m-4 3h4" />
+                      <circle cx="14" cy="16" r="3.5" />
+                      <path d="m16.5 18.5 3 3" />
+                    </svg>
+                  ) : <MousePointer2 size={20} aria-hidden="true" />}
                   <strong>{choosingSection ? "Pick a PrepTest and section" : "Choose specific"}</strong>
                   {!choosingSection && <span>Pick a PrepTest.</span>}
                 </button>
@@ -702,7 +709,13 @@ export default function TestingCentre() {
                     if (door === "test") setRandomPt(eligibleTests[Math.floor(Math.random() * eligibleTests.length)].pt);
                     setSelection("random");
                   }}>
-                  {choosingSection ? <Shuffle size={20} aria-hidden="true" /> : <Dice5 size={20} aria-hidden="true" />}
+                  {choosingSection ? (
+                    <svg aria-hidden="true" className="testing-section-choice-icon" viewBox="0 0 24 24"
+                      fill="none" stroke="currentColor" strokeWidth="1.65" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M10 21H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h10l3 3v4m-4-7v4h4M7 8h4m-4 3h4" />
+                      <path d="M12 14h1.5c2.5 0 2.5 6 5 6H22m-2-2 2 2-2 2m-8-2h1.5c2.5 0 2.5-6 5-6H22m-2-2 2 2-2 2" />
+                    </svg>
+                  ) : <Dice5 size={20} aria-hidden="true" />}
                   <strong id={choosingSection ? "section-choice-random-label" : undefined}>
                     {choosingSection ? "Let me choose for you" : "Random"}
                   </strong>

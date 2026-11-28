@@ -764,13 +764,27 @@ html.dark .classroom-root .testing-resume-description progress {
 
 .testing-setup-dialog[data-section-choice] .testing-setup-choices button {
   min-height: 64px;
-  grid-template-columns: 20px minmax(0, 1fr);
+  grid-template-columns: 40px minmax(0, 1fr);
   align-items: center;
   align-content: center;
   gap: 2px 12px;
   padding: 12px 16px;
   border-color: var(--classroom-line-strong);
   border-radius: 6px;
+}
+
+.testing-section-choice-icon {
+  grid-column: 1;
+  grid-row: 1 / span 2;
+  width: 40px;
+  height: 40px;
+  padding: 8px;
+  border-radius: 6px;
+  background: var(--classroom-hover);
+}
+
+.testing-setup-dialog[data-section-choice] .testing-setup-choices button:first-child .testing-section-choice-icon {
+  grid-row: 1;
 }
 
 .testing-setup-dialog[data-section-choice] .testing-setup-choices strong {
@@ -784,6 +798,7 @@ html.dark .classroom-root .testing-resume-description progress {
   font-size: .875rem;
   font-weight: 400;
   line-height: 1.4;
+  text-wrap: pretty;
 }
 
 .testing-setup-dialog[data-section-choice] button:focus-visible {
