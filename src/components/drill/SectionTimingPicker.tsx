@@ -261,19 +261,19 @@ export default function SectionTimingPicker({
             // between things, --input is the edge of a control and is the one
             // the testing surface tunes to 1.4.11's 3:1 in both themes. This
             // trigger drew --border and measured 1.32:1 light, 1.37:1 dark.
-            'w-full flex items-center justify-between gap-3 rounded-xl border border-input bg-background px-4 py-3 text-left transition-colors hover:bg-accent/40',
+            'grid w-full grid-cols-[1rem_minmax(0,1fr)_1rem] items-center gap-3 rounded-xl border border-input bg-background px-4 py-3 text-center transition-colors hover:bg-accent/40',
             'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/20',
             className,
           )}
         >
-          <span className="min-w-0">
+          <span className="col-start-2 min-w-0">
             <span
               className="block text-xs font-medium uppercase tracking-wider text-muted-foreground"
               id={fieldLabelId}
             >
               Timing
             </span>
-            <span className="mt-0.5 flex flex-wrap items-baseline gap-x-2" id={valueLabelId}>
+            <span className="mt-0.5 flex flex-wrap items-baseline justify-center gap-x-2" id={valueLabelId}>
               <span className="text-sm font-semibold text-foreground">{triggerTitle}</span>
               {triggerDetail && <span className="text-xs text-muted-foreground">{triggerDetail}</span>}
             </span>
