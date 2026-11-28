@@ -24,7 +24,7 @@ export interface SectionReportProps {
   onBack: () => void;
   backLabel?: string;
   /** Called when the user opens the read-only review walk (with optional qid and loaded row). */
-  onReviewSection?: (qid?: string, row?: SectionHistoryRow) => void;
+  onReviewSection?: (qid?: string, row?: SectionHistoryRow, trigger?: HTMLElement) => void;
   /** Called when the user clicks "Do blind review" on a released or sealed section. */
   onStartBlindReview?: (context: {
     historyId: string;
@@ -42,6 +42,8 @@ export interface SectionReportProps {
   title?: string;
   /** Increment to force a reload from the server (for example after completing blind review). */
   refreshKey?: number;
+  /** A result the caller already read for this section; used for the first render instead of a second read. */
+  initialResult?: OwnedSectionReportResult | null;
 }
 
 export function SectionReport({
@@ -58,10 +60,12 @@ export function SectionReport({
   onRetryPrediction,
   title,
   refreshKey = 0,
+  initialResult = null,
 }: SectionReportProps) {
   const { user } = useAuth();
-  const [result, setResult] = React.useState<OwnedSectionReportResult | null>(null);
-  const [loading, setLoading] = React.useState<boolean>(Boolean(historyId));
+  const [result, setResult] = React.useState<OwnedSectionReportResult | null>(initialResult);
+  const [loading, setLoading] = React.useState<boolean>(Boolean(historyId) && !initialResult);
+  const skipInitialRead = React.useRef(Boolean(initialResult));
   const [error, setError] = React.useState<string | null>(null);
   const [retryCount, setRetryCount] = React.useState(0);
 
@@ -70,6 +74,10 @@ export function SectionReport({
       setLoading(false);
       setResult(null);
       setError(null);
+      return;
+    }
+    if (skipInitialRead.current) {
+      skipInitialRead.current = false;
       return;
     }
     let active = true;
@@ -99,7 +107,7 @@ export function SectionReport({
         data={fallbackData}
         onBack={onBack}
         backLabel={backLabel}
-        onReviewSection={onReviewSection ? (qid) => onReviewSection(qid) : undefined}
+        onReviewSection={onReviewSection ? (qid, trigger) => onReviewSection(qid, undefined, trigger) : undefined}
         onStartBlindReview={
           !fallbackData.brUsed && onStartBlindReview
             ? () =>
@@ -210,7 +218,7 @@ export function SectionReport({
       data={data}
       onBack={onBack}
       backLabel={backLabel}
-      onReviewSection={onReviewSection ? (qid) => onReviewSection(qid, row) : undefined}
+      onReviewSection={onReviewSection ? (qid, trigger) => onReviewSection(qid, row, trigger) : undefined}
       onStartOver={canStartOver ? () => onStartOver!(row) : undefined}
       pendingPrediction={pendingPrediction}
       retryingPrediction={retryingPrediction}
