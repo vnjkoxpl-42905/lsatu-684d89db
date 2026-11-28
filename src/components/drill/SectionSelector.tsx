@@ -16,7 +16,6 @@ import {
   type SectionFreshness,
 } from '@/lib/sectionFreshness';
 import SectionTimingPicker, {
-  AccommodationNote,
   STANDARD_TIMING,
   type SectionTiming,
 } from '@/components/drill/SectionTimingPicker';
@@ -541,7 +540,7 @@ export function SectionSelector({
             >
               <SelectTrigger
                 aria-labelledby="section-select-label section-select"
-                className="text-sm"
+                className="relative justify-center px-8 text-sm [&>svg]:absolute [&>svg]:right-3"
                 id="section-select"
               >
                 <SelectValue
@@ -583,7 +582,7 @@ export function SectionSelector({
             labels={kind === 'rc' ? rcTimingLabels : { 100: 'Standard', 150: 'Time and a half', 200: 'Double time' }}
             accommodationNote={explicitBaseMinutes !== null && explicitBaseMinutes !== profileBaseMinutes
               ? 'Your selected timing is kept. New setups use your updated profile timing.'
-              : <AccommodationNote baseMinutes={profileBaseMinutes} />}
+              : undefined}
             className="min-h-[44px] rounded-md"
             contentClassName="testing-menu min-w-0 max-w-[var(--radix-popover-content-available-width)]"
           />}
