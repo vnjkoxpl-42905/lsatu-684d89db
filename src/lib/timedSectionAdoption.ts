@@ -36,6 +36,37 @@ export function newManualSectionHref(kind: 'lr' | 'rc', pt: number, section: num
   const query = new URLSearchParams({ kind, pt: String(pt), section: String(section), pace });
   return `${timedSectionResumeHref(crypto.randomUUID())}?${query}`;
 }
+
+// History state survives refresh. This ticket deliberately lives only in the
+// current page's memory, and only the newest in-app Start gesture can claim it.
+type StartIntent = { token: string; ownerId: string; destination: string; expiresAt: number };
+let pendingStart: StartIntent | undefined;
+
+function issueStart(ownerId: string, destination: string): string {
+  const token = crypto.randomUUID();
+  pendingStart = { token, ownerId, destination, expiresAt: performance.now() + 120000 };
+  return token;
+}
+
+export function claimSectionStart(token: unknown, ownerId: string | undefined, destination: string): boolean {
+  const intent = pendingStart;
+  if (!intent || token !== intent.token) return false;
+  pendingStart = undefined;
+  return intent.ownerId === ownerId && intent.destination === destination && performance.now() < intent.expiresAt;
+}
+
+export function newSectionStartIntent(ownerId: string, pt: number, section: number): string {
+  return issueStart(ownerId, lrSectionStartDestination(pt, section));
+}
+
+export function lrSectionStartDestination(pt: number, section: number): string {
+  return `lr:${pt}:${section}`;
+}
+
+export function newManualSectionLaunch(kind: 'lr' | 'rc', pt: number, section: number, pace: PracticeTestPaceId, ownerId: string) {
+  const href = newManualSectionHref(kind, pt, section, pace);
+  return { href, state: { timedSectionStart: issueStart(ownerId, href) } };
+}
 export function missedRcConfig(config: RcDrillConfig): RcDrillConfig {
   const { timedSectionSittingId: _sitting, practiceTestRunId: _test, practiceTestLegIndex: _leg,
     clockElapsedSeconds: _clock, currentQuestionIndex: _index, lastActiveAt: _active,

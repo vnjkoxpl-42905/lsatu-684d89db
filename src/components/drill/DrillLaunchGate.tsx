@@ -17,7 +17,7 @@
  */
 
 import * as React from 'react';
-import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
+import { useLocation, useNavigate, useNavigationType, useSearchParams } from 'react-router-dom';
 import { Loader2 } from 'lucide-react';
 
 import { useAuth } from '@/contexts/AuthContext';
@@ -39,7 +39,7 @@ import { drillRunSpecFromLaunch, type DrillRunSpec } from '@/lib/drillRunSpec';
 import { recordExposures } from '@/lib/questionExposure';
 import { Button } from '@/components/ui/button';
 import { DrillRunSpecProvider } from '@/components/drill/DrillRunSpecContext';
-import { manualSectionCoverage, manualSectionsEnabled, newManualSectionHref, sectionPace, timedSectionResumeHref } from '@/lib/timedSectionAdoption';
+import { claimSectionStart, lrSectionStartDestination, manualSectionCoverage, manualSectionsEnabled, newManualSectionHref, newManualSectionLaunch, sectionPace, timedSectionResumeHref } from '@/lib/timedSectionAdoption';
 
 interface Props {
   children: React.ReactNode;
@@ -61,6 +61,7 @@ function mergeUnclaimedParams(canonical: string, existing: URLSearchParams): str
 export default function DrillLaunchGate({ children, launch: embeddedLaunch }: Props) {
   const [searchParams] = useSearchParams();
   const location = useLocation();
+  const navigationType = useNavigationType();
   const navigate = useNavigate();
   const { user, authReady } = useAuth();
   const { isLoading: questionBankLoading } = useQuestionBank();
@@ -129,6 +130,7 @@ export default function DrillLaunchGate({ children, launch: embeddedLaunch }: Pr
     launch.timerMode === '52.5' ? 52.5 : launch.timerMode === '70' ? 70 : launch.timerMode === 'custom' ? -1 : 35) : null;
   const [adoption, setAdoption] = React.useState<{ key: string; redirect: boolean } | null>(null);
   const checkingAdoption = !!eligible && !!pace && adoption?.key !== resolutionKey;
+  const startIntent: unknown = !namedInUrl && navigationType !== 'POP' ? location.state?.startSection : undefined;
   React.useEffect(() => {
     let cancelled = false;
     if (protectedResume) {
@@ -136,14 +138,22 @@ export default function DrillLaunchGate({ children, launch: embeddedLaunch }: Pr
       catch { setFailure('The saved section identity is invalid.'); }
       return;
     }
-    if (!eligible || !pace || launch?.kind !== 'section') return;
+    if (!authReady || !eligible || !pace || launch?.kind !== 'section') return;
     void manualSectionsEnabled(user?.id).then(enabled => {
       if (cancelled) return;
-      if (enabled) navigate(newManualSectionHref('lr', launch.pt, launch.section, pace), { replace: true, state: null });
+      const startNow = claimSectionStart(startIntent, user?.id, lrSectionStartDestination(launch.pt, launch.section));
+      if (enabled) {
+        if (startNow && user?.id) {
+          const handoff = newManualSectionLaunch('lr', launch.pt, launch.section, pace, user.id);
+          navigate(handoff.href, { replace: true, state: handoff.state });
+        } else {
+          navigate(newManualSectionHref('lr', launch.pt, launch.section, pace), { replace: true, state: null });
+        }
+      }
       setAdoption({ key: resolutionKey, redirect: enabled });
     });
     return () => { cancelled = true; };
-  }, [eligible, pace, launch, protectedResume, resolutionKey, user?.id, navigate]);
+  }, [authReady, eligible, pace, launch, protectedResume, resolutionKey, startIntent, user?.id, navigate]);
 
   const needsResolution = !!launch && (launchNeedsResolution(launch) || !!requestedStandaloneRunId || !!homeworkAssignmentId);
   const waitsForQuestionBank =
@@ -260,9 +270,9 @@ export default function DrillLaunchGate({ children, launch: embeddedLaunch }: Pr
   if (protectedResume || checkingAdoption || adoption?.key === resolutionKey && adoption.redirect || launch && !spec) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
-        <div className="flex items-center gap-3 text-sm text-muted-foreground">
+        <div role="status" className="flex items-center gap-3 text-sm text-muted-foreground">
           <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
-          Opening your drill…
+          {launch?.kind === 'section' ? 'Opening section…' : 'Opening your drill…'}
         </div>
       </div>
     );

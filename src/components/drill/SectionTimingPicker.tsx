@@ -70,7 +70,7 @@ interface Props {
   allowedPercents?: number[];
   /** Overrides the row label for a percentage (RC names its three paces). */
   labels?: Record<number, string>;
-  /** Hide the Unlimited row where a stopwatch has no meaning. */
+  /** Hide the untimed option where a stopwatch has no meaning. */
   allowUnlimited?: boolean;
   /**
    * Line under the options naming the student's standing extra time, with a
@@ -231,8 +231,8 @@ export default function SectionTimingPicker({
     target.focus();
   };
 
-  const triggerTitle = isTimed ? labelFor(currentPercent) : 'Unlimited';
-  const triggerDetail = isTimed ? describe(currentPercent) : 'No clock';
+  const triggerTitle = isTimed ? labelFor(currentPercent) : 'Untimed';
+  const triggerDetail = isTimed ? describe(currentPercent) : null;
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -275,7 +275,7 @@ export default function SectionTimingPicker({
             </span>
             <span className="mt-0.5 flex flex-wrap items-baseline gap-x-2" id={valueLabelId}>
               <span className="text-sm font-semibold text-foreground">{triggerTitle}</span>
-              <span className="text-xs text-muted-foreground">{triggerDetail}</span>
+              {triggerDetail && <span className="text-xs text-muted-foreground">{triggerDetail}</span>}
             </span>
           </span>
           <ChevronDown className="h-4 w-4 shrink-0 text-muted-foreground" />
@@ -319,8 +319,7 @@ export default function SectionTimingPicker({
               {allowUnlimited && (
                 <Row
                   selected={value.mode === 'unlimited'}
-                  title="Unlimited"
-                  detail="∞"
+                  title="Untimed"
                   onSelect={() => {
                     onChange({ mode: 'unlimited' });
                     setOpen(false);
@@ -341,8 +340,7 @@ export default function SectionTimingPicker({
               {allowUnlimited && (
                 <Row
                   selected={value.mode === 'unlimited'}
-                  title="Unlimited"
-                  detail="∞"
+                  title="Untimed"
                   onSelect={() => {
                     onChange({ mode: 'unlimited' });
                     setOpen(false);
@@ -453,7 +451,7 @@ function Row({
   selected: boolean;
   tabStop?: boolean;
   title: string;
-  detail: string;
+  detail?: string;
   onSelect: () => void;
 }) {
   return (
@@ -471,7 +469,7 @@ function Row({
     >
       <span className="min-w-0">
         <span className="block text-sm font-semibold text-foreground">{title}</span>
-        <span className="block text-xs text-muted-foreground">{detail}</span>
+        {detail && <span className="block text-xs text-muted-foreground">{detail}</span>}
       </span>
       {selected && <Check className="mt-0.5 h-4 w-4 shrink-0 text-foreground" />}
     </button>

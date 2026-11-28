@@ -42,7 +42,7 @@ describe('SectionTimingPicker', () => {
 
     expect(names()).toMatch(/^Standard/);
     fireEvent.keyDown(list, { key: 'ArrowDown' });
-    expect(names()).toMatch(/^Unlimited/);
+    expect(names()).toMatch(/^Untimed/);
     fireEvent.keyDown(list, { key: 'ArrowDown' });
     expect(names()).toMatch(/^97%/);
     fireEvent.keyDown(list, { key: 'End' });
@@ -79,7 +79,7 @@ describe('SectionTimingPicker', () => {
   it('chooses a row on Enter, being a button', async () => {
     render(<Harness />);
     await open();
-    fireEvent.click(screen.getByRole('option', { name: /^Unlimited/ }));
-    expect(screen.getByRole('combobox', { name: /Timing/i }).textContent).toMatch(/Unlimited/);
+    fireEvent.click(screen.getByRole('option', { name: 'Untimed' }));
+    expect(screen.getByRole('combobox', { name: /Timing/i }).textContent).toMatch(/Untimed/);
   });
 });

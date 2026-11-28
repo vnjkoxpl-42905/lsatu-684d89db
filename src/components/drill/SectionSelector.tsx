@@ -32,7 +32,7 @@ import {
 import {
   manualSectionCoverage,
   manualSectionsEnabled,
-  newManualSectionHref,
+  newManualSectionLaunch,
 } from '@/lib/timedSectionAdoption';
 
 /**
@@ -44,9 +44,9 @@ export type SectionKind = 'lr' | 'rc';
 
 interface SectionSelectorProps {
   manifest: QuestionManifest;
+  ownerId?: string;
   onStartSection: (config: FullSectionConfig) => void;
-  /** Starts an RC section by navigating to the link `rcSectionHref` or `newManualSectionHref` builds. */
-  onStartRcSection?: (href: string) => void;
+  onStartRcSection?: (href: string, state?: { timedSectionStart: string }) => void;
   /**
    * Which kind the selector opens on. The drill hub's RC section passes 'rc'
    * so a student who has already thrown the LR/RC switch is not asked the same
@@ -63,6 +63,7 @@ interface SectionSelectorProps {
 
 export function SectionSelector({
   manifest,
+  ownerId,
   onStartSection,
   onStartRcSection,
   hideStatus = false,
@@ -101,25 +102,17 @@ export function SectionSelector({
   const [rcFreshnessLoading, setRcFreshnessLoading] = useState(false);
   const [rcFreshnessError, setRcFreshnessError] = useState<string | null>(null);
   const [rcError, setRcError] = useState<string | null>(null);
-  // Whether an RC start goes through the protected section preflight. The
-  // "clock begins after Start section" copy is only true on that path.
-  const [rcManualEnabled, setRcManualEnabled] = useState<boolean | null>(null);
   const [starting, setStarting] = useState(false);
+  const [startError, setStartError] = useState(false);
+  const startLocked = useRef(false);
+  const isMounted = useRef(false);
 
   useEffect(() => {
-    if (kind !== 'rc') return;
-    let cancelled = false;
-    manualSectionsEnabled()
-      .then((enabled) => {
-        if (!cancelled) setRcManualEnabled(enabled);
-      })
-      .catch(() => {
-        if (!cancelled) setRcManualEnabled(false);
-      });
+    isMounted.current = true;
     return () => {
-      cancelled = true;
+      isMounted.current = false;
     };
-  }, [kind]);
+  }, []);
 
   useEffect(() => {
     if (kind !== 'rc' || rcSections !== null) return;
@@ -320,35 +313,30 @@ export function SectionSelector({
   }, [pickableSections, selectedPT, selectedSection]);
 
   const handleStart = async () => {
-    if (checkingProfileTiming) return;
-    if (kind === 'rc') {
-      if (chosenRcSection && onStartRcSection && !starting) {
-        setStarting(true);
-        try {
-          const protectedPace = rcProtectedPaceForTiming(timing.mode === 'unlimited' ? timing : {
-            mode: 'timed', percent: Math.round(timing.percent * baseMinutes / 35 * 1e6) / 1e6,
-          });
-          const canUseManualSection =
-            protectedPace !== null &&
-            manualSectionCoverage('rc', chosenRcSection.preptest, chosenRcSection.section) &&
-            (await manualSectionsEnabled());
-          const href =
-            canUseManualSection && protectedPace
-              ? newManualSectionHref(
-                  'rc',
-                  chosenRcSection.preptest,
-                  chosenRcSection.section,
-                  protectedPace,
-                )
-              : rcSectionHref(chosenRcSection, rcPaceId);
-          onStartRcSection(href);
-        } finally {
-          setStarting(false);
+    if (checkingProfileTiming || startLocked.current || !isReadyToStart) return;
+    startLocked.current = true;
+    setStarting(true);
+    setStartError(false);
+    try {
+      if (kind === 'rc' && chosenRcSection && onStartRcSection) {
+        const { preptest, section } = chosenRcSection;
+        const protectedPace = rcProtectedPaceForTiming(timing.mode === 'unlimited' ? timing : {
+          mode: 'timed',
+          percent: Math.round(timing.percent * baseMinutes / 35 * 1e6) / 1e6,
+        });
+        const canUseProtectedSection = ownerId && protectedPace
+          && manualSectionCoverage('rc', preptest, section)
+          && await manualSectionsEnabled(ownerId);
+        if (!isMounted.current) return;
+        if (canUseProtectedSection && protectedPace && ownerId) {
+          const { href, state } = newManualSectionLaunch('rc', preptest, section, protectedPace, ownerId);
+          onStartRcSection(href, state);
+        } else {
+          onStartRcSection(rcSectionHref(chosenRcSection, rcPaceId));
         }
+        return;
       }
-      return;
-    }
-    if (selectedPT && selectedSection) {
+      if (!selectedPT || !selectedSection) return;
       let mode: TimerMode;
       let customMins: number | undefined;
       if (timing.mode === 'unlimited') {
@@ -375,307 +363,268 @@ export function SectionSelector({
           startedAt: Date.now(),
         },
       });
+    } catch {
+      if (!isMounted.current) return;
+      startLocked.current = false;
+      setStartError(true);
+      setStarting(false);
     }
   };
 
-  /**
-   * Questions in the section actually chosen, which is what turns a clock into
-   * a pace. Undefined until a section is picked; the control then shows the
-   * clock alone rather than a per-question figure for a section nobody chose.
-   */
   const chosenQuestionCount = useMemo(() => {
     if (kind === 'rc') return chosenRcSection?.questionCount;
     if (!selectedPT || !selectedSection) return undefined;
-    // Read from the bank, the same call the runner makes, rather than from
-    // manifest.sections[].count — one source for the denominator means the
-    // quoted pace and the served section cannot describe different sections.
-    // (The runner can still serve fewer: a full section is currently passed
-    // through the question-pool dedupe filter, which drops questions the
-    // student has already seen. That is a bug in the runner, not a reason to
-    // quote a pace for anything other than the real published section.)
     return questionBank.getSection(selectedPT, selectedSection).length || undefined;
   }, [kind, chosenRcSection, selectedPT, selectedSection]);
 
   const isReadyToStart =
-    kind === 'rc' ? Boolean(chosenRcSection) : Boolean(selectedPT && selectedSection);
-
-  // Only an RC start that will really open the preflight screen can promise
-  // that the clock waits for "Start section". LR and the live-drill fallback
-  // keep the older wording because their clock starts as soon as they open.
-  const clockWaitsForStart =
-    kind === 'rc' &&
-    rcManualEnabled === true &&
-    chosenRcSection != null &&
-    rcProtectedPaceForTiming(timing.mode === 'unlimited' ? timing : {
-      mode: 'timed',
-      percent: Math.round(timing.percent * baseMinutes / 35 * 1e6) / 1e6,
-    }) !== null &&
-    manualSectionCoverage('rc', chosenRcSection.preptest, chosenRcSection.section);
+    kind === 'rc' ? Boolean(chosenRcSection && onStartRcSection) : Boolean(selectedPT && selectedSection);
 
   return (
-    // No wrapper card and no header. The Testing Centre's panel is the card,
-    // and its door already said "Take a section / One real LR or RC section
-    // from an official PrepTest" — a heading here only said it again.
     <div className="testing-section-launcher">
-      {/* Which section. Named for what the student sits, not for a data
-          source: "Reading Comprehension" is four published passages in
-          their published order, and "Logical Reasoning" is a whole LR
-          section. */}
-      <div className="space-y-3 mb-8">
-        <span
-          className="text-xs font-semibold uppercase tracking-wider"
-          id="section-kind-label"
-        >
-          Section type
-        </span>
-        {/* Two toggle buttons in a labelled group, not role="tab". A tab
-            must point at a tabpanel through aria-controls and there is
-            none; a radiogroup owes the user arrow-key navigation this
-            never implemented. Pressed buttons are the pattern that is
-            actually complete here. */}
-        <div
-          aria-labelledby="section-kind-label"
-          className="grid grid-cols-1 gap-2 rounded-lg bg-muted p-1.5 sm:grid-cols-2 sm:gap-3"
-          role="group"
-        >
-          {([
-            { key: 'lr', label: 'Logical Reasoning' },
-            { key: 'rc', label: 'Reading Comprehension' },
-          ] as const).map(({ key, label }) => (
-            <button
-              key={key}
-              type="button"
-              aria-pressed={kind === key}
-              onClick={() => switchKind(key)}
-              className={cn(
-                "px-4 py-3.5 rounded-lg text-sm font-semibold transition-all duration-150 sm:px-6",
-                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/20",
-                kind === key
-                  ? "bg-background text-foreground"
-                  : "text-muted-foreground hover:text-foreground hover:bg-background/50",
-              )}
-            >
-              {label}
-            </button>
-          ))}
+      <fieldset className="testing-section-fields space-y-4" disabled={starting}>
+        <div className="grid gap-1.5">
+          <span
+            className="text-xs font-semibold uppercase tracking-wider"
+            id="section-kind-label"
+          >
+            Section type
+          </span>
+          {/* Two toggle buttons in a labelled group, not role="tab". A tab
+              must point at a tabpanel through aria-controls and there is
+              none; a radiogroup owes the user arrow-key navigation this
+              never implemented. Pressed buttons are the pattern that is
+              actually complete here. */}
+          <div
+            aria-labelledby="section-kind-label"
+            className="grid grid-cols-2 gap-1 rounded-lg bg-muted p-1"
+            role="group"
+          >
+            {([
+              { key: 'lr', label: 'Logical Reasoning' },
+              { key: 'rc', label: 'Reading Comprehension' },
+            ] as const).map(({ key, label }) => (
+              <button
+                key={key}
+                type="button"
+                autoFocus={key === initialKind}
+                aria-pressed={kind === key}
+                onClick={() => switchKind(key)}
+                className={cn(
+                  "min-h-[44px] rounded-md px-2 py-2 text-sm font-semibold transition-colors duration-150",
+                  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/20",
+                  kind === key
+                    ? "bg-background text-foreground"
+                    : "text-muted-foreground hover:text-foreground hover:bg-background/50",
+                )}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
+          {/* A live region that is always in the tree while RC is chosen, so a
+              screen reader hears the sections arrive or fail. A region added
+              with its message is skipped by most readers: only a change inside
+              an existing region is announced. The empty element costs nothing
+              and is what makes the two states below audible at all. */}
+          {kind === 'rc' && (
+            <p className="text-sm text-muted-foreground empty:!mt-0" role="status" aria-live="polite">
+              {rcError ? rcError : rcSections === null ? 'Loading sections…' : null}
+            </p>
+          )}
         </div>
-        {/* A live region that is always in the tree while RC is chosen, so a
-            screen reader hears the sections arrive or fail. A region added
-            with its message is skipped by most readers: only a change inside
-            an existing region is announced. The empty element costs nothing
-            and is what makes the two states below audible at all. */}
-        {kind === 'rc' && (
-          <p className="text-sm text-muted-foreground empty:!mt-0" role="status" aria-live="polite">
-            {rcError ? rcError : rcSections === null ? 'Loading sections…' : null}
-          </p>
-        )}
-      </div>
 
-      {/* PrepTest & Section Selectors */}
-      <div className="space-y-8 mb-12">
-        {!hideStatus && (
-          <div className="space-y-3">
+        {/* PrepTest & Section Selectors */}
+        <div className="space-y-4">
+          {!hideStatus && (
+            <div className="space-y-3">
+              <label
+                className="text-xs font-semibold uppercase tracking-wider"
+                htmlFor="status-select"
+                id="status-select-label"
+              >
+                Status
+              </label>
+              <Select
+                value={freshnessFilter}
+                onValueChange={(val) => setFreshnessFilter(val as FreshnessFilter)}
+              >
+                <SelectTrigger
+                  aria-labelledby="status-select-label status-select"
+                  className="text-sm"
+                  id="status-select"
+                >
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent className="testing-menu">
+                  {/* "Fresh" on its own is our word, not the student's, so it
+                      says what it filters to. Single-line, because the
+                      trigger renders the chosen item's children and has to
+                      keep reading straight once the menu closes. "Any" needs
+                      no gloss: it is the absence of the filter, and spelling
+                      that out only makes the pair harder to scan. */}
+                  <SelectItem value="fresh" className="text-sm focus:bg-foreground/5">
+                    {kind === 'rc' ? 'No recorded attempt or exposure' : 'Fresh · never attempted'}
+                  </SelectItem>
+                  <SelectItem value="any" className="text-sm focus:bg-foreground/5">
+                    Any
+                  </SelectItem>
+                </SelectContent>
+              </Select>
+              {/* One live region, always present, for the three things the
+                  filter can report: still checking, could not check, nothing
+                  left. Sighted students watch this line change under the
+                  control; a screen reader only hears it if the region was
+                  already there when the text arrived. Polite, because none of
+                  the three blocks the form: every section stays reachable
+                  through Any. */}
+              <p className="text-sm text-muted-foreground empty:!mt-0" role="status" aria-live="polite">
+                {(kind === 'rc' ? rcFreshnessLoading : freshnessLoading)
+                  ? 'Checking what you have worked…'
+                  : (kind === 'rc' ? rcFreshnessError : freshnessError)
+                    ? `${kind === 'rc' ? rcFreshnessError : freshnessError} Every section is listed until it can.`
+                    : pickableSections.length === 0 && (kind === 'lr' || rcSections !== null)
+                      ? kind === 'rc'
+                        ? 'No untouched RC sections left. Switch to Any to sit one again.'
+                        : 'No untouched LR sections left. Switch to Any to sit one again.'
+                      : null}
+              </p>
+              {kind === 'rc' && <p className="text-xs text-muted-foreground">Exposure tracking covers recorded previews and practice. Earlier untracked reading cannot be ruled out.</p>}
+            </div>
+          )}
+
+          {/* PrepTest, then section. Two steps rather than one flat list of
+              `PT130.S3` rows: a student picks the test first and the section
+              number second, which is the order they already hold it in. The
+              Status filter above has decided which tests are offered at all,
+              so nothing here needs counts or percentages on the rows. */}
+          <div className="grid gap-1.5">
             <label
               className="text-xs font-semibold uppercase tracking-wider"
-              htmlFor="status-select"
-              id="status-select-label"
+              htmlFor="preptest-select"
+              id="preptest-select-label"
             >
-              Status
+              PrepTest
+            </label>
+            {/* Same combobox as the practice-test door. This was a plain Select
+                until an audit put the two side by side: 54 rows of scroll here,
+                type-to-filter there, for the identical decision. */}
+            <PrepTestCombobox
+              centerValue
+              emptyMessage={hideStatus ? "No PrepTest by that number." : "No PrepTest by that number, under this filter."}
+              id="preptest-select"
+              labelId="preptest-select-label"
+              onChange={(pt) => {
+                setSelectedPT(pt);
+                // The section number means a different section in a different
+                // test, so carrying it across would start the wrong thing.
+                setSelectedSection(null);
+              }}
+              options={ptOptions}
+              placeholder="Select a PrepTest"
+              value={selectedPT}
+            />
+          </div>
+
+          <div className="grid gap-1.5">
+            <label
+              className="text-xs font-semibold uppercase tracking-wider"
+              htmlFor="section-select"
+              id="section-select-label"
+            >
+              Section
             </label>
             <Select
-              value={freshnessFilter}
-              onValueChange={(val) => setFreshnessFilter(val as FreshnessFilter)}
+              value={selectedSection ? String(selectedSection) : ''}
+              onValueChange={(val) => setSelectedSection(Number(val))}
+              disabled={!selectedPT}
             >
               <SelectTrigger
-                aria-labelledby="status-select-label status-select"
+                aria-labelledby="section-select-label section-select"
                 className="text-sm"
-                id="status-select"
+                id="section-select"
               >
-                <SelectValue />
+                <SelectValue
+                  placeholder={selectedPT ? 'Select a section' : 'Pick a PrepTest first'}
+                />
               </SelectTrigger>
               <SelectContent className="testing-menu">
-                {/* "Fresh" on its own is our word, not the student's, so it
-                    says what it filters to. Single-line, because the
-                    trigger renders the chosen item's children and has to
-                    keep reading straight once the menu closes. "Any" needs
-                    no gloss: it is the absence of the filter, and spelling
-                    that out only makes the pair harder to scan. */}
-                <SelectItem value="fresh" className="text-sm focus:bg-foreground/5">
-                  {kind === 'rc' ? 'No recorded attempt or exposure' : 'Fresh · never attempted'}
-                </SelectItem>
-                <SelectItem value="any" className="text-sm focus:bg-foreground/5">
-                  Any
-                </SelectItem>
+                {sectionsForPT.map((section) => (
+                  <SelectItem
+                    key={section}
+                    value={String(section)}
+                    className="text-sm focus:bg-foreground/5"
+                  >
+                    Section {section}
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
-            {/* One live region, always present, for the three things the
-                filter can report: still checking, could not check, nothing
-                left. Sighted students watch this line change under the
-                control; a screen reader only hears it if the region was
-                already there when the text arrived. Polite, because none of
-                the three blocks the form: every section stays reachable
-                through Any. */}
-            <p className="text-sm text-muted-foreground empty:!mt-0" role="status" aria-live="polite">
-              {(kind === 'rc' ? rcFreshnessLoading : freshnessLoading)
-                ? 'Checking what you have worked…'
-                : (kind === 'rc' ? rcFreshnessError : freshnessError)
-                  ? `${kind === 'rc' ? rcFreshnessError : freshnessError} Every section is listed until it can.`
-                  : pickableSections.length === 0 && (kind === 'lr' || rcSections !== null)
-                    ? kind === 'rc'
-                      ? 'No untouched RC sections left. Switch to Any to sit one again.'
-                      : 'No untouched LR sections left. Switch to Any to sit one again.'
-                    : null}
-            </p>
-            {kind === 'rc' && <p className="text-xs text-muted-foreground">Exposure tracking covers recorded previews and practice. Earlier untracked reading cannot be ruled out.</p>}
           </div>
-        )}
-
-        {/* PrepTest, then section. Two steps rather than one flat list of
-            `PT130.S3` rows: a student picks the test first and the section
-            number second, which is the order they already hold it in. The
-            Status filter above has decided which tests are offered at all,
-            so nothing here needs counts or percentages on the rows. */}
-        <div className="space-y-3">
-          <label
-            className="text-xs font-semibold uppercase tracking-wider"
-            htmlFor="preptest-select"
-            id="preptest-select-label"
-          >
-            PrepTest
-          </label>
-          {/* Same combobox as the practice-test door. This was a plain Select
-              until an audit put the two side by side: 54 rows of scroll here,
-              type-to-filter there, for the identical decision. */}
-          <PrepTestCombobox
-            emptyMessage={hideStatus ? "No PrepTest by that number." : "No PrepTest by that number, under this filter."}
-            id="preptest-select"
-            labelId="preptest-select-label"
-            onChange={(pt) => {
-              setSelectedPT(pt);
-              // The section number means a different section in a different
-              // test, so carrying it across would start the wrong thing.
-              setSelectedSection(null);
-            }}
-            options={ptOptions}
-            placeholder="Select a PrepTest"
-            value={selectedPT}
-          />
         </div>
 
-        <div className="space-y-3">
-          <label
-            className="text-xs font-semibold uppercase tracking-wider"
-            htmlFor="section-select"
-            id="section-select-label"
-          >
-            Section
-          </label>
-          <Select
-            value={selectedSection ? String(selectedSection) : ''}
-            onValueChange={(val) => setSelectedSection(Number(val))}
-            disabled={!selectedPT}
-          >
-            <SelectTrigger
-              aria-labelledby="section-select-label section-select"
-              className="text-sm"
-              id="section-select"
-            >
-              <SelectValue
-                placeholder={selectedPT ? 'Select a section' : 'Pick a PrepTest first'}
-              />
-            </SelectTrigger>
-            <SelectContent className="testing-menu">
-              {sectionsForPT.map((section) => (
-                <SelectItem
-                  key={section}
-                  value={String(section)}
-                  className="text-sm focus:bg-foreground/5"
-                >
-                  Section {section}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+        {/* Timing Selector */}
+        {/* The picker carries its own TIMING eyebrow, the way the PrepTest and
+            Section fields carry theirs, so this block adds no second label. */}
+        <div>
+          {checkingProfileTiming ? <p className="text-sm text-muted-foreground" role="status">Checking profile timing…</p> : <SectionTimingPicker
+            value={timing}
+            onChange={value => { timingTouched.current = true; setExplicitBaseMinutes(baseMinutes); setTiming(typeof value === 'function' ? value(timing) : value); }}
+            baseMinutes={baseMinutes}
+            // Three clocks and no more. 100% is the student's own standard,
+            // and the two above it are the accommodations the LSAT actually
+            // grants (+50% and +100%). The old speed-training presets (97%,
+            // 94%, 70%) and the custom stepper read as arbitrary numbers on
+            // a panel whose job is to start a real section.
+            allowedPercents={kind === 'rc' ? rcPercents : [100, 150, 200]}
+            // RC's clock is a per-passage budget with only three paces, and
+            // no stopwatch to fall back to.
+            allowUnlimited
+            labels={kind === 'rc' ? rcTimingLabels : { 100: 'Standard', 150: 'Time and a half', 200: 'Double time' }}
+            accommodationNote={explicitBaseMinutes !== null && explicitBaseMinutes !== profileBaseMinutes
+              ? 'Your selected timing is kept. New setups use your updated profile timing.'
+              : <AccommodationNote baseMinutes={profileBaseMinutes} />}
+            className="min-h-[44px] rounded-md"
+            contentClassName="testing-menu min-w-0 max-w-[var(--radix-popover-content-available-width)]"
+          />}
+          <p className="mt-1 min-h-5 text-sm text-muted-foreground" role="status">
+            {chosenQuestionCount ? `${chosenQuestionCount} questions` : null}
+          </p>
         </div>
-      </div>
-
-      {/* Timing Selector */}
-      {/* The picker carries its own TIMING eyebrow, the way the PrepTest and
-          Section fields carry theirs, so this block adds no second label. */}
-      <div className="space-y-3 mb-12">
-        {checkingProfileTiming ? <p className="text-sm text-muted-foreground" role="status">Checking profile timing…</p> : <SectionTimingPicker
-          value={timing}
-          onChange={value => { timingTouched.current = true; setExplicitBaseMinutes(baseMinutes); setTiming(typeof value === 'function' ? value(timing) : value); }}
-          baseMinutes={baseMinutes}
-          questionCount={chosenQuestionCount}
-          // Three clocks and no more. 100% is the student's own standard,
-          // and the two above it are the accommodations the LSAT actually
-          // grants (+50% and +100%). The old speed-training presets (97%,
-          // 94%, 70%) and the custom stepper read as arbitrary numbers on
-          // a panel whose job is to start a real section.
-          allowedPercents={kind === 'rc' ? rcPercents : [100, 150, 200]}
-          // RC's clock is a per-passage budget with only three paces, and
-          // no stopwatch to fall back to.
-          allowUnlimited
-          labels={kind === 'rc' ? rcTimingLabels : { 100: 'Standard', 150: 'Time and a half', 200: 'Double time' }}
-          accommodationNote={explicitBaseMinutes !== null && explicitBaseMinutes !== profileBaseMinutes
-            ? 'Your selected timing is kept. New setups use your updated profile timing.'
-            : <AccommodationNote baseMinutes={profileBaseMinutes} />}
-          className="min-h-[44px] rounded-md"
-          contentClassName="testing-menu"
-        />}
-
-        {/* Nothing under the control. No counts, no caveats: the clock
-            is already on it and the panel is four fields and a button. */}
-      </div>
-
-      {/* Divider */}
-      <div className="mb-8 h-px bg-border" />
-
-      {/* What the button does. Every field above states a choice; none of
-          them says what happens once the choice is made, and a student
-          pressing Start should already know they are committing to the
-          whole section rather than a drill they can leave. Appears only
-          once a section is actually chosen, so the count is the real one
-          and this is never a promise about nothing. Deliberately not under
-          the timing control, which was cleared on purpose. */}
-      {!checkingProfileTiming && isReadyToStart && chosenQuestionCount && (
-        <p className="mb-6 text-sm text-muted-foreground">
-          All {chosenQuestionCount} questions, in their published order.{' '}
-          {timing.mode === 'unlimited'
-            ? 'No clock, so take as long as you want.'
-            : clockWaitsForStart
-              ? 'The clock begins only after you press Start section.'
-              : 'The clock starts straight away.'}{' '}
-          It is scored when you submit, and blind review comes after.
-        </p>
-      )}
+      </fieldset>
 
       {/* Actions */}
-      <div className="flex items-center justify-between">
-        <button
-          type="button"
-          onClick={onCancel}
-          className="min-h-[44px] px-2 text-sm text-muted-foreground transition-colors duration-150 hover:text-foreground focus-visible:underline focus-visible:outline-none"
-        >
-          Cancel
-        </button>
+      <div className="testing-section-actions mt-3 border-t border-border pt-3">
+        {startError && (
+          <p role="alert" className="mb-2 text-sm">
+            We couldn’t open your section. Your timer hasn’t started.
+          </p>
+        )}
+        <div className="flex items-center justify-between gap-2">
+          <button
+            type="button"
+            onClick={onCancel}
+            className="min-h-[44px] px-2 text-sm text-muted-foreground transition-colors duration-150 hover:text-foreground focus-visible:underline focus-visible:outline-none"
+          >
+            Cancel
+          </button>
 
-        <button
-          type="button"
-          onClick={handleStart}
-          disabled={!isReadyToStart || starting || checkingProfileTiming}
-          className={cn(
-            "min-h-[44px] rounded-md px-8 py-3 text-sm font-semibold",
-            "transition-colors duration-200",
-            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/20 focus-visible:ring-offset-2",
-            isReadyToStart && !checkingProfileTiming
-              ? "bg-foreground text-background hover:bg-foreground/90"
-              : "bg-muted text-muted-foreground cursor-not-allowed"
-          )}
-        >
-          Start Section
-        </button>
+          <button
+            type="button"
+            onClick={handleStart}
+            disabled={!isReadyToStart || starting || checkingProfileTiming}
+            className={cn(
+              "min-h-[44px] rounded-md px-8 py-3 text-sm font-semibold",
+              "transition-colors duration-200",
+              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/20 focus-visible:ring-offset-2",
+              isReadyToStart && !checkingProfileTiming && !starting
+                ? "bg-foreground text-background hover:bg-foreground/90"
+                : "bg-muted text-muted-foreground cursor-not-allowed"
+            )}
+          >
+            {starting ? 'Opening section…' : startError ? 'Try again' : 'Start section'}
+          </button>
+        </div>
       </div>
     </div>
   );
