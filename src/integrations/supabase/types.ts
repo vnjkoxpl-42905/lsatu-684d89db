@@ -3461,6 +3461,24 @@ export type Database = {
         }
         Relationships: []
       }
+      mcp_lr_section_catalog: {
+        Row: {
+          prep_test: number
+          question_qids: string[]
+          section_number: number
+        }
+        Insert: {
+          prep_test: number
+          question_qids: string[]
+          section_number: number
+        }
+        Update: {
+          prep_test?: number
+          question_qids?: string[]
+          section_number?: number
+        }
+        Relationships: []
+      }
       mcp_write_audit: {
         Row: {
           actor_id: string
@@ -9845,6 +9863,16 @@ export type Database = {
         }
         Returns: Json
       }
+      mcp_execute_teaching_assignment: {
+        Args: {
+          p_confirmation: string
+          p_idempotency_key: string
+          p_item: Json
+          p_settings: Json
+          p_student_id: string
+        }
+        Returns: Json
+      }
       mcp_find_students: {
         Args: { p_limit?: number; p_query: string }
         Returns: {
@@ -9861,6 +9889,10 @@ export type Database = {
         Args: { p_admin_id: string; p_student_id: string }
         Returns: string
       }
+      mcp_list_inbox: {
+        Args: { p_limit?: number; p_offset?: number; p_unread_only?: boolean }
+        Returns: Json
+      }
       mcp_post_classroom_note: {
         Args: {
           p_content_html: string
@@ -9872,7 +9904,57 @@ export type Database = {
         }
         Returns: Json
       }
+      mcp_preview_teaching_assignment: {
+        Args: { p_item: Json; p_settings: Json; p_student_id: string }
+        Returns: Json
+      }
+      mcp_read_inbox_thread: {
+        Args: {
+          p_before_message_id?: string
+          p_limit?: number
+          p_message_id?: string
+          p_thread_id: string
+        }
+        Returns: Json
+      }
+      mcp_read_teaching_assignment_receipt: {
+        Args: {
+          p_confirmation: string
+          p_idempotency_key: string
+          p_student_id: string
+        }
+        Returns: Json
+      }
+      mcp_record_teaching_assignment_email: {
+        Args: {
+          p_confirmation: string
+          p_error: string
+          p_idempotency_key: string
+          p_ok: boolean
+          p_student_id: string
+        }
+        Returns: Json
+      }
+      mcp_reply_inbox_thread: {
+        Args: {
+          p_body: string
+          p_confirm_send: boolean
+          p_idempotency_key: string
+          p_reply_to_message_id: string
+          p_thread_id: string
+        }
+        Returns: Json
+      }
       mcp_require_admin: { Args: never; Returns: string }
+      mcp_teaching_assignment_plan: {
+        Args: {
+          p_actor: string
+          p_item: Json
+          p_settings: Json
+          p_student_id: string
+        }
+        Returns: Json
+      }
       open_review_episode_v1: {
         Args: {
           p_reason: string
